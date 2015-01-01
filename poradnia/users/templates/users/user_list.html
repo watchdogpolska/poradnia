@@ -26,7 +26,9 @@
           {% for user in user_list %}
             <a href="{% url 'users:detail' user.username %}" class="list-group-item{%if user.is_staff%} staff{%endif%}">
               <h4 class="list-group-item-heading">{% avatar user %} {{ user.username }}</h4>
-              <p class="list-group-item-text">{{ maker.tagline }}</p>
+              {% if user.case_count %}
+              <p class="list-group-item-text">Case count: {{ user.case_count }}</p>
+              {% endif %}
             </a>
           {% endfor %}
         
