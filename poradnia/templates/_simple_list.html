@@ -1,0 +1,13 @@
+<p><span class="label label-primary">{{title}}</span>
+    {% if object_list %}
+        {% for object in object_list%}
+            {% if object.get_absolute_url%}
+                <a href="{{object.get_absolute_url}}" class="label label-success">{{object}}</a> 
+            {%else%}
+                <span class="label label-info">{{object}}</span>
+            {%endif%}
+        {% endfor %}
+    {% else %}
+        <span class="label label-warning">No object for {{title}}</span>
+    {% endif %}
+</p>
