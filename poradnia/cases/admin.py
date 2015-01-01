@@ -2,4 +2,7 @@ from django.contrib import admin
 from .models import Case
 
 
-admin.site.register(Case)
+class CaseAdmin(admin.ModelAdmin):
+    list_display = ['name', 'client']
+
+admin.site.register(Case, CaseAdmin)
