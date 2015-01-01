@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Import the reverse lookup function
 from django.core.urlresolvers import reverse
-
+from django.db.models import Q
 # view imports
 from django.views.generic import DetailView
 from django.views.generic import RedirectView
@@ -18,7 +18,15 @@ from .forms import UserForm
 from .models import User
 
 
-class UserDetailView(LoginRequiredMixin, DetailView):
+class UserOrStaffOnlyMixin(object):
+    def get_queryset(self, *args, **kwargs):
+        queryset = super(UserOrStaffOnlyMixin, self).get_queryset(*args, **kwargs)
+        if not self.request.user.has_perm('users.can_view_other'):
+            return queryset.filter(Q(username=self.request.user.username) | Q(is_staff=True))
+        return queryset
+
+
+class UserDetailView(LoginRequiredMixin, UserOrStaffOnlyMixin, DetailView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = "username"
@@ -50,7 +58,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         return User.objects.get(username=self.request.user.username)
 
 
-class UserListView(LoginRequiredMixin, ListView):
+class UserListView(LoginRequiredMixin, UserOrStaffOnlyMixin, ListView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = "username"

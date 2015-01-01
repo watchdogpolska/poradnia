@@ -8,8 +8,9 @@ class Letter(Record):
     STATUS = Choices('open', 'closed')
     status = StatusField()
     status_changed = MonitorField(monitor='status')
-    text = models.TextField()
-    comment = models.TextField()
+    name = models.CharField(max_length=250)
+    text = models.TextField(blank=True, null=True)
+    comment = models.TextField(blank=True, null=True)
 
 
 class Attachment(models.Model):

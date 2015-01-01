@@ -1,3 +1,6 @@
 from django.shortcuts import render
+from django.views.generic import DetailView
+from .models import Case
 
-# Create your views here.
+class Case_Details(DetailView):
+    model = Case

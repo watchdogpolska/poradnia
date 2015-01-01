@@ -13,3 +13,6 @@ class User(AbstractUser):
 
     def __unicode__(self):
         return self.username
+
+    class Meta:
+        permissions = (("can_view_other", "Can view other"),)

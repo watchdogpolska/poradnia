@@ -24,11 +24,7 @@
     <!-- This file store project specific CSS -->
     <link href="{% static 'css/project.css' %}" rel="stylesheet">
     {% endblock %}
-
-    {% block angular %}
-      <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-    {% endblock %}
-
+    {% block extra_css %}{%endblock%} {# TODO: Remove it #}
   </head>
 
   <body>
@@ -38,7 +34,7 @@
         <a class="navbar-brand" href="/">poradnia</a>
         <ul class="nav navbar-nav">
           <li class="active"><a href="{% url 'home' %}">Home</a></li>
-          <li><a href="{% url 'about' %}">About</a></li>
+          {#<li><a href="{% url 'about' %}">About</a></li>#}
 
           {% if request.user.is_authenticated %}
             <li><a href="{% url 'users:detail' request.user.username  %}">{% trans "My Profile" %}</a></li>

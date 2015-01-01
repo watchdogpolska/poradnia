@@ -36,3 +36,4 @@ django-avatar==2.0
 pytz==2014.7
 
 # Your custom requirements go here
+django-guardian==1.2.5

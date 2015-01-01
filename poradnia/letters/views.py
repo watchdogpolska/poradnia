@@ -1,9 +1,14 @@
 from django.shortcuts import render
-from django.views.generic.edit import FormView
+from django.http import HttpResponseRedirect
 from .forms import LetterForm
 
 
-class ContactView(FormView):
-    template_name = 'letter.html'
-    form_class = LetterForm
-    success_url = '/thanks/'
+def add_letter(request, case_id=None):
+    if request.method == 'POST':
+        form = LetterForm(request.POST, user=request.user)
+        if form.is_valid():
+            obj = form.save(case_id=case_id)
+            return HttpResponseRedirect(obj.case.get_absolute_url())
+    else:
+        form = LetterForm(user=request.user)
+    return render(request, 'letters/form.html', {'form': form})

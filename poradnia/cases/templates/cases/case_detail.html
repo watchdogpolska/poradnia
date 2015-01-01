@@ -1,0 +1,8 @@
+{% extends 'cases/base.html' %}
+{%block title%}{{object}} - {{block.super}}{%endblock%}
+{%block content%}
+{%for record in object.record_set.all%}
+{{record}}
+{%endfor%}
+
+{%endblock%}
