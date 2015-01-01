@@ -1,0 +1,5 @@
+{% include '_simple_row.html' with title='name' object=object.name only %}
+{% include '_simple_list.html' with title='tags' object_list=object.tags.all only %}
+{% include '_simple_row.html' with title='status' object=object.status only %}
+{% include '_simple_row.html' with title='status_changed' object=object.status_changed only %}
+{% include '_simple_row.html' with title='client' object=object.client only %}

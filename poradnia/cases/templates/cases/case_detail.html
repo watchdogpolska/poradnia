@@ -1,8 +1,7 @@
 {% extends 'cases/base.html' %}
 {%block title%}{{object}} - {{block.super}}{%endblock%}
 {%block content%}
-{%for record in object.record_set.all%}
-{{record}}
-{%endfor%}
+{% include 'cases/_meta.html' with object=object %}
+{% include '_list.html' with title="Record" object_list=object.record_set.all %}
 
 {%endblock%}
