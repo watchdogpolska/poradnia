@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Import the reverse lookup function
 from django.core.urlresolvers import reverse
-from django.db.models import Q
 # view imports
 from django.views.generic import DetailView
 from django.views.generic import RedirectView
@@ -17,13 +16,13 @@ from .forms import UserForm
 # Import the customized User model
 from .models import User
 
+from cases.models import Case
+
 
 class UserOrStaffOnlyMixin(object):
     def get_queryset(self, *args, **kwargs):
         queryset = super(UserOrStaffOnlyMixin, self).get_queryset(*args, **kwargs)
-        if not self.request.user.has_perm('users.can_view_other'):
-            return queryset.filter(Q(username=self.request.user.username) | Q(is_staff=True))
-        return queryset
+        return queryset.for_user(self.request.user)
 
 
 class UserDetailView(LoginRequiredMixin, UserOrStaffOnlyMixin, DetailView):
@@ -31,6 +30,16 @@ class UserDetailView(LoginRequiredMixin, UserOrStaffOnlyMixin, DetailView):
     # These next two lines tell the view to index lookups by username
     slug_field = "username"
     slug_url_kwarg = "username"
+
+    def get_context_data(self, **kwargs):
+        """
+        Insert the single object into the context dict.
+        """
+        context = {}
+        context['case_list'] = Case.objects.for_user(self.request.user).\
+            filter(client=self.object).all()
+        context.update(kwargs)
+        return super(UserDetailView, self).get_context_data(**context)
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
@@ -63,3 +72,9 @@ class UserListView(LoginRequiredMixin, UserOrStaffOnlyMixin, ListView):
     # These next two lines tell the view to index lookups by username
     slug_field = "username"
     slug_url_kwarg = "username"
+
+    def get_queryset(self):
+        queryset = super(UserListView, self).get_queryset()
+        if self.request.user.has_perm('cases.can_view_all'):
+            return queryset.with_case_count()
+        return queryset
