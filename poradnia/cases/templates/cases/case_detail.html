@@ -1,7 +1,72 @@
 {% extends 'cases/base.html' %}
 {%block title%}{{object}} - {{block.super}}{%endblock%}
 {%block content%}
-{% include 'cases/_meta.html' with object=object %}
-{% include '_list.html' with title="Record" object_list=object.record_set.all %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-6">
+      {% include '_simple_row.html' with title='name' object=object.name only %}
+      {% include '_simple_list.html' with title='tags' object_list=object.tags.all only %}
+      {% include '_simple_row.html' with title='status' object=object.status only %}
+      {% include '_simple_row.html' with title='status_changed' object=object.status_changed only %}
+      {% include '_simple_row.html' with title='client' object=object.client only %}
+      <a class="btn btn-primary" href="{{ object.get_edit_url }}">Edit</a>
+      {#<a class="btn btn-warning" href="{% url 'cases:close' %}">Close</a>#}
+</div>
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+          <!-- Default panel contents -->
+          <div class="panel-heading">Permissison</div>
+          <table class="table table-striped">
+            <thead><tr>
+              <th>User</th>
+              <th>Rank</th>
+              {% if perm_case.cases.add_permission %}
+                <th>Delete</th>
+              {% endif %}
+              {% if perm_case.cases.change_permission %}
+                <th>Change</th>
+              {% endif %}
+            </tr></thead>
+            <tbody>
+            {%for perm in object.permission_set.all %}
+            <tr>
+              <td>{{perm.user}}</td>
+              <td>{{perm.rank}}</td>
+              {% if perm_case.cases.delete_permission %}
+                <td><a href="{% url 'cases:permission_delete' perm.pk %}">Delete</a></td>
+              {% endif %}
+              {% if perm_case.cases.change_permission %}
+                <td><a href="{% url 'cases:permission_change' perm.pk %}">Change</a></td>
+              {% endif %}
+            </tr>
+            {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    </div>
 
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12">
+      <h2>Record</h2>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <div class="list-group">
+        {% if object.record_set.all %}
+            {% for record in object.record_set.all %}
+                {% include record.get_child_obj.get_template_list with object=record.get_child_obj%}
+            {% endfor %}
+        {% else %}
+            <span class="label label-warning">No object for {{title}}</span>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
 {%endblock%}
