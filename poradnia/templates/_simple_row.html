@@ -1,1 +1,7 @@
-<p><span class="label label-primary">{{title}}</span>{{object}}</p>
+<p><span class="label label-primary">{{title}}</span>
+{% if object.get_absolute_url %}
+    <a href="{{object.get_absolute_url}}">{{object|safe}}</a>
+{% else %} 
+    {{object|safe}} {# TODO: Security issues #}
+{%endif%}
+</p>
