@@ -12,6 +12,9 @@ class Letter(Record):
     text = models.TextField(blank=True, null=True)
     comment = models.TextField(blank=True, null=True)
 
+    def __unicode__(self):
+        return self.name
+
 
 class Attachment(models.Model):
     letter = models.ForeignKey(Letter)
