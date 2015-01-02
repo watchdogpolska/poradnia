@@ -4,6 +4,7 @@ from django.conf import settings
 from model_utils.fields import MonitorField, StatusField
 from model_utils import Choices
 from django.core.urlresolvers import reverse
+from django.contrib.auth.models import Group
 
 
 class Style(models.Model):
@@ -22,7 +23,7 @@ class CaseManager(models.Manager):
         queryset = super(CaseManager, self).get_query_set()
         if user.has_perm('cases.can_view_all'):
             return queryset
-        field = 'record__following__user_id'  # Mam obawy czy to nie jest zbyt wiele relacji...
+        field = 'permission__user_id'  # Mam obawy czy to nie jest zbyt wiele relacji...
         return queryset.filter(**{field: user.pk})
 
 
@@ -44,3 +45,8 @@ class Case(models.Model):
     class Meta:
         permissions = (("can_select_client", "Can select client"),
                        ('can_view_all', "Can view all cases"))
+
+
+class Permission(models.Model):
+    case = models.ForeignKey(Case)
+    rank = models.ForeignKey(Group)
