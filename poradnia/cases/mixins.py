@@ -64,11 +64,11 @@ class PermissionGroupMixin(object):
         return queryset
 
     def get_permission_group(self):
-        if hasattr(self.object, 'get_permission_group'):
+        if hasattr(self, 'object') and hasattr(self.object, 'get_permission_group'):
             return self.object.get_permission_group(self.request.user)
         return None
 
     def get_context_data(self, **kwargs):
         group = self.get_permission_group()
         kwargs['perm_case'] = PermWrapper(group)
-        return kwargs
+        return super(PermissionGroupMixin, self).get_context_data(**kwargs)
