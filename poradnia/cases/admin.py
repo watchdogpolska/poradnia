@@ -9,7 +9,7 @@ class CaseAdmin(admin.ModelAdmin):
 
 @admin.register(Permission)
 class PermissionAdmin(admin.ModelAdmin):
-    list_display = ['case', 'rank']
+    list_display = ['case', 'rank', 'user']
 
 
 @admin.register(SiteGroup)
