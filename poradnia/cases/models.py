@@ -62,6 +62,10 @@ class SiteGroup(models.Model):
     rank = models.CharField(choices=RANK, max_length=15, default=RANK.client)
     group = models.ForeignKey(Group)
 
+    @classmethod
+    def for_current(cls):
+        return cls.objects.filter(site=Site.objects.get_current())
+
 
 class CaseQuerySet(QuerySet):
     def for_user(self, user):
@@ -69,6 +73,10 @@ class CaseQuerySet(QuerySet):
             return self
         field = 'permission__user_id'  # Mam obawy czy to nie jest zbyt wiele relacji...
         return self.filter(**{field: user.pk})
+
+    def without_lawyers(self):
+        group = SiteGroup.for_current().get(rank=SiteGroup.RANK.lawyer)
+        return self.exclude(permission__rank=group).all()
 
 
 class Case(models.Model):
@@ -91,6 +99,10 @@ class Case(models.Model):
 
     def get_permission_group(self, user):
         return self.permission_set.get(user=user).rank
+
+    def get_lawyers(self):
+        group = SiteGroup.for_current().get(rank=SiteGroup.RANK.lawyer)
+        return (c.user for c in self.permission_set.filter(rank=group).all())
 
     def save(self, *args, **kwargs):
         is_new = (True if self.pk is None else False)
