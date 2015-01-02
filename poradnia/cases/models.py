@@ -55,6 +55,9 @@ class Permission(models.Model):
             Following(user=self.user, case=self.case).save()
         Letter(name=self.get_update_title(), comment=self.get_update_msg(), case=self.case).save()
 
+    class Meta:
+        unique_together = (('user', 'case',),)
+
 
 class SiteGroup(models.Model):
     RANK = Choices('client', 'lawyer', 'student', 'secretary', 'spectator')
@@ -111,8 +114,7 @@ class Case(models.Model):
             self.assign(self.client, SiteGroup.RANK.client)
 
     def assign(self, user, rank=SiteGroup.RANK.client):
-        site = Site.objects.get_current()  # TODO: As manager of SiteGroup
-        group = SiteGroup.objects.get(site=site, rank=rank).group
+        group = SiteGroup.objects.for_current().get(rank=rank).group
         return Permission(case=self, rank=group, user=user).save()
 
     class Meta:
