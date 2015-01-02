@@ -7,3 +7,6 @@ class Record(models.Model):
     case = models.ForeignKey(Case)
     created_on = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True)
+
+    def get_absolute_url(self):
+        return "%s#%d" % (self.case.get_absolute_url(), self.pk)
