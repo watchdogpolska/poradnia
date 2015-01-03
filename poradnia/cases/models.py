@@ -17,9 +17,8 @@ class CaseQuerySet(QuerySet):
         field = 'permission__user_id'  # Mam obawy czy to nie jest zbyt wiele relacji...
         return self.filter(**{field: user.pk})
 
-    def without_lawyers(self):
-        group = LocalGroup.objects.get(rank=LocalGroup.RANK.lawyer)
-        return self.exclude(permission__group=group).all()
+    def free(self):
+        return self.exclude(permission__group__rank=LocalGroup.RANK.lawyer)
 
     def with_record_count(self):
         return self.annotate(Count('record'))
