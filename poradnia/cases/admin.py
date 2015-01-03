@@ -1,17 +1,13 @@
 from django.contrib import admin
-from .models import Case, Permission, SiteGroup
+from .models import Case
+from .permissions.models import Permission
+
+
+class PermissionInline(admin.TabularInline):
+    model = Permission
 
 
 @admin.register(Case)
 class CaseAdmin(admin.ModelAdmin):
     list_display = ['name', 'client']
-
-
-@admin.register(Permission)
-class PermissionAdmin(admin.ModelAdmin):
-    list_display = ['case', 'rank', 'user']
-
-
-@admin.register(SiteGroup)
-class SiteGroupAdmin(admin.ModelAdmin):
-    list_display = ['pk', 'rank', 'site', 'group']
+    inlines = [PermissionInline, ]

@@ -42,13 +42,15 @@ class Common(Configuration):
         'allauth',  # registration
         'allauth.account',  # registration
         'allauth.socialaccount',  # registration
-        'guardian',
+        'autofixture',
     )
 
     # Apps specific for this project go here.
     LOCAL_APPS = (
         'users',  # custom users app
         'cases',
+        'cases.permissions',
+        'cases.tags',
         'letters',
         'records',
         'tracking',

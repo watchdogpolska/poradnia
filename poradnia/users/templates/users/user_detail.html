@@ -22,14 +22,13 @@
     <a class="btn btn-primary" href="{% url 'users:update' %}">My Info</a>
     <a class="btn btn-primary" href="{% url 'account_email' %}">E-Mail</a>
     <a class="btn btn-info" href="{% url 'avatar_change' %}">Avatar</a>
-    <!-- Your Stuff: Custom user template urls -->
+    {% if object == request.user or request.user.perms.cases.can_view_case %}
+    <a class="btn btn-info" href="{% url 'cases:list' username=object.username %}">Cases</a>
+    {% endif %}
   </div>
 
 </div>
 <!-- End Action buttons -->
 {% endif %}
 
-{% if object == request.user or request.user.perms.cases.can_view_case %}
-{% include '_list.html' with title="Cases" object_list=case_list only %}
-{% endif %}
 {% endblock content %}

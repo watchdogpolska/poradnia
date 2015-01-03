@@ -31,10 +31,8 @@ class Migration(migrations.Migration):
                 ('user_permissions', models.ManyToManyField(related_query_name='user', related_name='user_set', to='auth.Permission', blank=True, help_text='Specific permissions for this user.', verbose_name='user permissions')),
             ],
             options={
-                'abstract': False,
-                'verbose_name': 'user',
-                'verbose_name_plural': 'users',
+                'permissions': (('can_view_other', 'Can view other'),),
             },
             bases=(models.Model,),
-        )
+        ),
     ]

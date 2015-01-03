@@ -7,11 +7,21 @@
       {% include '_simple_row.html' with title='name' object=object.name only %}
       {% include '_simple_list.html' with title='tags' object_list=object.tags.all only %}
       {% include '_simple_row.html' with title='status' object=object.status only %}
+<p><span class="label label-primary">Tags</span>
+{% for tag in objects.tags.all %}
+    <span class="label {{tag.style.code}}">
+    <a href="{{tag.get_absolute_url}}">{{tag}}</a>
+    <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+    </span>
+    <span class="label label-success"><span class="glyphicon glyphicon-plus"></span></span>
+{% endfor %}
+
+</p>
       {% include '_simple_row.html' with title='status_changed' object=object.status_changed only %}
       {% include '_simple_row.html' with title='client' object=object.client only %}
       <a class="btn btn-primary" href="{{ object.get_edit_url }}">Edit</a>
       {#<a class="btn btn-warning" href="{% url 'cases:close' %}">Close</a>#}
-</div>
+    </div>
     <div class="col-lg-6">
         <div class="panel panel-default">
           <!-- Default panel contents -->
@@ -20,7 +30,7 @@
             <thead><tr>
               <th>User</th>
               <th>Rank</th>
-              {% if perm_case.cases.add_permission %}
+              {% if perm_case.cases.delete_permission %}
                 <th>Delete</th>
               {% endif %}
               {% if perm_case.cases.change_permission %}
@@ -31,7 +41,7 @@
             {%for perm in object.permission_set.all %}
             <tr>
               <td>{{perm.user}}</td>
-              <td>{{perm.rank}}</td>
+              <td>{{perm.group.rank}}</td>
               {% if perm_case.cases.delete_permission %}
                 <td><a href="{% url 'cases:permission_delete' perm.pk %}">Delete</a></td>
               {% endif %}
@@ -64,7 +74,7 @@
                 {% include record.get_child_obj.get_template_list with object=record.get_child_obj%}
             {% endfor %}
         {% else %}
-            <span class="label label-warning">No object for {{title}}</span>
+            <span class="label label-warning">No records</span>
         {% endif %}
       </div>
     </div>

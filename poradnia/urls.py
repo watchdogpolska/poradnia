@@ -27,6 +27,8 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable avatars
     url(r'^avatar/', include('avatar.urls')),
+    url(r'^cases/permissions/', include('cases.permissions.urls', namespace='permissions')),
+    url(r'^cases/tags/', include('cases.tags.urls', namespace='tags')), 
     url(r'^cases/', include('cases.urls', namespace='cases')),
     url(r'^$', include('letters.urls'))
     # Your stuff: custom urls go here

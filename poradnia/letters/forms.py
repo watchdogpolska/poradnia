@@ -4,7 +4,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django import forms
 from django.contrib.auth import get_user_model
-from cases.models import Case, SiteGroup
+from cases.models import Case, LocalGroup
+from django.contrib.sites.models import Site
 
 
 class LetterForm(ModelForm):
@@ -37,7 +38,7 @@ class LetterForm(ModelForm):
         obj.case = case
         obj.created_by = self.user
         if not obj.created_by == client:
-            case.assign(obj.created_by, SiteGroup.RANK.spectator)
+            case.assign(obj.created_by, LocalGroup.RANK.spectator)
         if commit:
             obj.save()
         return obj

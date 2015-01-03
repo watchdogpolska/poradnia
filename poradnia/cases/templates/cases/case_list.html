@@ -1,22 +1,59 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Cases - {{block.super}}{% endblock %}
+{% block title %}Cases{% if object%} for {{object}}{%endif%}- {{block.super}}{% endblock %}
 
+{% block extra_css %}
+<style>
+.client {
+  background-color: #0A009C;
+}
+.lawyer {
+  background-color: #C80303;
+}
+.student {
+  background-color: #E6D344;
+}
+.secretary {
+  background-color: #D9534F;
+}
+.spectator {
+  background-color: #00FFFD;
+}
+</style>
+{% endblock %}
 {% block content %}
+{% if object %}
+  <h1>Cases for {{object}}</h1>
+{% endif %}
+
 <table class="table table-striped">
 <thead><tr>
+  <th>Numer</th>
   <th>Name</th>
   <th>Client</th>
   <th>Status</th>
+  <th>Users</th>
+  <th>Tags</th>
 </tr></thead>
 <tbody>
 {% for object in object_list %}
 <tr>
+  <td>{{object.pk}}</td>
   <td><a href="{{object.get_absolute_url}}">{{object.name}}</a></td>
-  <td>{{object.client}}</td>
+  <td><a href="{{object.client.get_absolute_url}}">{{object.client}}</a></td>
   <td>{{object.status}}</td>
-  <td>{% include '_simple_list.html' with title="Lawyers" object_list=object.get_lawyers %}</td>
+  <td>{% for perm in object.permission_set.all %}<span class="label {{perm.group.rank}}">{{perm.user}}</span>{%endfor%}</td>
+  <td>
+    {% for tag in object.tags.all %}
+      <a href="{{tag.get_absolute_url}}">
+      <span class="label {{tag.style.code}}">
+        {{tag}}
+      </span>
+      </a>
+    {%endfor%}
+  </td>
+
 </tr>
 {% endfor %}
 </tbody>

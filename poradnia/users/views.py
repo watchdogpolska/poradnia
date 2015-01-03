@@ -16,30 +16,18 @@ from .forms import UserForm
 # Import the customized User model
 from .models import User
 
-from cases.models import Case
 
-
-class UserOrStaffOnlyMixin(object):
+class PermissionMixin(object):
     def get_queryset(self, *args, **kwargs):
-        queryset = super(UserOrStaffOnlyMixin, self).get_queryset(*args, **kwargs)
+        queryset = super(PermissionMixin, self).get_queryset(*args, **kwargs)
         return queryset.for_user(self.request.user)
 
 
-class UserDetailView(LoginRequiredMixin, UserOrStaffOnlyMixin, DetailView):
+class UserDetailView(LoginRequiredMixin, PermissionMixin, DetailView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = "username"
     slug_url_kwarg = "username"
-
-    def get_context_data(self, **kwargs):
-        """
-        Insert the single object into the context dict.
-        """
-        context = {}
-        context['case_list'] = Case.objects.for_user(self.request.user).\
-            filter(client=self.object).all()
-        context.update(kwargs)
-        return super(UserDetailView, self).get_context_data(**context)
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
@@ -67,7 +55,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         return User.objects.get(username=self.request.user.username)
 
 
-class UserListView(LoginRequiredMixin, UserOrStaffOnlyMixin, ListView):
+class UserListView(LoginRequiredMixin, PermissionMixin, ListView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = "username"
@@ -75,6 +63,4 @@ class UserListView(LoginRequiredMixin, UserOrStaffOnlyMixin, ListView):
 
     def get_queryset(self):
         queryset = super(UserListView, self).get_queryset()
-        if self.request.user.has_perm('cases.can_view_all'):
-            return queryset.with_case_count()
-        return queryset
+        return queryset.for_user(self.request.user)

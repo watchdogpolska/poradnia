@@ -55,14 +55,7 @@ class PermWrapper(object):
         return self[app_label][perm_name]
 
 
-class PermissionGroupMixin(object):
-
-    def get_queryset(self, *args, **kwargs):
-        queryset = super(PermissionGroupMixin, self).get_queryset(*args, **kwargs)
-        if hasattr(self, 'for_user'):
-            return queryset.for_user(self.request.user)
-        return queryset
-
+class PermissionGroupContextMixin(object):
     def get_permission_group(self):
         if hasattr(self, 'object') and hasattr(self.object, 'get_permission_group'):
             return self.object.get_permission_group(self.request.user)
@@ -71,4 +64,14 @@ class PermissionGroupMixin(object):
     def get_context_data(self, **kwargs):
         group = self.get_permission_group()
         kwargs['perm_case'] = PermWrapper(group)
-        return super(PermissionGroupMixin, self).get_context_data(**kwargs)
+        return super(PermissionGroupContextMixin, self).get_context_data(**kwargs)
+
+
+class PermissionGroupQuerySetMixin(object):
+    def get_queryset(self, *args, **kwargs):
+        queryset = super(PermissionGroupQuerySetMixin, self).get_queryset(*args, **kwargs)
+        return queryset.for_user(self.request.user)
+
+
+class PermissionGroupMixin(PermissionGroupContextMixin, PermissionGroupQuerySetMixin):
+    pass
