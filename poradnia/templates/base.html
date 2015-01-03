@@ -36,6 +36,7 @@
           <li class="active"><a href="{% url 'home' %}">Home</a></li>
           {#<li><a href="{% url 'about' %}">About</a></li>#}
             <li><a href="{% url 'users:list' %}">Users</a></li>
+            <li><a href="{% url 'cases:list_free' %}">Free cases</a></li>
             <li><a href="{% url 'cases:list' %}">Cases</a></li>
           {% if request.user.is_authenticated %}
             <li><a href="{% url 'users:detail' request.user.username  %}">{% blocktrans with user=request.user %} Hello {{ user }}! {% endblocktrans %}</a></li>

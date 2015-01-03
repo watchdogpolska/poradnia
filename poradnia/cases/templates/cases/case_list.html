@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
 
-{% block title %}Cases{% if object%} for {{object}}{%endif%}- {{block.super}}{% endblock %}
+{% block title %}Cases - {{block.super}}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -23,9 +23,7 @@
 </style>
 {% endblock %}
 {% block content %}
-{% if object %}
-  <h1>Cases for {{object}}</h1>
-{% endif %}
+{% block content-title%}{%endblock%}
 
 <table class="table table-striped">
 <thead><tr>
