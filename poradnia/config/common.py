@@ -221,9 +221,7 @@ class Common(Configuration):
     AUTHENTICATION_BACKENDS = (
         "django.contrib.auth.backends.ModelBackend",
         "allauth.account.auth_backends.AuthenticationBackend",
-        'guardian.backends.ObjectPermissionBackend',
     )
-    ANONYMOUS_USER_ID = -1
 
     # Some really nice defaults
     ACCOUNT_AUTHENTICATION_METHOD = "username"
