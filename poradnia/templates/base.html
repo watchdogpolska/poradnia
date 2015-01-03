@@ -56,7 +56,7 @@
               <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
           {% endfor %}
       {% endif %}
-
+      {% block permissions %}{%endblock %}
       {% block content %}
         <p>Use this document as a way to quick start any new project.</p>
       {% endblock content %}

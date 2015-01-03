@@ -18,7 +18,7 @@ class CaseList(LoginRequiredMixin, PermissionGroupQuerySetMixin, ListView):
 class CaseObjectMixin(object):
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context
-        context = super(CaseList, self).get_context_data(**kwargs)
+        context = super(CaseObjectMixin, self).get_context_data(**kwargs)
         # Add in the publisher
         context['object'] = self.object
         return context

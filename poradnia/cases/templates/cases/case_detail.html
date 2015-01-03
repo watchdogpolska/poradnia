@@ -5,6 +5,7 @@
   <div class="row">
     <div class="col-lg-6">
       {% include '_simple_row.html' with title='name' object=object.name only %}
+      {% include '_simple_row.html' with title='permissions' object=perm_case only %}
       {% include '_simple_list.html' with title='tags' object_list=object.tags.all only %}
       {% include '_simple_row.html' with title='status' object=object.status only %}
       <p><span class="label label-primary">Tags</span>
@@ -30,8 +31,10 @@
             <thead><tr>
               <th>User</th>
               <th>Rank</th>
+              {% if perm.user == requests.user and perm_case.permissions.can_delete_own_permission %}
               {% if perm_case.permissions.delete_permission %}
                 <th>Delete</th>
+              {% endif %}
               {% endif %}
               {% if perm_case.permissions.change_permission %}
                 <th>Change</th>
@@ -42,11 +45,11 @@
             <tr>
               <td><span class="label {{perm.group.rank}}">{{perm.user}}</span></td>
               <td>{{perm.group.rank}}</td>
-              {% if perm_case.permissions.delete_permission %}
+              {% if perm_case.permissions.delete_permission %}{% if perm.user == requests.user and perm_case.permissions.can_delete_own_permission %}
                 <td><a href="{% url 'permissions:delete' perm.pk %}">Delete</a></td>
-              {% endif %}
+              {% endif %}{% endif %}
               {% if perm_case.permissions.change_permission %}
-                <td><a href="{% url 'permissions:change' perm.pk %}">Change</a></td>
+                <td><a href="{% url 'permissions:update' perm.pk %}">Change</a></td>
               {% endif %}
             </tr>
             {% endfor %}

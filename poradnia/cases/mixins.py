@@ -4,17 +4,18 @@
 
 class PermLookupDict(object):
     # Based on django.contrib.auth.context_processors
-    def __init__(self, group, app_label):
-        self.group, self.app_label = group, app_label
-        self.permissions = self.group.permissions.all()
+    def __init__(self, permissions_set, app_label):
+        self.permissions_set, self.app_label = permissions_set, app_label
+        self.permissions_set = self.permissions_set
 
     def __repr__(self):
-        return str(self.permissions)
+        return str(self.permissions_set)
+
+    def get_name(self, app_label, perm_name):
+        return "%s.%s" % (app_label, perm_name)
 
     def has_perm(self, app_label, perm_name):
-        return (True if [g for g in self.group.permissions.all()
-            if g.content_type.app_label == app_label and
-            g.codename == perm_name] else False)
+        return (self.get_name(app_label, perm_name) in self.permissions_set)
 
     def __getitem__(self, perm_name):
         return self.has_perm(self.app_label, perm_name)
@@ -25,8 +26,7 @@ class PermLookupDict(object):
         raise TypeError("PermLookupDict is not iterable.")
 
     def __bool__(self):
-        return (True if [g for g in self.group.permissions.all()
-            if g.content_type.app_label == self.app_label] else False)
+        return any(perm.split('.', 1)[0] == self.app_label for perm in self.permissions_set)
 
     def __nonzero__(self):      # Python 2 compatibility
         return type(self).__bool__(self)
@@ -34,15 +34,20 @@ class PermLookupDict(object):
 
 class PermWrapper(object):
     # Based on django.contrib.auth.context_processors
-    def __init__(self, group):
-        self.group = group
+    def __init__(self, permissions_set):
+        self.permissions_set = list(permissions_set)
 
     def __getitem__(self, app_label):
-        return PermLookupDict(self.group, app_label)
+        return PermLookupDict(self.permissions_set, app_label)
 
     def __iter__(self):
         # I am large, I contain multitudes.
-        raise TypeError("PermWrapper is not iterable.")
+        for perm in self.permissions_set:
+            yield perm
+        # raise TypeError("PermWrapper is not iterable.")
+
+    def __repr__(self):
+        return str(list(self.permissions_set))
 
     def __contains__(self, perm_name):
         """
@@ -56,12 +61,12 @@ class PermWrapper(object):
 
 
 class PermissionGroupContextMixin(object):
-    def get_permission_group(self):
-        return self.object.get_permission_group(self.request.user)
+    def get_permissions_set(self):
+        return self.object.get_permissions_set(self.request.user)
 
     def get_context_data(self, **kwargs):
-        group = self.get_permission_group()
-        kwargs['perm_case'] = PermWrapper(group)
+        permissions_set = self.get_permissions_set()
+        kwargs['perm_case'] = PermWrapper(permissions_set)
         return super(PermissionGroupContextMixin, self).get_context_data(**kwargs)
 
 

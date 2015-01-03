@@ -1,3 +1,4 @@
+from itertools import imap
 from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -15,8 +16,8 @@ class CaseQuerySet(QuerySet):
         print user.has_perm('cases.can_view_all')
         if user.has_perm('cases.can_view_all'):  # All rank can view own cases
             return self
-        field = 'permission__user_id'  # Mam obawy czy to nie jest zbyt wiele relacji...
-        return self.filter(**{field: user.pk})
+        field = 'permission__user'
+        return self.filter(**{field: user})
 
     def free(self):
         return self.exclude(permission__group__rank=LocalGroup.RANK.lawyer)
@@ -43,8 +44,14 @@ class Case(models.Model):
     def __unicode__(self):
         return self.name
 
-    def get_permission_group(self, user):
-        return self.permission_set.get(user=user).group.group
+    def get_permissions_set(self, user):
+        def get_name(perm):
+            return "%s.%s" % (perm.content_type.app_label, perm.codename)
+
+        try:  # Have local priviledge
+            return imap(get_name, self.permission_set.get(user=user).group.group.permissions.all())
+        except Permission.DoesNotExist:  # or use global priviledge
+            return user.get_all_permissions()
 
     def get_lawyers(self):
         group = LocalGroup.objects.get(rank=LocalGroup.RANK.lawyer)  # In one query?
