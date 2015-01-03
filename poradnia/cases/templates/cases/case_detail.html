@@ -40,7 +40,7 @@
             <tbody>
             {%for perm in object.permission_set.all %}
             <tr>
-              <td>{{perm.user}}</td>
+              <td><span class="label {{perm.group.rank}}">{{perm.user}}</span></td>
               <td>{{perm.group.rank}}</td>
               {% if perm_case.cases.delete_permission %}
                 <td><a href="{% url 'cases:permission_delete' perm.pk %}">Delete</a></td>
