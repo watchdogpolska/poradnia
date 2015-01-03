@@ -12,6 +12,7 @@ from .permissions.models import Permission, LocalGroup
 
 class CaseQuerySet(QuerySet):
     def for_user(self, user):
+        print user.has_perm('cases.can_view_all')
         if user.has_perm('cases.can_view_all'):  # All rank can view own cases
             return self
         field = 'permission__user_id'  # Mam obawy czy to nie jest zbyt wiele relacji...
@@ -43,7 +44,7 @@ class Case(models.Model):
         return self.name
 
     def get_permission_group(self, user):
-        return self.permission_set.get(user=user).user
+        return self.permission_set.get(user=user).group.group
 
     def get_lawyers(self):
         group = LocalGroup.objects.get(rank=LocalGroup.RANK.lawyer)  # In one query?
@@ -61,4 +62,5 @@ class Case(models.Model):
 
     class Meta:
         permissions = (("can_select_client", "Can select client"),
-                       ('can_view_all', "Can view all cases"))
+                       ('can_view_all', "Can view all cases",),
+                       ('can_view_free', "Can view free", ))

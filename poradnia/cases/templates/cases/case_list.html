@@ -1,27 +1,8 @@
-{% extends "base.html" %}
+{% extends "cases/base.html" %}
 {% load crispy_forms_tags %}
 
 {% block title %}Cases - {{block.super}}{% endblock %}
 
-{% block extra_css %}
-<style>
-.client {
-  background-color: #0A009C;
-}
-.lawyer {
-  background-color: #C80303;
-}
-.student {
-  background-color: #E6D344;
-}
-.secretary {
-  background-color: #D9534F;
-}
-.spectator {
-  background-color: #00FFFD;
-}
-</style>
-{% endblock %}
 {% block content %}
 {% block content-title%}{%endblock%}
 

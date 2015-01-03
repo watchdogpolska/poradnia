@@ -1,17 +1,17 @@
 from django.views.generic import DetailView, UpdateView, ListView
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
-from braces.views import FormValidMessageMixin
+from braces.views import FormValidMessageMixin, PermissionRequiredMixin, LoginRequiredMixin
 from .models import Case
-from .mixins import PermissionGroupMixin
+from .mixins import PermissionGroupMixin, PermissionGroupQuerySetMixin
 from .tags.models import Tag
 
 
-class CaseDetail(PermissionGroupMixin, DetailView):
+class CaseDetail(LoginRequiredMixin, PermissionGroupMixin, DetailView):
     model = Case
 
 
-class CaseList(PermissionGroupMixin, ListView):
+class CaseList(LoginRequiredMixin, PermissionGroupQuerySetMixin, ListView):
     model = Case
 
 
@@ -24,30 +24,39 @@ class CaseObjectMixin(object):
         return context
 
 
-class CaseListUser(CaseObjectMixin, CaseList):
+class CaseListUser(CaseObjectMixin, ListView):
+    model = Case
     template_name_suffix = '_list_for_user'
 
-    def get_queryset(self):
-        self.object = get_object_or_404(get_user_model(), username=self.kwargs['username'])
-        return self.model.objects.filter(client=self.object)
+    def get_queryset(self, *args, **kwargs):
+        queryset = super(CaseListUser, self).get_queryset(*args, **kwargs)
+        user_queryset = get_user_model().objects.for_user(self.request.user)
+        self.object = get_object_or_404(user_queryset, username=self.kwargs['username'])
+        return queryset.filter(client=self.object)
 
 
-class CaseListTag(CaseObjectMixin, CaseList):
+class CaseListTag(CaseObjectMixin, ListView):
+    model = Case
     template_name_suffix = '_list_for_tag'
 
-    def get_queryset(self):
+    def get_queryset(self, *args, **kwargs):
+        queryset = super(CaseListTag, self).get_queryset(*args, **kwargs)
         self.object = get_object_or_404(Tag, pk=self.kwargs['tag_pk'])
-        return self.model.objects.filter(tags=self.object)
+        return queryset.filter(tags=self.object)
 
 
-class CaseListFree(CaseList):
+class CaseListFree(LoginRequiredMixin, PermissionRequiredMixin, ListView):
+    model = Case
     template_name_suffix = '_list_free'
+    permission_required = "cases.can_view_free"
+    raise_exception = True  # Aware infinity loop after redirect to login page
 
-    def get_queryset(self):
-            return self.model.objects.free()
+    def get_queryset(self, *args, **kwargs):
+        queryset = super(CaseListFree, self).get_queryset(*args, **kwargs)
+        return queryset.free()
 
 
-class CaseEdit(FormValidMessageMixin, UpdateView, PermissionGroupMixin):
+class CaseEdit(LoginRequiredMixin, FormValidMessageMixin, UpdateView, PermissionGroupMixin):
     model = Case
     fields = ("name", "status", "tags")
 

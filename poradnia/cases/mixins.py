@@ -57,9 +57,7 @@ class PermWrapper(object):
 
 class PermissionGroupContextMixin(object):
     def get_permission_group(self):
-        if hasattr(self, 'object') and hasattr(self.object, 'get_permission_group'):
-            return self.object.get_permission_group(self.request.user)
-        return None
+        return self.object.get_permission_group(self.request.user)
 
     def get_context_data(self, **kwargs):
         group = self.get_permission_group()
