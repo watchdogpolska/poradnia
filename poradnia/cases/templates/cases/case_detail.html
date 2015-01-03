@@ -31,10 +31,8 @@
             <thead><tr>
               <th>User</th>
               <th>Rank</th>
-              {% if perm.user == requests.user and perm_case.permissions.can_delete_own_permission %}
               {% if perm_case.permissions.delete_permission %}
                 <th>Delete</th>
-              {% endif %}
               {% endif %}
               {% if perm_case.permissions.change_permission %}
                 <th>Change</th>
@@ -45,9 +43,16 @@
             <tr>
               <td><span class="label {{perm.group.rank}}">{{perm.user}}</span></td>
               <td>{{perm.group.rank}}</td>
-              {% if perm_case.permissions.delete_permission %}{% if perm.user == requests.user and perm_case.permissions.can_delete_own_permission %}
-                <td><a href="{% url 'permissions:delete' perm.pk %}">Delete</a></td>
-              {% endif %}{% endif %}
+              {% if perm_case.permissions.delete_permission %}
+              <td>
+              {% if perm.user == requests.user and perm_case.permissions.can_delete_own_permission %}
+                <a href="{% url 'permissions:delete' perm.pk %}">Delete</a></td>
+              {% else %}
+                  Not authorized
+              {% endif %}
+              </td>
+              {% endif %}
+              
               {% if perm_case.permissions.change_permission %}
                 <td><a href="{% url 'permissions:update' perm.pk %}">Change</a></td>
               {% endif %}
