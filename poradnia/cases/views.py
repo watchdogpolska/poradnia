@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from braces.views import FormValidMessageMixin, PermissionRequiredMixin, LoginRequiredMixin
 from .models import Case
-from .mixins import PermissionGroupMixin, PermissionGroupQuerySetMixin
+from .permissions.mixins import PermissionGroupMixin, PermissionGroupQuerySetMixin
 from .tags.models import Tag
 
 
@@ -32,7 +32,7 @@ class CaseListUser(CaseObjectMixin, ListView):
         queryset = super(CaseListUser, self).get_queryset(*args, **kwargs)
         user_queryset = get_user_model().objects.for_user(self.request.user)
         self.object = get_object_or_404(user_queryset, username=self.kwargs['username'])
-        return queryset.filter(client=self.object)
+        return queryset.filter(client=self.object).with_last_send_letter()
 
 
 class CaseListTag(CaseObjectMixin, ListView):
@@ -42,7 +42,7 @@ class CaseListTag(CaseObjectMixin, ListView):
     def get_queryset(self, *args, **kwargs):
         queryset = super(CaseListTag, self).get_queryset(*args, **kwargs)
         self.object = get_object_or_404(Tag, pk=self.kwargs['tag_pk'])
-        return queryset.filter(tags=self.object)
+        return queryset.filter(tags=self.object).with_last_send_letter()
 
 
 class CaseListFree(LoginRequiredMixin, PermissionRequiredMixin, ListView):
@@ -53,7 +53,7 @@ class CaseListFree(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 
     def get_queryset(self, *args, **kwargs):
         queryset = super(CaseListFree, self).get_queryset(*args, **kwargs)
-        return queryset.free()
+        return queryset.free().with_last_send_letter()
 
 
 class CaseEdit(LoginRequiredMixin, FormValidMessageMixin, UpdateView, PermissionGroupMixin):

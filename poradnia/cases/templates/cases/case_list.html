@@ -1,5 +1,5 @@
 {% extends "cases/base.html" %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags humanize %}
 
 {% block title %}Cases - {{block.super}}{% endblock %}
 
@@ -14,6 +14,8 @@
   <th>Status</th>
   <th>Users</th>
   <th>Tags</th>
+  <th>Last send</th>
+
 </tr></thead>
 <tbody>
 {% for object in object_list %}
@@ -32,7 +34,7 @@
       </a>
     {%endfor%}
   </td>
-
+  <td>{{object.last_send|naturaltime}}</td>
 </tr>
 {% endfor %}
 </tbody>

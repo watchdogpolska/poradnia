@@ -9,6 +9,7 @@ from model_utils.fields import MonitorField, StatusField
 from model_utils import Choices
 from .tags.models import Tag
 from .permissions.models import Permission, LocalGroup
+from django.db.models import Max
 
 
 class CaseQuerySet(QuerySet):
@@ -24,6 +25,10 @@ class CaseQuerySet(QuerySet):
 
     def with_record_count(self):
         return self.annotate(Count('record'))
+
+    def with_last_send_letter(self):
+        return self.filter(record__letter__isnull=False).\
+            annotate(last_send=Max('record__letter__created_on'))
 
 
 class Case(models.Model):
@@ -61,7 +66,7 @@ class Case(models.Model):
         is_new = (True if self.pk is None else False)
         super(Case, self).save(*args, **kwargs)
         if is_new:
-            self.assign(self.client, LocalGroup.RANK.client)
+            self.assign(user=self.client, rank=LocalGroup.RANK.client)
 
     def assign(self, user, rank=LocalGroup.RANK.client):
         group = LocalGroup.objects.get(rank=rank)

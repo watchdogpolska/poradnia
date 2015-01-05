@@ -79,7 +79,7 @@
       <div class="list-group">
         {% if object.record_set.all %}
             {% for record in object.record_set.all %}
-                {% include record.get_child_obj.get_template_list with object=record.get_child_obj%}
+                {% include record.cast.get_template_list with object=record.cast%}
             {% endfor %}
         {% else %}
             <span class="label label-warning">No records</span>

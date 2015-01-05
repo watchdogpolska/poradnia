@@ -1,7 +1,7 @@
 from django.contrib import admin
-from .models import Following
+from .models import Tracking
 
 
-class FollowingAdmin(admin.ModelAdmin):
+@admin.register(Tracking)
+class TrackingAdmin(admin.ModelAdmin):
     list_display = ['user', 'case']
-admin.site.register(Following, FollowingAdmin)

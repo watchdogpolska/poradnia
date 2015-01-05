@@ -22,19 +22,16 @@ class Permission(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL)
     objects = PassThroughManager.for_queryset_class(PermissionQuerySet)()
 
-    def get_update_msg(self):
-        context = {}
-        context['user'] = self.user
-        context['case'] = self.case
-        context['group'] = self.group
-        return render_to_string('permissions/permission_msg.html', context)
+    def __init__(self, *args, **kwargs):
+        super(Permission, self).__init__(*args, **kwargs)
+        self.__group = self.group
 
-    def get_update_title(self):
+    def get_msg_created(self):
         context = {}
         context['user'] = self.user
-        context['case'] = self.case
-        context['group'] = self.group
-        return render_to_string('permissions/permission_msg_title.html', context)
+        context['from'] = self.__group
+        context['to'] = self.group
+        return render_to_string('permissions/permission_msg_created.html', context)
 
     def __unicode__(self):
         return "%s as %s for %s" % (self.user.username, self.group.rank, self.case.name)
@@ -43,18 +40,17 @@ class Permission(models.Model):
         return self.case.get_permissions_set(user)
 
     def save(self, *args, **kwargs):
-        from letters.models import Letter
-        from tracking.models import Following
+        from records.models import Log
+        from tracking.models import Tracking
         is_new = True if self.pk is None else False
         super(Permission, self).save(*args, **kwargs)
         if is_new:
-            Following(user=self.user, case=self.case).save()
-        Letter(name=self.get_update_title(), comment=self.get_update_msg(), case=self.case).save()
+            Tracking(user=self.user, case=self.case).save()
+        Log(text=self.get_msg_created(), case=self.case).save()
 
     class Meta:
         unique_together = (('user', 'case',),)
-        permissions = (("can_delete_own_permission", "Can delete own permission"),
-                       )
+        permissions = (("can_delete_own_permission", "Can delete own permission"),)
 
 
 class LocalGroup(models.Model):
