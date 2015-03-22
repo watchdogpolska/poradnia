@@ -1,4 +1,4 @@
-{% load staticfiles i18n %}<!DOCTYPE html>
+{% load staticfiles i18n %}{% load notifications_tags %}<!DOCTYPE html>
 <html lang="en" ng-app>
   <head>
     <meta charset="utf-8">
@@ -14,10 +14,10 @@
 
     {% block css %}
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
 
     <!-- Optional theme -->
-    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
+    <link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css'%}">
 
     <!-- Your stuff: Third-party css libraries go here -->
 
@@ -28,35 +28,41 @@
   </head>
 
   <body>
-
-    <div class="header navbar">
+    <div class="header navbar navbar-default">
       <div class="container">
         <a class="navbar-brand" href="/">poradnia</a>
         <ul class="nav navbar-nav">
-          <li class="active"><a href="{% url 'home' %}">Home</a></li>
-          {#<li><a href="{% url 'about' %}">About</a></li>#}
+            <li><a href="{% url 'letters:home' %}">Home</a></li>
+            {#<li><a href="{% url 'about' %}">About</a></li>#}
             <li><a href="{% url 'users:list' %}">Users</a></li>
-            <li><a href="{% url 'cases:list_free' %}">Free cases</a></li>
+            <li><a href="{% url 'letters:add' %}">New cases</a></li>
+            {% if perms.cases.can_assign %}
+              <li><a href="{% url 'cases:list' %}?status=free">Free cases</a></li>
+            {% endif %}
             <li><a href="{% url 'cases:list' %}">Cases</a></li>
-          {% if request.user.is_authenticated %}
-            <li><a href="{% url 'users:detail' request.user.username  %}">{% blocktrans with user=request.user %} Hello {{ user }}! {% endblocktrans %}</a></li>
-            <li><a href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
-          {% else %}
-            <li><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
-            <li><a href="{% url 'account_login' %}">{% trans "Log In" %}</a></li>
-          {% endif %}
+            {% if request.user.is_staff %}
+              <li><a href="{% url 'admin:index' %}">Admin</a></li>
+            {% endif %}
+            {% if request.user.is_authenticated %}
+              <li><a href="{% url 'users:detail' request.user.username  %}">{% blocktrans with user=request.user %} Hello {{ user }}! {% endblocktrans %}</a></li>
+              <li><a href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
+              {% notifications_unread as unread_count%}
+              <li><p class="navbar-text">You have <a href="{% url 'notifications:all'%}">{{unread_count}} notification</a> unread</p></li>
+            {% else %}
+              <li><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
+              <li><a href="{% url 'account_login' %}"><span class="glyphicon glyphicon-off"></span>{% trans "Log In" %}</a></li>
+            {% endif %}
         </ul>
       </div>
     </div>
 
     <div class="container">
-        
       {% if messages %}
           {% for message in messages %}
               <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
           {% endfor %}
       {% endif %}
-      {% block permissions %}{%endblock %}
+      {% block breadcrumbs %}{% endblock %}
       {% block content %}
         <p>Use this document as a way to quick start any new project.</p>
       {% endblock content %}
@@ -70,12 +76,14 @@
     <!-- Placed at the end of the document so the pages load faster -->
     {% block javascript %}
       <!-- Latest JQuery -->
-      <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script src="{% static 'js/jquery.min.js' %}"></script>
 
       <!-- Latest compiled and minified JavaScript -->
-      <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+      <script src="{% static 'js/bootstrap.min.js' %}"></script>
 
       <!-- Your stuff: Third-party javascript libraries go here -->
+      <script src="{% static 'js/moment.js'%}"></script>
+      <script src="{% static 'js/bootstrap-datetimepicker.js'%}"></script>
 
       <!-- place project specific Javascript in this file -->
       <script src="{% static 'js/project.js' %}"></script>

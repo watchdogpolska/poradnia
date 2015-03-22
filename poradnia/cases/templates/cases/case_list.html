@@ -3,41 +3,63 @@
 
 {% block title %}Cases - {{block.super}}{% endblock %}
 
-{% block content %}
-{% block content-title%}{%endblock%}
+{% block extra_css %}
+<style>
+span.free, tr.free > td {
+  background-color: #38FF98;
+}
+span.open, tr.open > td {
+  background-color: #A3FFD0;
+}
+span.closed, tr.closed > td {
+  background-color: #DEFFEE;
+}
+</style>
+{% endblock %}
 
-<table class="table table-striped">
+{% block breadcrumbs%}
+<ol class="breadcrumb">
+  <li class="active">Cases</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+
+{% if user or tag or status %}
+<h1>{% if status %}{{status}} cases {% else %} Cases {% endif%}
+{% if user_filter %}of <a href="{{user_filter.get_absolute_url}}">{{user_filter}}</a> {% endif %}
+{% if tag %}tagged as "{{tag}}" {% endif %}
+</h1>
+{% else %}
+<h1>All cases</h1>
+{%endif%}
+
+{% if object_list %}
+<table class="table">
 <thead><tr>
   <th>Numer</th>
-  <th>Name</th>
   <th>Client</th>
-  <th>Status</th>
-  <th>Users</th>
-  <th>Tags</th>
-  <th>Last send</th>
-
+  <th>Name</th>
+  <th>Last response</th>
+  {% if user.is_staff %}<th>Last action</th>{% endif %}
+  <th>All readed?</th>
 </tr></thead>
 <tbody>
 {% for object in object_list %}
-<tr>
+<tr class="{{object.status}}">
   <td>{{object.pk}}</td>
-  <td><a href="{{object.get_absolute_url}}">{{object.name}}</a></td>
   <td><a href="{{object.client.get_absolute_url}}">{{object.client}}</a></td>
-  <td>{{object.status}}</td>
-  <td>{% for perm in object.permission_set.all %}<span class="label {{perm.group.rank}}">{{perm.user}}</span>{%endfor%}</td>
-  <td>
-    {% for tag in object.tags.all %}
-      <a href="{{tag.get_absolute_url}}">
-      <span class="label {{tag.style.code}}">
-        {{tag}}
-      </span>
-      </a>
-    {%endfor%}
-  </td>
-  <td>{{object.last_send|naturaltime}}</td>
+  <td><a href="{{object.get_absolute_url}}">{{object.name}}</a> ({{object.letter_count}})</td>
+  <td>{{object.last_send|naturaltime|default:"No answer"}}</td>
+  {% if request.user.is_staff %}<td>{{object.last_action|naturaltime}}</td>{% endif%}
+  <td>{{object.get_readed}}</td>
 </tr>
 {% endfor %}
 </tbody>
 </table>
+<p> Legenda: <span class="free">wolne</span>, <span class="open">otwarte</span>, <span class="closed">zamknięte</span></p>
+{% else %}
+<p>There is no cases. <a href="{% url 'letters:add' %}">Do more of these</a>!</p>
+{% endif %}
 
 {% endblock %}

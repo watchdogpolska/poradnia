@@ -1,5 +1,24 @@
 {% extends 'letters/base.html' %}
-{% load crispy_forms_tags %}
+{% load crispy_forms_tags staticfiles %}
+{% block javascript %}
+{{block.super}}
+<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
+<script type="text/javascript">
+    $(function() {
+        $('form tbody tr').formset();
+    })
+</script>
+{% endblock %}
 {%block content%}
+<form method="post" enctype="multipart/form-data">
 {% crispy form %}
+{% if formset %}
+    {% crispy formset %}
+{% endif %}
+ <div class="form-actions">  
+    <button type="submit" class="btn btn-primary">Save changes</button>  
+    <button class="btn">Cancel</button>  
+  </div>  
+</fieldset>  
+</form>
 {%endblock%}

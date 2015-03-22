@@ -32,3 +32,27 @@
   background-color: #f2dede;
   border-color: #eed3d7;
 }
+
+.msg_sent {
+    background-color: rgb(200,200,200);
+    border-radius: 10px;
+}
+.msg_receive {
+    background-color: rgb(220,220,220);
+    border-radius: 10px;
+}
+.quote-link {
+    background-color: #AFFCFF;
+    border: 1px solid;
+    border-color: #ff00ff;
+}
+@media print
+{    
+    .quote-link {
+        display: none !important;
+    }
+}
+
+#div_id_time {
+  position: relative;
+}

@@ -1,58 +1,82 @@
-from types import NoneType
 from django.db import models
 from cases.models import Case
+from notifications import notify
+from django.contrib.contenttypes.fields import GenericRelation
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes import generic
 
 
 class Record(models.Model):
+    STATIC_RELATION = ['letter', 'event', 'alarm']
     case = models.ForeignKey(Case)
-    created_on = models.DateTimeField(auto_now=True)
+    letter = models.OneToOneField('letters.Letter', null=True, blank=True)
+    event = models.OneToOneField('events.Event', null=True, blank=True)
+    alarm = models.OneToOneField('events.Alarm', null=True, blank=True)
 
-    def get_absolute_url(self):
-        return "%s#%d" % (self.case.get_absolute_url(), self.pk)
+    content_type = models.ForeignKey(
+        ContentType,
+        # verbose_name=_('content page'),
+        # limit_choices_to=limit,
+        null=True,
+        blank=True,
+    )
+    object_id = models.PositiveIntegerField(
+        # verbose_name=_('related object'),
+        null=True,
+    )
+    related_object = generic.GenericForeignKey('content_type', 'object_id')
+
+    @property  # We use OneToOneField if possible
+    def content_object(self):
+        for field in self.STATIC_RELATION:
+            if getattr(self, field+"_id"):
+                print field
+                return getattr(self, field)
+        return self.related_object
+
+    @content_object.setter
+    def content_object(self, obj):
+        for field in self.STATIC_RELATION:
+            if self._meta.get_field_by_name(field)[0].rel.to == obj._meta.model:
+                setattr(self, field, obj)
+        self.related_object = obj
+
+    def get_users_with_perms(self, *args, **kwargs):
+        return Case(pk=self.case_id).get_users_with_perms()
+
+    def case_get_absolute_url(self):
+        return Case(pk=self.case_id).get_absolute_url()
+
+
+class AbstractRecord(models.Model):
+    record_general = GenericRelation('Record', related_query_name='record')
+    case = models.ForeignKey(Case)
+
+    def show_modifier(self):
+        return (self.modified_by_id and self.modified_by_id != self.created_by_id)
+
+    def get_users_with_perms(self, *args, **kwargs):
+        return self.case.get_users_with_perms(*args, **kwargs)
 
     def get_template_list(self):
         return "%s/_%s_list.html" % (self._meta.app_label, self._meta.model_name)
 
-    def cast(self):
-        """
-        This method is quite handy, it converts "self" into its correct child class. For example:
+    def send_notification(self, actor, verb):
+        for user in self.case.get_users_with_perms().exclude(pk=actor.pk):
+            notify.send(actor, target=self, verb=verb, recipient=user)
 
-        .. code-block:: python
+    def save(self, *args, **kwargs):
+        created = True if self.pk is None else False
+        super(AbstractRecord, self).save(*args, **kwargs)
+        if kwargs.get('commit', True):
+            if created:
+                record = Record(case=self.case)
+                record.content_object = self
+                record.save()
+            self.case.update_counters()
 
-           class Fruit(models.Model):
-               name = models.CharField()
+    def __unicode__(self):
+        return "%s in case #%d" % (self._meta.model_name, self.case_id)
 
-           class Apple(Fruit):
-               pass
-
-           fruit = Fruit.objects.get(name='Granny Smith')
-           apple = fruit.cast()
-
-        :return self: A casted child class of self
-        Refference: http://stackoverflow.com/a/22302235/4017156
-        """
-        for name in dir(self):
-            try:
-                attr = getattr(self, name)
-                if isinstance(attr, self.__class__) and type(attr) != type(self):
-                    return attr
-            except:
-                pass
-
-    @classmethod
-    def allPossibleRecordTypes(cls):
-        #this returns a list of all the subclasses of account (i.e. accounttypeA, accounttypeB etc)
-        return [str(subClass).split('.')[-1][:-2] for subClass in cls.__subclasses__()]
-
-    def recordType(self):
-        if type(self.cast()) is NoneType:
-            #it is a child
-            return self.__class__.__name__
-        else:
-            #it is a parent, i.e. an record
-            return str(type(self.cast())).split('.')[-1][:-2]
-    recordType.short_description = "Record type"
-
-
-class Log(Record):
-    text = models.TextField()
+    class Meta:
+        abstract = True

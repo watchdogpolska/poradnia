@@ -1,6 +1,41 @@
-<div class="list-group-item">
-    <h4 class="list-group-item-heading"><a href="{{object.get_absolute_url}}">{{object}}</a></h4>
-  {# <p class="list-group-item-text">Case count: {{ user.case_count }}</p> #}
-    {% include '_simple_row.html' with title="Text" object=object.text%}
-    {% include '_simple_list.html' with title="Attachment" object=object.attachment_set.all%}
+{% load guardian_tags crispy_forms_tags humanize avatar_tags %}
+<div class="row obj_container base_sent">
+    {% if not object.created_by.is_staff %}
+    <div class="col-md-2 col-xs-2 avatar">
+        {% avatar object.created_by %}
+       {% if object.show_modifier %}{% avatar object.modified_by %}{% endif %}
+     </div>
+    {% endif %}
+    <div class="col-md-10 col-xs-10">
+        <div class="messages">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-envelope"></span>{{object}}</div>
+                <div class="panel-body">
+                    <p>{{object.text|linebreaks}}</p>
+                </div>
+                {% if object.attachment_set.all %}
+                <ul class="list-group">
+                    {% for att in object.attachment_set.all %}
+                    <li class="list-group-item"><span class="glyphicon glyphicon-paperclip"></span> <a href="{{att.attachment.url}}">{{att.filename}}</a></li>
+                    {% endfor%}
+                </ul>
+                {% endif %}
+                <div class="panel-footer">
+                    <span class="glyphicon glyphicon-user"></span>{{object.created_by}} &bull; 
+                    <span class="glyphicon glyphicon-time"></span><time datetime="{{object.created_on}}" title="{{object.created_on}}">{{object.created_on | naturaltime}}</time>
+                    {% if object.modified_by %}(updated on <time datetime="{{object.created_on}}" title="{{object.modified_on}}">{{object.modified_on | naturaltime}}</time> by {{object.modified_by}}){% endif %}
+                    {% if "can_change_all_record" in case_perms or requests.user == object.user and "can_change_own_record" in case_perms %} &bull; <span class="glyphicon glyphicon-pencil"></span><a href="{{object.get_edit_url}}">Edit</a>{% endif %}
+                    {% if not object.status == 'done' and "can_send_to_client" in case_perms%} &bull; <span class="glyphicon glyphicon-ok"></span><a href="{{object.get_send_url}}">Send</a>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if object.created_by.is_staff %}
+    <div class="col-md-2 col-xs-2 avatar">
+        {% avatar object.created_by %}
+       {% if object.show_modifier %}{% avatar object.modified_by %}{% endif %}
+
+     </div>
+    {% endif %}
+
 </div>

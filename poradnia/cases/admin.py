@@ -1,13 +1,8 @@
 from django.contrib import admin
+from guardian.admin import GuardedModelAdmin
 from .models import Case
-from .permissions.models import Permission
-
-
-class PermissionInline(admin.TabularInline):
-    model = Permission
 
 
 @admin.register(Case)
-class CaseAdmin(admin.ModelAdmin):
+class CaseAdmin(GuardedModelAdmin):
     list_display = ['name', 'client']
-    inlines = [PermissionInline, ]

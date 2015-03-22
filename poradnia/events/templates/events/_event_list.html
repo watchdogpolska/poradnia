@@ -1,0 +1,39 @@
+{% load guardian_tags crispy_forms_tags humanize avatar_tags %}
+<div class="row obj_container base_sent">
+    {% if not object.created_by.is_staff %}
+    <div class="col-md-2 col-xs-2 avatar">
+        {% avatar object.created_by %}
+        {% if object.show_modifier %}{% avatar object.modified_by %}{% endif %}
+    </div>
+    {% endif %}
+    <div class="col-md-10 col-xs-10">
+        <div class="messages">
+            <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-time"></span>{{object}}</div>
+                  <table class="table">
+                    <tr><td>Dead-line</td><td>{{object.deadline}}</td></tr>
+                    <tr><td>Time</td><td>{{object.time}}</td></tr>
+                    <tr><td>For client</td><td>{{object.for_client}}</td></tr>
+                    <tr><td>Triggered</td><td>{{object.triggered}}</td></tr>
+                </table>
+                <div class="panel-body">
+                    <p>{{object.text}}</p>
+                </div>
+                <div class="panel-footer">
+                    <span class="glyphicon glyphicon-user"></span>{{object.created_by}} &bull; 
+                    <span class="glyphicon glyphicon-time"></span><time datetime="{{object.created_on}}" title="{{object.created_on}}">{{object.created_on | naturaltime}}</time>
+                    {% if object.modified_by %}(updated on <time datetime="{{object.created_on}}" title="{{object.modified_on}}">{{object.modified_on | naturaltime}}</time> by {{object.modified_by}}){% endif %}
+                    {% if "can_change_all_record" in case_perms or requests.user == object.user and "can_change_own_record" in case_perms %} &bull; <span class="glyphicon glyphicon-pencil"></span><a href="{{object.get_edit_url}}">Edit</a>{% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% if object.created_by.is_staff %}
+    <div class="col-md-2 col-xs-2 avatar">
+        {% avatar object.created_by %}
+       {% if object.show_modifier %}{% avatar object.modified_by %}{% endif %}
+
+    </div>
+    {% endif %}
+
+</div>

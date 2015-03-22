@@ -43,24 +43,28 @@ class Common(Configuration):
         'allauth.account',  # registration
         'allauth.socialaccount',  # registration
         'autofixture',
+        'guardian',
+        'notifications',
     )
 
     # Apps specific for this project go here.
     LOCAL_APPS = (
         'users',  # custom users app
         'cases',
-        'cases.permissions',
         'cases.tags',
+        'cases.readed',
         'letters',
         'records',
         'tracking',
         'events',
+        'notifications_custom',
+        'pagination_custom',
         # Your stuff: custom apps go here
     )
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
-    INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + LOCAL_APPS
     # END APP CONFIGURATION
+    INSTALLED_APPS = LOCAL_APPS + THIRD_PARTY_APPS + DJANGO_APPS
 
     # MIDDLEWARE CONFIGURATION
     MIDDLEWARE_CLASSES = (
@@ -220,6 +224,7 @@ class Common(Configuration):
     # AUTHENTICATION CONFIGURATION
     AUTHENTICATION_BACKENDS = (
         "django.contrib.auth.backends.ModelBackend",
+        'guardian.backends.ObjectPermissionBackend',
         "allauth.account.auth_backends.AuthenticationBackend",
     )
 
@@ -273,3 +278,6 @@ class Common(Configuration):
     # END LOGGING CONFIGURATION
 
     # Your common stuff: Below this line define 3rd party library settings
+    # Guardian settings
+    ANONYMOUS_USER_ID = -1
+    GUARDIAN_MONKEY_PATCH = False

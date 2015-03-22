@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+{% load query_string %}
+{% block content %}
+<ul class="notifications">
+  {% for notice in page.object_list %}
+    {{notice}}
+    {% include 'notifications/notice.html' %}
+  {% endfor %}
+  {% if page.has_previous or page.has_next %}
+      <nav>
+        <ul class="pager">
+        {% if page.has_previous %}
+            <li><a href="?{% query_update request page=page.previous_page_number %}">previous</a></li>
+        {% endif %}
+        <li>{{page.number}} of {{page.paginator.num_pages}}</li>
+        {% if page.has_next %}
+            <li><a href="?{% query_update request page=page.next_page_number %}">next</a></li>
+        {% endif %}
+        </ul>
+    </nav>
+  {% endif %}
+</ul>
+{% endblock %}

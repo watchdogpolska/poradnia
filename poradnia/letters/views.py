@@ -1,15 +1,125 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
-from .forms import LetterForm
+from cases.models import Case
+from .helpers import formset_attachment_factory
+# from crispy_forms.helper import FormHelper
+from .forms import NewCaseForm, AddLetterForm, LetterForm, SendLetterForm
+from .models import Letter
+
 
 @login_required
-def add_letter(request, case_id=None):
+def new_case(request):
+    context = {}
+
+    LetterForm = NewCaseForm.partial(user=request.user)
+    AttachmentFormSet = formset_attachment_factory()
+
+    formset = None
     if request.method == 'POST':
-        form = LetterForm(request.POST, user=request.user)
+        form = LetterForm(request.POST, request.FILES)
         if form.is_valid():
-            obj = form.save(case_id=case_id)
-            return HttpResponseRedirect(obj.case.get_absolute_url())
+            obj = form.save(commit=False)
+            formset = AttachmentFormSet(request.POST, request.FILES, instance=obj)
+            if formset.is_valid():
+                obj.save()
+                formset.save()
+                return HttpResponseRedirect(obj.case.get_absolute_url())
     else:
-        form = LetterForm(user=request.user)
-    return render(request, 'letters/form.html', {'form': form})
+        form = LetterForm()
+    context['form'] = form
+    context['formset'] = formset or AttachmentFormSet(instance=Letter())
+    return render(request, 'letters/form.html', context)
+
+
+@login_required
+def add(request, case_pk):
+    context = {}
+    case = get_object_or_404(Case, pk=case_pk)
+    case.perm_check(request.user, 'can_add_record')
+
+    LetterForm = AddLetterForm.partial(case=case, user=request.user)
+    AttachmentFormSet = formset_attachment_factory()
+
+    formset = None
+    if request.method == 'POST':
+        form = LetterForm(request.POST, request.FILES)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            formset = AttachmentFormSet(request.POST, request.FILES, instance=obj)
+            if formset.is_valid():
+                obj.save()
+                formset.save()
+                return HttpResponseRedirect(case.get_absolute_url())
+    else:
+        form = LetterForm()
+    context['form'] = form
+    context['formset'] = formset or AttachmentFormSet(instance=Letter())
+
+    return render(request, 'letters/form.html', context)
+
+
+@login_required
+def send(request, pk):
+    context = {}
+
+    letter = get_object_or_404(Letter, pk=pk)
+    case = letter.case
+
+    case.perm_check(request.user, 'can_add_record')
+    context['letter'] = letter
+    context['case'] = case
+
+    if letter.status == Letter.STATUS.done:
+        # TODO: Msg: It doesn't make sense
+        return HttpResponseRedirect(case.get_absolute_url())
+
+    LetterForm = SendLetterForm.partial(user=request.user, instance=letter)
+
+    if request.method == 'POST':
+        form = LetterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            # TODO: Msg
+            return HttpResponseRedirect(case.get_absolute_url())
+    else:
+        form = SendLetterForm(user=request.user, instance=letter)
+    context['form'] = form
+    return render(request, 'letters/form.html', context)
+
+
+@login_required
+def edit(request, pk):
+    context = {}
+    letter = get_object_or_404(Letter, pk=pk)
+    context['letter'] = letter
+
+    case = letter.case
+    context['case'] = case
+
+    if letter.created_by == request.user:
+        case.perm_check(request.user, 'can_change_own_record')
+    else:
+        case.perm_check(request.user, 'can_change_all_record')
+
+    AttachmentFormSet = formset_attachment_factory()
+    formset = None
+    if request.method == 'POST':
+        form = LetterForm(request.POST, user=request.user, instance=letter)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            formset = AttachmentFormSet(request.POST, request.FILES, instance=obj)
+            if formset.is_valid():
+                obj.save()
+                formset.save()
+                return HttpResponseRedirect(obj.case.get_absolute_url())
+    else:
+        form = LetterForm(user=request.user, instance=letter)
+    context['form'] = form
+    context['formset'] = formset or AttachmentFormSet(instance=letter)
+
+    return render(request, 'letters/form.html', context)
+
+
+def detail(request, pk):
+    pass

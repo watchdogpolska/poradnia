@@ -17,17 +17,15 @@ from .forms import UserForm
 from .models import User
 
 
-class PermissionMixin(object):
-    def get_queryset(self, *args, **kwargs):
-        queryset = super(PermissionMixin, self).get_queryset(*args, **kwargs)
-        return queryset.for_user(self.request.user)
-
-
-class UserDetailView(LoginRequiredMixin, PermissionMixin, DetailView):
+class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = "username"
     slug_url_kwarg = "username"
+
+    def get_queryset(self, *args, **kwargs):
+        queryset = super(UserDetailView, self).get_queryset(*args, **kwargs)
+        return queryset.for_user(self.request.user)
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
@@ -55,7 +53,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         return User.objects.get(username=self.request.user.username)
 
 
-class UserListView(LoginRequiredMixin, PermissionMixin, ListView):
+class UserListView(LoginRequiredMixin, ListView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = "username"
