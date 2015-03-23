@@ -46,6 +46,10 @@ class Case(models.Model):
     letter_count = models.IntegerField(default=0)
     last_send = models.DateTimeField(null=True, blank=True)
     last_action = models.DateTimeField(null=True, blank=True)
+    deadline = models.ForeignKey('events.Event',
+        null=True,
+        blank=True,
+        related_name='event_deadline')
     objects = PassThroughManager.for_queryset_class(CaseQuerySet)()
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="case_created")
     created_on = models.DateTimeField(auto_now_add=True)
@@ -125,6 +129,11 @@ class Case(models.Model):
         try:
             last_send = letters_list.filter(status='done').order_by('-created_on', '-id').all()[0]
             self.last_send = last_send.status_changed or last_send.created_on
+        except IndexError:
+            pass
+
+        try:
+            self.deadline = self.event_set.order_by('time').all()[0]
         except IndexError:
             pass
         if save:

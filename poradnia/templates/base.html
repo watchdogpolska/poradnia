@@ -45,12 +45,12 @@
             {% endif %}
             {% if request.user.is_authenticated %}
               <li><a href="{% url 'users:detail' request.user.username  %}">{% blocktrans with user=request.user %} Hello {{ user }}! {% endblocktrans %}</a></li>
-              <li><a href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
+              <li><a href="{% url 'account_logout' %}"><span class="glyphicon glyphicon-off"></span>{% trans "Logout" %}</a></li>
               {% notifications_unread as unread_count%}
               <li><p class="navbar-text">You have <a href="{% url 'notifications:all'%}">{{unread_count}} notification</a> unread</p></li>
             {% else %}
               <li><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
-              <li><a href="{% url 'account_login' %}"><span class="glyphicon glyphicon-off"></span>{% trans "Log In" %}</a></li>
+              <li><a href="{% url 'account_login' %}">{% trans "Log In" %}</a></li>
             {% endif %}
         </ul>
       </div>

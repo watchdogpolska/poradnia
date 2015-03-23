@@ -2,6 +2,7 @@
 from django import forms
 from crispy_forms.helper import FormHelper
 from letters.forms import PartialMixin
+from django.core.urlresolvers import reverse
 
 from .models import Event
 
@@ -12,8 +13,9 @@ class EventForm(PartialMixin, forms.ModelForm):
         self.case = kwargs.pop('case')
         self.helper = FormHelper()
         self.helper.form_tag = False
-        # if 'instance' in kwargs:
-        #     self.helper.form_action = kwargs['instance'].get_edit_url()
+        self.helper.form_action = reverse('events:add', kwargs={'case_pk': self.case.pk})
+        if 'instance' in kwargs:
+            self.helper.form_action = kwargs['instance'].get_edit_url()
         super(EventForm, self).__init__(*args, **kwargs)
 
     def save(self, commit=True, *args, **kwargs):

@@ -9,7 +9,7 @@
     <div class="col-md-10 col-xs-10">
         <div class="messages">
             <div class="panel panel-default">
-                <div class="panel-heading"><span class="glyphicon glyphicon-time"></span>{{object}}</div>
+                <div class="panel-heading"><span class="glyphicon glyphicon-{{object.deadline|yesno:'fire,time'}}"></span>{{object}}</div>
                   <table class="table">
                     <tr><td>Dead-line</td><td>{{object.deadline}}</td></tr>
                     <tr><td>Time</td><td>{{object.time}}</td></tr>
