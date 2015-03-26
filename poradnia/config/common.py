@@ -59,6 +59,7 @@ class Common(Configuration):
         'events',
         'notifications_custom',
         'pagination_custom',
+        'registers',
         # Your stuff: custom apps go here
     )
 
@@ -70,6 +71,7 @@ class Common(Configuration):
     MIDDLEWARE_CLASSES = (
         # Make sure djangosecure.middleware.SecurityMiddleware is listed first
         'djangosecure.middleware.SecurityMiddleware',
+        'django.middleware.locale.LocaleMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
@@ -281,3 +283,8 @@ class Common(Configuration):
     # Guardian settings
     ANONYMOUS_USER_ID = -1
     GUARDIAN_MONKEY_PATCH = False
+    from django.utils.translation import ugettext_lazy as _
+    LANGUAGES = (
+      ('pl', _('Polish')),
+      ('en', _('English')),
+    )

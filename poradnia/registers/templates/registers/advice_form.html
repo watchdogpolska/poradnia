@@ -1,0 +1,29 @@
+{% extends 'registers/base.html' %}
+{% load crispy_forms_tags i18n %}
+{%block title%}{{headline}} - {% if object %}{{object}} - {% endif%}{{block.super}}{%endblock%}
+
+{% block content %}
+<ol class="breadcrumb">
+  <li><a href="{% url 'registers:list' %}">{% trans 'Register'%}</a></li>
+  {% if object %}
+  <li><a href="{{object.get_absolute_url }}">{{object}}</a></li>
+  {% endif %}
+  <li class="active">{{headline}}</li>
+</ol>
+
+<div class="row">
+  {% if object %}<h1>{{object}}</h1>{% endif %}
+    
+    <div class="col-md-18">
+    {% block form %}
+    <form method="post">
+      {% crispy form %}
+      <div class="form-actions">  
+        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-save"></span>{% trans 'Save changes'%}</button>  
+        <button class="btn">{% trans 'Cancel'%}</button>  
+      </div>  
+    </form>
+  </div>
+</div>
+{% endblock %}
+{% endblock %}

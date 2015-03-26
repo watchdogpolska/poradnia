@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     url(r'^', include('cases.urls', namespace='cases')),
     url(r'^letters/', include('letters.urls', namespace='letters')),
     url(r'^event/', include('events.urls', namespace='events')),
+    url(r'^advice/', include('registers.urls', namespace='registers')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

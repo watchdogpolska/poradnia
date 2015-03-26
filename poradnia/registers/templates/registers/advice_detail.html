@@ -1,0 +1,85 @@
+{% extends 'registers/base.html' %}
+{% load i18n humanize %}
+{%block title%}{{object}} - {{block.super}}{%endblock%}
+
+{% block content %}
+<ol class="breadcrumb">
+  <li><a href="{% url 'registers:list' %}">{% trans 'Register' %}</a></li>
+  <li class="active">{{object}}</li>
+</ol>
+
+<div class="row">
+    <div class="col-xs-18">
+        <h1 class="pull-left">{{object}}</h1>
+        <div class="btn-group pull-right">
+            <a href="{% url 'registers:update' pk=object.pk %}" class="btn btn-primary">
+                <span class="glyphicon glyphicon-edit"></span>{% trans 'Edit'%}
+            </a>
+            <a href="{% url 'registers:delete' pk=object.pk %}" class="btn btn-danger">
+                <span class="glyphicon glyphicon-trash"></span>{% trans 'Delete'%}
+            </a>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="col-xs-18">
+        <table class="table">
+
+            {% if object.grant_on %}
+            <tr>
+                <td>{% trans 'Grant on'%}</td>
+                <td><time datetime="{{object.grant_on|date:'Y-m-d h:m:sT'}}">{{object.grant_on |naturaltime }}</time></td>
+            </tr>
+            {% endif %}
+
+            {% if object.issues.all %}
+            <tr>
+                <td>{% trans 'Issues'%}</td>
+                <td>{% for obj in object.issues.all%}{{obj}}{% if not forloop.last%},{% endif%}{% endfor%}</td>
+            </tr>
+            {% endif %}
+
+            {% if object.area %}
+            <tr>
+                <td>{% trans 'Area'%}</td>
+                <td>{{object.area}}</td>
+            </tr>
+            {% endif %}
+
+            {% if object.person_kind %}
+            <tr>
+                <td>{% trans 'Kind of person'%}</td>
+                <td>{{object.person_kind}}</td>
+            </tr>
+            {% endif %}
+
+            {% if object.institution_kind %}
+            <tr>
+                <td>{% trans 'Kind of istitution'%}</td>
+                <td>{{object.institution_kind }}</td>
+            </tr>
+            {% endif %}
+            
+            <tr>
+                <td>{% trans 'Advicer'%}</td>
+                <td>{{object.advicer}}</td>
+            </tr>
+
+            <tr>
+                <td>{% trans 'Created'%}</td>
+                <td>{% blocktrans with object.created_by as created and object.created_on|naturaltime as created_on_natural and object.created_on|date:'Y-m-d h:m:sT' as created_on_date %}{{created}} on <time datetime="{{created_on_date}}">{{created_on_natural}}</time>{% endblocktrans %}</td>
+            </tr>
+
+            
+            <tr>
+                <td>{% trans 'Modified'%}</td>
+                <td>{% blocktrans with object.modified_by as modified_by and object.modified_on|naturaltime as modified_on_natural and object.modified_on|date:'Y-m-d h:m:sT' as modified_on_date %}{{modified_by}} on <time datetime="{{modified_on_date}}">{{modified_on_natural}}</time>{% endblocktrans %}</td>
+            </tr>
+
+        </table>
+        {{object.comment}}
+
+    </div>
+</div>
+
+{% endblock %}
