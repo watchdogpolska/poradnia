@@ -106,8 +106,8 @@
 <div role="tabpanel" class="row">
 
   <ul class="nav nav-tabs" role="tablist" id="form-tab">
-    {% for label, form in forms.items %}
-    <li role="presentation"><a href="#{{label}}" aria-controls="{{label}}" role="tab" data-toggle="tab">{{label}}</a></li>
+    {% for label, row in forms.items %}
+    <li role="presentation"><a href="#{{label}}" aria-controls="{{label}}" role="tab" data-toggle="tab">{{row.title}}</a></li>
     {% endfor %}
   </ul>
 
