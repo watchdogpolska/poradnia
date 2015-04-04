@@ -4,9 +4,9 @@ register = template.Library()
 
 @register.simple_tag
 def query_update(request, **kwargs):
-    # import ipdb; ipdb.set_trace()
     updated = request.GET.copy()
-    updated.update(kwargs)
+    for k, v in kwargs.items():
+        updated[k] = v
     return updated.urlencode()
 
 
