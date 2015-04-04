@@ -10,7 +10,10 @@ from records.models import AbstractRecord
 
 class Letter(AbstractRecord):
     STATUS = Choices(('staff', _('Staff')), ('done', _('Done')))
+    GENRE = Choices('mail', 'comment')
+    genre = models.CharField(choices=GENRE, default=GENRE.comment, max_length=20)
     status = StatusField()
+    status_changed = MonitorField(monitor='status')
     accept = MonitorField(monitor='status', when=['done'], verbose_name=_("Accepted on"))
     name = models.CharField(max_length=250, verbose_name=_("Subject"))
     text = models.TextField(verbose_name=_("Comment"))
