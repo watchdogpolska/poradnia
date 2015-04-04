@@ -2,6 +2,8 @@ from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from cases.models import Case
+from django.contrib import messages
+from django.utils.translation import ugettext as _
 from .helpers import formset_attachment_factory
 # from crispy_forms.helper import FormHelper
 from .forms import NewCaseForm, AddLetterForm, LetterForm, SendLetterForm
@@ -23,6 +25,9 @@ def new_case(request):
             formset = AttachmentFormSet(request.POST, request.FILES, instance=obj)
             if formset.is_valid():
                 obj.save()
+                obj = form.save()
+                messages.success(request,
+                    _("Case about %(object)s created!") % {'object': obj, })
                 formset.save()
                 return HttpResponseRedirect(obj.case.get_absolute_url())
     else:
@@ -49,6 +54,8 @@ def add(request, case_pk):
             formset = AttachmentFormSet(request.POST, request.FILES, instance=obj)
             if formset.is_valid():
                 obj.save()
+                messages.success(request,
+                    _("Letter %(object)s created!") % {'object': obj, })
                 formset.save()
                 return HttpResponseRedirect(case.get_absolute_url())
     else:
@@ -71,7 +78,7 @@ def send(request, pk):
     context['case'] = case
 
     if letter.status == Letter.STATUS.done:
-        # TODO: Msg: It doesn't make sense
+        messages.warning(request, _("It doesn't make sense."))
         return HttpResponseRedirect(case.get_absolute_url())
 
     LetterForm = SendLetterForm.partial(user=request.user, instance=letter)
@@ -79,8 +86,9 @@ def send(request, pk):
     if request.method == 'POST':
         form = LetterForm(request.POST)
         if form.is_valid():
-            form.save()
-            # TODO: Msg
+            obj = form.save()
+            messages.success(request,
+                _("Letter %(object)s send!") % {'object': obj, })
             return HttpResponseRedirect(case.get_absolute_url())
     else:
         form = SendLetterForm(user=request.user, instance=letter)
@@ -112,6 +120,8 @@ def edit(request, pk):
             if formset.is_valid():
                 obj.save()
                 formset.save()
+                messages.success(request,
+                    _("Letter %(object)s updated!") % {'object': obj, })
                 return HttpResponseRedirect(obj.case.get_absolute_url())
     else:
         form = LetterForm(user=request.user, instance=letter)

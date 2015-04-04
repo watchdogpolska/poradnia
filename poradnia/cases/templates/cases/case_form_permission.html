@@ -1,13 +1,13 @@
 {% extends "cases/base.html" %}
-{% load crispy_forms_tags staticfiles %}
+{% load crispy_forms_tags staticfiles i18n %}
 
-{% block title %}Case: {{ object }} - {{block.super}}{% endblock %}
+{% block title %}{{ object }} - {{block.super}}{% endblock %}
 
 {% block breadcrumbs%}
 <ol class="breadcrumb">
-  <li><a href="{% url 'cases:list'%}">Cases</a></li>
+  <li><a href="{% url 'cases:list'%}">{% trans 'Cases'%}</a></li>
   <li><a href="{{object.get_absolute_url}}">{{object}}</a></li>
-  <li class="active">Permission</li>
+  <li class="active">{% trans 'Permission'%}</li>
 </ol>
 {% endblock %}
 
@@ -22,7 +22,7 @@
 {% block content %}
 
 <div class="container">
-<h1>{% block header %}Case: {{ object }}{% endblock %}</h1>
+<h1>{% block header %}{{ object }}{% endblock %}</h1>
 <div class="row">
     <div class="col-lg-6">
         <form class="form-horizontal" method="post" action="{{object.get_permission_url}}">
@@ -37,17 +37,17 @@
         {% endfor %}
         <div class="control-group row">
           <div class="controls">
-            <button type="submit" class="btn">Update</button>
+            <button type="submit" class="btn">{% trans 'Update'%}</button>
           </div>
         </div>
         </form>
     </div>
     <div class="col-lg-6">
-    <h2>Add new user</h2>
+    <h2>{% trans 'Add new user'%}</h2>
         <form class="form-horizontal" method="post" action="{{object.get_permission_url}}">
         {{add_form|crispy}}{% csrf_token %}
         <div class="controls">
-            <button type="submit" class="btn">Update</button>
+            <button type="submit" class="btn">{% trans 'Update'%}</button>
         </div>
         </form>
     </div>

@@ -1,6 +1,8 @@
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from django.utils.translation import ugettext as _
 from .models import Event
 from cases.models import Case
 from .forms import EventForm
@@ -20,7 +22,9 @@ def add(request, case_pk):
     if request.method == 'POST':
         form = form(request.POST)
         if form.is_valid():
-            form.save()
+            obj = form.save()
+            messages.success(request,
+                _("Success added new event %(event)s") % {'event': obj, })
             return HttpResponseRedirect(case.get_absolute_url())
     else:
         form = form(user=request.user)
@@ -36,14 +40,16 @@ def edit(request, pk):
 
     case.perm_check(request.user, 'can_add_record')
     context['event'] = event
-    context['case'] = case
+    context['object'] = case
 
     form = EventForm.partial(user=request.user, case=case, instance=event)
 
     if request.method == 'POST':
         form = form(request.POST)
         if form.is_valid():
-            form.save()
+            obj = form.save()
+            messages.success(request,
+                _("Success updated event %(event)s") % {'event': obj, })
             return HttpResponseRedirect(case.get_absolute_url())
     else:
         form = form(user=request.user, instance=event)

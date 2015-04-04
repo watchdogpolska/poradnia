@@ -9,11 +9,12 @@ from braces.views import FormValidMessageMixin
 from braces.views import OrderableListMixin
 from braces.views import SelectRelatedMixin
 from braces.views import UserFormKwargsMixin
+from braces.views import LoginRequiredMixin
 from .models import Advice
 from .forms import AdviceForm
 
 
-class PermissionMixin(object):
+class PermissionMixin(LoginRequiredMixin, object):
     def get_queryset(self, *args, **kwargs):
         qs = super(PermissionMixin, self).get_queryset(*args, **kwargs)
         return qs.for_user(self.request.user)
@@ -43,7 +44,7 @@ class AdviceUpdate(PermissionMixin, FormMixins, UpdateView):
         return _("{0} updated!").format(self.object)
 
 
-class AdviceCreate(FormMixins, CreateView):
+class AdviceCreate(FormMixins, LoginRequiredMixin, CreateView):
     model = Advice
     form_class = AdviceForm
     headline = _("Creating")

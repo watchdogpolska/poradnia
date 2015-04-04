@@ -2,27 +2,27 @@ from os.path import basename
 from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
 from model_utils.fields import MonitorField, StatusField
 from model_utils import Choices
 from records.models import AbstractRecord
 
 
 class Letter(AbstractRecord):
-    STATUS = Choices('staff', 'done')
-    GENRE = Choices('mail', 'comment')
+    STATUS = Choices(('staff', _('Staff')), ('done', _('Done')))
     status = StatusField()
-    genre = models.CharField(choices=GENRE, default=GENRE.mail, max_length=20)
-    send_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True,
-        related_name="senders")
-    status_changed = MonitorField(monitor='status')
-    accept = MonitorField(monitor='status', when=['done'])
-    name = models.CharField(max_length=250)
-    text = models.TextField()
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="letter_created")
-    created_on = models.DateTimeField(auto_now_add=True)
-    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True,
-        related_name="letter_modified")
-    modified_on = models.DateTimeField(auto_now=True, null=True, blank=True)
+    accept = MonitorField(monitor='status', when=['done'], verbose_name=_("Accepted on"))
+    name = models.CharField(max_length=250, verbose_name=_("Subject"))
+    text = models.TextField(verbose_name=_("Comment"))
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='letter_created_by', verbose_name=_("Created by"))
+    created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))
+    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                    verbose_name=_("Modified by"),
+                                    null=True,
+                                    related_name='letter_modified_by')
+    modified_on = models.DateTimeField(
+        auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
 
     def __unicode__(self):
         return self.name
@@ -45,6 +45,10 @@ class Letter(AbstractRecord):
     def get_send_url(self):
         return reverse('letters:send', kwargs={'pk': self.pk})
 
+    class Meta:
+        verbose_name = _('Letter')
+        verbose_name_plural = _('Letters')
+
 
 class Attachment(models.Model):
     letter = models.ForeignKey(Letter)
@@ -59,3 +63,7 @@ class Attachment(models.Model):
 
     def get_absolute_url(self):
         return self.attachment.url
+
+    class Meta:
+        verbose_name = _('Attachment')
+        verbose_name_plural = _('Attachments')

@@ -1,5 +1,5 @@
 {% extends 'letters/base.html' %}
-{% load crispy_forms_tags staticfiles %}
+{% load crispy_forms_tags staticfiles i18n %}
 {% block javascript %}
 {{block.super}}
 <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
@@ -9,16 +9,26 @@
     })
 </script>
 {% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+  <li><a href="{% url 'cases:list'%}">{% trans 'Cases'%}</a></li>
+  <li><a href="{{ case.get_absolute_url }}">{{ case }}</a></li>
+  <li class="active">{% trans 'Edit'%}</li>
+</ol>
+{% endblock %}
+
 {%block content%}
+{% block object %}<h1 class="row">{{object}}</h1>{% endblock %}
+
 <form method="post" enctype="multipart/form-data">
 {% crispy form %}
 {% if formset %}
     {% crispy formset %}
 {% endif %}
  <div class="form-actions">  
-    <button type="submit" class="btn btn-primary">Save changes</button>  
-    <button class="btn">Cancel</button>  
+    <button type="submit" class="btn btn-primary">{% trans 'Save changes'%}</button>  
+    <button class="btn">{% trans 'Cancel'%}</button>  
   </div>  
-</fieldset>  
 </form>
 {%endblock%}

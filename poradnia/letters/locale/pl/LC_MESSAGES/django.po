@@ -1,0 +1,123 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: letter 0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-04-03 18:33-0700\n"
+"PO-Revision-Date: 2015-04-04 03:33+0100\n"
+"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"Language: pl_PL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: models.py:12
+msgid "Staff"
+msgstr "Zespół"
+
+#: models.py:12
+msgid "Done"
+msgstr "Wykonane"
+
+#: models.py:14
+msgid "Accepted on"
+msgstr "Zaakceptowane o"
+
+#: models.py:15
+msgid "Subject"
+msgstr "Przedmiot"
+
+#: models.py:16
+msgid "Comment"
+msgstr "Komentarz"
+
+#: models.py:18
+msgid "Created by"
+msgstr "Utworzone przez"
+
+#: models.py:19
+msgid "Created on"
+msgstr "Utworzone o"
+
+#: models.py:21
+msgid "Modified by"
+msgstr "Zmienione o"
+
+#: models.py:25
+msgid "Modified on"
+msgstr "Zmienione przez"
+
+#: models.py:49
+msgid "Letter"
+msgstr "List"
+
+#: models.py:50
+msgid "Letters"
+msgstr "Listy"
+
+#: models.py:68
+msgid "Attachment"
+msgstr "Załącznik"
+
+#: models.py:69
+msgid "Attachments"
+msgstr "Załączniki"
+
+#: templates/letters/_letter_list.html:27 templates/letters/form.html:17
+msgid "Edit"
+msgstr "Edytuj"
+
+#: templates/letters/_letter_list.html:28
+msgid "Send"
+msgstr "Wyślij"
+
+#: templates/letters/form.html:15
+msgid "Cases"
+msgstr "Sprawy"
+
+#: templates/letters/form.html:30
+#| msgid "Status changed on"
+msgid "Save changes"
+msgstr "Zapisz zmiany"
+
+#: templates/letters/form.html:31
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: views.py:30
+#, python-format
+msgid "Case about %(object)s created!"
+msgstr "Sprawa o %(object)s utworzona!"
+
+#: views.py:58
+#, python-format
+msgid "Letter %(object)s created!"
+msgstr "List %(object)s utworzone"
+
+#: views.py:81
+msgid "It doesn't make sense."
+msgstr "To nie ma sensu."
+
+#: views.py:91
+#, python-format
+msgid "Letter %(object)s send!"
+msgstr "List %(object)s wysłany!"
+
+#: views.py:124
+#, python-format
+msgid "Letter %(object)s updated!"
+msgstr "List %(object)s zaktualizowany!"
+
+#~ msgid "%(object)s updated!"
+#~ msgstr "%(object)s zaktualizowany!"
+
+#~ msgid "Success created new case about %(object)s"
+#~ msgstr "Utworzono nowa "

@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class AbstractCategory(models.Model):
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, verbose_name=("Name"))
 
     def __unicode__(self):
         return self.name
@@ -37,7 +37,7 @@ class AdviceQuerySet(QuerySet):
     def for_user(self, user):
         if user.has_perm('registers.can_view_all_advices'):
             return self
-        return self.filter(Q(who=user.pk) | Q(created_by=user.pk))
+        return self.filter(Q(advicer=user.pk) | Q(created_by=user.pk))
 
     def visible(self):
         return self.filter(visible=True)

@@ -1,12 +1,12 @@
 {% extends 'cases/base.html' %}
-{% load guardian_tags crispy_forms_tags staticfiles %}
+{% load guardian_tags crispy_forms_tags staticfiles humanize i18n %}
 {%block title%}{{object}} - {{block.super}}{%endblock%}
 {% block javascript %}
 {{block.super}}
 <script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
 <script type="text/javascript">
   $(function() {
-    $('form tbody tr').formset();
+    $('form tbody tr').formset({addText:"{% trans 'add another'%}", deleteText: "{% trans 'remove'%}"});
   });
   $('#form-tab a').click(function (e) {
     e.preventDefault()
@@ -17,100 +17,117 @@
 {% endblock %}
 {% block breadcrumbs%}
 <ol class="breadcrumb">
-  <li><a href="{% url 'cases:list'%}">Cases</a></li>
+  <li><a href="{% url 'cases:list'%}">{% trans 'Cases'%}</a></li>
   <li class="active">{{object}}</li>
 </ol>
 {% endblock %}
 
 {%block content%}
 {% get_obj_perms request.user for object as "case_perms" %}
-
-<div class="container">
-  <div class="row">
-    <div class="col-lg-6">
-      {% include '_simple_row.html' with title='name' object=object.name only %}
-      {% include '_simple_row.html' with title='permissions' object=perm_case only %}
-      {% include '_simple_list.html' with title='tags' object_list=object.tags.all only %}
-      {% include '_simple_row.html' with title='status' object=object.status only %}
-      <p><span class="label label-primary">Tags</span>
-        {% for tag in object.tags.all %}
-        <span class="label {{tag.style.code}}">
-          <a href="{{tag.get_absolute_url}}">{{tag}}</a>
-          <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-        </span>
-        {% endfor %}
-      </p>
-      <p><span class="label label-info"><a href="{{ object.get_permission_url }}">Involved in</a></span>
-        {% for user in object.get_users_with_perms.all %}
-        <span class="label label-info">
-          <a href="{{user.get_absolute_url}}">{{user}}</a>
-        </span>
-        {% endfor %}
-
-        <p><span class="label label-primary">Creating</span>
-          <a href="{{object.created_by.get_absolute_url}}">{{object.created_by}}</a> on {{object.created_on}}
-        </p>
-
-        {% if object.modified_by %}
-        <p><span class="label label-primary">Last update</span>
-          <a href="{{object.modified_by.get_absolute_url}}">{{object.modified_by}}</a> on {{object.modified_on}}
-        </p>
-        {% endif %}
-
-        {% include '_simple_row.html' with title='status_changed' object=object.status_changed only %}
-        {% include '_simple_row.html' with title='client' object=object.client only %}
-        {% if 'change_case' in case_perms %}
-        <a class="btn btn-primary" href="{{ object.get_edit_url }}">Edit</a>
-        {% endif %}
-        {#<a class="btn btn-warning" href="{% url 'cases:close' %}">Close</a>#}
-      </div>
-    </div>
-  </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12">
-        <h2>Record</h2>
-      </div>
-    </div>
-    <div class="panel-body msg_container_base">
-      {% if record_list %}
-      {% for record in record_list %}
-      {% include record.content_object.get_template_list with object=record.content_object %}
-      {% endfor %}
-      {% else %}
-      <span class="label label-warning">No records</span>
+<div class="row">
+  <div class="col-xs-18">
+    <div class="pull-left"><h1>#{{object.pk}} - {{object.name}}</h1></div>
+    <div class="pull-right">
+    <div class="btn-group">
+      {% if 'change_case' in case_perms %}
+      <a class="btn btn-primary" href="{{ object.get_edit_url }}"><span class="glyphicon glyphicon-edit"></span>{% trans 'Edit'%}</a>
+      {% endif %}
+      {% if 'can_assign' in case_perms %}
+      <a class="btn btn-primary" href="{{ object.get_permission_url }}"><span class="glyphicon glyphicon-eye-close"></span>{% trans 'Permissions' %}</a>
       {% endif %}
     </div>
-  </div>
-  {% if 'can_add_record' in case_perms %}
-  <div role="tabpanel">
-
-    <ul class="nav nav-tabs" role="tablist" id="form-tab">
-      {% for label, form in forms.items %}
-      <li role="presentation"><a href="#{{label}}" aria-controls="{{label}}" role="tab" data-toggle="tab">{{label}}</a></li>
-      {% endfor %}
-    </ul>
-
-    <div class="tab-content">
-      {% for label, form in forms.items %}
-      <div role="tabpanel" class="tab-pane" id="{{label}}">
-        <h2>{{label}}</h2>
-        <form method="post" enctype="multipart/form-data" action="{{form.form.helper.form_action}}">
-          {% crispy form.form %}
-          {% if form.formset %}
-          {% crispy form.formset %}
-          {% endif %}
-          <div class="form-actions">  
-            <button type="submit" class="btn btn-primary">Save changes</button>  
-            <button class="btn">Cancel</button>  
-          </div>
-        </form>  
-      </div>
-      {% endfor %}
     </div>
-
   </div>
-
+</div>
+<div class="row">
+  <div class=" col-lg-6">
+    <div class="panel panel-default">
+      <div class="panel-heading"><span class="glyphicon glyphicon-earphone"></span>{% trans 'Metrical data'%}</div>
+      <table class="table">
+        {% if object.tag_set.all %}
+        <tr>
+          <td>{% trans 'Tags' %}</td>
+          <td>{% for tag in object.tag_set.all %}<a href="{{tag.get_absolute_url}}">{{tag}}</a>{% endfor%}</td>
+        </tr>
+        {% endif %}
+        <tr>
+          <td>{% trans 'Creating' %}</td>
+          <td><a href="{{object.created_by.get_absolute_url}}">{{object.created_by}}</a> on {{object.created_on|naturaltime}}</td>
+        </tr>
+        <tr>
+          <td>{% trans 'Client' %}</td>
+          <td><a href="{{object.client.get_absolute_url}}">{{object.client}}</a>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <div class="panel panel-default">
+      <div class="panel-heading"><span class="glyphicon glyphicon-transfer"></span>{% trans 'Workflow'%}</div>
+      <table class="table">
+        <tr>
+          <td><span class="glyphicon glyphicon-user"></span>{% trans 'Involved in' %}</td>
+          <td>{% for user in object.get_users_with_perms.all %}<a class="label label-info" href="{{user.get_absolute_url}}">{{user}}</a>{% endfor%}</td>
+        </tr>
+        {% if object.modified_by %}
+        <tr>
+          <td>{% trans 'Last update'%}</td>
+          <td>
+            <a href="{{object.modified_by.get_absolute_url}}">{{object.modified_by}}</a> on {{object.modified_on}}
+          </td>
+        </tr>
+        {% endif %}
+        <tr>
+          <td>{% trans 'Status' %}</td>
+          <td>{% if object.status_changed %}{% blocktrans with object.status as status and status_changed as object.status_changed %}{{status}} since {{ status_changed }}{% endblocktrans %}{% else %}{{ object.status }}{%endif%}</td>
+        </tr>
+        {% if object.deadline %}
+        <tr>
+          <td><span class="glyphicon glyphicon-fire"></span>{% trans 'Dead-line'%}</td>
+          <td>{% blocktrans with object.deadline as deadline and object.deadline.time|naturaltime as naturaltime %}{{deadline}} at {{naturaltime}}{% endblocktrans %}</td>
+        </tr>
+        {%endif%}
+      </table>
+    </div> 
+  </div>
+</div>
+<div class="row"><div class="col-xs-12"><h2>{% trans 'Record'%}</h2></div></div>
+<div class="panel-body msg_container_base row">
+  {% if record_list %}
+  {% for record in record_list %}
+  {% include record.content_object.get_template_list with object=record.content_object %}
+  {% endfor %}
+  {% else %}
+  <span class="label label-warning">{% trans 'No records'%}</span>
   {% endif %}
 </div>
+{% if 'can_add_record' in case_perms %}
+<div role="tabpanel" class="row">
+
+  <ul class="nav nav-tabs" role="tablist" id="form-tab">
+    {% for label, form in forms.items %}
+    <li role="presentation"><a href="#{{label}}" aria-controls="{{label}}" role="tab" data-toggle="tab">{{label}}</a></li>
+    {% endfor %}
+  </ul>
+
+  <div class="tab-content">
+    {% for key, row in forms.items %}
+    <div role="tabpanel" class="tab-pane" id="{{key}}">
+      <h2>{{row.title}}</h2>
+      <form method="post" enctype="multipart/form-data" action="{{row.form.helper.form_action}}">
+        {% crispy row.form %}
+        {% if row.formset %}
+        {% crispy row.formset %}
+        {% endif %}
+        <div class="form-actions">  
+          <button type="submit" class="btn btn-primary">{% trans 'Save changes'%}</button>  
+          <button class="btn">{% trans 'Cancel'%}</button>  
+        </div>
+      </form>  
+    </div>
+    {% endfor %}
+  </div>
+</div>
+{% endif %}
 {%endblock%}

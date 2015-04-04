@@ -1,9 +1,11 @@
 from django.db import models
-from cases.models import Case
-from notifications import notify
+
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.utils.translation import ugettext_lazy as _
+from cases.models import Case
+from notifications import notify
 
 
 class Record(models.Model):
@@ -15,22 +17,18 @@ class Record(models.Model):
 
     content_type = models.ForeignKey(
         ContentType,
-        # verbose_name=_('content page'),
-        # limit_choices_to=limit,
         null=True,
         blank=True,
     )
     object_id = models.PositiveIntegerField(
-        # verbose_name=_('related object'),
         null=True,
     )
     related_object = generic.GenericForeignKey('content_type', 'object_id')
 
-    @property  # We use OneToOneField if possible
+    @property  # We use OneToOneField as possible
     def content_object(self):
         for field in self.STATIC_RELATION:
-            if getattr(self, field+"_id"):
-                print field
+            if getattr(self, field + "_id"):
                 return getattr(self, field)
         return self.related_object
 
@@ -46,6 +44,10 @@ class Record(models.Model):
 
     def case_get_absolute_url(self):
         return Case(pk=self.case_id).get_absolute_url()
+
+    class Meta:
+        verbose_name = _('Record')
+        verbose_name_plural = _('Records')
 
 
 class AbstractRecord(models.Model):
@@ -76,7 +78,8 @@ class AbstractRecord(models.Model):
             self.case.update_counters()
 
     def __unicode__(self):
-        return "%s in case #%d" % (self._meta.model_name, self.case_id)
+        return _("%(object)s in case #%(case_id)d") %\
+            {'object': self._meta.model_name, 'case_id': self.case_id}
 
     class Meta:
         abstract = True

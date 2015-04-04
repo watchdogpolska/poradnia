@@ -4,18 +4,20 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Count, Q
 from django.db.models.query import QuerySet
+from django.utils.translation import ugettext_lazy as _
+from django.core.exceptions import PermissionDenied
 from model_utils.managers import PassThroughManager
 from model_utils.fields import MonitorField, StatusField
 from model_utils import Choices
 from guardian.models import UserObjectPermissionBase
 from guardian.models import GroupObjectPermissionBase
 from guardian.shortcuts import get_objects_for_user, get_users_with_perms, assign_perm
-from django.core.exceptions import PermissionDenied
 from notifications import notify
 from .tags.models import Tag
 
 
 class CaseQuerySet(QuerySet):
+
     def for_user(self, user):
         if user.has_perm('cases.can_view_all'):
             return self
@@ -38,24 +40,27 @@ class CaseQuerySet(QuerySet):
 
 class Case(models.Model):
     STATUS = Choices('free', 'open', 'closed')
-    name = models.CharField(max_length=150)
-    tags = models.ManyToManyField(Tag, null=True, blank=True)
+    name = models.CharField(max_length=150, verbose_name=_("Subject"))
+    tags = models.ManyToManyField(Tag, null=True, blank=True, verbose_name=_("Tags"))
     status = StatusField()
     status_changed = MonitorField(monitor='status')
-    client = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='case_client')
-    letter_count = models.IntegerField(default=0)
-    last_send = models.DateTimeField(null=True, blank=True)
-    last_action = models.DateTimeField(null=True, blank=True)
+    client = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='case_client', verbose_name=_("Client"))
+    letter_count = models.IntegerField(default=0, verbose_name=_("Letter count"))
+    last_send = models.DateTimeField(null=True, blank=True, verbose_name=_("Last send"))
+    last_action = models.DateTimeField(null=True, blank=True, verbose_name=_("Last action"))
     deadline = models.ForeignKey('events.Event',
-        null=True,
-        blank=True,
-        related_name='event_deadline')
+                                 null=True,
+                                 blank=True,
+                                 related_name='event_deadline', verbose_name=_("Dead-line"))
     objects = PassThroughManager.for_queryset_class(CaseQuerySet)()
-    created_by = models.ForeignKey(settings.AUTH_USER_MODEL, related_name="case_created")
-    created_on = models.DateTimeField(auto_now_add=True)
+    created_by = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name="case_created", verbose_name=_("Created by"))
+    created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))
     modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True,
-        related_name="case_modified")
-    modified_on = models.DateTimeField(auto_now=True, null=True, blank=True)
+                                    related_name="case_modified", verbose_name=_("Modified by"))
+    modified_on = models.DateTimeField(
+        auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
 
     def get_readed(self):
         try:
@@ -100,20 +105,20 @@ class Case(models.Model):
     def view_perm_check(self, user, perm='VIEW'):
         if not (user.has_perm('cases.can_view_all') or
                 user.has_perm('cases.can_view', self)):
-                raise PermissionDenied
+            raise PermissionDenied
         return True
 
     class Meta:
         ordering = ['last_send', ]
-        permissions = (('can_view_all', "Can view all cases",),  # Global permission
-                       ('can_view', "Can view",),
-                       ('can_select_client', "Can select client"),  # Global permission
-                       ('can_assign', "Can assign new permissions"),
-                       ('can_send_to_client', "Can send text to client"),
-                       ('can_manage_permission', "Can assign permission",),
-                       ('can_add_record', 'Can add record', ),
-                       ('can_change_own_record', "Can change own records"),
-                       ('can_change_all_record', "Can change all records"),
+        permissions = (('can_view_all', _("Can view all cases")),  # Global permission
+                       ('can_view', _("Can view")),
+                       ('can_select_client', _("Can select client")),  # Global permission
+                       ('can_assign', _("Can assign new permissions")),
+                       ('can_send_to_client', _("Can send text to client")),
+                       ('can_manage_permission', _("Can assign permission")),
+                       ('can_add_record', _('Can add record')),
+                       ('can_change_own_record', _("Can change own records")),
+                       ('can_change_all_record', _("Can change all records")),
                        )
 
     def update_counters(self, save=True):

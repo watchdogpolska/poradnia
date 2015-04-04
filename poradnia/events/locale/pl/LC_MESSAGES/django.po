@@ -1,0 +1,93 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: event 0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-04-03 17:51-0700\n"
+"PO-Revision-Date: 2015-04-04 02:52+0100\n"
+"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"Language: pl_PL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: models.py:9 templates/events/_event_list.html:14
+msgid "Dead-line"
+msgstr "Termin"
+
+#: models.py:10 templates/events/_event_list.html:15
+msgid "Time"
+msgstr "Czas"
+
+#: models.py:13 templates/events/_event_list.html:16
+msgid "For client"
+msgstr "Dla klienta"
+
+#: models.py:14
+msgid "Unchecked are visible for staff only"
+msgstr "Odznaczone jest widoczne tylko dla zespołu"
+
+#: models.py:15
+msgid "Subject"
+msgstr "Przedmiot"
+
+#: models.py:17
+msgid "Created by"
+msgstr "Utworzone przez"
+
+#: models.py:18
+msgid "Created on"
+msgstr "Utworzone o"
+
+#: models.py:20
+msgid "Modified by"
+msgstr "Zmodyfikowane przez"
+
+#: models.py:24
+msgid "Modified on"
+msgstr "Zmodyfikowane o"
+
+#: templates/events/_alarm_list.html:13
+msgid "A related event "
+msgstr "Powiązane wydarzenie"
+
+#: templates/events/_event_list.html:17
+msgid "Triggered"
+msgstr "Zaistniałe"
+
+#: templates/events/_event_list.html:26 templates/events/form.html:8
+msgid "Edit"
+msgstr "Edytuj"
+
+#: templates/events/form.html:6
+msgid "Cases"
+msgstr "Sprawy"
+
+#: templates/events/form.html:18
+msgid "Save changes"
+msgstr "Zapisz zmiany"
+
+#: templates/events/form.html:19
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: views.py:27
+#, python-format
+msgid "Success added new event %(event)s"
+msgstr "Dodano wydarzenie %(event)s"
+
+#: views.py:52
+#, python-format
+msgid "Success updated event %(event)s"
+msgstr "Zaktualizowano wydarzenie %(event)s"
+
+#~ msgid "Text"
+#~ msgstr "Komentarz"

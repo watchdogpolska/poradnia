@@ -1,4 +1,4 @@
-{% load guardian_tags crispy_forms_tags humanize avatar_tags %}
+{% load guardian_tags crispy_forms_tags humanize avatar_tags i18n %}
 <div class="row obj_container base_sent">
     {% if not object.event.created_by.is_staff %}
     <div class="col-md-2 col-xs-2 avatar">
@@ -10,7 +10,7 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><span class="glyphicon glyphicon-bell"></span>{{object}}</div>
                   <table class="table">
-                    <tr><td>Event</td><td>{{object.event}}</td></tr>
+                    <tr><td>{% trans 'A related event '%}</td><td>{{object.event}}</td></tr>
                 </table>
             </div>
         </div>
