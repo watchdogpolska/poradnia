@@ -55,7 +55,6 @@ class Common(Configuration):
         'cases.readed',
         'letters',
         'records',
-        'tracking',
         'events',
         'notifications_custom',
         'pagination_custom',
