@@ -1,8 +1,27 @@
+from datetime import datetime
 from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.query import QuerySet
 from records.models import AbstractRecord
+
+
+class Alarm(AbstractRecord):
+    event = models.OneToOneField('Event')
+
+    class Meta:
+        verbose_name = _('Alarm')
+        verbose_name_plural = _('Alarms')
+
+
+class EventQuerySet(QuerySet):
+
+    def untriggered(self):
+        return self.filter(alarm__isnull=True)
+
+    def old(self):
+        return self.filter(time__lte=datetime.now())
 
 
 class Event(AbstractRecord):
@@ -22,6 +41,7 @@ class Event(AbstractRecord):
                                     related_name='event_modified_by')
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
+    objects = EventQuerySet.as_manager()
 
     def get_absolute_url(self):
         case_url = self.record.case_get_absolute_url()
@@ -30,18 +50,18 @@ class Event(AbstractRecord):
     def get_edit_url(self):
         return reverse('events:edit', kwargs={'pk': self.pk})
 
+    def execute(self):
+        obj = Alarm(event=self, case=self.case)
+        obj.save()
+        return obj
+
     @property
     def triggered(self):
-        return bool(self.alarm)
+        try:
+            return bool(self.alarm)
+        except Alarm.DoesNotExist:
+            return False
 
     class Meta:
         verbose_name = _('Event')
         verbose_name_plural = _('Events')
-
-
-class Alarm(AbstractRecord):
-    event = models.OneToOneField(Event)
-
-    class Meta:
-        verbose_name = _('Alarm')
-        verbose_name_plural = _('Alarms')
