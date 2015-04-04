@@ -1,4 +1,5 @@
 {% load query_string %}
+{% if page.has_previous or page.has_next %}
 <nav>
     <ul class="pager">
     {% if page.has_previous %}
@@ -10,3 +11,4 @@
     {% endif %}
     </ul>
 </nav>
+{% endif %}
