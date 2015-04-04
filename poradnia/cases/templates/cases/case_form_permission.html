@@ -21,14 +21,27 @@
 {% endblock %}
 {% block content %}
 
-<div class="container">
-<h1>{% block header %}{{ object }}{% endblock %}</h1>
+<div class="row">
+  <div class="col-xs-18">
+    <div class="pull-left"><h1>{{object}}</h1></div>
+    <div class="pull-right">
+    <div class="btn-group">
+      {% if staff_only %}
+      <a class="btn btn-primary" href="{% url 'cases:permission_all' pk=object.pk %}"><span class="glyphicon glyphicon-edit"></span>{% trans 'All users'%}</a>
+      {% else %}
+      <a class="btn btn-primary" href="{% url 'cases:permission' pk=object.pk %}"><span class="glyphicon glyphicon-edit"></span>{% trans 'Staff only'%}</a>
+      {% endif %}
+    </div>
+    </div>
+  </div>
+</div>
 <div class="row">
     <div class="col-lg-6">
+    <h2>{% trans 'Update users' %}</h2>
         <form class="form-horizontal" method="post" action="{{object.get_permission_url}}">
         {% for user, form in form.items %}
             <div class="row">
-            <h2>{{user}}</h2>
+            <h3>{{user}}</h3>
             <div class="col-lg-12">
                 {% csrf_token %}
                 {{ form|crispy }}
@@ -37,7 +50,7 @@
         {% endfor %}
         <div class="control-group row">
           <div class="controls">
-            <button type="submit" class="btn">{% trans 'Update'%}</button>
+            <button type="submit" class="btn btn-primary">{% trans 'Update'%}</button>
           </div>
         </div>
         </form>
@@ -47,10 +60,10 @@
         <form class="form-horizontal" method="post" action="{{object.get_permission_url}}">
         {{add_form|crispy}}{% csrf_token %}
         <div class="controls">
-            <button type="submit" class="btn">{% trans 'Update'%}</button>
+            <button type="submit" class="btn btn-primary">{% trans 'Update'%}</button>
         </div>
         </form>
     </div>
 </div>
-</div>
+
 {% endblock %}

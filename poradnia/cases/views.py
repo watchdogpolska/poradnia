@@ -109,11 +109,13 @@ def edit(request, pk):
 
 
 @login_required
-def permission(request, pk):
+def permission(request, pk, limit='staff'):
     context = {}
     case = get_object_or_404(Case, pk=pk)
     context['object'] = case
     case.perm_check(request.user, 'can_manage_permission')
+
+    # Update permission
     context['form'] = {}
     for user in case.get_users_with_perms():
         if request.method == 'POST':
@@ -127,8 +129,13 @@ def permission(request, pk):
             form = UserObjectPermissionsForm(user, case, request.POST or None, prefix=user.pk)
         context['form'][user] = form
 
+    staff_only = True if limit == 'staff' else False
+    context['staff_only'] = staff_only
+
+    # Assign new permission
+    form = ManageObjectPermissionForm(case, request.POST or None,
+        staff_only=staff_only, user=request.user)
     if request.method == 'POST':
-        form = ManageObjectPermissionForm(case, request.POST or None, user=request.user)
         if form.is_valid():
             form.save_obj_perms()
             for user in form.cleaned_data['user']:
@@ -138,8 +145,6 @@ def permission(request, pk):
             if 'can_send_to_client' in form.cleaned_data[form.get_obj_perms_field_name()]:
                 case.status = case.STATUS.open
                 case.save()
-    else:
-        form = ManageObjectPermissionForm(case, request.POST or None, user=request.user)
     context['add_form'] = form
 
     return render(request, 'cases/case_form_permission.html', context)

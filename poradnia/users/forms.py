@@ -19,18 +19,21 @@ class UserForm(forms.ModelForm):
 
 
 class ManageObjectPermissionForm(BaseObjectPermissionsForm):
-    user = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(), required=True)
+    users = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(), required=True)
+
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        self.staff_only = kwargs.pop('staff_only', False)
+        super(ManageObjectPermissionForm, self).__init__(*args, **kwargs)
+        self.fields['users'].queryset = self.get_user_queryset()
 
     def get_user_queryset(self):
         qs = get_user_model().objects
         qs = qs.for_user(self.user)
+        if self.staff_only:
+            qs = qs.filter(is_staff=True)
         qs = qs.exclude(pk__in=[o.pk for o in get_users_with_perms(self.obj)])
         return qs
-
-    def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
-        super(ManageObjectPermissionForm, self).__init__(*args, **kwargs)
-        self.fields['user'].queryset = self.get_user_queryset()
 
     def are_obj_perms_required(self):
         return True
