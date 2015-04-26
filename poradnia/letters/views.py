@@ -25,7 +25,6 @@ def new_case(request):
             formset = AttachmentFormSet(request.POST, request.FILES, instance=obj)
             if formset.is_valid():
                 obj.save()
-                obj = form.save()
                 messages.success(request,
                     _("Case about %(object)s created!") % {'object': obj, })
                 formset.save()

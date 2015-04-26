@@ -98,7 +98,7 @@ class Case(models.Model):
         return self.objects.get(pk=pk.group(1))
 
     def perm_check(self, user, perm):
-        if not user.has_perm('cases.' + perm):
+        if not (user.has_perm('cases.' + perm) or user.has_perm('cases.' + perm, self)):
             raise PermissionDenied
         return True
 

@@ -42,6 +42,9 @@ class Letter(AbstractRecord):
         case_url = self.record.case_get_absolute_url()
         return "%s#letter-%s" % (case_url, self.pk)
 
+    def is_done(self):
+        return (True if self.status == self.STATUS.done else False)
+
     def get_edit_url(self):
         return reverse('letters:edit', kwargs={'pk': self.pk})
 
@@ -62,7 +65,7 @@ class Attachment(models.Model):
         return basename(self.attachment.name)
 
     def __unicode__(self):
-        return "%s (%s)" % (self.text, self.filename)
+        return "%s" % (self.filename)
 
     def get_absolute_url(self):
         return self.attachment.url

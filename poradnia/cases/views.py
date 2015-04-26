@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import ugettext as _
+from django.core.exceptions import PermissionDenied
 from guardian.forms import UserObjectPermissionsForm
 from users.forms import ManageObjectPermissionForm
 from letters.forms import AddLetterForm
@@ -11,6 +12,7 @@ from letters.helpers import formset_attachment_factory
 from pagination_custom.utils import paginator
 from letters.models import Letter
 from records.models import Record
+from notifications import notify
 from .models import Case
 from .readed.models import Readed
 from .tags.models import Tag
@@ -51,7 +53,7 @@ def detail(request, pk):
 def list(request):
     context = {}
     object_list = (Case.objects.
-                   with_read_time(request.user).
+                   # with_read_time(request.user).
                    for_user(request.user).
                    select_related('client').
                    prefetch_related('tags'))
@@ -92,7 +94,7 @@ def edit(request, pk):
     context = {}
 
     case = get_object_or_404(Case, pk=pk)
-    case.view_perm_check(request.user)
+    case.perm_check(request.user, 'can_change_case')
     context['object'] = case
 
     if request.method == 'POST':
@@ -113,7 +115,12 @@ def permission(request, pk, limit='staff'):
     context = {}
     case = get_object_or_404(Case, pk=pk)
     context['object'] = case
-    case.perm_check(request.user, 'can_manage_permission')
+
+    if case.status == case.STATUS.free:
+        if not (request.user.has_perm('cases.can_assign')):
+            raise PermissionDenied
+    else:
+        case.perm_check(request.user, 'can_manage_permission')
 
     # Update permission
     context['form'] = {}
@@ -138,7 +145,8 @@ def permission(request, pk, limit='staff'):
     if request.method == 'POST':
         if form.is_valid():
             form.save_obj_perms()
-            for user in form.cleaned_data['user']:
+            for user in form.cleaned_data['users']:
+                notify.send(request.user, target=case, verb='granted', recipient=user)
                 messages.success(request,
                     _("Success granted permission of %(user)s to %(case)s") %
                     {'user': user, 'case': case})

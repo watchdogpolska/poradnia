@@ -11,6 +11,7 @@ from notifications import notify
 class Record(models.Model):
     STATIC_RELATION = ['letter', 'event', 'alarm']
     case = models.ForeignKey(Case)
+    created_on = models.DateTimeField(auto_now_add=True)
     letter = models.OneToOneField('letters.Letter', null=True, blank=True)
     event = models.OneToOneField('events.Event', null=True, blank=True)
     alarm = models.OneToOneField('events.Alarm', null=True, blank=True)
@@ -46,6 +47,7 @@ class Record(models.Model):
         return Case(pk=self.case_id).get_absolute_url()
 
     class Meta:
+        ordering = ['created_on', 'id']
         verbose_name = _('Record')
         verbose_name_plural = _('Records')
 
@@ -70,12 +72,11 @@ class AbstractRecord(models.Model):
     def save(self, *args, **kwargs):
         created = True if self.pk is None else False
         super(AbstractRecord, self).save(*args, **kwargs)
-        if kwargs.get('commit', True):
-            if created:
-                record = Record(case=self.case)
-                record.content_object = self
-                record.save()
-            self.case.update_counters()
+        if created:
+            record = Record(case=self.case)
+            record.content_object = self
+            record.save()
+        self.case.update_counters()
 
     def __unicode__(self):
         return _("%(object)s (#%(pk)d) in case #%(case_id)d") %\

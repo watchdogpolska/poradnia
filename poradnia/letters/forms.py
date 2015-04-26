@@ -59,7 +59,8 @@ class NewCaseForm(ModelForm, PartialMixin):
         obj.created_by = self.user
         obj.client = self.get_client()
         obj.case = self.get_case(client=obj.client)
-        obj.save()
+        if kwargs.get('commit', False):
+            obj.save()
         return obj
 
     class Meta:
@@ -74,11 +75,14 @@ class AddLetterForm(ModelForm, PartialMixin):
         self.helper = FormsetHelper()
         self.helper.form_action = reverse('letters:add', kwargs={'case_pk': self.case.pk})
         super(AddLetterForm, self).__init__(*args, **kwargs)
-        if self.user.is_authenticated() and not self.user.has_perm('cases.can_send_to_client'):
+        self.fields['name'].initial = "Odp: %s" % (self.case)
+        if not self.user.has_perm('cases.can_send_to_client'):
             del self.fields['status']
 
     def save(self, commit=True, *args, **kwargs):
         obj = super(AddLetterForm, self).save(commit=False, *args, **kwargs)
+        if not self.user.has_perm('cases.can_send_to_client'):  # if user or student
+            obj.status = obj.STATUS.staff if self.user.is_staff else obj.STATUS.done
         obj.created_by = self.user
         obj.case = self.case
         if commit:
