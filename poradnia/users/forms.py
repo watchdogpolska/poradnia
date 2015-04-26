@@ -39,7 +39,7 @@ class ManageObjectPermissionForm(BaseObjectPermissionsForm):
         return True
 
     def save_obj_perms(self):
-        for user in self.cleaned_data['user']:
+        for user in self.cleaned_data['users']:
             perms = self.cleaned_data[self.get_obj_perms_field_name()]
             model_perms = [c[0] for c in self.get_obj_perms_field_choices()]
 
