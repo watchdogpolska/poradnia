@@ -12,7 +12,6 @@ from model_utils import Choices
 from guardian.models import UserObjectPermissionBase
 from guardian.models import GroupObjectPermissionBase
 from guardian.shortcuts import get_objects_for_user, get_users_with_perms, assign_perm
-from notifications import notify
 from .tags.models import Tag
 
 
@@ -39,7 +38,10 @@ class CaseQuerySet(QuerySet):
 
 
 class Case(models.Model):
-    STATUS = Choices('free', 'open', 'closed')
+    STATUS = Choices(('free', _('free')),
+                     ('open', _('open')),
+                     ('closed', _('closed'))
+                     )
     name = models.CharField(max_length=150, verbose_name=_("Subject"))
     tags = models.ManyToManyField(Tag, null=True, blank=True, verbose_name=_("Tags"))
     status = StatusField()
@@ -89,10 +91,10 @@ class Case(models.Model):
         return self.name
 
     def get_email(self):
-        return 'case-{0}@poradnia.siecobywatelska.pl'.format(self.pk)
+        return 'sprawa-{0}@poradnia.siecobywatelska.pl'.format(self.pk)
 
     def get_by_email(self, email):
-        pk = match('^case-([0-9]+)@poradnia.siecobywatelska.pl$', email)
+        pk = match('^sprawa-([0-9]+)@poradnia.siecobywatelska.pl$', email)
         if not pk:
             raise self.DoesNotExist
         return self.objects.get(pk=pk.group(1))
@@ -104,6 +106,7 @@ class Case(models.Model):
 
     def view_perm_check(self, user, perm='VIEW'):
         if not (user.has_perm('cases.can_view_all') or
+                (self.case.status == self.STATUS.free and user.has_perm('cases.can_view_free')) or
                 user.has_perm('cases.can_view', self)):
             raise PermissionDenied
         return True
@@ -144,16 +147,27 @@ class Case(models.Model):
         if save:
             self.save()
 
+    def status_update(self, save=True):
+        if self.status == self.STATUS.closed:
+            return False
+        users = get_users_with_perms(self, attach_perms=True)
+        check = any('can_send_to_client' in perm for user, perm in users)
+        self.status = self.STATUS.open if check else self.STATUS.free
+        if save:
+            self.save()
+
     def assign_perm(self):
         assign_perm('can_view', self.created_by, self)  # assign creator
         assign_perm('can_add_record', self.created_by, self)  # assign creator
+        if self.created_by.has_perm('cases.can_send_to_client'):
+            assign_perm('can_send_to_client', self.created_by, self)
         if self.created_by != self.client:
             assign_perm('can_view', self.client, self)  # assign client
             assign_perm('can_add_record', self.client, self)  # assign client
 
     def send_notification(self, actor, verb):
         for user in self.get_users_with_perms().exclude(pk=actor.pk):
-            notify.send(actor, target=self, verb=verb, recipient=user)
+            user.notify(actor=actor, verb=verb, target=self)
 
     def save(self, *args, **kwargs):
         created = True if self.pk is None else False
@@ -164,6 +178,16 @@ class Case(models.Model):
 
 class CaseUserObjectPermission(UserObjectPermissionBase):
     content_object = models.ForeignKey(Case)
+
+    def save(self, *args, **kwargs):
+        super(CaseUserObjectPermission, self).save(*args, **kwargs)
+        if self.permission.codename == 'can_send_to_client':
+            self.content_object.status = self.content_object.STATUS.open
+            self.content_object.save()
+
+    def delete(self, *args, **kwargs):
+        super(CaseUserObjectPermission, self).delete(*args, **kwargs)
+        self.content_object.status_update()
 
 
 class CaseGroupObjectPermission(GroupObjectPermissionBase):

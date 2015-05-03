@@ -1,0 +1,7 @@
+{{actor}}: Uprawnienia do {{target}}
+
+{{actor}} nadal dla Ciebie uprawnienia do sprawy {{target}}.
+
+Zapoznaj się z aktami sprawy pod adresem http://poradnia.siecobywatelska.pl/{{target.get_absolute_url}}.
+
+Możesz udzielić odpowiedzi na ten e-mail, a zostanie zarejestrowana w sprawie.

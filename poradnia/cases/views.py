@@ -12,7 +12,6 @@ from letters.helpers import formset_attachment_factory
 from pagination_custom.utils import paginator
 from letters.models import Letter
 from records.models import Record
-from notifications import notify
 from .models import Case
 from .readed.models import Readed
 from .tags.models import Tag
@@ -58,7 +57,7 @@ def list(request):
                    select_related('client').
                    prefetch_related('tags'))
 
-    # TODO: Form
+    # TODO: Form or django-filter?
     # Show cases with TAG
     if 'tag' in request.GET:
         tag = get_object_or_404(Tag, pk=request.GET['tag'])
@@ -146,13 +145,13 @@ def permission(request, pk, limit='staff'):
         if form.is_valid():
             form.save_obj_perms()
             for user in form.cleaned_data['users']:
-                notify.send(request.user, target=case, verb='granted', recipient=user)
+                user.notify(actor=request.user, target=case, verb='granted', from_email=case.get_email())
                 messages.success(request,
                     _("Success granted permission of %(user)s to %(case)s") %
                     {'user': user, 'case': case})
-            if 'can_send_to_client' in form.cleaned_data[form.get_obj_perms_field_name()]:
-                case.status = case.STATUS.open
-                case.save()
+
+    if request.method == 'POST':
+        case.status_update()
     context['add_form'] = form
 
     return render(request, 'cases/case_form_permission.html', context)

@@ -13,8 +13,10 @@
 {% block breadcrumbs %}
 <ol class="breadcrumb">
   <li><a href="{% url 'cases:list'%}">{% trans 'Cases'%}</a></li>
+  {% if case %}
   <li><a href="{{ case.get_absolute_url }}">{{ case }}</a></li>
   <li class="active">{% trans 'Edit'%}</li>
+  {% endif %}
 </ol>
 {% endblock %}
 

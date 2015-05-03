@@ -67,7 +67,10 @@ class AbstractRecord(models.Model):
 
     def send_notification(self, actor, verb):
         for user in self.case.get_users_with_perms().exclude(pk=actor.pk):
-            notify.send(actor, target=self, verb=verb, recipient=user)
+            user.notify(actor=actor,
+                verb=verb,
+                target=self,
+                from_email=self.case.get_email())
 
     def save(self, *args, **kwargs):
         created = True if self.pk is None else False

@@ -80,7 +80,7 @@
         {% endif %}
         <tr>
           <td>{% trans 'Status' %}</td>
-          <td>{% if object.status_changed %}{% blocktrans with object.status as status and status_changed as object.status_changed %}{{status}} since {{ status_changed }}{% endblocktrans %}{% else %}{{ object.status }}{%endif%}</td>
+          <td>{% if object.status_changed %}{% blocktrans with object.status as status and object.status_changed|naturaltime as status_changed %}{{status}} since {{ status_changed }}{% endblocktrans %}{% else %}{{ object.status }}{%endif%}</td>
         </tr>
         {% if object.deadline %}
         <tr>

@@ -1,0 +1,7 @@
+{{actor}}: {{target.name}}
+{{actor}} napisal:
+{{target.text}}
+
+Zobacz w Poradni: http://poradnia.siecobywatelska.pl/{{target.case.get_absolute_url}}
+
+Możesz udzielić odpowiedzi bezpośrednio na tę wiadomość, a zostanie zarejestrowana do akt.

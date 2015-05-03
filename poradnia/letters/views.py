@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from cases.models import Case
 from django.contrib import messages
 from django.utils.translation import ugettext as _
+from django.db.models import Q
 from .helpers import formset_attachment_factory
 # from crispy_forms.helper import FormHelper
 from .forms import NewCaseForm, AddLetterForm, LetterForm, SendLetterForm
@@ -27,6 +28,8 @@ def new_case(request):
                 obj.save()
                 messages.success(request,
                     _("Case about %(object)s created!") % {'object': obj, })
+                if obj.created_by != obj.client:
+                    obj.client.notify(actor=request.user, verb='created', target=obj)
                 formset.save()
                 return HttpResponseRedirect(obj.case.get_absolute_url())
     else:
@@ -88,6 +91,7 @@ def send(request, pk):
             obj = form.save()
             messages.success(request,
                 _("Letter %(object)s send!") % {'object': obj, })
+            obj.send_notification(actor=request.user, verb='accepted')
             return HttpResponseRedirect(case.get_absolute_url())
     else:
         form = SendLetterForm(user=request.user, instance=letter)
@@ -121,6 +125,7 @@ def edit(request, pk):
                 formset.save()
                 messages.success(request,
                     _("Letter %(object)s updated!") % {'object': obj, })
+                obj.send_notification(actor=request.user, verb='updated')
                 return HttpResponseRedirect(obj.case.get_absolute_url())
     else:
         form = LetterForm(user=request.user, instance=letter)

@@ -7,8 +7,10 @@ from django.db.models import Count
 from django.contrib.auth.models import UserManager
 from django.utils import timezone
 from django.template.loader import render_to_string
+from django.template import loader, Context
 from guardian.mixins import GuardianUserMixin
 from model_utils.managers import PassThroughManager
+import notifications
 
 
 class UserQuerySet(QuerySet):
@@ -30,7 +32,8 @@ class CustomUserManager(GuardianUserMixin, PassThroughManager.for_queryset_class
             now = timezone.now()
             email = self.normalize_email(email)
             password = self.make_random_password()
-            user = self.model(username=email, email=email,
+            username = "user-%s" % (User.objects.count(), )  # TOOD: Race cognition
+            user = self.model(username=username, email=email,
                               is_staff=False, is_active=True,
                               is_superuser=False, date_joined=now,
                               **extra_fields)
@@ -53,6 +56,15 @@ class User(AbstractUser):
         if self.is_staff:
             text += ' (team)'
         return text
+
+    def notify(self, actor, verb, target, from_email=None):
+        notifications.notify.send(actor, verb=verb, target=target, recipient=self)
+        subject = "%s %s %s" % (actor, verb, target)
+        t = loader.get_template('%s/email/%s_%s.txt' % (target._meta.app_label,
+            target._meta.model_name, verb))
+        c = Context(dict(actor=actor, verb=verb, target=target, recipient=self))
+        subject, txt = t.render(c).split("\n", 1)
+        self.email_user(subject, txt, from_email)
 
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'username': self.username})

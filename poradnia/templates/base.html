@@ -47,6 +47,7 @@
               
               {% notifications_unread as unread_count%}
               <li><p class="navbar-text">You have <a href="{% url 'notifications:all'%}">{{unread_count}} notification</a> unread</p></li>
+              <li><a href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
             {% else %}
               <li><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
               <li><a href="{% url 'account_login' %}">{% trans "Log In" %}</a></li>
@@ -54,9 +55,6 @@
 
 
         </ul>
-        <form class="navbar-form navbar-right">
-          <input type="text" class="form-control" placeholder="Search...">
-        </form>
       </div>
     </div>
   </nav>
@@ -67,7 +65,7 @@
         <ul class="nav nav-sidebar">
           <li><a href="{% url 'letters:home' %}"><i class="glyphicon glyphicon-home"></i> Home</a></li>
           {% if request.user.is_staff %}
-            <li><a href="{% url 'admin:index' %}">Admin</a></li>
+            <li><a href="{% url 'admin:index' %}"><i class="glyphicon glyphicon-cog"></i> Admin</a></li>
           {% endif %}
           <li><a href="{% url 'users:list' %}"><i class="glyphicon glyphicon-user"></i> Users</a></li>
         </ul>

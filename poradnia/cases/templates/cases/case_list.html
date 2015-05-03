@@ -5,13 +5,13 @@
 
 {% block extra_css %}
 <style>
-  span.free, tr.free > td {
+  span.free, tr.free > td, td.free {
     background-color: #38FF98;
   }
-  span.open, tr.open > td {
+  span.open, tr.open > td, td.open {
     background-color: #A3FFD0;
   }
-  span.closed, tr.closed > td {
+  span.closed, tr.closed > td, td.closed {
     background-color: #DEFFEE;
   }
 </style>
@@ -28,7 +28,7 @@
 <h1>
 {% if user or tag or status %}
 {% trans 'Cases' %} 
-{% if status %}{% blocktrans %}with status {{ status}}{% endblocktrans %}{% endif %}
+{% if status %}{% blocktrans %}with case status {{ status}} {% endblocktrans %}{% endif %}
 {% if user_filter %}{% blocktrans with user_filter.get_absolute_url as user_link %}<a href="{{ user_link }}">{{ user_filter }}</a>{% endblocktrans %}{% endif %}
 {% if tag %}{% blocktrans %}tagged as {{ tag }}{% endblocktrans %}{% endif %}
 {% else %}
@@ -49,8 +49,8 @@
   </tr></thead>
   <tbody>
     {% for object in object_list %}
-    <tr class="{{ object.status }}">
-      <td>{{ object.pk }}</td>
+    <tr>
+      <td class="{{ object.status }}">{{ object.pk }}</td>
       <td><a href="{{ object.client.get_absolute_url }}">{{ object.client }}</a></td>
       <td>
         <a href="{{ object.get_absolute_url }}">{{ object.name }}</a> 
