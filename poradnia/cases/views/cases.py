@@ -1,3 +1,4 @@
+from __future__ import absolute_import
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
@@ -12,10 +13,10 @@ from letters.helpers import formset_attachment_factory
 from pagination_custom.utils import paginator
 from letters.models import Letter
 from records.models import Record
-from .models import Case
-from .readed.models import Readed
-from .tags.models import Tag
-from .forms import CaseForm
+from ..models import Case
+from ..readed.models import Readed
+from ..tags.models import Tag
+from ..forms import CaseForm
 
 
 @login_required

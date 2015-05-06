@@ -36,6 +36,21 @@ class CaseQuerySet(QuerySet):
             condition = condition | Q(casegroupobjectpermission__group__user=user)
         return self.filter(condition)
 
+    def by_msg(self, message):
+        cond = Q()
+        # Assosiate by email
+        for email in message.to_addresses:
+            import re
+            result = re.match('^sprawa-(?P<pk>\d+)@poradnia.siecobywatelska.pl$', email)
+            if result:
+                cond = cond | Q(pk=result.group('pk'))
+        # Assosiate by email headers
+        # if message.in_reply_to:
+        #     cond = cond | Q(messages=message.in_reply_to)
+        if not cond.children:
+            return self.none()
+        return self.filter(cond)
+
 
 class Case(models.Model):
     STATUS = Choices(('free', _('free')),
@@ -91,13 +106,13 @@ class Case(models.Model):
         return self.name
 
     def get_email(self):
-        return 'sprawa-{0}@poradnia.siecobywatelska.pl'.format(self.pk)
+        return settings.PORADNIA_EMAIL_OUTPUT % self.__dict__
 
     def get_by_email(self, email):
-        pk = match('^sprawa-([0-9]+)@poradnia.siecobywatelska.pl$', email)
-        if not pk:
+        filter_param = match(settings.PORADNIA_EMAIL_INPUT, email)
+        if not filter_param:
             raise self.DoesNotExist
-        return self.objects.get(pk=pk.group(1))
+        return self.objects.get(**filter_param.groupdict())
 
     def perm_check(self, user, perm):
         if not (user.has_perm('cases.' + perm) or user.has_perm('cases.' + perm, self)):
@@ -106,7 +121,7 @@ class Case(models.Model):
 
     def view_perm_check(self, user, perm='VIEW'):
         if not (user.has_perm('cases.can_view_all') or
-                (self.case.status == self.STATUS.free and user.has_perm('cases.can_view_free')) or
+                (self.status == self.STATUS.free and user.has_perm('cases.can_view_free')) or
                 user.has_perm('cases.can_view', self)):
             raise PermissionDenied
         return True
@@ -151,7 +166,7 @@ class Case(models.Model):
         if self.status == self.STATUS.closed:
             return False
         users = get_users_with_perms(self, attach_perms=True)
-        check = any('can_send_to_client' in perm for user, perm in users)
+        check = any('can_send_to_client' in perm for user, perm in users.items())
         self.status = self.STATUS.open if check else self.STATUS.free
         if save:
             self.save()

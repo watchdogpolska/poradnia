@@ -38,7 +38,7 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Project name</a>
+        <a class="navbar-brand" href="#">Poradnia Pozarządowego Centrum Dostępu do Informacji Publicznej</a>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
@@ -73,7 +73,9 @@
          {% if perms.cases.can_assign %}
             <li><a href="{% url 'cases:list' %}?status=free"><i class="glyphicon glyphicon-question-sign"></i> Free cases</a></li>
           {% endif %}
+          {% if request.user.is_authenticated %}
           <li><a href="{% url 'cases:list' %}"><i class="glyphicon glyphicon-book"></i> Cases</a></li>
+          {% endif %}
           <li><a href="{% url 'letters:add' %}"><i class="glyphicon glyphicon-pencil"></i> New case</a></li>
         </ul>
       </div>

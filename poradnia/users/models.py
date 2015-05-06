@@ -7,9 +7,9 @@ from django.db.models import Count
 from django.contrib.auth.models import UserManager
 from django.utils import timezone
 from django.template.loader import render_to_string
-from django.template import loader, Context
 from guardian.mixins import GuardianUserMixin
 from model_utils.managers import PassThroughManager
+from template_mail.utils import send_tpl_email
 import notifications
 
 
@@ -57,14 +57,14 @@ class User(AbstractUser):
             text += ' (team)'
         return text
 
+    def send_tpl_email_user(self, template_name, context, from_email, **kwds):
+        return send_tpl_email(template_name, self.email, context, from_email, **kwds)
+
     def notify(self, actor, verb, target, from_email=None):
         notifications.notify.send(actor, verb=verb, target=target, recipient=self)
-        subject = "%s %s %s" % (actor, verb, target)
-        t = loader.get_template('%s/email/%s_%s.txt' % (target._meta.app_label,
-            target._meta.model_name, verb))
-        c = Context(dict(actor=actor, verb=verb, target=target, recipient=self))
-        subject, txt = t.render(c).split("\n", 1)
-        self.email_user(subject, txt, from_email)
+        template_name = '%s/email/%s_%s.txt' % (target._meta.app_label, target._meta.model_name, verb)
+        context = dict(actor=actor, verb=verb, target=target, recipient=self)
+        return self.send_tpl_email_user(template_name, context, from_email)
 
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'username': self.username})

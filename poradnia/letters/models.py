@@ -5,7 +5,17 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from model_utils.fields import MonitorField, StatusField
 from model_utils import Choices
+from django.dispatch import receiver
+from django_mailbox.signals import message_received
+from django_mailbox.models import Message
+from django.contrib.auth import get_user_model
+import talon
 from records.models import AbstractRecord
+from template_mail.utils import send_tpl_email
+from cases.models import Case
+
+
+talon.init()
 
 
 class Letter(AbstractRecord):
@@ -17,6 +27,7 @@ class Letter(AbstractRecord):
     accept = MonitorField(monitor='status', when=['done'], verbose_name=_("Accepted on"))
     name = models.CharField(max_length=250, verbose_name=_("Subject"))
     text = models.TextField(verbose_name=_("Comment"))
+    signature = models.TextField(verbose_name=_("Signature"), blank=True, null=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='letter_created_by', verbose_name=_("Created by"))
     created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))
@@ -26,6 +37,7 @@ class Letter(AbstractRecord):
                                     related_name='letter_modified_by')
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
+    message = models.ForeignKey(Message, null=True, blank=True)
 
     def __unicode__(self):
         return self.name
@@ -51,6 +63,9 @@ class Letter(AbstractRecord):
     def get_send_url(self):
         return reverse('letters:send', kwargs={'pk': self.pk})
 
+    def get_all_attachments(self):
+        return list(self.message.attachments.all()) + list(self.attachment_set.all())
+
     class Meta:
         verbose_name = _('Letter')
         verbose_name_plural = _('Letters')
@@ -73,3 +88,51 @@ class Attachment(models.Model):
     class Meta:
         verbose_name = _('Attachment')
         verbose_name_plural = _('Attachments')
+
+
+@receiver(message_received)
+def mail_process(sender, message, **args):
+    print "I just recieved a messtsage titled %s from a mailbox named %s" % (message.subject,
+                                                                           message.mailbox.name, )
+    # new_user + poradnia@ => new_user @ new_user
+    # new_user + case => FAIL
+    # old_user + case => PASS
+    # many_case => FAIL
+
+    # Identify user
+    user = get_user_model().objects.get_by_email_or_create(message.from_address[0])
+    print "Identified user: ", user
+
+    # Identify case
+    try:  # TODO: Is it old case?
+        case = Case.objects.by_msg(message).get()
+    except Case.MultipleObjectsReturned:  # How many cases?
+        print "Multiple case spam"
+        send_tpl_email('case/email/case_many.txt', message.from_address[0],
+            {'subject': message.subject})
+        return
+    except Case.DoesNotExist:
+        print "Case creating"
+        case = Case(name=message.subject, created_by=user, client=user)
+        case.save()
+        user.notify(actor=user, verb='registered', target=case, from_email=case.get_email())
+
+    if message.text:
+        text = talon.quotations.extract_from(message.text, 'text/plain')
+        signature = message.text.replace(text, '')
+    else:   # TODO: HTML strip (XSS injection)
+        text = talon.quotations.extract_from(message.html, 'text/html')
+        signature = message.text.replace(text, '')
+    status = Letter.STATUS.staff if user.is_staff else Letter.STATUS.done
+    obj = Letter()
+    obj.name = message.subject
+    obj.created_by = user
+    obj.case = case
+    obj.status = status
+    obj.text = text
+    obj.signature = signature
+    obj.save()
+    obj.send_notification(user, 'created')
+    case.update_counters()
+
+    print "Assing a message %s to case #%s as letter #%s" % (message.subject, case.pk, obj.pk)

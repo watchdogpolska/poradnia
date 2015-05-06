@@ -45,6 +45,7 @@ class Common(Configuration):
         'autofixture',
         'guardian',
         'notifications',
+        'django_mailbox',
     )
 
     # Apps specific for this project go here.
@@ -287,3 +288,5 @@ class Common(Configuration):
       ('pl', _('Polish')),
       ('en', _('English')),
     )
+    PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@poradnia.siecobywatelska.pl"
+    PORADNIA_EMAIL_INPUT = "^sprawa-(?P<pk>\d+)@poradnia.siecobywatelska.pl$"
