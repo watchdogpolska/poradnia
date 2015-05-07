@@ -4,16 +4,12 @@
 {% block title %}User: {{ object.username }}{% endblock %}
 
 {% block content %}
-<div class="container">
-
-  <div class="row">
-    <div class="col-sm-12">
-
-      <h2>{{ object.username }}</h2>
-    </div>
+<div class="row">
+  <div class="col-sm-12">
+    <h2>{{ object.username }}</h2>
   </div>
-
-{% if object == request.user or request.user.perms.cases.can_view_all %}
+</div>
+{% if object == request.user or perms.case.can_view_all %}
 <div class="row">
 
   <div class="col-sm-12 ">
@@ -22,7 +18,7 @@
     <a class="btn btn-primary" href="{% url 'account_email' %}">E-Mail</a>
     <a class="btn btn-info" href="{% url 'avatar_change' %}">Avatar</a>
     {% endif %}
-    {% if object == request.user or request.user.perms.cases.can_view_all %}
+    {% if object == request.user or perms.case.can_view_all %}
     <a class="btn btn-info" href="{% url 'cases:list' %}?user={{object.username}}">Cases</a>
     {% endif %}
   </div>
