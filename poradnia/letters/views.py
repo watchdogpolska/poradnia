@@ -4,7 +4,6 @@ from django.contrib.auth.decorators import login_required
 from cases.models import Case
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from django.db.models import Q
 from .helpers import formset_attachment_factory
 # from crispy_forms.helper import FormHelper
 from .forms import NewCaseForm, AddLetterForm, LetterForm, SendLetterForm
@@ -29,7 +28,7 @@ def new_case(request):
                 messages.success(request,
                     _("Case about %(object)s created!") % {'object': obj, })
                 if obj.created_by != obj.client:
-                    obj.client.notify(actor=request.user, verb='created', target=obj)
+                    obj.client.notify(actor=request.user, verb='created', target=obj, from_email=obj.case.get_email())
                 formset.save()
                 return HttpResponseRedirect(obj.case.get_absolute_url())
     else:
