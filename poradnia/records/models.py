@@ -63,7 +63,7 @@ class AbstractRecord(models.Model):
         return self.case.get_users_with_perms(*args, **kwargs)
 
     def get_template_list(self):
-        return "%s/_%s_list.html" % (self._meta.app_label, self._meta.model_name)
+        return u"%s/_%s_list.html" % (self._meta.app_label, self._meta.model_name)
 
     def send_notification(self, actor, verb):
         for user in self.case.get_users_with_perms().exclude(pk=actor.pk):
