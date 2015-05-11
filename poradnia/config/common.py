@@ -42,7 +42,6 @@ class Common(Configuration):
         'allauth',  # registration
         'allauth.account',  # registration
         'allauth.socialaccount',  # registration
-        'autofixture',
         'guardian',
         'notifications',
         'django_mailbox',
