@@ -64,7 +64,7 @@ class User(AbstractUser):
         notifications.notify.send(actor, verb=verb, target=target, recipient=self)
         template_name = '%s/email/%s_%s.txt' % (target._meta.app_label, target._meta.model_name, verb)
         context = dict(actor=actor, verb=verb, target=target, recipient=self)
-        return self.send_tpl_email_user(template_name, context, from_email)
+        return self.send_tpl_email_user(template_name, context, "%s <%s>" % (actor, from_email))
 
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'username': self.username})
