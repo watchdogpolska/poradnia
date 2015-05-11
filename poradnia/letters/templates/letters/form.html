@@ -17,6 +17,9 @@
   <li><a href="{{ case.get_absolute_url }}">{{ case }}</a></li>
   <li class="active">{% trans 'Edit'%}</li>
   {% endif %}
+  {% if headline %}
+    <li class="active">{{ headline }}</li>
+  {% endif %}
 </ol>
 {% endblock %}
 

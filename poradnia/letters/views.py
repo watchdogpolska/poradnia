@@ -35,6 +35,7 @@ def new_case(request):
         form = LetterForm()
     context['form'] = form
     context['formset'] = formset or AttachmentFormSet(instance=Letter())
+    context['headline'] = _('Create a new case')
     return render(request, 'letters/form.html', context)
 
 

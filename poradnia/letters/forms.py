@@ -1,11 +1,12 @@
+from functools import partial
 from django.forms import ModelForm
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
+from django.utils.translation import ugettext_lazy as _
 from .helpers import FormsetHelper
 from cases.models import Case
-from functools import partial
 from .models import Letter, Attachment
 
 
@@ -16,7 +17,8 @@ class PartialMixin(object):
 
 
 class NewCaseForm(ModelForm, PartialMixin):
-    client = forms.ModelChoiceField(queryset=get_user_model().objects.all(), required=False)
+    client = forms.ModelChoiceField(queryset=get_user_model().objects.all(), label=_("Client"),
+        required=False, help_text=_("Leave empty to use email field and create a new one user."))
     email = forms.EmailField(required=False)
 
     def __init__(self, *args, **kwargs):
@@ -33,7 +35,7 @@ class NewCaseForm(ModelForm, PartialMixin):
 
         if self.user.has_perm('cases.can_select_client') and \
                 not (self.cleaned_data.get('email') or self.cleaned_data.get('client')):
-            raise ValidationError("Have to enter 'email' or 'client'")
+            raise ValidationError(_("Have to enter 'email' or 'client'"))
 
         return self.cleaned_data
 
