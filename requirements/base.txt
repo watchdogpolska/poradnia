@@ -39,4 +39,4 @@ pytz==2014.7
 django-guardian==1.2.5
 django-notifications-hq==0.6.2
 django-mailbox==4.3.4
-
+talon==1.0.2
