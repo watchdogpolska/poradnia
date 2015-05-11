@@ -63,20 +63,20 @@
     <div class="row">
       <div class="col-sm-3 col-md-2 sidebar">
         <ul class="nav nav-sidebar">
-          <li><a href="{% url 'letters:home' %}"><i class="glyphicon glyphicon-home"></i> Home</a></li>
+          <li><a href="{% url 'letters:home' %}"><i class="glyphicon glyphicon-home"></i> {% trans 'Home' %}</a></li>
           {% if request.user.is_staff %}
-            <li><a href="{% url 'admin:index' %}"><i class="glyphicon glyphicon-cog"></i> Admin</a></li>
+            <li><a href="{% url 'admin:index' %}"><i class="glyphicon glyphicon-cog"></i> {% trans 'Admin' %}</a></li>
           {% endif %}
-          <li><a href="{% url 'users:list' %}"><i class="glyphicon glyphicon-user"></i> Users</a></li>
+          <li><a href="{% url 'users:list' %}"><i class="glyphicon glyphicon-user"></i> {% trans 'Users'%}</a></li>
         </ul>
         <ul class="nav nav-sidebar">
          {% if perms.cases.can_assign %}
-            <li><a href="{% url 'cases:list' %}?status=free"><i class="glyphicon glyphicon-question-sign"></i> Free cases</a></li>
+            <li><a href="{% url 'cases:list' %}?status=free"><i class="glyphicon glyphicon-question-sign"></i> {% trans 'Free cases'%}</a></li>
           {% endif %}
           {% if request.user.is_authenticated %}
-          <li><a href="{% url 'cases:list' %}"><i class="glyphicon glyphicon-book"></i> Cases</a></li>
+          <li><a href="{% url 'cases:list' %}"><i class="glyphicon glyphicon-book"></i> {% trans 'Cases'%}</a></li>
           {% endif %}
-          <li><a href="{% url 'letters:add' %}"><i class="glyphicon glyphicon-pencil"></i> New case</a></li>
+          <li><a href="{% url 'letters:add' %}"><i class="glyphicon glyphicon-pencil"></i> {% trans 'New case'%}</a></li>
         </ul>
       </div>
       <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">

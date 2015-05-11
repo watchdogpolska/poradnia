@@ -1,0 +1,366 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-05-10 22:32-0700\n"
+"PO-Revision-Date: 2015-05-11 07:46+0100\n"
+"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: pl\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+
+#: account/email.html:7
+msgid "Account"
+msgstr "Konto"
+
+#: account/email.html:13
+msgid "E-mail Addresses"
+msgstr "Adresy e-mail"
+
+#: account/email.html:15
+msgid "The following e-mail addresses are associated with your account:"
+msgstr "Nastepujące adresy e-mail są powiązane z twoim kontem:"
+
+#: account/email.html:29
+msgid "Verified"
+msgstr "Zweryfikowany"
+
+#: account/email.html:31
+msgid "Unverified"
+msgstr "Niezweryfikowany"
+
+#: account/email.html:33
+msgid "Primary"
+msgstr "Podstawowy"
+
+#: account/email.html:39
+msgid "Make Primary"
+msgstr "Uczyń podstawowym"
+
+#: account/email.html:40
+msgid "Re-send Verification"
+msgstr "Wyślij ponownie kod weryfikacyjny"
+
+#: account/email.html:41
+msgid "Remove"
+msgstr "Usuń"
+
+#: account/email.html:48
+msgid "Warning:"
+msgstr "Uwaga:"
+
+#: account/email.html:48
+msgid ""
+"You currently do not have any e-mail address set up. You should really add "
+"an e-mail address so you can receive notifications, reset your password, etc."
+msgstr ""
+"Obecnie nie masz ustawionych żadnych adresów e-mail. Powinieneś wprowadzić "
+"adres e-mail, aby otrzymywać powiadomienia, móc zresetować hasło itd."
+
+#: account/email.html:53
+msgid "Add E-mail Address"
+msgstr "Dodaj adres e-mail"
+
+#: account/email.html:58
+msgid "Add E-mail"
+msgstr "Dodaj e-mail"
+
+#: account/email.html:69
+msgid "Do you really want to remove the selected e-mail address?"
+msgstr "Czy na pewno chcesz usunąć wybrany adres e-mail?"
+
+#: account/email_confirm.html:7 account/email_confirm.html.py:14
+#: account/email_confirmed.html:6 account/email_confirmed.html.py:13
+msgid "Confirm E-mail Address"
+msgstr "Potwierdz adres e-mail"
+
+#: account/email_confirm.html:20
+#, python-format
+msgid ""
+"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
+"address for user %(user_display)s."
+msgstr ""
+"Proszę o potwierdzenie, że adres <a href=\"mailto:%(email)s\">%(email)s</a> "
+"należy do użytkownika %(user_display)s."
+
+#: account/email_confirm.html:24
+msgid "Confirm"
+msgstr "Potwierdź"
+
+#: account/email_confirm.html:31
+#, python-format
+msgid ""
+"This e-mail confirmation link expired or is invalid. Please <a href="
+"\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+msgstr ""
+"Ten link potwierdzenia adresu e-mail jest przeterminowany lub nieprawidłowy. "
+"Proszę <a href=\"%(email_url)s\">zażądaj nowego potwierdzenia e-maila</a>."
+
+#: account/email_confirmed.html:17
+#, python-format
+msgid ""
+"You have confirmed that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-"
+"mail address for user %(user_display)s."
+msgstr ""
+"Potwierdziłeś, że adres <a href=\"mailto:%(email)s\">%(email)s</a> należy do "
+"użytkownika %(user_display)s."
+
+#: account/login.html:8 account/login.html.py:16 account/login.html.py:44
+msgid "Sign In"
+msgstr "Zarejestruj się"
+
+#: account/login.html:19
+#, python-format
+msgid ""
+"Please sign in with one\n"
+"      of your existing third party accounts. Or, <a href=\"%(signup_url)s"
+"\">sign up</a> \n"
+"      for a %(site_name)s account and sign in below:"
+msgstr ""
+"Zaloguj się proszę z użyciem kont partnerskich, albo <a href=\"%(signup_url)s"
+"\">zarejestruj się</a> na stronie %(site_name)s i zaloguj się poniżej:"
+
+#: account/login.html:29
+msgid "or"
+msgstr "lub"
+
+#: account/login.html:43
+msgid "Forgot Password?"
+msgstr "Zapomniałeś hasła?"
+
+#: account/logout.html:6 account/logout.html.py:13 account/logout.html:22
+msgid "Sign Out"
+msgstr "Wyloguj"
+
+#: account/logout.html:15
+msgid "Are you sure you want to sign out?"
+msgstr "Czy jesteś pewien, że chcesz się wylogować?"
+
+#: account/password_change.html:5 account/password_change.html.py:11
+#: account/password_change.html:16 account/password_reset_from_key.html:7
+#: account/password_reset_from_key.html:13
+#: account/password_reset_from_key_done.html:5
+#: account/password_reset_from_key_done.html:11
+msgid "Change Password"
+msgstr "Zmiana hasła"
+
+#: account/password_delete.html:5 account/password_delete.html.py:8
+msgid "Delete Password"
+msgstr "Usuwanie hasła"
+
+#: account/password_delete.html:9
+msgid ""
+"You may delete your password since you are currently logged in using OpenID."
+msgstr ""
+"Możesz usunąć swoje hasła, gdyż obecnie jesteś zalogowany z wykorzystaniem "
+"OpenID."
+
+#: account/password_delete.html:12
+msgid "delete my password"
+msgstr "usuń moje hasło"
+
+#: account/password_delete_done.html:5 account/password_delete_done.html:8
+msgid "Password Deleted"
+msgstr "Hasło usunięte"
+
+#: account/password_delete_done.html:9
+msgid "Your password has been deleted."
+msgstr "Twoje hasło zostało usunięte."
+
+#: account/password_reset.html:7 account/password_reset.html.py:14
+#: account/password_reset_done.html:6 account/password_reset_done.html:12
+msgid "Password Reset"
+msgstr "Reset hasła"
+
+#: account/password_reset.html:19
+msgid ""
+"Forgotten your password? Enter your e-mail address below, and we'll send you "
+"an e-mail allowing you to reset it."
+msgstr ""
+"Zapomniałeś/-aś swojego hasła? Wpisz poniżej swój adres e-mail, a my wyślemy "
+"do Ciebie e-mail umożliwiający zresetowanie hasła."
+
+#: account/password_reset.html:24
+msgid "Reset My Password"
+msgstr "Zresetuj moje hasło"
+
+#: account/password_reset.html:27
+msgid "Please contact us if you have any trouble resetting your password."
+msgstr ""
+"Skontaktuj się proszę, jeżeli masz jakiekolwiek trudności z resetem hasła. "
+
+#: account/password_reset_done.html:18
+msgid ""
+"We have sent you an e-mail. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+"Wyslaliśmy do Ciebie e-mail. Skontaktuj się, jeżeli nie otrzymasz go w ciągu "
+"kilku minut."
+
+#: account/password_reset_from_key.html:13
+msgid "Bad Token"
+msgstr "Zły token"
+
+#: account/password_reset_from_key.html:17
+#, python-format
+msgid ""
+"The password reset link was invalid, possibly because it has already been "
+"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
+"a>."
+msgstr ""
+"Link resetu hasła jest nieprawidłowy, prawdopodobnie z powodu wcześniejszego "
+"użycia. Zażądaj <a href=\"%(passwd_reset_url)s\">nowego resetu hasła</a>, "
+"proszę."
+
+#: account/password_reset_from_key.html:23
+msgid "change password"
+msgstr "zmiana hasła"
+
+#: account/password_reset_from_key.html:26
+#: account/password_reset_from_key_done.html:12
+msgid "Your password is now changed."
+msgstr "Twoje hasło zostało zmienione."
+
+#: account/password_set.html:6 account/password_set.html.py:12
+#: account/password_set.html:17
+msgid "Set Password"
+msgstr "Ustaw hasło"
+
+#: account/signup.html:7
+msgid "Signup"
+msgstr "Rejestracja"
+
+#: account/signup.html:10 account/signup.html.py:20 base.html:52
+msgid "Sign Up"
+msgstr "Rejestracja"
+
+#: account/signup.html:12
+#, python-format
+msgid ""
+"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgstr "Masz konto? Jeżeli tak to <a href=\"%(login_url)s\">zaloguj się</a>."
+
+#: account/signup_closed.html:6 account/signup_closed.html.py:12
+msgid "Sign Up Closed"
+msgstr "Rejestracja zamknięta"
+
+#: account/signup_closed.html:14
+msgid "We are sorry, but the sign up is currently closed."
+msgstr "Przepraszamy, ale rejestracja jest obecnie zamknięta."
+
+#: account/verification_sent.html:5 account/verification_sent.html.py:11
+#: account/verified_email_required.html:6
+#: account/verified_email_required.html:12
+msgid "Verify Your E-mail Address"
+msgstr "Potwierdź swój adres e-mail."
+
+#: account/verification_sent.html:13
+#, python-format
+msgid ""
+"We have sent an e-mail to <a href=\"mailto:%(email)s\">%(email)s</a> for "
+"verification. Follow the link provided to finalize the signup process. "
+"Please contact us if you do not receive it within a few minutes."
+msgstr ""
+"Wysłaliśmy do <a href=\"mailto:%(email)s\">%(email)s</a> wiadomość celem "
+"weryfikacji. Podążaj za załączonym linkiem, aby ukończyć rejestracje. "
+"Powiadom nas, jeżeli nie otrzymasz wiadomości w ciągu kilku minut."
+
+#: account/verified_email_required.html:16
+msgid ""
+"This part of the site requires us to verify that\n"
+"        you are who you claim to be. For this purpose, we require that you\n"
+"        verify ownership of your e-mail address. "
+msgstr ""
+
+#: account/verified_email_required.html:20
+msgid ""
+"We have sent an e-mail to you for\n"
+"        verification. Please click on the link inside this e-mail. Please\n"
+"        contact us if you do not receive it within a few minutes."
+msgstr ""
+
+#: account/verified_email_required.html:24
+#, python-format
+msgid ""
+"<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
+"mail address</a>."
+msgstr ""
+
+#: avatar/add.html:10 avatar/change.html:9
+msgid "Your current avatar: "
+msgstr ""
+
+#: avatar/add.html:13 avatar/change.html:12
+msgid "You haven't uploaded an avatar yet. Please upload one now."
+msgstr ""
+
+#: avatar/add.html:17 avatar/change.html:23
+msgid "Upload New Image"
+msgstr ""
+
+#: avatar/change.html:18
+msgid "Choose new Default"
+msgstr ""
+
+#: avatar/confirm_delete.html:9
+msgid "Please select the avatars that you would like to delete."
+msgstr ""
+
+#: avatar/confirm_delete.html:12
+#, python-format
+msgid ""
+"You have no avatars to delete. Please <a href=\"%(avatar_change_url)s"
+"\">upload one</a> now."
+msgstr ""
+
+#: avatar/confirm_delete.html:18
+msgid "Delete These"
+msgstr ""
+
+#: base.html:46
+#, python-format
+msgid " Hello %(user)s! "
+msgstr ""
+
+#: base.html:50
+msgid "Logout"
+msgstr "Wyloguj"
+
+#: base.html:53
+msgid "Log In"
+msgstr "Logowanie"
+
+#: base.html:66
+msgid "Home"
+msgstr "Strona główna"
+
+#: base.html:68
+msgid "Admin"
+msgstr "Panel administracyjny"
+
+#: base.html:70
+msgid "Users"
+msgstr "Użytkownicy"
+
+#: base.html:74
+msgid "Free cases"
+msgstr "Wolne sprawy"
+
+#: base.html:77
+msgid "Cases"
+msgstr "Sprawy"
+
+#: base.html:79
+msgid "New case"
+msgstr "Nowa sprawa"
