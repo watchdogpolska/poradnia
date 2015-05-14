@@ -53,7 +53,7 @@
       <td>
         <a href="{{ object.get_absolute_url }}">{{ object.name }}</a> 
         ({{ object.letter_count }})
-        {% if object.deadline.time %}<span class="label label-warning"><span class="glyphicon glyphicon-fire"></span>{{ object.deadline.time }}</span>{% endif%}
+        {% if object.deadline.time %}<span class="label label-warning"><span class="glyphicon glyphicon-fire"></span> {{ object.deadline.time }}</span>{% endif%}
       </td>
       <td>{% if object.last_send %}{{ object.last_send|naturaltime }}{% else %}{% trans 'No answer' %}{% endif %}</td>
       {% if request.user.is_staff %}<td>{{ object.last_action|naturaltime }}</td>{% endif %}

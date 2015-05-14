@@ -13,10 +13,10 @@
         <h1 class="pull-left">{{object}}</h1>
         <div class="btn-group pull-right">
             <a href="{% url 'registers:update' pk=object.pk %}" class="btn btn-primary">
-                <span class="glyphicon glyphicon-edit"></span>{% trans 'Edit'%}
+                <span class="glyphicon glyphicon-edit"></span> {% trans 'Edit'%}
             </a>
             <a href="{% url 'registers:delete' pk=object.pk %}" class="btn btn-danger">
-                <span class="glyphicon glyphicon-trash"></span>{% trans 'Delete'%}
+                <span class="glyphicon glyphicon-trash"></span> {% trans 'Delete'%}
             </a>
         </div>
     </div>

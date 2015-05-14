@@ -30,10 +30,10 @@
     <div class="pull-right">
     <div class="btn-group">
       {% if 'change_case' in case_perms %}
-      <a class="btn btn-primary" href="{{ object.get_edit_url }}"><span class="glyphicon glyphicon-edit"></span>{% trans 'Edit'%}</a>
+      <a class="btn btn-primary" href="{{ object.get_edit_url }}"><span class="glyphicon glyphicon-edit"></span> {% trans 'Edit'%}</a>
       {% endif %}
       {% if 'can_assign' in case_perms %}
-      <a class="btn btn-primary" href="{{ object.get_permission_url }}"><span class="glyphicon glyphicon-eye-close"></span>{% trans 'Permissions' %}</a>
+      <a class="btn btn-primary" href="{{ object.get_permission_url }}"><span class="glyphicon glyphicon-eye-close"></span> {% trans 'Permissions' %}</a>
       {% endif %}
     </div>
     </div>
@@ -42,7 +42,7 @@
 <div class="row">
   <div class=" col-lg-6">
     <div class="panel panel-default">
-      <div class="panel-heading"><span class="glyphicon glyphicon-earphone"></span>{% trans 'Metrical data'%}</div>
+      <div class="panel-heading"><span class="glyphicon glyphicon-earphone"></span> {% trans 'Metrical data'%}</div>
       <table class="table">
         {% if object.tag_set.all %}
         <tr>
@@ -77,10 +77,10 @@
   </div>
   <div class="col-lg-6">
     <div class="panel panel-default">
-      <div class="panel-heading"><span class="glyphicon glyphicon-transfer"></span>{% trans 'Workflow'%}</div>
+      <div class="panel-heading"><span class="glyphicon glyphicon-transfer"></span> {% trans 'Workflow'%}</div>
       <table class="table">
         <tr>
-          <td><span class="glyphicon glyphicon-user"></span>{% trans 'Involved in' %}</td>
+          <td><span class="glyphicon glyphicon-user"></span> {% trans 'Involved in' %}</td>
           <td>{% for user in object.get_users_with_perms.all %}<a class="label label-info" href="{{user.get_absolute_url}}">{{user}}</a>{% endfor%}</td>
         </tr>
         {% if object.modified_by %}
@@ -97,7 +97,7 @@
         </tr>
         {% if object.deadline %}
         <tr>
-          <td><span class="glyphicon glyphicon-fire"></span>{% trans 'Dead-line'%}</td>
+          <td><span class="glyphicon glyphicon-fire"></span> {% trans 'Dead-line'%}</td>
           <td>{% blocktrans with object.deadline as deadline and object.deadline.time|naturaltime as naturaltime %}{{deadline}} at {{naturaltime}}{% endblocktrans %}</td>
         </tr>
         {%endif%}
