@@ -40,11 +40,11 @@
 {% if object_list %}
 <table class="table">
   <thead><tr>
-    <th>{% trans 'ID' %}</th>
-    <th>{% trans 'Client' %}</th>
-    <th>{% trans 'Subject' %}</th>
-    <th>{% trans 'Last response' %}</th>
-    {% if user.is_staff %}<th>{% trans 'Last action' %}</th>{% endif %}
+    <th>{% trans 'ID' %} {% include 'cases/_order_link.html' with column="pk" %}</th>
+    <th>{% trans 'Client' %} {% include 'cases/_order_link.html' with column="client" %}</th>
+    <th>{% trans 'Subject' %} {% include 'cases/_order_link.html' with column="name" %} [{% trans 'Dead-line'%} {% include 'cases/_order_link.html' with column="deadline" %} ]</th>
+    <th>{% trans 'Last response' %} {% include 'cases/_order_link.html' with column="last_response" %}</th>
+    {% if user.is_staff %}<th>{% trans 'Last action' %} {% include 'cases/_order_link.html' with column="last_action" %}</th>{% endif %}
     {# <th>All readed?</th> #}
   </tr></thead>
   <tbody>

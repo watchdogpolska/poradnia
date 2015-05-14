@@ -48,6 +48,13 @@ def detail(request, pk):
     context['record_list'] = qs.all()
     return render(request, 'cases/case_detail.html', context)
 
+SORT_MAP = {'deadline': 'deadline__time',
+    'pk': 'pk',
+    'client': 'client',
+    'name': 'name',
+    'last_response': 'last_response',
+    'last_action': 'last_action'}
+
 
 @login_required
 def list(request):
@@ -58,6 +65,7 @@ def list(request):
                    select_related('client').
                    prefetch_related('tags'))
 
+    # # # Filtering 
     # TODO: Form or django-filter?
     # Show cases with TAG
     if 'tag' in request.GET:
@@ -84,8 +92,20 @@ def list(request):
         object_list = object_list.by_involved_in(user)
         context['involved'] = user
 
-    object_list = object_list.all()
+    # # # Ordering
+    order_by = request.GET.get('order_by', 'deadline')  # get or default
+    order_by = order_by if order_by in SORT_MAP else 'deadline'  # check exists
+    order_key = SORT_MAP[order_by]  # get key
+    ordering = 'asc' if request.GET.get('ordering') == 'asc' else 'desc'
+
+    context['order_by'] = order_by
+    context['ordering'] = ordering
+
+    real_order_key = order_key if ordering == 'asc' else '-'+order_key
+
+    object_list = object_list.order_by(real_order_key).all()
     context['object_list'] = paginator(request, object_list)
+
     return render(request, 'cases/case_list.html', context)
 
 
