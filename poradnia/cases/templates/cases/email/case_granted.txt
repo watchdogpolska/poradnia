@@ -4,4 +4,4 @@
 
 Zapoznaj się z aktami sprawy pod adresem http://poradnia.siecobywatelska.pl/{{target.get_absolute_url}}.
 
-Możesz udzielić odpowiedzi na ten e-mail, a zostanie zarejestrowana w sprawie.
+{% if email %}Używaj adresu {{email}} do korespondencji w tej sprawie, dzięki temu wymiana korespondencji będzie sprawniejsza. Dziękujemy za współpracę.{% endif %}
