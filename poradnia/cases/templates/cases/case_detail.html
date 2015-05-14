@@ -52,7 +52,7 @@
         {% endif %}
         {% if request.user.is_staff %}
         <tr>
-          <td><i class="glyphicon glyphicon-stats"></i> {% trans 'Advice list' %}</a></td>
+          <td><i class="glyphicon glyphicon-stats"></i> {% trans 'Advice' %}</a></td>
           <td>
           {% if object.advice %}
             <a href="{{object.advice.get_absolute_url}}">{{object.advice}}</a>
