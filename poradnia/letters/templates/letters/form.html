@@ -15,7 +15,9 @@
   <li><a href="{% url 'cases:list'%}">{% trans 'Cases'%}</a></li>
   {% if case %}
   <li><a href="{{ case.get_absolute_url }}">{{ case }}</a></li>
-  <li class="active">{% trans 'Edit'%}</li>
+  {% endif %}
+  {% if object %}
+  <li>{{object}}</li>
   {% endif %}
   {% if headline %}
     <li class="active">{{ headline }}</li>
@@ -25,7 +27,11 @@
 
 {%block content%}
 {% block object %}<h1 class="row">{{object}}</h1>{% endblock %}
-
+{% if object %}
+<div class="panel-body msg_container_base row">
+  {% include object.get_template_list with object=object %}
+</div>
+{% endif %}
 <form method="post" enctype="multipart/form-data">
 {% crispy form %}
 {% if formset %}

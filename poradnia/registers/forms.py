@@ -1,5 +1,6 @@
 from datetime import datetime
 from django.forms import ModelForm
+from django.utils.translation import ugettext as _
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.helper import FormHelper
 from .models import Advice
@@ -15,6 +16,7 @@ class AdviceForm(UserKwargModelFormMixin, ModelForm):
         self.fields['advicer'].initial = self.user
         self.fields['grant_on'].initial = datetime.now()
         self.fields['case'].queryset = Case.objects.for_user(self.user).all()
+        self.fields['case'].help_text = _('Select from cases which do you have a permission')
 
     class Meta:
         model = Advice

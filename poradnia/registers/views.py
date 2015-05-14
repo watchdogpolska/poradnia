@@ -38,7 +38,7 @@ class FormMixins(FormValidMessageMixin, SetHeadlineMixin, UserFormKwargsMixin):
 class AdviceUpdate(PermissionMixin, FormMixins, UpdateView):
     model = Advice
     form_class = AdviceForm
-    headline = _("Updating")
+    headline = _("Updated advice")
 
     def get_form_valid_message(self):
         return _("{0} updated!").format(self.object)
@@ -47,7 +47,7 @@ class AdviceUpdate(PermissionMixin, FormMixins, UpdateView):
 class AdviceCreate(FormMixins, LoginRequiredMixin, CreateView):
     model = Advice
     form_class = AdviceForm
-    headline = _("Creating")
+    headline = _("New advice")
 
     def get_initial(self, *args, **kwargs):
         initial = super(AdviceCreate, self).get_initial(*args, **kwargs)
@@ -60,7 +60,7 @@ class AdviceCreate(FormMixins, LoginRequiredMixin, CreateView):
 
 class AdviceDelete(PermissionMixin, SetHeadlineMixin, DeleteView):
     model = Advice
-    headline = _("Deleting")
+    headline = _("Removal advice")
     success_url = reverse_lazy('registers:list')
 
     def get_success_message(self):

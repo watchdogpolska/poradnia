@@ -64,7 +64,7 @@ def add(request, case_pk):
         form = LetterForm()
     context['form'] = form
     context['formset'] = formset or AttachmentFormSet(instance=Letter())
-
+    context['headline'] = _('Add')
     return render(request, 'letters/form.html', context)
 
 
@@ -76,7 +76,7 @@ def send(request, pk):
     case = letter.case
 
     case.perm_check(request.user, 'can_add_record')
-    context['letter'] = letter
+    context['object'] = letter
     context['case'] = case
 
     if letter.status == Letter.STATUS.done:
@@ -96,6 +96,7 @@ def send(request, pk):
     else:
         form = SendLetterForm(user=request.user, instance=letter)
     context['form'] = form
+    context['headline'] = _('Send to client')
     return render(request, 'letters/form.html', context)
 
 
@@ -103,7 +104,7 @@ def send(request, pk):
 def edit(request, pk):
     context = {}
     letter = get_object_or_404(Letter, pk=pk)
-    context['letter'] = letter
+    context['object'] = letter
 
     case = letter.case
     context['case'] = case
@@ -131,7 +132,7 @@ def edit(request, pk):
         form = LetterForm(user=request.user, instance=letter)
     context['form'] = form
     context['formset'] = formset or AttachmentFormSet(instance=letter)
-
+    context['headline'] = _('Edit')
     return render(request, 'letters/form.html', context)
 
 

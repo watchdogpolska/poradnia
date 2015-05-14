@@ -45,7 +45,7 @@ class AdviceQuerySet(QuerySet):
 
 
 class Advice(models.Model):
-    case = models.OneToOneField(Case, null=True, blank=True)
+    case = models.OneToOneField(Case, null=True, blank=True, verbose_name=_("Case"))
     subject = models.CharField(max_length=50, verbose_name=_("Subject"), null=True, blank=True)
     issues = models.ManyToManyField(Issue, null=True, verbose_name=_("Issues"), blank=True)
     area = models.ForeignKey(Area, null=True, verbose_name=_("Area"), blank=True)
