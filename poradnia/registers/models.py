@@ -5,6 +5,7 @@ from django.core.urlresolvers import reverse
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
+from cases.models import Case
 
 
 class AbstractCategory(models.Model):
@@ -44,6 +45,7 @@ class AdviceQuerySet(QuerySet):
 
 
 class Advice(models.Model):
+    case = models.OneToOneField(Case, null=True, blank=True)
     subject = models.CharField(max_length=50, verbose_name=_("Subject"), null=True, blank=True)
     issues = models.ManyToManyField(Issue, null=True, verbose_name=_("Issues"), blank=True)
     area = models.ForeignKey(Area, null=True, verbose_name=_("Area"), blank=True)

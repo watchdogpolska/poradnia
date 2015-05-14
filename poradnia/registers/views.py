@@ -49,6 +49,11 @@ class AdviceCreate(FormMixins, LoginRequiredMixin, CreateView):
     form_class = AdviceForm
     headline = _("Creating")
 
+    def get_initial(self, *args, **kwargs):
+        initial = super(AdviceCreate, self).get_initial(*args, **kwargs)
+        initial.update(self.request.GET.dict())
+        return initial
+
     def get_form_valid_message(self):
         return _("{0} created!").format(self.object)
 

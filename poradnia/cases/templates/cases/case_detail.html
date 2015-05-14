@@ -50,6 +50,19 @@
           <td>{% for tag in object.tag_set.all %}<a href="{{tag.get_absolute_url}}">{{tag}}</a>{% endfor%}</td>
         </tr>
         {% endif %}
+        {% if request.user.is_staff %}
+        <tr>
+          <td><i class="glyphicon glyphicon-stats"></i> {% trans 'Advice list' %}</a></td>
+          <td>
+          {% if object.advice %}
+            <a href="{{object.advice.get_absolute_url}}">{{object.advice}}</a>
+          {% else %}
+            <a href="{% url 'registers:create'%}?case={{object.pk}}"><i class="glyphicon glyphicon-pencil"></i> {% trans 'Create new advice'%}</a>
+          {% endif %}
+          </td>
+        </tr>
+
+        {% endif %}
         <tr>
           <td>{% trans 'Creating' %}</td>
           <td><a href="{{object.created_by.get_absolute_url}}">{{object.created_by}}</a> on {{object.created_on|naturaltime}}</td>

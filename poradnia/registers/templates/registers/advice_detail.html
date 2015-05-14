@@ -32,6 +32,14 @@
             </tr>
             {% endif %}
 
+            {% if object.case %}
+            <tr>
+                <td>{% trans 'Case'%}</td>
+                <td><a href="{{object.case.get_absolute_url}}">{{object.case}}</td>
+            </tr>
+            {% endif %}
+
+
             {% if object.issues.all %}
             <tr>
                 <td>{% trans 'Issues'%}</td>
