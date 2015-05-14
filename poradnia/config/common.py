@@ -289,3 +289,4 @@ class Common(Configuration):
     )
     PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@poradnia.siecobywatelska.pl"
     PORADNIA_EMAIL_INPUT = "^sprawa-(?P<pk>\d+)@poradnia.siecobywatelska.pl$"
+    ATOMIC_REQUESTS = True
