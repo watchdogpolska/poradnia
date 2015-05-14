@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: letter 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-14 07:33-0700\n"
+"POT-Creation-Date: 2015-05-14 08:00-0700\n"
 "PO-Revision-Date: 2015-05-14 16:33+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
@@ -19,132 +19,132 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: forms.py:20
+#: letters/forms.py:20
 msgid "Client"
 msgstr "Klient"
 
-#: forms.py:21
+#: letters/forms.py:21
 msgid "Leave empty to use email field and create a new one user."
 msgstr ""
 "Pozostaw puste, aby wykorzystać pole adresu e-mail i utworzyć nowego "
 "użytkownika."
 
-#: forms.py:38
+#: letters/forms.py:38
 msgid "Have to enter 'email' or 'client'"
 msgstr "Musisz podać adres e-mail lub dane klienta."
 
-#: forms.py:101
+#: letters/forms.py:101
 msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
-#: models.py:22
+#: letters/models.py:22
 msgid "Staff"
 msgstr "Zespół"
 
-#: models.py:22
+#: letters/models.py:22
 msgid "Done"
 msgstr "Wykonane"
 
-#: models.py:27
+#: letters/models.py:27
 msgid "Accepted on"
 msgstr "Zaakceptowane o"
 
-#: models.py:28
+#: letters/models.py:28
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: models.py:29
+#: letters/models.py:29
 msgid "Comment"
 msgstr "Komentarz"
 
-#: models.py:30
+#: letters/models.py:30
 msgid "Signature"
 msgstr "Podpis"
 
-#: models.py:32
+#: letters/models.py:32
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:33
+#: letters/models.py:33
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:35
+#: letters/models.py:35
 msgid "Modified by"
 msgstr "Zmienione o"
 
-#: models.py:39
+#: letters/models.py:39
 msgid "Modified on"
 msgstr "Zmienione przez"
 
-#: models.py:70
+#: letters/models.py:70
 msgid "Letter"
 msgstr "List"
 
-#: models.py:71
+#: letters/models.py:71
 msgid "Letters"
 msgstr "Listy"
 
-#: models.py:89
+#: letters/models.py:89
 msgid "Attachment"
 msgstr "Załącznik"
 
-#: models.py:90
+#: letters/models.py:90
 msgid "Attachments"
 msgstr "Załączniki"
 
-#: templates/letters/_letter_list.html:27 views.py:135
+#: letters/templates/letters/_letter_list.html:27 letters/views.py:135
 msgid "Edit"
 msgstr "Edytuj"
 
-#: templates/letters/_letter_list.html:28
+#: letters/templates/letters/_letter_list.html:28
 msgid "Send"
 msgstr "Wyślij"
 
-#: templates/letters/form.html:15
+#: letters/templates/letters/form.html:15
 msgid "Cases"
 msgstr "Sprawy"
 
-#: templates/letters/form.html:41
+#: letters/templates/letters/form.html:41
 msgid "Save changes"
 msgstr "Zapisz zmiany"
 
-#: templates/letters/form.html:42
+#: letters/templates/letters/form.html:42
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: views.py:29
+#: letters/views.py:29
 #, python-format
 msgid "Case about %(object)s created!"
 msgstr "Sprawa o %(object)s utworzona!"
 
-#: views.py:38
+#: letters/views.py:38
 msgid "Create a new case"
 msgstr "Tworzenie nowej sprawy"
 
-#: views.py:60
+#: letters/views.py:60
 #, python-format
 msgid "Letter %(object)s created!"
 msgstr "List %(object)s utworzone"
 
-#: views.py:67
+#: letters/views.py:67
 msgid "Add"
 msgstr "Dodaj"
 
-#: views.py:83
+#: letters/views.py:83
 msgid "It doesn't make sense."
 msgstr "To nie ma sensu."
 
-#: views.py:93
+#: letters/views.py:93
 #, python-format
 msgid "Letter %(object)s send!"
 msgstr "List %(object)s wysłany!"
 
-#: views.py:99
+#: letters/views.py:99
 msgid "Send to client"
 msgstr "Wyślij do klienta"
 
-#: views.py:128
+#: letters/views.py:128
 #, python-format
 msgid "Letter %(object)s updated!"
 msgstr "List %(object)s zaktualizowany!"

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: event 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-03 17:51-0700\n"
-"PO-Revision-Date: 2015-04-04 02:52+0100\n"
+"POT-Creation-Date: 2015-05-14 08:00-0700\n"
+"PO-Revision-Date: 2015-05-14 17:03+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -19,72 +19,89 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: models.py:9 templates/events/_event_list.html:14
+#: events/models.py:14
+msgid "Alarm"
+msgstr "Alarm"
+
+#: events/models.py:15
+msgid "Alarms"
+msgstr "Alarmy"
+
+#: events/models.py:28 events/templates/events/_event_list.html:14
 msgid "Dead-line"
 msgstr "Termin"
 
-#: models.py:10 templates/events/_event_list.html:15
+#: events/models.py:29 events/templates/events/_event_list.html:15
 msgid "Time"
 msgstr "Czas"
 
-#: models.py:13 templates/events/_event_list.html:16
+#: events/models.py:32 events/templates/events/_event_list.html:16
 msgid "For client"
 msgstr "Dla klienta"
 
-#: models.py:14
+#: events/models.py:33
 msgid "Unchecked are visible for staff only"
 msgstr "Odznaczone jest widoczne tylko dla zespołu"
 
-#: models.py:15
+#: events/models.py:34
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: models.py:17
+#: events/models.py:36
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:18
+#: events/models.py:37
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:20
+#: events/models.py:39
 msgid "Modified by"
 msgstr "Zmodyfikowane przez"
 
-#: models.py:24
+#: events/models.py:43
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
-#: templates/events/_alarm_list.html:13
+#: events/models.py:66
+msgid "Event"
+msgstr "Wydarzenie"
+
+#: events/models.py:67
+msgid "Events"
+msgstr "Wydarzenia"
+
+#: events/templates/events/_alarm_list.html:13
 msgid "A related event "
 msgstr "Powiązane wydarzenie"
 
-#: templates/events/_event_list.html:17
+#: events/templates/events/_event_list.html:17
 msgid "Triggered"
 msgstr "Zaistniałe"
 
-#: templates/events/_event_list.html:26 templates/events/form.html:8
+#: events/templates/events/_event_list.html:26
+#: events/templates/events/form.html:8
 msgid "Edit"
 msgstr "Edytuj"
 
-#: templates/events/form.html:6
+#: events/templates/events/form.html:6
 msgid "Cases"
 msgstr "Sprawy"
 
-#: templates/events/form.html:18
+#: events/templates/events/form.html:18
 msgid "Save changes"
 msgstr "Zapisz zmiany"
 
-#: templates/events/form.html:19
+#: events/templates/events/form.html:19
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: views.py:27
+#: events/views.py:27
 #, python-format
 msgid "Success added new event %(event)s"
 msgstr "Dodano wydarzenie %(event)s"
 
-#: views.py:52
+#: events/views.py:52
 #, python-format
 msgid "Success updated event %(event)s"
 msgstr "Zaktualizowano wydarzenie %(event)s"

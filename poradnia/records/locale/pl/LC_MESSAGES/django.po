@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: record 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-03 18:18-0700\n"
+"POT-Creation-Date: 2015-05-14 08:00-0700\n"
 "PO-Revision-Date: 2015-04-04 03:18+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
@@ -19,16 +19,16 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: models.py:49
+#: records/models.py:51
 msgid "Record"
 msgstr "Wpis"
 
-#: models.py:50
+#: records/models.py:52
 msgid "Records"
 msgstr "Wpis"
 
-#: models.py:81
-#, python-format
-#| msgid "%s in case #%d"
-msgid "%(object)s in case #%(case_id)d"
+#: records/models.py:85
+#, fuzzy, python-format
+#| msgid "%(object)s in case #%(case_id)d"
+msgid "%(object)s (#%(pk)d) in case #%(case_id)d"
 msgstr "%(object)s w sprawie #%(case_id)d"
