@@ -66,6 +66,7 @@
           <li><a href="{% url 'letters:home' %}"><i class="glyphicon glyphicon-home"></i> {% trans 'Home' %}</a></li>
           {% if request.user.is_staff %}
             <li><a href="{% url 'admin:index' %}"><i class="glyphicon glyphicon-cog"></i> {% trans 'Admin' %}</a></li>
+            <li><a href="{% url 'registers:list' %}"><i class="glyphicon glyphicon-stats"></i> {% trans 'Advice list' %}</a></li>
           {% endif %}
           <li><a href="{% url 'users:list' %}"><i class="glyphicon glyphicon-user"></i> {% trans 'Users'%}</a></li>
         </ul>
