@@ -38,15 +38,16 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Poradnia Pozarządowego Centrum Dostępu do Informacji Publicznej</a>
+        <a class="navbar-brand" href="#">Poradnia Sieci Obywatelskiej Watchdog Polska</a>
       </div>
       <div id="navbar" class="navbar-collapse collapse">
         <ul class="nav navbar-nav navbar-right">
             {% if request.user.is_authenticated %}
-              <li><a href="{% url 'users:detail' request.user.username  %}">{% blocktrans with user=request.user %} Hello {{ user }}! {% endblocktrans %}</a></li>
+              <li><a href="{% url 'users:detail' request.user.username  %}">{% blocktrans with user=request.user %} Witaj {{ user }}! {% endblocktrans %}</a></li>
               
               {% notifications_unread as unread_count%}
-              <li><p class="navbar-text">You have <a href="{% url 'notifications:all'%}">{{unread_count}} notification</a> unread</p></li>
+              {% url 'notifications:all' as notification_all_url %}
+              <li><p class="navbar-text">{% blocktrans %}You have <a href="notification_all_url">{{unread_count}} notification</a> unread</p>{% endblocktrans %}</li>
               <li><a href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
             {% else %}
               <li><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
