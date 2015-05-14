@@ -98,7 +98,7 @@ class AddLetterForm(ModelForm, PartialMixin):
 
 
 class SendLetterForm(ModelForm, PartialMixin):
-    comment = forms.CharField(widget=forms.widgets.Textarea)
+    comment = forms.CharField(widget=forms.widgets.Textarea, label=_("Comment for staff"))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')

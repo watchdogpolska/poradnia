@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: registers 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-04-03 18:34-0700\n"
-"PO-Revision-Date: 2015-04-04 03:34+0100\n"
+"POT-Creation-Date: 2015-05-14 07:43-0700\n"
+"PO-Revision-Date: 2015-05-14 16:42+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -19,69 +19,77 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: models.py:47 templates/registers/advice_list.html:27
+#: forms.py:19
+msgid "Select from cases which do you have a permission"
+msgstr "Wybór spośród spraw do których masz uprawnienia"
+
+#: models.py:48 templates/registers/advice_detail.html:37
+msgid "Case"
+msgstr "Sprawa"
+
+#: models.py:49 templates/registers/advice_list.html:27
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: models.py:48 templates/registers/advice_detail.html:37
+#: models.py:50 templates/registers/advice_detail.html:45
 msgid "Issues"
 msgstr "Zagadnienie"
 
-#: models.py:49 templates/registers/advice_detail.html:44
+#: models.py:51 templates/registers/advice_detail.html:52
 msgid "Area"
 msgstr "Obszar"
 
-#: models.py:52
+#: models.py:54
 msgid "Kind of person "
 msgstr "Rodzaj osoby"
 
-#: models.py:54 templates/registers/advice_list.html:29
+#: models.py:56 templates/registers/advice_list.html:29
 msgid "Kind of institution"
 msgstr "Rodzaj podmiotu zobowiązanego"
 
-#: models.py:57 templates/registers/advice_detail.html:64
+#: models.py:59 templates/registers/advice_detail.html:72
 #: templates/registers/advice_list.html:26
 msgid "Advicer"
 msgstr "Radzący"
 
-#: models.py:57
+#: models.py:59
 msgid "Person who give a advice"
 msgstr "Osoba, która udzieliła porady"
 
-#: models.py:59 templates/registers/advice_detail.html:30
+#: models.py:61 templates/registers/advice_detail.html:30
 msgid "Grant on"
 msgstr "Udzielona o"
 
-#: models.py:61 templates/registers/advice_list.html:25
+#: models.py:63 templates/registers/advice_list.html:25
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:63 templates/registers/advice_list.html:24
+#: models.py:65 templates/registers/advice_list.html:24
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:67
+#: models.py:69
 msgid "Modified by"
 msgstr "Zmodyfikowane przez"
 
-#: models.py:70
+#: models.py:72
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
-#: models.py:71
+#: models.py:73
 msgid "Visible"
 msgstr "Widoczne"
 
-#: models.py:72
+#: models.py:74
 msgid "Comment"
 msgstr "Komentarz"
 
-#: models.py:76
+#: models.py:78
 #, python-format
 msgid "Advice #%d"
 msgstr "Porada #%d"
 
-#: models.py:83
+#: models.py:85
 msgid "Can view all advices"
 msgstr "Może oglądać wszystkie porady"
 
@@ -109,20 +117,20 @@ msgstr "Edytuj"
 msgid "Delete"
 msgstr "Usuń"
 
-#: templates/registers/advice_detail.html:51
+#: templates/registers/advice_detail.html:59
 #: templates/registers/advice_list.html:28
 msgid "Kind of person"
 msgstr "Rodzaj osoby"
 
-#: templates/registers/advice_detail.html:58
+#: templates/registers/advice_detail.html:66
 msgid "Kind of istitution"
 msgstr "Rodzaj instytucji"
 
-#: templates/registers/advice_detail.html:69
+#: templates/registers/advice_detail.html:77
 msgid "Created"
 msgstr "Utworzone"
 
-#: templates/registers/advice_detail.html:70
+#: templates/registers/advice_detail.html:78
 #, python-format
 msgid ""
 "%(created)s on <time datetime=\"%(created_on_date)s\">"
@@ -131,11 +139,11 @@ msgstr ""
 "%(created)s <time datetime=\"%(created_on_date)s\">%(created_on_natural)s</"
 "time>"
 
-#: templates/registers/advice_detail.html:75
+#: templates/registers/advice_detail.html:83
 msgid "Modified"
 msgstr "Zmodyfikowane"
 
-#: templates/registers/advice_detail.html:76
+#: templates/registers/advice_detail.html:84
 #, python-format
 msgid ""
 "%(modified_by)s on <time datetime=\"%(modified_on_date)s\">"
@@ -157,8 +165,8 @@ msgid "Add"
 msgstr "Dodaj"
 
 #: views.py:41
-msgid "Updating"
-msgstr "Aktualizowanie"
+msgid "Updated advice"
+msgstr "Aktualizacja porady"
 
 #: views.py:44
 #, python-brace-format
@@ -166,19 +174,28 @@ msgid "{0} updated!"
 msgstr "{0} zaktualizowany!"
 
 #: views.py:50
-msgid "Creating"
-msgstr "Tworzenie"
+msgid "New advice"
+msgstr "Nowa sprawa"
 
-#: views.py:53
+#: views.py:58
 #, python-brace-format
 msgid "{0} created!"
 msgstr "{0} utworzony!"
 
-#: views.py:58
-msgid "Deleting"
-msgstr "Usuwanie"
+#: views.py:63
+msgid "Removal advice"
+msgstr "Usuwanie porady"
 
-#: views.py:62
+#: views.py:67
 #, python-brace-format
 msgid "{0} deleted!"
 msgstr "{0} usunięto!"
+
+#~ msgid "Updating"
+#~ msgstr "Aktualizowanie"
+
+#~ msgid "Creating"
+#~ msgstr "Tworzenie"
+
+#~ msgid "Deleting"
+#~ msgstr "Usuwanie"
