@@ -36,9 +36,9 @@
                 {% for object in object_list %}
                 <tr>
                     <td><time datetime="{{object.created_on|date:'Y-m-d h:m:sT'}}">{{object.created_on |naturaltime }}</time></td>
-                    <td {% if object.created_by_id == object.who_id %} colspan="2" style="text-align: center"{% endif%}>{{object.created_by}}</td>
-                    {% if not object.created_by_id == object.who_id %}
-                    <td>{{object.who }}</td>
+                    <td {% if object.created_by_id == object.advicer_id %} colspan="2" style="text-align: center"{% endif%}>{{object.created_by}}</td>
+                    {% if object.created_by_id != object.advicer_id %}
+                        <td>{{object.advicer }}</td>
                     {% endif %}
                     <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
                     <td>{{object.person_kind }}</td>
