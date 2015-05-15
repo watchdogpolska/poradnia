@@ -142,9 +142,11 @@ body {
     border-radius: 10px;
 }
 .quote-link {
-    background-color: #AFFCFF;
-    border: 1px solid;
-    border-color: #ff00ff;
+    background-color: rgb(245, 245, 245);
+    border-radius: 2px;
+    border: 1px solid #DDD;
+    color: rgb(51, 122, 183);
+    padding: 4px;
 }
 @media print {
     .quote-link {
@@ -153,4 +155,8 @@ body {
 }
 #div_id_time {
     position: relative;
+}
+
+.panel-body > blockquote {
+    font-size: 100%;
 }
