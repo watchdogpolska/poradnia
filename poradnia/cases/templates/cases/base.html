@@ -5,13 +5,13 @@
 {{block.super}}
 <script type="text/javascript">
   $('blockquote').each(function(index, value){ 
-    var show = '<span class="glyphicon glyphicon-collapse-down"></span> {%trans "Show" %}';
-    var hide = '<span class="glyphicon glyphicon-collapse-up"></span> {%trans "Hide" %}'
+    var show = '<span class="glyphicon glyphicon-collapse-down"></span> {%trans "Show quote" %}';
+    var hide = '<span class="glyphicon glyphicon-collapse-up"></span> {%trans "Hide quote" %}'
     var el=$(value).hide(); 
     var new_el=$("<button class='btn quote-link'>"+show+"</a>");
     new_el.click(function(event){
         event.preventDefault();
-        el.toggle();
+        el.slideToggle();
         console.log(this.innerHTML);
         this.innerHTML = this.innerHTML == show ? hide : show;
     });
