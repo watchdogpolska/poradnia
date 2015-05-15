@@ -1,9 +1,11 @@
 {% extends 'registers/base.html' %}
-{% load humanize i18n %}
+{% load humanize i18n crispy_forms_tags %}
 {% block content %}
 <ol class="breadcrumb">
   <li class="active">{% trans 'Register'%}</li>
 </ol>
+
+{% crispy filter.form %}
 
 {% if object_list %}
 <div class="row">
@@ -16,6 +18,7 @@
         </div>
     </div>
 </div>
+
 <div class="row">
     <div class="col-md-18">
         <table class="table table-striped">

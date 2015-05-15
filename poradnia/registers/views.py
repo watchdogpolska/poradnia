@@ -10,6 +10,7 @@ from braces.views import OrderableListMixin
 from braces.views import SelectRelatedMixin
 from braces.views import UserFormKwargsMixin
 from braces.views import LoginRequiredMixin
+from .filters import AdviceFilter
 from .models import Advice
 from .forms import AdviceForm
 
@@ -20,8 +21,28 @@ class PermissionMixin(LoginRequiredMixin, object):
         return qs.for_user(self.request.user)
 
 
-class AdviceList(PermissionMixin, SelectRelatedMixin, OrderableListMixin, ListView):
+class FilterMixin(object):
+    filter_class = None
+
+    def get_filter_class(self):
+        return self.filter_class
+
+    def get_filter(self, *args, **kwargs):
+        qs = super(FilterMixin, self).get_queryset(*args, **kwargs)
+        return self.get_filter_class()(self.request.GET, queryset=qs)
+
+    def get_context_data(self, **kwargs):
+        context = super(FilterMixin, self).get_context_data(**kwargs)
+        context['filter'] = self.get_filter()
+        return context
+
+    def get_queryset(self, *args, **kwargs):
+        return self.get_filter(*args, **kwargs).qs
+
+
+class AdviceList(PermissionMixin, FilterMixin, SelectRelatedMixin, OrderableListMixin, ListView):
     model = Advice
+    filter_class = AdviceFilter
     orderable_columns = ("id", "advicer", "person_kind", "institution_kind")
     orderable_columns_default = "created_on"
     select_related = ["person_kind", "created_by", "advicer", "institution_kind"]
