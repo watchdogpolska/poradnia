@@ -47,7 +47,7 @@
               
               {% notifications_unread as unread_count%}
               {% url 'notifications:all' as notification_all_url %}
-              <li><p class="navbar-text">{% blocktrans %}You have <a href="notification_all_url">{{unread_count}} notification</a> unread</p>{% endblocktrans %}</li>
+              <li><p class="navbar-text">{% blocktrans %}You have <a href="{{notification_all_url}}">{{unread_count}} notification</a> unread</p>{% endblocktrans %}</li>
               <li><a href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
             {% else %}
               <li><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
