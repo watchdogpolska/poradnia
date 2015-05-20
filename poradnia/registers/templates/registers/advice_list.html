@@ -11,7 +11,7 @@
 <div class="row">
     <div class="col-md-18">
         <div class="pull-left">
-            <h1>{% trans 'Record index' %}</h1>
+            <h1>{% trans 'Record advices' %}</h1>
         </div>
         <div class="pull-right">
             <a href="{% url 'registers:create' %}" class="btn btn-success"><span class="glyphicon glyphicon-edit"></span> {% trans 'Add' %}</a>
@@ -35,14 +35,14 @@
             <tbody>
                 {% for object in object_list %}
                 <tr>
-                    <td><time datetime="{{object.created_on|date:'Y-m-d h:m:sT'}}">{{object.created_on |naturaltime }}</time></td>
-                    <td {% if object.created_by_id == object.advicer_id %} colspan="2" style="text-align: center"{% endif %}>{{object.created_by}}</td>
+                    <td><time datetime="{{ object.created_on|date:'Y-m-d h:m:sT' }}">{{ object.created_on|naturaltime }}</time></td>
+                    <td {% if object.created_by_id == object.advicer_id %} colspan="2" style="text-align: center"{% endif %}>{{ object.created_by }}</td>
                     {% if object.created_by_id != object.advicer_id %}
-                        <td>{{object.advicer }}</td>
+                        <td>{{ object.advicer }}</td>
                     {% endif %}
-                    <td><a href="{{object.get_absolute_url}}">{{object}}</a></td>
-                    <td>{{object.person_kind }}</td>
-                    <td>{{object.institution_kind }}</td>
+                    <td><a href="{{ object.get_absolute_url }}">{{ object }}</a></td>
+                    <td>{{ object.person_kind }}</td>
+                    <td>{{ object.institution_kind }}</td>
                 </tr>
                 {% endfor %}
             </tbody>
