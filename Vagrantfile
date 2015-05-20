@@ -10,8 +10,7 @@ SCRIPT
 
 Vagrant.configure('2') do |config|
 
-    config.vm.box = 'precise64'
-    config.vm.box_url = "http://files.vagrantup.com/" + config.vm.box + ".box"
+    config.vm.box = 'ubuntu/precise64'
 
     config.ssh.forward_agent = true
     # Forward the dev server port

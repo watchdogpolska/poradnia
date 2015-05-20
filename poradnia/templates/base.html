@@ -14,15 +14,8 @@
 
 {% block css %}
 <!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="{% static 'css/bootstrap.min.css'%}">
+<link rel="stylesheet" href="{% static 'css/style.css'%}">
 
-<!-- Optional theme -->
-<link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css'%}">
-
-<!-- Your stuff: Third-party css libraries go here -->
-
-<!-- This file store project specific CSS -->
-<link href="{% static 'css/project.css' %}" rel="stylesheet">
 {% endblock %}
 {% block extra_css %}{%endblock%} {# TODO: Remove it #}
 </head>
@@ -100,18 +93,13 @@
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
   {% block javascript %}
-  <!-- Latest JQuery -->
-  <script src="{% static 'js/jquery.min.js' %}"></script>
-
   <!-- Latest compiled and minified JavaScript -->
-  <script src="{% static 'js/bootstrap.min.js' %}"></script>
-
-  <!-- Your stuff: Third-party javascript libraries go here -->
-  <script src="{% static 'js/moment.js'%}"></script>
-  <script src="{% static 'js/bootstrap-datetimepicker.js'%}"></script>
+  {# // <script src="{% static 'js/bootstrap.min.js' %}"></script> #}
+  <script src="{% static 'js/script.js' %}"></script>
 
   <!-- place project specific Javascript in this file -->
   <script src="{% static 'js/project.js' %}"></script>
+  
   {% endblock javascript %}
 </body>
 </html>

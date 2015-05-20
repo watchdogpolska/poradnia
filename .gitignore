@@ -31,3 +31,14 @@ node_modules/
 # Campass
 .sass-cache
 staticfiles
+
+# Vagrant
+.vagrant
+
+# Bower
+bower_components/
+
+# Upload's directory
+poradnia/media/
+
+
