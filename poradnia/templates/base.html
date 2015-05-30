@@ -22,7 +22,7 @@
 
 <body>
 
-  <nav class="navbar navbar-inverse navbar-fixed-top">
+  <nav class="navbar navbar-inverse">
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -60,21 +60,15 @@
           <li><a href="{% url 'letters:home' %}"><i class="glyphicon glyphicon-home"></i> {% trans 'Home' %}</a></li>
           {% if request.user.is_staff %}
             <li><a href="{% url 'admin:index' %}"><i class="glyphicon glyphicon-cog"></i> {% trans 'Admin' %}</a></li>
-            <li><a href="{% url 'registers:list' %}"><i class="glyphicon glyphicon-stats"></i> {% trans 'Advice list' %}</a></li>
+            {% include 'cases/_menu.html' %}
           {% endif %}
           <li><a href="{% url 'users:list' %}"><i class="glyphicon glyphicon-user"></i> {% trans 'Users'%}</a></li>
         </ul>
         <ul class="nav nav-sidebar">
-         {% if perms.cases.can_assign %}
-            <li><a href="{% url 'cases:list' %}?status=free"><i class="glyphicon glyphicon-question-sign"></i> {% trans 'Free cases'%}</a></li>
-          {% endif %}
-          {% if request.user.is_authenticated %}
-          <li><a href="{% url 'cases:list' %}"><i class="glyphicon glyphicon-book"></i> {% trans 'Cases'%}</a></li>
-          {% endif %}
-          <li><a href="{% url 'letters:add' %}"><i class="glyphicon glyphicon-pencil"></i> {% trans 'New case'%}</a></li>
+        {% include 'cases/_menu_sidebar.html' %}
         </ul>
       </div>
-      <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+      <div class="col-sm-9 col-md-10 main">
         {% if messages %}
         {% for message in messages %}
         <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
