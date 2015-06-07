@@ -21,11 +21,14 @@ $dependencies = <<SCRIPT
     echo "source /usr/local/bin/virtualenvwrapper.sh" >> /tmp/init.sh
     echo "cd /vagrant/" >> /tmp/init.sh
     echo "mkvirtualenv poradnia" >> /tmp/init.sh
+    echo "workon poradnia" >> /tmp/init.sh
     echo "pip install numpy" >> /tmp/init.sh
     echo "pip install http://downloads.sourceforge.net/project/pyml/PyML-0.7.13.3.tar.gz" >> /tmp/init.sh
     echo "pip install -r requirements/local.txt" >> /tmp/init.sh
     echo "cdvirtualenv" >> /tmp/init.sh
     echo 'echo "export DATABASE_URL=\"mysql://root:root@localhost/poradnia\"">> bin/postactivate' >> /tmp/init.sh
+    echo 'echo "source /usr/local/bin/virtualenvwrapper.sh">> ~/.bashrc' >> /tmp/init.sh
+    echo 'echo "workon poradnia">> ~/.bashrc' >> /tmp/init.sh
     chmod a+x /tmp/init.sh
     cat /tmp/init.sh
     sudo -H -u vagrant bash -c 'source /tmp/init.sh'     
