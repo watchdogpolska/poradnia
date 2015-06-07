@@ -1,0 +1,25 @@
+$case-header-padding-vertical: 1em;
+.case-header{
+	border-bottom: 1px solid $gray-lighter;
+	padding-bottom: 1em;
+	margin-bottom: 1em;
+	&-actions{
+		@extend .btn-group;
+		@media(min-width: $screen-md-min) {		
+			float: right;
+			margin: 20px;
+		}
+
+
+	}
+	&-title{
+	}
+	&-number{
+		color: $gray-light;
+		font-size: 0.7em;
+		vertical-align: middle;
+	}
+	&-meta{
+		font-size: 1.2em;
+	}
+}

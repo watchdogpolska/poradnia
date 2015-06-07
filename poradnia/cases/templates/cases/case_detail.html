@@ -25,53 +25,51 @@
 {%block content%}
 {% get_obj_perms request.user for object as "case_perms" %}
 <div class="row">
-  <div class="col-xs-18">
-    <div class="pull-left"><h1>#{{object.pk}} - {{object.name}}</h1></div>
-    <div class="pull-right">
-    <div class="btn-group">
-      {% if 'change_case' in case_perms %}
-      <a class="btn btn-primary" href="{{ object.get_edit_url }}"><span class="glyphicon glyphicon-edit"></span> {% trans 'Edit'%}</a>
-      {% endif %}
-      {% if 'can_assign' in case_perms %}
-      <a class="btn btn-primary" href="{{ object.get_permission_url }}"><span class="glyphicon glyphicon-eye-close"></span> {% trans 'Permissions' %}</a>
-      {% endif %}
-    </div>
+  <div class="col-xs-12">
+    <div class="case-header">
+      <div class="case-header-actions">
+        {% if 'change_case' in case_perms %}
+        <a class="btn btn-primary" href="{{ object.get_edit_url }}"><span class="glyphicon glyphicon-edit"></span> {% trans 'Edit'%}</a>
+        {% endif %}
+        {% if 'can_assign' in case_perms %}
+        <a class="btn btn-primary" href="{{ object.get_permission_url }}"><span class="glyphicon glyphicon-eye-close"></span> {% trans 'Permissions' %}</a>
+        {% endif %}
+      </div>
+      <h1 class="case-header-title">{{object.name}}<span class="case-header-number">#{{object.pk}}</span></h1>
+      <div class="case-header-meta">
+        {% if object.status_changed %}
+          <span class="label label-success" title="Ostatnia zmiana stanu: {{ object.status_changed }} dni temu"> <i class="fa fa-folder-open-o"></i> Open</span> 
+        {% else %}
+          <span class="label label-success" title="Ostatnia zmiana 7 dni temu"> <i class="fa fa-folder-open-o"></i> {{ object.status }}</span> 
+        {%endif%}
+        Utworzona przez <a href="{{object.created_by.get_absolute_url}}">{{object.created_by}}</a> 
+        on {{object.created_on|naturaltime}} dla 
+        <a href="{{object.client.get_absolute_url}}">{{object.client}}</a> 
+      </div>
     </div>
   </div>
 </div>
+
+
 <div class="row">
   <div class=" col-lg-6">
     <div class="panel panel-default">
       <div class="panel-heading"><span class="glyphicon glyphicon-earphone"></span> {% trans 'Metrical data'%}</div>
       <table class="table">
-        {% if object.tag_set.all %}
-        <tr>
-          <td>{% trans 'Tags' %}</td>
-          <td>{% for tag in object.tag_set.all %}<a href="{{tag.get_absolute_url}}">{{tag}}</a>{% endfor%}</td>
-        </tr>
-        {% endif %}
+
         {% if request.user.is_staff %}
         <tr>
           <td><i class="glyphicon glyphicon-stats"></i> {% trans 'Advice' %}</a></td>
           <td>
-          {% if object.advice %}
+            {% if object.advice %}
             <a href="{{object.advice.get_absolute_url}}">{{object.advice}}</a>
-          {% else %}
+            {% else %}
             <a href="{% url 'registers:create'%}?case={{object.pk}}"><i class="glyphicon glyphicon-pencil"></i> {% trans 'Create new advice'%}</a>
-          {% endif %}
+            {% endif %}
           </td>
         </tr>
 
         {% endif %}
-        <tr>
-          <td>{% trans 'Creating' %}</td>
-          <td><a href="{{object.created_by.get_absolute_url}}">{{object.created_by}}</a> on {{object.created_on|naturaltime}}</td>
-        </tr>
-        <tr>
-          <td>{% trans 'Client' %}</td>
-          <td><a href="{{object.client.get_absolute_url}}">{{object.client}}</a>
-          </td>
-        </tr>
       </table>
     </div>
   </div>
@@ -91,10 +89,6 @@
           </td>
         </tr>
         {% endif %}
-        <tr>
-          <td>{% trans 'Status' %}</td>
-          <td>{% if object.status_changed %}{% blocktrans with object.status as status and object.status_changed|naturaltime as status_changed %}{{status}} since {{ status_changed }}{% endblocktrans %}{% else %}{{ object.status }}{%endif%}</td>
-        </tr>
         {% if object.deadline %}
         <tr>
           <td><span class="glyphicon glyphicon-fire"></span> {% trans 'Dead-line'%}</td>
@@ -106,15 +100,15 @@
   </div>
 </div>
 <div class="row"><div class="col-xs-12"><h2>{% trans 'Record'%}</h2></div></div>
-<div class="panel-body msg_container_base row">
   {% if record_list %}
+<div class="timeline">
   {% for record in record_list %}
   {% include record.content_object.get_template_list with object=record.content_object %}
   {% endfor %}
+</div>
   {% else %}
   <span class="label label-warning">{% trans 'No records'%}</span>
   {% endif %}
-</div>
 {% if 'can_add_record' in case_perms %}
 <div role="tabpanel" class="row">
 

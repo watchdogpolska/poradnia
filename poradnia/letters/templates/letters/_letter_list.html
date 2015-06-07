@@ -1,44 +1,30 @@
 {% load guardian_tags crispy_forms_tags humanize avatar_tags i18n %}
-<div class="row obj_container base_sent">
-    {% if not object.created_by.is_staff %}
-    <div class="col-md-2 col-xs-2 avatar">
-        {% avatar object.created_by %}
-       {% if object.show_modifier %}{% avatar object.modified_by %}{% endif %}
-     </div>
-    {% endif %}
-    <div class="col-md-10 col-xs-10">
-        <div class="messages">
-            <div class="panel panel-default">
-                <div class="panel-heading"><span class="glyphicon glyphicon-envelope"></span> {{object}}</div>
-                <div class="panel-body">
-                    <p>{{object.text|linebreaks}}</p>
-                    {% if object.signature %}
-                    <blockquote>{{object.signature | linebreaks}}</blockquote>
-                    {% endif %}
-                </div>
-                {% if object.attachment_set.all %}
-                <ul class="list-group">
-                    {% for att in object.attachment_set.all %}
-                    <li class="list-group-item"><span class="glyphicon glyphicon-paperclip"></span> <a href="{{att.attachment.url}}">{{att.filename}}</a></li>
-                    {% endfor%}
-                </ul>
-                {% endif %}
-                <div class="panel-footer">
-                    <span class="glyphicon glyphicon-user"></span> {{object.created_by}} &bull; 
-                    <span class="glyphicon glyphicon-time"></span> <time datetime="{{object.created_on}}" title="{{object.created_on}}">{{object.created_on | naturaltime}}</time>
-                    {% if object.modified_by %}(updated on <time datetime="{{object.created_on}}" title="{{object.modified_on}}">{{object.modified_on | naturaltime}}</time> by {{object.modified_by}}){% endif %}
-                    {% if "can_change_all_record" in case_perms or requests.user == object.user and "can_change_own_record" in case_perms %} &bull; <span class="glyphicon glyphicon-pencil"></span><a href="{{object.get_edit_url}}">{% trans 'Edit'%}</a>{% endif %}
-                    {% if "can_send_to_client" in case_perms and not object.is_done %} &bull; <span class="glyphicon glyphicon-ok"></span><a href="{{object.get_send_url}}">{% trans 'Send'%}</a>{% endif %}
-                </div>
-            </div>
+<div class="timeline-messange">
+    <a href="#"><img src="{% avatar_url object.created_by %}" class="timeline-avatar"></a>
+    {% if object.show_modifier %}<a href="#"><img src="{% avatar_url object.modified_by %}"></a>{% endif %}
+    <div class="panel {% if object.created_by.is_staff|yesno:'panel-default,panel-brand' %}  timeline-comment">
+        <div class="panel-heading"><span class="glyphicon glyphicon-envelope"></span> {{object}}</div>
+        <div class="panel-body">
+            <p>{{object.text|linebreaks}}</p>
+            {% if object.signature %}
+            <blockquote>{{object.signature | linebreaks}}</blockquote>
+            {% endif %}
+        </div>
+        {% if object.attachment_set.all %}
+        <ul class="list-group">
+            {% for att in object.attachment_set.all %}
+            <li class="list-group-item"><span class="glyphicon glyphicon-paperclip"></span> <a href="{{att.attachment.url}}">{{att.filename}}</a></li>
+            {% endfor%}
+        </ul>
+        {% endif %}
+        <div class="panel-footer">
+            <span class="glyphicon glyphicon-user"></span> {{object.created_by}} &bull; 
+            <span class="glyphicon glyphicon-time"></span> 
+            <time datetime="{{object.created_on}}" title="{{object.created_on}}">{{object.created_on | naturaltime}}</time>
+            {% if object.modified_by %}
+            (updated on <time datetime="{{object.created_on}}" title="{{object.modified_on}}">{{object.modified_on | naturaltime}}</time> by {{object.modified_by}}){% endif %}
+            {% if "can_change_all_record" in case_perms or requests.user == object.user and "can_change_own_record" in case_perms %} &bull; <span class="glyphicon glyphicon-pencil"></span><a href="{{object.get_edit_url}}">{% trans 'Edit'%}</a>{% endif %}
+            {% if "can_send_to_client" in case_perms and not object.is_done %} &bull; <span class="glyphicon glyphicon-ok"></span><a href="{{object.get_send_url}}">{% trans 'Send'%}</a>{% endif %}
         </div>
     </div>
-    {% if object.created_by.is_staff %}
-    <div class="col-md-2 col-xs-2 avatar">
-        {% avatar object.created_by %}
-       {% if object.show_modifier %}{% avatar object.modified_by %}{% endif %}
-
-     </div>
-    {% endif %}
-
 </div>

@@ -1,0 +1,88 @@
+
+$timeline-transparent-size: 5px;
+$timeline-mark-height: 10px;
+$timeline-mark-width: 2px;
+$timeline-mark-color: $panel-default-border; 
+$timeline-avatar-size: 48px;
+$timeline-avatar-border-radius: 4px;
+
+$timeline-triangle-size: 8px;
+$timeline-line-padding: 4px;
+
+.timeline{
+	position: relative;
+	overflow: hidden;
+	&:after{
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: block;
+		height: 100%;
+		width: $timeline-mark-width;
+		z-index: -1;
+		background: repeating-linear-gradient( 
+			$timeline-mark-color 0px, 
+			$timeline-mark-color $timeline-mark-height, 
+			transparent			 $timeline-mark-height ,
+			transparent			 #{ $timeline-mark-height + $timeline-transparent-size });
+		left: $timeline-line-padding;
+		@media(min-width: $screen-md-min) {	 
+			left: #{ $timeline-line-padding + $timeline-avatar-size };
+		}
+
+	}
+	&-avatar{
+		float: left;
+		border-radius: $timeline-avatar-border-radius;
+		@include square($timeline-avatar-size);
+		display: none;
+		@media(min-width: $screen-md-min) {	
+			display: block;
+		}
+	}
+	&-comment{
+		position: relative;
+		margin-left: #{$timeline-line-padding * 2 + $timeline-mark-width + $timeline-triangle-size } ;
+		@media(min-width: $screen-md-min) {	 
+			margin-left: #{$timeline-line-padding * 2 + $timeline-avatar-size + $timeline-mark-width + $timeline-triangle-size };
+		}
+	}
+}
+@mixin timeline-comment-variant($border, $bg){
+	position: relative;
+	&:before,&:after{
+		content: '';
+		position: absolute;
+		display: block;
+		border: $timeline-triangle-size solid transparent;
+		border-left-width: 0px;
+		top: 12px;
+	}
+	&:after{
+		border-right-color: $bg;
+		left: #{ -$timeline-triangle-size + 1};
+	}
+	&:before{
+		border-right-color: $border;
+		left: #{ -$timeline-triangle-size };
+	}	
+}
+.timeline-comment.panel-default {
+	@include timeline-comment-variant($panel-default-border, $panel-default-heading-bg);
+}
+.timeline-comment.panel-primary {
+	@include timeline-comment-variant($panel-primary-border, $panel-primary-heading-bg);
+}
+.timeline-comment.panel-success {
+	@include timeline-comment-variant($panel-success-border, $panel-success-heading-bg);
+}
+.timeline-comment.panel-info {
+	@include timeline-comment-variant($panel-info-border, $panel-info-heading-bg);
+}
+.timeline-comment.panel-warning {
+	@include timeline-comment-variant($panel-warning-border, $panel-warning-heading-bg);
+}
+.timeline-comment.panel-danger {
+	@include timeline-comment-variant($panel-danger-border, $panel-danger-heading-bg);
+}
