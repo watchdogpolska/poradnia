@@ -22,65 +22,40 @@
 
 <body>
 
-  <nav class="navbar navbar-inverse">
+  <nav class="navbar navbar-default">
     <div class="container-fluid">
+      <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
-        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="body">
           <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+          <i class="burger"></i>
         </button>
-        <a class="navbar-brand" href="#">Poradnia Sieci Obywatelskiej Watchdog Polska</a>
-      </div>
-      <div id="navbar" class="navbar-collapse collapse">
-        <ul class="nav navbar-nav navbar-right">
-            {% if request.user.is_authenticated %}
-              <li><a href="{% url 'users:detail' request.user.username  %}">{% blocktrans with user=request.user %} Witaj {{ user }}! {% endblocktrans %}</a></li>
-              
-              {% notifications_unread as unread_count%}
-              {% url 'notifications:all' as notification_all_url %}
-              <li><p class="navbar-text">{% blocktrans %}You have <a href="{{notification_all_url}}">{{unread_count}} notification</a> unread</p>{% endblocktrans %}</li>
-              <li><a href="{% url 'account_logout' %}">{% trans "Logout" %}</a></li>
-            {% else %}
-              <li><a href="{% url 'account_signup' %}">{% trans "Sign Up" %}</a></li>
-              <li><a href="{% url 'account_login' %}">{% trans "Log In" %}</a></li>
-            {% endif %}
-
-
-        </ul>
+        <a class="navbar-brand" href="#">Poradnia</a>
       </div>
     </div>
   </nav>
 
-  <div class="container-fluid">
-    <div class="row">
-      <div class="col-sm-3 col-md-2 sidebar">
-        <ul class="nav nav-sidebar">
-          <li><a href="{% url 'letters:home' %}"><i class="glyphicon glyphicon-home"></i> {% trans 'Home' %}</a></li>
-          {% if request.user.is_staff %}
-            <li><a href="{% url 'admin:index' %}"><i class="glyphicon glyphicon-cog"></i> {% trans 'Admin' %}</a></li>
-            {% include 'cases/_menu.html' %}
-          {% endif %}
-          <li><a href="{% url 'users:list' %}"><i class="glyphicon glyphicon-user"></i> {% trans 'Users'%}</a></li>
-        </ul>
-        <ul class="nav nav-sidebar">
-        {% include 'cases/_menu_sidebar.html' %}
-        </ul>
-      </div>
-      <div class="col-sm-9 col-md-10 main">
+  <div class="main">
+    <div class="sidebar">
+      {% include '_sidebar.html'%}
+    </div>
+    <div class="main-side">
+      <div class="content">
         {% if messages %}
         {% for message in messages %}
         <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
         {% endfor %}
         {% endif %}
         {% block breadcrumbs %}{% endblock %}
-        {% block content %}
-        <p>Use this document as a way to quick start any new project.</p>
-        {% endblock content %}
-      </div>
+        <div>
+          {% block content %}
+          <p>Use this document as a way to quick start any new project.</p>
+          {% endblock content %}
+        </div>
+        </div>
     </div>
   </div>
+</div>
 {% block modal %}{% endblock modal %}
 
 <!-- Le javascript
