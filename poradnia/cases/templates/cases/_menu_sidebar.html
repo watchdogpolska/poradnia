@@ -1,0 +1,7 @@
+{%load i18n%}{% if perms.cases.can_assign %}
+<li><a href="{% url 'cases:list' %}?status=free"><i class="glyphicon glyphicon-question-sign"></i> {% trans 'Free cases'%}</a></li>
+{% endif %}
+{% if request.user.is_authenticated %}
+<li><a href="{% url 'cases:list' %}"><i class="glyphicon glyphicon-book"></i> {% trans 'Cases'%}</a></li>
+{% endif %}
+<li><a href="{% url 'letters:add' %}"><i class="glyphicon glyphicon-pencil"></i> {% trans 'New case'%}</a></li>

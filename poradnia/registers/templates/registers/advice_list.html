@@ -5,9 +5,6 @@
   <li class="active">{% trans 'Register' %}</li>
 </ol>
 
-{% crispy filter.form %}
-
-{% if object_list %}
 <div class="row">
     <div class="col-md-18">
         <div class="pull-left">
@@ -18,7 +15,9 @@
         </div>
     </div>
 </div>
+{% crispy filter.form %}
 
+{% if object_list %}
 <div class="row">
     <div class="col-md-18">
         <table class="table table-striped">
