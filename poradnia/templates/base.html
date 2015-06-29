@@ -68,7 +68,7 @@
         {% include 'cases/_menu_sidebar.html' %}
         </ul>
       </div>
-      <div class="col-sm-9 col-md-10 main">
+      <div class="col-sm-offset-3 col-md-10 col-md-offset-2 ">
         {% if messages %}
         {% for message in messages %}
         <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
