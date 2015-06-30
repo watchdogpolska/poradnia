@@ -2,7 +2,7 @@
 <div class="timeline-messange">
     <a href="#"><img src="{% avatar_url object.created_by %}" class="timeline-avatar"></a>
     {% if object.show_modifier %}<a href="#"><img src="{% avatar_url object.modified_by %}"></a>{% endif %}
-    <div class="panel {% if object.created_by.is_staff|yesno:'panel-default,panel-brand' %}  timeline-comment">
+    <div class="panel {{ object.created_by.is_staff|yesno:'panel-default,panel-brand' }}  timeline-comment">
         <div class="panel-heading"><span class="glyphicon glyphicon-envelope"></span> {{object}}</div>
         <div class="panel-body">
             <p>{{object.text|linebreaks}}</p>

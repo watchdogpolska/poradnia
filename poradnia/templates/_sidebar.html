@@ -1,0 +1,34 @@
+{%load i18n%}
+<div class="sidebar-header">
+	<a href="#">
+		<div class="logo"></div>
+		<p>Poradnia</p>
+	</a>
+</div>
+<div class="stats">
+	<ul>
+{# 		{% notifications_unread as unread_count%} #}
+		{% url 'notifications:all' as notification_all_url %}
+		<li><a href="{{notification_all_url}}"><div class="icon"><i class="fa fa-trophy"></i></div><div class="text">{{unread_count}}</div></a></li>
+		<li><a href=""><div class="icon"><i class="fa fa-envelope"></i></div><div class="text">2</div></a></li>
+	</ul>
+</div>
+<ul class="menu">
+	<li><a href="/"><i class="glyphicon glyphicon-home"></i> Home</a></li>
+	{% if request.user.is_authenticated %}
+	<li><a href="{% url 'registers:list' %}"><i class="glyphicon glyphicon-stats"></i> {% trans 'Advice list' %}</a></li>
+
+	{% if perms.cases.can_assign %}
+	<li><a href="{% url 'cases:list' %}?status=free"><i class="glyphicon glyphicon-question-sign"></i> {% trans 'Free cases'%}</a></li>
+	{% endif %}
+	{% if request.user.is_authenticated %}
+	<li><a href="{% url 'cases:list' %}"><i class="glyphicon glyphicon-book"></i> {% trans 'Cases'%}</a></li>
+	{% endif %}
+	<li><a href="{% url 'letters:add' %}"><i class="glyphicon glyphicon-pencil"></i> {% trans 'New case'%}</a></li>
+
+	<li><a href="{% url 'account_logout' %}"><i class="glyphicon glyphicon-log-out"></i> {% trans "Logout" %}</a></li>
+	{% else %}
+	<li><a href="{% url 'account_signup' %}"><i class="glyphicon glyphicon-user"></i> {% trans "Sign Up" %}</a></li>
+	<li><a href="{% url 'account_login' %}"><i class="glyphicon glyphicon-log-in"></i> {% trans "Log In" %}</a></li>
+	{% endif %}
+</ul>
