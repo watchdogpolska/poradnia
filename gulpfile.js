@@ -43,7 +43,7 @@ gulp.task('js', function(){
     return gulp.src(
         [
             config.bowerDir + '/jquery/dist/jquery.js',
-            config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.js',
+            // config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.js',
             config.bowerDir + '/moment/min/moment.min.js',
             // config.bowerDir + '/moment/min/locales.js',
             config.bowerDir + '/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',

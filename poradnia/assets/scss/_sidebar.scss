@@ -1,18 +1,101 @@
-.sidebar {
-    display: none;
+$menu-item-hover-bg: lighten($brand-primary, 10%) !default;
+$menu-item-selected-bg: darken($brand-primary, 10%) !default;
+
+$menu-item-padding-vertical: 0em !default;
+$menu-item-padding-horizontal: 1em !default;
+
+$menu-link-color: white !default;
+$menu-link-padding-vertical: .5em !default;
+$menu-link-padding-horizontal: .5em !default;
+
+$menu-inidicator-width: .4em !default;
+$menu-inidicator-color: $menu-link-color !default;
+
+.menu{
+	// background: 
+	list-style: none;
+	padding: 0;
+	> li{
+		display: block;
+		transition: .4s background-color;
+		padding: $menu-item-padding-vertical $menu-item-padding-horizontal;
+		> a {
+			display: block;
+			color: $menu-link-color;
+			padding: $menu-link-padding-vertical $menu-link-padding-horizontal;
+			font-style: none;
+			text-decoration: none;
+			> .fa, .glyphicon{
+				margin-right: 0.5em;
+			}
+		}
+		&:hover{
+			background: $menu-item-hover-bg;
+		}
+		&.is-selected{
+			background: $menu-item-selected-bg;
+			border-left: $menu-inidicator-width solid $menu-inidicator-color;
+			padding-left: #{ $menu-item-padding-horizontal - $menu-inidicator-width };
+		}
+	} 
 }
-@media (min-width: $screen-sm-min) {
-    .sidebar {
-        position: fixed;
-        top: 51px;
-        bottom: 0;
-        left: 0;
-        z-index: 1000;
-        display: block;
-        padding: 20px;
-        overflow-x: hidden;
-        overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
-        background-color: #f5f5f5;
-        border-right: 1px solid #eee;
-    }
+
+.stats{ 
+	>ul {
+		display: flex;
+		padding: 0;
+		margin: 0;
+		> li{
+			flex: 1;
+			color: white;
+			list-style: none;
+		}
+		&:last-child{
+			border-right: none;	
+		}
+	}
+	a{
+		height: 100%;
+		text-align: center;
+		display: block;
+		padding: $menu-link-padding-vertical $menu-link-padding-horizontal;
+		transition: .4s background-color;
+		&, &:hover, &:focus{
+			color: white;
+			text-decoration: none;
+		}
+		&:hover{
+			background: $menu-item-hover-bg;
+			
+		}
+	}
+}
+.sidebar{
+	background: $brand-primary;
+	transition: 2s;
+	height: 100%;
+	overflow-y: auto;
+	position: fixed;
+	z-index: #{ $zindex-navbar - 1};
+	width: 90%;
+	transform: translateX(-100%);
+	transition: 0.5s;
+	top: $navbar-height;
+	@media(min-width: $grid-float-breakpoint) {
+		/* height: auto; */
+		position: static;
+		width: auto;
+		display: block;
+		transform: none;
+	}
+	body.show-sidebar &{
+		transform: none;
+	}
+	&-header{
+		padding: 1em;
+		text-align: center;
+		a, a:focus, a:hover{
+			color: white;
+		}
+	}
 }
