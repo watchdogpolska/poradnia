@@ -79,6 +79,9 @@ class Case(models.Model):
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
 
+    def status_display(self):
+        return self.STATUS[self.status]
+
     def get_readed(self):
         try:
             obj = self.readed_set.all()[0]

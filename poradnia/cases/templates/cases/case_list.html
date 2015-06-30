@@ -1,5 +1,5 @@
 {% extends "cases/base.html" %}
-{% load crispy_forms_tags humanize i18n %}
+{% load crispy_forms_tags humanize i18n cases_tags %}
 
 {% block extra_css %}
 <style>
@@ -26,7 +26,7 @@
 <h1>
 {% if user or tag or status %}
 {% trans 'Cases' %} 
-{% if status %}{% blocktrans %}with case status {{ status}} {% endblocktrans %}{% endif %}
+{% if status %}{% blocktrans %}with case status {{ status }} {% endblocktrans %}{% endif %}
 {% if user_filter %}{% blocktrans with user_filter.get_absolute_url as user_link %}<a href="{{ user_link }}">{{ user_filter }}</a>{% endblocktrans %}{% endif %}
 {% if tag %}{% blocktrans %}tagged as {{ tag }}{% endblocktrans %}{% endif %}
 {% else %}
@@ -63,7 +63,7 @@
     {% endfor %}
   </tbody>
 </table>
-<p>{% blocktrans %}Legend: <span class="free">free</span>, <span class="open">open</span>, <span class="closed">closed</span>{% endblocktrans %}</p>
+<p>{% trans 'Legend' %}: {% for status in statuses %}<span class="label label-success"><i class="{{status.0|status2css}}"></i> {{status.0|status2display}}</span> {% endfor %}
 {% include 'pagination_custom/pager.html' with page=object_list %}
 {% else %}
 <p>{% trans 'There is no cases.' %}<a href="{% url 'letters:add' %}">{% trans 'Do more of these!' %}</a></p>

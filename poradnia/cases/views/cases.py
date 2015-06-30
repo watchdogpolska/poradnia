@@ -59,6 +59,7 @@ SORT_MAP = {'deadline': 'deadline__time',
 @login_required
 def list(request):
     context = {}
+    context['statuses'] = Case.STATUS
     object_list = (Case.objects.
                    # with_read_time(request.user).
                    for_user(request.user).

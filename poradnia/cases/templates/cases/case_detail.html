@@ -1,5 +1,5 @@
 {% extends 'cases/base.html' %}
-{% load guardian_tags crispy_forms_tags staticfiles humanize i18n %}
+{% load guardian_tags crispy_forms_tags staticfiles humanize i18n cases_tags %}
 {%block title%}{{object}} - {{block.super}}{%endblock%}
 {% block javascript %}
 {{block.super}}
@@ -38,12 +38,12 @@
       <h1 class="case-header-title">{{object.name}}<span class="case-header-number">#{{object.pk}}</span></h1>
       <div class="case-header-meta">
         {% if object.status_changed %}
-          <span class="label label-success" title="Ostatnia zmiana stanu: {{ object.status_changed }} dni temu"> <i class="fa fa-folder-open-o"></i> Open</span> 
+          <span class="label label-success" title="Ostatnia zmiana stanu: {{ object.status_changed }} dni temu"> <i class="{{object.status|status2css}}"></i> {{object.status_display}}</span> 
         {% else %}
           <span class="label label-success" title="Ostatnia zmiana 7 dni temu"> <i class="fa fa-folder-open-o"></i> {{ object.status }}</span> 
         {%endif%}
         Utworzona przez <a href="{{object.created_by.get_absolute_url}}">{{object.created_by}}</a> 
-        on {{object.created_on|naturaltime}} dla 
+        {{object.created_on|naturaltime}} dla 
         <a href="{{object.client.get_absolute_url}}">{{object.client}}</a> 
       </div>
     </div>
