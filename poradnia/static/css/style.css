@@ -9848,7 +9848,7 @@ button.close {
   background: #D82727;
   -webkit-transition: 2s;
           transition: 2s;
-  height: 100%;
+  height: 100vh;
   overflow-y: auto;
   position: fixed;
   z-index: 999;
