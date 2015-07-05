@@ -84,7 +84,8 @@ $block-list-inidicator-color: $block-list-link-color !default;
 .sidebar{
 	background: $brand-primary;
 	transition: 2s;
-	height: 100vh;
+	height: auto;
+	// min-height: 100vh;
 	overflow-y: auto;
 	position: fixed;
 	z-index: #{ $zindex-navbar - 1};
@@ -98,6 +99,7 @@ $block-list-inidicator-color: $block-list-link-color !default;
 		width: auto;
 		display: block;
 		transform: none;
+		height: 100%;
 	}
 	body.show-sidebar &{
 		transform: none;
