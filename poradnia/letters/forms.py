@@ -5,9 +5,10 @@ from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
-from .helpers import FormsetHelper
+import autocomplete_light
 from cases.models import Case
 from .models import Letter, Attachment
+from .helpers import FormsetHelper
 
 
 EMAIL_HELP_TEXT = _("The user account will be created automatically," +
@@ -34,9 +35,10 @@ class PartialMixin(object):
         return partial(cls, *args, **kwargs)
 
 
-class NewCaseForm(ModelForm, PartialMixin):
+class NewCaseForm(autocomplete_light.ModelForm, PartialMixin):
     client = forms.ModelChoiceField(queryset=get_user_model().objects.all(), label=_("Client"),
-        required=False, help_text=_("Leave empty to use email field and create a new one user."))
+        required=False, help_text=_("Leave empty to use email field and create a new one user."),
+        widget=autocomplete_light.ChoiceWidget('UserAutocomplete'))
     email = forms.EmailField(required=False, label=_("User e-mail"))
     email_registration = UserEmailField(required=True, help_text=_(EMAIL_HELP_TEXT),
         label=_("E-mail"))
