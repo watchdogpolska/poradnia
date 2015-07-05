@@ -1,7 +1,9 @@
 {% extends 'registers/base.html' %}
 {% load i18n humanize avatar_tags %}
 {%block title%}{{object}} - {{block.super}}{%endblock%}
-
+{% block breadcrumbs_rows %}
+    <li class="active">{{object}}</a>
+{% endblock %}
 {% block content %}
 <ol class="breadcrumb">
   <li><a href="{% url 'registers:list' %}">{% trans 'Register' %}</a></li>

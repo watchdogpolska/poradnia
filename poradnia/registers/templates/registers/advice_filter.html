@@ -1,9 +1,9 @@
 {% extends 'registers/base.html' %}
 {% load humanize i18n crispy_forms_tags %}
+{% block breadcrumbs_rows %}
+    <li class="active">{% trans 'Advice index'%}</li>
+{% endblock %}
 {% block content %}
-<ol class="breadcrumb">
-  <li class="active">{% trans 'Register' %}</li>
-</ol>
 
 <div class="row">
     <div class="col-md-18">

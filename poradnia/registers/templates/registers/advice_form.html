@@ -1,16 +1,15 @@
 {% extends 'registers/base.html' %}
 {% load crispy_forms_tags i18n %}
 
-{% block content %}
-<ol class="breadcrumb">
-  <li><a href="{% url 'registers:list' %}">{% trans 'Register'%}</a></li>
+{% block breadcrumbs_rows %}
   {% if object %}
     <li><a href="{{object.get_absolute_url }}">{{object}}</a></li>
     <li class="active">{% trans 'Update' %}</li>
   {% else %}
     <li class="active">{% trans 'Add' %}</li>
   {% endif %}
-</ol>
+{% endblock %}
+{% block content %}
 
 <div class="row">
   {% if object %}<h1>{{object}}</h1>{% endif %}

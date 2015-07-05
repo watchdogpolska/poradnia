@@ -9,13 +9,14 @@ from braces.views import (OrderableListMixin, SelectRelatedMixin, LoginRequiredM
 from ..filters import AdviceFilter
 from ..models import Advice
 from ..forms import AdviceForm
-from .mixins import PermissionMixin, ListFilteredMixin
+from .mixins import PermissionMixin
+from django_filters.views import FilterView
 
 
-class AdviceList(PermissionMixin, ListFilteredMixin, SelectRelatedMixin,
-        OrderableListMixin, ListView):
+class AdviceList(PermissionMixin, SelectRelatedMixin,
+        OrderableListMixin, FilterView):
     model = Advice
-    filter_set = AdviceFilter
+    filterset_class = AdviceFilter
     orderable_columns = ("id", "advicer", "person_kind", "institution_kind")
     orderable_columns_default = "created_on"
     select_related = ["person_kind", "created_by", "advicer", "institution_kind"]
@@ -29,13 +30,17 @@ class AdviceList(PermissionMixin, ListFilteredMixin, SelectRelatedMixin,
 class AdviceUpdate(PermissionMixin, FormValidMessageMixin, UserFormKwargsMixin, UpdateView):
     model = Advice
     form_class = AdviceForm
-    form_valid_message = _("{__unicode__} updated!")
+
+    def get_form_valid_message(self):
+        return _("{0} updated!").format(self.object)
 
 
 class AdviceCreate(FormValidMessageMixin, UserFormKwargsMixin, LoginRequiredMixin, CreateView):
     model = Advice
     form_class = AdviceForm
-    form_valid_message = _("{__unicode__} created!")
+
+    def get_form_valid_message(self):
+        return _("{0} created!").format(self.object)
 
 
 class AdviceDelete(PermissionMixin, DeleteView):

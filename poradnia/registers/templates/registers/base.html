@@ -1,3 +1,10 @@
 {% extends 'base.html' %}
 {% load i18n %}
-{% block title %}{% trans 'Register'%} - {{block.super}}{%endblock %}
+{% block title %}{% trans 'Advice list'%} - {{block.super}}{%endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+  <li><a href="{% url 'registers:list'%}">{% trans 'Advice list' %}</a></li>
+  {% block breadcrumbs_rows%}{% endblock %}
+</ol>
+{% endblock %}
