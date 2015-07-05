@@ -28,7 +28,7 @@ def detail(request, pk):
     case = get_object_or_404(qs, pk=pk)
     case.view_perm_check(request.user)
 
-    Readed.update(user=request.user, case=case)
+    # Readed.update(user=request.user, case=case)
 
     context['object'] = case
     context['forms'] = {}
@@ -132,7 +132,7 @@ def edit(request, pk):
 
 
 @login_required
-def permission(request, pk, limit='staff'):
+def permission(request, pk):
     context = {}
     case = get_object_or_404(Case, pk=pk)
     context['object'] = case
@@ -157,12 +157,8 @@ def permission(request, pk, limit='staff'):
             form = UserObjectPermissionsForm(user, case, request.POST or None, prefix=user.pk)
         context['form'][user] = form
 
-    staff_only = True if limit == 'staff' else False
-    context['staff_only'] = staff_only
-
     # Assign new permission
-    form = ManageObjectPermissionForm(case, request.POST or None,
-        staff_only=staff_only, user=request.user)
+    form = ManageObjectPermissionForm(case, request.POST or None, user=request.user)
     if request.method == 'POST':
         if form.is_valid():
             form.save_obj_perms()

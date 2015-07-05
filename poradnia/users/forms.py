@@ -5,6 +5,7 @@ from guardian.forms import BaseObjectPermissionsForm
 from guardian.shortcuts import get_users_with_perms
 from guardian.shortcuts import assign_perm
 from guardian.shortcuts import remove_perm
+import autocomplete_light
 from .models import User
 
 
@@ -19,7 +20,8 @@ class UserForm(forms.ModelForm):
 
 
 class ManageObjectPermissionForm(BaseObjectPermissionsForm):
-    users = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(), required=True)
+    users = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(), required=True,
+        widget=autocomplete_light.MultipleChoiceWidget('UserAutocomplete'))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
