@@ -10,6 +10,24 @@ from cases.models import Case
 from .models import Letter, Attachment
 
 
+EMAIL_HELP_TEXT = _("The user account will be created automatically," +
+    "so you have access to the archive and data about persons responsible for the case.")
+
+
+class UserEmailField(forms.EmailField):
+    def validate(self, value):
+        "Check if value consists only of unique user emails."
+
+        super(UserEmailField, self).validate(value)
+
+        if get_user_model().objects.filter(email=value).exists():
+            raise ValidationError(
+                _('E-mail %(email)s are already used. Please log in.'),
+                code='invalid',
+                params={'email': value},
+            )
+
+
 class PartialMixin(object):
     @classmethod
     def partial(cls, *args, **kwargs):
@@ -19,7 +37,9 @@ class PartialMixin(object):
 class NewCaseForm(ModelForm, PartialMixin):
     client = forms.ModelChoiceField(queryset=get_user_model().objects.all(), label=_("Client"),
         required=False, help_text=_("Leave empty to use email field and create a new one user."))
-    email = forms.EmailField(required=False)
+    email = forms.EmailField(required=False, label=_("User e-mail"))
+    email_registration = UserEmailField(required=True, help_text=_(EMAIL_HELP_TEXT),
+        label=_("E-mail"))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
@@ -31,16 +51,25 @@ class NewCaseForm(ModelForm, PartialMixin):
         else:
             self.fields['client'].initial = self.user
 
-    def clean(self):
+        if not self.user.is_anonymous():
+            del self.fields['email_registration']
 
+    def clean(self):
         if self.user.has_perm('cases.can_select_client') and \
                 not (self.cleaned_data.get('email') or self.cleaned_data.get('client')):
-            raise ValidationError(_("Have to enter 'email' or 'client'"))
-
+            raise ValidationError(_("Have to enter user email or select a client"))
         return self.cleaned_data
 
-    def get_client(self):
-        # If client selected - use it
+    def get_user(self):
+        if self.user.is_anonymous():
+            return get_user_model().objects.get_by_email_or_create(
+                self.cleaned_data['email_registration'])
+        return self.user
+
+    def get_client(self, user):
+        if self.user.is_anonymous() and self.cleaned_data['email_registration']:
+            return user
+
         if not self.user.has_perm('cases.can_select_client'):
             return self.user
         elif self.cleaned_data['client']:
@@ -49,18 +78,19 @@ class NewCaseForm(ModelForm, PartialMixin):
             return get_user_model().objects.get_by_email_or_create(self.cleaned_data['email'])
         return self.user
 
-    def get_case(self, client):
-        # Create new_case
-        case = Case(name=self.cleaned_data['name'], created_by=self.user, client=client)
+    def get_case(self, client, user):
+        case = Case(name=self.cleaned_data['name'], created_by=user, client=client)
         case.save()
         return case
 
     def save(self, commit=False, *args, **kwargs):
+        user = self.get_user()
+
         obj = super(NewCaseForm, self).save(commit=False, *args, **kwargs)
         obj.status = obj.STATUS.done
-        obj.created_by = self.user
-        obj.client = self.get_client()
-        obj.case = self.get_case(client=obj.client)
+        obj.created_by = user
+        obj.client = self.get_client(user)
+        obj.case = self.get_case(client=obj.client, user=user)
         if kwargs.get('commit', False):
             obj.save()
         return obj
@@ -136,7 +166,7 @@ class LetterForm(ModelForm, PartialMixin):
         self.helper.form_action = kwargs['instance'].get_edit_url()
         self.helper.form_method = 'post'
         super(LetterForm, self).__init__(*args, **kwargs)
-        if self.user.is_authenticated() and not self.user.has_perm('cases.can_send_to_client'):
+        if not self.user.has_perm('cases.can_send_to_client'):
             del self.fields['status']
 
     def save(self, commit=True, *args, **kwargs):

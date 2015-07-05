@@ -10,7 +10,10 @@ from .forms import NewCaseForm, AddLetterForm, LetterForm, SendLetterForm
 from .models import Letter
 
 
-@login_required
+REGISTRATION_TEXT = _("User  %(user)s registered! You will receive a password by mail. " +
+    "Log in to get access to archive")
+
+
 def new_case(request):
     context = {}
 
@@ -28,7 +31,10 @@ def new_case(request):
                 messages.success(request,
                     _("Case about %(object)s created!") % {'object': obj, })
                 if obj.created_by != obj.client:
-                    obj.client.notify(actor=request.user, verb='created', target=obj, from_email=obj.case.get_email())
+                    obj.client.notify(actor=request.user, verb='created', target=obj,
+                        from_email=obj.case.get_email())
+                if request.user.is_anonymous():
+                    messages.success(request, _(REGISTRATION_TEXT) % {'user': obj.created_by, })
                 formset.save()
                 return HttpResponseRedirect(obj.case.get_absolute_url())
     else:
@@ -56,8 +62,8 @@ def add(request, case_pk):
             formset = AttachmentFormSet(request.POST, request.FILES, instance=obj)
             if formset.is_valid():
                 obj.save()
-                messages.success(request,
-                    _("Letter %(object)s created!") % {'object': obj, })
+                messages.success(request, _("Letter %(object)s created!") % {'object': obj, })
+  
                 formset.save()
                 return HttpResponseRedirect(case.get_absolute_url())
     else:
