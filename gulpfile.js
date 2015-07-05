@@ -12,72 +12,94 @@ var fs          = require('fs'),
 
 var config = function(){
     var appName = json.name;
+
+    var path = {
+        'bower'  : './bower_components/',
+        'assets' : './' + appName + '/assets',
+        'static' : './' + appName + '/static'
+    };
+
     return {
-         'bowerDir'   : './bower_components/' ,
-        'assetsDir'  : './' + appName + '/assets',
-         'scssDir'    : './' + appName + '/assets/scss',
-        'jsAssetDir' : './' + appName + '/assets/js',
-        'staticDir'  : './' + appName + '/static',
-        'cssDir'     : './' + appName + '/static/css',   
-        'jsDir'      : './' + appName + '/static/js',   
-        'fontsDir'   : './' + appName + '/static/fonts',   
+        'path': path,
+        'scss': {
+            'input': path.assets + '/scss/style.scss',
+            'include': [
+                path.bower  + '/bootstrap-sass/assets/stylesheets',
+                path.bower  + '/font-awesome/scss',
+                path.assets + '/scss/'
+            ],
+            'output': path.static + "/css",
+            'watch': [
+                path.assets + '/scss/**.scss',
+
+            ]
+        },
+        'icons':{
+            'input': [
+                path.bower + '/font-awesome/fonts/**.*',
+                path.bower + '/bootstrap-sass/assets/fonts/**/*.*'
+            ],
+            'output': path.static + "/fonts"
+        },
+        'script':{
+            'input' : [
+                path.bower  + '/jquery/dist/jquery.js',
+                // path.bower + '/bootstrap-sass/assets/javascripts/bootstrap.js',
+                path.bower  + '/moment/min/moment.min.js',
+                // path.bower + '/moment/min/locales.js',
+                path.bower  + '/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
+                path.assets + '/js/*.js'
+            ],
+            'output': {
+                'dir'     : path.static + "/js",
+                'filename': 'script.js'
+            },
+            'watch': [
+                path.assets + '/js/*.js'
+            ]
+        }
     }
 }();
 
 gulp.task('bower', function() { 
-    return bower(config.bowerDir)
-          .pipe(gulp.dest('./aaaaa')) 
+    return bower(config.path.bower);
 });
 
 gulp.task('icons', function() { 
-    return gulp.src(
-        [
-            config.bowerDir + '/font-awesome/fonts/**.*',
-            config.bowerDir + '/bootstrap-sass/assets/fonts/**/*.*'
-        ]) 
-         .pipe(gulp.dest(config.fontsDir)); 
+    return gulp.src(config.icons.input) 
+          .pipe(gulp.dest(config.icons.output)); 
 });
 
 gulp.task('js', function(){
-    // return gulp.src([config.bowerDir + '/jquery/dist/jquery.js']).pipe(uglify('script.js')).pipe(gulp.dest(config.jsDir));
-    return gulp.src(
-        [
-            config.bowerDir + '/jquery/dist/jquery.js',
-            // config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.js',
-            config.bowerDir + '/moment/min/moment.min.js',
-            // config.bowerDir + '/moment/min/locales.js',
-            config.bowerDir + '/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
-            config.jsAssetDir + '/*.js'
-        ])
-        .pipe(uglify('script.js'))
-        .pipe(gulp.dest(config.jsDir))
+    return gulp.src(config.script.input)
+        .pipe(uglify(config.script.output.filename))
+        .pipe(gulp.dest(config.script.output.dir))
         .pipe(livereload());
 });
+
 gulp.task('scss', function() { 
     return sass(
-        config.scssDir + '/style.scss',
-        {
-            style: 'expanded',
-             loadPath: [
-                  config.bowerDir + '/bootstrap-sass/assets/stylesheets',
-                 config.bowerDir + '/font-awesome/scss',
-                 config.scssDir
-            ], 
-              sourcemap: true,
-               trace: true
-         }) 
-         .pipe(prefix("last 1 version", "> 1%", "ie 8", "ie 7"))
-        // .pipe(csslint())
-        // .pipe(csslint.reporter())
-         .pipe(gulp.dest(config.cssDir))
-          .pipe(livereload()); 
+            config.scss.input,
+            {
+                style: 'expanded', 
+                loadPath: config.scss.include,
+                sourcemap: true
+            }
+        ) 
+        .pipe(prefix("last 1 version", "> 1%", "ie 8", "ie 7"))
+        .pipe(gulp.dest(config.scss.output))
+          .pipe(livereload()); 
 });
 
 // Rerun the task when a file changes
  gulp.task('watch', function() {
-     livereload.listen();
-     gulp.watch(config.scssDir + "/**/*.scss", ['scss']); 
-     gulp.watch(config.jsAssetDir + "/**/*.js", ['js']); 
+     livereload.listen();
+    config.scss.watch.forEach(function(path){
+        gulp.watch(path, ['scss']); 
+    })
+    config.script.watch.forEach(function(path){
+        gulp.watch(path, ['js']); 
+    })
 });
 
-  gulp.task('default', ['bower', 'icons', 'scss']);
+  gulp.task('default', ['bower', 'icons', 'scss', 'watch']);
