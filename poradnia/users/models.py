@@ -49,10 +49,10 @@ class User(AbstractUser):
     objects = CustomUserManager()
 
     def __unicode__(self):
-
         if self.first_name or self.last_name:
             text = "{0} {1}".format(self.first_name, self.last_name)
-        text = self.username
+        else:
+            text = self.username
         if self.is_staff:
             text += ' (team)'
         return text
