@@ -9,7 +9,7 @@ from cases.models import Case
 
 
 class AbstractCategory(models.Model):
-    name = models.CharField(max_length=50, verbose_name=("Name"))
+    name = models.CharField(max_length=50, verbose_name=_("Name"))
 
     def __unicode__(self):
         return self.name

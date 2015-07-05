@@ -46,6 +46,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        {% include 'pagination_custom/pager.html' with page=page_obj %}
     </div>
 </div>
 {% else %}

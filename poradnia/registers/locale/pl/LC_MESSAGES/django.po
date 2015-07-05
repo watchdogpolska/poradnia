@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: registers 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-05 09:17-0700\n"
-"PO-Revision-Date: 2015-07-05 18:17+0100\n"
+"POT-Creation-Date: 2015-07-05 10:37-0700\n"
+"PO-Revision-Date: 2015-07-05 19:38+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -35,6 +35,10 @@ msgstr "Utworzone o"
 #: forms.py:19
 msgid "Select from cases which do you have a permission"
 msgstr "Wybór spośród spraw do których masz uprawnienia"
+
+#: models.py:12
+msgid "Name"
+msgstr "Nazwa"
 
 #: models.py:48 templates/registers/advice_detail.html:37
 msgid "Case"
@@ -95,13 +99,12 @@ msgstr "Może oglądać wszystkie porady"
 
 #: templates/registers/_sidebar.html:4
 #: templates/registers/advice_detail.html:7
-#: templates/registers/advice_form.html:7
+#: templates/registers/advice_form.html:6
 #: templates/registers/advice_list.html:5 templates/registers/base.html:3
 msgid "Register"
 msgstr "Rejestr"
 
 #: templates/registers/_sidebar.html:7
-#| msgid "Advice #%d"
 msgid "Advice list"
 msgstr "Rejestr porad"
 
@@ -111,7 +114,7 @@ msgid "Delete %(object)s"
 msgstr "Usunięto %(object)s"
 
 #: templates/registers/advice_confirm_delete.html:8
-#: templates/registers/advice_form.html:23
+#: templates/registers/advice_form.html:24
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -158,7 +161,17 @@ msgstr ""
 "%(modified_by)s <time datetime=\"%(modified_on_date)s\">"
 "%(modified_on_natural)s</time>"
 
-#: templates/registers/advice_form.html:22
+#: templates/registers/advice_form.html:9
+#| msgid "Updating"
+msgid "Update"
+msgstr "Aktualizowanie"
+
+#: templates/registers/advice_form.html:11
+#: templates/registers/advice_list.html:14
+msgid "Add"
+msgstr "Dodaj"
+
+#: templates/registers/advice_form.html:23
 msgid "Save changes"
 msgstr "Zapisz zmiany"
 
@@ -166,42 +179,35 @@ msgstr "Zapisz zmiany"
 msgid "Record advices"
 msgstr "Rejestr porad"
 
-#: templates/registers/advice_list.html:14
-msgid "Add"
-msgstr "Dodaj"
-
-#: views.py:62
-msgid "Updated advice"
-msgstr "Aktualizacja porady"
-
-#: views.py:65
+#: views/advice.py:32
 #, python-brace-format
-msgid "{0} updated!"
-msgstr "{0} zaktualizowany!"
+#| msgid "{0} updated!"
+msgid "{__unicode__} updated!"
+msgstr "{__unicode__} zaktualizowany!"
 
-#: views.py:71
-msgid "New advice"
-msgstr "Nowa sprawa"
-
-#: views.py:79
+#: views/advice.py:38
 #, python-brace-format
-msgid "{0} created!"
-msgstr "{0} utworzony!"
+#| msgid "{0} created!"
+msgid "{__unicode__} created!"
+msgstr "{__unicode__} utworzony!"
 
-#: views.py:84
-msgid "Removal advice"
-msgstr "Usuwanie porady"
-
-#: views.py:88
+#: views/advice.py:44
 #, python-brace-format
-msgid "{0} deleted!"
-msgstr "{0} usunięto!"
+#| msgid "{0} deleted!"
+msgid "{__unicode__} deleted!"
+msgstr "{__unicode__} usunięto!"
+
+#~ msgid "Updated advice"
+#~ msgstr "Aktualizacja porady"
+
+#~ msgid "New advice"
+#~ msgstr "Nowa sprawa"
+
+#~ msgid "Removal advice"
+#~ msgstr "Usuwanie porady"
 
 #~ msgid "Record index"
 #~ msgstr "Wykaz wpisów"
-
-#~ msgid "Updating"
-#~ msgstr "Aktualizowanie"
 
 #~ msgid "Creating"
 #~ msgstr "Tworzenie"
