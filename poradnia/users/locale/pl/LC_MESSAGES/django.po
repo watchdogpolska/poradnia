@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-05 12:54-0700\n"
-"PO-Revision-Date: 2015-07-05 21:54+0100\n"
+"POT-Creation-Date: 2015-07-05 13:12-0700\n"
+"PO-Revision-Date: 2015-07-05 22:12+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -19,7 +19,7 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: models.py:86 templates/users/user_detail.html:17
+#: models.py:86 templates/users/user_detail.html:21
 msgid "Description"
 msgstr "Opis"
 
@@ -27,18 +27,17 @@ msgstr "Opis"
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: models.py:90 templates/users/profile_form.html:4
-#| msgid "Your profile"
+#: models.py:90 templates/users/profile_form.html:7
+#: templates/users/profile_form.html:10 templates/users/user_detail.html:31
 msgid "Profile"
 msgstr "Profil"
 
 #: models.py:91
-#| msgid "Your profile"
 msgid "Profiles"
 msgstr "Profile"
 
 #: templates/users/_sidebar.html:3 templates/users/user_detail.html:3
-#: templates/users/user_form.html:4 templates/users/user_form.html.py:10
+#: templates/users/user_form.html:4 templates/users/user_form.html.py:15
 msgid "User"
 msgstr "Użytkownik"
 
@@ -62,31 +61,41 @@ msgstr "Rejestracja"
 msgid "Log In"
 msgstr "Zaloguj"
 
-#: templates/users/user_detail.html:14
-msgid "Users are member of staff."
-msgstr "Użytkownik jest członkiem zespołu"
-
-#: templates/users/user_detail.html:26
-msgid "My Info"
-msgstr "Moje informacje"
-
-#: templates/users/user_detail.html:28
-msgid "Avatar"
-msgstr "Avatar"
-
-#: templates/users/user_detail.html:31
-msgid "Cases"
-msgstr "Sprawy"
-
-#: templates/users/user_form.html:16
-msgid "Update"
-msgstr "Aktualizuj"
-
-#: templates/users/user_list.html:19
+#: templates/users/base.html:5 templates/users/user_list.html:23
 msgid "Users"
 msgstr "Użytkownicy"
 
-#: templates/users/user_list.html:22
+#: templates/users/user_detail.html:18
+msgid "Users are member of staff."
+msgstr "Użytkownik jest członkiem zespołu"
+
+#: templates/users/user_detail.html:30
+msgid "My Info"
+msgstr "Moje informacje"
+
+#: templates/users/user_detail.html:33
+msgid "Avatar"
+msgstr "Avatar"
+
+#: templates/users/user_detail.html:36
+msgid "Cases"
+msgstr "Sprawy"
+
+#: templates/users/user_form.html:8
+msgid "Account"
+msgstr "Konto"
+
+#: templates/users/user_form.html:21
+msgid "Update"
+msgstr "Aktualizuj"
+
+#: templates/users/user_list.html:4 templates/users/user_list.html.py:7
+#, fuzzy
+#| msgid "Users list"
+msgid "Users index"
+msgstr "Wykaz użytkowników"
+
+#: templates/users/user_list.html:26
 msgid ""
 "You don't have access to data of all our users. Mostly you have access to "
 "staff and own profile."

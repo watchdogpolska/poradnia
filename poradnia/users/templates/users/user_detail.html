@@ -1,6 +1,10 @@
-{% extends "base.html" %}
+{% extends "users/base.html" %}
 {% load avatar_tags static i18n %}
 {% block title %}{% trans 'User'%}: {{ object.get_nicename }} - {{block.super}}{% endblock %}
+
+{% block breadcrumbs_rows%}
+    <li class="active">{{ object }}</li>
+{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -24,11 +28,12 @@
     
     {% if object == request.user %}
     <a class="btn btn-primary" href="{% url 'users:update' %}">{% trans 'My Info' %}</a>
+    <a class="btn btn-info" href="{% url 'users:profile' %}">{% trans 'Profile' %}</a>
     {# <a class="btn btn-primary" href="{% url 'account_email' %}">{% trans 'E-Mail'%}</a> #}
     <a class="btn btn-info" href="{% url 'avatar_change' %}">{% trans 'Avatar'%}</a>
     {% endif %}
     {% if object == request.user or perms.case.can_view_all %}
-    <a class="btn btn-info" href="{% url 'cases:list' %}?user={{object.username}}">{% trans 'Cases'%}</a>
+    <a class="btn btn-info" href="{% url 'cases:list' %}?user={{object.username}}"><i class="glyphicon glyphicon-book"></i> {% trans 'Cases'%}</a>
     {% endif %}
   </div>
 

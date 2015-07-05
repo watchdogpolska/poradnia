@@ -1,7 +1,12 @@
-{% extends "base.html" %}
+{% extends "users/base.html" %}
 {% load crispy_forms_tags i18n %}
 
 {% block title %}{% trans 'User'%}: {{ user.username }} - {{block.super}}{% endblock %}
+
+{% block breadcrumbs_rows%}
+    <li><a href="{{user.get_absolute_url}}">{{user}}</a></li>
+    <li class="active">{% trans 'Account' %}</li>
+{% endblock %}
 
 {% block content %}
 

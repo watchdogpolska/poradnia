@@ -8,7 +8,7 @@ from django.views.generic import UpdateView
 from django.views.generic import ListView
 
 # Only authenticated users can access views using this.
-from braces.views import LoginRequiredMixin
+from braces.views import LoginRequiredMixin, SetHeadlineMixin
 
 # Import the form from users/forms.py
 from .forms import UserForm, ProfileForm
