@@ -33,6 +33,7 @@ urlpatterns = patterns('',
     url(r'^letters/', include('letters.urls', namespace='letters')),
     url(r'^event/', include('events.urls', namespace='events')),
     url(r'^advice/', include('registers.urls', namespace='registers')),
+    url(r'^autocomplete/', include('autocomplete_light.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

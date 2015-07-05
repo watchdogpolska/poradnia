@@ -20,46 +20,6 @@
 		</li>
 	</ul>
 </div>
-<div class="block-list">
-	<div class="block-list-header">{% trans 'User'%}</div>
-	<ul class="block-list-list">
-
-		{% if request.user.is_authenticated %}
-			<li class="block-list-item">
-				<a href="{% url 'account_logout' %}"><i class="glyphicon glyphicon-log-out"></i> {% trans "Logout" %}</a>
-			</li>
-		{% else %}
-		    <li class="block-list-item">
-		    	<a href="{% url 'account_signup' %}"><i class="glyphicon glyphicon-user"></i> {% trans "Sign Up" %}</a>
-		    </li>
-        	<li class="block-list-item">
-        		<a href="{% url 'account_login' %}"><i class="glyphicon glyphicon-log-in"></i> {% trans "Log In" %}</a>
-        	</li>
-		{% endif %}
-	</ul>
-</div>
-{% if request.user.is_authenticated and request.user.is_staff %}
-<div class="block-list">
-	<div class="block-list-header">{% trans 'Register'%}</div>
-	<ul class="block-list-list">
-		<li class="block-list-item">
-		 	<a href="{% url 'registers:list' %}"><i class="glyphicon glyphicon-stats"></i> {% trans 'Advice list' %}</a>
-		</li>
-		{% if perms.cases.can_assign %}
-		<li class="block-list-item">
-		 	<a href="{% url 'registers:list' %}?status=free"><i class="glyphicon glyphicon-question-sign"></i> {% trans 'Free cases'%}</a>
-		</li>
-		{% endif%}
-
-	</ul>
-</div>
-{% endif %}
-{% if request.user.is_authenticated and request.user.is_staff %}
-<div class="block-list">
-	<div class="block-list-header">{% trans 'Files'%}</div>
-	<ul class="block-list-list">
-		<li class="block-list-item"><a href="{% url 'letters:add' %}"><i class="glyphicon glyphicon-pencil"></i> {% trans 'New case'%}</a></li>
-	</ul>
-</div>
-{% endif %}
-
+{% include 'users/_sidebar.html' %}
+{% include 'registers/_sidebar.html' %}
+{% include 'cases/_sidebar.html' %}

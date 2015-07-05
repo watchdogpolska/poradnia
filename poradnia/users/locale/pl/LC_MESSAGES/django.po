@@ -1,0 +1,54 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: pl_PL\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-07-05 09:18-0700\n"
+"PO-Revision-Date: 2015-07-05 18:18+0100\n"
+"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"Language: pl_PL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.5.4\n"
+
+#: templates/users/_sidebar.html:3
+#| msgid "Users"
+msgid "User"
+msgstr "Użytkownik"
+
+#: templates/users/_sidebar.html:7
+#| msgid "Users"
+msgid "Users list"
+msgstr "Wykaz użytkowników"
+
+#: templates/users/_sidebar.html:10
+msgid "Logout"
+msgstr "Wyloguj"
+
+#: templates/users/_sidebar.html:14
+msgid "Sign Up"
+msgstr "Rejestracja"
+
+#: templates/users/_sidebar.html:17
+msgid "Log In"
+msgstr "Zaloguj"
+
+#: templates/users/user_list.html:19
+msgid "Users"
+msgstr "Użytkownicy"
+
+#: templates/users/user_list.html:22
+msgid ""
+"You don't have access to data of all our users. Mostly you have access to "
+"staff and own profile."
+msgstr ""
+"Nie masz dostepu do danych wszystkich użytkowników. W większości tylko do "
+"profilu członków zespołu i swojego."

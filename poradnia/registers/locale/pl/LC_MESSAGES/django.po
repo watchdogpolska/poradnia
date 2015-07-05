@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: registers 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-15 07:40-0700\n"
-"PO-Revision-Date: 2015-05-15 16:40+0100\n"
+"POT-Creation-Date: 2015-07-05 09:17-0700\n"
+"PO-Revision-Date: 2015-07-05 18:17+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -19,6 +19,19 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
+#: filters.py:14 models.py:59 templates/registers/advice_detail.html:72
+#: templates/registers/advice_list.html:28
+msgid "Advicer"
+msgstr "Radzący"
+
+#: filters.py:19 models.py:63 templates/registers/advice_list.html:27
+msgid "Created by"
+msgstr "Utworzone przez"
+
+#: filters.py:21 models.py:65 templates/registers/advice_list.html:26
+msgid "Created on"
+msgstr "Utworzone o"
+
 #: forms.py:19
 msgid "Select from cases which do you have a permission"
 msgstr "Wybór spośród spraw do których masz uprawnienia"
@@ -27,7 +40,7 @@ msgstr "Wybór spośród spraw do których masz uprawnienia"
 msgid "Case"
 msgstr "Sprawa"
 
-#: models.py:49 templates/registers/advice_list.html:30
+#: models.py:49 templates/registers/advice_list.html:29
 msgid "Subject"
 msgstr "Przedmiot"
 
@@ -43,14 +56,9 @@ msgstr "Obszar"
 msgid "Kind of person "
 msgstr "Rodzaj osoby"
 
-#: models.py:56 templates/registers/advice_list.html:32
+#: models.py:56 templates/registers/advice_list.html:31
 msgid "Kind of institution"
 msgstr "Rodzaj podmiotu zobowiązanego"
-
-#: models.py:59 templates/registers/advice_detail.html:72
-#: templates/registers/advice_list.html:29
-msgid "Advicer"
-msgstr "Radzący"
 
 #: models.py:59
 msgid "Person who give a advice"
@@ -59,14 +67,6 @@ msgstr "Osoba, która udzieliła porady"
 #: models.py:61 templates/registers/advice_detail.html:30
 msgid "Grant on"
 msgstr "Udzielona o"
-
-#: models.py:63 templates/registers/advice_list.html:28
-msgid "Created by"
-msgstr "Utworzone przez"
-
-#: models.py:65 templates/registers/advice_list.html:27
-msgid "Created on"
-msgstr "Utworzone o"
 
 #: models.py:69
 msgid "Modified by"
@@ -93,6 +93,18 @@ msgstr "Porada #%d"
 msgid "Can view all advices"
 msgstr "Może oglądać wszystkie porady"
 
+#: templates/registers/_sidebar.html:4
+#: templates/registers/advice_detail.html:7
+#: templates/registers/advice_form.html:7
+#: templates/registers/advice_list.html:5 templates/registers/base.html:3
+msgid "Register"
+msgstr "Rejestr"
+
+#: templates/registers/_sidebar.html:7
+#| msgid "Advice #%d"
+msgid "Advice list"
+msgstr "Rejestr porad"
+
 #: templates/registers/advice_confirm_delete.html:7
 #, python-format
 msgid "Delete %(object)s"
@@ -103,12 +115,6 @@ msgstr "Usunięto %(object)s"
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: templates/registers/advice_detail.html:7
-#: templates/registers/advice_form.html:7
-#: templates/registers/advice_list.html:5 templates/registers/base.html:3
-msgid "Register"
-msgstr "Rejestr"
-
 #: templates/registers/advice_detail.html:16
 msgid "Edit"
 msgstr "Edytuj"
@@ -118,7 +124,7 @@ msgid "Delete"
 msgstr "Usuń"
 
 #: templates/registers/advice_detail.html:59
-#: templates/registers/advice_list.html:31
+#: templates/registers/advice_list.html:30
 msgid "Kind of person"
 msgstr "Rodzaj osoby"
 
@@ -156,12 +162,11 @@ msgstr ""
 msgid "Save changes"
 msgstr "Zapisz zmiany"
 
-#: templates/registers/advice_list.html:14
-#| msgid "Removal advice"
+#: templates/registers/advice_list.html:11
 msgid "Record advices"
 msgstr "Rejestr porad"
 
-#: templates/registers/advice_list.html:17
+#: templates/registers/advice_list.html:14
 msgid "Add"
 msgstr "Dodaj"
 
