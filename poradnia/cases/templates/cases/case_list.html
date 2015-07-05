@@ -36,7 +36,7 @@
 
 
 {% if object_list %}
-<table class="table">
+<table class="table  table-striped">
   <thead><tr>
     <th>{% trans 'ID' %} {% include 'cases/_order_link.html' with column="pk" %}</th>
     <th>{% trans 'Client' %} {% include 'cases/_order_link.html' with column="client" %}</th>
@@ -48,9 +48,10 @@
   <tbody>
     {% for object in object_list %}
     <tr>
-      <td class="{{ object.status }}">{{ object.pk }}</td>
+      <td>{{ object.pk }}</td>
       <td><a href="{{ object.client.get_absolute_url }}">{{ object.client }}</a></td>
       <td>
+        <span class="{{object.status|status2css}}">
         <a href="{{ object.get_absolute_url }}">{{ object.name }}</a> 
         ({{ object.letter_count }})
         {% if object.deadline.time %}<span class="label label-warning"><span class="glyphicon glyphicon-fire"></span> {{ object.deadline.time }}</span>{% endif%}
