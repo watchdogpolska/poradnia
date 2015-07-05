@@ -52,6 +52,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         # Only get the User record for the user making the request
         return User.objects.get(username=self.request.user.username)
 
+
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ProfileForm
     model = Profile
