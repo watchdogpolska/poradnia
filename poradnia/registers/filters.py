@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
 import django_filters
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout
@@ -9,13 +10,15 @@ from .models import Advice
 class AdviceFilter(django_filters.FilterSet):
     advicer = django_filters.ModelChoiceFilter(
         queryset=get_user_model().objects.all(),
-        widget=autocomplete_light.ChoiceWidget('UserAutocomplete')
+        widget=autocomplete_light.ChoiceWidget('UserAutocomplete'),
+        label=_("Advicer"),
         )
     created_by = django_filters.ModelChoiceFilter(
         queryset=get_user_model().objects.all(),
-        widget=autocomplete_light.ChoiceWidget('UserAutocomplete')
+        widget=autocomplete_light.ChoiceWidget('UserAutocomplete'),
+        label=_("Created by"),
         )
-    created_on = django_filters.DateRangeFilter()
+    created_on = django_filters.DateRangeFilter(label=_("Created on"))
 
     @property
     def form(self):

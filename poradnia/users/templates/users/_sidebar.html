@@ -1,0 +1,25 @@
+{% load i18n%}
+<div class="block-list">
+    <div class="block-list-header">{% trans 'User'%}</div>
+    <ul class="block-list-list">
+        
+        {% if request.user.is_authenticated %}
+            <li class="block-list-item">
+                <a href="{% url 'users:detail' username=request.user.username%}"><i class="fa fa-user"></i> {% trans "Your profile" %}</a>
+            </li>
+            <li class="block-list-item">
+                <a href="{% url 'users:list' %}"><i class="glyphicon glyphicon-log-out"></i> {% trans "Users list" %}</a>
+            </li>
+            <li class="block-list-item">
+                <a href="{% url 'account_logout' %}"><i class="glyphicon glyphicon-log-out"></i> {% trans "Logout" %}</a>
+            </li>
+        {% else %}
+            <li class="block-list-item">
+                <a href="{% url 'account_signup' %}"><i class="glyphicon glyphicon-user"></i> {% trans "Sign Up" %}</a>
+            </li>
+            <li class="block-list-item">
+                <a href="{% url 'account_login' %}"><i class="glyphicon glyphicon-log-in"></i> {% trans "Log In" %}</a>
+            </li>
+        {% endif %}
+    </ul>
+</div>
