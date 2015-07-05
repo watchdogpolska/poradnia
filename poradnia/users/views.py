@@ -11,10 +11,10 @@ from django.views.generic import ListView
 from braces.views import LoginRequiredMixin
 
 # Import the form from users/forms.py
-from .forms import UserForm
+from .forms import UserForm, ProfileForm
 
 # Import the customized User model
-from .models import User
+from .models import User, Profile
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
@@ -51,6 +51,18 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     def get_object(self):
         # Only get the User record for the user making the request
         return User.objects.get(username=self.request.user.username)
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    form_class = ProfileForm
+    model = Profile
+
+    def get_success_url(self):
+        return reverse("users:detail",
+                       kwargs={"username": self.request.user.username})
+
+    def get_object(self):
+        # Only get the User record for the user making the request
+        return Profile.objects.get_or_create(user=self.request.user)[0]
 
 
 class UserListView(ListView):

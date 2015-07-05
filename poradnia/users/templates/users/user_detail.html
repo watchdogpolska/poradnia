@@ -1,7 +1,6 @@
 {% extends "base.html" %}
-{% load avatar_tags %}
-{% load static %}
-{% block title %}User: {{ object.username }}{% endblock %}
+{% load avatar_tags static i18n %}
+{% block title %}{% trans 'User'%}: {{ object.get_nicename }} - {{block.super}}{% endblock %}
 
 {% block content %}
 <div class="row">
@@ -9,17 +8,27 @@
     <h2>{{ object.username }}</h2>
   </div>
 </div>
+<div class="row">
+  <div class="col-sm-12 ">
+    {% if object.is_staff %}
+      <p>{% trans 'Users are member of staff.'%}</p>
+    {% endif %}
+    {% if object.description %}
+    <div><span><b>{% trans 'Description'%}:</b></span>{{object.description}}</div>
+    {% endif %}
+  </div>
+</div>
 {% if object == request.user or perms.case.can_view_all %}
 <div class="row">
-
   <div class="col-sm-12 ">
+    
     {% if object == request.user %}
-    <a class="btn btn-primary" href="{% url 'users:update' %}">My Info</a>
-    <a class="btn btn-primary" href="{% url 'account_email' %}">E-Mail</a>
-    <a class="btn btn-info" href="{% url 'avatar_change' %}">Avatar</a>
+    <a class="btn btn-primary" href="{% url 'users:update' %}">{% trans 'My Info' %}</a>
+    {# <a class="btn btn-primary" href="{% url 'account_email' %}">{% trans 'E-Mail'%}</a> #}
+    <a class="btn btn-info" href="{% url 'avatar_change' %}">{% trans 'Avatar'%}</a>
     {% endif %}
     {% if object == request.user or perms.case.can_view_all %}
-    <a class="btn btn-info" href="{% url 'cases:list' %}?user={{object.username}}">Cases</a>
+    <a class="btn btn-info" href="{% url 'cases:list' %}?user={{object.username}}">{% trans 'Cases'%}</a>
     {% endif %}
   </div>
 

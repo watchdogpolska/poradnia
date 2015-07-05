@@ -6,7 +6,7 @@ from guardian.shortcuts import get_users_with_perms
 from guardian.shortcuts import assign_perm
 from guardian.shortcuts import remove_perm
 import autocomplete_light
-from .models import User
+from .models import User, Profile
 
 
 class UserForm(forms.ModelForm):
@@ -17,6 +17,13 @@ class UserForm(forms.ModelForm):
 
         # Constrain the UserForm to just these fields.
         fields = ("first_name", "last_name")
+
+
+class ProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ("description", "www")
 
 
 class ManageObjectPermissionForm(BaseObjectPermissionsForm):

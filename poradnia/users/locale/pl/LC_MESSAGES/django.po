@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-05 10:51-0700\n"
-"PO-Revision-Date: 2015-07-05 19:51+0100\n"
+"POT-Creation-Date: 2015-07-05 12:54-0700\n"
+"PO-Revision-Date: 2015-07-05 21:54+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -19,7 +19,26 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: templates/users/_sidebar.html:3
+#: models.py:86 templates/users/user_detail.html:17
+msgid "Description"
+msgstr "Opis"
+
+#: models.py:87
+msgid "Homepage"
+msgstr "Strona domowa"
+
+#: models.py:90 templates/users/profile_form.html:4
+#| msgid "Your profile"
+msgid "Profile"
+msgstr "Profil"
+
+#: models.py:91
+#| msgid "Your profile"
+msgid "Profiles"
+msgstr "Profile"
+
+#: templates/users/_sidebar.html:3 templates/users/user_detail.html:3
+#: templates/users/user_form.html:4 templates/users/user_form.html.py:10
 msgid "User"
 msgstr "Użytkownik"
 
@@ -42,6 +61,26 @@ msgstr "Rejestracja"
 #: templates/users/_sidebar.html:21
 msgid "Log In"
 msgstr "Zaloguj"
+
+#: templates/users/user_detail.html:14
+msgid "Users are member of staff."
+msgstr "Użytkownik jest członkiem zespołu"
+
+#: templates/users/user_detail.html:26
+msgid "My Info"
+msgstr "Moje informacje"
+
+#: templates/users/user_detail.html:28
+msgid "Avatar"
+msgstr "Avatar"
+
+#: templates/users/user_detail.html:31
+msgid "Cases"
+msgstr "Sprawy"
+
+#: templates/users/user_form.html:16
+msgid "Update"
+msgstr "Aktualizuj"
 
 #: templates/users/user_list.html:19
 msgid "Users"
