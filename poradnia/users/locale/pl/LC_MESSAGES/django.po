@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-05 09:18-0700\n"
-"PO-Revision-Date: 2015-07-05 18:18+0100\n"
+"POT-Creation-Date: 2015-07-05 10:51-0700\n"
+"PO-Revision-Date: 2015-07-05 19:51+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -20,24 +20,26 @@ msgstr ""
 "X-Generator: Poedit 1.5.4\n"
 
 #: templates/users/_sidebar.html:3
-#| msgid "Users"
 msgid "User"
 msgstr "Użytkownik"
 
-#: templates/users/_sidebar.html:7
-#| msgid "Users"
+#: templates/users/_sidebar.html:8
+msgid "Your profile"
+msgstr "Twój profil"
+
+#: templates/users/_sidebar.html:11
 msgid "Users list"
 msgstr "Wykaz użytkowników"
 
-#: templates/users/_sidebar.html:10
+#: templates/users/_sidebar.html:14
 msgid "Logout"
 msgstr "Wyloguj"
 
-#: templates/users/_sidebar.html:14
+#: templates/users/_sidebar.html:18
 msgid "Sign Up"
 msgstr "Rejestracja"
 
-#: templates/users/_sidebar.html:17
+#: templates/users/_sidebar.html:21
 msgid "Log In"
 msgstr "Zaloguj"
 

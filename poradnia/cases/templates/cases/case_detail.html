@@ -52,27 +52,6 @@
 
 
 <div class="row">
-  <div class=" col-lg-6">
-    <div class="panel panel-default">
-      <div class="panel-heading"><span class="glyphicon glyphicon-earphone"></span> {% trans 'Metrical data'%}</div>
-      <table class="table">
-
-        {% if request.user.is_staff %}
-        <tr>
-          <td><i class="glyphicon glyphicon-stats"></i> {% trans 'Advice' %}</a></td>
-          <td>
-            {% if object.advice %}
-            <a href="{{object.advice.get_absolute_url}}">{{object.advice}}</a>
-            {% else %}
-            <a href="{% url 'registers:create'%}?case={{object.pk}}"><i class="glyphicon glyphicon-pencil"></i> {% trans 'Create new advice'%}</a>
-            {% endif %}
-          </td>
-        </tr>
-
-        {% endif %}
-      </table>
-    </div>
-  </div>
   <div class="col-lg-6">
     <div class="panel panel-default">
       <div class="panel-heading"><span class="glyphicon glyphicon-transfer"></span> {% trans 'Workflow'%}</div>
@@ -98,6 +77,26 @@
       </table>
     </div> 
   </div>
+
+  {% if request.user.is_staff %}
+  <div class=" col-lg-6">
+    <div class="panel panel-default">
+      <div class="panel-heading"><span class="glyphicon glyphicon-earphone"></span> {% trans 'Metrical data'%}</div>
+      <table class="table">
+        <tr>
+          <td><i class="glyphicon glyphicon-stats"></i> {% trans 'Advice' %}</a></td>
+          <td>
+            {% if object.advice %}
+            <a href="{{object.advice.get_absolute_url}}">{{object.advice}}</a>
+            {% else %}
+            <a href="{% url 'registers:create'%}?case={{object.pk}}"><i class="glyphicon glyphicon-pencil"></i> {% trans 'Create new advice'%}</a>
+            {% endif %}
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+  {% endif %}
 </div>
 <div class="row"><div class="col-xs-12"><h2>{% trans 'Record'%}</h2></div></div>
   {% if record_list %}
