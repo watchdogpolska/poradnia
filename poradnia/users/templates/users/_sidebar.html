@@ -8,7 +8,7 @@
                 <a href="{% url 'users:detail' username=request.user.username%}"><i class="fa fa-user"></i> {% trans "Your profile" %}</a>
             </li>
             <li class="block-list-item">
-                <a href="{% url 'users:list' %}"><i class="glyphicon glyphicon-log-out"></i> {% trans "Users list" %}</a>
+                <a href="{% url 'users:list' %}"><i class="fa fa-users"></i> {% trans "Users list" %}</a>
             </li>
             <li class="block-list-item">
                 <a href="{% url 'account_logout' %}"><i class="glyphicon glyphicon-log-out"></i> {% trans "Logout" %}</a>
