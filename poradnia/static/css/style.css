@@ -9848,7 +9848,7 @@ button.close {
   background: #D82727;
   -webkit-transition: 2s;
           transition: 2s;
-  height: 100vh;
+  height: auto;
   overflow-y: auto;
   position: fixed;
   z-index: 999;
@@ -9869,6 +9869,7 @@ button.close {
     -webkit-transform: none;
         -ms-transform: none;
             transform: none;
+    height: 100%;
   }
 }
 body.show-sidebar .sidebar {
