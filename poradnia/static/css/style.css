@@ -9772,30 +9772,38 @@ button.close {
   background: #D82727;
 }
 
-.menu {
-  list-style: none;
-  padding: 0;
+.block-list-header {
+  font-size: .8em;
+  text-transform: uppercase;
+  padding: 0em 1em;
+  color: white;
+  margin-top: .5em;
 }
-.menu > li {
+.block-list-list {
+  padding: 0;
+  list-style: none;
+  margin-bottom: .5em;
+}
+.block-list-item {
   display: block;
   -webkit-transition: .4s background-color;
           transition: .4s background-color;
   padding: 0em 1em;
 }
-.menu > li > a {
+.block-list-item > a {
   display: block;
   color: white;
   padding: 0.5em 0.5em;
   font-style: none;
   text-decoration: none;
 }
-.menu > li > a > .fa, .menu > li > a .glyphicon {
+.block-list-item > a > .fa, .block-list-item > a .glyphicon {
   margin-right: 0.5em;
 }
-.menu > li:hover {
+.block-list-item:hover {
   background: #e05252;
 }
-.menu > li.is-selected {
+.block-list-item.is-selected {
   background: #ad1f1f;
   border-left: 0.4em solid white;
   padding-left: 0.6em;

@@ -1,28 +1,39 @@
-$menu-item-hover-bg: lighten($brand-primary, 10%) !default;
-$menu-item-selected-bg: darken($brand-primary, 10%) !default;
+$block-list-item-hover-bg: lighten($brand-primary, 10%) !default;
+$block-list-item-selected-bg: darken($brand-primary, 10%) !default;
 
-$menu-item-padding-vertical: 0em !default;
-$menu-item-padding-horizontal: 1em !default;
+$block-list-item-padding-vertical: 0em !default;
+$block-list-item-padding-horizontal: 1em !default;
 
-$menu-link-color: white !default;
-$menu-link-padding-vertical: .5em !default;
-$menu-link-padding-horizontal: .5em !default;
+$block-list-link-color: white !default;
+$block-list-link-padding-vertical: .5em !default;
+$block-list-link-padding-horizontal: .5em !default;
 
-$menu-inidicator-width: .4em !default;
-$menu-inidicator-color: $menu-link-color !default;
+$block-list-header-padding-vertical: $block-list-link-padding-vertical;
+$block-list-header-padding-horizontal: $block-list-link-padding-horizontal;
+$block-list-inidicator-width: .4em !default;
+$block-list-inidicator-color: $block-list-link-color !default;
 
-.menu{
-	// background: 
-	list-style: none;
-	padding: 0;
-	> li{
+.block-list{
+	&-header{
+		font-size: .8em;
+		text-transform: uppercase;
+		padding: $block-list-item-padding-vertical $block-list-item-padding-horizontal;
+		color: $block-list-link-color;
+		margin-top: .5em;
+	}
+	&-list{
+		padding: 0;
+		list-style: none;
+		margin-bottom: .5em;
+	}
+	&-item{
 		display: block;
 		transition: .4s background-color;
-		padding: $menu-item-padding-vertical $menu-item-padding-horizontal;
+		padding: $block-list-item-padding-vertical $block-list-item-padding-horizontal;
 		> a {
 			display: block;
-			color: $menu-link-color;
-			padding: $menu-link-padding-vertical $menu-link-padding-horizontal;
+			color: $block-list-link-color;
+			padding: $block-list-link-padding-vertical $block-list-link-padding-horizontal;
 			font-style: none;
 			text-decoration: none;
 			> .fa, .glyphicon{
@@ -30,17 +41,17 @@ $menu-inidicator-color: $menu-link-color !default;
 			}
 		}
 		&:hover{
-			background: $menu-item-hover-bg;
+			background: $block-list-item-hover-bg;
 		}
 		&.is-selected{
-			background: $menu-item-selected-bg;
-			border-left: $menu-inidicator-width solid $menu-inidicator-color;
-			padding-left: #{ $menu-item-padding-horizontal - $menu-inidicator-width };
+			background: $block-list-item-selected-bg;
+			border-left: $block-list-inidicator-width solid $block-list-inidicator-color;
+			padding-left: #{ $block-list-item-padding-horizontal - $block-list-inidicator-width };
 		}
-	} 
+	}
 }
 
-.stats{ 
+.stats{
 	>ul {
 		display: flex;
 		padding: 0;
@@ -51,22 +62,22 @@ $menu-inidicator-color: $menu-link-color !default;
 			list-style: none;
 		}
 		&:last-child{
-			border-right: none;	
+			border-right: none;
 		}
 	}
 	a{
 		height: 100%;
 		text-align: center;
 		display: block;
-		padding: $menu-link-padding-vertical $menu-link-padding-horizontal;
+		padding: $block-list-link-padding-vertical $block-list-link-padding-horizontal;
 		transition: .4s background-color;
 		&, &:hover, &:focus{
 			color: white;
 			text-decoration: none;
 		}
 		&:hover{
-			background: $menu-item-hover-bg;
-			
+			background: $block-list-item-hover-bg;
+
 		}
 	}
 }
