@@ -45,6 +45,7 @@ class Common(Configuration):
         'guardian',
         'notifications',
         'django_mailbox',
+        'autocomplete_light',
     )
 
     # Apps specific for this project go here.
