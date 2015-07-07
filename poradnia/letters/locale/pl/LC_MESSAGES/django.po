@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: letter 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-07 15:58-0700\n"
-"PO-Revision-Date: 2015-07-08 00:58+0100\n"
+"POT-Creation-Date: 2015-07-08 01:26+0200\n"
+"PO-Revision-Date: 2015-07-08 01:24+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -83,8 +83,8 @@ msgid "Subject"
 msgstr "Przedmiot"
 
 #: models.py:29
-msgid "Comment"
-msgstr "Komentarz"
+msgid "Text"
+msgstr "Treść"
 
 #: models.py:30
 msgid "Signature"
@@ -118,11 +118,15 @@ msgstr "Listy"
 msgid "File"
 msgstr "Plik"
 
-#: models.py:89
+#: models.py:77
+msgid "Comment"
+msgstr "Komentarz"
+
+#: models.py:90
 msgid "Attachment"
 msgstr "Załącznik"
 
-#: models.py:90
+#: models.py:91
 msgid "Attachments"
 msgstr "Załączniki"
 
@@ -134,15 +138,23 @@ msgstr "Edytuj"
 msgid "Send"
 msgstr "Wyślij"
 
-#: templates/letters/form.html:15
+#: templates/letters/form.html:7
+msgid "remove"
+msgstr "usuń"
+
+#: templates/letters/form.html:7
+msgid "add another"
+msgstr "dodaj kolejne"
+
+#: templates/letters/form.html:14
 msgid "Cases"
 msgstr "Sprawy"
 
-#: templates/letters/form.html:42
+#: templates/letters/form.html:41
 msgid "Save changes"
 msgstr "Zapisz zmiany"
 
-#: templates/letters/form.html:43
+#: templates/letters/form.html:42
 msgid "Cancel"
 msgstr "Anuluj"
 

@@ -5,11 +5,13 @@
         
         {% if request.user.is_authenticated %}
             <li class="block-list-item">
-                <a href="{% url 'users:detail' username=request.user.username%}"><i class="fa fa-user"></i> {% trans "Your profile" %}</a>
+                <a href="{% url 'users:detail' username=request.user.username%}"><i class="fa fa-user"></i> {% blocktrans with request.user as user%}{{user}}{% endblocktrans %}</a>
             </li>
+            {% if request.user.is_staff %}
             <li class="block-list-item">
                 <a href="{% url 'users:list' %}"><i class="fa fa-users"></i> {% trans "Users list" %}</a>
             </li>
+            {% endif %}
             <li class="block-list-item">
                 <a href="{% url 'account_logout' %}"><i class="glyphicon glyphicon-log-out"></i> {% trans "Logout" %}</a>
             </li>

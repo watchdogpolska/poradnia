@@ -8,7 +8,7 @@ from django.views.generic import UpdateView
 from django.views.generic import ListView
 
 # Only authenticated users can access views using this.
-from braces.views import LoginRequiredMixin, SetHeadlineMixin
+from braces.views import LoginRequiredMixin, StaffuserRequiredMixin
 
 # Import the form from users/forms.py
 from .forms import UserForm, ProfileForm
@@ -66,7 +66,7 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return Profile.objects.get_or_create(user=self.request.user)[0]
 
 
-class UserListView(ListView):
+class UserListView(StaffuserRequiredMixin, ListView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = "username"

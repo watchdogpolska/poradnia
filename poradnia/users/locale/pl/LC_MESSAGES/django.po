@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-05 13:12-0700\n"
-"PO-Revision-Date: 2015-07-05 22:12+0100\n"
+"POT-Creation-Date: 2015-07-08 01:18+0200\n"
+"PO-Revision-Date: 2015-07-08 01:18+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -42,22 +42,23 @@ msgid "User"
 msgstr "Użytkownik"
 
 #: templates/users/_sidebar.html:8
-msgid "Your profile"
-msgstr "Twój profil"
+#, python-format
+msgid "%(user)s"
+msgstr "%(user)s"
 
-#: templates/users/_sidebar.html:11
+#: templates/users/_sidebar.html:12
 msgid "Users list"
 msgstr "Wykaz użytkowników"
 
-#: templates/users/_sidebar.html:14
+#: templates/users/_sidebar.html:16
 msgid "Logout"
 msgstr "Wyloguj"
 
-#: templates/users/_sidebar.html:18
+#: templates/users/_sidebar.html:20
 msgid "Sign Up"
 msgstr "Rejestracja"
 
-#: templates/users/_sidebar.html:21
+#: templates/users/_sidebar.html:23
 msgid "Log In"
 msgstr "Zaloguj"
 
@@ -70,8 +71,8 @@ msgid "Users are member of staff."
 msgstr "Użytkownik jest członkiem zespołu"
 
 #: templates/users/user_detail.html:30
-msgid "My Info"
-msgstr "Moje informacje"
+msgid "About me"
+msgstr "O mnie"
 
 #: templates/users/user_detail.html:33
 msgid "Avatar"
@@ -90,8 +91,6 @@ msgid "Update"
 msgstr "Aktualizuj"
 
 #: templates/users/user_list.html:4 templates/users/user_list.html.py:7
-#, fuzzy
-#| msgid "Users list"
 msgid "Users index"
 msgstr "Wykaz użytkowników"
 
@@ -102,3 +101,9 @@ msgid ""
 msgstr ""
 "Nie masz dostepu do danych wszystkich użytkowników. W większości tylko do "
 "profilu członków zespołu i swojego."
+
+#~ msgid "My Info"
+#~ msgstr "Moje informacje"
+
+#~ msgid "Your profile"
+#~ msgstr "Twój profil"

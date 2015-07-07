@@ -27,7 +27,7 @@
   <div class="col-sm-12 ">
     
     {% if object == request.user %}
-    <a class="btn btn-primary" href="{% url 'users:update' %}">{% trans 'My Info' %}</a>
+    <a class="btn btn-primary" href="{% url 'users:update' %}">{% trans 'About me' %}</a>
     <a class="btn btn-info" href="{% url 'users:profile' %}">{% trans 'Profile' %}</a>
     {# <a class="btn btn-primary" href="{% url 'account_email' %}">{% trans 'E-Mail'%}</a> #}
     <a class="btn btn-info" href="{% url 'avatar_change' %}">{% trans 'Avatar'%}</a>
