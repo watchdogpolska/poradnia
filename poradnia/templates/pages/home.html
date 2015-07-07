@@ -1,1 +1,19 @@
 {% extends "base.html" %}
+
+{% block content %}
+<h2>Niesiemy pomoc dla każdego</h2>
+<h3>Kim jesteśmy?</h3>
+<p>Sieć Obywatelska Watchdog Polska to niezależna, apolityczna i niedochodowa organizacja pożytku publicznego o charakterze organizacji strażniczej i think-do-thanku.</p>
+
+<p>Od 12 lat działamy w Polsce na rzecz jawności życia publicznego, dobrego rządzenia i rozliczalności władz.</p>
+<p>Stoimy na straży prawa do informacji. Postrzegamy je nie tylko jako warunek dobrego państwa, ale przede wszystkim jako jedno z praw człowieka, które choni ludzką godność, daje wolność wyrażania opinii i bezpieczeństwo przed nadużyiami władzy.</p>
+<p>Wzmcniamy w obywatelach poczucie, że mają prawo dowiadywać się, jak funkcjonują władze oraz instytucje publiczne, a także wpływać na podejmowane przez nie decyzje i sposób gospodarowania publicznym majątkiem (m. in. pieniędzmi z podatków). Uczymyjak to zrobić skutecznie. W sytuacjach, gdy urzędy nie szanują praw obywateli, udzielamy pomocy prawnej.</p>
+<p>Przez lata zdobyliśmy rzetelną wiedzę na temat dostepu do informacji publicznej, kontroli obywatelskiej oraz współdecydowania o sprawch publicznych. Udzielająć porad prawnych, mieliśmy okazję poznać bliżej tysiące konkretnych spraw, w kilkuset uczestniczyliśmy na etapie postępowania sądowego (znaczną część wygrywając).</p>
+<p>Bezpośrednio angażujemy się w działania na szczeblu lokalnym - każdego roku uczestniczymy w kilkudziesięciu spotkaniach z mieszkańcami miast i wsi rozsianych po całej Polsce. Dzięki temu interesujące nas tematy znamy, zarówno z perspektywy stolicy, w której tworzone są przepisy, jak i niewielkishc ośrodków, gdzie prawo to się stosuje (bądź nie).</p>
+<h3>Pomoc prawna</h3>
+<p>Udzielamy ponad 1000 konsultacji prawnych rocznie. Z tego stworzyliśmy stroną na której jesteś do sprawnego angażowania naszego całego zespołu w pomoc Tobie, aby nieść pomóc szybko i profesjonalnie.</p>
+
+<p>Jeżeli kontaktujesz się z nami pierwszy raz - skorzystaj z <a href="{% url 'letters:add' %}">formularza dla nowej sprawy</a>. Konto użytkownika zostnaie utworzone automatycznie - przy okazji.</p>
+
+<p>Jeżeli już korzystałeś z naszej pomocy - <a href="{% url 'account_login' %}">zaloguj się</a>, aby mieć dostęp do informacji o stanie załatwienia Twojej sprawy - osób odpowiedzialnych, pism, terminów.</p>
+{% endblock %}

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: letter 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-05 08:13-0700\n"
-"PO-Revision-Date: 2015-07-05 17:14+0100\n"
+"POT-Creation-Date: 2015-07-06 11:36-0700\n"
+"PO-Revision-Date: 2015-07-06 20:36+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -19,7 +19,7 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: forms.py:13
+#: forms.py:14
 msgid ""
 "The user account will be created automatically,so you have access to the "
 "archive and data about persons responsible for the case."
@@ -27,35 +27,45 @@ msgstr ""
 "Konto użytkownika zostanie utworzone automatycznie, dzięki czemu będziesz "
 "mieć dostęp do archiwum i danych o osobach odpowiedzialnych za twoją sprawę."
 
-#: forms.py:25
+#: forms.py:26
 #, python-format
 msgid "E-mail %(email)s are already used. Please log in."
 msgstr "Adres e-mail %(email)s jest aktualnie w użyciu. Proszę, zaloguj się."
 
-#: forms.py:38
+#: forms.py:39
 msgid "Client"
 msgstr "Klient"
 
-#: forms.py:39
+#: forms.py:40
 msgid "Leave empty to use email field and create a new one user."
 msgstr ""
 "Pozostaw puste, aby wykorzystać pole adresu e-mail i utworzyć nowego "
 "użytkownika."
 
-#: forms.py:40
+#: forms.py:42
 msgid "User e-mail"
 msgstr "E-mail użytkownika"
 
-#: forms.py:42
+#: forms.py:44
 msgid "E-mail"
 msgstr "E-mail"
 
-#: forms.py:60
-#| msgid "Have to enter 'email' or 'client'"
+#: forms.py:50
+#| msgid ""
+#| "Short description of the case for organizational purposes. The name and "
+#| "two words will suffice."
+msgid ""
+"Short description of the case for organizational purposes. The institution "
+"name and two words will suffice."
+msgstr ""
+"Krótki opis sprawy dla celów organizacyjnych. Nazwa instytucji i dwa słowa "
+"wystarczą."
+
+#: forms.py:64
 msgid "Have to enter user email or select a client"
 msgstr "Musisz podać adres e-mail klienta lub go wybrać z bazy."
 
-#: forms.py:131
+#: forms.py:135
 msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
@@ -127,11 +137,11 @@ msgstr "Wyślij"
 msgid "Cases"
 msgstr "Sprawy"
 
-#: templates/letters/form.html:41
+#: templates/letters/form.html:42
 msgid "Save changes"
 msgstr "Zapisz zmiany"
 
-#: templates/letters/form.html:42
+#: templates/letters/form.html:43
 msgid "Cancel"
 msgstr "Anuluj"
 

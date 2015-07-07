@@ -47,6 +47,8 @@ class NewCaseForm(autocomplete_light.ModelForm, PartialMixin):
         self.user = kwargs.pop('user')
         self.helper = FormsetHelper()
         super(NewCaseForm, self).__init__(*args, **kwargs)
+        self.fields['name'].help_text = _("Short description of the case for organizational " +
+            "purposes. The institution name and two words will suffice.")
         if not self.user.has_perm('cases.can_select_client'):
             del self.fields['client']
             del self.fields['email']

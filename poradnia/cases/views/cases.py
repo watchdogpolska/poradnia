@@ -4,9 +4,6 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from django.core.exceptions import PermissionDenied
-from guardian.forms import UserObjectPermissionsForm
-from users.forms import ManageObjectPermissionForm
 from letters.forms import AddLetterForm
 from events.forms import EventForm
 from letters.helpers import formset_attachment_factory
@@ -130,46 +127,3 @@ def edit(request, pk):
 
     return render(request, 'cases/case_form.html', context)
 
-
-@login_required
-def permission(request, pk):
-    context = {}
-    case = get_object_or_404(Case, pk=pk)
-    context['object'] = case
-
-    if case.status == case.STATUS.free:
-        if not (request.user.has_perm('cases.can_assign')):
-            raise PermissionDenied
-    else:
-        case.perm_check(request.user, 'can_manage_permission')
-
-    # Update permission
-    context['form'] = {}
-    for user in case.get_users_with_perms():
-        if request.method == 'POST':
-            form = UserObjectPermissionsForm(user, case, request.POST or None, prefix=user.pk)
-            if form.is_valid():
-                form.save_obj_perms()
-                messages.success(request,
-                    _("Success updated permission of %(user)s to %(case)s") %
-                    {'user': user, 'case': case})
-        else:
-            form = UserObjectPermissionsForm(user, case, request.POST or None, prefix=user.pk)
-        context['form'][user] = form
-
-    # Assign new permission
-    form = ManageObjectPermissionForm(case, request.POST or None, user=request.user)
-    if request.method == 'POST':
-        if form.is_valid():
-            form.save_obj_perms()
-            for user in form.cleaned_data['users']:
-                user.notify(actor=request.user, target=case, verb='granted', from_email=case.get_email())
-                messages.success(request,
-                    _("Success granted permission of %(user)s to %(case)s") %
-                    {'user': user, 'case': case})
-
-    if request.method == 'POST':
-        case.status_update()
-    context['add_form'] = form
-
-    return render(request, 'cases/case_form_permission.html', context)

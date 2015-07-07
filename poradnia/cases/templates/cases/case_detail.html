@@ -32,7 +32,8 @@
         <a class="btn btn-primary" href="{{ object.get_edit_url }}"><span class="glyphicon glyphicon-edit"></span> {% trans 'Edit'%}</a>
         {% endif %}
         {% if 'can_assign' in case_perms %}
-        <a class="btn btn-primary" href="{{ object.get_permission_url }}"><span class="glyphicon glyphicon-eye-close"></span> {% trans 'Permissions' %}</a>
+        <a class="btn btn-primary" href="{% url 'cases:permission_add' pk=object.pk %}"><span class="glyphicon glyphicon-eye-close"></span> {% trans 'Add permissions' %}</a>
+        <a class="btn btn-primary" href="{% url 'cases:permission_update' pk=object.pk %}"><span class="glyphicon glyphicon-eye-close"></span> {% trans 'Update permissions' %}</a>
         {% endif %}
       </div>
       <h1 class="case-header-title">{{object.name}} <span class="case-header-number">#{{object.pk}}</span></h1>

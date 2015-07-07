@@ -27,6 +27,7 @@
 
 {%block content%}
 {% block object %}<h1 class="row">{{object}}</h1>{% endblock %}
+{% block description%}{%endblock%}
 {% if object %}
 <div class="panel-body msg_container_base row">
   {% include object.get_template_list with object=object %}

@@ -1,0 +1,36 @@
+{% extends "cases/base.html" %}
+{% load staticfiles i18n %}
+
+{% block title %}{{ object }} - {{block.super}}{% endblock %}
+
+{% block breadcrumbs%}
+<ol class="breadcrumb">
+  <li><a href="{% url 'cases:list'%}">{% trans 'Cases'%}</a></li>
+  <li><a href="{{object.get_absolute_url}}">{{object}}</a></li>
+  <li class="active">{% trans 'Permission'%}</li>
+</ol>
+{% endblock %}
+
+{% block extra_css %}
+<link href="{% static 'cases/lou-multiselect/css/multi-select.css' %}" media="screen" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block javascript %}
+{{block.super}}
+    <script src="{% static 'cases/lou-multiselect/js/jquery.multi-select.js'%}" type="text/javascript"></script>
+    <script>$('select[name*=permissions]').multiSelect();</script>
+{% endblock %}
+{% block content %}
+
+<div class="row">
+  <div class="col-xs-18">
+    <div class="pull-left"><h1>{{object}}</h1></div>
+  </div>
+</div>
+<div class="row">
+    <div class="col-lg-12">
+        <p>{% trans 'Involved in' %}:{% for user in object.get_users_with_perms.all %}<a class="label label-info" href="{{user.get_absolute_url}}">{{user}}</a>{% endfor%}</p>
+    {% block form %} {% endblock %}
+    </div>
+</div>
+
+{% endblock %}
