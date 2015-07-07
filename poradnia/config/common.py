@@ -283,11 +283,15 @@ class Common(Configuration):
     # Guardian settings
     ANONYMOUS_USER_ID = -1
     GUARDIAN_MONKEY_PATCH = False
+
     from django.utils.translation import ugettext_lazy as _
     LANGUAGES = (
       ('pl', _('Polish')),
       ('en', _('English')),
     )
+
+    LOCALE_PATHS = (join(BASE_DIR, 'templates/locale'), )
+
     PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@poradnia.siecobywatelska.pl"
     PORADNIA_EMAIL_INPUT = "^sprawa-(?P<pk>\d+)@poradnia.siecobywatelska.pl$"
     ATOMIC_REQUESTS = True

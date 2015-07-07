@@ -73,7 +73,7 @@ class Letter(AbstractRecord):
 
 class Attachment(models.Model):
     letter = models.ForeignKey(Letter)
-    attachment = models.FileField(upload_to="letters/%Y/%m/%d")
+    attachment = models.FileField(upload_to="letters/%Y/%m/%d", verbose_name=_("File"))
 
     @property
     def filename(self):

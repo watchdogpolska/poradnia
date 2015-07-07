@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: letter 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-06 11:36-0700\n"
-"PO-Revision-Date: 2015-07-06 20:36+0100\n"
+"POT-Creation-Date: 2015-07-07 15:58-0700\n"
+"PO-Revision-Date: 2015-07-08 00:58+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -51,9 +51,6 @@ msgid "E-mail"
 msgstr "E-mail"
 
 #: forms.py:50
-#| msgid ""
-#| "Short description of the case for organizational purposes. The name and "
-#| "two words will suffice."
 msgid ""
 "Short description of the case for organizational purposes. The institution "
 "name and two words will suffice."
@@ -116,6 +113,10 @@ msgstr "List"
 #: models.py:71
 msgid "Letters"
 msgstr "Listy"
+
+#: models.py:76
+msgid "File"
+msgstr "Plik"
 
 #: models.py:89
 msgid "Attachment"
