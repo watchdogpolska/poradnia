@@ -32,8 +32,9 @@ def detail(request, pk):
     context['forms']['letter'] = {'title': _('Letter'),
                                   'form': AddLetterForm(user=request.user, case=case),
                                   'formset': formset_attachment_factory()(instance=None)}
-    context['forms']['event'] = {'title': _('Event'),
-                                 'form': EventForm(user=request.user, case=case)}
+    if request.user.is_staff:
+        context['forms']['event'] = {'title': _('Event'),
+                                     'form': EventForm(user=request.user, case=case)}
 
     qs = (Record.objects.filter(case=case).
         select_related('letter__created_by', 'letter', 'letter__modified_by').
@@ -49,7 +50,8 @@ SORT_MAP = {'deadline': 'deadline__time',
     'pk': 'pk',
     'client': 'client',
     'name': 'name',
-    'last_response': 'last_response',
+    'created_on': 'created_on',
+    'last_response': 'last_send',
     'last_action': 'last_action'}
 
 

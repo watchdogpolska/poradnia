@@ -54,7 +54,7 @@ class CaseQuerySet(QuerySet):
 
 class Case(models.Model):
     STATUS = Choices(('free', _('free')),
-                     ('open', _('open')),
+                     ('open', _('assigned')),
                      ('closed', _('closed'))
                      )
     name = models.CharField(max_length=150, verbose_name=_("Subject"))
