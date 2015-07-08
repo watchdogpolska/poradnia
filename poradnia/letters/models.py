@@ -63,9 +63,6 @@ class Letter(AbstractRecord):
     def get_send_url(self):
         return reverse('letters:send', kwargs={'pk': self.pk})
 
-    def get_all_attachments(self):
-        return list(self.message.attachments.all()) + list(self.attachment_set.all())
-
     class Meta:
         verbose_name = _('Letter')
         verbose_name_plural = _('Letters')
@@ -122,22 +119,29 @@ def mail_process(sender, message, **args):
         case.save()
         user.notify(actor=user, verb='registered', target=case, from_email=case.get_email())
 
+    # Prepare text
     if message.text:
         text = talon.quotations.extract_from(message.text, 'text/plain')
         signature = message.text.replace(text, '')
     else:   # TODO: HTML strip (XSS injection)
         text = talon.quotations.extract_from(message.html, 'text/html')
         signature = message.text.replace(text, '')
+
     status = Letter.STATUS.staff if user.is_staff else Letter.STATUS.done
     obj = Letter()
     obj.name = message.subject
     obj.created_by = user
     obj.case = case
-    obj.status = status
+    obj.status = Letter.STATUS.done
     obj.text = text
     obj.signature = signature
     obj.save()
     obj.send_notification(user, 'created')
+
+
+    # Convert attachments
+    Attachment.objects.bulk_create(Attachment(letter=obj, attachment=attachment.document)
+        for attachment in message.attachments.all())
     case.update_counters()
 
     print "Assing a message %s to case #%s as letter #%s" % (message.subject, case.pk, obj.pk)
