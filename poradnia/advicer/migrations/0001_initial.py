@@ -74,7 +74,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='advice',
             name='area',
-            field=models.ForeignKey(blank=True, to='registers.Area', null=True),
+            field=models.ForeignKey(blank=True, to='advicer.Area', null=True),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -86,13 +86,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='advice',
             name='institution_kind',
-            field=models.ForeignKey(blank=True, to='registers.InstitutionKind', null=True),
+            field=models.ForeignKey(blank=True, to='advicer.InstitutionKind', null=True),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='advice',
             name='issues',
-            field=models.ManyToManyField(to='registers.Issue', null=True, blank=True),
+            field=models.ManyToManyField(to='advicer.Issue', null=True, blank=True),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -104,7 +104,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='advice',
             name='person_kind',
-            field=models.ForeignKey(blank=True, to='registers.PersonKind', null=True),
+            field=models.ForeignKey(blank=True, to='advicer.PersonKind', null=True),
             preserve_default=True,
         ),
         migrations.AddField(

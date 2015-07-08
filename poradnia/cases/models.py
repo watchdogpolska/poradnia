@@ -6,6 +6,7 @@ from django.db.models import Count, Q
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth.models import Permission
 from model_utils.managers import PassThroughManager
 from model_utils.fields import MonitorField, StatusField
 from model_utils import Choices
@@ -210,3 +211,12 @@ class CaseUserObjectPermission(UserObjectPermissionBase):
 
 class CaseGroupObjectPermission(GroupObjectPermissionBase):
     content_object = models.ForeignKey(Case)
+
+
+class PermissionGroup(models.Model):
+    name = models.CharField(max_length=25, verbose_name=_("Name"))
+    permissions = models.ManyToManyField(Permission, verbose_name=_("Permissions"),
+        limit_choices_to={'content_type__app_label': 'cases', 'content_type__name': 'case'})
+
+    def __unicode__(self):
+        return self.name

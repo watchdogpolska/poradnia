@@ -31,7 +31,7 @@ urlpatterns = patterns('',
     url(r'^cases/', include('cases.urls', namespace='cases')),
     url(r'^letters/', include('letters.urls', namespace='letters')),
     url(r'^event/', include('events.urls', namespace='events')),
-    url(r'^advice/', include('registers.urls', namespace='registers')),
+    url(r'^advice/', include('advicer.urls', namespace='advicer')),
     url(r'^autocomplete/', include('autocomplete_light.urls')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

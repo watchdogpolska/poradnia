@@ -45,7 +45,7 @@ class AdviceCreate(FormValidMessageMixin, UserFormKwargsMixin, LoginRequiredMixi
 
 class AdviceDelete(PermissionMixin, DeleteView):
     model = Advice
-    success_url = reverse_lazy('registers:list')
+    success_url = reverse_lazy('advicer:list')
     success_message = _("{__unicode__} deleted!")
 
     def delete(self, request, *args, **kwargs):

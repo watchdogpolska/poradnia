@@ -89,7 +89,7 @@
             {% if object.advice %}
             <a href="{{object.advice.get_absolute_url}}">{{object.advice}}</a>
             {% else %}
-            <a href="{% url 'registers:create'%}?case={{object.pk}}"><i class="glyphicon glyphicon-pencil"></i> {% trans 'Create new advice'%}</a>
+            <a href="{% url 'advicer:create'%}?case={{object.pk}}"><i class="glyphicon glyphicon-pencil"></i> {% trans 'Create new advice'%}</a>
             {% endif %}
           </td>
         </tr>

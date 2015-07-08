@@ -59,7 +59,7 @@ class Common(Configuration):
         'events',
         'notifications_custom',
         'pagination_custom',
-        'registers',
+        'advicer',
         # Your stuff: custom apps go here
     )
 

@@ -1,4 +1,4 @@
-{% extends 'registers/base.html' %}
+{% extends 'advicer/base.html' %}
 {% load humanize i18n crispy_forms_tags %}
 {% block breadcrumbs_rows %}
     <li class="active">{% trans 'Advice index'%}</li>
@@ -11,7 +11,7 @@
             <h1>{% trans 'Record advices' %}</h1>
         </div>
         <div class="pull-right">
-            <a href="{% url 'registers:create' %}" class="btn btn-success"><span class="glyphicon glyphicon-edit"></span> {% trans 'Add' %}</a>
+            <a href="{% url 'advicer:create' %}" class="btn btn-success"><span class="glyphicon glyphicon-edit"></span> {% trans 'Add' %}</a>
         </div>
     </div>
 </div>
@@ -52,7 +52,7 @@
 {% else %}
 <div class="row">
     <div class="col-md-18">
-        <p>There is no any records. <a href="{% url 'registers:create' %}">Add one</a> of these!</p>
+        <p>There is no any records. <a href="{% url 'advicer:create' %}">Add one</a> of these!</p>
     </div>
 </div>
 {% endif %}

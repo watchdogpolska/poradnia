@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
 
     dependencies = [
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('registers', '0001_initial'),
+        ('advicer', '0001_initial'),
     ]
 
     operations = [
@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='advice',
             name='area',
-            field=models.ForeignKey(verbose_name='Area', blank=True, to='registers.Area', null=True),
+            field=models.ForeignKey(verbose_name='Area', blank=True, to='advicer.Area', null=True),
             preserve_default=True,
         ),
         migrations.AlterField(
@@ -61,13 +61,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='advice',
             name='institution_kind',
-            field=models.ForeignKey(verbose_name='Kind of institution', blank=True, to='registers.InstitutionKind', null=True),
+            field=models.ForeignKey(verbose_name='Kind of institution', blank=True, to='advicer.InstitutionKind', null=True),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='advice',
             name='issues',
-            field=models.ManyToManyField(to='registers.Issue', null=True, verbose_name='Issues', blank=True),
+            field=models.ManyToManyField(to='advicer.Issue', null=True, verbose_name='Issues', blank=True),
             preserve_default=True,
         ),
         migrations.AlterField(
@@ -85,7 +85,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='advice',
             name='person_kind',
-            field=models.ForeignKey(verbose_name='Kind of person ', blank=True, to='registers.PersonKind', null=True),
+            field=models.ForeignKey(verbose_name='Kind of person ', blank=True, to='advicer.PersonKind', null=True),
             preserve_default=True,
         ),
         migrations.AlterField(

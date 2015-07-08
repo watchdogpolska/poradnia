@@ -1,4 +1,4 @@
-{% extends 'registers/base.html' %}
+{% extends 'advicer/base.html' %}
 {% load i18n humanize avatar_tags %}
 {%block title%}{{object}} - {{block.super}}{%endblock%}
 {% block breadcrumbs_rows %}
@@ -10,10 +10,10 @@
     <div class="col-xs-18">
         <h1 class="pull-left">{{object}}</h1>
         <div class="btn-group pull-right">
-            <a href="{% url 'registers:update' pk=object.pk %}" class="btn btn-primary">
+            <a href="{% url 'advicer:update' pk=object.pk %}" class="btn btn-primary">
                 <span class="glyphicon glyphicon-edit"></span> {% trans 'Edit'%}
             </a>
-            <a href="{% url 'registers:delete' pk=object.pk %}" class="btn btn-danger">
+            <a href="{% url 'advicer:delete' pk=object.pk %}" class="btn btn-danger">
                 <span class="glyphicon glyphicon-trash"></span> {% trans 'Delete'%}
             </a>
         </div>

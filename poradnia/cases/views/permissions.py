@@ -7,6 +7,7 @@ from users.forms import TranslatedManageObjectPermissionForm, TranslatedUserObje
 from ..models import Case
 
 
+
 @login_required
 def permission_add(request, pk):
     context = {}

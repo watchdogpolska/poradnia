@@ -7,14 +7,15 @@ from django.db import models, migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('registers', '0005_advice_case'),
+        ('cases', '0019_auto_20150503_1741'),
+        ('advicer', '0004_auto_20150503_1741'),
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.AddField(
             model_name='advice',
             name='case',
-            field=models.OneToOneField(null=True, blank=True, to='cases.Case'),
+            field=models.ForeignKey(blank=True, to='cases.Case', null=True),
             preserve_default=True,
         ),
     ]

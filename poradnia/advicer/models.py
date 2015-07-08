@@ -36,7 +36,7 @@ class InstitutionKind(AbstractCategory):
 
 class AdviceQuerySet(QuerySet):
     def for_user(self, user):
-        if user.has_perm('registers.can_view_all_advices'):
+        if user.has_perm('advicer.can_view_all_advices'):
             return self
         return self.filter(Q(advicer=user.pk) | Q(created_by=user.pk))
 
@@ -78,7 +78,7 @@ class Advice(models.Model):
         return self.subject or _("Advice #%d") % (self.pk)
 
     def get_absolute_url(self):
-        return reverse('registers:detail', kwargs={'pk': self.pk})
+        return reverse('advicer:detail', kwargs={'pk': self.pk})
 
     class Meta:
         ordering = ['created_on', ]
