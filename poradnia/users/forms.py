@@ -3,19 +3,28 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 from guardian.forms import BaseObjectPermissionsForm
-from guardian.shortcuts import get_users_with_perms
-from guardian.shortcuts import assign_perm
-from guardian.shortcuts import remove_perm
+from guardian.shortcuts import assign_perm, remove_perm
+from guardian.forms import UserObjectPermissionsForm
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Submit, Field
+from crispy_forms.bootstrap import FormActions
 import autocomplete_light
 from .models import User, Profile
-from guardian.forms import UserObjectPermissionsForm
-
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
-from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
 
 
-class UserForm(forms.ModelForm):
+class SaveButtonMixin(object):
+    def __init__(self, *args, **kwargs):
+        super(SaveButtonMixin, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout.append(
+            FormActions(
+                Submit('save_changes', _('Update'), css_class="btn-primary"),
+                Submit('cancel', _('Cancel')),
+            )
+        )
+
+
+class UserForm(SaveButtonMixin, forms.ModelForm):
 
     class Meta:
         # Set this form to use the User model.
@@ -25,7 +34,7 @@ class UserForm(forms.ModelForm):
         fields = ("first_name", "last_name")
 
 
-class ProfileForm(forms.ModelForm):
+class ProfileForm(SaveButtonMixin, forms.ModelForm):
     helper = FormHelper()
     helper.form_class = 'form-horizontal'
     helper.label_class = 'col-lg-2'
@@ -33,10 +42,6 @@ class ProfileForm(forms.ModelForm):
     helper.layout = Layout(
         Field('description'),
         Field('www'),
-        FormActions(
-            Submit('save_changes', _('Update'), css_class="btn-primary"),
-            Submit('cancel', _('Cancel')),
-        )
     )
 
     class Meta:
