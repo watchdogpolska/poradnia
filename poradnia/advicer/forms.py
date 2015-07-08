@@ -1,13 +1,26 @@
 from datetime import datetime
-from django.forms import ModelForm
 from django.utils.translation import ugettext as _
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.helper import FormHelper
-from .models import Advice
+import autocomplete_light
 from cases.models import Case
+from .models import Advice
 
 
-class AdviceForm(UserKwargModelFormMixin, ModelForm):
+class AuthorMixin(object):
+    def save(self, commit=True, *args, **kwargs):
+        obj = super(AuthorMixin, self).save(commit=False, *args, **kwargs)
+        if obj.pk:  # update
+            obj.modified_by = self.user
+        else:  # new
+            obj.created_by = self.user
+        if commit:
+            obj.save()
+        return obj
+
+
+class AdviceForm(UserKwargModelFormMixin, AuthorMixin, autocomplete_light.ModelForm):
+
     def __init__(self, *args, **kwargs):
         super(AdviceForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -22,11 +35,3 @@ class AdviceForm(UserKwargModelFormMixin, ModelForm):
         model = Advice
         fields = ['case', 'subject', 'grant_on', 'issues', 'area',
             'person_kind', 'institution_kind', 'advicer', 'comment']
-
-    def save(self, commit=True, *args, **kwargs):
-        obj = super(AdviceForm, self).save(commit=False, *args, **kwargs)
-        obj.created_by = self.user
-        obj.modified_by = self.user
-        if commit:
-            obj.save()
-        return obj

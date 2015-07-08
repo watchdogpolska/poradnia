@@ -9,7 +9,7 @@ from braces.views import (OrderableListMixin, SelectRelatedMixin, LoginRequiredM
 from ..filters import AdviceFilter
 from ..models import Advice
 from ..forms import AdviceForm
-from .mixins import PermissionMixin
+from .mixins import PermissionMixin, FormInitialMixin
 from django_filters.views import FilterView
 
 
@@ -35,7 +35,7 @@ class AdviceUpdate(PermissionMixin, FormValidMessageMixin, UserFormKwargsMixin, 
         return _("{0} updated!").format(self.object)
 
 
-class AdviceCreate(FormValidMessageMixin, UserFormKwargsMixin, LoginRequiredMixin, CreateView):
+class AdviceCreate(FormInitialMixin, FormValidMessageMixin, UserFormKwargsMixin, LoginRequiredMixin, CreateView):
     model = Advice
     form_class = AdviceForm
 
