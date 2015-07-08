@@ -8,6 +8,7 @@ from guardian.shortcuts import assign_perm
 from guardian.shortcuts import remove_perm
 import autocomplete_light
 from .models import User, Profile
+from guardian.forms import UserObjectPermissionsForm
 
 
 class UserForm(forms.ModelForm):
@@ -27,7 +28,17 @@ class ProfileForm(forms.ModelForm):
         fields = ("description", "www")
 
 
-class ManageObjectPermissionForm(BaseObjectPermissionsForm):
+class PermissionsTranslationMixin(object):
+    def __init__(self, *args, **kwargs):
+        super(PermissionsTranslationMixin, self).__init__(*args, **kwargs)
+        self.fields['permissions'].choices = [(key, _(value)) for key, value in self.fields['permissions'].choices]
+
+
+class TranslatedUserObjectPermissionsForm(PermissionsTranslationMixin, UserObjectPermissionsForm):
+    pass
+
+
+class TranslatedManageObjectPermissionForm(PermissionsTranslationMixin, BaseObjectPermissionsForm):
     users = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(), required=True,
         widget=autocomplete_light.MultipleChoiceWidget('UserAutocomplete'))
 
@@ -38,8 +49,6 @@ class ManageObjectPermissionForm(BaseObjectPermissionsForm):
         # Update queryset dynamically
         self.fields['users'].queryset = self.get_user_queryset()
 
-        # Add translations
-        self.fields['permissions'].choices = [(key, _(value)) for key, value in self.fields['permissions'].choices]
 
     def get_user_queryset(self):
         qs = get_user_model().objects
