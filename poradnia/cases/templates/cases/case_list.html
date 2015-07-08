@@ -25,7 +25,7 @@
 
 <h1>
 {% if user or tag or status %}
-{% trans 'Cases' %} 
+{% trans 'Cases' %}
 {% if status %}{% blocktrans %}with case status {{ status }} {% endblocktrans %}{% endif %}
 {% if user_filter %}{% blocktrans with user_filter.get_absolute_url as user_link %}<a href="{{ user_link }}">{{ user_filter }}</a>{% endblocktrans %}{% endif %}
 {% if tag %}{% blocktrans %}tagged as {{ tag }}{% endblocktrans %}{% endif %}
@@ -54,9 +54,9 @@
       <td><a href="{{ object.client.get_absolute_url }}">{{ object.client }}</a></td>
       <td>
         <span class="{{object.status|status2css}}">
-        <a href="{{ object.get_absolute_url }}">{{ object.name }}</a> 
+        <a href="{{ object.get_absolute_url }}">{{ object.name }}</a>
         ({{ object.letter_count }})
-        {% if object.deadline.time %}<span class="label label-warning"><span class="glyphicon glyphicon-fire"></span> {{ object.deadline.time }}</span>{% endif%}
+        {% if object.deadline.time %}<span class="label label-warning"><i class="fa fa-fire"></i> {{ object.deadline.time }}</span>{% endif%}
       </td>
       <td>{% if object.last_send %}{{ object.last_send|naturaltime }}{% else %}{% trans 'No answer' %}{% endif %}</td>
       {% if request.user.is_staff %}
@@ -64,7 +64,7 @@
         <td>{{object.created_on|naturaltime}}</td>
       {% endif %}
       {# <td>{{ object.get_readed }}</td> #}
-      
+
     </tr>
     {% endfor %}
   </tbody>
