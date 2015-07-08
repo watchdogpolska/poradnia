@@ -45,18 +45,9 @@ class TranslatedManageObjectPermissionForm(PermissionsTranslationMixin, BaseObje
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         self.staff_only = kwargs.pop('staff_only', False)
-        super(ManageObjectPermissionForm, self).__init__(*args, **kwargs)
+        super(TranslatedManageObjectPermissionForm, self).__init__(*args, **kwargs)
         # Update queryset dynamically
-        self.fields['users'].queryset = self.get_user_queryset()
-
-
-    def get_user_queryset(self):
-        qs = get_user_model().objects
-        qs = qs.for_user(self.user)
-        if self.staff_only:
-            qs = qs.filter(is_staff=True)
-        qs = qs.exclude(pk__in=[o.pk for o in get_users_with_perms(self.obj)])
-        return qs
+        self.fields['users'].queryset = get_user_model().objects.for_user(self.user).all()
 
     def are_obj_perms_required(self):
         return True
