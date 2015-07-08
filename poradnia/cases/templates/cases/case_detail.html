@@ -58,7 +58,7 @@
       <table class="table">
         <tr>
           <td><i class="fa fa-user"></i> {% trans 'Involved in' %}</td>
-          <td>{% for user in object.get_users_with_perms.all %}<a class="label label-info" href="{{user.get_absolute_url}}">{{user}}</a>{% endfor%}</td>
+          <td>{% for user in object.get_users_with_perms.all %}<a class="label label-info" href="{{user.get_absolute_url}}">{{user}}</a> {% endfor%}</td>
         </tr>
         {% if object.modified_by %}
         <tr>
