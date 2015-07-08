@@ -1,0 +1,24 @@
+.main{
+	@include clearfix;
+}
+.main-side{
+	@media(min-width: $grid-float-breakpoint) {
+		margin-left: 200px;
+	};
+}
+.navbar{
+	position: fixed;
+	width: 100%;
+	z-index: $zindex-navbar;
+	@media(min-width: $grid-float-breakpoint) {
+		display: none;
+	}
+}
+.content{
+	max-width: 960px;
+	width: 90%;
+	margin: 6em auto;
+	@media(min-width: $screen-sm-min) {
+		margin-top: 1em;
+	}
+}

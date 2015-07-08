@@ -1,41 +1,13 @@
 @import "base";
 
+@import "layout";
 @import "cards";
 @import "sidebar";
 @import "case";
 @import "timeline";
 
 
-body{
-	display: flex;
-	min-height: 100vh;
-	flex-direction: column;
-}
-.main{
-	display: flex;
-	flex: 1;
-}
-.side-bar{
-	flex: 1;
-	// height: 100%;
-}
-.main-side{
-	flex: 4;
-}
-.navbar{
-	@media(min-width: $grid-float-breakpoint) {
-		display: none;
-	}
-}
-.content{
-	max-width: 960px;
-	width: 90%;
-	margin: 3em auto;
-	margin-top: 3em;
-	@media(min-width: $screen-md-min) {
-		margin-top: 1em;
-	}
-}
+
 .logo{
 	display: inline-block;
 	width: 160px;
