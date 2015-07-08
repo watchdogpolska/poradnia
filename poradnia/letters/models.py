@@ -127,7 +127,6 @@ def mail_process(sender, message, **args):
         text = talon.quotations.extract_from(message.html, 'text/html')
         signature = message.text.replace(text, '')
 
-    status = Letter.STATUS.staff if user.is_staff else Letter.STATUS.done
     obj = Letter()
     obj.name = message.subject
     obj.created_by = user
