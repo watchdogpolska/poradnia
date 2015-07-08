@@ -26,7 +26,7 @@ class Letter(AbstractRecord):
     status_changed = MonitorField(monitor='status')
     accept = MonitorField(monitor='status', when=['done'], verbose_name=_("Accepted on"))
     name = models.CharField(max_length=250, verbose_name=_("Subject"))
-    text = models.TextField(verbose_name=_("Comment"))
+    text = models.TextField(verbose_name=_("Text"))
     signature = models.TextField(verbose_name=_("Signature"), blank=True, null=True)
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='letter_created_by', verbose_name=_("Created by"))
@@ -73,7 +73,7 @@ class Letter(AbstractRecord):
 
 class Attachment(models.Model):
     letter = models.ForeignKey(Letter)
-    attachment = models.FileField(upload_to="letters/%Y/%m/%d")
+    attachment = models.FileField(upload_to="letters/%Y/%m/%d", verbose_name=_("File"))
 
     @property
     def filename(self):

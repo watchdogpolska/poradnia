@@ -1,5 +1,20 @@
 from django.contrib import admin
-from .models import Letter
+from .models import Letter, Attachment
 
 
-admin.site.register(Letter)
+class AttachmentInline(admin.StackedInline):
+    '''
+        Stacked Inline View for Attachment
+    '''
+    model = Attachment
+
+
+class LetterAdmin(admin.ModelAdmin):
+    '''
+        Admin View for Letter
+    '''
+    inlines = [
+        AttachmentInline,
+    ]
+
+admin.site.register(Letter, LetterAdmin)

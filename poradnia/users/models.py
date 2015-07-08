@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from django.contrib.auth.models import AbstractUser
+from django.db import models
 from django.db.models import Q
+from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.db.models.query import QuerySet
 from django.db.models import Count
@@ -48,11 +50,13 @@ class CustomUserManager(GuardianUserMixin, PassThroughManager.for_queryset_class
 class User(AbstractUser):
     objects = CustomUserManager()
 
-    def __unicode__(self):
+    def get_nicename(self):
         if self.first_name or self.last_name:
-            text = "{0} {1}".format(self.first_name, self.last_name)
-        else:
-            text = self.username
+            return "{0} {1}".format(self.first_name, self.last_name)
+        return self.username
+
+    def __unicode__(self):
+        text = self.get_nicename()
         if self.is_staff:
             text += ' (team)'
         return text
@@ -73,3 +77,15 @@ class User(AbstractUser):
 
     class Meta:
         permissions = (("can_view_other", "Can view other"),)
+        verbose_name = "Profile"
+        verbose_name_plural = "Profiles"
+
+
+class Profile(models.Model):
+    user = models.OneToOneField(User, primary_key=True)
+    description = models.TextField(blank=True, verbose_name=_("Description"))
+    www = models.URLField(null=True, blank=True, verbose_name=_("Homepage"))
+
+    class Meta:
+        verbose_name = _("Profile")
+        verbose_name_plural = _("Profiles")

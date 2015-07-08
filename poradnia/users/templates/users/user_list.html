@@ -1,8 +1,12 @@
-{% extends "base.html" %}
-{% load static %}{% load i18n %}
-{% load avatar_tags %}
+{% extends "users/base.html" %}
+{% load static i18n avatar_tags %}
 
-{% block title %}Members{% endblock %}
+{% block title %}{% trans 'Users index'%}{% endblock %}
+
+{% block breadcrumbs_rows%}
+    <li class="active">{% trans 'Users index'%}</li>
+{% endblock %}
+
 {% block extra_css%}
 <style>
 .staff {

@@ -2,10 +2,9 @@
 {% load crispy_forms_tags staticfiles i18n %}
 {% block javascript %}
 {{block.super}}
-<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
 <script type="text/javascript">
     $(function() {
-        $('form tbody tr').formset();
+        $('form tbody tr').formset({'deleteText': '{% trans "remove"%}', 'addText':'{% trans "add another"%}'});
     })
 </script>
 {% endblock %}
@@ -27,6 +26,7 @@
 
 {%block content%}
 {% block object %}<h1 class="row">{{object}}</h1>{% endblock %}
+{% block description%}{%endblock%}
 {% if object %}
 <div class="panel-body msg_container_base row">
   {% include object.get_template_list with object=object %}

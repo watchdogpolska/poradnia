@@ -1,11 +1,14 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext as _
 from guardian.forms import BaseObjectPermissionsForm
 from guardian.shortcuts import get_users_with_perms
 from guardian.shortcuts import assign_perm
 from guardian.shortcuts import remove_perm
-from .models import User
+import autocomplete_light
+from .models import User, Profile
+from guardian.forms import UserObjectPermissionsForm
 
 
 class UserForm(forms.ModelForm):
@@ -18,22 +21,33 @@ class UserForm(forms.ModelForm):
         fields = ("first_name", "last_name")
 
 
-class ManageObjectPermissionForm(BaseObjectPermissionsForm):
-    users = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(), required=True)
+class ProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = Profile
+        fields = ("description", "www")
+
+
+class PermissionsTranslationMixin(object):
+    def __init__(self, *args, **kwargs):
+        super(PermissionsTranslationMixin, self).__init__(*args, **kwargs)
+        self.fields['permissions'].choices = [(key, _(value)) for key, value in self.fields['permissions'].choices]
+
+
+class TranslatedUserObjectPermissionsForm(PermissionsTranslationMixin, UserObjectPermissionsForm):
+    pass
+
+
+class TranslatedManageObjectPermissionForm(PermissionsTranslationMixin, BaseObjectPermissionsForm):
+    users = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(), required=True,
+        widget=autocomplete_light.MultipleChoiceWidget('UserAutocomplete'))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         self.staff_only = kwargs.pop('staff_only', False)
-        super(ManageObjectPermissionForm, self).__init__(*args, **kwargs)
-        self.fields['users'].queryset = self.get_user_queryset()
-
-    def get_user_queryset(self):
-        qs = get_user_model().objects
-        qs = qs.for_user(self.user)
-        if self.staff_only:
-            qs = qs.filter(is_staff=True)
-        qs = qs.exclude(pk__in=[o.pk for o in get_users_with_perms(self.obj)])
-        return qs
+        super(TranslatedManageObjectPermissionForm, self).__init__(*args, **kwargs)
+        # Update queryset dynamically
+        self.fields['users'].queryset = get_user_model().objects.for_user(self.user).all()
 
     def are_obj_perms_required(self):
         return True

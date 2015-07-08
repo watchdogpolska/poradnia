@@ -1,0 +1,10 @@
+{% extends 'users/user_form.html' %}
+{% load i18n %}
+
+
+{% block breadcrumbs_rows%}
+    <li><a href="{{user.get_absolute_url}}">{{user}}</a></li>
+    <li class="active">{% trans 'Profile' %}</li>
+{% endblock %}
+
+{% block title %}{% trans 'Profile' %} - {{block.super}}{% endblock %}

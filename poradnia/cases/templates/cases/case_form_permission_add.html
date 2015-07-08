@@ -1,0 +1,11 @@
+{% extends 'cases/_case_form_permission.html' %}
+{% load i18n crispy_forms_tags %}
+{% block form %}
+<h2>{% trans 'Add new user'%}</h2>
+<form class="form-horizontal" method="post">
+    {{add_form|crispy}}{% csrf_token %}
+    <div class="controls">
+        <button type="submit" class="btn btn-primary">{% trans 'Update'%}</button>
+    </div>
+</form>
+{% endblock %}

@@ -1,0 +1,59 @@
+{% extends 'advicer/base.html' %}
+{% load humanize i18n crispy_forms_tags %}
+{% block breadcrumbs_rows %}
+    <li class="active">{% trans 'Advice index'%}</li>
+{% endblock %}
+{% block content %}
+
+<div class="row">
+    <div class="col-md-18">
+        <div class="pull-left">
+            <h1>{% trans 'Record advices' %}</h1>
+        </div>
+        <div class="pull-right">
+            <a href="{% url 'advicer:create' %}" class="btn btn-success"><span class="glyphicon glyphicon-edit"></span> {% trans 'Add' %}</a>
+        </div>
+    </div>
+</div>
+{% crispy filter.form %}
+
+{% if object_list %}
+<div class="row">
+    <div class="col-md-18">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>{% trans 'Created on' %}</th>
+                    <th>{% trans 'Created by' %}</th>
+                    <th>{% trans 'Advicer' %}</th>
+                    <th>{% trans 'Subject' %}</th>
+                    <th>{% trans 'Kind of person' %}</th>
+                    <th>{% trans 'Kind of institution' %}</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for object in object_list %}
+                <tr>
+                    <td><time datetime="{{ object.created_on|date:'Y-m-d h:m:sT' }}">{{ object.created_on|naturaltime }}</time></td>
+                    <td {% if object.created_by_id == object.advicer_id %} colspan="2" style="text-align: center"{% endif %}>{{ object.created_by }}</td>
+                    {% if object.created_by_id != object.advicer_id %}
+                        <td>{{ object.advicer }}</td>
+                    {% endif %}
+                    <td><a href="{{ object.get_absolute_url }}">{{ object }}</a></td>
+                    <td>{{ object.person_kind }}</td>
+                    <td>{{ object.institution_kind }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% include 'pagination_custom/pager.html' with page=page_obj %}
+    </div>
+</div>
+{% else %}
+<div class="row">
+    <div class="col-md-18">
+        <p>There is no any records. <a href="{% url 'advicer:create' %}">Add one</a> of these!</p>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

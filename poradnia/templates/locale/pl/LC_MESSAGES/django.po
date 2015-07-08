@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-05-14 07:44-0700\n"
-"PO-Revision-Date: 2015-05-14 16:44+0100\n"
+"POT-Creation-Date: 2015-07-07 15:53-0700\n"
+"PO-Revision-Date: 2015-07-08 00:46+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
 "Language: pl\n"
@@ -241,7 +241,7 @@ msgstr "Ustaw hasło"
 msgid "Signup"
 msgstr "Rejestracja"
 
-#: account/signup.html:10 account/signup.html.py:20 base.html:52
+#: account/signup.html:10 account/signup.html.py:20
 msgid "Sign Up"
 msgstr "Rejestracja"
 
@@ -282,6 +282,8 @@ msgid ""
 "        you are who you claim to be. For this purpose, we require that you\n"
 "        verify ownership of your e-mail address. "
 msgstr ""
+"Ta część strona wymaga weryfikacji, że jesteś tym za kogo się podajesz. W "
+"tym celu wymagamy weryfikacji adresu e-mail."
 
 #: account/verified_email_required.html:20
 msgid ""
@@ -289,6 +291,9 @@ msgid ""
 "        verification. Please click on the link inside this e-mail. Please\n"
 "        contact us if you do not receive it within a few minutes."
 msgstr ""
+"Wysłaliśmy do Ciebie e-mail weryfikacji. Kliknij w odnośnik zawarty w treści "
+"wiadomości, proszę. Jeżeli nie otrzymasz wiadomości w ciągu kilku minut - "
+"skontaktuj się z nami."
 
 #: account/verified_email_required.html:24
 #, python-format
@@ -296,26 +301,28 @@ msgid ""
 "<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
 "mail address</a>."
 msgstr ""
+"<strong>Notatka:</strong> możesz <a href=\"%(email_url)s\">zmienić swój "
+"adres e-mail</a>."
 
 #: avatar/add.html:10 avatar/change.html:9
 msgid "Your current avatar: "
-msgstr ""
+msgstr "Twój obecny avatar"
 
 #: avatar/add.html:13 avatar/change.html:12
 msgid "You haven't uploaded an avatar yet. Please upload one now."
-msgstr ""
+msgstr "Nie wysłałeś dotąd avatara. Wyślij proszę teraz."
 
 #: avatar/add.html:17 avatar/change.html:23
 msgid "Upload New Image"
-msgstr ""
+msgstr "Wyślij nowy obraz"
 
 #: avatar/change.html:18
 msgid "Choose new Default"
-msgstr ""
+msgstr "Wybierz domyślny"
 
 #: avatar/confirm_delete.html:9
 msgid "Please select the avatars that you would like to delete."
-msgstr ""
+msgstr "Wybierz avatar, który chcesz usunąć"
 
 #: avatar/confirm_delete.html:12
 #, python-format
@@ -323,48 +330,36 @@ msgid ""
 "You have no avatars to delete. Please <a href=\"%(avatar_change_url)s"
 "\">upload one</a> now."
 msgstr ""
+"Nie masz avatarów do usunięcia. <a href=\"%(avatar_change_url)s\">Dodaj "
+"nowy</a>."
 
 #: avatar/confirm_delete.html:18
 msgid "Delete These"
-msgstr ""
+msgstr "Usuń wybrane"
 
-#: base.html:46
-#, python-format
-msgid " Hello %(user)s! "
-msgstr ""
+#~ msgid "Logout"
+#~ msgstr "Wyloguj"
 
-#: base.html:50
-msgid "Logout"
-msgstr "Wyloguj"
+#~ msgid "Log In"
+#~ msgstr "Logowanie"
 
-#: base.html:53
-msgid "Log In"
-msgstr "Logowanie"
+#~ msgid "Home"
+#~ msgstr "Strona główna"
 
-#: base.html:66
-msgid "Home"
-msgstr "Strona główna"
+#~ msgid "Admin"
+#~ msgstr "Panel administracyjny"
 
-#: base.html:68
-msgid "Admin"
-msgstr "Panel administracyjny"
+#~ msgid "Advice list"
+#~ msgstr "Lista porad"
 
-#: base.html:69
-msgid "Advice list"
-msgstr "Lista porad"
+#~ msgid "Users"
+#~ msgstr "Użytkownicy"
 
-#: base.html:71
-msgid "Users"
-msgstr "Użytkownicy"
+#~ msgid "Free cases"
+#~ msgstr "Wolne sprawy"
 
-#: base.html:75
-msgid "Free cases"
-msgstr "Wolne sprawy"
+#~ msgid "Cases"
+#~ msgstr "Sprawy"
 
-#: base.html:78
-msgid "Cases"
-msgstr "Sprawy"
-
-#: base.html:80
-msgid "New case"
-msgstr "Nowa sprawa"
+#~ msgid "New case"
+#~ msgstr "Nowa sprawa"

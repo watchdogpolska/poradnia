@@ -59,7 +59,7 @@ class Common(Configuration):
         'events',
         'notifications_custom',
         'pagination_custom',
-        'registers',
+        'advicer',
         # Your stuff: custom apps go here
     )
 
@@ -141,10 +141,10 @@ class Common(Configuration):
 
     # GENERAL CONFIGURATION
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#time-zone
-    TIME_ZONE = 'America/Los_Angeles'
+    TIME_ZONE = 'Europe/Warsaw'
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-    LANGUAGE_CODE = 'en-us'
+    LANGUAGE_CODE = 'pl-pl'
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
     SITE_ID = 1
@@ -239,7 +239,7 @@ class Common(Configuration):
     # Custom user app defaults
     # Select the correct user model
     AUTH_USER_MODEL = "users.User"
-    LOGIN_REDIRECT_URL = "users:redirect"
+    LOGIN_REDIRECT_URL = "home"
     LOGIN_URL = "account_login"
     # END Custom user app defaults
 
@@ -283,11 +283,15 @@ class Common(Configuration):
     # Guardian settings
     ANONYMOUS_USER_ID = -1
     GUARDIAN_MONKEY_PATCH = False
+
     from django.utils.translation import ugettext_lazy as _
     LANGUAGES = (
       ('pl', _('Polish')),
       ('en', _('English')),
     )
+
+    LOCALE_PATHS = (join(BASE_DIR, 'templates/locale'), )
+
     PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@poradnia.siecobywatelska.pl"
     PORADNIA_EMAIL_INPUT = "^sprawa-(?P<pk>\d+)@poradnia.siecobywatelska.pl$"
     ATOMIC_REQUESTS = True
