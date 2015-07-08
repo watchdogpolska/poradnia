@@ -29,19 +29,19 @@
     <div class="case-header">
       <div class="case-header-actions">
         {% if 'change_case' in case_perms %}
-        <a class="btn btn-primary" href="{{ object.get_edit_url }}"><span class="glyphicon glyphicon-edit"></span> {% trans 'Edit'%}</a>
+        <a class="btn btn-primary" href="{{ object.get_edit_url }}"><i class="fa fa-pencil-square-o"></i> {% trans 'Edit'%}</a>
         {% endif %}
         {% if 'can_assign' in case_perms %}
-        <a class="btn btn-primary" href="{% url 'cases:permission_add' pk=object.pk %}"><span class="glyphicon glyphicon-eye-close"></span> {% trans 'Assign user' %}</a>
-        <a class="btn btn-primary" href="{% url 'cases:permission_update' pk=object.pk %}"><span class="glyphicon glyphicon-eye-close"></span> {% trans 'Update permissions' %}</a>
+        <a class="btn btn-primary" href="{% url 'cases:permission_add' pk=object.pk %}"><i class="fa fa-eye-slash"></i> {% trans 'Assign user' %}</a>
+        <a class="btn btn-primary" href="{% url 'cases:permission_update' pk=object.pk %}"><i class="fa fa-eye-slash"></i> {% trans 'Update permissions' %}</a>
         {% endif %}
       </div>
       <h1 class="case-header-title">{{object.name}} <span class="case-header-number">#{{object.pk}}</span></h1>
       <div class="case-header-meta">
         {% if object.status_changed %}
-          <span class="label label-success" title="Ostatnia zmiana stanu: {{ object.status_changed }} dni temu"> <i class="{{object.status|status2css}}"></i> {{object.status_display}}</span> 
+          <span class="label label-success" title="Ostatnia zmiana stanu: {{ object.status_changed }} dni temu"> <i class="{{object.status|status2css}}"></i> {{object.status_display}}</span>
         {% else %}
-          <span class="label label-success" title="Ostatnia zmiana 7 dni temu"> <i class="fa fa-folder-open-o"></i> {{ object.status }}</span> 
+          <span class="label label-success" title="Ostatnia zmiana 7 dni temu"> <i class="fa fa-folder-open-o"></i> {{ object.status }}</span>
         {%endif%}
         {%blocktrans with object.created_by.get_absolute_url as created_url and object.created_by as created_user and object.created_on|naturaltime as created_on and object.client.get_absolute_url as client_url and object.client as client_user%}Created by <a href="{{created_url}}">{{created_user}}</a> on
         {{created_on}} for <a href="{{client_url}}">{{client_user}}</a>{% endblocktrans %}
@@ -54,10 +54,10 @@
 <div class="row">
   <div class="col-lg-6">
     <div class="panel panel-default">
-      <div class="panel-heading"><span class="glyphicon glyphicon-transfer"></span> {% trans 'Workflow'%}</div>
+      <div class="panel-heading"><i class="fa fa-newspaper-o"></i> {% trans 'Workflow'%}</div>
       <table class="table">
         <tr>
-          <td><span class="glyphicon glyphicon-user"></span> {% trans 'Involved in' %}</td>
+          <td><i class="fa fa-user"></i> {% trans 'Involved in' %}</td>
           <td>{% for user in object.get_users_with_perms.all %}<a class="label label-info" href="{{user.get_absolute_url}}">{{user}}</a>{% endfor%}</td>
         </tr>
         {% if object.modified_by %}
@@ -70,26 +70,26 @@
         {% endif %}
         {% if object.deadline %}
         <tr>
-          <td><span class="glyphicon glyphicon-fire"></span> {% trans 'Dead-line'%}</td>
+          <td><i class="fa fa-fire"></i> {% trans 'Dead-line'%}</td>
           <td>{% blocktrans with object.deadline as deadline and object.deadline.time|naturaltime as naturaltime %}{{deadline}} at {{naturaltime}}{% endblocktrans %}</td>
         </tr>
         {%endif%}
       </table>
-    </div> 
+    </div>
   </div>
 
   {% if request.user.is_staff %}
   <div class=" col-lg-6">
     <div class="panel panel-default">
-      <div class="panel-heading"><span class="glyphicon glyphicon-earphone"></span> {% trans 'Metrical data'%}</div>
+      <div class="panel-heading"><i class="fa fa-phone"></i> {% trans 'Metrical data'%}</div>
       <table class="table">
         <tr>
-          <td><i class="glyphicon glyphicon-stats"></i> {% trans 'Advice' %}</a></td>
+          <td><i class="fa fa-area-chart"></i> {% trans 'Advice' %}</a></td>
           <td>
             {% if object.advice %}
             <a href="{{object.advice.get_absolute_url}}">{{object.advice}}</a>
             {% else %}
-            <a href="{% url 'advicer:create'%}?case={{object.pk}}"><i class="glyphicon glyphicon-pencil"></i> {% trans 'Create new advice'%}</a>
+            <a href="{% url 'advicer:create'%}?case={{object.pk}}"><i class="fa fa-pencil"></i> {% trans 'Create new advice'%}</a>
             {% endif %}
           </td>
         </tr>
@@ -126,11 +126,11 @@
         {% if row.formset %}
         {% crispy row.formset %}
         {% endif %}
-        <div class="form-actions">  
-          <button type="submit" class="btn btn-primary">{% trans 'Save changes'%}</button>  
-          <button class="btn">{% trans 'Cancel'%}</button>  
+        <div class="form-actions">
+          <button type="submit" class="btn btn-primary">{% trans 'Save changes'%}</button>
+          <button class="btn">{% trans 'Cancel'%}</button>
         </div>
-      </form>  
+      </form>
     </div>
     {% endfor %}
   </div>

@@ -15,12 +15,7 @@
         <h1>{% block header %}{% trans 'User' %}: {{ user.get_nicename }}{% endblock %}</h1>
         <form class="form-horizontal" method="post">
             {% csrf_token %}
-            {{ form|crispy }}
-            <div class="control-group">
-              <div class="controls">
-                <button type="submit" class="btn">{% trans 'Update'%}</button>
-              </div>
-            </div>
+            {% crispy form %}
         </form>
     </div>
 </div>

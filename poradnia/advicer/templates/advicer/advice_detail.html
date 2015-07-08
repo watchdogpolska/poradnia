@@ -11,10 +11,10 @@
         <h1 class="pull-left">{{object}}</h1>
         <div class="btn-group pull-right">
             <a href="{% url 'advicer:update' pk=object.pk %}" class="btn btn-primary">
-                <span class="glyphicon glyphicon-edit"></span> {% trans 'Edit'%}
+                <i class="fa fa-pencil"></i> {% trans 'Edit'%}
             </a>
             <a href="{% url 'advicer:delete' pk=object.pk %}" class="btn btn-danger">
-                <span class="glyphicon glyphicon-trash"></span> {% trans 'Delete'%}
+                <i class="fa fa-trash"></i> {% trans 'Delete'%}
             </a>
         </div>
     </div>
@@ -65,7 +65,7 @@
                 <td>{{object.institution_kind }}</td>
             </tr>
             {% endif %}
-            
+
             <tr>
                 <td>{% trans 'Advicer'%}</td>
                 <td>{{object.advicer}}</td>
@@ -76,7 +76,7 @@
                 <td>{% avatar object.created_by %} {% blocktrans with object.created_by as created and object.created_on|naturaltime as created_on_natural and object.created_on|date:'Y-m-d h:m:sT' as created_on_date %}{{created}} on <time datetime="{{created_on_date}}">{{created_on_natural}}</time>{% endblocktrans %}</td>
             </tr>
 
-            
+
             <tr>
                 <td>{% trans 'Modified'%}</td>
                 <td> {% avatar object.modified_by %}{% blocktrans with object.modified_by as modified_by and object.modified_on|naturaltime as modified_on_natural and object.modified_on|date:'Y-m-d h:m:sT' as modified_on_date %}{{modified_by}} on <time datetime="{{modified_on_date}}">{{modified_on_natural}}</time>{% endblocktrans %}</td>

@@ -2,8 +2,10 @@
 {% load i18n avatar_tags %}
 {% load url from future %}
 
+{% load crispy_forms_tags i18n %}
+
+
 {% block content %}
-<div class="container">
   <div class="row">
     <div class="col-xs-12">
         <h2>{% trans "Your current avatar: " %}</h2>
@@ -12,17 +14,14 @@
             <p>{% trans "You haven't uploaded an avatar yet. Please upload one now." %}</p>
         {% else %}
             <form method="POST" action="{% url 'avatar_change' %}">
-                <ul>
-                    {{ primary_avatar_form.as_ul }}
-                </ul>
-                <p>{% csrf_token %}<input type="submit" value="{% trans "Choose new Default" %}" /></p>
+            {% crispy primary_avatar_form %}
+
             </form>
         {% endif %}
         <form enctype="multipart/form-data" method="POST" action="{% url 'avatar_add' %}">
-            {{ upload_avatar_form.as_p }}
+            {% crispy upload_avatar_form %}
             <p>{% csrf_token %}<input type="submit" value="{% trans "Upload New Image" %}" /></p>
         </form>
     </div>
   </div>
-</div>
 {% endblock %}

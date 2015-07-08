@@ -10,6 +10,10 @@ import autocomplete_light
 from .models import User, Profile
 from guardian.forms import UserObjectPermissionsForm
 
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div, Submit, HTML, Button, Row, Field
+from crispy_forms.bootstrap import AppendedText, PrependedText, FormActions
+
 
 class UserForm(forms.ModelForm):
 
@@ -22,6 +26,18 @@ class UserForm(forms.ModelForm):
 
 
 class ProfileForm(forms.ModelForm):
+    helper = FormHelper()
+    helper.form_class = 'form-horizontal'
+    helper.label_class = 'col-lg-2'
+    helper.field_class = 'col-lg-8'
+    helper.layout = Layout(
+        Field('description'),
+        Field('www'),
+        FormActions(
+            Submit('save_changes', _('Update'), css_class="btn-primary"),
+            Submit('cancel', _('Cancel')),
+        )
+    )
 
     class Meta:
         model = Profile

@@ -11,6 +11,8 @@ class CaseForm(forms.ModelForm):
         self.user = kwargs.pop('user')
         self.helper = FormHelper()
         self.helper.form_tag = False
+        self.helper.label_class = 'col-lg-2'
+        self.helper.field_class = 'col-lg-10'
         if 'instance' in kwargs:
             self.helper.form_action = kwargs['instance'].get_edit_url()
         super(CaseForm, self).__init__(*args, **kwargs)

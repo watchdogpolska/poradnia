@@ -6,12 +6,12 @@
 {% block content %}
 
 <div class="row">
-    <div class="col-md-18">
+    <div class="col-md-12">
         <div class="pull-left">
             <h1>{% trans 'Record advices' %}</h1>
         </div>
         <div class="pull-right">
-            <a href="{% url 'advicer:create' %}" class="btn btn-success"><span class="glyphicon glyphicon-edit"></span> {% trans 'Add' %}</a>
+            <a href="{% url 'advicer:create' %}" class="btn btn-success"><i class="fa fa-pencil"></i> {% trans 'Add' %}</a>
         </div>
     </div>
 </div>
@@ -19,7 +19,7 @@
 
 {% if object_list %}
 <div class="row">
-    <div class="col-md-18">
+    <div class="col-md-12">
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -51,7 +51,7 @@
 </div>
 {% else %}
 <div class="row">
-    <div class="col-md-18">
+    <div class="col-md-12">
         <p>There is no any records. <a href="{% url 'advicer:create' %}">Add one</a> of these!</p>
     </div>
 </div>
