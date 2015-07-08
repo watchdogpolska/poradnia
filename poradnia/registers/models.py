@@ -71,7 +71,7 @@ class Advice(models.Model):
     modified_on = models.DateTimeField(auto_now=True, null=True, blank=True,
         verbose_name=_("Modified on"))
     visible = models.BooleanField(default=True, verbose_name=_("Visible"))
-    comment = models.TextField(verbose_name=_("Comment"))
+    comment = models.TextField(verbose_name=_("Comment"), null=True, blank=True)
     objects = AdviceQuerySet.as_manager()
 
     def __unicode__(self):

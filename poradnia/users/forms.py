@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext as _
 from guardian.forms import BaseObjectPermissionsForm
 from guardian.shortcuts import get_users_with_perms
 from guardian.shortcuts import assign_perm
@@ -34,7 +35,11 @@ class ManageObjectPermissionForm(BaseObjectPermissionsForm):
         self.user = kwargs.pop('user')
         self.staff_only = kwargs.pop('staff_only', False)
         super(ManageObjectPermissionForm, self).__init__(*args, **kwargs)
+        # Update queryset dynamically
         self.fields['users'].queryset = self.get_user_queryset()
+
+        # Add translations
+        self.fields['permissions'].choices = [(key, _(value)) for key, value in self.fields['permissions'].choices]
 
     def get_user_queryset(self):
         qs = get_user_model().objects
