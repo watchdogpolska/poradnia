@@ -13,7 +13,11 @@
 <h3>Pomoc prawna</h3>
 <p>Udzielamy ponad 1000 konsultacji prawnych rocznie. Z tego stworzyliśmy stroną na której jesteś do sprawnego angażowania naszego całego zespołu w pomoc Tobie, aby nieść pomóc szybko i profesjonalnie.</p>
 
-<p>Jeżeli kontaktujesz się z nami pierwszy raz - skorzystaj z <a href="{% url 'letters:add' %}">formularza dla nowej sprawy</a>. Konto użytkownika zostnaie utworzone automatycznie - przy okazji.</p>
+{% if request.user.is_anonymous %}
+<p>Jeżeli kontaktujesz się z nami pierwszy raz - skorzystaj z <a href="{% url 'letters:add' %}">formularza dla nowej sprawy</a>. Wiadomość zostanie dokładnie przekazana do członków zespołu. Konto użytkownika zostnaie utworzone automatycznie - dane do logowania otrzymasz w zwrotnej wiadomości e-mail.</p>
 
 <p>Jeżeli już korzystałeś z naszej pomocy - <a href="{% url 'account_login' %}">zaloguj się</a>, aby mieć dostęp do informacji o stanie załatwienia Twojej sprawy - osób odpowiedzialnych, pism, terminów.</p>
+{% else %}
+<p>Aby zostać obsłużonym w sposób sprawny skorzystaj z <a href="{% url 'letters:add' %}">formularza dla nowej sprawy</a>. Jeżeli chcesz odwołać się do wcześniejszej sprawy - skorzystaj z <a href="{% url 'cases:list' %}">wykazu spraw</a>. </p>
+{% endif %}
 {% endblock %}
