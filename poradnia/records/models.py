@@ -65,8 +65,11 @@ class AbstractRecord(models.Model):
     def get_template_list(self):
         return u"%s/_%s_list.html" % (self._meta.app_label, self._meta.model_name)
 
-    def send_notification(self, actor, verb):
-        for user in self.case.get_users_with_perms().exclude(pk=actor.pk):
+    def send_notification(self, actor, verb, staff=None):
+        qs = self.case.get_users_with_perms().exclude(pk=actor.pk)
+        if staff is not None:
+            qs = qs.filter(is_staff=staff)
+        for user in qs:
             user.notify(actor=actor,
                 verb=verb,
                 target=self,

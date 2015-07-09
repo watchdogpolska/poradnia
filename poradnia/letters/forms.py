@@ -149,7 +149,7 @@ class SendLetterForm(ModelForm, PartialMixin):
         obj.send_notification(self.user, 'send_to_client')
         msg = Letter(case=obj.case, created_by=self.user, text=self.cleaned_data['comment'], status=obj.STATUS.staff)
         msg.save()
-        msg.send_notification(self.user, 'drop_a_note')
+        msg.send_notification(self.user, 'drop_a_note', staff=True)
         return obj
 
     class Meta:
