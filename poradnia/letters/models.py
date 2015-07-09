@@ -3,6 +3,7 @@ from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.core.files import File
 from model_utils.fields import MonitorField, StatusField
 from model_utils import Choices
 from django.dispatch import receiver
@@ -13,7 +14,6 @@ import talon
 from records.models import AbstractRecord
 from template_mail.utils import send_tpl_email
 from cases.models import Case
-
 
 talon.init()
 
@@ -139,8 +139,10 @@ def mail_process(sender, message, **args):
 
 
     # Convert attachments
-    Attachment.objects.bulk_create(Attachment(letter=obj, attachment=attachment.document)
-        for attachment in message.attachments.all())
+    attachments = []
+    for attachment in message.attachments.all():
+        attachments.add(Attachment(letter=obj, attachment=File(attachment.document, attachment.get_filename())))
+    Attachment.objects.bulk_create(attachments)
     case.update_counters()
 
     print "Assing a message %s to case #%s as letter #%s" % (message.subject, case.pk, obj.pk)
