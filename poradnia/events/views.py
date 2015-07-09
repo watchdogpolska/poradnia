@@ -1,11 +1,16 @@
+from django.utils.html import mark_safe
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from .models import Event
+from django.views.generic import MonthArchiveView, ArchiveIndexView
+from braces.views import SelectRelatedMixin
 from cases.models import Case
+from users.mixins import PermissionMixin
+from .models import Event
 from .forms import EventForm
+from .utils import EventCalendar
 
 
 @login_required
@@ -57,5 +62,26 @@ def edit(request, pk):
     return render(request, 'events/form.html', context)
 
 
-def dismiss(request, pk):
+def dismiss(request, pk):  # TODO
     pass
+
+
+class CalendarListView(PermissionMixin, ArchiveIndexView):
+    model = Event
+    date_field = 'time'
+    allow_future = True
+    date_list_period = 'month'
+
+
+class CalendarEventView(PermissionMixin, SelectRelatedMixin, MonthArchiveView):
+    model = Event
+    date_field = "time"
+    allow_future = True
+    select_related = ['case', 'record']
+    template_name = 'events/calendar.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(CalendarEventView, self).get_context_data(**kwargs)
+        cal = EventCalendar(self.object_list).formatmonth(int(self.get_year()), int(self.get_month()))
+        context['calendar'] = mark_safe(cal)
+        return context
