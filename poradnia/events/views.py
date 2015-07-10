@@ -82,6 +82,8 @@ class CalendarEventView(PermissionMixin, SelectRelatedMixin, MonthArchiveView):
 
     def get_context_data(self, **kwargs):
         context = super(CalendarEventView, self).get_context_data(**kwargs)
-        cal = EventCalendar(self.object_list).formatmonth(int(self.get_year()), int(self.get_month()))
+        locale = (self.request.LANGUAGE_CODE, 'utf-8')
+        date = (int(self.get_year()), int(self.get_month()))
+        cal = EventCalendar(self.object_list, locale=locale).formatmonth(*date)
         context['calendar'] = mark_safe(cal)
         return context
