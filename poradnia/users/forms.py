@@ -6,26 +6,13 @@ from guardian.forms import BaseObjectPermissionsForm
 from guardian.shortcuts import assign_perm, remove_perm
 from guardian.forms import UserObjectPermissionsForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Field
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Layout, Field
 import autocomplete_light
 from .models import User, Profile
-
-
-class SaveButtonMixin(object):
-    def __init__(self, *args, **kwargs):
-        super(SaveButtonMixin, self).__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
-        self.helper.layout.append(
-            FormActions(
-                Submit('save_changes', _('Update'), css_class="btn-primary"),
-                Submit('cancel', _('Cancel')),
-            )
-        )
+from utilities.forms import SaveButtonMixin
 
 
 class UserForm(SaveButtonMixin, forms.ModelForm):
-
     class Meta:
         # Set this form to use the User model.
         model = User

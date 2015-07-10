@@ -13,3 +13,4 @@ def has_perms(user, perms, obj=None,  required_all=True):
     if not required_all and any(tests):
         return True
     raise PermissionDenied
+

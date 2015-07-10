@@ -1,10 +1,3 @@
-from braces.views import LoginRequiredMixin
-
-
-class PermissionMixin(LoginRequiredMixin, object):
-    def get_queryset(self, *args, **kwargs):
-        qs = super(PermissionMixin, self).get_queryset(*args, **kwargs)
-        return qs.for_user(self.request.user)
 
 
 class FormInitialMixin(object):

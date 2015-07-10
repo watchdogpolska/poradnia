@@ -1,13 +1,17 @@
 from django.utils.html import mark_safe
 from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from django.views.generic import MonthArchiveView, ArchiveIndexView
+from django.views.generic import MonthArchiveView, ArchiveIndexView, View
+from django.views.generic.list import BaseListView
+from django.utils.timezone import now
+from dateutil.relativedelta import relativedelta
 from braces.views import SelectRelatedMixin
 from cases.models import Case
 from users.mixins import PermissionMixin
+from keys.mixins import KeyAuthMixin
 from .models import Event
 from .forms import EventForm
 from .utils import EventCalendar
@@ -87,3 +91,48 @@ class CalendarEventView(PermissionMixin, SelectRelatedMixin, MonthArchiveView):
         cal = EventCalendar(self.object_list, locale=locale).formatmonth(*date)
         context['calendar'] = mark_safe(cal)
         return context
+
+
+class ICalendarView(KeyAuthMixin, PermissionMixin, BaseListView):
+    window = 1
+    model = Event
+
+    def get_event(self, obj):
+        from icalendar import Event
+        event = Event()
+        event['uid'] = obj.pk
+        event['dtstart'] = obj.time
+        event['summary'] = unicode(obj)
+        event['description'] = obj.text
+        return event
+
+    def get_subcomponents(self):
+        return [self.get_event(x) for x in self.get_queryset()]
+
+    def get_icalendar(self):
+        from icalendar import Calendar
+        cal = Calendar()
+        cal['summary'] = 'Events for %s'.format(self.request.user)
+        cal['dtstart'] = self.get_start()
+        cal['dtend'] = self.get_end()
+
+        [cal.add_component(component) for component in self.get_subcomponents()]
+        return cal
+
+    def get_start(self):
+        return now()+relativedelta(months=+self.window)
+
+    def get_end(self):
+        return now()+relativedelta(months=-self.window)
+
+    def get_queryset(self):
+        qs = super(ICalendarView, self).get_queryset()
+        qs = qs.filter(time__lt=self.get_start())
+        qs = qs.filter(time__gt=self.get_end())
+        return qs
+
+    def render_to_response(self, *args, **kwargs):
+        response = HttpResponse(content_type='application/force-download')
+        response['Content-Disposition'] = 'attachment; filename=calendar.ics'
+        response.write(self.get_icalendar().to_ical())
+        return response
