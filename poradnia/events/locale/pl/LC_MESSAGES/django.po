@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: event 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-10 01:35+0200\n"
+"POT-Creation-Date: 2015-07-10 02:31+0200\n"
 "PO-Revision-Date: 2015-07-10 01:36+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
@@ -27,47 +27,47 @@ msgstr "Alarm"
 msgid "Alarms"
 msgstr "Alarmy"
 
-#: models.py:28 templates/events/_event_list.html:14
+#: models.py:34 templates/events/_event_list.html:14
 msgid "Dead-line"
 msgstr "Termin"
 
-#: models.py:29 templates/events/_event_list.html:15
+#: models.py:35 templates/events/_event_list.html:15
 msgid "Time"
 msgstr "Czas"
 
-#: models.py:32 templates/events/_event_list.html:16
+#: models.py:38 templates/events/_event_list.html:16
 msgid "For client"
 msgstr "Dla klienta"
 
-#: models.py:33
+#: models.py:39
 msgid "Unchecked are visible for staff only"
 msgstr "Odznaczone jest widoczne tylko dla zespołu"
 
-#: models.py:34
+#: models.py:40
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: models.py:36
+#: models.py:42
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:37
+#: models.py:43
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:39
+#: models.py:45
 msgid "Modified by"
 msgstr "Zmodyfikowane przez"
 
-#: models.py:43
+#: models.py:49
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
-#: models.py:66
+#: models.py:72
 msgid "Event"
 msgstr "Wydarzenie"
 
-#: models.py:67
+#: models.py:73 templates/events/base.html:5
 msgid "Events"
 msgstr "Wydarzenia"
 
@@ -82,11 +82,6 @@ msgstr "Zaistniałe"
 #: templates/events/_event_list.html:26 templates/events/form.html:8
 msgid "Edit"
 msgstr "Edytuj"
-
-#: templates/events/base.html:5
-#| msgid "Events"
-msgid "Events list"
-msgstr "Baza wydarzeń"
 
 #: templates/events/event_archive.html:4
 msgid "Months index"
@@ -104,15 +99,19 @@ msgstr "Zapisz zmiany"
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: views.py:31
+#: views.py:32
 #, python-format
 msgid "Success added new event %(event)s"
 msgstr "Dodano wydarzenie %(event)s"
 
-#: views.py:56
+#: views.py:57
 #, python-format
 msgid "Success updated event %(event)s"
 msgstr "Zaktualizowano wydarzenie %(event)s"
+
+#~| msgid "Events"
+#~ msgid "Events list"
+#~ msgstr "Baza wydarzeń"
 
 #~ msgid "Text"
 #~ msgstr "Komentarz"

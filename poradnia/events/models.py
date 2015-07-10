@@ -56,6 +56,9 @@ class Event(AbstractRecord):
     def get_edit_url(self):
         return reverse('events:edit', kwargs={'pk': self.pk})
 
+    def get_calendar_url(self):
+        return reverse('events:calendar', kwargs={'month': self.time.month, 'year': self.time.year})
+
     def execute(self):
         obj = Alarm(event=self, case=self.case)
         obj.save()
