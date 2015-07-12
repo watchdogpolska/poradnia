@@ -5,6 +5,7 @@ from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
+from multiupload.fields import MultiFileField
 import autocomplete_light
 from cases.models import Case
 from .models import Letter, Attachment
@@ -29,13 +30,23 @@ class UserEmailField(forms.EmailField):
             )
 
 
+class FileMixin(forms.Form):
+    files = MultiFileField(label=_("Attachments"))
+
+    def save(self, commit=True, *args, **kwargs):
+        obj = super(FileMixin, self).save(commit=False, *args, **kwargs)
+        Attachment.objects.bulk_create(Attachment(file=each, letter=obj)
+            for each in self.cleaned_data['files'])
+        return obj
+
+
 class PartialMixin(object):
     @classmethod
     def partial(cls, *args, **kwargs):
         return partial(cls, *args, **kwargs)
 
 
-class NewCaseForm(autocomplete_light.ModelForm, PartialMixin):
+class NewCaseForm(autocomplete_light.ModelForm, FileMixin, PartialMixin):
     client = forms.ModelChoiceField(queryset=get_user_model().objects.all(), label=_("Client"),
         required=False, help_text=_("Leave empty to use email field and create a new one user."),
         widget=autocomplete_light.ChoiceWidget('UserAutocomplete'))

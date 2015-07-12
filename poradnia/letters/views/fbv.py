@@ -4,10 +4,10 @@ from django.contrib.auth.decorators import login_required
 from cases.models import Case
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from .helpers import formset_attachment_factory
+from ..helpers import formset_attachment_factory
 # from crispy_forms.helper import FormHelper
-from .forms import NewCaseForm, AddLetterForm, LetterForm, SendLetterForm
-from .models import Letter
+from ..forms import NewCaseForm, AddLetterForm, LetterForm, SendLetterForm
+from ..models import Letter
 
 
 REGISTRATION_TEXT = _("User  %(user)s registered! You will receive a password by mail. " +
@@ -18,29 +18,22 @@ def new_case(request):
     context = {}
 
     LetterForm = NewCaseForm.partial(user=request.user)
-    AttachmentFormSet = formset_attachment_factory()
 
-    formset = None
     if request.method == 'POST':
         form = LetterForm(request.POST, request.FILES)
         if form.is_valid():
-            obj = form.save(commit=False)
-            formset = AttachmentFormSet(request.POST, request.FILES, instance=obj)
-            if formset.is_valid():
-                obj.save()
-                messages.success(request,
-                    _("Case about %(object)s created!") % {'object': obj.name, })
-                if obj.created_by != obj.client:
-                    obj.client.notify(actor=request.user, verb='created', target=obj,
-                        from_email=obj.case.get_email())
-                if request.user.is_anonymous():
-                    messages.success(request, _(REGISTRATION_TEXT) % {'user': obj.created_by, })
-                formset.save()
-                return HttpResponseRedirect(obj.case.get_absolute_url())
+            obj = form.save()
+            messages.success(request,
+                _("Case about %(object)s created!") % {'object': obj.name, })
+            if obj.created_by != obj.client:
+                obj.client.notify(actor=request.user, verb='created', target=obj,
+                    from_email=obj.case.get_email())
+            if request.user.is_anonymous():
+                messages.success(request, _(REGISTRATION_TEXT) % {'user': obj.created_by, })
+            return HttpResponseRedirect(obj.case.get_absolute_url())
     else:
         form = LetterForm()
     context['form'] = form
-    context['formset'] = formset or AttachmentFormSet(instance=Letter())
     context['headline'] = _('Create a new case')
     return render(request, 'letters/form_new.html', context)
 

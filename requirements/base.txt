@@ -42,4 +42,4 @@ django-mailbox==4.3.4
 talon==1.0.2
 django-filter==0.10.0
 django-autocomplete-light==2.2.3
-
+django-multiupload==0.5
