@@ -29,7 +29,7 @@ def new_case(request):
             if formset.is_valid():
                 obj.save()
                 messages.success(request,
-                    _("Case about %(object)s created!") % {'object': obj, })
+                    _("Case about %(object)s created!") % {'object': obj.name, })
                 if obj.created_by != obj.client:
                     obj.client.notify(actor=request.user, verb='created', target=obj,
                         from_email=obj.case.get_email())
