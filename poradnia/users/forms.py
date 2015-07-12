@@ -84,3 +84,12 @@ class TranslatedManageObjectPermissionForm(PermissionsTranslationMixin, BaseObje
 
             for perm in perms:
                 assign_perm(perm, user, self.obj)
+
+
+class SignupForm(forms.ModelForm):
+    class Meta:
+        model = get_user_model()  # use this function for swapping user model
+        fields = ['first_name', 'last_name']
+
+    def save(self, user):
+        user.save()
