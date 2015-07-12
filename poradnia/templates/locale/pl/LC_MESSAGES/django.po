@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-12 20:49+0200\n"
-"PO-Revision-Date: 2015-07-12 20:49+0100\n"
+"POT-Creation-Date: 2015-07-12 21:13+0200\n"
+"PO-Revision-Date: 2015-07-12 21:14+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
 "Language: pl\n"
@@ -251,6 +251,10 @@ msgid ""
 "Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
 msgstr "Masz konto? Jeżeli tak, to <a href=\"%(login_url)s\">zaloguj się</a>."
 
+#: account/signup.html:13
+msgid "Field with asterisk are required."
+msgstr "Pole oznaczone gwiazdką są wymagane."
+
 #: account/signup_closed.html:6 account/signup_closed.html.py:12
 msgid "Sign Up Closed"
 msgstr "Rejestracja zamknięta"
@@ -304,87 +308,26 @@ msgstr ""
 "<strong>Notatka:</strong> możesz <a href=\"%(email_url)s\">zmienić swój "
 "adres e-mail</a>."
 
-#: avatar/add.html:6
-msgid "Add avatar"
-msgstr "Dodaj avatar"
+#~ msgid "Add avatar"
+#~ msgstr "Dodaj avatar"
 
-#: avatar/add.html:12 avatar/change.html:11
-msgid "Your current avatar: "
-msgstr "Twój obecny avatar"
+#~ msgid "Your current avatar: "
+#~ msgstr "Twój obecny avatar"
 
-#: avatar/add.html:15 avatar/change.html:14
-msgid "You haven't uploaded an avatar yet. Please upload one now."
-msgstr "Nie wysłałeś dotąd avatara. Wyślij proszę teraz."
+#~ msgid "You haven't uploaded an avatar yet. Please upload one now."
+#~ msgstr "Nie wysłałeś dotąd avatara. Wyślij proszę teraz."
 
-#: avatar/add.html:19 avatar/change.html:27
-msgid "Upload New Image"
-msgstr "Wyślij nowy obraz"
+#~ msgid "Upload New Image"
+#~ msgstr "Wyślij nowy obraz"
 
-#: avatar/base.html:7
-msgid "Users"
-msgstr "Użytkownicy"
+#~ msgid "Users"
+#~ msgstr "Użytkownicy"
 
-#: avatar/base.html:8
-msgid "Avatar"
-msgstr "Avatar"
+#~ msgid "Avatar"
+#~ msgstr "Avatar"
 
-#: avatar/change.html:7
-msgid "Change"
-msgstr "Zmień"
+#~ msgid "Change"
+#~ msgstr "Zmień"
 
-#: avatar/change.html:19
-msgid "Choose avatar"
-msgstr "Wybierz avatar"
-
-#: avatar/change.html:24
-#| msgid "Upload New Image"
-msgid "Upload a new avatar"
-msgstr "Wyślij nowy avatar"
-
-#: avatar/confirm_delete.html:5
-msgid "Delete confirmation"
-msgstr "Potwierdzenie usunięcia"
-
-#: avatar/confirm_delete.html:11
-msgid "Please select the avatars that you would like to delete."
-msgstr "Wybierz avatar, który chcesz usunąć"
-
-#: avatar/confirm_delete.html:14
-#, python-format
-msgid ""
-"You have no avatars to delete. Please <a href=\"%(avatar_change_url)s"
-"\">upload one</a> now."
-msgstr ""
-"Nie masz avatarów do usunięcia. <a href=\"%(avatar_change_url)s\">Dodaj "
-"nowy</a>."
-
-#: avatar/confirm_delete.html:20
-msgid "Delete These"
-msgstr "Usuń wybrane"
-
-#~ msgid "Choose new Default"
-#~ msgstr "Wybierz domyślny"
-
-#~ msgid "Logout"
-#~ msgstr "Wyloguj"
-
-#~ msgid "Log In"
-#~ msgstr "Logowanie"
-
-#~ msgid "Home"
-#~ msgstr "Strona główna"
-
-#~ msgid "Admin"
-#~ msgstr "Panel administracyjny"
-
-#~ msgid "Advice list"
-#~ msgstr "Lista porad"
-
-#~ msgid "Free cases"
-#~ msgstr "Wolne sprawy"
-
-#~ msgid "Cases"
-#~ msgstr "Sprawy"
-
-#~ msgid "New case"
-#~ msgstr "Nowa sprawa"
+#~ msgid "Choose avatar"
+#~ msgstr "Wybierz avatar"

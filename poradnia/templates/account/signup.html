@@ -10,8 +10,9 @@
 <h1>{% trans "Sign Up" %}</h1>
 
 <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
-
+<p>{% trans 'Field with asterisk are required.' %}</p>
 {% crispy form %}
+
 
 {% endblock content %}
 
