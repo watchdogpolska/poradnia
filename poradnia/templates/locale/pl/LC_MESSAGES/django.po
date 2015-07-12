@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-07 15:53-0700\n"
-"PO-Revision-Date: 2015-07-08 00:46+0100\n"
+"POT-Creation-Date: 2015-07-12 13:04+0200\n"
+"PO-Revision-Date: 2015-07-12 13:05+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
 "Language: pl\n"
@@ -137,7 +137,7 @@ msgstr "lub"
 
 #: account/login.html:43
 msgid "Forgot Password?"
-msgstr "Zapomniałeś hasła?"
+msgstr "Zapomniałeś/zapomniałaś hasła?"
 
 #: account/logout.html:6 account/logout.html.py:13 account/logout.html:22
 msgid "Sign Out"
@@ -198,14 +198,14 @@ msgstr "Zresetuj moje hasło"
 #: account/password_reset.html:27
 msgid "Please contact us if you have any trouble resetting your password."
 msgstr ""
-"Skontaktuj się proszę, jeżeli masz jakiekolwiek trudności z resetem hasła. "
+"Prosimy, skontaktuj się, jeżeli masz jakiekolwiek trudności z resetem hasła. "
 
 #: account/password_reset_done.html:18
 msgid ""
 "We have sent you an e-mail. Please contact us if you do not receive it "
 "within a few minutes."
 msgstr ""
-"Wyslaliśmy do Ciebie e-mail. Skontaktuj się, jeżeli nie otrzymasz go w ciągu "
+"Wysłaliśmy do Ciebie e-mail. Skontaktuj się, jeżeli nie otrzymasz go w ciągu "
 "kilku minut."
 
 #: account/password_reset_from_key.html:13
@@ -304,21 +304,17 @@ msgstr ""
 "<strong>Notatka:</strong> możesz <a href=\"%(email_url)s\">zmienić swój "
 "adres e-mail</a>."
 
-#: avatar/add.html:10 avatar/change.html:9
+#: avatar/add.html:10 avatar/change.html:11
 msgid "Your current avatar: "
 msgstr "Twój obecny avatar"
 
-#: avatar/add.html:13 avatar/change.html:12
+#: avatar/add.html:13 avatar/change.html:14
 msgid "You haven't uploaded an avatar yet. Please upload one now."
 msgstr "Nie wysłałeś dotąd avatara. Wyślij proszę teraz."
 
 #: avatar/add.html:17 avatar/change.html:23
 msgid "Upload New Image"
 msgstr "Wyślij nowy obraz"
-
-#: avatar/change.html:18
-msgid "Choose new Default"
-msgstr "Wybierz domyślny"
 
 #: avatar/confirm_delete.html:9
 msgid "Please select the avatars that you would like to delete."
@@ -336,6 +332,9 @@ msgstr ""
 #: avatar/confirm_delete.html:18
 msgid "Delete These"
 msgstr "Usuń wybrane"
+
+#~ msgid "Choose new Default"
+#~ msgstr "Wybierz domyślny"
 
 #~ msgid "Logout"
 #~ msgstr "Wyloguj"
