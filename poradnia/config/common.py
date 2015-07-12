@@ -240,6 +240,7 @@ class Common(Configuration):
     # Select the correct user model
     AUTH_USER_MODEL = "users.User"
     ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
+    ACCOUNT_FORMS = {'login': 'users.forms.CustomLoginForm'}
     LOGIN_REDIRECT_URL = "home"
     LOGIN_URL = "account_login"
     # END Custom user app defaults

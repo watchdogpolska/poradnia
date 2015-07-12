@@ -2,14 +2,28 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _l
 from guardian.forms import BaseObjectPermissionsForm
 from guardian.shortcuts import assign_perm, remove_perm
 from guardian.forms import UserObjectPermissionsForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Field, Row, Div
+from crispy_forms.layout import Layout, Submit, Row, Div
 from crispy_forms.bootstrap import FormActions, PrependedText
 import autocomplete_light
 from .models import User, Profile
+
+
+class SingleButtonMixin(object):
+    action_text = _l('Save')
+
+    def __init__(self, *args, **kwargs):
+        super(SingleButtonMixin, self).__init__(*args, **kwargs)
+        self.helper = getattr(self, 'helper', FormHelper(self))
+        self.helper.layout.append(
+            FormActions(
+                Submit('action', self.action_text, css_class="btn-primary"),
+            )
+        )
 
 
 class SaveButtonMixin(object):
@@ -22,6 +36,7 @@ class SaveButtonMixin(object):
                 Submit('cancel', _('Cancel')),
             )
         )
+
 
 class FormHorizontalMixin(object):
     def __init__(self, *args, **kwargs):
@@ -43,6 +58,7 @@ class UserForm(FormHorizontalMixin, forms.ModelForm):
                 Submit('cancel', _('Cancel')),
             )
         )
+
     class Meta:
         # Set this form to use the User model.
         model = User
@@ -117,9 +133,18 @@ class SignupForm(FormHorizontalMixin, forms.ModelForm):
                 )
             )
         )
+
     class Meta:
         model = get_user_model()  # use this function for swapping user model
         fields = ['first_name', 'last_name']
 
     def save(self, user):
         user.save()
+
+
+from allauth.account.forms import LoginForm
+
+
+class CustomLoginForm(SingleButtonMixin, LoginForm):
+    action_text = _l('Sign In')
+    pass

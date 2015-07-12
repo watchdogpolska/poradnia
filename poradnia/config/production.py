@@ -57,7 +57,7 @@ class Production(Common):
     INSTALLED_APPS += ("gunicorn", )
 
     # EMAIL
-    DEFAULT_FROM_EMAIL = values.Value('poradnia <noreply@poradnia.informacjapubliczna.org.pl>')
+    DEFAULT_FROM_EMAIL = values.Value('poradnia <noreply@porady.siecobywatelska.pl>')
     EMAIL_HOST = values.Value('smtp.sendgrid.com')
     EMAIL_HOST_PASSWORD = values.SecretValue()
     EMAIL_HOST_USER = values.SecretValue()

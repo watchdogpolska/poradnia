@@ -11,7 +11,7 @@ def update_site_forward(apps, schema_editor):
     Site.objects.update_or_create(
         id=settings.SITE_ID,
         defaults={
-            "domain": "poradnia.informacjapubliczna.org.pl",
+            "domain": "porady.siecobywatelska.pl",
             "name": "poradnia"
         }
     )
