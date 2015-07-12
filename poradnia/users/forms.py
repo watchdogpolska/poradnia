@@ -36,8 +36,8 @@ class UserForm(FormHorizontalMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
         self.helper.layout = Layout(
-            PrependedText('first_name', 'A'),
-            PrependedText('last_name', 'B'),
+            'first_name',
+            'last_name',
             FormActions(
                 Submit('save_changes', _('Update'), css_class="btn-primary"),
                 Submit('cancel', _('Cancel')),
@@ -103,17 +103,18 @@ class SignupForm(FormHorizontalMixin, forms.ModelForm):
         self.helper.field_class = 'col-lg-9'
         self.helper.layout = Layout(
             Row(
-                Div(PrependedText('first_name', 'A'), css_class='col-md-6'),
-                Div(PrependedText('last_name', 'B'), css_class='col-md-6')
-            ),
-            PrependedText('username', '<i class="fa fa-user"></i>'),
-            PrependedText('email', '@'),
-            Row(
-                Div(PrependedText('password1', '<i class="fa fa-key"></i>', type='password') ,css_class='col-md-6'),
-                Div(PrependedText('password2', '<i class="fa fa-key"></i>', type='password'),css_class='col-md-6')
-            ),
-            FormActions(
-                Submit('signup', _('Signup'), css_class="btn-primary"),
+                Div(
+                    'first_name',
+                    'last_name',
+                    PrependedText('username', '<i class="fa fa-user"></i>'),
+                    PrependedText('email', '@'),
+                    PrependedText('password1', '<i class="fa fa-key"></i>', type='password'),
+                    PrependedText('password2', '<i class="fa fa-key"></i>', type='password'),
+                    FormActions(
+                        Submit('signup', _('Signup'), css_class="btn-primary"),
+                    ),
+                    css_class='col-md-8 col-md-offset-2'
+                )
             )
         )
     class Meta:
