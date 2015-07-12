@@ -52,7 +52,7 @@
 {% else %}
 <div class="row">
     <div class="col-md-12">
-        <p>There is no any records. <a href="{% url 'advicer:create' %}">Add one</a> of these!</p>
+        <p>{% url 'advicer:create' as create_url %}{% blocktrans %}There is no any records. <a href="{{create_url}}">Add one</a> of these! {% endblocktrans %}</p>
     </div>
 </div>
 {% endif %}

@@ -31,7 +31,7 @@ class AdviceFilter(django_filters.FilterSet):
             'person_kind',
             'created_by',
             'created_on',
-            Submit('save', 'save')
+            Submit('filter', _('Filter'))
         )
         return self._form
 

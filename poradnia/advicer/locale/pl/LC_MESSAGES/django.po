@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: advicer 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-08 02:41+0200\n"
-"PO-Revision-Date: 2015-07-08 02:42+0100\n"
+"POT-Creation-Date: 2015-07-12 22:00+0200\n"
+"PO-Revision-Date: 2015-07-12 22:00+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -32,7 +32,11 @@ msgstr "Utworzone przez"
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: forms.py:19
+#: filters.py:34
+msgid "Filter"
+msgstr "Filtruj"
+
+#: forms.py:32
 msgid "Select from cases which do you have a permission"
 msgstr "Wybór spośród spraw do których masz uprawnienia"
 
@@ -175,6 +179,12 @@ msgstr "Rejestr porad"
 #: templates/advicer/advice_form.html:9
 msgid "Add"
 msgstr "Dodaj"
+
+#: templates/advicer/advice_filter.html:55
+#, python-format
+msgid ""
+"There is no any records. <a href=\"%(create_url)s\">Add one</a> of these! "
+msgstr "Nie ma żadnych wpisów. <a href=\"%(create_url)s\">Dodaj nowy</a>."
 
 #: templates/advicer/advice_form.html:7
 msgid "Update"
