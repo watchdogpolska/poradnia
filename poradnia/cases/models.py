@@ -42,7 +42,7 @@ class CaseQuerySet(QuerySet):
         # Assosiate by email
         for email in message.to_addresses:
             import re
-            result = re.match('^sprawa-(?P<pk>\d+)@poradnia.siecobywatelska.pl$', email)
+            result = re.match('^sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl$', email)
             if result:
                 cond = cond | Q(pk=result.group('pk'))
         # Assosiate by email headers
