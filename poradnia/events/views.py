@@ -8,7 +8,7 @@ from django.views.generic import MonthArchiveView, ArchiveIndexView, View
 from django.views.generic.list import BaseListView
 from django.utils.timezone import now
 from dateutil.relativedelta import relativedelta
-from braces.views import SelectRelatedMixin
+from braces.views import SelectRelatedMixin, LoginRequiredMixin
 from cases.models import Case
 from users.mixins import PermissionMixin
 from keys.mixins import KeyAuthMixin
@@ -70,14 +70,14 @@ def dismiss(request, pk):  # TODO
     pass
 
 
-class CalendarListView(PermissionMixin, ArchiveIndexView):
+class CalendarListView(PermissionMixin, LoginRequiredMixin, ArchiveIndexView):
     model = Event
     date_field = 'time'
     allow_future = True
     date_list_period = 'month'
 
 
-class CalendarEventView(PermissionMixin, SelectRelatedMixin, MonthArchiveView):
+class CalendarEventView(PermissionMixin, SelectRelatedMixin, LoginRequiredMixin, MonthArchiveView):
     model = Event
     date_field = "time"
     allow_future = True
