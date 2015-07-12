@@ -3,6 +3,7 @@
 <li class="active">{{ month|date:"F Y" }}</li>
 {% endblock %}
 
+{% block title %}{{ month|date:"F Y" }} - {{block.super}}{% endblock %}
 
 {% block content %}
 <style>

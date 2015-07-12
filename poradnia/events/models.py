@@ -21,7 +21,7 @@ class EventQuerySet(QuerySet):
             return self
         from cases.models import Case
         case_list = Case.objects.for_user(user).all()
-        return self.filter(case_pk__in=case_list)
+        return self.filter(case_id__in=case_list)
 
     def untriggered(self):
         return self.filter(alarm__isnull=True)
