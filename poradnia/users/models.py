@@ -14,6 +14,8 @@ from model_utils.managers import PassThroughManager
 from template_mail.utils import send_tpl_email
 import notifications
 
+USERNAME = _('Username')  # Hack to overwrite django translation
+
 
 class UserQuerySet(QuerySet):
     def for_user(self, user):
@@ -77,8 +79,8 @@ class User(AbstractUser):
 
     class Meta:
         permissions = (("can_view_other", "Can view other"),)
-        verbose_name = "Profile"
-        verbose_name_plural = "Profiles"
+        verbose_name = _("User")
+        verbose_name_plural = _("Users")
 
 
 class Profile(models.Model):

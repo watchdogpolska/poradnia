@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-12 11:59+0200\n"
-"PO-Revision-Date: 2015-07-12 11:59+0100\n"
+"POT-Creation-Date: 2015-07-12 14:28+0200\n"
+"PO-Revision-Date: 2015-07-12 14:29+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -27,27 +27,37 @@ msgstr "Aktualizuj"
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: models.py:86 templates/users/user_detail.html:21
+#: models.py:17
+#| msgid "User"
+msgid "Username"
+msgstr "Nazwa użytkownika / użytkowniczki"
+
+#: models.py:82 templates/users/_sidebar.html:3
+#: templates/users/user_detail.html:3 templates/users/user_form.html:4
+#: templates/users/user_form.html.py:15
+msgid "User"
+msgstr "Użytkownik / użytkowniczka"
+
+#: models.py:83 templates/users/base.html:5 templates/users/user_list.html:20
+msgid "Users"
+msgstr "Użytkownicy / użytkowniczki"
+
+#: models.py:88 templates/users/user_detail.html:21
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:87
+#: models.py:89
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: models.py:90 templates/users/profile_form.html:7
+#: models.py:92 templates/users/profile_form.html:7
 #: templates/users/profile_form.html:10 templates/users/user_detail.html:31
 msgid "Profile"
 msgstr "Profil"
 
-#: models.py:91
+#: models.py:93
 msgid "Profiles"
 msgstr "Profile"
-
-#: templates/users/_sidebar.html:3 templates/users/user_detail.html:3
-#: templates/users/user_form.html:4 templates/users/user_form.html.py:15
-msgid "User"
-msgstr "Użytkownik / użytkowniczka"
 
 #: templates/users/_sidebar.html:8
 #, python-format
@@ -69,10 +79,6 @@ msgstr "Rejestracja"
 #: templates/users/_sidebar.html:23
 msgid "Log In"
 msgstr "Zaloguj"
-
-#: templates/users/base.html:5 templates/users/user_list.html:20
-msgid "Users"
-msgstr "Użytkownicy / użytkowniczki"
 
 #: templates/users/user_detail.html:18
 msgid "Users are member of staff."
