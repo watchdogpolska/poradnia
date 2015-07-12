@@ -24,7 +24,7 @@ class AbstractCalendar(LocaleHTMLCalendar):
                 body.append('</ul>')
                 html = '<span class="day">%d</span> %s' % (day, ''.join(body))
                 return self.day_cell(cssclass, html)
-            return self.day_cell(cssclass, day)
+            return self.day_cell(cssclass, '<span class="day">%d</span>' % day)
         return self.day_cell('noday', '&nbsp;')
 
     def formatmonth(self, year, month):
