@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-12 11:51+0200\n"
-"PO-Revision-Date: 2015-07-12 11:51+0100\n"
+"POT-Creation-Date: 2015-07-12 12:40+0200\n"
+"PO-Revision-Date: 2015-07-12 12:40+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -117,7 +117,6 @@ msgid "Name"
 msgstr "Nazwa"
 
 #: models.py:218
-#| msgid "Permission"
 msgid "Permissions"
 msgstr "Uprawnienia"
 
@@ -145,7 +144,6 @@ msgid "New case"
 msgstr "Nowa sprawa"
 
 #: templates/cases/_sidebar.html:8 templates/cases/case_list.html:20
-#| msgid "Cases"
 msgid "Cases index"
 msgstr "Wykaz spraw"
 
@@ -277,8 +275,16 @@ msgid "No answer"
 msgstr "Brak odpowiedzi"
 
 #: templates/cases/case_list.html:72
-msgid "Legend"
-msgstr "Legenda"
+msgid "Legend of status"
+msgstr "Legenda statusów"
+
+#: templates/cases/case_list.html:72
+msgid "Cases have status changed by staff."
+msgstr ""
+"Zgłoszona przez Ciebie sprawa otrzymuje najpierw status \"wolna\". To "
+"znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. "
+"Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na \"przypisana"
+"\". A gdy już Ci pomożemy \"zakończona\"."
 
 #: templates/cases/case_list.html:75
 msgid "There is no cases."
@@ -310,3 +316,6 @@ msgstr "Nadano uprawnienia %(user)s do sprawy %(case)s"
 #, python-format
 msgid "Success updated permission of %(user)s to %(case)s"
 msgstr "Zaktualizowano uprawniania %(user)s do sprawy %(case)s"
+
+#~ msgid "Legend"
+#~ msgstr "Legenda"
