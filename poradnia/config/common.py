@@ -293,6 +293,6 @@ class Common(Configuration):
 
     LOCALE_PATHS = (join(BASE_DIR, 'templates/locale'), )
 
-    PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@poradnia.siecobywatelska.pl"
-    PORADNIA_EMAIL_INPUT = "^sprawa-(?P<pk>\d+)@poradnia.siecobywatelska.pl$"
+    PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
+    PORADNIA_EMAIL_INPUT = "^sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl$"
     ATOMIC_REQUESTS = True

@@ -5,7 +5,7 @@ Informujemy, że pytanie zostało zarejestrowane w naszym systemie.
 
 Zgodnie z dostępnym na stronie „Regulaminem poradnictwa”, odpowiedź zostanie przygotowana przez nas zespół w terminie do 10 dni. W niektórych przypadkach może to zająć więcej czasu, o czym poinformujemy.
 
-Z przesłanym pytaniem oraz dokumentami można zapoznać się poprzez naszą stronę internetową, która wymaga logowania http://poradnia.siecobywatelska.pl/{{case.get_absolute_url}}. Przez stronę można przesyłać dodatkowe dokumenty i pytania.
+Z przesłanym pytaniem oraz dokumentami można zapoznać się poprzez naszą stronę internetową, która wymaga logowania http://porady.siecobywatelska.pl/{{case.get_absolute_url}}. Przez stronę można przesyłać dodatkowe dokumenty i pytania.
 
 Kontaktować się można również używając adresu {{email}} do korespondencji w tej (konkretnej) sprawie. Dzięki temu wymiana korespondencji będzie sprawniejsza.
 
