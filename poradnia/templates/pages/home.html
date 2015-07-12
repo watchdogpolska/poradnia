@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h2>Pomagamy każdemu korzystać z prawa</h2>
+</h2>Pomagamy Ci skutecznie korzystać z Twoich praw</h2>
 <h3>Kim jesteśmy?</h3>
 <p>Sieć Obywatelska Watchdog Polska to niezależna, apolityczna i niedochodowa organizacja pożytku publicznego o charakterze organizacji strażniczej i think-do-thanku.</p>
 <p>Od 12 lat działamy w Polsce na rzecz jawności życia publicznego, dobrego rządzenia i rozliczalności władz.</p>
@@ -10,12 +10,7 @@
 <p>Przez lata zdobyliśmy rzetelną wiedzę na temat dostępu do informacji publicznej, kontroli obywatelskiej oraz współdecydowania o sprawach publicznych. Udzielając porad prawnych, mieliśmy okazję poznać bliżej tysiące konkretnych spraw, w kilkuset uczestniczyliśmy na etapie postępowania sądowego (znaczną część wygrywając).</p>
 <h3>Pomoc prawna</h3>
 <p>Udzielamy ponad 1000 konsultacji prawnych rocznie. Aby jeszcze sprawniej pomagać, stworzyliśmy stronę, na której w tej chwili się znajdujesz.</p>
-
-{% if request.user.is_anonymous %}
-<p>Jeżeli kontaktujesz się z nami pierwszy raz - skorzystaj z <a href="{% url 'letters:add' %}">formularza dla nowej sprawy</a>. Wiadomość zostanie dokładnie przekazana do naszego zespołu prawnego. Konto użytkownika zostanie utworzone automatycznie - dane do logowania otrzymasz w zwrotnej wiadomości e-mail.</p>
-
-<p>Jeżeli już korzystałeś/korzystałaś z naszej pomocy - <a href="{% url 'account_login' %}">zaloguj się</a>, aby mieć dostęp do informacji o stanie Twojej sprawy. </p>
-{% else %}
-<p>Aby zostać obsłużonym w sposób sprawny skorzystaj z <a href="{% url 'letters:add' %}">formularza dla nowej sprawy</a>. Jeżeli chcesz odwołać się do wcześniejszej sprawy - skorzystaj z <a href="{% url 'cases:list' %}">wykazu spraw</a>. </p>
-{% endif %}
+<p>Nie jesteśmy specjalistami w każdej dziedzinie. Pomagamy w tematach, które wiążą się z naszą misją, realizowanymi działaniami i celami statutowymi. Dzięki temu mamy pewność, że porada którą otrzymujesz opiera się na doświadczeniu i przemyślanej wiedzy.</p>
+<p>Nasze eksperckie obszary to dostęp do informacji publicznej, fundusz sołecki i wpływanie na decyzje rządzących.</p>
+<p>Aby zgłosić nam kwestię, która chcesz rozwiązać, <a href="{% url 'account_signup' %}">zarejestruj się</a> lub <a href="{% url 'account_login' %}">zaloguj</a> i użyj <a href="{% url 'letters:add' %}">formularza dla "nowej sprawy"</a>. Jeżeli chcesz odwołać się do wcześniejszej korespondencji z nami, dotyczącej innych problemów - skorzystaj z „<a href="{% url 'cases:list' %}">wykazu spraw</a>”.</p>
 {% endblock %}

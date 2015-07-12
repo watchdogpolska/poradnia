@@ -5,7 +5,7 @@
         <li class="block-list-item"><a href="{% url 'letters:add' %}"><i class="fa fa-pencil"></i> {% trans 'New case'%}</a></li>
         {% if request.user.is_authenticated %}
         <li class="block-list-item">
-            <a href="{% url 'cases:list' %}?status=free"><i class="fa fa-book"></i> {% trans 'Cases'%}</a>
+            <a href="{% url 'cases:list' %}?status=free"><i class="fa fa-book"></i> {% trans 'Cases index'%}</a>
         </li>
         {% endif%}
         {% if perms.cases.can_assign %}
