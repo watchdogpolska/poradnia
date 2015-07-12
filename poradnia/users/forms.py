@@ -6,8 +6,8 @@ from guardian.forms import BaseObjectPermissionsForm
 from guardian.shortcuts import assign_perm, remove_perm
 from guardian.forms import UserObjectPermissionsForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Field
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Layout, Submit, Field, Row, Div
+from crispy_forms.bootstrap import FormActions, PrependedText
 import autocomplete_light
 from .models import User, Profile
 
@@ -15,7 +15,7 @@ from .models import User, Profile
 class SaveButtonMixin(object):
     def __init__(self, *args, **kwargs):
         super(SaveButtonMixin, self).__init__(*args, **kwargs)
-        self.helper = FormHelper(self)
+        self.helper = getattr(self, 'helper', FormHelper(self))
         self.helper.layout.append(
             FormActions(
                 Submit('save_changes', _('Update'), css_class="btn-primary"),
@@ -23,9 +23,26 @@ class SaveButtonMixin(object):
             )
         )
 
+class FormHorizontalMixin(object):
+    def __init__(self, *args, **kwargs):
+        super(FormHorizontalMixin, self).__init__(*args, **kwargs)
+        self.helper = getattr(self, 'helper', FormHelper(self))
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-9'
 
-class UserForm(SaveButtonMixin, forms.ModelForm):
 
+class UserForm(FormHorizontalMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        self.helper.layout = Layout(
+            PrependedText('first_name', 'A'),
+            PrependedText('last_name', 'B'),
+            FormActions(
+                Submit('save_changes', _('Update'), css_class="btn-primary"),
+                Submit('cancel', _('Cancel')),
+            )
+        )
     class Meta:
         # Set this form to use the User model.
         model = User
@@ -34,15 +51,7 @@ class UserForm(SaveButtonMixin, forms.ModelForm):
         fields = ("first_name", "last_name")
 
 
-class ProfileForm(SaveButtonMixin, forms.ModelForm):
-    helper = FormHelper()
-    helper.form_class = 'form-horizontal'
-    helper.label_class = 'col-lg-2'
-    helper.field_class = 'col-lg-8'
-    helper.layout = Layout(
-        Field('description'),
-        Field('www'),
-    )
+class ProfileForm(FormHorizontalMixin,SaveButtonMixin, forms.ModelForm):
 
     class Meta:
         model = Profile
@@ -86,7 +95,27 @@ class TranslatedManageObjectPermissionForm(PermissionsTranslationMixin, BaseObje
                 assign_perm(perm, user, self.obj)
 
 
-class SignupForm(forms.ModelForm):
+class SignupForm(FormHorizontalMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(SignupForm, self).__init__(*args, **kwargs)
+        self.helper = getattr(self, 'helper', FormHelper(self))
+        self.helper.label_class = 'col-lg-3'
+        self.helper.field_class = 'col-lg-9'
+        self.helper.layout = Layout(
+            Row(
+                Div(PrependedText('first_name', 'A'), css_class='col-md-6'),
+                Div(PrependedText('last_name', 'B'), css_class='col-md-6')
+            ),
+            PrependedText('username', '<i class="fa fa-user"></i>'),
+            PrependedText('email', '@'),
+            Row(
+                Div(PrependedText('password1', '<i class="fa fa-key"></i>', type='password') ,css_class='col-md-6'),
+                Div(PrependedText('password2', '<i class="fa fa-key"></i>', type='password'),css_class='col-md-6')
+            ),
+            FormActions(
+                Submit('signup', _('Signup'), css_class="btn-primary"),
+            )
+        )
     class Meta:
         model = get_user_model()  # use this function for swapping user model
         fields = ['first_name', 'last_name']
