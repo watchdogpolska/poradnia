@@ -22,7 +22,8 @@ class AbstractCalendar(LocaleHTMLCalendar):
                 for event in self.events[day]:
                     body.append(self.get_row_content(event))
                 body.append('</ul>')
-                return self.day_cell(cssclass, '%d %s' % (day, ''.join(body)))
+                html = '<span class="day">%d</span> %s' % (day, ''.join(body))
+                return self.day_cell(cssclass, html)
             return self.day_cell(cssclass, day)
         return self.day_cell('noday', '&nbsp;')
 
