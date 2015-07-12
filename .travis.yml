@@ -1,0 +1,20 @@
+language: python
+env:
+  - DATABASE_URL=mysql://travis:@localhost/
+python:
+  - "3.3"
+  - "3.4"
+  - "2.7"
+env:
+  - DJANGO=1.7.1
+  - DJANGO=1.8
+  - DJANGO=1.6
+install:
+  - pip install -q Django==$DJANGO --use-mirrors
+  - pip install pep8 --use-mirrors
+  - pip install -r requirements/test.txt --use-mirrors
+before_script:
+  - "pep8 --exclude=migrations --ignore=E501,E225 src"
+  - pyflakes -x W src
+script:
+  - python poradnia/manage.py test
