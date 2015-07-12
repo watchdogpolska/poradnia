@@ -47,7 +47,7 @@ var config = function(){
                 path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
                 path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
                 path.bower  + '/moment/min/moment.min.js',
-                // path.bower + '/moment/min/locales.js',
+                path.bower + '/moment/locale/pl.js',
                 path.bower  + '/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
                 path.assets + '/js/*.js'
             ],
