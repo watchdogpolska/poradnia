@@ -3,7 +3,6 @@
 {%block title%}{{object}} - {{block.super}}{%endblock%}
 {% block javascript %}
 {{block.super}}
-<script type="text/javascript" src="{% static 'js/jquery.formset.js' %}"></script>
 <script type="text/javascript">
   $(function() {
     $('form tbody tr').formset({addText:"{% trans 'add another'%}", deleteText: "{% trans 'remove'%}"});
