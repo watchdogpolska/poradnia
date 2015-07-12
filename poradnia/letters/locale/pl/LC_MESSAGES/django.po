@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: letter 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-08 01:26+0200\n"
-"PO-Revision-Date: 2015-07-08 01:24+0100\n"
+"POT-Creation-Date: 2015-07-12 12:17+0200\n"
+"PO-Revision-Date: 2015-07-12 12:18+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -25,7 +25,7 @@ msgid ""
 "archive and data about persons responsible for the case."
 msgstr ""
 "Konto użytkownika zostanie utworzone automatycznie, dzięki czemu będziesz "
-"mieć dostęp do archiwum i danych o osobach odpowiedzialnych za twoją sprawę."
+"mieć dostęp do archiwum zawierającego wszystkie Twoje sprawy."
 
 #: forms.py:26
 #, python-format
@@ -55,8 +55,8 @@ msgid ""
 "Short description of the case for organizational purposes. The institution "
 "name and two words will suffice."
 msgstr ""
-"Krótki opis sprawy dla celów organizacyjnych. Nazwa instytucji i dwa słowa "
-"wystarczą."
+"Podaj nazwę instytucji i typ problemu np. „brak odpowiedzi”, „ochrona danych "
+"osobowych” itp."
 
 #: forms.py:64
 msgid "Have to enter user email or select a client"
@@ -106,27 +106,23 @@ msgstr "Zmienione o"
 msgid "Modified on"
 msgstr "Zmienione przez"
 
-#: models.py:70
+#: models.py:67
 msgid "Letter"
 msgstr "List"
 
-#: models.py:71
+#: models.py:68
 msgid "Letters"
 msgstr "Listy"
 
-#: models.py:76
+#: models.py:73
 msgid "File"
 msgstr "Plik"
 
-#: models.py:77
-msgid "Comment"
-msgstr "Komentarz"
-
-#: models.py:90
+#: models.py:86
 msgid "Attachment"
 msgstr "Załącznik"
 
-#: models.py:91
+#: models.py:87
 msgid "Attachments"
 msgstr "Załączniki"
 
@@ -202,6 +198,9 @@ msgstr "Wyślij do klienta"
 #, python-format
 msgid "Letter %(object)s updated!"
 msgstr "List %(object)s zaktualizowany!"
+
+#~ msgid "Comment"
+#~ msgstr "Komentarz"
 
 #~ msgid "%(object)s updated!"
 #~ msgstr "%(object)s zaktualizowany!"
