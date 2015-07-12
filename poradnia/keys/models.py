@@ -21,7 +21,7 @@ class Key(models.Model):
     objects = KeyQuerySet.as_manager()
 
     def get_absolute_url(self):
-        return reverse('details', kwargs={'pk': self.pk})
+        return reverse('keys:details', kwargs={'pk': self.pk})
 
     def __unicode__(self):
         return "%s" % (self.created_on)

@@ -3,7 +3,7 @@
 {% block breadcrumbs %}
 <ol class="breadcrumb">
   <li><a href="{% url 'users:list' %}">{% trans 'Users' %}</a></li>
-  <li><a href="{% url 'list' %}">{% trans 'Keys' %}</a></li>
+  <li><a href="{% url 'keys:list' %}">{% trans 'Keys' %}</a></li>
   {% block breadcrumbs_rows%}{% endblock %}
 </ol>
 {% endblock %}

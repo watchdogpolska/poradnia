@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content %}
-<a href="{% url 'create'%}">{% trans 'Generate new key' %}</a>
+<p><a href="{% url 'keys:create'%}" class="btn btn-primary pull-right">{% trans 'Generate new key' %}</a></p>
 <table class="table table-stripped">
     <tr>
         <th>{% trans 'Description'%}</th>
@@ -21,7 +21,7 @@
         <td>{{object.created_on|naturaltime}}</td>
         <td>{{object.download_on|naturaltime}}</td>
         <td>{{object.used_on|naturaltime}}</td>
-        <td>[<a href="{% url 'details' pk=object.pk %}">{% trans 'Download'%}</a>][<a href="{% url 'delete' pk=object.pk %}">{% trans 'Delete'%}</a>]</td>
+        <td>[<a href="{% url 'keys:details' pk=object.pk %}">{% trans 'Download'%}</a>][<a href="{% url 'keys:delete' pk=object.pk %}">{% trans 'Delete'%}</a>]</td>
     </tr>
     {% endfor %}
 </table>
