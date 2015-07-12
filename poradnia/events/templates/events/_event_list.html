@@ -1,39 +1,24 @@
 {% load guardian_tags crispy_forms_tags humanize avatar_tags i18n %}
-<div class="row obj_container base_sent">
-    {% if not object.created_by.is_staff %}
-    <div class="col-md-2 col-xs-2 avatar">
-        {% avatar object.created_by %}
-        {% if object.show_modifier %}{% avatar object.modified_by %}{% endif %}
-    </div>
-    {% endif %}
-    <div class="col-md-10 col-xs-10">
-        <div class="messages">
-            <div class="panel panel-default">
-                <div class="panel-heading"><i class="fa fa-{{object.deadline|yesno:'fire,calendar'}}"></i> {{object}}</div>
-                  <table class="table">
-                    <tr><td>{% trans 'Dead-line'%}</td><td>{{object.deadline}}</td></tr>
-                    <tr><td>{% trans 'Time' %}</td><td><a href="{{object.get_calendar_url}}">{{object.time}}</a></td></tr>
-                    <tr><td>{% trans 'For client'%}</td><td>{{object.for_client}}</td></tr>
-                    <tr><td>{% trans 'Triggered'%}</td><td>{{object.triggered|yesno:"yes,no"}}</td></tr>
-                </table>
-                <div class="panel-body">
-                    <p>{{object.text}}</p>
-                </div>
-                <div class="panel-footer">
-                    <i class="fa fa-user"></i> {{object.created_by}} &bull;
-                    <i class="fa fa-clock"></i> <time datetime="{{object.created_on}}" title="{{object.created_on}}">{{object.created_on | naturaltime}}</time>
-                    {% if object.modified_by %}(updated on <time datetime="{{object.created_on}}" title="{{object.modified_on}}">{{object.modified_on | naturaltime}}</time> by {{object.modified_by}}){% endif %}
-                    {% if "can_change_all_record" in case_perms or requests.user == object.user and "can_change_own_record" in case_perms %} &bull; <i class="fa fa-pencil"></i> <a href="{{object.get_edit_url}}">{% trans 'Edit'%}</a>{% endif %}
-                </div>
-            </div>
+<div class="timeline-messange">
+    <a href="#"><img src="{% avatar_url object.created_by %}" class="timeline-avatar"></a>
+    <div class="panel {{ object.created_by.is_staff|yesno:'panel-default,panel-primary' }}  timeline-comment">
+        <div class="panel-heading">
+            <i class="fa fa-{{object.deadline|yesno:'fire,calendar'}}"></i> {{object}}
+        </div>
+        <table class="table">
+            <tr><td>{% trans 'Dead-line'%}</td><td>{{object.deadline}}</td></tr>
+            <tr><td>{% trans 'Time' %}</td><td><a href="{{object.get_calendar_url}}">{{object.time}}</a></td></tr>
+            <tr><td>{% trans 'For client'%}</td><td>{{object.for_client}}</td></tr>
+            <tr><td>{% trans 'Triggered'%}</td><td>{{object.triggered|yesno:"yes,no"}}</td></tr>
+        </table>
+        <div class="panel-body">
+            <p>{{object.text}}</p>
+        </div>
+        <div class="panel-footer">
+            <i class="fa fa-user"></i> {{object.created_by}} &bull;
+            <i class="fa fa-clock"></i> <time datetime="{{object.created_on}}" title="{{object.created_on}}">{{object.created_on | naturaltime}}</time>
+            {% if object.modified_by %}(updated on <time datetime="{{object.created_on}}" title="{{object.modified_on}}">{{object.modified_on | naturaltime}}</time> by {{object.modified_by}}){% endif %}
+            {% if "can_change_all_record" in case_perms or requests.user == object.user and "can_change_own_record" in case_perms %} &bull; <i class="fa fa-pencil"></i> <a href="{{object.get_edit_url}}">{% trans 'Edit'%}</a>{% endif %}
         </div>
     </div>
-    {% if object.created_by.is_staff %}
-    <div class="col-md-2 col-xs-2 avatar">
-        {% avatar object.created_by %}
-       {% if object.show_modifier %}{% avatar object.modified_by %}{% endif %}
-
-    </div>
-    {% endif %}
-
 </div>

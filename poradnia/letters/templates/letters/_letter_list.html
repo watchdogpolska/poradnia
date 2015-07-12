@@ -1,7 +1,6 @@
 {% load guardian_tags crispy_forms_tags humanize avatar_tags letter_tags i18n %}
 <div class="timeline-messange">
     <a href="#"><img src="{% avatar_url object.created_by %}" class="timeline-avatar"></a>
-    {% if object.show_modifier %}<a href="#"><img src="{% avatar_url object.modified_by %}"></a>{% endif %}
     <div class="panel {{ object.created_by.is_staff|yesno:'panel-default,panel-primary' }}  timeline-comment">
         <div class="panel-heading"><i class="fa fa-envelope"></i> {{object}}</div>
         <div class="panel-body">
