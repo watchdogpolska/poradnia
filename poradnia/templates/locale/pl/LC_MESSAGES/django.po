@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-12 21:25+0200\n"
-"PO-Revision-Date: 2015-07-12 21:26+0100\n"
+"POT-Creation-Date: 2015-07-12 21:36+0200\n"
+"PO-Revision-Date: 2015-07-12 21:38+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
 "Language: pl\n"
@@ -65,8 +65,9 @@ msgid ""
 "You currently do not have any e-mail address set up. You should really add "
 "an e-mail address so you can receive notifications, reset your password, etc."
 msgstr ""
-"Obecnie nie masz ustawionych żadnych adresów e-mail. Powinieneś wprowadzić "
-"adres e-mail, aby otrzymywać powiadomienia, móc zresetować hasło itd."
+"Obecnie nie masz ustawionych żadnych adresów e-mail. Powinieneś / powinnaś "
+"wprowadzić adres e-mail, aby otrzymywać powiadomienia i móc zresetować hasło "
+"itd."
 
 #: account/email.html:53
 msgid "Add E-mail Address"
@@ -83,7 +84,7 @@ msgstr "Czy na pewno chcesz usunąć wybrany adres e-mail?"
 #: account/email_confirm.html:7 account/email_confirm.html.py:14
 #: account/email_confirmed.html:6 account/email_confirmed.html.py:13
 msgid "Confirm E-mail Address"
-msgstr "Potwierdz adres e-mail"
+msgstr "Potwierdź adres e-mail"
 
 #: account/email_confirm.html:20
 #, python-format
@@ -91,8 +92,8 @@ msgid ""
 "Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
 "address for user %(user_display)s."
 msgstr ""
-"Proszę o potwierdzenie, że adres <a href=\"mailto:%(email)s\">%(email)s</a> "
-"należy do użytkownika %(user_display)s."
+"Prosimy o potwierdzenie, że adres <a href=\"mailto:%(email)s\">%(email)s</a> "
+"należy do użytkownika / użytkowniczki %(user_display)s."
 
 #: account/email_confirm.html:24
 msgid "Confirm"
