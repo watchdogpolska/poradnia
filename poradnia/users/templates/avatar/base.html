@@ -1,0 +1,11 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% block content %}{% endblock %}
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+  <li><a href="{% url 'users:list'%}">{% trans 'Users' %}</a></li>
+  <li><a href="{{ request.user.get_absolute_url }}">{{request.user}}</a></li>
+  <li><a href="{% url 'avatar_change' as avatar_add %}">{% trans 'Avatar' %}</a></li>
+  {% block breadcrumbs_row %}{% endblock %}
+</ol>
+{% endblock %}

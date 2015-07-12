@@ -4,23 +4,27 @@
 
 {% load crispy_forms_tags i18n %}
 
-
+  {% block breadcrumbs_row %}<li class="active">{% trans 'Change' %}</a></li>{% endblock %}
 {% block content %}
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-md-6">
         <h2>{% trans "Your current avatar: " %}</h2>
         {% avatar user %}
         {% if not avatars %}
             <p>{% trans "You haven't uploaded an avatar yet. Please upload one now." %}</p>
         {% else %}
             <form method="POST" action="{% url 'avatar_change' %}">
-            {% crispy primary_avatar_form %}
-
+            {{primary_avatar_form|crispy}}
+            {% csrf_token %}
+            <p>{% csrf_token %}<input type="submit" class="btn btn-primary" value="{% trans "Choose avatar" %}" /></p>
             </form>
         {% endif %}
+    </div>
+    <div class="col-md-6">
+        <h2>{% trans "Upload a new avatar" %}</h2>
         <form enctype="multipart/form-data" method="POST" action="{% url 'avatar_add' %}">
-            {% crispy upload_avatar_form %}
-            <p>{% csrf_token %}<input type="submit" value="{% trans "Upload New Image" %}" /></p>
+            {{ upload_avatar_form|crispy}}
+            <p>{% csrf_token %}<input type="submit" class="btn btn-prmiary" value="{% trans "Upload New Image" %}" /></p>
         </form>
     </div>
   </div>
