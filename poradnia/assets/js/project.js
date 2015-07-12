@@ -1,5 +1,5 @@
 /* Project specific Javascript goes here. */
- $('input.datetimeinput').datetimepicker({ format: 'YYYY-MM-DD HH:mm' ,sideBySide: true});
+ $('input.datetimeinput').datetimepicker({ format: 'DD.MM.YYYY HH:mm:ss' ,sideBySide: true});
 
 
 $(function () {
