@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-12 19:47+0200\n"
-"PO-Revision-Date: 2015-07-12 19:48+0100\n"
+"POT-Creation-Date: 2015-07-13 13:13+0200\n"
+"PO-Revision-Date: 2015-07-13 13:16+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -19,16 +19,15 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: forms.py:36 forms.py:58
+#: forms.py:35 forms.py:57
 msgid "Update"
 msgstr "Aktualizuj"
 
-#: forms.py:37 forms.py:59
+#: forms.py:36 forms.py:58
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: forms.py:135
-#| msgid "Sign Up"
+#: forms.py:130
 msgid "Signup"
 msgstr "Rejestracja"
 
@@ -42,7 +41,8 @@ msgstr "Nazwa użytkownika / użytkowniczki"
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: models.py:83 templates/users/base.html:5 templates/users/user_list.html:20
+#: models.py:83 templates/avatar/base.html:6 templates/users/base.html:5
+#: templates/users/user_list.html:20
 msgid "Users"
 msgstr "Użytkownicy / użytkowniczki"
 
@@ -62,6 +62,58 @@ msgstr "Profil"
 #: models.py:93
 msgid "Profiles"
 msgstr "Profile"
+
+#: templates/avatar/add.html:6
+#| msgid "Avatar"
+msgid "Add avatar"
+msgstr "Dodaj avatar"
+
+#: templates/avatar/add.html:12 templates/avatar/change.html:11
+msgid "Your current avatar: "
+msgstr "Twój obecny avatar:"
+
+#: templates/avatar/add.html:15 templates/avatar/change.html:14
+msgid "You haven't uploaded an avatar yet. Please upload one now."
+msgstr "Nie masz obecnie żadnego avataru. prosimy dodać nowy."
+
+#: templates/avatar/add.html:19 templates/avatar/change.html:27
+msgid "Upload New Image"
+msgstr "Dodaj nowy obraz"
+
+#: templates/avatar/base.html:8 templates/users/user_detail.html:33
+msgid "Avatar"
+msgstr "Avatar"
+
+#: templates/avatar/change.html:7
+msgid "Change"
+msgstr "Zmień"
+
+#: templates/avatar/change.html:19
+msgid "Choose avatar"
+msgstr "Wybierz avatar"
+
+#: templates/avatar/change.html:24
+msgid "Upload a new avatar"
+msgstr "Wyślij nowy avatar "
+
+#: templates/avatar/confirm_delete.html:5
+msgid "Delete confirmation"
+msgstr "Potwierdzenie usuwania"
+
+#: templates/avatar/confirm_delete.html:11
+msgid "Please select the avatars that you would like to delete."
+msgstr "Prosimy wybrać avatar, który chcesz usunąć."
+
+#: templates/avatar/confirm_delete.html:14
+#, python-format
+msgid ""
+"You have no avatars to delete. Please <a href=\"%(avatar_change_url)s"
+"\">upload one</a> now."
+msgstr "Nie masz avatarów. Prosimy <a href=\"%(avatar_change_url)s\">dodaj</a>"
+
+#: templates/avatar/confirm_delete.html:20
+msgid "Delete These"
+msgstr "Usuń wybrane"
 
 #: templates/users/_sidebar.html:8
 #, python-format
@@ -91,10 +143,6 @@ msgstr "Użytkownik jest członkiem zespołu"
 #: templates/users/user_detail.html:30
 msgid "About me"
 msgstr "O mnie"
-
-#: templates/users/user_detail.html:33
-msgid "Avatar"
-msgstr "Avatar"
 
 #: templates/users/user_detail.html:36
 msgid "Cases"
