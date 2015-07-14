@@ -12,5 +12,10 @@
 <p>Udzielamy ponad 1000 konsultacji prawnych rocznie. Aby jeszcze sprawniej pomagać, stworzyliśmy stronę, na której w tej chwili się znajdujesz.</p>
 <p>Nie jesteśmy specjalistami w każdej dziedzinie. Pomagamy w tematach, które wiążą się z naszą misją, realizowanymi działaniami i celami statutowymi. Dzięki temu mamy pewność, że porada którą otrzymujesz opiera się na doświadczeniu i przemyślanej wiedzy.</p>
 <p>Nasze eksperckie obszary to dostęp do informacji publicznej, fundusz sołecki i wpływanie na decyzje rządzących.</p>
-<p>Aby zgłosić nam kwestię, która chcesz rozwiązać, <a href="{% url 'account_signup' %}">zarejestruj się</a> lub <a href="{% url 'account_login' %}">zaloguj</a> i użyj <a href="{% url 'letters:add' %}">formularza dla "nowej sprawy"</a>. Jeżeli chcesz odwołać się do wcześniejszej korespondencji z nami, dotyczącej innych problemów - skorzystaj z „<a href="{% url 'cases:list' %}">wykazu spraw</a>”.</p>
+{% if requests.user.is_anonymous %}
+<p>Aby zgłosić nam problemy, który chcesz rozwiązać, <a href="{% url 'account_signup' %}">zarejestruj się</a> lub <a href="{% url 'account_login' %}">zaloguj</a> i użyj <a href="{% url 'letters:add' %}">formularza dla "nowej sprawy"</a>. Jeżeli chcesz odwołać się do wcześniejszej korespondencji z nami, dotyczącej innych problemów - skorzystaj z „<a href="{% url 'cases:list' %}">wykazu spraw</a>”.</p>
+{% else %}
+<p>Aby zgłosić nam problem, który chcesz rozwiązać, <a href="{% url 'letters:add' %}">użyj formularza dla "nowej sprawy"</a>. Jeżeli chcesz odwołać się do wcześniejszej korespondencji z nami, dotyczącej innych problemów - skorzystaj z „<a href="{% url 'cases:list' %}">wykazu spraw</a>”.
+</p>
+{% endif %}
 {% endblock %}
