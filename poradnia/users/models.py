@@ -54,7 +54,7 @@ class User(AbstractUser):
 
     def get_nicename(self):
         if self.first_name or self.last_name:
-            return "{0} {1}".format(self.first_name, self.last_name)
+            return u"{0} {1}".format(self.first_name, self.last_name)
         return self.username
 
     def __unicode__(self):
