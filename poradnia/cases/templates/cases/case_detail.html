@@ -124,10 +124,6 @@
         {% if row.formset %}
         {% crispy row.formset %}
         {% endif %}
-        <div class="form-actions">
-          <button type="submit" class="btn btn-primary">{% trans 'Save changes'%}</button>
-          <button class="btn">{% trans 'Cancel'%}</button>
-        </div>
       </form>
     </div>
     {% endfor %}

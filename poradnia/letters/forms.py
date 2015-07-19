@@ -103,6 +103,8 @@ class NewCaseForm(autocomplete_light.ModelForm, SingleButtonMixin, FileMixin, Pa
 
 
 class AddLetterForm(SingleButtonMixin, ModelForm, PartialMixin):
+    form_helper_cls = FormsetHelper
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         self.case = kwargs.pop('case')
