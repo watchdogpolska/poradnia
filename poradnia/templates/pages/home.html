@@ -1,6 +1,8 @@
 {% extends "base.html" %}
-
+{% load tinycontent_tags %}
 {% block content %}
+{% tinycontent_simple 'home:up' %}
+{% tinycontent 'home:start' %}
 <h2>Pomagamy Ci skutecznie korzystać z Twoich praw</h2>
 <h3>Kim jesteśmy?</h3>
 <p>Sieć Obywatelska Watchdog Polska to niezależna, apolityczna i niedochodowa organizacja pożytku publicznego o charakterze organizacji strażniczej i think-do-thanku.</p>
@@ -12,10 +14,15 @@
 <p>Udzielamy ponad 1000 konsultacji prawnych rocznie. Aby jeszcze sprawniej pomagać, stworzyliśmy stronę, na której w tej chwili się znajdujesz.</p>
 <p>Nie jesteśmy specjalistami w każdej dziedzinie. Pomagamy w tematach, które wiążą się z naszą misją, realizowanymi działaniami i celami statutowymi. Dzięki temu mamy pewność, że porada którą otrzymujesz opiera się na doświadczeniu i przemyślanej wiedzy.</p>
 <p>Nasze eksperckie obszary to dostęp do informacji publicznej, fundusz sołecki i wpływanie na decyzje rządzących.</p>
+{% endtinycontent %}
 {% if requests.user.is_anonymous %}
+{% tinycontent 'home:anonymous' %}
 <p>Aby zgłosić nam problemy, który chcesz rozwiązać, <a href="{% url 'account_signup' %}">zarejestruj się</a> lub <a href="{% url 'account_login' %}">zaloguj</a> i użyj <a href="{% url 'letters:add' %}">formularza dla "nowej sprawy"</a>. Jeżeli chcesz odwołać się do wcześniejszej korespondencji z nami, dotyczącej innych problemów - skorzystaj z „<a href="{% url 'cases:list' %}">wykazu spraw</a>”.</p>
+{% endtinycontent %}
 {% else %}
+{% tinycontent 'home:user' %}
 <p>Aby zgłosić nam problem, który chcesz rozwiązać, <a href="{% url 'letters:add' %}">użyj formularza dla "nowej sprawy"</a>. Jeżeli chcesz odwołać się do wcześniejszej korespondencji z nami, dotyczącej innych problemów - skorzystaj z „<a href="{% url 'cases:list' %}">wykazu spraw</a>”.
 </p>
+{% endtinycontent %}
 {% endif %}
 {% endblock %}
