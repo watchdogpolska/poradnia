@@ -33,4 +33,4 @@ class EventForm(PartialMixin, forms.ModelForm):
     class Meta:
         # Set this form to use the User model.
         model = Event
-        fields = ("deadline", "time", "for_client", "text")
+        fields = ("deadline", "time", "text")
