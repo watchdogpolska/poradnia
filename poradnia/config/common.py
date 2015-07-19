@@ -29,7 +29,7 @@ class Common(Configuration):
         'django.contrib.sites',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-
+        'django.contrib.flatpages',
         # Useful template tags:
         'django.contrib.humanize',
 
@@ -46,6 +46,8 @@ class Common(Configuration):
         'notifications',
         'django_mailbox',
         'autocomplete_light',
+        'tinymce',
+        'flatpages_tinymce',
     )
 
     # Apps specific for this project go here.
