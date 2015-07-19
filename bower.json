@@ -17,6 +17,7 @@
   "dependencies": {
     "font-awesome": "~4.3.0",
     "bootstrap-sass": "~3.3.4",
-    "eonasdan-bootstrap-datetimepicker": "~4.7.14"
+    "pikaday-time": "~1.3.3",
+    "moment": "~2.10.3"
   }
 }

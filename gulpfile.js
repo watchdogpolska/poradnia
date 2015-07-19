@@ -26,6 +26,7 @@ var config = function(){
             'include': [
                 path.bower  + '/bootstrap-sass/assets/stylesheets',
                 path.bower  + '/font-awesome/scss',
+                path.bower  + '/pikaday-time/scss/',
                 path.assets + '/scss/'
             ],
             'output': path.static + "/css",
@@ -44,11 +45,11 @@ var config = function(){
         'script':{
             'input' : [
                 path.bower  + '/jquery/dist/jquery.js',
-                path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
-                path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
-                path.bower  + '/moment/min/moment.min.js',
-                path.bower + '/moment/locale/pl.js',
-                path.bower  + '/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
+                path.bower  + '/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
+                path.bower  + '/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
+                path.bower  + '/moment/moment.js',
+                path.bower  + '/moment/locale/pl.js',
+                path.bower  + '/pikaday-time/pikaday.js',
                 path.assets + '/js/*.js'
             ],
             'output': {
