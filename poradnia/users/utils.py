@@ -1,5 +1,6 @@
 from django.core.exceptions import PermissionDenied
 from guardian.shortcuts import get_perms
+from braces.views import LoginRequiredMixin
 
 
 def has_perms(user, perms, obj=None,  required_all=True):
@@ -13,3 +14,9 @@ def has_perms(user, perms, obj=None,  required_all=True):
     if not required_all and any(tests):
         return True
     raise PermissionDenied
+
+
+class PermissionMixin(LoginRequiredMixin, object):
+    def get_queryset(self, *args, **kwargs):
+        qs = super(PermissionMixin, self).get_queryset(*args, **kwargs)
+        return qs.for_user(self.request.user)
