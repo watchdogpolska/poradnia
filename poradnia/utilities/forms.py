@@ -8,12 +8,20 @@ from django.utils.translation import ugettext_lazy as _l
 from multiupload.fields import MultiFileField
 
 
-class SingleButtonMixin(object):
+class HelperMixin(object):
+    form_helper_cls = FormHelper
+
+    def __init__(self, *args, **kwargs):
+        super(HelperMixin, self).__init__(*args, **kwargs)
+        self.helper = getattr(self, 'helper', self.form_helper_cls(self))
+
+
+class SingleButtonMixin(HelperMixin):
     action_text = _l('Save')
+    form_helper_cls = FormHelper
 
     def __init__(self, *args, **kwargs):
         super(SingleButtonMixin, self).__init__(*args, **kwargs)
-        self.helper = getattr(self, 'helper', FormHelper(self))
         self.helper.layout.append(
             FormActions(
                 Submit('action', self.action_text, css_class="btn-primary"),
@@ -21,10 +29,9 @@ class SingleButtonMixin(object):
         )
 
 
-class SaveButtonMixin(object):
+class SaveButtonMixin(HelperMixin):
     def __init__(self, *args, **kwargs):
         super(SaveButtonMixin, self).__init__(*args, **kwargs)
-        self.helper = getattr(self, 'helper', FormHelper(self))
         self.helper.layout.append(
             FormActions(
                 Submit('save_changes', _('Update'), css_class="btn-primary"),
@@ -33,10 +40,9 @@ class SaveButtonMixin(object):
         )
 
 
-class FormHorizontalMixin(object):
+class FormHorizontalMixin(HelperMixin):
     def __init__(self, *args, **kwargs):
         super(FormHorizontalMixin, self).__init__(*args, **kwargs)
-        self.helper = getattr(self, 'helper', FormHelper(self))
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-9'
