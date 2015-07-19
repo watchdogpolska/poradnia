@@ -20,3 +20,9 @@ class PermissionMixin(LoginRequiredMixin, object):
     def get_queryset(self, *args, **kwargs):
         qs = super(PermissionMixin, self).get_queryset(*args, **kwargs)
         return qs.for_user(self.request.user)
+
+
+class AutocompletePermissionMixin(object):
+    def choices_for_request(self):
+        self.choices = self.choices.for_user(self.request.user)
+        return super(AutocompletePermissionMixin, self).choices_for_request()

@@ -15,17 +15,14 @@ from .forms import UserForm, ProfileForm
 
 # Import the customized User model
 from .models import User, Profile
+from .utils import PermissionMixin
 
 
-class UserDetailView(LoginRequiredMixin, DetailView):
+class UserDetailView(PermissionMixin, DetailView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = "username"
     slug_url_kwarg = "username"
-
-    def get_queryset(self, *args, **kwargs):
-        queryset = super(UserDetailView, self).get_queryset(*args, **kwargs)
-        return queryset.for_user(self.request.user)
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
@@ -66,12 +63,8 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         return Profile.objects.get_or_create(user=self.request.user)[0]
 
 
-class UserListView(StaffuserRequiredMixin, ListView):
+class UserListView(StaffuserRequiredMixin, PermissionMixin, ListView):
     model = User
     # These next two lines tell the view to index lookups by username
     slug_field = "username"
     slug_url_kwarg = "username"
-
-    def get_queryset(self):
-        queryset = super(UserListView, self).get_queryset()
-        return queryset.for_user(self.request.user)
