@@ -8,7 +8,7 @@ from django.utils.translation import ugettext_lazy as _l
 from multiupload.fields import MultiFileField
 
 
-class HelperMixin(object):
+class HelperMixin(forms.Form):
     form_helper_cls = FormHelper
 
     def __init__(self, *args, **kwargs):
