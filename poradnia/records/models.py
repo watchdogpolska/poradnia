@@ -4,9 +4,17 @@ from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.query import QuerySet
+from django.db.models import Q
+from model_utils.managers import PassThroughManager
 from cases.models import Case
-from notifications import notify
 
+
+class RecordQuerySet(QuerySet):
+    def for_user(self, user):
+        if user.is_staff:
+            return self
+        return self.filter(Q(event=None) & Q(event=None) & Q(letter__status='done'))
 
 class Record(models.Model):
     STATIC_RELATION = ['letter', 'event', 'alarm']
@@ -25,6 +33,7 @@ class Record(models.Model):
         null=True,
     )
     related_object = generic.GenericForeignKey('content_type', 'object_id')
+    objects = PassThroughManager.for_queryset_class(RecordQuerySet)()
 
     @property  # We use OneToOneField as possible
     def content_object(self):
