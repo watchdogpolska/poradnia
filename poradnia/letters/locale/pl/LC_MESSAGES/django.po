@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: letter 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-12 21:41+0200\n"
-"PO-Revision-Date: 2015-07-12 21:41+0100\n"
+"POT-Creation-Date: 2015-07-19 13:01+0200\n"
+"PO-Revision-Date: 2015-07-19 13:00+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -19,38 +19,30 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: forms.py:14
-msgid ""
-"The user account will be created automatically,so you have access to the "
-"archive and data about persons responsible for the case."
-msgstr ""
-"Konto użytkownika zostanie utworzone automatycznie, dzięki czemu będziesz "
-"mieć dostęp do archiwum zawierającego wszystkie Twoje sprawy."
-
 #: forms.py:26
 #, python-format
 msgid "E-mail %(email)s are already used. Please log in."
 msgstr "Adres e-mail %(email)s jest aktualnie w użyciu. Proszę, zaloguj się."
 
-#: forms.py:39
+#: forms.py:37
 msgid "Client"
 msgstr "Klient"
 
-#: forms.py:40
+#: forms.py:38
 msgid "Leave empty to use email field and create a new one user."
 msgstr ""
 "Pozostaw puste, aby wykorzystać pole adresu e-mail i utworzyć nowego "
 "użytkownika."
 
-#: forms.py:42
+#: forms.py:40
 msgid "User e-mail"
 msgstr "E-mail użytkownika"
 
-#: forms.py:44
+#: forms.py:42
 msgid "E-mail"
 msgstr "E-mail"
 
-#: forms.py:50
+#: forms.py:49
 msgid ""
 "Short description of the case for organizational purposes. The institution "
 "name and two words will suffice."
@@ -58,11 +50,11 @@ msgstr ""
 "Podaj nazwę instytucji i typ problemu np. „brak odpowiedzi”, „ochrona danych "
 "osobowych” itp."
 
-#: forms.py:64
+#: forms.py:63
 msgid "Have to enter user email or select a client"
 msgstr "Musisz podać adres e-mail klienta lub go wybrać z bazy."
 
-#: forms.py:135
+#: forms.py:133
 msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
@@ -126,35 +118,53 @@ msgstr "Załącznik"
 msgid "Attachments"
 msgstr "Załączniki"
 
-#: templates/letters/_letter_list.html:26 views.py:141
-msgid "Edit"
-msgstr "Edytuj"
-
-#: templates/letters/_letter_list.html:27
-msgid "Send"
-msgstr "Wyślij"
-
-#: templates/letters/form.html:7
+#: templates/letters/_form.html:7
 msgid "remove"
 msgstr "usuń"
 
-#: templates/letters/form.html:7
+#: templates/letters/_form.html:7
 msgid "add another"
 msgstr "dodaj kolejne"
 
-#: templates/letters/form.html:14
+#: templates/letters/_form.html:14
 msgid "Cases"
 msgstr "Sprawy"
 
-#: templates/letters/form.html:41
+#: templates/letters/_form.html:33
 msgid "Save changes"
 msgstr "Zapisz zmiany"
 
-#: templates/letters/form.html:42
+#: templates/letters/_form.html:34
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: views.py:13
+#: templates/letters/_letter_list.html:26 templates/letters/form_edit.html:6
+#: views/fbv.py:109
+msgid "Edit"
+msgstr "Edytuj"
+
+#: templates/letters/_letter_list.html:27 templates/letters/form_send.html:7
+msgid "Send"
+msgstr "Wyślij"
+
+#: templates/letters/form_add.html:5 views/fbv.py:41
+msgid "Add"
+msgstr "Dodaj"
+
+#: templates/letters/form_new.html:4
+msgid "New case"
+msgstr "Nowa sprawa"
+
+#: views/cbv.py:14
+msgid "Create a new case"
+msgstr "Tworzenie nowej sprawy"
+
+#: views/cbv.py:20
+#, python-format
+msgid "Case about %(object)s created!"
+msgstr "Sprawa o tytule %(object)s została zarejestrowana!"
+
+#: views/fbv.py:13
 #, python-format
 msgid ""
 "User  %(user)s registered! You will receive a password by mail. Log in to "
@@ -163,41 +173,39 @@ msgstr ""
 "Konto %(user)s utworzone! Hasło otrzymasz na adres e-mail. Zaloguj się, aby "
 "uzyskać dostęp do archiwum."
 
-#: views.py:32
-#, python-format
-msgid "Case about %(object)s created!"
-msgstr "Sprawa o tytule %(object)s została zarejestrowana!"
-
-#: views.py:44
-msgid "Create a new case"
-msgstr "Tworzenie nowej sprawy"
-
-#: views.py:65
+#: views/fbv.py:34
 #, python-format
 msgid "Letter %(object)s created!"
 msgstr "List %(object)s utworzone"
 
-#: views.py:73
-msgid "Add"
-msgstr "Dodaj"
-
-#: views.py:89
+#: views/fbv.py:57
 msgid "It doesn't make sense."
 msgstr "To nie ma sensu."
 
-#: views.py:99
+#: views/fbv.py:67
 #, python-format
 msgid "Letter %(object)s send!"
 msgstr "List %(object)s wysłany!"
 
-#: views.py:105
+#: views/fbv.py:73
 msgid "Send to client"
 msgstr "Wyślij do klienta"
 
-#: views.py:134
+#: views/fbv.py:102
 #, python-format
 msgid "Letter %(object)s updated!"
 msgstr "List %(object)s zaktualizowany!"
+
+#~| msgid "New case"
+#~ msgid "Report case"
+#~ msgstr "Zgłoś sprawę"
+
+#~ msgid ""
+#~ "The user account will be created automatically,so you have access to the "
+#~ "archive and data about persons responsible for the case."
+#~ msgstr ""
+#~ "Konto użytkownika zostanie utworzone automatycznie, dzięki czemu będziesz "
+#~ "mieć dostęp do archiwum zawierającego wszystkie Twoje sprawy."
 
 #~ msgid "Comment"
 #~ msgstr "Komentarz"

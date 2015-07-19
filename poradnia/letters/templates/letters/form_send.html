@@ -1,0 +1,8 @@
+{% extends 'letters/_form.html' %}
+{% load i18n %}
+{% block breadcrumbs %}
+  {% block breadcrumb_row %}
+  <li><a href="{{ case.get_absolute_url }}">{{ case }}</a></li>
+  <li>{{object}}</li>
+  <li class="active">{% trans 'Send' %}</li>
+{% endblock %}
