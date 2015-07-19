@@ -1,12 +1,7 @@
-engines:
-  fixme:
-    enabled: true
-
-# Analysis settings for Languages and Engines are both valid but mutually exclusive.
-# languages:
-#  CSS: true
-#  JavaScript: true
-#  Python: true
+languages:
+  JavaScript: true
+  Python: true
+  CSS: true
 
 exclude_paths:
 - poradnia/cases/static/cases/lou-multiselect/*
