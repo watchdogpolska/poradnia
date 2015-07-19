@@ -25,7 +25,7 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable avatars
     url(r'^avatar/', include('avatar.urls')),
-
+    url(r'^pages/', include('django.contrib.flatpages.urls')),
     # Your stuff: custom urls go here
     url(r'^inbox/notifications/', include('notifications_custom.urls', namespace="notifications")),
     url(r'^cases/', include('cases.urls', namespace='cases')),

@@ -29,7 +29,7 @@ class Common(Configuration):
         'django.contrib.sites',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-
+        'django.contrib.flatpages',
         # Useful template tags:
         'django.contrib.humanize',
 
