@@ -1,8 +1,9 @@
 poradnia
 ==============================
 
-A short description of the project.
-
+.. image:: https://codeclimate.com/github/watchdogpolska/poradnia/badges/gpa.svg
+   :target: https://codeclimate.com/github/watchdogpolska/poradnia
+   :alt: Code Climate
 
 LICENSE: BSD
 
