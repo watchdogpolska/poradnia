@@ -4,7 +4,10 @@ var fs          = require('fs'),
     notify      = require("gulp-notify"), 
     bower       = require('gulp-bower'),
     watch       = require('gulp-watch'),
-    uglify      = require('gulp-uglifyjs'),
+    uglify      = require('gulp-uglify'),
+    concat      = require('gulp-concat'),
+    rename      = require('gulp-rename'),
+    minifycss      = require('gulp-minify-css'),
     prefix      = require('gulp-autoprefixer'),
     livereload  = require('gulp-livereload'),
     csslint     = require('gulp-csslint'),
@@ -26,6 +29,7 @@ var config = function(){
             'include': [
                 path.bower  + '/bootstrap-sass/assets/stylesheets',
                 path.bower  + '/font-awesome/scss',
+                path.bower  + '/pikaday-time/scss/',
                 path.assets + '/scss/'
             ],
             'output': path.static + "/css",
@@ -44,11 +48,11 @@ var config = function(){
         'script':{
             'input' : [
                 path.bower  + '/jquery/dist/jquery.js',
-                path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
-                path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
-                path.bower  + '/moment/min/moment.min.js',
-                path.bower + '/moment/locale/pl.js',
-                path.bower  + '/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js',
+                path.bower  + '/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
+                path.bower  + '/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
+                path.bower  + '/moment/moment.js',
+                path.bower  + '/moment/locale/pl.js',
+                path.bower  + '/pikaday-time/pikaday.js',
                 path.assets + '/js/*.js'
             ],
             'output': {
@@ -73,7 +77,11 @@ gulp.task('icons', function() { 
 
 gulp.task('js', function(){
     return gulp.src(config.script.input)
-        .pipe(uglify(config.script.output.filename))
+        .pipe(concat(config.script.output.filename))
+        .pipe(gulp.dest(config.script.output.dir))
+          .pipe(livereload())
+        .pipe(uglify())
+        .pipe(rename({ extname: '.min.js' }))
         .pipe(gulp.dest(config.script.output.dir))
         .pipe(livereload());
 });
@@ -88,6 +96,10 @@ gulp.task('scss', function() { 
             }
         ) 
         .pipe(prefix("last 1 version", "> 1%", "ie 8", "ie 7"))
+        .pipe(gulp.dest(config.scss.output))
+          .pipe(livereload()) 
+        .pipe(rename({ extname: '.min.css' }))
+        .pipe(minifycss())
         .pipe(gulp.dest(config.scss.output))
           .pipe(livereload()); 
 });

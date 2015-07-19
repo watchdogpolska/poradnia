@@ -13,9 +13,11 @@
 <![endif]-->
 
 {% block css %}
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="{% static 'css/style.css'%}">
-
+{% if debug %}
+  <link rel="stylesheet" href="{% static 'css/style.css'%}">
+{% else %}
+  <link rel="stylesheet" href="{% static 'css/style.min.css'%}">
+{% endif %}
 {% endblock %}
 {% block extra_css %}{%endblock%} {# TODO: Remove it #}
 </head>
@@ -54,17 +56,17 @@
         </div>
     </div>
   </div>
-</div>
 {% block modal %}{% endblock modal %}
 
 <!-- Le javascript
   ================================================== -->
   <!-- Placed at the end of the document so the pages load faster -->
+  {% if debug %}
+    <script src="{% static 'js/script.js' %}"></script>
+  {% else %}
+    <script src="{% static 'js/script.min.js' %}"></script>
+  {% endif %}
   {% block javascript %}
-  <!-- Latest compiled and minified JavaScript -->
-  {# // <script src="{% static 'js/bootstrap.min.js' %}"></script> #}
-  <script src="{% static 'js/script.js' %}"></script>
-
   {% include 'autocomplete_light/static.html' %}
   {% endblock javascript %}
 </body>
