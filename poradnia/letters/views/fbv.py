@@ -107,7 +107,7 @@ def edit(request, pk):
     context['form'] = form
     context['formset'] = formset or AttachmentFormSet(instance=letter)
     context['headline'] = _('Edit')
-    return render(request, 'letters/form.html', context)
+    return render(request, 'letters/form_edit.html', context)
 
 
 def detail(request, pk):

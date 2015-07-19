@@ -162,7 +162,9 @@ class AttachmentForm(ModelForm):
         model = Attachment
 
 
-class LetterForm(SingleButtonMixin, ModelForm, PartialMixin):
+class LetterForm(SingleButtonMixin, ModelForm, PartialMixin):  # eg. edit form
+    form_helper_cls = FormsetHelper
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(LetterForm, self).__init__(*args, **kwargs)
