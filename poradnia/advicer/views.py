@@ -1,15 +1,15 @@
-# from django.shortcuts import render
-from django.views.generic import ListView, UpdateView, CreateView, DeleteView, DetailView
+from django.views.generic import UpdateView, CreateView, DeleteView, DetailView
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from braces.views import (OrderableListMixin, SelectRelatedMixin, LoginRequiredMixin,
     FormValidMessageMixin, UserFormKwargsMixin)
-from ..filters import AdviceFilter
-from ..models import Advice
-from ..forms import AdviceForm
-from .mixins import PermissionMixin, FormInitialMixin
+from utilities.views import FormInitialMixin
+from users.utils import PermissionMixin
+from .filters import AdviceFilter
+from .models import Advice
+from .forms import AdviceForm
 from django_filters.views import FilterView
 
 
@@ -35,7 +35,8 @@ class AdviceUpdate(PermissionMixin, FormValidMessageMixin, UserFormKwargsMixin, 
         return _("{0} updated!").format(self.object)
 
 
-class AdviceCreate(FormInitialMixin, FormValidMessageMixin, UserFormKwargsMixin, LoginRequiredMixin, CreateView):
+class AdviceCreate(FormInitialMixin, FormValidMessageMixin, UserFormKwargsMixin, LoginRequiredMixin,
+        CreateView):
     model = Advice
     form_class = AdviceForm
 
