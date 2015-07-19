@@ -298,4 +298,8 @@ class Common(Configuration):
 
     PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
     PORADNIA_EMAIL_INPUT = "^sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl$"
-    ATOMIC_REQUESTS = True
+    ATOMIC_REQUESTS = True  # Why?
+
+    TINYMCE_DEFAULT_CONFIG = {
+        'theme': "advanced",
+    }

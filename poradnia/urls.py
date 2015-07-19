@@ -13,9 +13,6 @@ urlpatterns = patterns('',
     url(r'^$',
         TemplateView.as_view(template_name='pages/home.html'),
         name="home"),
-#    url(r'^about/$',
-#        TemplateView.as_view(template_name='pages/about.html'),
-#        name="about"),
     # Uncomment the next line to enable the admin:
     url(r'^admin/', include(admin.site.urls)),
 
@@ -25,14 +22,19 @@ urlpatterns = patterns('',
 
     # Uncomment the next line to enable avatars
     url(r'^avatar/', include('avatar.urls')),
+    # Flatpages
     url(r'^pages/', include('django.contrib.flatpages.urls')),
-    # Your stuff: custom urls go here
-    url(r'^inbox/notifications/', include('notifications_custom.urls', namespace="notifications")),
+    url(r'^tinymce/', include('tinymce.urls')),
+    # Notifications
+    url(r'^notifications/', include('notifications_custom.urls', namespace="notifications")),
+    # Poradnia
     url(r'^cases/', include('cases.urls', namespace='cases')),
     url(r'^letters/', include('letters.urls', namespace='letters')),
     url(r'^event/', include('events.urls', namespace='events')),
     url(r'^advice/', include('advicer.urls', namespace='advicer')),
+    # Utils
     url(r'^autocomplete/', include('autocomplete_light.urls')),
+
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

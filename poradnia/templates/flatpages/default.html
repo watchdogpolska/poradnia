@@ -1,6 +1,7 @@
 {%extends 'base.html' %}
-
+{% load flatpage_admin %}
 {% block title %}{{ flatpage.title }} - {{block.super}}{% endblock %}
 {% block content %}
-{{ flatpage.content }}
+<h1>{{flatpage.title}}</h1>
+{% flatpage_admin flatpage %}
 {% endblock %}
