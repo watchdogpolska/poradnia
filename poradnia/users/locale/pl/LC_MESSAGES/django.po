@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-13 13:13+0200\n"
-"PO-Revision-Date: 2015-07-13 13:16+0100\n"
+"POT-Creation-Date: 2015-07-19 14:29+0200\n"
+"PO-Revision-Date: 2015-07-19 14:29+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -19,15 +19,15 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: forms.py:35 forms.py:57
+#: forms.py:24
 msgid "Update"
 msgstr "Aktualizuj"
 
-#: forms.py:36 forms.py:58
+#: forms.py:25
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: forms.py:130
+#: forms.py:97
 msgid "Signup"
 msgstr "Rejestracja"
 
@@ -63,20 +63,23 @@ msgstr "Profil"
 msgid "Profiles"
 msgstr "Profile"
 
-#: templates/avatar/add.html:6
-#| msgid "Avatar"
+#: templates/avatar/add.html:7
 msgid "Add avatar"
 msgstr "Dodaj avatar"
 
-#: templates/avatar/add.html:12 templates/avatar/change.html:11
+#: templates/avatar/add.html:14 templates/avatar/change.html:10
 msgid "Your current avatar: "
 msgstr "Twój obecny avatar:"
 
-#: templates/avatar/add.html:15 templates/avatar/change.html:14
+#: templates/avatar/add.html:16 templates/avatar/change.html:12
+msgid "Avatar choices: "
+msgstr "Dostępne avatary:"
+
+#: templates/avatar/add.html:18 templates/avatar/change.html:14
 msgid "You haven't uploaded an avatar yet. Please upload one now."
 msgstr "Nie masz obecnie żadnego avataru. prosimy dodać nowy."
 
-#: templates/avatar/add.html:19 templates/avatar/change.html:27
+#: templates/avatar/add.html:22 templates/avatar/change.html:27
 msgid "Upload New Image"
 msgstr "Dodaj nowy obraz"
 
@@ -84,7 +87,7 @@ msgstr "Dodaj nowy obraz"
 msgid "Avatar"
 msgstr "Avatar"
 
-#: templates/avatar/change.html:7
+#: templates/avatar/change.html:5
 msgid "Change"
 msgstr "Zmień"
 
@@ -96,22 +99,22 @@ msgstr "Wybierz avatar"
 msgid "Upload a new avatar"
 msgstr "Wyślij nowy avatar "
 
-#: templates/avatar/confirm_delete.html:5
+#: templates/avatar/confirm_delete.html:6
 msgid "Delete confirmation"
 msgstr "Potwierdzenie usuwania"
 
-#: templates/avatar/confirm_delete.html:11
+#: templates/avatar/confirm_delete.html:13
 msgid "Please select the avatars that you would like to delete."
 msgstr "Prosimy wybrać avatar, który chcesz usunąć."
 
-#: templates/avatar/confirm_delete.html:14
+#: templates/avatar/confirm_delete.html:16
 #, python-format
 msgid ""
 "You have no avatars to delete. Please <a href=\"%(avatar_change_url)s"
 "\">upload one</a> now."
 msgstr "Nie masz avatarów. Prosimy <a href=\"%(avatar_change_url)s\">dodaj</a>"
 
-#: templates/avatar/confirm_delete.html:20
+#: templates/avatar/confirm_delete.html:22
 msgid "Delete These"
 msgstr "Usuń wybrane"
 
