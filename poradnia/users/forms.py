@@ -10,7 +10,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Div
 from crispy_forms.bootstrap import FormActions, PrependedText
 import autocomplete_light
-from utitilies.forms import SingleButtonMixin, SaveButtonMixin, FormHorizontalMixin
+from utilities.forms import SingleButtonMixin, SaveButtonMixin, FormHorizontalMixin
 from .models import User, Profile
 
 
