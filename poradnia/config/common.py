@@ -303,3 +303,5 @@ class Common(Configuration):
     TINYMCE_DEFAULT_CONFIG = {
         'theme': "advanced",
     }
+
+    AVATAR_GRAVATAR_DEFAULT = 'retro'
