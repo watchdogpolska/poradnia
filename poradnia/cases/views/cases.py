@@ -41,7 +41,7 @@ def detail(request, pk):
         prefetch_related('letter__attachment_set'))
 
     if not request.user.is_staff:
-        qs = qs.filter(letter__status=Letter.STATUS.done)
+        qs = qs.for_user(request.user)
 
     context['record_list'] = qs.all()
     return render(request, 'cases/case_detail.html', context)

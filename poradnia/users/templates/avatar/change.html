@@ -1,15 +1,15 @@
 {% extends "avatar/base.html" %}
-{% load i18n avatar_tags %}
-{% load url from future %}
+{% load i18n avatar_tags crispy_forms_tags %}
 
-{% load crispy_forms_tags i18n %}
-
-  {% block breadcrumbs_row %}<li class="active">{% trans 'Change' %}</a></li>{% endblock %}
+{% block breadcrumbs_row %}
+<li class="active">{% trans 'Change' %}</li>
+{% endblock %}
 {% block content %}
   <div class="row">
     <div class="col-md-6">
         <h2>{% trans "Your current avatar: " %}</h2>
         {% avatar user %}
+        <h2>{% trans "Avatar choices: " %}</h2>
         {% if not avatars %}
             <p>{% trans "You haven't uploaded an avatar yet. Please upload one now." %}</p>
         {% else %}

@@ -30,8 +30,8 @@ unicode-slugify==0.1.1
 django-autoslug==1.7.2
 
 # Useful things
-django-avatar==2.0
-
+# django-avatar==2.0
+https://github.com/watchdogpolska/django-avatar/archive/73ad17491ec8fd56e57427fb8aea1a032e02b29b.zip
 # Time zones support
 pytz==2014.7
 
@@ -43,3 +43,5 @@ talon==1.0.2
 django-filter==0.10.0
 django-autocomplete-light==2.2.3
 django-multiupload==0.5
+https://github.com/sp1ky/django-flatpages-tinymce/archive/3808a58e8f67491a4e7ed72bceca3f6d760a8c98.zip
+django-tinymce==1.5.3

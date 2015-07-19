@@ -3,7 +3,9 @@
 {% load i18n avatar_tags %}
 {% load url from future %}
 
-  {% block breadcrumbs_row %}<li class="active">{% trans 'Add avatar' %}</a></li>{% endblock %}
+{% block breadcrumbs_row %}
+<li class="active">{% trans 'Add avatar' %}</a></li>
+{% endblock %}
 
 {% block content %}
 <div class="container">
@@ -11,6 +13,7 @@
     <div class="col-xs-12">
       <h2>{% trans "Your current avatar: " %}</h2>
         {% avatar user %}
+        <h2>{% trans "Avatar choices: " %}</h2>
         {% if not avatars %}
             <p>{% trans "You haven't uploaded an avatar yet. Please upload one now." %}</p>
         {% endif %}

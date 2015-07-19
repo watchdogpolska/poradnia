@@ -29,7 +29,7 @@ class Common(Configuration):
         'django.contrib.sites',
         'django.contrib.messages',
         'django.contrib.staticfiles',
-
+        'django.contrib.flatpages',
         # Useful template tags:
         'django.contrib.humanize',
 
@@ -46,6 +46,8 @@ class Common(Configuration):
         'notifications',
         'django_mailbox',
         'autocomplete_light',
+        'tinymce',
+        'flatpages_tinymce',
     )
 
     # Apps specific for this project go here.
@@ -233,7 +235,7 @@ class Common(Configuration):
     # Some really nice defaults
     ACCOUNT_AUTHENTICATION_METHOD = "username"
     ACCOUNT_EMAIL_REQUIRED = True
-    ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+    ACCOUNT_EMAIL_VERIFICATION = "optional"
     # END AUTHENTICATION CONFIGURATION
 
     # Custom user app defaults
@@ -296,4 +298,10 @@ class Common(Configuration):
 
     PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
     PORADNIA_EMAIL_INPUT = "^sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl$"
-    ATOMIC_REQUESTS = True
+    ATOMIC_REQUESTS = True  # Why?
+
+    TINYMCE_DEFAULT_CONFIG = {
+        'theme': "advanced",
+    }
+
+    AVATAR_GRAVATAR_DEFAULT = 'retro'

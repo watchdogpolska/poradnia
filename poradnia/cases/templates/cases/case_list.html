@@ -56,7 +56,7 @@
         <span class="{{object.status|status2css}}">
         <a href="{{ object.get_absolute_url }}">{{ object.name }}</a>
         ({{ object.letter_count }})
-        {% if object.deadline.time %}<span class="label label-warning"><i class="fa fa-fire"></i> {{ object.deadline.time }}</span>{% endif%}
+        {% if object.deadline.time and request.user.is_staff %}<span class="label label-warning"><i class="fa fa-fire"></i> {{ object.deadline.time }}</span>{% endif%}
       </td>
       <td>{% if object.last_send %}{{ object.last_send|naturaltime }}{% else %}{% trans 'No answer' %}{% endif %}</td>
       {% if request.user.is_staff %}

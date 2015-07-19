@@ -27,10 +27,6 @@ class EventQuerySet(QuerySet):
 class Event(AbstractRecord):
     deadline = models.BooleanField(default=False, verbose_name=_("Dead-line"))
     time = models.DateTimeField(verbose_name=_("Time"))
-    for_client = models.BooleanField(
-        default=False,
-        verbose_name=_("For client"),
-        help_text=_("Unchecked are visible for staff only"))
     text = models.CharField(max_length=150, verbose_name=_("Subject"))
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name='event_created_by', verbose_name=_("Created by"))
