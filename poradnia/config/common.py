@@ -73,7 +73,7 @@ class Common(Configuration):
     MIDDLEWARE_CLASSES = (
         # Make sure djangosecure.middleware.SecurityMiddleware is listed first
         'djangosecure.middleware.SecurityMiddleware',
-        'django.middleware.locale.LocaleMiddleware',
+        # 'django.middleware.locale.LocaleMiddleware',
         'django.contrib.sessions.middleware.SessionMiddleware',
         'django.middleware.common.CommonMiddleware',
         'django.middleware.csrf.CsrfViewMiddleware',
@@ -146,7 +146,7 @@ class Common(Configuration):
     TIME_ZONE = 'Europe/Warsaw'
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-    LANGUAGE_CODE = 'pl-pl'
+    LANGUAGE_CODE = 'pl'
 
     # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
     SITE_ID = 1
