@@ -106,8 +106,8 @@ class AddLetterForm(SingleButtonMixin, ModelForm, PartialMixin):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         self.case = kwargs.pop('case')
-        self.helper.form_action = reverse('letters:add', kwargs={'case_pk': self.case.pk})
         super(AddLetterForm, self).__init__(*args, **kwargs)
+        self.helper.form_action = reverse('letters:add', kwargs={'case_pk': self.case.pk})
         self.fields['name'].initial = "Odp: %s" % (self.case)
         if not self.user.has_perm('cases.can_send_to_client'):
             del self.fields['status']
