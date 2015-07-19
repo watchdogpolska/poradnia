@@ -30,8 +30,8 @@ unicode-slugify==0.1.1
 django-autoslug==1.7.2
 
 # Useful things
-django-avatar==2.0
-
+# django-avatar==2.0
+https://github.com/watchdogpolska/django-avatar/archive/f69b5c64d6b931c53387cdbb6038d19b8803f4dd.zip
 # Time zones support
 pytz==2014.7
 
