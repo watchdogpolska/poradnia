@@ -1,7 +1,6 @@
 languages:
   JavaScript: true
   Python: true
-  CSS: true
 
 exclude_paths:
 - poradnia/cases/static/cases/lou-multiselect/*
