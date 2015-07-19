@@ -67,7 +67,7 @@
           </td>
         </tr>
         {% endif %}
-        {% if object.deadline %}
+        {% if object.deadline and request.user.is_staff %}
         <tr>
           <td><i class="fa fa-fire"></i> {% trans 'Dead-line'%}</td>
           <td>{% blocktrans with object.deadline as deadline and object.deadline.time|naturaltime as naturaltime %}{{deadline}} at {{naturaltime}}{% endblocktrans %}</td>
