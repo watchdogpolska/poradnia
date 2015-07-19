@@ -1,0 +1,8 @@
+languages:
+  JavaScript: true
+  Python: true
+
+exclude_paths:
+- poradnia/cases/static/cases/lou-multiselect/*
+- poradnia/assets/js/jquery.formset.js
+- poradnia/*/migrations/*
