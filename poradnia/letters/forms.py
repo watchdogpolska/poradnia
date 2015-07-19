@@ -98,7 +98,7 @@ class NewCaseForm(autocomplete_light.ModelForm, FileMixin, PartialMixin):
         case.save()
         return case
 
-    def save(self, commit=False, *args, **kwargs):
+    def save(self, commit=True, *args, **kwargs):
         user = self.get_user()
 
         obj = super(NewCaseForm, self).save(commit=False, *args, **kwargs)
@@ -106,7 +106,7 @@ class NewCaseForm(autocomplete_light.ModelForm, FileMixin, PartialMixin):
         obj.created_by = user
         obj.client = self.get_client(user)
         obj.case = self.get_case(client=obj.client, user=user)
-        if kwargs.get('commit', False):
+        if commit:
             obj.save()
         return obj
 
