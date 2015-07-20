@@ -31,7 +31,7 @@
     <a class="btn btn-info" href="{% url 'users:profile' %}">{% trans 'Profile' %}</a>
     {# <a class="btn btn-primary" href="{% url 'account_email' %}">{% trans 'E-Mail'%}</a> #}
     <a class="btn btn-info" href="{% url 'avatar_change' %}">{% trans 'Avatar'%}</a>
-    <a class="btn btn-info" href="{% url 'keys:list' %}">{% trans 'Keys'%}</a>
+    <a class="btn btn-info" href="{% url 'keys:list' %}"><i class="fa fa-key"></i> {% trans 'Keys'%}</a>
     {% endif %}
     {% if object == request.user or perms.case.can_view_all %}
     <a class="btn btn-info" href="{% url 'cases:list' %}?user={{object.username}}"><i class="fa fa-book"></i> {% trans 'Cases'%}</a>

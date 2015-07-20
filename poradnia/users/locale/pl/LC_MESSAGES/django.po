@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-19 14:29+0200\n"
-"PO-Revision-Date: 2015-07-19 14:29+0100\n"
+"POT-Creation-Date: 2015-07-20 13:23+0200\n"
+"PO-Revision-Date: 2015-07-20 13:24+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -19,17 +19,14 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: forms.py:24
-msgid "Update"
-msgstr "Aktualizuj"
-
-#: forms.py:25
-msgid "Cancel"
-msgstr "Anuluj"
-
-#: forms.py:97
+#: forms.py:84
 msgid "Signup"
 msgstr "Rejestracja"
+
+#: login_form.py:7
+#| msgid "Sign Up"
+msgid "Sign In"
+msgstr "Logowanie"
 
 #: models.py:17
 msgid "Username"
@@ -147,7 +144,11 @@ msgstr "Użytkownik jest członkiem zespołu"
 msgid "About me"
 msgstr "O mnie"
 
-#: templates/users/user_detail.html:36
+#: templates/users/user_detail.html:34
+msgid "Keys"
+msgstr "Klucze"
+
+#: templates/users/user_detail.html:37
 msgid "Cases"
 msgstr "Sprawy"
 
@@ -166,6 +167,12 @@ msgid ""
 msgstr ""
 "Nie masz dostepu do danych wszystkich użytkowników. W większości tylko do "
 "profilu członków zespołu i swojego."
+
+#~ msgid "Update"
+#~ msgstr "Aktualizuj"
+
+#~ msgid "Cancel"
+#~ msgstr "Anuluj"
 
 #~ msgid "My Info"
 #~ msgstr "Moje informacje"
