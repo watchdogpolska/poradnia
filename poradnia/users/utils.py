@@ -1,9 +1,6 @@
 from django.core.exceptions import PermissionDenied
-from django.contrib.auth import get_user_model
 from guardian.shortcuts import get_perms
 from braces.views import LoginRequiredMixin
-from django_filters import ModelChoiceFilter
-import autocomplete_light
 
 
 def has_perms(user, perms, obj=None,  required_all=True):
@@ -29,9 +26,3 @@ class AutocompletePermissionMixin(object):
     def choices_for_request(self):
         self.choices = self.choices.for_user(self.request.user)
         return super(AutocompletePermissionMixin, self).choices_for_request()
-
-
-class UserChoiceFilter(ModelChoiceFilter):
-    def __init__(self, queryset=get_user_model().objects.all(),
-            widget=autocomplete_light.ChoiceWidget('UserAutocomplete'), *args, **kwargs):
-        super(UserChoiceFilter, self).__init__(queryset=queryset, widget=widget, *args, **kwargs)
