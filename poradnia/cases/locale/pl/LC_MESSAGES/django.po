@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-12 12:40+0200\n"
-"PO-Revision-Date: 2015-07-12 12:40+0100\n"
+"POT-Creation-Date: 2015-07-20 12:31+0200\n"
+"PO-Revision-Date: 2015-07-20 12:31+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -55,7 +55,7 @@ msgstr "Ostatnia odpowiedź"
 msgid "Last action"
 msgstr "Ostatnia czynność"
 
-#: models.py:73 templates/cases/case_detail.html:73
+#: models.py:73 templates/cases/case_detail.html:72
 #: templates/cases/case_list.html:43
 msgid "Dead-line"
 msgstr "Termin"
@@ -121,7 +121,7 @@ msgid "Permissions"
 msgstr "Uprawnienia"
 
 #: templates/cases/_case_form_permission.html:8 templates/cases/base.html:3
-#: templates/cases/case_detail.html:20 templates/cases/case_form.html:7
+#: templates/cases/case_detail.html:19 templates/cases/case_form.html:7
 #: templates/cases/case_list.html:28
 msgid "Cases"
 msgstr "Sprawy"
@@ -131,7 +131,7 @@ msgid "Permission"
 msgstr "Uprawnienie"
 
 #: templates/cases/_case_form_permission.html:31
-#: templates/cases/case_detail.html:60
+#: templates/cases/case_detail.html:59
 msgid "Involved in"
 msgstr "Zaangażowani"
 
@@ -151,6 +151,10 @@ msgstr "Wykaz spraw"
 msgid "Free cases"
 msgstr "Wolne sprawy"
 
+#: templates/cases/_sidebar.html:18
+msgid "Event calendar"
+msgstr "Kalendarz wydarzeń"
+
 #: templates/cases/base.html:8
 msgid "Show quote"
 msgstr "Pokaż cytat"
@@ -159,27 +163,27 @@ msgstr "Pokaż cytat"
 msgid "Hide quote"
 msgstr "Ukryj cytat"
 
-#: templates/cases/case_detail.html:9
+#: templates/cases/case_detail.html:8
 msgid "add another"
 msgstr "dodaj kolejne"
 
-#: templates/cases/case_detail.html:9
+#: templates/cases/case_detail.html:8
 msgid "remove"
 msgstr "usuń"
 
-#: templates/cases/case_detail.html:32 templates/cases/case_form.html:9
+#: templates/cases/case_detail.html:31 templates/cases/case_form.html:9
 msgid "Edit"
 msgstr "Edytuj"
 
-#: templates/cases/case_detail.html:35
+#: templates/cases/case_detail.html:34
 msgid "Assign user"
 msgstr "Przypisz użytkownika"
 
-#: templates/cases/case_detail.html:36
+#: templates/cases/case_detail.html:35
 msgid "Update permissions"
 msgstr "Aktualizuj uprawnienia"
 
-#: templates/cases/case_detail.html:46
+#: templates/cases/case_detail.html:45
 #, python-format
 msgid ""
 "Created by <a href=\"%(created_url)s\">%(created_user)s</a> on\n"
@@ -188,46 +192,34 @@ msgstr ""
 "Utworzona przez <a href=\"%(created_url)s\">%(created_user)s</a> "
 "%(created_on)s dla <a href=\"%(client_url)s\">%(client_user)s</a>"
 
-#: templates/cases/case_detail.html:57
+#: templates/cases/case_detail.html:56
 msgid "Workflow"
 msgstr "Przepływ pracy"
 
-#: templates/cases/case_detail.html:65
+#: templates/cases/case_detail.html:64
 msgid "Last update"
 msgstr "Ostatnia aktualizacja"
 
-#: templates/cases/case_detail.html:74
+#: templates/cases/case_detail.html:73
 #, python-format
 msgid "%(deadline)s at %(naturaltime)s"
 msgstr "%(deadline)s o %(naturaltime)s"
 
-#: templates/cases/case_detail.html:84
+#: templates/cases/case_detail.html:83
 msgid "Metrical data"
 msgstr "Dane metrykalne"
 
-#: templates/cases/case_detail.html:87
+#: templates/cases/case_detail.html:86
 msgid "Advice"
 msgstr "Porada"
 
-#: templates/cases/case_detail.html:92
+#: templates/cases/case_detail.html:91
 msgid "Create new advice"
 msgstr "Utwórz nową porade"
 
-#: templates/cases/case_detail.html:101
-msgid "Record"
-msgstr "Wpis"
-
-#: templates/cases/case_detail.html:109
+#: templates/cases/case_detail.html:107
 msgid "No records"
 msgstr "Brak wpisów"
-
-#: templates/cases/case_detail.html:130
-msgid "Save changes"
-msgstr "Zapisz zmiany"
-
-#: templates/cases/case_detail.html:131
-msgid "Cancel"
-msgstr "Anuluj"
 
 #: templates/cases/case_form.html:22
 #: templates/cases/case_form_permission_add.html:8
@@ -294,28 +286,37 @@ msgstr "Tutaj nie ma spraw."
 msgid "Do more of these!"
 msgstr "Utwórz!"
 
-#: views/cases.py:32
+#: views/cases.py:30
 msgid "Letter"
 msgstr "List"
 
-#: views/cases.py:36
+#: views/cases.py:34
 msgid "Event"
 msgstr "Wydarzenie"
 
-#: views/cases.py:124
+#: views/cases.py:122
 #, python-format
 msgid "Successful add \"%(object)s\"."
 msgstr "Dodano \"%(object)s\""
 
-#: views/permissions.py:31
+#: views/permissions.py:30
 #, python-format
 msgid "Success granted permission of %(user)s to %(case)s"
 msgstr "Nadano uprawnienia %(user)s do sprawy %(case)s"
 
-#: views/permissions.py:59
+#: views/permissions.py:58
 #, python-format
 msgid "Success updated permission of %(user)s to %(case)s"
 msgstr "Zaktualizowano uprawniania %(user)s do sprawy %(case)s"
+
+#~ msgid "Record"
+#~ msgstr "Wpis"
+
+#~ msgid "Save changes"
+#~ msgstr "Zapisz zmiany"
+
+#~ msgid "Cancel"
+#~ msgstr "Anuluj"
 
 #~ msgid "Legend"
 #~ msgstr "Legenda"
