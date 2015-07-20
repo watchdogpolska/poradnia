@@ -102,7 +102,7 @@ class NewCaseForm(autocomplete_light.ModelForm, SingleButtonMixin, FileMixin, Pa
         model = Letter
 
 
-class AddLetterForm(SingleButtonMixin, ModelForm, PartialMixin):
+class AddLetterForm(ModelForm, SingleButtonMixin, PartialMixin):
     form_helper_cls = FormsetHelper
 
     def __init__(self, *args, **kwargs):
@@ -110,6 +110,7 @@ class AddLetterForm(SingleButtonMixin, ModelForm, PartialMixin):
         self.case = kwargs.pop('case')
         super(AddLetterForm, self).__init__(*args, **kwargs)
         self.helper.form_action = reverse('letters:add', kwargs={'case_pk': self.case.pk})
+        import ipdb; ipdb.set_trace()
         self.fields['name'].initial = "Odp: %s" % (self.case)
         if not self.user.has_perm('cases.can_send_to_client'):
             del self.fields['status']
@@ -130,7 +131,7 @@ class AddLetterForm(SingleButtonMixin, ModelForm, PartialMixin):
         model = Letter
 
 
-class SendLetterForm(SingleButtonMixin, ModelForm, PartialMixin):
+class SendLetterForm(ModelForm, SingleButtonMixin, PartialMixin):
     comment = forms.CharField(widget=forms.widgets.Textarea, label=_("Comment for staff"))
 
     def __init__(self, *args, **kwargs):
@@ -162,7 +163,7 @@ class AttachmentForm(ModelForm):
         model = Attachment
 
 
-class LetterForm(SingleButtonMixin, ModelForm, PartialMixin):  # eg. edit form
+class LetterForm(ModelForm, SingleButtonMixin, PartialMixin):  # eg. edit form
     form_helper_cls = FormsetHelper
 
     def __init__(self, *args, **kwargs):
