@@ -5,9 +5,17 @@
 {% endblock %}
 
 {% block content %}
+{% regroup date_list by year as year_list %}
+
 <ul>
-{% for month in date_list %}
-        <li><a href="{% url 'events:calendar' year=month.year month=month.month %}">{{ month|date:"F Y" }}</a></li>
+{% for year in year_list %}
+    <li>{{ year.grouper }}
+    <ul>
+        {% for month in year.list %}
+        	<li><a href="{% url 'events:calendar' year=month.year month=month.month %}">{{ month|date:"F Y" }}</a></li>
+        {% endfor %}
+    </ul>
+    </li>
 {% endfor %}
 </ul>
 {% endblock %}
