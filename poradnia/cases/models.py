@@ -160,9 +160,9 @@ class Case(models.Model):
             pass
 
         try:
-            self.deadline = self.event_set.order_by('time').all()[0]
+            self.deadline = self.event_set.filter(deadline=True).order_by('time').all()[0]
         except IndexError:
-            pass
+            self.deadline = None
         if save:
             self.save()
 

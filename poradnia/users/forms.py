@@ -14,18 +14,7 @@ from utilities.forms import SingleButtonMixin, SaveButtonMixin, FormHorizontalMi
 from .models import User, Profile
 
 
-class UserForm(FormHorizontalMixin, forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super(UserForm, self).__init__(*args, **kwargs)
-        self.helper.layout = Layout(
-            'first_name',
-            'last_name',
-            FormActions(
-                Submit('save_changes', _('Update'), css_class="btn-primary"),
-                Submit('cancel', _('Cancel')),
-            )
-        )
-
+class UserForm(SaveButtonMixin, forms.ModelForm):
     class Meta:
         # Set this form to use the User model.
         model = User
@@ -35,7 +24,6 @@ class UserForm(FormHorizontalMixin, forms.ModelForm):
 
 
 class ProfileForm(FormHorizontalMixin, SaveButtonMixin, forms.ModelForm):
-
     class Meta:
         model = Profile
         fields = ("description", "www")

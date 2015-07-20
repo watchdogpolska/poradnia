@@ -1,0 +1,13 @@
+{% extends 'events/base.html' %}
+{% load i18n %}
+{% block breadcrumbs_rows %}
+<li class="active">{% trans 'Months index' %}</li>
+{% endblock %}
+
+{% block content %}
+<ul>
+{% for month in date_list %}
+        <li><a href="{% url 'events:calendar' year=month.year month=month.month %}">{{ month|date:"F Y" }}</a></li>
+{% endfor %}
+</ul>
+{% endblock %}
