@@ -15,7 +15,7 @@
         {% endif%}
         {% if request.user.is_staff %}
         <li class="block-list-item">
-            <a href="{% url 'events:calendar' %}"><i class="fa fa-question-circle"></i> {% trans 'Event calendar' %}</a>
+            <a href="{% url 'events:calendar' %}"><i class="fa fa-calendar"></i> {% trans 'Event calendar' %}</a>
         </li>
         {% endif %}
     </ul>
