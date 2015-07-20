@@ -7,24 +7,17 @@
 {% endblock %}
 
 {% block content %}
-<div class="row">
-  <div class="col-sm-12">
-    <h2>{{ object.username }}</h2>
-  </div>
-</div>
-<div class="row">
-  <div class="col-sm-12 ">
-    {% if object.is_staff %}
-      <p>{% trans 'Users are member of staff.'%}</p>
-    {% endif %}
-    {% if object.description %}
-    <div><span><b>{% trans 'Description'%}:</b></span>{{object.description}}</div>
-    {% endif %}
-  </div>
-</div>
+{% load avatar_tags %}
+<img src="{% avatar_url object %}">
+<h2>{{ object.username }}</h2>
+{% if object.is_staff %}
+  <p>{% trans 'Users are member of staff.'%}</p>
+{% endif %}
+{% if object.description %}
+<p><span><b>{% trans 'Description'%}:</b></span>{{object.description}}</p>
+{% endif %}
+
 {% if object == request.user or perms.case.can_view_all %}
-<div class="row">
-  <div class="col-sm-12 ">
 
     {% if object == request.user %}
     <a class="btn btn-primary" href="{% url 'users:update' %}">{% trans 'About me' %}</a>
@@ -35,9 +28,6 @@
     {% if object == request.user or perms.case.can_view_all %}
     <a class="btn btn-info" href="{% url 'cases:list' %}?user={{object.username}}"><i class="fa fa-book"></i> {% trans 'Cases'%}</a>
     {% endif %}
-  </div>
-
-</div>
 <!-- End Action buttons -->
 {% endif %}
 
