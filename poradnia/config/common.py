@@ -56,7 +56,6 @@ class Common(Configuration):
         'keys',
         'cases',
         'cases.tags',
-        'cases.readed',
         'letters',
         'records',
         'events',

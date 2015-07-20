@@ -1,5 +1,4 @@
-from datetime import datetime
-from django.views.generic import CreateView, DeleteView, ListView, DetailView, TemplateView
+from django.views.generic import CreateView, DeleteView, ListView, DetailView
 from django.core.urlresolvers import reverse_lazy as reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now

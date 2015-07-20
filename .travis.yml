@@ -13,10 +13,10 @@ cache:
 install:
   - pip install pip --upgrade
   - pip install -q Django==$DJANGO --cache-dir $HOME/.pip-cache
-  - pip install pep8 --cache-dir $HOME/.pip-cache
+  - pip install pep8 flake8 --cache-dir $HOME/.pip-cache
   - pip install -r requirements/test.txt --cache-dir $HOME/.pip-cache
 before_script:
   - "pep8 --exclude=migrations --ignore=E501,E225,E128,E121 poradnia"
-  - pyflakes -x W src
+  - flake8
 script:
   - python poradnia/manage.py test
