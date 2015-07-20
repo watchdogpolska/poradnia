@@ -7,6 +7,7 @@ from django.utils.translation import ugettext as _
 from django.views.generic import MonthArchiveView, ArchiveIndexView
 from django.views.generic.list import BaseListView
 from django.utils.timezone import now
+from django.conf import settings
 from dateutil.relativedelta import relativedelta
 from braces.views import SelectRelatedMixin, LoginRequiredMixin
 from cases.models import Case
@@ -84,9 +85,12 @@ class CalendarEventView(PermissionMixin, SelectRelatedMixin, LoginRequiredMixin,
     select_related = ['case', 'record']
     template_name = 'events/calendar.html'
 
+    def get_language_code(self):
+        return getattr(self.request, 'LANGUAGE_CODE', settings.LANGUAGE_CODE)
+
     def get_context_data(self, **kwargs):
         context = super(CalendarEventView, self).get_context_data(**kwargs)
-        locale = (self.request.LANGUAGE_CODE, 'utf-8')
+        locale = (self.get_language_code(), 'utf-8')
         date = (int(self.get_year()), int(self.get_month()))
         cal = EventCalendar(self.object_list, locale=locale).formatmonth(*date)
         context['calendar'] = mark_safe(cal)
