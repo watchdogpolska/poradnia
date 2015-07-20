@@ -48,6 +48,7 @@ class Common(Configuration):
         'autocomplete_light',
         'tinymce',
         'flatpages_tinymce',
+        'tinycontent',
     )
 
     # Apps specific for this project go here.
