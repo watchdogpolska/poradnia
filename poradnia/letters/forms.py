@@ -1,18 +1,17 @@
-from functools import partial
 from django.forms import ModelForm
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
-from multiupload.fields import MultiFileField
+from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _l
 import autocomplete_light
 from cases.models import Case
-from .models import Letter, Attachment
+from utilities.forms import FileMixin, PartialMixin, SingleButtonMixin
 from .helpers import FormsetHelper
+from .models import Letter, Attachment
 
-
-EMAIL_HELP_TEXT = _("The user account will be created automatically," +
+EMAIL_HELP_TEXT = _l("The user account will be created automatically," +
     "so you have access to the archive and data about persons responsible for the case.")
 
 
@@ -30,23 +29,11 @@ class UserEmailField(forms.EmailField):
             )
 
 
-class FileMixin(forms.Form):
-    files = MultiFileField(label=_("Attachments"))
+class NewCaseForm(autocomplete_light.ModelForm, SingleButtonMixin, FileMixin, PartialMixin):
+    form_helper_cls = FormsetHelper
+    attachment_cls = Attachment
+    action_text = _l("Report case")
 
-    def save(self, commit=True, *args, **kwargs):
-        obj = super(FileMixin, self).save(commit=False, *args, **kwargs)
-        Attachment.objects.bulk_create(Attachment(file=each, letter=obj)
-            for each in self.cleaned_data['files'])
-        return obj
-
-
-class PartialMixin(object):
-    @classmethod
-    def partial(cls, *args, **kwargs):
-        return partial(cls, *args, **kwargs)
-
-
-class NewCaseForm(autocomplete_light.ModelForm, FileMixin, PartialMixin):
     client = forms.ModelChoiceField(queryset=get_user_model().objects.all(), label=_("Client"),
         required=False, help_text=_("Leave empty to use email field and create a new one user."),
         widget=autocomplete_light.ChoiceWidget('UserAutocomplete'))
@@ -56,8 +43,9 @@ class NewCaseForm(autocomplete_light.ModelForm, FileMixin, PartialMixin):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
-        self.helper = FormsetHelper()
         super(NewCaseForm, self).__init__(*args, **kwargs)
+        self.helper.form_tag = False
+        self.helper.form_method = 'post'
         self.fields['name'].help_text = _("Short description of the case for organizational " +
             "purposes. The institution name and two words will suffice.")
         if not self.user.has_perm('cases.can_select_client'):
@@ -100,7 +88,6 @@ class NewCaseForm(autocomplete_light.ModelForm, FileMixin, PartialMixin):
 
     def save(self, commit=True, *args, **kwargs):
         user = self.get_user()
-
         obj = super(NewCaseForm, self).save(commit=False, *args, **kwargs)
         obj.status = obj.STATUS.done
         obj.created_by = user
@@ -115,13 +102,14 @@ class NewCaseForm(autocomplete_light.ModelForm, FileMixin, PartialMixin):
         model = Letter
 
 
-class AddLetterForm(ModelForm, PartialMixin):
+class AddLetterForm(SingleButtonMixin, ModelForm, PartialMixin):
+    form_helper_cls = FormsetHelper
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         self.case = kwargs.pop('case')
-        self.helper = FormsetHelper()
-        self.helper.form_action = reverse('letters:add', kwargs={'case_pk': self.case.pk})
         super(AddLetterForm, self).__init__(*args, **kwargs)
+        self.helper.form_action = reverse('letters:add', kwargs={'case_pk': self.case.pk})
         self.fields['name'].initial = "Odp: %s" % (self.case)
         if not self.user.has_perm('cases.can_send_to_client'):
             del self.fields['status']
@@ -142,15 +130,14 @@ class AddLetterForm(ModelForm, PartialMixin):
         model = Letter
 
 
-class SendLetterForm(ModelForm, PartialMixin):
+class SendLetterForm(SingleButtonMixin, ModelForm, PartialMixin):
     comment = forms.CharField(widget=forms.widgets.Textarea, label=_("Comment for staff"))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         ins = kwargs['instance']
-        self.helper = FormsetHelper()
-        self.helper.form_action = ins.get_send_url()
         super(SendLetterForm, self).__init__(*args, **kwargs)
+        self.helper.form_action = ins.get_send_url()
 
     def save(self, commit=True, *args, **kwargs):
         obj = super(SendLetterForm, self).save(commit=False, *args, **kwargs)
@@ -158,7 +145,8 @@ class SendLetterForm(ModelForm, PartialMixin):
         obj.status = obj.STATUS.done
         obj.save()
         obj.send_notification(self.user, 'send_to_client')
-        msg = Letter(case=obj.case, created_by=self.user, text=self.cleaned_data['comment'], status=obj.STATUS.staff)
+        msg = Letter(case=obj.case, created_by=self.user, text=self.cleaned_data['comment'],
+            status=obj.STATUS.staff)
         msg.save()
         msg.send_notification(self.user, 'drop_a_note', staff=True)
         return obj
@@ -174,13 +162,14 @@ class AttachmentForm(ModelForm):
         model = Attachment
 
 
-class LetterForm(ModelForm, PartialMixin):
+class LetterForm(SingleButtonMixin, ModelForm, PartialMixin):  # eg. edit form
+    form_helper_cls = FormsetHelper
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
-        self.helper = FormsetHelper()
+        super(LetterForm, self).__init__(*args, **kwargs)
         self.helper.form_action = kwargs['instance'].get_edit_url()
         self.helper.form_method = 'post'
-        super(LetterForm, self).__init__(*args, **kwargs)
         if not self.user.has_perm('cases.can_send_to_client'):
             del self.fields['status']
 

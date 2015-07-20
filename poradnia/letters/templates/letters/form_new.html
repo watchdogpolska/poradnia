@@ -1,4 +1,8 @@
-{% extends 'letters/form.html' %}
+{% extends 'letters/_form.html' %}
+{% load i18n %}
+{% block breadcrumb_row %}
+<li class="active">{% trans 'New case' %}</li>
+{% endblock %}
 
 {% block description%}
 <p>Witamy w elektronicznym systemie poradnictwa Sieci Obywatelskiej Watchdog Polska. Tu możesz opisać swój problem.</p>
