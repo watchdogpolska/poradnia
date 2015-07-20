@@ -16,14 +16,8 @@
 
     <div class="col-md-12">
     {% block form %}
-    <form method="post">
       {% crispy form %}
-      <div class="form-actions">
-        <button type="submit" class="btn btn-primary"><i class="fa fa-floppy-o"></i> {% trans 'Save changes'%}</button>
-        <button class="btn">{% trans 'Cancel'%}</button>
-      </div>
-    </form>
+    {% endblock %}
   </div>
 </div>
-{% endblock %}
 {% endblock %}

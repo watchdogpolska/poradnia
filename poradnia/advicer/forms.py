@@ -1,30 +1,17 @@
 from datetime import datetime
 from django.utils.translation import ugettext as _
 from braces.forms import UserKwargModelFormMixin
-from crispy_forms.helper import FormHelper
 import autocomplete_light
 from cases.models import Case
 from .models import Advice
+from utilities.forms import FormHorizontalMixin, SingleButtonMixin, AuthorMixin
 
 
-class AuthorMixin(object):
-    def save(self, commit=True, *args, **kwargs):
-        obj = super(AuthorMixin, self).save(commit=False, *args, **kwargs)
-        if obj.pk:  # update
-            obj.modified_by = self.user
-        else:  # new
-            obj.created_by = self.user
-        if commit:
-            obj.save()
-        return obj
-
-
-class AdviceForm(UserKwargModelFormMixin, AuthorMixin, autocomplete_light.ModelForm):
+class AdviceForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, AuthorMixin,
+        autocomplete_light.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AdviceForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
-        self.helper.form_tag = False
         self.helper.form_method = 'post'
         self.fields['advicer'].initial = self.user
         self.fields['grant_on'].initial = datetime.now()

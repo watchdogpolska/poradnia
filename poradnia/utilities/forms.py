@@ -65,3 +65,15 @@ class PartialMixin(object):
     @classmethod
     def partial(cls, *args, **kwargs):
         return partial(cls, *args, **kwargs)
+
+
+class AuthorMixin(object):
+    def save(self, commit=True, *args, **kwargs):
+        obj = super(AuthorMixin, self).save(commit=False, *args, **kwargs)
+        if obj.pk:  # update
+            obj.modified_by = self.user
+        else:  # new
+            obj.created_by = self.user
+        if commit:
+            obj.save()
+        return obj
