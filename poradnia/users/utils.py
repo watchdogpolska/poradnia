@@ -3,7 +3,7 @@ from guardian.shortcuts import get_perms
 from braces.views import LoginRequiredMixin
 
 
-def has_perms(user, perms, obj=None,  required_all=True):
+def has_perms(user, perms, obj=None, required_all=True):
     if obj:
         perms_obj = get_perms(user, obj)
         tests = [perm in perms_obj for perm in perms]

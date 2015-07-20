@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import *
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('notifications_custom.views',
     url(r'^$', 'all', name='all'),
-    )
+)
 
 urlpatterns += patterns('notifications.views',
     url(r'^unread/$', 'unread', name='unread'),

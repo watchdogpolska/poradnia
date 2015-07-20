@@ -39,7 +39,7 @@ def add(request, case_pk):
     context['form'] = form
     context['formset'] = formset or AttachmentFormSet(instance=Letter())
     context['headline'] = _('Add')
-    return render(request, 'letters/form.html', context)
+    return render(request, 'letters/form_add.html', context)
 
 
 @login_required
@@ -71,7 +71,7 @@ def send(request, pk):
         form = SendLetterForm(user=request.user, instance=letter)
     context['form'] = form
     context['headline'] = _('Send to client')
-    return render(request, 'letters/form.html', context)
+    return render(request, 'letters/form_send.html', context)
 
 
 @login_required
@@ -107,7 +107,7 @@ def edit(request, pk):
     context['form'] = form
     context['formset'] = formset or AttachmentFormSet(instance=letter)
     context['headline'] = _('Edit')
-    return render(request, 'letters/form.html', context)
+    return render(request, 'letters/form_edit.html', context)
 
 
 def detail(request, pk):

@@ -100,8 +100,8 @@ def mail_process(sender, message, **args):
     user = get_user_model().objects.get_by_email_or_create(message.from_address[0])
     print "Identified user: ", user
 
-    # Skip autoreply messages - see RFC3834 
-    if (lambda x: x.has_key('Auto-Submitted') and x['Auto-Submitted'] == 'auto-replied')(message.get_email_object()):
+    # Skip autoreply messages - see RFC3834
+    if (lambda x: 'Auto-Submitted' in 'x' and x['Auto-Submitted'] == 'auto-replied')(message.get_email_object()):
         print "Skip"
         return
 
@@ -136,7 +136,6 @@ def mail_process(sender, message, **args):
     obj.signature = signature
     obj.save()
     obj.send_notification(user, 'created')
-
 
     # Convert attachments
     attachments = []

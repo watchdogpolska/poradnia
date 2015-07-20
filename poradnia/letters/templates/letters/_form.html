@@ -12,15 +12,7 @@
 {% block breadcrumbs %}
 <ol class="breadcrumb">
   <li><a href="{% url 'cases:list'%}">{% trans 'Cases'%}</a></li>
-  {% if case %}
-  <li><a href="{{ case.get_absolute_url }}">{{ case }}</a></li>
-  {% endif %}
-  {% if object %}
-  <li>{{object}}</li>
-  {% endif %}
-  {% if headline %}
-    <li class="active">{{ headline }}</li>
-  {% endif %}
+  {% block breadcrumb_row %}{% endblock %}
 </ol>
 {% endblock %}
 
@@ -37,9 +29,5 @@
 {% if formset %}
     {% crispy formset %}
 {% endif %}
- <div class="form-actions">  
-    <button type="submit" class="btn btn-primary">{% trans 'Save changes'%}</button>  
-    <button class="btn">{% trans 'Cancel'%}</button>  
-  </div>  
 </form>
 {%endblock%}

@@ -1,16 +1,15 @@
+
 from django.views.generic import UpdateView, CreateView, DeleteView, DetailView
 from django.core.urlresolvers import reverse_lazy
-from django.http import HttpResponseRedirect
-from django.contrib import messages
 from django.utils.translation import ugettext_lazy as _
 from braces.views import (OrderableListMixin, SelectRelatedMixin, LoginRequiredMixin,
     FormValidMessageMixin, UserFormKwargsMixin)
-from utilities.views import FormInitialMixin
-from users.utils import PermissionMixin
+from django_filters.views import FilterView
+from users.mixins import PermissionMixin
+from utilities.views import DeleteMessageMixin, FormInitialMixin
 from .filters import AdviceFilter
 from .models import Advice
 from .forms import AdviceForm
-from django_filters.views import FilterView
 
 
 class AdviceList(PermissionMixin, SelectRelatedMixin,
@@ -44,18 +43,11 @@ class AdviceCreate(FormInitialMixin, FormValidMessageMixin, UserFormKwargsMixin,
         return _("{0} created!").format(self.object)
 
 
-class AdviceDelete(PermissionMixin, DeleteView):
+class AdviceDelete(PermissionMixin, DeleteMessageMixin, DeleteView):
     model = Advice
     success_url = reverse_lazy('advicer:list')
     success_message = _("{__unicode__} deleted!")
-
-    def delete(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        success_url = self.get_success_url()
-        self.object.visible = False
-        self.object.save()
-        messages.add_message(request, messages.SUCCESS, self.get_success_message())
-        return HttpResponseRedirect(success_url)
+    hide_field = 'visible'
 
 
 class AdviceDetail(PermissionMixin, DetailView):

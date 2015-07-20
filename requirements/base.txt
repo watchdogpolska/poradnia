@@ -45,3 +45,4 @@ django-autocomplete-light==2.2.3
 django-multiupload==0.5
 https://github.com/sp1ky/django-flatpages-tinymce/archive/3808a58e8f67491a4e7ed72bceca3f6d760a8c98.zip
 django-tinymce==1.5.3
+icalendar==3.9.0

@@ -16,6 +16,12 @@ class Alarm(AbstractRecord):
 
 
 class EventQuerySet(QuerySet):
+    def for_user(self, user):
+        if user.has_perm('cases.can_view_all'):
+            return self
+        from cases.models import Case
+        case_list = Case.objects.for_user(user).all()
+        return self.filter(case_id__in=case_list)
 
     def untriggered(self):
         return self.filter(alarm__isnull=True)
@@ -45,6 +51,9 @@ class Event(AbstractRecord):
 
     def get_edit_url(self):
         return reverse('events:edit', kwargs={'pk': self.pk})
+
+    def get_calendar_url(self):
+        return reverse('events:calendar', kwargs={'month': self.time.month, 'year': self.time.year})
 
     def execute(self):
         obj = Alarm(event=self, case=self.case)

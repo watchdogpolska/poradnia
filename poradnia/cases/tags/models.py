@@ -18,4 +18,4 @@ class Tag(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('cases:list')+'?tag='+str(self.pk)
+        return reverse('cases:list') + '?tag=' + str(self.pk)
