@@ -8,10 +8,8 @@ from letters.forms import AddLetterForm
 from events.forms import EventForm
 from letters.helpers import formset_attachment_factory
 from pagination_custom.utils import paginator
-from letters.models import Letter
 from records.models import Record
 from ..models import Case
-from ..readed.models import Readed
 from ..tags.models import Tag
 from ..forms import CaseForm
 
@@ -65,7 +63,7 @@ def list(request):
                    select_related('client').
                    prefetch_related('tags'))
 
-    # # # Filtering 
+    # # # Filtering
     # TODO: Form or django-filter?
     # Show cases with TAG
     if 'tag' in request.GET:
@@ -101,7 +99,7 @@ def list(request):
     context['order_by'] = order_by
     context['ordering'] = ordering
 
-    real_order_key = order_key if ordering == 'asc' else '-'+order_key
+    real_order_key = order_key if ordering == 'asc' else '-' + order_key
 
     object_list = object_list.order_by(real_order_key).all()
     context['object_list'] = paginator(request, object_list)
@@ -121,11 +119,10 @@ def edit(request, pk):
         form = CaseForm(request.POST, request.FILES, instance=case, user=request.user)
         if form.is_valid():
             obj = form.save()
-            messages.success(request,  _('Successful add "%(object)s".') % {'object': obj})
+            messages.success(request, _('Successful add "%(object)s".') % {'object': obj})
             return redirect(obj)
     else:
         form = CaseForm(instance=case, user=request.user)
     context['form'] = form
 
     return render(request, 'cases/case_form.html', context)
-

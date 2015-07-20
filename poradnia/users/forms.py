@@ -2,7 +2,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
-from django.utils.translation import ugettext as _l
 from guardian.forms import BaseObjectPermissionsForm
 from guardian.shortcuts import assign_perm, remove_perm
 from guardian.forms import UserObjectPermissionsForm
@@ -10,7 +9,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit, Row, Div
 from crispy_forms.bootstrap import FormActions, PrependedText
 import autocomplete_light
-from utilities.forms import SingleButtonMixin, SaveButtonMixin, FormHorizontalMixin
+from utilities.forms import SaveButtonMixin, FormHorizontalMixin
 from .models import User, Profile
 
 
@@ -95,11 +94,3 @@ class SignupForm(FormHorizontalMixin, forms.ModelForm):
 
     def save(self, user):
         user.save()
-
-
-from allauth.account.forms import LoginForm
-
-
-class CustomLoginForm(SingleButtonMixin, LoginForm):
-    action_text = _l('Sign In')
-    pass

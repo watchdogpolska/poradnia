@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from django.views.generic import MonthArchiveView, ArchiveIndexView, View
+from django.views.generic import MonthArchiveView, ArchiveIndexView
 from django.views.generic.list import BaseListView
 from django.utils.timezone import now
 from dateutil.relativedelta import relativedelta
@@ -120,10 +120,10 @@ class ICalendarView(KeyAuthMixin, PermissionMixin, BaseListView):
         return cal
 
     def get_start(self):
-        return now()+relativedelta(months=+self.window)
+        return now() + relativedelta(months=+self.window)
 
     def get_end(self):
-        return now()+relativedelta(months=-self.window)
+        return now() + relativedelta(months=-self.window)
 
     def get_queryset(self):
         qs = super(ICalendarView, self).get_queryset()

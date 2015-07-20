@@ -4,7 +4,7 @@ from django.conf.urls import *
 
 urlpatterns = patterns('notifications_custom.views',
     url(r'^$', 'all', name='all'),
-    )
+)
 
 urlpatterns += patterns('notifications.views',
     url(r'^unread/$', 'unread', name='unread'),

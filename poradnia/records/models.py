@@ -16,6 +16,7 @@ class RecordQuerySet(QuerySet):
             return self
         return self.filter(Q(event=None) & Q(event=None) & Q(letter__status='done'))
 
+
 class Record(models.Model):
     STATIC_RELATION = ['letter', 'event', 'alarm']
     case = models.ForeignKey(Case)
