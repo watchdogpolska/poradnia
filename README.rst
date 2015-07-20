@@ -5,6 +5,10 @@ poradnia
    :target: https://codeclimate.com/github/watchdogpolska/poradnia
    :alt: Code Climate
 
+.. image:: https://landscape.io/github/watchdogpolska/poradnia/master/landscape.svg?style=flat
+   :target: https://landscape.io/github/watchdogpolska/poradnia/master
+   :alt: Code Health
+
 LICENSE: BSD
 
 Settings
