@@ -10,3 +10,4 @@ class CustomLoginForm(SingleButtonMixin, LoginForm):
     def __init__(self, *args, **kwargs):
         super(CustomLoginForm, self).__init__(*args, **kwargs)
         self.fields['login'].label = _('Login')
+        self.helper.form_class = 'login-form'
