@@ -9,6 +9,10 @@ poradnia
    :target: https://landscape.io/github/watchdogpolska/poradnia/master
    :alt: Code Health
 
+.. image:: https://requires.io/github/ad-m/poradnia/requirements.svg
+     :target: https://requires.io/github/ad-m/poradnia/requirements/
+     :alt: Requirements Status
+
 LICENSE: BSD
 
 Settings
