@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-21 23:00+0200\n"
+"POT-Creation-Date: 2015-07-21 23:14+0200\n"
 "PO-Revision-Date: 2015-07-21 22:59+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
@@ -23,17 +23,13 @@ msgstr ""
 msgid "Signup"
 msgstr "Rejestracja"
 
-#: login_form.py:7
-msgid "Sign In"
-msgstr "Logowanie"
+#: login_form.py:12 models.py:18
+msgid "Login"
+msgstr "Nazwa użytkownika / użytkowniczki"
 
 #: models.py:17
 msgid "Username or e-mail"
 msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
-
-#: models.py:18
-msgid "Login"
-msgstr "Nazwa użytkownika / użytkowniczki"
 
 #: models.py:83 templates/users/_sidebar.html:3
 #: templates/users/user_detail.html:3 templates/users/user_form.html:4
@@ -148,10 +144,14 @@ msgid "About me"
 msgstr "O mnie"
 
 #: templates/users/user_detail.html:27
+msgid "Password change"
+msgstr ""
+
+#: templates/users/user_detail.html:28
 msgid "Keys"
 msgstr "Klucze"
 
-#: templates/users/user_detail.html:30
+#: templates/users/user_detail.html:31
 msgid "Cases"
 msgstr "Sprawy"
 
@@ -170,6 +170,9 @@ msgid ""
 msgstr ""
 "Nie masz dostepu do danych wszystkich użytkowników. W większości tylko do "
 "profilu członków zespołu i swojego."
+
+#~ msgid "Sign In"
+#~ msgstr "Logowanie"
 
 #~ msgid "Update"
 #~ msgstr "Aktualizuj"
