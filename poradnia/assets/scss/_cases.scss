@@ -1,0 +1,12 @@
+.table-cases{
+	.id,
+	.last_response,
+	.last_action,
+	.created_on{
+		display: none;
+		@media (min-width: $screen-md-min) {
+			display: table-cell;
+		}
+	}
+
+}

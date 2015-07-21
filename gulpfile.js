@@ -41,7 +41,6 @@ var config = function(){
         'icons':{
             'input': [
                 path.bower + '/font-awesome/fonts/**.*',
-                path.bower + '/bootstrap-sass/assets/fonts/**/*.*'
             ],
             'output': path.static + "/fonts"
         },
