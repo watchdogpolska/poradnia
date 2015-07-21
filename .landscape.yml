@@ -3,3 +3,5 @@ requirements:
     - requirements/test.txt
     - requirements/production.txt
     - requirements/local.txt
+ignore-patterns:
+    - ^poradnia/.*/migrations/
