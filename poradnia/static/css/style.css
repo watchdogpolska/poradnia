@@ -9700,6 +9700,30 @@ See: https://github.com/owenmead/Pikaday/pull/20*/
   }
 }
 
+.footer {
+  padding: 12px 6px;
+  margin: 12px 0;
+  border-top: 1px solid #F5F5F5;
+  color: #888;
+  font-size: 10px;
+}
+.footer:before, .footer:after {
+  content: " ";
+  display: table;
+}
+.footer:after {
+  clear: both;
+}
+.footer-right {
+  float: left;
+}
+.footer-left {
+  float: right;
+}
+.footer-center {
+  text-align: center;
+}
+
 .cards {
   position: relative;
   padding: 2em;
