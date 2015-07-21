@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-20 13:23+0200\n"
-"PO-Revision-Date: 2015-07-20 13:24+0100\n"
+"POT-Creation-Date: 2015-07-21 23:00+0200\n"
+"PO-Revision-Date: 2015-07-21 22:59+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -24,39 +24,42 @@ msgid "Signup"
 msgstr "Rejestracja"
 
 #: login_form.py:7
-#| msgid "Sign Up"
 msgid "Sign In"
 msgstr "Logowanie"
 
 #: models.py:17
-msgid "Username"
+msgid "Username or e-mail"
+msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
+
+#: models.py:18
+msgid "Login"
 msgstr "Nazwa użytkownika / użytkowniczki"
 
-#: models.py:82 templates/users/_sidebar.html:3
+#: models.py:83 templates/users/_sidebar.html:3
 #: templates/users/user_detail.html:3 templates/users/user_form.html:4
 #: templates/users/user_form.html.py:15
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: models.py:83 templates/avatar/base.html:6 templates/users/base.html:5
+#: models.py:84 templates/avatar/base.html:6 templates/users/base.html:5
 #: templates/users/user_list.html:20
 msgid "Users"
 msgstr "Użytkownicy / użytkowniczki"
 
-#: models.py:88 templates/users/user_detail.html:21
+#: models.py:89 templates/users/user_detail.html:17
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:89
+#: models.py:90
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: models.py:92 templates/users/profile_form.html:7
-#: templates/users/profile_form.html:10 templates/users/user_detail.html:31
+#: models.py:93 templates/users/profile_form.html:7
+#: templates/users/profile_form.html:10 templates/users/user_detail.html:24
 msgid "Profile"
 msgstr "Profil"
 
-#: models.py:93
+#: models.py:94
 msgid "Profiles"
 msgstr "Profile"
 
@@ -80,7 +83,7 @@ msgstr "Nie masz obecnie żadnego avataru. prosimy dodać nowy."
 msgid "Upload New Image"
 msgstr "Dodaj nowy obraz"
 
-#: templates/avatar/base.html:8 templates/users/user_detail.html:33
+#: templates/avatar/base.html:8 templates/users/user_detail.html:26
 msgid "Avatar"
 msgstr "Avatar"
 
@@ -136,19 +139,19 @@ msgstr "Rejestracja"
 msgid "Log In"
 msgstr "Zaloguj"
 
-#: templates/users/user_detail.html:18
+#: templates/users/user_detail.html:14
 msgid "Users are member of staff."
 msgstr "Użytkownik jest członkiem zespołu"
 
-#: templates/users/user_detail.html:30
+#: templates/users/user_detail.html:23
 msgid "About me"
 msgstr "O mnie"
 
-#: templates/users/user_detail.html:34
+#: templates/users/user_detail.html:27
 msgid "Keys"
 msgstr "Klucze"
 
-#: templates/users/user_detail.html:37
+#: templates/users/user_detail.html:30
 msgid "Cases"
 msgstr "Sprawy"
 

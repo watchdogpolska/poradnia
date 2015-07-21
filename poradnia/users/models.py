@@ -14,7 +14,8 @@ from model_utils.managers import PassThroughManager
 from template_mail.utils import send_tpl_email
 import notifications
 
-USERNAME = _('Username')  # Hack to overwrite django translation
+_('Username or e-mail')  # Hack to overwrite django translation
+_('Login')
 
 
 class UserQuerySet(QuerySet):
