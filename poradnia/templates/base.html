@@ -1,8 +1,9 @@
-{% load staticfiles i18n %}{% load notifications_tags %}<!DOCTYPE html>
+{% load staticfiles i18n notifications_tags tinycontent_tags %}
+<!DOCTYPE html>
 <html lang="en" ng-app>
 <head>
   <meta charset="utf-8">
-  <title>{% block title %}poradnia{% endblock title %}</title>
+  <title>{% block title %}Poradnia{% endblock title %}</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="author" content="">
@@ -54,13 +55,14 @@
           {% endblock content %}
         </div>
           <div class="footer">
-            <div class="footer-right">Lorem ipsum dolor.</div>
+            {% tinycontent 'footer' %}
+            <div class="footer-right">Sieć Obywatelska - Watchdog Polska</div>
             <div class="footer-left">
-              <a href="">Lorem.</a>
-              <a href="">Minima!</a>
-              <a href="">Doloremque.</a>
+              silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
+              <a href="https://github.com/watchdogpolska/poradnia">Github</a>
             </div>
             <div class="footer-center">Strona wykorzystuje Cookies</div>
+            {% endtinycontent %}
           </div>
         </div>
     </div>
