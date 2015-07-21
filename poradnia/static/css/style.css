@@ -10072,6 +10072,12 @@ body.show-sidebar .sidebar {
   left: -8px;
 }
 
+.form-actions {
+  background: #F5F5F5;
+  padding: 12px 6px;
+  text-align: right;
+}
+
 .logo {
   display: inline-block;
   width: 160px;
