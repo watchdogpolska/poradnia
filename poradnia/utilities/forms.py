@@ -49,7 +49,7 @@ class FormHorizontalMixin(HelperMixin):
 
 
 class FileMixin(forms.Form):  # TODO: Generalize
-    files = MultiFileField(label=_("Attachments"))
+    files = MultiFileField(label=_("Attachments"), required=False)
     attachment_cls = None
 
     def save(self, commit=True, *args, **kwargs):
