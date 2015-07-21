@@ -10102,6 +10102,35 @@ body.show-sidebar .sidebar {
   text-align: right;
 }
 
+table.month {
+  table-layout: fixed;
+  width: 100%;
+}
+table.month td, table.month th {
+  border: 1px solid #AAA;
+  width: 14.28%;
+  vertical-align: top;
+  padding: 3px;
+}
+table.month td ul {
+  list-style: none;
+  padding: 0;
+  font-size: .85em;
+}
+table.month td li:nth-child(2n) {
+  background: #DDD;
+}
+table.month .day {
+  display: block;
+  text-align: right;
+}
+table.month > tr:nth-child(2) > th {
+  width: 14.28%;
+}
+table.month li.deadline {
+  background-color: #EEAEAE;
+}
+
 .logo {
   display: inline-block;
   width: 160px;

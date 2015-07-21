@@ -6,36 +6,7 @@
 {% block title %}{{ month|date:"F Y" }} - {{block.super}}{% endblock %}
 
 {% block content %}
-<style>
-table.month{
-    table-layout: fixed;
-    width: 100%;
-}
-table.month td,table.month th{
-    border: 1px solid #AAA;
-    width: 14.28%;
-    vertical-align: top;
-    padding: 3px;
-}
-table.month td ul {
-    list-style: none;
-    padding: 0;
-    font-size: .85em;
-}
-table.month .day{
-    display: block;
-    text-align: right;
-}
-table.month td ul li:nth-child(2n){
-    background: #FAFAFA;
-}
-table > tr:nth-child(2) > th{
-    width: 14.28%;
-}
-li.deadline {
-    background-color: #ff00ff;
-}
-</style>
+
 {{calendar}}
 
 <nav>
