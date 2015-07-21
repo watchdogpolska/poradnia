@@ -10131,6 +10131,10 @@ table.month li.deadline {
   background-color: #EEAEAE;
 }
 
+.keys td {
+  vertical-align: middle;
+}
+
 .logo {
   display: inline-block;
   width: 160px;
