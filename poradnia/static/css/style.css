@@ -9932,6 +9932,21 @@ body.show-sidebar .sidebar {
   font-size: 1.2em;
 }
 
+.table-cases .id,
+.table-cases .last_response,
+.table-cases .last_action,
+.table-cases .created_on {
+  display: none;
+}
+@media (min-width: 992px) {
+  .table-cases .id,
+  .table-cases .last_response,
+  .table-cases .last_action,
+  .table-cases .created_on {
+    display: table-cell;
+  }
+}
+
 .timeline {
   position: relative;
   overflow: hidden;
