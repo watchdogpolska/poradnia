@@ -29,7 +29,7 @@ class UserEmailField(forms.EmailField):
             )
 
 
-class NewCaseForm(autocomplete_light.ModelForm, SingleButtonMixin, FileMixin, PartialMixin):
+class NewCaseForm(SingleButtonMixin, FileMixin, PartialMixin, autocomplete_light.ModelForm):
     form_helper_cls = FormsetHelper
     attachment_cls = Attachment
     action_text = _l("Report case")
@@ -102,7 +102,7 @@ class NewCaseForm(autocomplete_light.ModelForm, SingleButtonMixin, FileMixin, Pa
         model = Letter
 
 
-class AddLetterForm(ModelForm, SingleButtonMixin, PartialMixin):
+class AddLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
     form_helper_cls = FormsetHelper
 
     def __init__(self, *args, **kwargs):
@@ -130,7 +130,7 @@ class AddLetterForm(ModelForm, SingleButtonMixin, PartialMixin):
         model = Letter
 
 
-class SendLetterForm(ModelForm, SingleButtonMixin, PartialMixin):
+class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
     comment = forms.CharField(widget=forms.widgets.Textarea, label=_("Comment for staff"))
 
     def __init__(self, *args, **kwargs):
@@ -162,7 +162,7 @@ class AttachmentForm(ModelForm):
         model = Attachment
 
 
-class LetterForm(ModelForm, SingleButtonMixin, PartialMixin):  # eg. edit form
+class LetterForm(SingleButtonMixin, PartialMixin, ModelForm):  # eg. edit form
     form_helper_cls = FormsetHelper
 
     def __init__(self, *args, **kwargs):
