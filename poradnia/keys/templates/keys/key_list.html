@@ -6,8 +6,10 @@
 {% endblock %}
 
 {% block content %}
-<p><a href="{% url 'keys:create'%}" class="btn btn-primary pull-right">{% trans 'Generate new key' %}</a></p>
-<table class="table table-stripped">
+<div class="text-right">
+    <a href="{% url 'keys:create'%}" class="btn btn-primary">{% trans 'Generate new key' %}</a></p>
+</div>
+<table class="table table-stripped table-keys">
     <tr>
         <th>{% trans 'Description'%}</th>
         <th>{% trans 'Created on'%}</th>
@@ -21,7 +23,10 @@
         <td>{{object.created_on|naturaltime}}</td>
         <td>{{object.download_on|naturaltime}}</td>
         <td>{{object.used_on|naturaltime}}</td>
-        <td>[<a href="{% url 'keys:details' pk=object.pk %}">{% trans 'Download'%}</a>][<a href="{% url 'keys:delete' pk=object.pk %}">{% trans 'Delete'%}</a>]</td>
+        <td>
+            <a href="{% url 'keys:details' pk=object.pk %}" class="btn btn-default"><i class="fa fa-download"></i>{% trans 'Download'%}</a>
+            <a href="{% url 'keys:delete' pk=object.pk %}" class="btn btn-default"><i class="fa fa-trash"></i>{% trans 'Delete'%}</a>
+        </td>
     </tr>
     {% endfor %}
 </table>
