@@ -5,7 +5,7 @@ from django.utils.translation import ugettext_lazy as _
 from braces.views import (OrderableListMixin, SelectRelatedMixin, LoginRequiredMixin,
     FormValidMessageMixin, UserFormKwargsMixin)
 from django_filters.views import FilterView
-from users.mixins import PermissionMixin
+from users.utils import PermissionMixin
 from utilities.views import DeleteMessageMixin, FormInitialMixin
 from .filters import AdviceFilter
 from .models import Advice

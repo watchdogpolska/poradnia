@@ -11,7 +11,7 @@ from django.conf import settings
 from dateutil.relativedelta import relativedelta
 from braces.views import SelectRelatedMixin, LoginRequiredMixin
 from cases.models import Case
-from users.mixins import PermissionMixin
+from users.utils import PermissionMixin
 from keys.mixins import KeyAuthMixin
 from .models import Event
 from .forms import EventForm

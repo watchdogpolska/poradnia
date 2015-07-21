@@ -3,7 +3,7 @@ from django.core.urlresolvers import reverse_lazy as reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils.timezone import now
 from braces.views import UserFormKwargsMixin
-from users.mixins import PermissionMixin
+from users.utils import PermissionMixin
 from utilities.views import DeleteMessageMixin
 from .models import Key
 from .forms import KeyForm
