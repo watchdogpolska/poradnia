@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext_lazy as _
 import django_filters
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout
+from crispy_forms.layout import Submit
 from .models import Advice
 from users.filters import UserChoiceFilter
 
@@ -14,16 +14,10 @@ class AdviceFilter(django_filters.FilterSet):
     @property
     def form(self):
         self._form = super(AdviceFilter, self).form
-        self._form.helper = FormHelper()
+        self._form.helper = FormHelper(self._form)
         self._form.helper.form_class = 'form-inline'
         self._form.helper.form_method = 'get'
-        self._form.helper.layout = Layout(
-            'advicer',
-            'person_kind',
-            'created_by',
-            'created_on',
-            Submit('filter', _('Filter'))
-        )
+        self._form.helper.layout.append(Submit('filter', _('Filter')))
         return self._form
 
     class Meta:
