@@ -5,3 +5,5 @@ requirements:
     - requirements/local.txt
 ignore-patterns:
     - ^poradnia/.*/migrations/
+uses:
+    - django
