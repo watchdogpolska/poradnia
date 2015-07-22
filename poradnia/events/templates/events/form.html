@@ -4,7 +4,7 @@
 {% block breadcrumbs %}
 <ol class="breadcrumb">
   <li><a href="{% url 'cases:list'%}">{% trans 'Cases'%}</a></li>
-  <li><a href="{{ case.get_absolute_url }}">{{ case }}</a></li>
+  <li><a href="{{ object.case.get_absolute_url }}">{{ case }}</a></li>
   <li class="active">{% trans 'Edit'%}</li>
 </ol>
 {% endblock %}
