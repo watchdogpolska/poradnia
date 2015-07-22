@@ -17,7 +17,14 @@ from .forms import EventForm
 from .utils import EventCalendar
 
 
-class EventCreateView(UserFormKwargsMixin, FormValidMessageMixin, CreateView):
+class CaseContextMixin(object):
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(EventCreateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'case': self.case})
+        return kwargs
+
+
+class EventCreateView(UserFormKwargsMixin, CaseContextMixin, FormValidMessageMixin, CreateView):
     model = Event
     form_class = EventForm
     template_name = 'events/form.html'
@@ -26,11 +33,6 @@ class EventCreateView(UserFormKwargsMixin, FormValidMessageMixin, CreateView):
         self.case = get_object_or_404(Case, pk=self.kwargs['case_pk'])
         self.case.perm_check(request.user, 'can_add_record')
         return super(EventCreateView, self).dispatch(request, *args, **kwargs)
-
-    def get_form_kwargs(self, *args, **kwargs):
-        kwargs = super(EventCreateView, self).get_form_kwargs(*args, **kwargs)
-        kwargs.update({'case': self.case})
-        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super(EventCreateView, self).get_context_data(**kwargs)
@@ -41,7 +43,7 @@ class EventCreateView(UserFormKwargsMixin, FormValidMessageMixin, CreateView):
         return _("Success added new event %(event)s") % ({'event': self.object})
 
 
-class EventUpdateView(UserFormKwargsMixin, FormValidMessageMixin, UpdateView):
+class EventUpdateView(UserFormKwargsMixin, CaseContextMixin, FormValidMessageMixin, UpdateView):
     model = Event
     form_class = EventForm
     template_name = 'events/form.html'
@@ -51,11 +53,6 @@ class EventUpdateView(UserFormKwargsMixin, FormValidMessageMixin, UpdateView):
         self.case = obj.case
         obj.case.perm_check(self.request.user, 'can_add_record')
         return obj
-
-    def get_form_kwargs(self, *args, **kwargs):
-        kwargs = super(EventUpdateView, self).get_form_kwargs(*args, **kwargs)
-        kwargs.update({'case': self.case})
-        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super(EventUpdateView, self).get_context_data(**kwargs)
