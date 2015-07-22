@@ -7,8 +7,7 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy as _l
 import autocomplete_light
 from cases.models import Case
-from utilities.forms import FileMixin, PartialMixin, SingleButtonMixin
-from .helpers import FormsetHelper
+from utilities.forms import FileMixin, PartialMixin, SingleButtonMixin, FormsetHelper
 from .models import Letter, Attachment
 
 EMAIL_HELP_TEXT = _l("The user account will be created automatically," +

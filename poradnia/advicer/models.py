@@ -6,6 +6,7 @@ from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
 from cases.models import Case
+from utilities.models import AttachmentBase
 
 
 class AbstractCategory(models.Model):
@@ -84,3 +85,7 @@ class Advice(models.Model):
         ordering = ['created_on', ]
         permissions = (('can_view_all_advices', _("Can view all advices"),),
                        )
+
+
+class Attachment(AttachmentBase):
+    advice = models.ForeignKey(Advice)

@@ -1,23 +1,10 @@
-from django.forms.models import BaseInlineFormSet
 from django.forms.models import inlineformset_factory
-from crispy_forms.helper import FormHelper
+from utilities.forms import BaseTableFormSet
 from .models import Letter, Attachment
 
 
-class FormsetHelper(FormHelper):
-    form_tag = False
-    form_method = 'post'
 
-
-class TableInlineHelper(FormsetHelper):
-    template = 'bootstrap/table_inline_formset.html'
-
-
-def formset_attachment_factory(form_formset=None, *args, **kwargs):
+def formset_attachment_factory(form_formset=BaseTableFormSet, parent_cls=Letter, inline_cls=Attachment, *args, **kwargs):
     from .forms import AttachmentForm
-    if form_formset is None:
-        class BaseAttachmentFormSet(BaseInlineFormSet):
-            helper = TableInlineHelper()
-        form_formset = BaseAttachmentFormSet
-    return inlineformset_factory(Letter, Attachment, form=AttachmentForm, formset=form_formset,
+    return inlineformset_factory(parent_cls, inline_cls, form=AttachmentForm, formset=form_formset,
         *args, **kwargs)

@@ -5,11 +5,15 @@ from django.utils.translation import ugettext_lazy as _
 from braces.views import (OrderableListMixin, SelectRelatedMixin, LoginRequiredMixin,
     FormValidMessageMixin, UserFormKwargsMixin)
 from django_filters.views import FilterView
+from django.forms.models import inlineformset_factory
+from django.contrib import messages
 from users.utils import PermissionMixin
 from utilities.views import DeleteMessageMixin, FormInitialMixin
 from .filters import AdviceFilter
-from .models import Advice
-from .forms import AdviceForm
+from .models import Advice, Attachment
+from .forms import AdviceForm, AttachmentForm
+from django.http import HttpResponseRedirect
+from utilities.forms import BaseTableFormSet
 
 
 class AdviceList(PermissionMixin, SelectRelatedMixin,
@@ -26,21 +30,69 @@ class AdviceList(PermissionMixin, SelectRelatedMixin,
         return qs.visible()
 
 
-class AdviceUpdate(PermissionMixin, FormValidMessageMixin, UserFormKwargsMixin, UpdateView):
+class FormSetMixin(object):
+
+    def get_instance(self):
+        return None
+
+    def get_formset(self):
+        return inlineformset_factory(self.model, self.inline_model,
+            form=self.inline_form_cls, formset=BaseTableFormSet)
+
+    def get_context_data(self, **kwargs):
+        context = super(FormSetMixin, self).get_context_data(**kwargs)
+        context.update({'formset': self.get_formset()}(instance=self.get_instance()))
+        return context
+
+    def get_formset_valid_message(self):
+        return _("{0} created!").format(self.object)
+
+    def get_form(self, *args, **kwargs):
+        form = super(FormSetMixin, self).get_form(*args, **kwargs)
+        if hasattr(form, 'helper'):
+            form.helper.form_tag = False
+        return form
+
+    def formset_valid(self, form, formset):
+        formset.save()
+        messages.success(self.request, self.get_formset_valid_message())
+        return HttpResponseRedirect(self.object.get_absolute_url())
+
+    def form_invalid(self, form, formset):
+        return self.render_to_response(self.get_context_data(form=form, formset=formset))
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        FormSet = self.get_formset()
+        formset = FormSet(self.request.POST or None, self.request.FILES, instance=self.object)
+
+        if formset.is_valid():
+            self.object.save()
+            return self.formset_valid(form, formset)
+        else:
+            return self.formset_invalid(form, formset)
+
+
+class AdviceUpdate(FormSetMixin, PermissionMixin, FormValidMessageMixin, UserFormKwargsMixin,
+        UpdateView):
     model = Advice
     form_class = AdviceForm
+    inline_model = Attachment
+    inline_form_cls = AttachmentForm
 
     def get_form_valid_message(self):
         return _("{0} updated!").format(self.object)
 
+    def get_instance(self):
+        return self.object
 
-class AdviceCreate(FormInitialMixin, FormValidMessageMixin, UserFormKwargsMixin, LoginRequiredMixin,
+
+class AdviceCreate(FormSetMixin, FormInitialMixin, UserFormKwargsMixin, LoginRequiredMixin,
         CreateView):
     model = Advice
     form_class = AdviceForm
-
-    def get_form_valid_message(self):
-        return _("{0} created!").format(self.object)
+    inline_model = Attachment
+    inline_form_cls = AttachmentForm
 
 
 class AdviceDelete(PermissionMixin, DeleteMessageMixin, DeleteView):
