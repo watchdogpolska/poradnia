@@ -3,16 +3,12 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext as _
-from django.utils.translation import ugettext_lazy as _l
+from django.utils.translation import ugettext_lazy as _
 import autocomplete_light
 from cases.models import Case
 from utilities.forms import FileMixin, PartialMixin, SingleButtonMixin
 from .helpers import FormsetHelper
 from .models import Letter, Attachment
-
-EMAIL_HELP_TEXT = _l("The user account will be created automatically," +
-    "so you have access to the archive and data about persons responsible for the case.")
 
 
 class UserEmailField(forms.EmailField):
@@ -32,14 +28,15 @@ class UserEmailField(forms.EmailField):
 class NewCaseForm(SingleButtonMixin, FileMixin, PartialMixin, autocomplete_light.ModelForm):
     form_helper_cls = FormsetHelper
     attachment_cls = Attachment
-    action_text = _l("Report case")
+    action_text = _("Report case")
 
     client = forms.ModelChoiceField(queryset=get_user_model().objects.all(), label=_("Client"),
         required=False, help_text=_("Leave empty to use email field and create a new one user."),
         widget=autocomplete_light.ChoiceWidget('UserAutocomplete'))
     email = forms.EmailField(required=False, label=_("User e-mail"))
-    email_registration = UserEmailField(required=True, help_text=_(EMAIL_HELP_TEXT),
-        label=_("E-mail"))
+    email_registration = UserEmailField(required=True, help_text=_("The user account will be " +
+    "created automatically, so you have access to the archive and data about persons " +
+    "responsible for the case."), label=_("E-mail"))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
