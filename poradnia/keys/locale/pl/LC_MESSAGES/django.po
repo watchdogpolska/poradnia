@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: keys 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-20 13:28+0200\n"
-"PO-Revision-Date: 2015-07-20 13:27+0100\n"
+"POT-Creation-Date: 2015-07-22 19:30+0200\n"
+"PO-Revision-Date: 2015-07-22 19:30+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -27,15 +27,15 @@ msgstr "Użytkownik / użytkowniczka"
 msgid "Key"
 msgstr "Klucz"
 
-#: models.py:17 templates/keys/key_list.html:12
+#: models.py:17 templates/keys/key_list.html:15
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:18 templates/keys/key_list.html:13
+#: models.py:18 templates/keys/key_list.html:16
 msgid "Created on"
 msgstr "Utworzony o"
 
-#: models.py:19 templates/keys/key_list.html:15
+#: models.py:19 templates/keys/key_list.html:18
 msgid "Used on"
 msgstr "Użyty o"
 
@@ -80,23 +80,27 @@ msgstr "Nowy klucz"
 msgid "Keys index"
 msgstr "Wykaz kluczy"
 
-#: templates/keys/key_list.html:9
+#: templates/keys/key_list.html:10
+msgid "Help"
+msgstr "Pomoc"
+
+#: templates/keys/key_list.html:11
 msgid "Generate new key"
 msgstr "Wygeneruj nowy klucz"
 
-#: templates/keys/key_list.html:14
+#: templates/keys/key_list.html:17
 msgid "Downloaded on"
 msgstr "Pobrany o"
 
-#: templates/keys/key_list.html:16
+#: templates/keys/key_list.html:19
 msgid "Actions"
 msgstr "Akcje"
 
-#: templates/keys/key_list.html:24
+#: templates/keys/key_list.html:28
 msgid "Download"
 msgstr "Pobierz"
 
-#: templates/keys/key_list.html:24
+#: templates/keys/key_list.html:29
 msgid "Delete"
 msgstr "Usuń"
 
