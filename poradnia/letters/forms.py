@@ -121,7 +121,7 @@ class AddLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
         obj.case = self.case
         if commit:
             obj.save()
-        obj.send_notification(self.user, 'created')
+        obj.send_notification(actor=self.user, verb='created')
         return obj
 
     class Meta:
@@ -143,11 +143,11 @@ class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
         obj.modified_by = self.user
         obj.status = obj.STATUS.done
         obj.save()
-        obj.send_notification(self.user, 'send_to_client')
+        obj.send_notification(actor=self.user, verb='send_to_client')
         msg = Letter(case=obj.case, created_by=self.user, text=self.cleaned_data['comment'],
             status=obj.STATUS.staff)
         msg.save()
-        msg.send_notification(self.user, 'drop_a_note', staff=True)
+        msg.send_notification(actor=self.user, verb='drop_a_note', staff=True)
         return obj
 
     class Meta:
@@ -176,7 +176,7 @@ class LetterForm(SingleButtonMixin, PartialMixin, ModelForm):  # eg. edit form
         obj = super(LetterForm, self).save(commit=False, *args, **kwargs)
         obj.modified_by = self.user
         obj.save()
-        obj.send_notification(self.user, 'updated')
+        obj.send_notification(actor=self.user, verb='updated')
         return obj
 
     class Meta:
