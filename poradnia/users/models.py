@@ -12,13 +12,14 @@ from django.template.loader import render_to_string
 from guardian.mixins import GuardianUserMixin
 from model_utils.managers import PassThroughManager
 from template_mail.utils import send_tpl_email
-import notifications
+from notifications.models import notify_handler as send
 
 _('Username or e-mail')  # Hack to overwrite django translation
 _('Login')
 
 
 class UserQuerySet(QuerySet):
+
     def for_user(self, user):
         if not user.has_perm('users.can_view_other'):
             return self.filter(Q(username=user.username) | Q(is_staff=True))
@@ -29,7 +30,8 @@ class UserQuerySet(QuerySet):
 
 
 class CustomUserManager(GuardianUserMixin, PassThroughManager.for_queryset_class(UserQuerySet),
-        UserManager):
+                        UserManager):
+
     def get_by_email_or_create(self, email, notify=True, **extra_fields):
         try:
             user = self.model.objects.get(email=email)  # Support allauth EmailAddress
@@ -45,7 +47,7 @@ class CustomUserManager(GuardianUserMixin, PassThroughManager.for_queryset_class
             user.set_password(password)
             user.save(using=self._db)
             text = render_to_string('users/email_new_user.html',
-                {'user': user, 'password': password})
+                                    {'user': user, 'password': password})
             user.email_user('New registration', text)
         return user
 
@@ -64,16 +66,37 @@ class User(AbstractUser):
             text += ' (team)'
         return text
 
-    def send_tpl_email_user(self, template_name, context, from_email, **kwds):
+    def send_template_email(self, template_name, context, from_email, **kwds):
         return send_tpl_email(template_name, self.email, context, from_email, **kwds)
 
-    def notify(self, actor, verb, target, from_email=None):
-        notifications.notify.send(actor, verb=verb, target=target, recipient=self)
-        template_name = '%s/email/%s_%s.txt' % (target._meta.app_label, target._meta.model_name, verb)
-        context = dict(actor=actor, verb=verb, target=target, recipient=self)
+    def _get_notify_template_name(self, target, verb):
+        return '%s/email/%s_%s.txt' % (target._meta.app_label, target._meta.model_name, verb)
+
+    def _get_email_name(self, actor, from_email):
         if from_email:
-            context['email'] = from_email
-        return self.send_tpl_email_user(template_name, context, "%s <%s>" % (actor, from_email))
+            return u"%s <%s>" % (actor, from_email)
+        return None
+
+    def notify(self, actor, verb, **kwargs):
+        notify_kw = {'sender': actor,
+                     'verb': verb,
+                     # 'object': kwargs.get('object', None),
+                     # 'target': kwargs.get('target', None),
+                     }
+        send(recipient=self, **notify_kw)
+
+        if 'target' not in kwargs:
+            return
+
+        template_name = self._get_notify_template_name(kwargs['target'], verb)
+        from_email = kwargs.get('from_email', None)
+
+        email_name = self._get_email_name(actor, from_email)
+
+        context = kwargs
+        context['email'] = from_email  # TODO: Drop this alias
+        context['actor'] = actor
+        return self.send_template_email(template_name, context, email_name)
 
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'username': self.username})

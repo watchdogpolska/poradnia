@@ -1,0 +1,6 @@
+{{actor}}: W sprawie {{target}} nadał uprawnienia dla {{action_object}}
+Użytkownik/-ka {{actor}} nadał/-a dla {{action_object}} uprawnienia grupy {{action_target}} dla sprawy {{target}}
+
+{% if email %}
+Odpowiedź, aby zbawić świat.
+{% endif %}

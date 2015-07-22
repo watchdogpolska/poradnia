@@ -9,9 +9,11 @@ from events.forms import EventForm
 from letters.helpers import formset_attachment_factory
 from pagination_custom.utils import paginator
 from records.models import Record
+from django.views.generic import UpdateView
+from braces.views import UserFormKwargsMixin
 from ..models import Case
 from ..tags.models import Tag
-from ..forms import CaseForm
+from ..forms import CaseForm, CaseGroupPermissionForm
 
 
 @login_required
@@ -19,6 +21,7 @@ def detail(request, pk):
     context = {}
     qs = (Case.objects.prefetch_related('tags').
           select_related('created_by').
+          select_related('triggered').
           select_related('modified_by'))
     case = get_object_or_404(qs, pk=pk)
     case.view_perm_check(request.user)
@@ -36,12 +39,17 @@ def detail(request, pk):
 
     qs = (Record.objects.filter(case=case).
         select_related('letter__created_by', 'letter', 'letter__modified_by').
-        prefetch_related('letter__attachment_set'))
+        select_related('event__created_by', 'event', 'event__modified_by').
+        select_related('event__alarm', ).
+
+        prefetch_related('letter__attachment_set', 'letter__created_by__avatar_set'))
 
     if not request.user.is_staff:
         qs = qs.for_user(request.user)
 
     context['record_list'] = qs.all()
+    context['casegroup_form'] = CaseGroupPermissionForm(case=case, user=request.user)
+
     return render(request, 'cases/case_detail.html', context)
 
 SORT_MAP = {'deadline': 'deadline__time',
@@ -107,22 +115,17 @@ def list(request):
     return render(request, 'cases/case_list.html', context)
 
 
-@login_required
-def edit(request, pk):
-    context = {}
+class CaseUpdateView(UserFormKwargsMixin, UpdateView):
+    form_class = CaseForm
+    template_name = 'cases/case_form.html'
+    model = Case
 
-    case = get_object_or_404(Case, pk=pk)
-    case.perm_check(request.user, 'can_change_case')
-    context['object'] = case
+    def get_object(self):
+        obj = super(CaseUpdateView, self).get_object()
+        obj.perm_check(self.request.user, 'can_change_case')
+        return obj
 
-    if request.method == 'POST':
-        form = CaseForm(request.POST, request.FILES, instance=case, user=request.user)
-        if form.is_valid():
-            obj = form.save()
-            messages.success(request, _('Successful add "%(object)s".') % {'object': obj})
-            return redirect(obj)
-    else:
-        form = CaseForm(instance=case, user=request.user)
-    context['form'] = form
-
-    return render(request, 'cases/case_form.html', context)
+    def form_valid(self, form):
+        obj = form.save()
+        messages.success(self.request, _('Successful updated "%(object)s".') % {'object': obj})
+        return redirect(obj)

@@ -7,7 +7,7 @@
 <ol class="breadcrumb">
   <li><a href="{% url 'cases:list'%}">{% trans 'Cases'%}</a></li>
   <li><a href="{{object.get_absolute_url}}">{{object}}</a></li>
-  <li class="active">{% trans 'Permission'%}</li>
+  <li class="active">{% trans 'Permissions' %}</li>
 </ol>
 {% endblock %}
 
@@ -19,18 +19,9 @@
     <script src="{% static 'cases/lou-multiselect/js/jquery.multi-select.js'%}" type="text/javascript"></script>
     <script>$('select[name*=permissions]').multiSelect();</script>
 {% endblock %}
+
 {% block content %}
-
-<div class="row">
-  <div class="col-xs-18">
-    <div class="pull-left"><h1>{{object}}</h1></div>
-  </div>
-</div>
-<div class="row">
-    <div class="col-lg-12">
-        <p>{% trans 'Involved in' %}:{% for user in object.get_users_with_perms.all %}<a class="label label-info" href="{{user.get_absolute_url}}">{{user}}</a>{% endfor%}</p>
-    {% block form %} {% endblock %}
-    </div>
-</div>
-
+<h1>{{object}}</h1>
+<p>{% trans 'Involved in' %}:{% include 'cases/_involved_in.html' %}</p>
+{% block form %} {% endblock %}
 {% endblock %}

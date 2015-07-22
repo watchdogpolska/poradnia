@@ -10,20 +10,7 @@
 </ol>
 {% endblock %}
 {% block content %}
-
-<div class="row">
-  <div class="col-lg-12">
-    <h1>{% block header %}{{ object }}{% endblock %}</h1>
-    <form class="form-horizontal" method="post" action="{{ form.helper.form_action }}">
-      {% csrf_token %}
-      {% crispy form %}
-      <div class="control-group">
-        <div class="controls">
-          <button type="submit" class="btn">{% trans 'Update'%}</button>
-        </div>
-      </div>
-    </form>
-  </div>
-</div>
-
+<h1>{% block header %}{{ object }}{% endblock %}</h1>
+{% csrf_token %}
+{% crispy form %}
 {% endblock %}

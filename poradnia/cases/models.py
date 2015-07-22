@@ -184,9 +184,15 @@ class Case(models.Model):
             assign_perm('can_view', self.client, self)  # assign client
             assign_perm('can_add_record', self.client, self)  # assign client
 
-    def send_notification(self, actor, verb):
-        for user in self.get_users_with_perms().exclude(pk=actor.pk):
-            user.notify(actor=actor, verb=verb, target=self)
+    def send_notification(self, actor, staff=None, **context):
+        qs = self.get_users_with_perms().exclude(pk=actor.pk)
+        if staff is not None:
+            qs = qs.filter(is_staff=staff)
+        for user in qs:
+            user.notify(actor=actor,
+                target=self,
+                from_email=self.get_email(),
+                **context)
 
     def save(self, *args, **kwargs):
         created = True if self.pk is None else False

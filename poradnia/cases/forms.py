@@ -1,29 +1,29 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from crispy_forms.helper import FormHelper
+from guardian.shortcuts import assign_perm
+from django.contrib.auth import get_user_model
+from django.utils.translation import ugettext_lazy as _
+from django.core.urlresolvers import reverse
+from braces.forms import UserKwargModelFormMixin
+from crispy_forms.layout import Submit
+from utilities.forms import HelperMixin, FormHorizontalMixin, SaveButtonMixin
+import autocomplete_light
+from .models import Case, PermissionGroup
 
 
-from .models import Case
-
-
-class CaseForm(forms.ModelForm):
+class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SaveButtonMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-        self.helper.label_class = 'col-lg-2'
-        self.helper.field_class = 'col-lg-10'
+        super(CaseForm, self).__init__(*args, **kwargs)
         if 'instance' in kwargs:
             self.helper.form_action = kwargs['instance'].get_edit_url()
-        super(CaseForm, self).__init__(*args, **kwargs)
 
     def save(self, commit=True, *args, **kwargs):
         obj = super(CaseForm, self).save(commit=False, *args, **kwargs)
         if obj.pk:  # update
             obj.modified_by = self.user
-            obj.send_notification(self.user, 'updated')
+            obj.send_notification(self.user, staff=True, verb='updated')
         else:  # new
-            obj.send_notification(self.user, 'created')
+            obj.send_notification(self.user, staff=True, verb='created')
             obj.created_by = self.user
         if commit:
             obj.save()
@@ -33,3 +33,32 @@ class CaseForm(forms.ModelForm):
         # Set this form to use the User model.
         model = Case
         fields = ("name", "status", "tags")
+
+
+class CaseGroupPermissionForm(HelperMixin, forms.Form):
+    action_text = _('Grant')
+    user = forms.ModelChoiceField(queryset=None, required=True,
+        widget=autocomplete_light.ChoiceWidget('UserAutocomplete'), label=_("User"))
+    group = forms.ModelChoiceField(queryset=PermissionGroup.objects.all(),
+        label=_("Permissions group"))
+
+    def __init__(self, user, case=None, *args, **kwargs):
+        self.case = case
+        self.user = user
+        super(CaseGroupPermissionForm, self).__init__(*args, **kwargs)
+        self.fields['user'].queryset = get_user_model().objects.for_user(self.user)
+        self.helper.form_class = 'form-inline'
+        self.helper.layout.append(Submit('grant', _('Grant')))
+
+        self.helper.form_action = reverse('cases:permission_grant',
+            kwargs={'pk': str(self.case.pk)})
+
+    def assign(self, *args, **kwargs):
+        perms = [x.codename for x in self.cleaned_data['group'].permissions.all()]
+
+        for perm in perms:
+            assign_perm(perm, self.cleaned_data['user'], self.case)
+
+        self.case.send_notification(actor=self.user, verb='grant_group',
+            action_object=self.cleaned_data['user'], action_target=self.cleaned_data['group'],
+            staff=True)

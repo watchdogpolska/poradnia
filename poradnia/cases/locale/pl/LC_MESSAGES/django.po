@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-20 12:31+0200\n"
-"PO-Revision-Date: 2015-07-20 12:31+0100\n"
+"POT-Creation-Date: 2015-07-22 04:20+0200\n"
+"PO-Revision-Date: 2015-07-22 04:09+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -18,6 +18,18 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
+
+#: forms.py:40 forms.py:52
+msgid "Grant"
+msgstr "Przyznaj"
+
+#: forms.py:42
+msgid "User"
+msgstr "Użytkownik"
+
+#: forms.py:44
+msgid "Permissions group"
+msgstr "Grupa uprawnień"
 
 #: models.py:57
 msgid "free"
@@ -51,11 +63,11 @@ msgstr "Liczba listów"
 msgid "Last send"
 msgstr "Ostatnia odpowiedź"
 
-#: models.py:69 templates/cases/case_list.html:45
+#: models.py:69 templates/cases/case_list.html:46
 msgid "Last action"
 msgstr "Ostatnia czynność"
 
-#: models.py:73 templates/cases/case_detail.html:72
+#: models.py:73 templates/cases/case_detail.html:67
 #: templates/cases/case_list.html:43
 msgid "Dead-line"
 msgstr "Termin"
@@ -64,7 +76,7 @@ msgstr "Termin"
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:77 templates/cases/case_list.html:46
+#: models.py:77 templates/cases/case_list.html:47
 msgid "Created on"
 msgstr "Utworzone o"
 
@@ -112,11 +124,11 @@ msgstr "Może zmieniać własne wpisy"
 msgid "Can change all records"
 msgstr "Może zmieniać wszystkie wpisy"
 
-#: models.py:217
+#: models.py:223
 msgid "Name"
 msgstr "Nazwa"
 
-#: models.py:218
+#: models.py:224 templates/cases/_case_form_permission.html:10
 msgid "Permissions"
 msgstr "Uprawnienia"
 
@@ -126,12 +138,8 @@ msgstr "Uprawnienia"
 msgid "Cases"
 msgstr "Sprawy"
 
-#: templates/cases/_case_form_permission.html:10
-msgid "Permission"
-msgstr "Uprawnienie"
-
-#: templates/cases/_case_form_permission.html:31
-#: templates/cases/case_detail.html:59
+#: templates/cases/_case_form_permission.html:25
+#: templates/cases/case_detail.html:54
 msgid "Involved in"
 msgstr "Zaangażowani"
 
@@ -175,15 +183,7 @@ msgstr "usuń"
 msgid "Edit"
 msgstr "Edytuj"
 
-#: templates/cases/case_detail.html:34
-msgid "Assign user"
-msgstr "Przypisz użytkownika"
-
-#: templates/cases/case_detail.html:35
-msgid "Update permissions"
-msgstr "Aktualizuj uprawnienia"
-
-#: templates/cases/case_detail.html:45
+#: templates/cases/case_detail.html:41
 #, python-format
 msgid ""
 "Created by <a href=\"%(created_url)s\">%(created_user)s</a> on\n"
@@ -192,48 +192,51 @@ msgstr ""
 "Utworzona przez <a href=\"%(created_url)s\">%(created_user)s</a> "
 "%(created_on)s dla <a href=\"%(client_url)s\">%(client_user)s</a>"
 
-#: templates/cases/case_detail.html:56
+#: templates/cases/case_detail.html:51
 msgid "Workflow"
 msgstr "Przepływ pracy"
 
-#: templates/cases/case_detail.html:64
+#: templates/cases/case_detail.html:59
 msgid "Last update"
 msgstr "Ostatnia aktualizacja"
 
-#: templates/cases/case_detail.html:73
+#: templates/cases/case_detail.html:68
 #, python-format
 msgid "%(deadline)s at %(naturaltime)s"
 msgstr "%(deadline)s o %(naturaltime)s"
 
-#: templates/cases/case_detail.html:83
+#: templates/cases/case_detail.html:78
 msgid "Metrical data"
 msgstr "Dane metrykalne"
 
-#: templates/cases/case_detail.html:86
+#: templates/cases/case_detail.html:81
 msgid "Advice"
 msgstr "Porada"
 
-#: templates/cases/case_detail.html:91
+#: templates/cases/case_detail.html:86
 msgid "Create new advice"
 msgstr "Utwórz nową porade"
 
-#: templates/cases/case_detail.html:107
+#: templates/cases/case_detail.html:94
+msgid "Assign permissions"
+msgstr "Przyznaj uprawnienia"
+
+#: templates/cases/case_detail.html:98
+msgid "Advanced"
+msgstr "Zaawansowane"
+
+#: templates/cases/case_detail.html:112
 msgid "No records"
 msgstr "Brak wpisów"
-
-#: templates/cases/case_form.html:22
-#: templates/cases/case_form_permission_add.html:8
-#: templates/cases/case_form_permission_update.html:18
-msgid "Update"
-msgstr "Aktualizuj"
 
 #: templates/cases/case_form_permission_add.html:4
 msgid "Add new user"
 msgstr "Dodaj nowego użytkownika"
 
 #: templates/cases/case_form_permission_update.html:5
-msgid "Update users"
-msgstr "Aktualizuj uprawnienia użytkowników"
+#, python-format
+msgid "Update permission of  %(user)s"
+msgstr "Aktualizacja uprawnień użytkownika %(user)s"
 
 #: templates/cases/case_list.html:29
 #, python-format
@@ -262,15 +265,15 @@ msgstr "ID"
 msgid "Last response"
 msgstr "Ostatnia odpowiedź"
 
-#: templates/cases/case_list.html:61
+#: templates/cases/case_list.html:62
 msgid "No answer"
 msgstr "Brak odpowiedzi"
 
-#: templates/cases/case_list.html:72
+#: templates/cases/case_list.html:73
 msgid "Legend of status"
 msgstr "Legenda statusów"
 
-#: templates/cases/case_list.html:72
+#: templates/cases/case_list.html:73
 msgid "Cases have status changed by staff."
 msgstr ""
 "Zgłoszona przez Ciebie sprawa otrzymuje najpierw status \"wolna\". To "
@@ -278,36 +281,51 @@ msgstr ""
 "Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na \"przypisana"
 "\". A gdy już Ci pomożemy \"zakończona\"."
 
-#: templates/cases/case_list.html:75
+#: templates/cases/case_list.html:76
 msgid "There is no cases."
 msgstr "Tutaj nie ma spraw."
 
-#: templates/cases/case_list.html:75
+#: templates/cases/case_list.html:76
 msgid "Do more of these!"
 msgstr "Utwórz!"
 
-#: views/cases.py:30
+#: views/cases.py:31
 msgid "Letter"
 msgstr "List"
 
-#: views/cases.py:34
+#: views/cases.py:35
 msgid "Event"
 msgstr "Wydarzenie"
 
-#: views/cases.py:122
+#: views/cases.py:128
 #, python-format
 msgid "Successful add \"%(object)s\"."
 msgstr "Dodano \"%(object)s\""
 
-#: views/permissions.py:30
+#: views/permissions.py:40
 #, python-format
 msgid "Success granted permission of %(user)s to %(case)s"
 msgstr "Nadano uprawnienia %(user)s do sprawy %(case)s"
 
-#: views/permissions.py:58
+#: views/permissions.py:74
 #, python-format
-msgid "Success updated permission of %(user)s to %(case)s"
-msgstr "Zaktualizowano uprawniania %(user)s do sprawy %(case)s"
+msgid "%(user)s granted permissions from %(group)s!"
+msgstr "%(user)s przyznano uprawnienia grupy %(group)s!"
+
+#~ msgid "Update"
+#~ msgstr "Aktualizuj"
+
+#~ msgid "Permission"
+#~ msgstr "Uprawnienie"
+
+#~ msgid "Assign user"
+#~ msgstr "Przypisz użytkownika"
+
+#~ msgid "Update users"
+#~ msgstr "Aktualizuj uprawnienia użytkowników"
+
+#~ msgid "Success updated permission of %(user)s to %(case)s"
+#~ msgstr "Zaktualizowano uprawniania %(user)s do sprawy %(case)s"
 
 #~ msgid "Record"
 #~ msgstr "Wpis"

@@ -30,10 +30,6 @@
         {% if 'change_case' in case_perms %}
         <a class="btn btn-primary" href="{{ object.get_edit_url }}"><i class="fa fa-pencil-square-o"></i> {% trans 'Edit'%}</a>
         {% endif %}
-        {% if 'can_assign' in case_perms %}
-        <a class="btn btn-primary" href="{% url 'cases:permission_add' pk=object.pk %}"><i class="fa fa-eye-slash"></i> {% trans 'Assign user' %}</a>
-        <a class="btn btn-primary" href="{% url 'cases:permission_update' pk=object.pk %}"><i class="fa fa-eye-slash"></i> {% trans 'Update permissions' %}</a>
-        {% endif %}
       </div>
       <h1 class="case-header-title">{{object.name}} <span class="case-header-number">#{{object.pk}}</span></h1>
       <div class="case-header-meta">
@@ -49,7 +45,6 @@
   </div>
 </div>
 
-
 <div class="row">
   <div class="col-lg-6">
     <div class="panel panel-default">
@@ -57,7 +52,7 @@
       <table class="table">
         <tr>
           <td><i class="fa fa-user"></i> {% trans 'Involved in' %}</td>
-          <td>{% for user in object.get_users_with_perms.all %}<a class="label label-info" href="{{user.get_absolute_url}}">{{user}}</a> {% endfor%}</td>
+          <td>{% include 'cases/_involved_in.html' %}</td>
         </tr>
         {% if object.modified_by %}
         <tr>
@@ -94,6 +89,16 @@
         </tr>
       </table>
     </div>
+    {% if 'can_assign' in case_perms %}
+    <div class="panel panel-default">
+      <div class="panel-heading"><i class="fa fa-users"></i> {% trans 'Assign permissions' %}
+      </div>
+      <div class="panel-body">
+      {% crispy casegroup_form %}
+      <a class="btn btn-primary" href="{% url 'cases:permission_add' pk=object.pk %}"><i class="fa fa-eye-slash"></i> {% trans 'Advanced' %}</a>
+      </div>
+    </div>
+    {% endif %}
   </div>
   {% endif %}
 </div>

@@ -4,8 +4,12 @@ from . import views
 
 urlpatterns = patterns('',
     url(r'^$', views.list, name="list"),
-    url(r'^case-(?P<pk>\d+)/edit$', views.edit, name="edit"),
-    url(r'^case-(?P<pk>\d+)/permission/add$', views.permission_add, name="permission_add"),
-    url(r'^case-(?P<pk>\d+)/permission/update$', views.permission_update, name="permission_update"),
-    url(r'^case-(?P<pk>\d+)$', views.detail, name="detail"),
+    url(r'^case-(?P<pk>\d+)/edit$', views.CaseUpdateView.as_view(), name="edit"),
+    url(r'^case-(?P<pk>\d+)/permission$', views.UserPermissionCreateView.as_view(),
+        name="permission_add"),
+    url(r'^case-(?P<pk>\d+)/permission/(?P<user_pk>\d+)$', views.UserPermissionUpdateView.as_view(),
+        name="permission_update"),
+    url(r'^case-(?P<pk>\d+)/permission/grant$', views.CaseGroupPermissionView.as_view(),
+        name="permission_grant"),
+    url(r'^case-(?P<pk>\d+)/$', views.detail, name="detail"),
 )

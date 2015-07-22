@@ -40,5 +40,11 @@ class Local(Common):
         'SHOW_TEMPLATE_CONTEXT': True,
 
     }
+
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+        }
+    }
     # end django-debug-toolbar
     # Your local stuff: Below this line define 3rd party libary settings

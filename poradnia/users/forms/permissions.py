@@ -4,6 +4,7 @@ from django.utils.translation import ugettext as _
 from guardian.forms import BaseObjectPermissionsForm
 from guardian.shortcuts import assign_perm, remove_perm
 from guardian.forms import UserObjectPermissionsForm
+from utilities.forms import SaveButtonMixin
 import autocomplete_light
 
 
@@ -14,11 +15,13 @@ class PermissionsTranslationMixin(object):
             for key, value in self.fields['permissions'].choices]
 
 
-class TranslatedUserObjectPermissionsForm(PermissionsTranslationMixin, UserObjectPermissionsForm):
+class TranslatedUserObjectPermissionsForm(SaveButtonMixin, PermissionsTranslationMixin,
+        UserObjectPermissionsForm):
     pass
 
 
-class TranslatedManageObjectPermissionForm(PermissionsTranslationMixin, BaseObjectPermissionsForm):
+class TranslatedManageObjectPermissionForm(SaveButtonMixin, PermissionsTranslationMixin,
+        BaseObjectPermissionsForm):
     users = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(), required=True,
         widget=autocomplete_light.MultipleChoiceWidget('UserAutocomplete'))
 
