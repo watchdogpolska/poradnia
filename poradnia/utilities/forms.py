@@ -1,7 +1,7 @@
 from functools import partial
 from django import forms
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
+from crispy_forms.layout import Submit, Reset
 from crispy_forms.bootstrap import FormActions
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy as _l
@@ -35,7 +35,8 @@ class SaveButtonMixin(HelperMixin):
         self.helper.layout.append(
             FormActions(
                 Submit('save_changes', _('Update'), css_class="btn-primary"),
-                Submit('cancel', _('Cancel')),
+                Reset('reset', _('Reset!'))
+,
             )
         )
 
