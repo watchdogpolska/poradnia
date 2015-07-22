@@ -52,12 +52,15 @@ class FormHorizontalMixin(HelperMixin):
 class FileMixin(forms.Form):  # TODO: Generalize
     files = MultiFileField(label=_("Attachments"), required=False)
     attachment_cls = None
+    attachment_rel_field = None
+    attachment_file_field = None
 
     def save(self, commit=True, *args, **kwargs):
         obj = super(FileMixin, self).save(commit=False, *args, **kwargs)
         attachments = []
         for each in self.cleaned_data['files']:
-            attachments.append(self.attachment_cls(file=each, letter=obj))
+            kw = {self.attachment_rel_field: each, self.attachment_file_field: obj}
+            attachments.append(self.attachment_cls(**kw))
         self.attachment_cls.objects.bulk_create(attachments)
         return obj
 

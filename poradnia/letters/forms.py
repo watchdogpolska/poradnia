@@ -28,6 +28,8 @@ class UserEmailField(forms.EmailField):
 class NewCaseForm(SingleButtonMixin, FileMixin, PartialMixin, autocomplete_light.ModelForm):
     form_helper_cls = FormsetHelper
     attachment_cls = Attachment
+    attachment_rel_field = 'letter'
+    attachment_file_field = 'attachment'
     action_text = _("Report case")
 
     client = forms.ModelChoiceField(queryset=get_user_model().objects.all(), label=_("Client"),
