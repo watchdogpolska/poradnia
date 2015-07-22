@@ -1,3 +1,4 @@
+import locale
 from dateutil.relativedelta import relativedelta
 from django.utils.html import mark_safe
 from django.shortcuts import get_object_or_404
@@ -15,7 +16,6 @@ from keys.mixins import KeyAuthMixin
 from .models import Event
 from .forms import EventForm
 from .utils import EventCalendar
-
 
 
 class EventCreateView(UserFormKwargsMixin, FormValidMessageMixin, CreateView):
@@ -67,12 +67,21 @@ class CalendarEventView(PermissionMixin, SelectRelatedMixin, LoginRequiredMixin,
     def get_language_code(self):
         return getattr(self.request, 'LANGUAGE_CODE', settings.LANGUAGE_CODE)
 
+    def get_user_locale(self):
+        if self.get_language_code() in locale.locale_alias:
+            name = locale.locale_alias[self.get_language_code()].split('.')[0]
+            return (name, 'UTF-8')
+        else:
+            return locale.getlocale()
+
+    def get_calendar(self):
+        date = (int(self.get_year()), int(self.get_month()))
+        cal = EventCalendar(self.object_list, locale=self.get_user_locale()).formatmonth(*date)
+        return mark_safe(cal)
+
     def get_context_data(self, **kwargs):
         context = super(CalendarEventView, self).get_context_data(**kwargs)
-        locale = (self.get_language_code(), 'utf-8')
-        date = (int(self.get_year()), int(self.get_month()))
-        cal = EventCalendar(self.object_list, locale=locale).formatmonth(*date)
-        context['calendar'] = mark_safe(cal)
+        context['calendar'] = self.get_calendar()
         return context
 
 
