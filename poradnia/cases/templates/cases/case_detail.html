@@ -124,7 +124,7 @@
     {% for key, row in forms.items %}
     <div role="tabpanel" class="tab-pane" id="{{key}}">
       <h2>{{row.title}}</h2>
-      <form method="post" enctype="multipart/form-data" action="{{row.form.helper.form_action}}">
+      <form method="post" class="{{row.form.helper.form_class }}" enctype="multipart/form-data" action="{{row.form.helper.form_action}}">
         {% crispy row.form %}
         {% if row.formset %}
         {% crispy row.formset %}

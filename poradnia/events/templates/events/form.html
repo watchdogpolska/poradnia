@@ -4,22 +4,14 @@
 {% block breadcrumbs %}
 <ol class="breadcrumb">
   <li><a href="{% url 'cases:list'%}">{% trans 'Cases'%}</a></li>
-  <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+  <li><a href="{{ case.get_absolute_url }}">{{ case }}</a></li>
   <li class="active">{% trans 'Edit'%}</li>
 </ol>
 {% endblock %}
 
 {%block content%}
-{% block object %}<h1 class="row">{{object}}</h1>{% endblock %}
-<div class="row">
-    <form method="post">
-        {% crispy form %}
-        <div class="form-actions">  
-            <button type="submit" class="btn btn-primary">{% trans 'Save changes'%}</button>  
-            <button class="btn">{% trans 'Cancel'%}</button>  
-        </div>  
-    </form>
-</div>
+{% block object %}<h1>{{object}}</h1>{% endblock %}
+{% crispy form %}
 {%endblock%}
 {% block javascript %}
 {{block.super}}

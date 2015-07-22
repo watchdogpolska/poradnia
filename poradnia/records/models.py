@@ -75,8 +75,8 @@ class AbstractRecord(models.Model):
     def get_template_list(self):
         return u"%s/_%s_list.html" % (self._meta.app_label, self._meta.model_name)
 
-    def send_notification(self, *args, **kwargs):  # TODO: Backward compatibility hack
-        return self.case.send_notification(*args, **kwargs)
+    def send_notification(self, *args, **kwargs):
+        return self.case.send_notification(target=self, *args, **kwargs)
 
     def save(self, *args, **kwargs):
         created = True if self.pk is None else False

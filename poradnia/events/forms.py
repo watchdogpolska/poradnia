@@ -1,33 +1,26 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from crispy_forms.helper import FormHelper
 from letters.forms import PartialMixin
 from django.core.urlresolvers import reverse
-
+from utilities.forms import AuthorMixin, FormHorizontalMixin, SaveButtonMixin
 from .models import Event
 
 
-class EventForm(PartialMixin, forms.ModelForm):
+class EventForm(PartialMixin, AuthorMixin, FormHorizontalMixin, SaveButtonMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         self.case = kwargs.pop('case')
-        self.helper = FormHelper()
-        self.helper.form_tag = False
-        self.helper.form_action = reverse('events:add', kwargs={'case_pk': self.case.pk})
-        if 'instance' in kwargs:
-            self.helper.form_action = kwargs['instance'].get_edit_url()
         super(EventForm, self).__init__(*args, **kwargs)
+        self.helper.form_action = reverse('events:add', kwargs={'case_pk': self.case.pk})
+        if kwargs.get('instance', False):
+            self.helper.form_action = kwargs['instance'].get_edit_url()
 
     def save(self, commit=True, *args, **kwargs):
         obj = super(EventForm, self).save(commit=False, *args, **kwargs)
-        created = False if obj.pk else True
+        created = obj.pk is None
         obj.case = self.case
-        if created:
-            obj.created_by = self.user
-        else:
-            obj.modified_by = self.user
         obj.save()
-        obj.send_notification(self.user, 'created' if created else 'updated')
+        obj.send_notification(actor=self.user, staff=True, verb='created' if created else 'updated')
         return obj
 
     class Meta:

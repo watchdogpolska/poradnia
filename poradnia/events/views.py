@@ -1,15 +1,14 @@
+from dateutil.relativedelta import relativedelta
 from django.utils.html import mark_safe
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect, HttpResponse
-from django.contrib.auth.decorators import login_required
-from django.contrib import messages
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
 from django.utils.translation import ugettext as _
-from django.views.generic import MonthArchiveView, ArchiveIndexView
+from django.views.generic import MonthArchiveView, ArchiveIndexView, CreateView, UpdateView
 from django.views.generic.list import BaseListView
 from django.utils.timezone import now
 from django.conf import settings
-from dateutil.relativedelta import relativedelta
-from braces.views import SelectRelatedMixin, LoginRequiredMixin
+from braces.views import (SelectRelatedMixin, LoginRequiredMixin, UserFormKwargsMixin,
+    FormValidMessageMixin)
 from cases.models import Case
 from users.utils import PermissionMixin
 from keys.mixins import KeyAuthMixin
@@ -18,53 +17,53 @@ from .forms import EventForm
 from .utils import EventCalendar
 
 
-@login_required
-def add(request, case_pk):
-    context = {}
+class EventCreateView(UserFormKwargsMixin, FormValidMessageMixin, CreateView):
+    model = Event
+    form_class = EventForm
+    template_name = 'events/form.html'
 
-    case = get_object_or_404(Case, pk=case_pk)
+    def dispatch(self, request, *args, **kwargs):
+        self.case = get_object_or_404(Case, pk=self.kwargs['case_pk'])
+        self.case.perm_check(request.user, 'can_add_record')
+        return super(EventCreateView, self).dispatch(request, *args, **kwargs)
 
-    case.perm_check(request.user, 'can_add_record')
-    context['case'] = case
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(EventCreateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'case': self.case})
+        return kwargs
 
-    form = EventForm.partial(case=case, user=request.user)
+    def get_context_data(self, **kwargs):
+        context = super(EventCreateView, self).get_context_data(**kwargs)
+        context['case'] = self.case
+        return context
 
-    if request.method == 'POST':
-        form = form(request.POST)
-        if form.is_valid():
-            obj = form.save()
-            messages.success(request,
-                _("Success added new event %(event)s") % {'event': obj, })
-            return HttpResponseRedirect(case.get_absolute_url())
-    else:
-        form = form(user=request.user)
-    context['form'] = form
-    return render(request, 'events/form.html', context)
+    def get_form_valid_message(self):
+        return _("Success added new event %(event)s") % ({'event': self.object})
 
 
-def edit(request, pk):
-    context = {}
+class EventUpdateView(UserFormKwargsMixin, FormValidMessageMixin, UpdateView):
+    model = Event
+    form_class = EventForm
+    template_name = 'events/form.html'
 
-    event = get_object_or_404(Event, pk=pk)
-    case = event.case
+    def get_object(self):
+        obj = super(EventUpdateView, self).get_object()
+        self.case = obj.case
+        obj.case.perm_check(self.request.user, 'can_add_record')
+        return obj
 
-    case.perm_check(request.user, 'can_add_record')
-    context['event'] = event
-    context['object'] = case
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(EventUpdateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs.update({'case': self.case})
+        return kwargs
 
-    form = EventForm.partial(user=request.user, case=case, instance=event)
+    def get_context_data(self, **kwargs):
+        context = super(EventUpdateView, self).get_context_data(**kwargs)
+        context['case'] = self.case
+        return context
 
-    if request.method == 'POST':
-        form = form(request.POST)
-        if form.is_valid():
-            obj = form.save()
-            messages.success(request,
-                _("Success updated event %(event)s") % {'event': obj, })
-            return HttpResponseRedirect(case.get_absolute_url())
-    else:
-        form = form(user=request.user, instance=event)
-    context['form'] = form
-    return render(request, 'events/form.html', context)
+    def get_form_valid_message(self):
+        return _("Success updated event %(event)s") % {'event': self.object}
 
 
 def dismiss(request, pk):  # TODO
