@@ -23,28 +23,18 @@
 
 {% block content %}
 
-<h1>
-{% if user or tag or status %}
-{% trans 'Cases' %}
-{% if status %}{% blocktrans %}with case status {{ status }} {% endblocktrans %}{% endif %}
-{% if user_filter %}{% blocktrans with user_filter.get_absolute_url as user_link %}<a href="{{ user_link }}">{{ user_filter }}</a>{% endblocktrans %}{% endif %}
-{% if tag %}{% blocktrans %}tagged as {{ tag }}{% endblocktrans %}{% endif %}
-{% else %}
-{% trans 'All cases' %}
-{% endif %}
-</h1>
-
+{% crispy filter.form %}
 
 {% if object_list %}
 <table class="table  table-striped table-cases">
   <thead><tr>
-    <th class="id">{% trans 'ID' %} {% include 'cases/_order_link.html' with column="pk" %}</th>
-    <th class="client">{% trans 'Client' %} {% include 'cases/_order_link.html' with column="client" %}</th>
-    <th class="subject">{% trans 'Subject' %} {% include 'cases/_order_link.html' with column="name" %} [{% trans 'Dead-line'%} {% include 'cases/_order_link.html' with column="deadline" %} ]</th>
-    <th class="last_response">{% trans 'Last response' %} {% include 'cases/_order_link.html' with column="last_response" %}</th>
+    <th class="id">{% trans 'ID' %}</th>
+    <th class="client">{% trans 'Client' %}</th>
+    <th class="subject">{% trans 'Subject' %} {% if user.is_staff %}[{% trans 'Dead-line'%}] {% endif %}</th>
+    <th class="last_response">{% trans 'Last response' %}</th>
     {% if user.is_staff %}
-      <th class="last_action">{% trans 'Last action' %} {% include 'cases/_order_link.html' with column="last_action" %}</th>
-      <th class="created_on">{% trans 'Created on' %} {% include 'cases/_order_link.html' with column="created_on" %}</th>
+      <th class="last_action">{% trans 'Last action' %}</th>
+      <th class="created_on">{% trans 'Created on' %}</th>
     {% endif %}
     {# <th>All readed?</th> #}
   </tr></thead>
@@ -57,7 +47,7 @@
         <span class="{{object.status|status2css}}">
         <a href="{{ object.get_absolute_url }}">{{ object.name }}</a>
         ({{ object.letter_count }})
-        {% if object.deadline.time and request.user.is_staff %}<span class="label label-warning"><i class="fa fa-fire"></i> {{ object.deadline.time }}</span>{% endif%}
+        {% if request.user.is_staff and object.deadline.time %}<span class="label label-warning"><i class="fa fa-fire"></i> {{ object.deadline.time }}</span>{% endif%}
       </td>
       <td class="last_response">{% if object.last_send %}{{ object.last_send|naturaltime }}{% else %}{% trans 'No answer' %}{% endif %}</td>
       {% if request.user.is_staff %}
@@ -71,7 +61,7 @@
   </tbody>
 </table>
 <p>{% trans 'Legend of status' %} <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title='{% trans 'Cases have status changed by staff.'%}'></i>: {% for status in statuses %}<span class="label label-success"><i class="{{status.0|status2css}}"></i> {{status.0|status2display}}</span> {% endfor %}
-{% include 'pagination_custom/pager.html' with page=object_list %}
+{% include 'pagination_custom/pager.html' with page=page_obj %}
 {% else %}
 <p>{% trans 'There is no cases.' %}<a href="{% url 'letters:add' %}">{% trans 'Do more of these!' %}</a></p>
 {% endif %}
