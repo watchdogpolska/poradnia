@@ -6,8 +6,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 import autocomplete_light
 from cases.models import Case
-from utilities.forms import FileMixin, PartialMixin, SingleButtonMixin
-from .helpers import FormsetHelper
+from utilities.forms import PartialMixin, SingleButtonMixin, FormsetHelper
 from .models import Letter, Attachment
 
 
@@ -25,7 +24,7 @@ class UserEmailField(forms.EmailField):
             )
 
 
-class NewCaseForm(SingleButtonMixin, FileMixin, PartialMixin, autocomplete_light.ModelForm):
+class NewCaseForm(SingleButtonMixin, PartialMixin, autocomplete_light.ModelForm):
     form_helper_cls = FormsetHelper
     attachment_cls = Attachment
     attachment_rel_field = 'letter'
@@ -91,7 +90,8 @@ class NewCaseForm(SingleButtonMixin, FileMixin, PartialMixin, autocomplete_light
         obj.status = obj.STATUS.done
         obj.created_by = user
         obj.client = self.get_client(user)
-        obj.case = self.get_case(client=obj.client, user=user)
+        if not obj.case_id:
+            obj.case = self.get_case(client=obj.client, user=user)
         if commit:
             obj.save()
         return obj

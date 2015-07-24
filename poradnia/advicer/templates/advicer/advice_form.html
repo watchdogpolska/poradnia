@@ -13,10 +13,12 @@
 
 <div class="row">
   {% if object %}<h1>{{object}}</h1>{% endif %}
-
     <div class="col-md-12">
     {% block form %}
+    <form class="{{form.helper.form_class}}" enctype="multipart/form-data" method="POST">
       {% crispy form %}
+      {% crispy formset %}
+    </form>
     {% endblock %}
   </div>
 </div>

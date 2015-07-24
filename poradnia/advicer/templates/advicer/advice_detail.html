@@ -84,6 +84,14 @@
             {% endif %}
         </table>
         {{object.comment}}
+        {% if object.attachment_set.all %}
+        <h2>{% trans 'Attachments' %}</h2>
+        <ul>
+        {% for object in object.attachment_set.all %}
+            <li><a href="{{object.get_absolute_url}}">{{object}}</a></li>
+        {% endfor %}
+        </ul>
+        {% endif %}
 
     </div>
 </div>

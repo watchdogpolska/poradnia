@@ -1,10 +1,11 @@
 from datetime import datetime
 from django.utils.translation import ugettext as _
+from django import forms
 from braces.forms import UserKwargModelFormMixin
 import autocomplete_light
 from cases.models import Case
-from .models import Advice
-from utilities.forms import FormHorizontalMixin, SingleButtonMixin, AuthorMixin
+from utilities.forms import FormHorizontalMixin, SingleButtonMixin, AuthorMixin, HelperMixin
+from .models import Advice, Attachment
 
 
 class AdviceForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, AuthorMixin,
@@ -22,3 +23,14 @@ class AdviceForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin
         model = Advice
         fields = ['case', 'subject', 'grant_on', 'issues', 'area',
             'person_kind', 'institution_kind', 'advicer', 'comment']
+
+
+class AttachmentForm(HelperMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(AttachmentForm, self).__init__(*args, **kwargs)
+        self.helper.form_tag = False
+        self.helper.form_method = 'post'
+
+    class Meta:
+        model = Attachment
+        fields = ['attachment']

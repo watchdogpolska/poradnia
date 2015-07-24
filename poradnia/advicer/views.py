@@ -6,10 +6,10 @@ from braces.views import (OrderableListMixin, SelectRelatedMixin, LoginRequiredM
     FormValidMessageMixin, UserFormKwargsMixin)
 from django_filters.views import FilterView
 from users.utils import PermissionMixin
-from utilities.views import DeleteMessageMixin, FormInitialMixin
+from utilities.views import DeleteMessageMixin, FormInitialMixin, FormSetMixin
 from .filters import AdviceFilter
-from .models import Advice
-from .forms import AdviceForm
+from .models import Advice, Attachment
+from .forms import AdviceForm, AttachmentForm
 
 
 class AdviceList(PermissionMixin, SelectRelatedMixin,
@@ -26,21 +26,26 @@ class AdviceList(PermissionMixin, SelectRelatedMixin,
         return qs.visible()
 
 
-class AdviceUpdate(PermissionMixin, FormValidMessageMixin, UserFormKwargsMixin, UpdateView):
+class AdviceUpdate(FormSetMixin, PermissionMixin, FormValidMessageMixin, UserFormKwargsMixin,
+        UpdateView):
     model = Advice
     form_class = AdviceForm
+    inline_model = Attachment
+    inline_form_cls = AttachmentForm
 
     def get_form_valid_message(self):
         return _("{0} updated!").format(self.object)
 
+    def get_instance(self):
+        return self.object
 
-class AdviceCreate(FormInitialMixin, FormValidMessageMixin, UserFormKwargsMixin, LoginRequiredMixin,
+
+class AdviceCreate(FormSetMixin, FormInitialMixin, UserFormKwargsMixin, LoginRequiredMixin,
         CreateView):
     model = Advice
     form_class = AdviceForm
-
-    def get_form_valid_message(self):
-        return _("{0} created!").format(self.object)
+    inline_model = Attachment
+    inline_form_cls = AttachmentForm
 
 
 class AdviceDelete(PermissionMixin, DeleteMessageMixin, DeleteView):
