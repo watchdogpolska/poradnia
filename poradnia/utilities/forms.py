@@ -1,10 +1,8 @@
 from functools import partial
-from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Reset
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy as _l
-from multiupload.fields import MultiFileField
 from django.forms.models import BaseInlineFormSet
 
 
@@ -55,19 +53,6 @@ class FormHorizontalMixin(HelperMixin):
         self.helper.form_class = 'form-horizontal'
         self.helper.label_class = 'col-lg-3'
         self.helper.field_class = 'col-lg-9'
-
-
-class FileMixin(forms.Form):  # TODO: Generalize
-    files = MultiFileField(label=_("Attachments"), required=False)
-    attachment_cls = None
-
-    def save(self, commit=True, *args, **kwargs):
-        obj = super(FileMixin, self).save(commit=False, *args, **kwargs)
-        attachments = []
-        for each in self.cleaned_data['files']:
-            attachments.append(self.attachment_cls(file=each, letter=obj))
-        self.attachment_cls.objects.bulk_create(attachments)
-        return obj
 
 
 class PartialMixin(object):

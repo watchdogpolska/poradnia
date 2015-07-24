@@ -7,7 +7,7 @@ from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy as _l
 import autocomplete_light
 from cases.models import Case
-from utilities.forms import FileMixin, PartialMixin, SingleButtonMixin, FormsetHelper
+from utilities.forms import PartialMixin, SingleButtonMixin, FormsetHelper
 from .models import Letter, Attachment
 
 EMAIL_HELP_TEXT = _l("The user account will be created automatically," +
@@ -28,7 +28,7 @@ class UserEmailField(forms.EmailField):
             )
 
 
-class NewCaseForm(SingleButtonMixin, FileMixin, PartialMixin, autocomplete_light.ModelForm):
+class NewCaseForm(SingleButtonMixin, PartialMixin, autocomplete_light.ModelForm):
     form_helper_cls = FormsetHelper
     attachment_cls = Attachment
     action_text = _l("Report case")
@@ -91,7 +91,8 @@ class NewCaseForm(SingleButtonMixin, FileMixin, PartialMixin, autocomplete_light
         obj.status = obj.STATUS.done
         obj.created_by = user
         obj.client = self.get_client(user)
-        obj.case = self.get_case(client=obj.client, user=user)
+        if not obj.case_id:
+            obj.case = self.get_case(client=obj.client, user=user)
         if commit:
             obj.save()
         return obj

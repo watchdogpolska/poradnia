@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from letters.forms import AddLetterForm
 from events.forms import EventForm
-from letters.helpers import formset_attachment_factory
+from letters.helpers import AttachmentFormSet
 from pagination_custom.utils import paginator
 from records.models import Record
 from django.views.generic import UpdateView
@@ -32,7 +32,7 @@ def detail(request, pk):
     context['forms'] = {}
     context['forms']['letter'] = {'title': _('Letter'),
                                   'form': AddLetterForm(user=request.user, case=case),
-                                  'formset': formset_attachment_factory()(instance=None)}
+                                  'formset': AttachmentFormSet(instance=None)}
     if request.user.is_staff:
         context['forms']['event'] = {'title': _('Event'),
                                      'form': EventForm(user=request.user, case=case)}
