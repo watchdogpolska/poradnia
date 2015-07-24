@@ -1,24 +1,14 @@
 from django.utils.translation import ugettext_lazy as _
 import django_filters
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit
-from .models import Advice
+from utilities.filters import CrispyFilterMixin
 from users.filters import UserChoiceFilter
+from .models import Advice
 
 
-class AdviceFilter(django_filters.FilterSet):
+class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
     advicer = UserChoiceFilter(label=_("Advicer"))
     created_by = UserChoiceFilter(label=_("Created by"))
     created_on = django_filters.DateRangeFilter(label=_("Created on"))
-
-    @property
-    def form(self):
-        self._form = super(AdviceFilter, self).form
-        self._form.helper = FormHelper(self._form)
-        self._form.helper.form_class = 'form-inline'
-        self._form.helper.form_method = 'get'
-        self._form.helper.layout.append(Submit('filter', _('Filter')))
-        return self._form
 
     class Meta:
         model = Advice
