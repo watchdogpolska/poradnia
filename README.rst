@@ -5,6 +5,10 @@ poradnia
    :target: https://codeclimate.com/github/watchdogpolska/poradnia
    :alt: Code Climate
 
+.. image:: https://scrutinizer-ci.com/g/watchdogpolska/poradnia/badges/quality-score.png?b=master
+   :target: https://scrutinizer-ci.com/g/watchdogpolska/poradnia/?branch=master
+   :alt: Scrutinizer Code Quality
+
 .. image:: https://landscape.io/github/watchdogpolska/poradnia/master/landscape.svg?style=flat
    :target: https://landscape.io/github/watchdogpolska/poradnia/master
    :alt: Code Health
