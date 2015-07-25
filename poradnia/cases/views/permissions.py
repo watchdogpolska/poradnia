@@ -58,6 +58,7 @@ class UserPermissionUpdateView(FormValidMessageMixin, FormView):
     def get_form_kwargs(self):
         kwargs = super(UserPermissionUpdateView, self).get_form_kwargs()
         self.case = get_object_or_404(Case, pk=self.kwargs['pk'])
+        assign_perm_check(self.request.user, self.case)
         self.action_user = get_object_or_404(get_user_model(), username=self.kwargs['username'])
         kwargs.update({'user': self.action_user, 'obj': self.case})
         return kwargs
