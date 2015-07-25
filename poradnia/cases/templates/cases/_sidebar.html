@@ -1,6 +1,6 @@
 {% load i18n %}
 <div class="block-list">
-    <div class="block-list-header">{% trans 'Files'%}</div>
+    <div class="block-list-header">{% trans 'Cases' %}</div>
     <ul class="block-list-list">
         <li class="block-list-item"><a href="{% url 'letters:add' %}"><i class="fa fa-pencil"></i> {% trans 'New case'%}</a></li>
         {% if request.user.is_authenticated %}
