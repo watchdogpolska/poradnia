@@ -2,7 +2,7 @@
     {% for user in object.get_users_with_perms.all %}
     <span class="label label-info">
     <a href="{{user.get_absolute_url}}">{{user}}</a>
-    <a href="{% url 'cases:permission_update' user_pk=user.pk pk=object.pk%}"><i class="fa fa-pencil"></i></a>
+    <a href="{% url 'cases:permission_update' username=user.username pk=object.pk%}"><i class="fa fa-pencil"></i></a>
     </span>
     {% endfor%}
 {% else %}
