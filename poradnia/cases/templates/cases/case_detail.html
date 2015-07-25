@@ -91,11 +91,12 @@
     </div>
     {% if 'can_assign' in case_perms %}
     <div class="panel panel-default">
-      <div class="panel-heading"><i class="fa fa-users"></i> {% trans 'Assign permissions' %}
+      <div class="panel-heading">
+            <i class="fa fa-users"></i> {% trans 'Assign permissions' %}
+            <a class="btn btn-default btn-xs pull-right" href="{% url 'cases:permission_add' pk=object.pk %}">{% trans "..." %}</a>
       </div>
       <div class="panel-body">
       {% crispy casegroup_form %}
-      <a class="btn btn-primary" href="{% url 'cases:permission_add' pk=object.pk %}"><i class="fa fa-eye-slash"></i> {% trans 'Advanced' %}</a>
       </div>
     </div>
     {% endif %}
