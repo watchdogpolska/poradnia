@@ -2,22 +2,21 @@
 from django.views.generic import UpdateView, CreateView, DeleteView, DetailView
 from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-from braces.views import (OrderableListMixin, SelectRelatedMixin, LoginRequiredMixin,
-    FormValidMessageMixin, UserFormKwargsMixin)
+from braces.views import (SelectRelatedMixin, LoginRequiredMixin, FormValidMessageMixin,
+    UserFormKwargsMixin)
 from django_filters.views import FilterView
 from users.utils import PermissionMixin
-from utilities.views import DeleteMessageMixin, FormInitialMixin
+from utilities.views import DeleteMessageMixin, FormInitialMixin, FormSetMixin
 from .filters import AdviceFilter
-from .models import Advice
-from .forms import AdviceForm
+from .models import Advice, Attachment
+from .forms import AdviceForm, AttachmentForm
+
+ORDERING_TEXT = _("Ordering")
 
 
-class AdviceList(PermissionMixin, SelectRelatedMixin,
-        OrderableListMixin, FilterView):
+class AdviceList(PermissionMixin, SelectRelatedMixin, FilterView):
     model = Advice
     filterset_class = AdviceFilter
-    orderable_columns = ("id", "advicer", "person_kind", "institution_kind")
-    orderable_columns_default = "created_on"
     select_related = ["person_kind", "created_by", "advicer", "institution_kind"]
     paginate_by = 25
 
@@ -26,21 +25,26 @@ class AdviceList(PermissionMixin, SelectRelatedMixin,
         return qs.visible()
 
 
-class AdviceUpdate(PermissionMixin, FormValidMessageMixin, UserFormKwargsMixin, UpdateView):
+class AdviceUpdate(FormSetMixin, PermissionMixin, FormValidMessageMixin, UserFormKwargsMixin,
+        UpdateView):
     model = Advice
     form_class = AdviceForm
+    inline_model = Attachment
+    inline_form_cls = AttachmentForm
 
     def get_form_valid_message(self):
         return _("{0} updated!").format(self.object)
 
+    def get_instance(self):
+        return self.object
 
-class AdviceCreate(FormInitialMixin, FormValidMessageMixin, UserFormKwargsMixin, LoginRequiredMixin,
+
+class AdviceCreate(FormSetMixin, FormInitialMixin, UserFormKwargsMixin, LoginRequiredMixin,
         CreateView):
     model = Advice
     form_class = AdviceForm
-
-    def get_form_valid_message(self):
-        return _("{0} created!").format(self.object)
+    inline_model = Attachment
+    inline_form_cls = AttachmentForm
 
 
 class AdviceDelete(PermissionMixin, DeleteMessageMixin, DeleteView):

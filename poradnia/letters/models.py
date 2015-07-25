@@ -1,4 +1,3 @@
-from os.path import basename
 from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -14,6 +13,8 @@ import talon
 from records.models import AbstractRecord
 from template_mail.utils import send_tpl_email
 from cases.models import Case
+from utilities.models import AttachmentBase
+
 
 talon.init()
 
@@ -68,23 +69,8 @@ class Letter(AbstractRecord):
         verbose_name_plural = _('Letters')
 
 
-class Attachment(models.Model):
+class Attachment(AttachmentBase):
     letter = models.ForeignKey(Letter)
-    attachment = models.FileField(upload_to="letters/%Y/%m/%d", verbose_name=_("File"))
-
-    @property
-    def filename(self):
-        return basename(self.attachment.name)
-
-    def __unicode__(self):
-        return "%s" % (self.filename)
-
-    def get_absolute_url(self):
-        return self.attachment.url
-
-    class Meta:
-        verbose_name = _('Attachment')
-        verbose_name_plural = _('Attachments')
 
 
 @receiver(message_received)

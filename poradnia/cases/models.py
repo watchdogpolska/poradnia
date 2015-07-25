@@ -123,7 +123,7 @@ class Case(models.Model):
             raise PermissionDenied
         return True
 
-    def view_perm_check(self, user, perm='VIEW'):
+    def view_perm_check(self, user):
         if not (user.has_perm('cases.can_view_all') or
                 (self.status == self.STATUS.free and user.has_perm('cases.can_view_free')) or
                 user.has_perm('cases.can_view', self)):

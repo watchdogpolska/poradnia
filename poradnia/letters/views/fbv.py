@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from cases.models import Case
 from django.contrib import messages
 from django.utils.translation import ugettext as _
-from ..helpers import formset_attachment_factory
+from ..helpers import AttachmentFormSet
 # from crispy_forms.helper import FormHelper
 from ..forms import AddLetterForm, LetterForm, SendLetterForm
 from ..models import Letter
@@ -21,7 +21,7 @@ def add(request, case_pk):
     case.perm_check(request.user, 'can_add_record')
 
     LetterForm = AddLetterForm.partial(case=case, user=request.user)
-    AttachmentFormSet = formset_attachment_factory()
+    context['case'] = case
 
     formset = None
     if request.method == 'POST':
@@ -37,8 +37,8 @@ def add(request, case_pk):
     else:
         form = LetterForm()
     context['form'] = form
-    context['formset'] = formset or AttachmentFormSet(instance=Letter())
-    context['headline'] = _('Add')
+    context['formset'] = formset or AttachmentFormSet(instance=None)
+    context['headline'] = _('Add letter')
     return render(request, 'letters/form_add.html', context)
 
 
@@ -88,7 +88,6 @@ def edit(request, pk):
     else:
         case.perm_check(request.user, 'can_change_all_record')
 
-    AttachmentFormSet = formset_attachment_factory()
     formset = None
     if request.method == 'POST':
         form = LetterForm(request.POST, user=request.user, instance=letter)

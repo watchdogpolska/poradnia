@@ -14,7 +14,7 @@ from ..forms import CaseGroupPermissionForm
 
 def assign_perm_check(user, case):
     if case.status == case.STATUS.free:
-        if not (user.has_perm('cases.can_assign')):
+        if not user.has_perm('cases.can_assign'):
             raise PermissionDenied
     else:
         case.perm_check(user, 'can_manage_permission')
@@ -58,7 +58,8 @@ class UserPermissionUpdateView(FormValidMessageMixin, FormView):
     def get_form_kwargs(self):
         kwargs = super(UserPermissionUpdateView, self).get_form_kwargs()
         self.case = get_object_or_404(Case, pk=self.kwargs['pk'])
-        self.action_user = get_object_or_404(get_user_model(), pk=self.kwargs['user_pk'])
+        assign_perm_check(self.request.user, self.case)
+        self.action_user = get_object_or_404(get_user_model(), username=self.kwargs['username'])
         kwargs.update({'user': self.action_user, 'obj': self.case})
         return kwargs
 

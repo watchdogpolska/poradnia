@@ -1,6 +1,7 @@
-{{actor}}: W sprawie {{target}} nadał uprawnienia dla {{action_object}}
+{{actor}} w {{target}}: Nadano uprawnienia dla {{action_object}}
 Użytkownik/-ka {{actor}} nadał/-a dla {{action_object}} uprawnienia grupy {{action_target}} dla sprawy {{target}}
 
-{% if email %}
-Odpowiedź, aby zbawić świat.
-{% endif %}
+Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl/{{target.get_absolute_url}}.
+
+{% if email %} Prosimy, używaj adresu {{email}} do korespondencji w tej sprawie, dzięki temu wymiana korespondencji będzie sprawniejsza. Dziękujemy za współpracę.{% endif %}
+

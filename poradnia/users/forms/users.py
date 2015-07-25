@@ -4,7 +4,7 @@ from utilities.forms import SaveButtonMixin, FormHorizontalMixin
 from ..models import Profile
 
 
-class UserForm(SaveButtonMixin, forms.ModelForm):
+class UserForm(FormHorizontalMixin, SaveButtonMixin, forms.ModelForm):
     class Meta:
         # Set this form to use the User model.
         model = get_user_model()

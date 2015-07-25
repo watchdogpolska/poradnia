@@ -7,7 +7,7 @@ Zgodnie z dostępnym na stronie „Regulaminem poradnictwa”, odpowiedź zostan
 
 Z przesłanym pytaniem oraz dokumentami można zapoznać się poprzez naszą stronę internetową, która wymaga logowania http://porady.siecobywatelska.pl/{{case.get_absolute_url}}. Przez stronę można przesyłać dodatkowe dokumenty i pytania.
 
-Kontaktować się można również używając adresu {{email}} do korespondencji w tej (konkretnej) sprawie. Dzięki temu wymiana korespondencji będzie sprawniejsza.
+{% if email %}Kontaktować się można również używając adresu {{email}} do korespondencji w tej (konkretnej) sprawie. Dzięki temu wymiana korespondencji będzie sprawniejsza.{% endif %}
 
 Z poważaniem,
 

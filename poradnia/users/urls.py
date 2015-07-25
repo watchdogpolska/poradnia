@@ -12,7 +12,7 @@ urlpatterns = patterns('',
     ),
     # URL pattern for the UserRedirectView
     url(
-        regex=r'^~redirect/$',
+        regex=r'^~przekieruj/$',
         view=views.UserRedirectView.as_view(),
         name='redirect'
     ),
@@ -24,13 +24,13 @@ urlpatterns = patterns('',
     ),
     # URL pattern for the UserUpdateView
     url(
-        regex=r'^~update/$',
+        regex=r'^~aktualizuj/$',
         view=views.UserUpdateView.as_view(),
         name='update'
     ),
     # URL pattern for the ProfileUpdateView
     url(
-        regex=r'^~profile/$',
+        regex=r'^~profil/$',
         view=views.ProfileUpdateView.as_view(),
         name='profile'
     ),

@@ -17,22 +17,22 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 
     # User management
-    url(r'^users/keys', include('keys.urls', namespace="keys")),
-    url(r'^users/', include("users.urls", namespace="users")),
-    url(r'^accounts/', include('allauth.urls')),
+    url(r'^uzytkownik/klucze', include('keys.urls', namespace="keys")),
+    url(r'^uzytkownik/', include("users.urls", namespace="users")),
+    url(r'^konta/', include('allauth.urls')),
 
     # Uncomment the next line to enable avatars
     url(r'^avatar/', include('avatar.urls')),
     # Flatpages
-    url(r'^pages/', include('django.contrib.flatpages.urls')),
+    url(r'^strony/', include('django.contrib.flatpages.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
     # Notifications
-    url(r'^notifications/', include('notifications_custom.urls', namespace="notifications")),
+    url(r'^powiadomienia/', include('notifications_custom.urls', namespace="notifications")),
     # Poradnia
-    url(r'^cases/', include('cases.urls', namespace='cases')),
-    url(r'^letters/', include('letters.urls', namespace='letters')),
-    url(r'^event/', include('events.urls', namespace='events')),
-    url(r'^advice/', include('advicer.urls', namespace='advicer')),
+    url(r'^sprawy/', include('cases.urls', namespace='cases')),
+    url(r'^listy/', include('letters.urls', namespace='letters')),
+    url(r'^wydarzenia/', include('events.urls', namespace='events')),
+    url(r'^porady/', include('advicer.urls', namespace='advicer')),
     # Utils
     url(r'^autocomplete/', include('autocomplete_light.urls')),
 

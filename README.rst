@@ -5,6 +5,10 @@ poradnia
    :target: https://codeclimate.com/github/watchdogpolska/poradnia
    :alt: Code Climate
 
+.. image:: https://scrutinizer-ci.com/g/watchdogpolska/poradnia/badges/quality-score.png?b=master
+   :target: https://scrutinizer-ci.com/g/watchdogpolska/poradnia/?branch=master
+   :alt: Scrutinizer Code Quality
+
 .. image:: https://landscape.io/github/watchdogpolska/poradnia/master/landscape.svg?style=flat
    :target: https://landscape.io/github/watchdogpolska/poradnia/master
    :alt: Code Health
@@ -103,16 +107,17 @@ Run these commands to deploy the project to Heroku:
 .. code-block:: bash
 
     heroku create --buildpack https://github.com/heroku/heroku-buildpack-python
-    heroku addons:add heroku-postgresql:dev
-    heroku addons:add pgbackups:auto-month
-    heroku addons:add sendgrid:starter
-    heroku addons:add memcachier:dev
-    heroku pg:promote DATABASE_URL
+    heroku addons:create cleardb
+    heroku addons:create sendgrid:starter
+    heroku addons:create memcachier:dev
+    heroku config:set DATABASE_URL=$(heroku config | grep CLEARDB_DATABASE_URL | cut -d ' ' -f2)
     heroku config:set DJANGO_CONFIGURATION=Production
+    heroku config:set DJANGO_SETTINGS_MODULE="config"
     heroku config:set DJANGO_SECRET_KEY=RANDOM_SECRET_KEY_HERE
-    heroku config:set DJANGO_AWS_ACCESS_KEY_ID=YOUR_AWS_ID_HERE
-    heroku config:set DJANGO_AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_ACCESS_KEY_HERE
-    heroku config:set DJANGO_AWS_STORAGE_BUCKET_NAME=YOUR_AWS_S3_BUCKET_NAME_HERE
+    heroku config:set DJANGO_EMAIL_HOST_USER=$(heroku config | grep SENDGRID_USERNAME | cut -d ' ' -f2)
+    heroku config:set DJANGO_EMAIL_HOST_PASSWORD=$(heroku config | grep SENDGRID_PASSWORD | cut -d ' ' -f2)
+    heroku config:set DJANGO_SERVER_EMAIL="smtp.sendgrid.com"
+    heroku config:set WHITENOISE_USE="True"
     git push heroku master
     heroku run python poradnia/manage.py migrate
     heroku run python poradnia/manage.py createsuperuser
@@ -146,15 +151,9 @@ You can then deploy by running the following commands.
     git push dokku master
     ssh -t dokku@yourservername.com dokku memcached:create poradnia-memcached
     ssh -t dokku@yourservername.com dokku memcached:link poradnia-memcached poradnia
-    ssh -t dokku@yourservername.com dokku postgres:create poradnia-postgres
-    ssh -t dokku@yourservername.com dokku postgres:link poradnia-postgres poradnia
-    ssh -t dokku@yourservername.com dokku config:set poradnia DJANGO_CONFIGURATION=Production
-    ssh -t dokku@yourservername.com dokku config:set poradnia DJANGO_SECRET_KEY=RANDOM_SECRET_KEY_HERE
-    ssh -t dokku@yourservername.com dokku config:set poradnia DJANGO_AWS_ACCESS_KEY_ID=YOUR_AWS_ID_HERE
-    ssh -t dokku@yourservername.com dokku config:set poradnia DJANGO_AWS_SECRET_ACCESS_KEY=YOUR_AWS_SECRET_ACCESS_KEY_HERE
-    ssh -t dokku@yourservername.com dokku config:set poradnia DJANGO_AWS_STORAGE_BUCKET_NAME=YOUR_AWS_S3_BUCKET_NAME_HERE
-    ssh -t dokku@yourservername.com dokku config:set poradnia SENDGRID_USERNAME=YOUR_SENDGRID_USERNAME
-    ssh -t dokku@yourservername.com dokku config:set poradnia SENDGRID_PASSWORD=YOUR_SENDGRID_PASSWORD
+    ssh -t dokku@yourservername.com dokku mysql:create poradnia-mysql
+    ssh -t dokku@yourservername.com dokku mysql:link poradnia-mysq ploradnia
+    ssh -t dokku@yourservername.com dokku config:set .... # See heroku installation
     ssh -t dokku@yourservername.com dokku run poradnia python poradnia/manage.py migrate
     ssh -t dokku@yourservername.com dokku run poradnia python poradnia/manage.py createsuperuser
 

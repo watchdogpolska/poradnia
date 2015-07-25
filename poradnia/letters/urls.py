@@ -5,8 +5,8 @@ from . import views
 urlpatterns = patterns('',
     url(r'^$', views.NewCaseCreateView.as_view(), name='home'),
     url(r'^$', views.NewCaseCreateView.as_view(), name='add'),
-    url(r'^case-(?P<case_pk>\d+)/add$', views.add, name="add"),
-    url(r'^(?P<pk>\d+)/detail$', views.send, name="detail"),
-    url(r'^(?P<pk>\d+)/send$', views.send, name="send"),
-    url(r'^(?P<pk>\d+)/edit$', views.edit, name="edit"),
+    url(r'^sprawa-(?P<case_pk>\d+)/$', views.add, name="add"),
+    url(r'^(?P<pk>\d+)/wyslij/$', views.send, name="send"),
+    url(r'^(?P<pk>\d+)/edytuj/$', views.edit, name="edit"),
+    url(r'^(?P<pk>\d+)/$', views.send, name="detail"),
 )
