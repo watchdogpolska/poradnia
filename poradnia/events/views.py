@@ -108,7 +108,8 @@ class ICalendarView(KeyAuthMixin, PermissionMixin, BaseListView):
         cal['dtstart'] = self.get_start()
         cal['dtend'] = self.get_end()
 
-        [cal.add_component(component) for component in self.get_subcomponents()]
+        for component in self.get_subcomponents():
+            cal.add_component(component)
         return cal
 
     def get_start(self):

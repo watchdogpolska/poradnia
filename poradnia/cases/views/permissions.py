@@ -14,7 +14,7 @@ from ..forms import CaseGroupPermissionForm
 
 def assign_perm_check(user, case):
     if case.status == case.STATUS.free:
-        if not (user.has_perm('cases.can_assign')):
+        if not user.has_perm('cases.can_assign'):
             raise PermissionDenied
     else:
         case.perm_check(user, 'can_manage_permission')

@@ -53,7 +53,7 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
         self.helper.form_action = reverse('cases:permission_grant',
             kwargs={'pk': str(self.case.pk)})
 
-    def assign(self, *args, **kwargs):
+    def assign(self):
         perms = [x.codename for x in self.cleaned_data['group'].permissions.all()]
 
         for perm in perms:
