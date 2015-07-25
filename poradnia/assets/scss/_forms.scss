@@ -2,4 +2,12 @@
 	background: #F5F5F5;
 	padding: $padding-base-horizontal $padding-base-vertical;
 	text-align: right;
+	&:last-child{
+		border-bottom-left-radius: $border-radius-base;
+		border-bottom-right-radius: $border-radius-base;
+	}
+	&:first-child{
+		border-top-left-radius: $border-radius-base;
+		border-top-right-radius: $border-radius-base;
+	}
 }
