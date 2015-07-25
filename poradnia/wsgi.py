@@ -28,6 +28,9 @@ os.environ.setdefault("DJANGO_CONFIGURATION", "Production")
 # setting points here.
 application = get_wsgi_application()
 
+if os.environ.get('WHITENOISE_USE', False) == 'True':
+    from whitenoise.django import DjangoWhiteNoise
+    application = DjangoWhiteNoise(application)
 # Apply WSGI middleware here.
 # from helloworld.wsgi import HelloWorldApplication
 # application = HelloWorldApplication(application)
