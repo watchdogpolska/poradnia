@@ -2,8 +2,8 @@
 from django.views.generic import UpdateView, CreateView, DeleteView, DetailView
 from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-from braces.views import (OrderableListMixin, SelectRelatedMixin, LoginRequiredMixin,
-    FormValidMessageMixin, UserFormKwargsMixin)
+from braces.views import (SelectRelatedMixin, LoginRequiredMixin, FormValidMessageMixin,
+    UserFormKwargsMixin)
 from django_filters.views import FilterView
 from users.utils import PermissionMixin
 from utilities.views import DeleteMessageMixin, FormInitialMixin, FormSetMixin
@@ -11,13 +11,12 @@ from .filters import AdviceFilter
 from .models import Advice, Attachment
 from .forms import AdviceForm, AttachmentForm
 
+ORDERING_TEXT = _("Ordering")
 
-class AdviceList(PermissionMixin, SelectRelatedMixin,
-        OrderableListMixin, FilterView):
+
+class AdviceList(PermissionMixin, SelectRelatedMixin, FilterView):
     model = Advice
     filterset_class = AdviceFilter
-    orderable_columns = ("id", "advicer", "person_kind", "institution_kind")
-    orderable_columns_default = "created_on"
     select_related = ["person_kind", "created_by", "advicer", "institution_kind"]
     paginate_by = 25
 

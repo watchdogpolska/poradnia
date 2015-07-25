@@ -13,3 +13,11 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
     class Meta:
         model = Advice
         fields = ['advicer', 'created_by', 'created_on', 'person_kind']
+        order_by = (
+            ('created_on', _('Creation date')),
+            ('modified_on', _('Modification date')),
+            ('id', _('ID')),
+            ('advicer', _('Advicer')),
+            ('person_kind', _('Person kind')),
+            ('institution_kind', _('Institution kind'))
+        )

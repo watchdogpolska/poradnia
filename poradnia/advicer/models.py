@@ -20,19 +20,27 @@ class AbstractCategory(models.Model):
 
 
 class Issue(AbstractCategory):
-    pass
+    class Meta:
+        verbose_name = _("Issue")
+        verbose_name_plural = _("Issues")
 
 
 class Area(AbstractCategory):
-    pass
+    class Meta:
+        verbose_name = _("Area")
+        verbose_name_plural = _("Areas")
 
 
 class PersonKind(AbstractCategory):
-    pass
+    class Meta:
+        verbose_name = _("Person kind")
+        verbose_name_plural = _("Person kinds")
 
 
 class InstitutionKind(AbstractCategory):
-    pass
+    class Meta:
+        verbose_name = _("Institution kind")
+        verbose_name_plural = _("Institution kinds")
 
 
 class AdviceQuerySet(QuerySet):
@@ -63,14 +71,14 @@ class Advice(models.Model):
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL,
         verbose_name=_("Created by"), related_name='advice_created_by')
     created_on = models.DateTimeField(auto_now_add=True,
-        verbose_name=_("Created on"))
+        verbose_name=_("Creation date"))
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         null=True,
         verbose_name=_("Modified by"),
         related_name='advice_modified_by')
     modified_on = models.DateTimeField(auto_now=True, null=True, blank=True,
-        verbose_name=_("Modified on"))
+        verbose_name=_("Modification date"))
     visible = models.BooleanField(default=True, verbose_name=_("Visible"))
     comment = models.TextField(verbose_name=_("Comment"), null=True, blank=True)
     objects = AdviceQuerySet.as_manager()
@@ -85,7 +93,13 @@ class Advice(models.Model):
         ordering = ['created_on', ]
         permissions = (('can_view_all_advices', _("Can view all advices"),),
                        )
+        verbose_name = _("Advice")
+        verbose_name_plural = _("Advices")
 
 
 class Attachment(AttachmentBase):
     advice = models.ForeignKey(Advice)
+
+    class Meta:
+        verbose_name = _("Attachment")
+        verbose_name_plural = _("Attachments")
