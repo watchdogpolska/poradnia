@@ -1,2 +1,7 @@
-TODO
-TODO
+{{actor}}: Wydarzenie "{{target}}" utworzone
+
+{{actor}} utworzył wydarzenie "{{target}}" w sprawie "{{target.case}}".
+
+Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl/{{target.get_absolute_url}}.
+
+{% if email %} Prosimy, używaj adresu {{email}} do korespondencji w tej sprawie, dzięki temu wymiana korespondencji będzie sprawniejsza. Dziękujemy za współpracę.{% endif %}
