@@ -11,3 +11,13 @@
 		border-top-right-radius: $border-radius-base;
 	}
 }
+
+.login-form{
+	@include center-block;
+	width: 400px;
+}
+
+.registration-form{
+	@include center-block;
+	width: 500px;
+}
