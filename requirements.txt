@@ -3,4 +3,5 @@
 pylibmc==1.2.3
 django-heroku-memcacheify==0.7
 whitenoise==2.0.2
+newrelic
 -r requirements/production.txt
