@@ -1,9 +1,11 @@
 from functools import partial
+from django import forms
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Reset
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy as _l
 from django.forms.models import BaseInlineFormSet
+from tinycontent.models import TinyContent
 
 
 class FormsetHelper(FormHelper):
@@ -71,3 +73,13 @@ class AuthorMixin(object):
         if commit:
             obj.save()
         return obj
+
+
+class GIODOMixin(object):
+    def __init__(self, *args, **kwargs):
+        super(GIODOMixin, self).__init__(*args, **kwargs)
+        self.fields['giodo'] = forms.BooleanField(required=True)
+        try:
+            self.fields['giodo'].label = TinyContent.get_content_by_name('giodo').content
+        except TinyContent.DoesNotExist:
+            self.fields['giodo'].label = 'Lorem ipsum'

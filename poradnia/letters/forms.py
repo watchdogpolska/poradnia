@@ -6,16 +6,14 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 import autocomplete_light
 from cases.models import Case
-from utilities.forms import PartialMixin, SingleButtonMixin, FormsetHelper
+from utilities.forms import PartialMixin, SingleButtonMixin, FormsetHelper, GIODOMixin
 from .models import Letter, Attachment
 
 
 class UserEmailField(forms.EmailField):
     def validate(self, value):
         "Check if value consists only of unique user emails."
-
         super(UserEmailField, self).validate(value)
-
         if get_user_model().objects.filter(email=value).exists():
             raise ValidationError(
                 _('E-mail %(email)s are already used. Please log in.'),
@@ -24,14 +22,14 @@ class UserEmailField(forms.EmailField):
             )
 
 
-class NewCaseForm(SingleButtonMixin, PartialMixin, autocomplete_light.ModelForm):
+class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, autocomplete_light.ModelForm):
     form_helper_cls = FormsetHelper
     attachment_cls = Attachment
     attachment_rel_field = 'letter'
     attachment_file_field = 'attachment'
     action_text = _("Report case")
 
-    client = forms.ModelChoiceField(queryset=get_user_model().objects.all(), label=_("Client"),
+    client = forms.ModelChoiceField(queryset=get_user_model().objects.none(), label=_("Client"),
         required=False, help_text=_("Leave empty to use email field and create a new one user."),
         widget=autocomplete_light.ChoiceWidget('UserAutocomplete'))
     email = forms.EmailField(required=False, label=_("User e-mail"))
@@ -46,14 +44,25 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, autocomplete_light.ModelForm)
         self.helper.form_method = 'post'
         self.fields['name'].help_text = _("Short description of the case for organizational " +
             "purposes. The institution name and two words will suffice.")
-        if not self.user.has_perm('cases.can_select_client'):
+
+        if self._is_super_staff():
+            self.fields['client'].initial = self.user
+            self.fields['client'].queryset = (get_user_model().objects.
+                for_user(self.user).all())
+        else:
             del self.fields['client']
             del self.fields['email']
-        else:
-            self.fields['client'].initial = self.user
 
-        if not self.user.is_anonymous():
+        if not self.user.is_anonymous():  # is registered
             del self.fields['email_registration']
+
+        if not (self.user.is_anonymous() or self._is_super_staff()):
+            del self.fields['giodo']
+        elif self._is_super_staff():
+            self.fields['giodo'].required = False
+
+    def _is_super_staff(self):
+        return self.user.has_perm('cases.can_select_client')
 
     def clean(self):
         if self.user.has_perm('cases.can_select_client') and \

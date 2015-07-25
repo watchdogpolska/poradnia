@@ -3,11 +3,11 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 from crispy_forms.layout import Layout, Submit
-from crispy_forms.bootstrap import FormActions, PrependedText
-from utilities.forms import FormHorizontalMixin
+from crispy_forms.bootstrap import PrependedText
+from utilities.forms import FormHorizontalMixin, GIODOMixin
 
 
-class SignupForm(FormHorizontalMixin, forms.ModelForm):
+class SignupForm(FormHorizontalMixin, GIODOMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(SignupForm, self).__init__(*args, **kwargs)
         self.helper.label_class = 'col-lg-3'
@@ -19,6 +19,7 @@ class SignupForm(FormHorizontalMixin, forms.ModelForm):
             PrependedText('email', '@'),
             PrependedText('password1', '<i class="fa fa-key"></i>', type='password'),
             PrependedText('password2', '<i class="fa fa-key"></i>', type='password'),
+            'giodo',
         )
         self.helper.add_input(Submit('signup', _('Signup'), css_class="btn-primary"))
 

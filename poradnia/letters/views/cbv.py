@@ -22,7 +22,7 @@ class NewCaseCreateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Cre
         messages.success(self.request,
             _("Case about %(object)s created!") % {'object': self.object.name, })
         if self.object.created_by != self.object.client:
-            self.obj.client.notify(actor=self.request.user, verb='created', target=self.object,
+            self.object.client.notify(actor=self.request.user, verb='created',
                 from_email=self.object.case.get_email())
         if self.request.user.is_anonymous():
             messages.success(self.request, _(REGISTRATION_TEXT) % {'user': self.object.created_by})
