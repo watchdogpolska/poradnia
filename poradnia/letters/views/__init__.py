@@ -1,2 +1,2 @@
-from .fbv import add, send, edit, detail  # noqa
-from .cbv import NewCaseCreateView  # noqa
+from .fbv import add, send, detail  # noqa
+from .cbv import NewCaseCreateView, LetterUpdateView  # noqa

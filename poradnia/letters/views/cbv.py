@@ -3,8 +3,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from braces.views import UserFormKwargsMixin, SetHeadlineMixin
+from django.views.generic import UpdateView
 from utilities.views import FormSetMixin
-from ..forms import NewCaseForm, AttachmentForm
+from ..forms import NewCaseForm, AttachmentForm, LetterForm
 from ..models import Letter, Attachment
 from .fbv import REGISTRATION_TEXT
 
@@ -27,3 +28,36 @@ class NewCaseCreateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Cre
         if self.request.user.is_anonymous():
             messages.success(self.request, _(REGISTRATION_TEXT) % {'user': self.object.created_by})
         return HttpResponseRedirect(self.object.case.get_absolute_url())
+
+
+class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, UpdateView):
+    model = Letter
+    form_class = LetterForm
+    headline = _('Edit')
+    template_name = 'letters/form_edit.html'
+    inline_model = Attachment
+    inline_form_cls = AttachmentForm
+
+    def get_context_data(self, **kwargs):
+        context = super(LetterUpdateView, self).get_context_data(**kwargs)
+        context['case'] = self.object.case
+        return context
+
+    def get_object(self):
+        obj = super(LetterUpdateView, self).get_object()
+        if obj.created_by_id == self.request.user.pk:
+            obj.case.perm_check(self.request.user, 'can_change_own_record')
+        else:
+            obj.case.perm_check(self.request.user, 'can_change_all_record')
+        return obj
+
+    def get_formset_valid_message(self):
+        return ("Letter %(object)s updated!") % {'object': self.object}
+
+    def get_success_url(self):
+        return self.object.case.get_absolute_url()
+
+    def formset_valid(self, form, formset):
+        resp = super(LetterUpdateView, self).formset_valid(form, formset)
+        self.object.send_notification(actor=self.request.user, verb='updated')
+        return resp

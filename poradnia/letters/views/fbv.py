@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.utils.translation import ugettext as _
 from ..helpers import AttachmentFormSet
 # from crispy_forms.helper import FormHelper
-from ..forms import AddLetterForm, LetterForm, SendLetterForm
+from ..forms import AddLetterForm, SendLetterForm
 from ..models import Letter
 
 
@@ -72,41 +72,6 @@ def send(request, pk):
     context['form'] = form
     context['headline'] = _('Send to client')
     return render(request, 'letters/form_send.html', context)
-
-
-@login_required
-def edit(request, pk):
-    context = {}
-    letter = get_object_or_404(Letter, pk=pk)
-    context['object'] = letter
-
-    case = letter.case
-    context['case'] = case
-
-    if letter.created_by == request.user:
-        case.perm_check(request.user, 'can_change_own_record')
-    else:
-        case.perm_check(request.user, 'can_change_all_record')
-
-    formset = None
-    if request.method == 'POST':
-        form = LetterForm(request.POST, user=request.user, instance=letter)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            formset = AttachmentFormSet(request.POST, request.FILES, instance=obj)
-            if formset.is_valid():
-                obj.save()
-                formset.save()
-                messages.success(request,
-                    _("Letter %(object)s updated!") % {'object': obj, })
-                obj.send_notification(actor=request.user, verb='updated')
-                return HttpResponseRedirect(obj.case.get_absolute_url())
-    else:
-        form = LetterForm(user=request.user, instance=letter)
-    context['form'] = form
-    context['formset'] = formset or AttachmentFormSet(instance=letter)
-    context['headline'] = _('Edit')
-    return render(request, 'letters/form_edit.html', context)
 
 
 def detail(request, pk):
