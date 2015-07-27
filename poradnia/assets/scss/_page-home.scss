@@ -1,0 +1,46 @@
+.freatures{
+	@include make-row;
+	&__freature{
+		@include make-md-column(4, 40px);
+	}
+}
+.freature{
+	&__icon{
+		text-align: center;
+		padding: 15px;
+		font-size: 8em;
+	}
+	&__title{
+		margin-bottom: 3px;
+		font-size: 1.5em
+	}
+	&__description{
+		text-align: justify;
+	}
+
+}
+
+.support-button{
+	display: inline-block;
+	clear:both;
+	background: #D72626;
+	color: white;
+	font-size: 2.3em;
+	padding:.5em;
+	transition: .2s;
+	font-size: 1.8em;
+	@media (min-width: $screen-md-min) {
+		font-size: 2.3em;
+	}
+	&:hover{
+		background: darken(#D72626, 5%);
+		color: white;
+		text-decoration: none;
+	}
+
+}
+
+.support-notice p {
+	margin: 0;
+	padding: 0;
+}

@@ -2,17 +2,50 @@
 {% load tinycontent_tags %}
 {% block content %}
 {% tinycontent 'home:start' %}
-<h2>Pomagamy Ci skutecznie korzystać z Twoich praw</h2>
-<h3>Kim jesteśmy?</h3>
+<h1>Pomagamy Ci skutecznie korzystać z Twoich praw</h1>
+<h2>Jak udzielamy pomocy prawnej?</h2>
+
+<p>Udzielamy ponad 1000 konsultacji prawnych rocznie. Aby sprawniej Ci pomagać, stworzyliśmy stronę, na której w tej chwili się znajdujesz.</p>
+
+<p>Specjalizujemy się w takich tematach, jak dostęp do informacji publicznej, fundusz sołecki i wpływanie na decyzje rządzących. W tych obszarach mamy pewność, że porada którą otrzymujesz opiera się na doświadczeniu i bogatej, przemyślanej wiedzy.</p>
+
+<p>Aby zgłosić nam problem, który chcesz rozwiązać, użyj formularza dla <a href="############">"nowej sprawy"</a>. Jeżeli chcesz odwołać się do wcześniejszej korespondencji z nami, dotyczącej innych problemów - skorzystaj z <a href="#########">„wykazu spraw”</a>.</p>
+
+
+
+<div class="freatures">
+	<div class="freatures__freature">
+		<div class="freature__icon"><i class="fa fa-binoculars"></i></div>
+		<div class="freature__title">Sprawdzamy</div>
+		<div class="freature__description">Od lat sprawdzamy jak w praktyce funkcjonują gwarancje konstytucyjne i przepisy ustawy o dostępie do informacji publicznej oraz o funduszu sołeckim, a także rozwiązania dotyczące skarg i wniosków oraz kontrola w samorządzie.</div>
+	</div>
+	<div class="freatures__freature">
+		<div class="freature__icon"><i class="fa fa-book"></i></div>
+		<div class="freature__title">Uczymy</div>
+		<div class="freature__description">Przeprowadziliśmy kilkaset spotkań i szkoleń dla obywatelek i obywatel, na temat tego jak korzystać z prawa i skutecznie wpływać na działania władz. </div>
+	</div>
+	<div class="freatures__freature">
+		<div class="freature__icon"><i class="fa fa-institution"></i></div>
+		<div class="freature__title">Chodzimy do sądu</div>
+		<div class="freature__description">Wtedy, gdy instytucje nie stosują prawa, szukamy sprawiedliwości w sądach. Przeprowadziliśmy kilkaset spraw sądowych, wiele z nich wygrywając. </div>
+	</div>
+</div>
+
+<h2>Kim jesteśmy?</h2>
+
 <p>Sieć Obywatelska Watchdog Polska to niezależna, apolityczna i niedochodowa organizacja pożytku publicznego o charakterze organizacji strażniczej i think-do-thanku.</p>
-<p>Od 12 lat działamy w Polsce na rzecz jawności życia publicznego, dobrego rządzenia i rozliczalności władz.</p>
+
 <p>Stoimy na straży prawa do informacji. Postrzegamy je nie tylko jako warunek dobrego państwa, ale przede wszystkim jako jedno z praw człowieka, które chroni ludzką godność, daje wolność wyrażania opinii i bezpieczeństwo przed nadużyciami władzy.</p>
-<p>Wzmacniamy w obywatelach poczucie, że mają prawo dowiadywać się, jak funkcjonują władze oraz instytucje publiczne, a także wpływać na podejmowane przez nie decyzje i sposób gospodarowania publicznym majątkiem (m. in. pieniędzmi z podatków). Uczymy, jak to zrobić skutecznie. W sytuacjach, gdy urzędy nie szanują praw obywateli, udzielamy pomocy prawnej.</p>
-<p>Przez lata zdobyliśmy rzetelną wiedzę na temat dostępu do informacji publicznej, kontroli obywatelskiej oraz współdecydowania o sprawach publicznych. Udzielając porad prawnych, mieliśmy okazję poznać bliżej tysiące konkretnych spraw, w kilkuset uczestniczyliśmy na etapie postępowania sądowego (znaczną część wygrywając).</p>
-<h3>Pomoc prawna</h3>
-<p>Udzielamy ponad 1000 konsultacji prawnych rocznie. Aby jeszcze sprawniej pomagać, stworzyliśmy stronę, na której w tej chwili się znajdujesz.</p>
-<p>Nie jesteśmy specjalistami w każdej dziedzinie. Pomagamy w tematach, które wiążą się z naszą misją, realizowanymi działaniami i celami statutowymi. Dzięki temu mamy pewność, że porada którą otrzymujesz opiera się na doświadczeniu i przemyślanej wiedzy.</p>
-<p>Nasze eksperckie obszary to dostęp do informacji publicznej, fundusz sołecki i wpływanie na decyzje rządzących.</p>
+
+<p>Wzmacniamy w obywatelach poczucie, że mają prawo dowiadywać się, jak funkcjonują władze oraz instytucje publiczne, a także wpływać na podejmowane przez nie decyzje i sposób gospodarowania publicznym majątkiem (m. in. pieniędzmi z podatków). </p>
+
+<div class"support-notice">
+	<p>Chcesz aby Twoje prawa były chronione, politycy mądrze wydawali Twoje pieniądze? Wesprzyj nas!</p>
+
+	<p><a href="" class="support-button">Wesprzyj nas finansowo</a></p>
+
+	<p>lub Włącz się w nasze działania</p>
+</div>
 {% endtinycontent %}
 {% if requests.user.is_anonymous %}
 {% tinycontent 'home:anonymous' %}
