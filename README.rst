@@ -17,7 +17,12 @@ poradnia
      :target: https://requires.io/github/ad-m/poradnia/requirements/
      :alt: Requirements Status
 
-LICENSE: BSD
+.. image:: https://img.shields.io/github/issues/watchdogpolska/poradnia.svg
+     :target: https://github.com/watchdogpolska/poradnia/issues
+     :alt: Requirements Status
+     
+.. image:: https://img.shields.io/github/license/watchdogpolska/poradnia.svg
+     :alt: License
 
 Settings
 ------------
