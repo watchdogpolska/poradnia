@@ -2,59 +2,54 @@
 {% load tinycontent_tags %}
 {% block content %}
 {% tinycontent 'home:start' %}
-<h1>Pomagamy Ci skutecznie korzystać z Twoich praw</h1>
+<h1>Pomagamy Ci skutecznie korzystać z&nbsp;Twoich praw</h1>
 <h2>Jak udzielamy pomocy prawnej?</h2>
 
 <p>Udzielamy ponad 1000 konsultacji prawnych rocznie. Aby sprawniej Ci pomagać, stworzyliśmy stronę, na której w tej chwili się znajdujesz.</p>
 
-<p>Specjalizujemy się w takich tematach, jak dostęp do informacji publicznej, fundusz sołecki i wpływanie na decyzje rządzących. W tych obszarach mamy pewność, że porada którą otrzymujesz opiera się na doświadczeniu i bogatej, przemyślanej wiedzy.</p>
-
-<p>Aby zgłosić nam problem, który chcesz rozwiązać, użyj formularza dla <a href="############">"nowej sprawy"</a>. Jeżeli chcesz odwołać się do wcześniejszej korespondencji z nami, dotyczącej innych problemów - skorzystaj z <a href="#########">„wykazu spraw”</a>.</p>
-
-
-
+<p>Specjalizujemy się w takich tematach, jak dostęp do informacji publicznej, fundusz sołecki i&nbsp;wpływanie na decyzje rządzących. W tych obszarach mamy pewność, że porada którą otrzymujesz opiera się na doświadczeniu i&nbsp;bogatej, przemyślanej wiedzy.</p>
+{% endtinycontent %}
+{% if requests.user.is_anonymous %}
+{% tinycontent 'home:anonymous' %}
+<p>Aby zgłosić nam problemy, który chcesz rozwiązać, <a href="{% url 'account_signup' %}">zarejestruj się</a> lub <a href="{% url 'account_login' %}">zaloguj</a> i&nbsp;użyj <a href="{% url 'letters:add' %}">formularza dla "nowej sprawy"</a>. Jeżeli chcesz odwołać się do wcześniejszej korespondencji z&nbsp;nami, dotyczącej innych problemów - skorzystaj z&nbsp;„<a href="{% url 'cases:list' %}">wykazu spraw</a>”.</p>
+{% endtinycontent %}
+{% else %}
+{% tinycontent 'home:user' %}
+<p>Aby zgłosić nam problem, który chcesz rozwiązać, <a href="{% url 'letters:add' %}">użyj formularza dla "nowej sprawy"</a>. Jeżeli chcesz odwołać się do wcześniejszej korespondencji z&nbsp;nami, dotyczącej innych problemów - skorzystaj z&nbsp;„<a href="{% url 'cases:list' %}">wykazu spraw</a>”.
+</p>
+{% endtinycontent %}
+{% endif %}
+{% tinycontent 'home:end' %}
 <div class="freatures">
 	<div class="freatures__freature">
 		<div class="freature__icon"><i class="fa fa-binoculars"></i></div>
 		<div class="freature__title">Sprawdzamy</div>
-		<div class="freature__description">Od lat sprawdzamy jak w praktyce funkcjonują gwarancje konstytucyjne i przepisy ustawy o dostępie do informacji publicznej oraz o funduszu sołeckim, a także rozwiązania dotyczące skarg i wniosków oraz kontrola w samorządzie.</div>
+		<div class="freature__description">Od lat sprawdzamy jak w praktyce funkcjonują gwarancje konstytucyjne i&nbsp;przepisy ustawy o dostępie do informacji publicznej oraz o funduszu sołeckim, a także rozwiązania dotyczące skarg i&nbsp;wniosków oraz kontrola w samorządzie.</div>
 	</div>
 	<div class="freatures__freature">
 		<div class="freature__icon"><i class="fa fa-book"></i></div>
 		<div class="freature__title">Uczymy</div>
-		<div class="freature__description">Przeprowadziliśmy kilkaset spotkań i szkoleń dla obywatelek i obywatel, na temat tego jak korzystać z prawa i skutecznie wpływać na działania władz. </div>
+		<div class="freature__description">Przeprowadziliśmy kilkaset spotkań i&nbsp;szkoleń dla obywatelek i&nbsp;obywateli, na temat tego jak korzystać z&nbsp;prawa i&nbsp;skutecznie wpływać na działania władz. </div>
 	</div>
 	<div class="freatures__freature">
 		<div class="freature__icon"><i class="fa fa-institution"></i></div>
 		<div class="freature__title">Chodzimy do sądu</div>
-		<div class="freature__description">Wtedy, gdy instytucje nie stosują prawa, szukamy sprawiedliwości w sądach. Przeprowadziliśmy kilkaset spraw sądowych, wiele z nich wygrywając. </div>
+		<div class="freature__description">Wtedy, gdy instytucje nie stosują prawa, szukamy sprawiedliwości w sądach. Przeprowadziliśmy kilkaset spraw sądowych, wiele z&nbsp;nich wygrywając. </div>
 	</div>
 </div>
 
 <h2>Kim jesteśmy?</h2>
 
-<p>Sieć Obywatelska Watchdog Polska to niezależna, apolityczna i niedochodowa organizacja pożytku publicznego o charakterze organizacji strażniczej i think-do-thanku.</p>
+<p>Sieć Obywatelska Watchdog Polska to niezależna, apolityczna i&nbsp;niedochodowa organizacja pożytku publicznego o charakterze organizacji strażniczej i&nbsp;think-do-thanku.</p>
 
-<p>Stoimy na straży prawa do informacji. Postrzegamy je nie tylko jako warunek dobrego państwa, ale przede wszystkim jako jedno z praw człowieka, które chroni ludzką godność, daje wolność wyrażania opinii i bezpieczeństwo przed nadużyciami władzy.</p>
+<p>Stoimy na straży prawa do informacji. Postrzegamy je nie tylko jako warunek dobrego państwa, ale przede wszystkim jako jedno z&nbsp;praw człowieka, które chroni ludzką godność, daje wolność wyrażania opinii i&nbsp;bezpieczeństwo przed nadużyciami władzy.</p>
 
-<p>Wzmacniamy w obywatelach poczucie, że mają prawo dowiadywać się, jak funkcjonują władze oraz instytucje publiczne, a także wpływać na podejmowane przez nie decyzje i sposób gospodarowania publicznym majątkiem (m. in. pieniędzmi z podatków). </p>
+<p>Wzmacniamy w obywatelach poczucie, że mają prawo dowiadywać się, jak funkcjonują władze oraz instytucje publiczne, a także wpływać na podejmowane przez nie decyzje i&nbsp;sposób gospodarowania publicznym majątkiem (m. in. pieniędzmi z&nbsp;podatków). </p>
 
-<div class"support-notice">
-	<p>Chcesz aby Twoje prawa były chronione, politycy mądrze wydawali Twoje pieniądze? Wesprzyj nas!</p>
-
-	<p><a href="" class="support-button">Wesprzyj nas finansowo</a></p>
-
-	<p>lub Włącz się w nasze działania</p>
+<div class="support-notice text-center">
+    <p>Chcesz aby Twoje prawa były chronione, politycy mądrze wydawali Twoje pieniądze?</p>
+    <p><a href="http://siecobywatelska.pl/wlacz-sie-5min/#wspieraj_siec" class="support-button">Wesprzyj nas finansowo</a></p>
+    <p style="font-size: 2.3em;">lub <a href="http://siecobywatelska.pl/wlacz-sie-5min/#scroll">włącz się w nasze działania</a>.</p>
 </div>
 {% endtinycontent %}
-{% if requests.user.is_anonymous %}
-{% tinycontent 'home:anonymous' %}
-<p>Aby zgłosić nam problemy, który chcesz rozwiązać, <a href="{% url 'account_signup' %}">zarejestruj się</a> lub <a href="{% url 'account_login' %}">zaloguj</a> i użyj <a href="{% url 'letters:add' %}">formularza dla "nowej sprawy"</a>. Jeżeli chcesz odwołać się do wcześniejszej korespondencji z nami, dotyczącej innych problemów - skorzystaj z „<a href="{% url 'cases:list' %}">wykazu spraw</a>”.</p>
-{% endtinycontent %}
-{% else %}
-{% tinycontent 'home:user' %}
-<p>Aby zgłosić nam problem, który chcesz rozwiązać, <a href="{% url 'letters:add' %}">użyj formularza dla "nowej sprawy"</a>. Jeżeli chcesz odwołać się do wcześniejszej korespondencji z nami, dotyczącej innych problemów - skorzystaj z „<a href="{% url 'cases:list' %}">wykazu spraw</a>”.
-</p>
-{% endtinycontent %}
-{% endif %}
 {% endblock %}
