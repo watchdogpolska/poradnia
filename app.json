@@ -1,0 +1,44 @@
+{
+  "name":"poradnia",
+  "scripts":{
+    "postdeploy":"python poradnia/manage.py migrate"
+  },
+  "env":{
+    "DJANGO_CONFIGURATION":{
+      "required":true
+    },
+    "DJANGO_EMAIL_HOST_PASSWORD":{
+      "required":true
+    },
+    "DJANGO_EMAIL_HOST_USER":{
+      "required":true
+    },
+    "DJANGO_SECRET_KEY":{
+      "required":true
+    },
+    "DJANGO_SERVER_EMAIL":{
+      "required":true
+    },
+    "DJANGO_SETTINGS_MODULE":{
+      "required":true
+    },
+    "EMAIL_HOST_PASSWORD":{
+      "required":true
+    },
+    "EMAIL_HOST_USER":{
+      "required":true
+    },
+    "NEW_RELIC_APP_NAME":{
+      "required":true
+    },
+    "WHITENOISE_USE":{
+      "required":true
+    }
+  },
+  "addons":[
+    "sendgrid",
+    "newrelic",
+    "cleardb",
+    "memcachier"
+  ]
+}
