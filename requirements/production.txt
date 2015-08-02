@@ -7,3 +7,5 @@ django-storages==1.1.8
 Collectfast==0.2.3
 gevent== 1.0.2
 boto==2.38.0
+raven==5.5.0
+

@@ -9,16 +9,18 @@ Production Configurations
 '''
 from configurations import values
 from .common import Common
+from os import environ
 
 
 class Production(Common):
+    INSTALLED_APPS = Common.INSTALLED_APPS
+    MIDDLEWARE_CLASSES = Common.MIDDLEWARE_CLASSES
 
     # This ensures that Django will be able to detect a secure connection
     # properly on Heroku.
     SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
     # INSTALLED_APPS
-    INSTALLED_APPS = Common.INSTALLED_APPS
     # END INSTALLED_APPS
 
     # SECRET KEY
@@ -27,7 +29,6 @@ class Production(Common):
 
     # django-secure
     INSTALLED_APPS += ("djangosecure", )
-
     # set this to 60 seconds and then to 518400 when you can prove it works
     # SECURE_HSTS_SECONDS = 60
     # SECURE_HSTS_INCLUDE_SUBDOMAINS = values.BooleanValue(True)
@@ -80,3 +81,12 @@ class Production(Common):
     # END CACHING
 
     # Your production stuff: Below this line define 3rd party libary settings
+    # Ustaw wartość twojego DSN
+    RAVEN_CONFIG = {
+        'dsn': environ.get('RAVEN_DSN', 'http://example.com'),
+    }
+
+    INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
+    MIDDLEWARE_CLASSES = (
+        "raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware",
+    ) + MIDDLEWARE_CLASSES

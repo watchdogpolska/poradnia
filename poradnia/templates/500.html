@@ -5,9 +5,25 @@
 {% block content %}
 <h1>Ooops!!! 500</h1>
 
+<h3>Wygląda na to, że coś poszło nie tak!</h3>
+
+<p>Monitorujemy takie błędy automatycznie. Jeżeli błąd się będzie utrzymywać - skontaktuj się z nami. W międzyczasie, spróbuj odświeżyć stronę.</p>
+
+{% if request.sentry.id %}
+    <p>W przypadku potrzeby wsparcia użyj identyfikatora 
+    <strong>{{ request.sentry.id }}</strong>.</p>
+{% endif %}
+
+<h1>Ooops!!! 500</h1>
+
 <h3>Looks like something went wrong!</h3>
 
 <p>We track these errors automatically, but if the problem persists feel free to contact us. In the meantime, try refreshing.</p>
+
+{% if request.sentry.id %}
+    <p>If you need assistance, you may reference this error as
+    <strong>{{ request.sentry.id }}</strong>.</p>
+{% endif %}
 {% endblock content %}
 
 
