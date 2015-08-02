@@ -1,7 +1,7 @@
 {
   "name":"poradnia",
   "scripts":{
-    "postdeploy":"python poradnia/manage.py migrate"
+    "postdeploy":"python poradnia/manage.py migrate; echo \"from users.models import User; u, _=User.objects.get_or_create(username='admin', defaults={'email':'admin@example.com', 'is_superuser':True, 'is_staff':True}); u.set_password('admin'); print (u, u.pk); u.save(); print (u, u.pk);\" | python poradnia/manage.py shell --plain;"
   },
   "env":{
     "DJANGO_CONFIGURATION":{
