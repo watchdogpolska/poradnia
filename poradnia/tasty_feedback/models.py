@@ -8,7 +8,7 @@ from .utils import githubify
 
 
 class Feedback(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, help_text=_("Author"))
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, help_text=_("Author"), null=True)
     text = models.TextField(verbose_name=_("Comment"),
         help_text=_("Text reported by user"))
     status = models.BooleanField(default=False, verbose_name=_("Status"),
