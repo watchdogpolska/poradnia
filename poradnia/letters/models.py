@@ -13,7 +13,7 @@ import talon
 from records.models import AbstractRecord
 from template_mail.utils import send_tpl_email
 from cases.models import Case
-from utilities.models import AttachmentBase
+from atom.models import AttachmentBase
 
 
 talon.init()

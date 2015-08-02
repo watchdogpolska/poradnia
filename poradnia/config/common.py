@@ -49,6 +49,7 @@ class Common(Configuration):
         'tinymce',
         'flatpages_tinymce',
         'tinycontent',
+        'feedback_custom'
     )
 
     # Apps specific for this project go here.
@@ -63,6 +64,7 @@ class Common(Configuration):
         'notifications_custom',
         'pagination_custom',
         'advicer',
+        'tasty_feedback',
         # Your stuff: custom apps go here
     )
 
@@ -306,3 +308,6 @@ class Common(Configuration):
     }
 
     AVATAR_GRAVATAR_DEFAULT = 'retro'
+    FEEDBACK_FILTER = 'feedback_custom.filters.AtomFeedbackFilter'
+    FEEDBACK_FORM_SUBMIT = 'feedback_custom.forms.FeedbackForm'
+    FEEDBACK_GITHUB_REPO = 'https://github.com/watchdogpolska/poradnia'

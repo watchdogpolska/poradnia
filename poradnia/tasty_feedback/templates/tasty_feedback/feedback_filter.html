@@ -1,0 +1,40 @@
+{% extends 'tasty_feedback/base.html' %}
+{% load humanize i18n crispy_forms_tags %}
+{% block breadcrumbs_rows %}
+<li class="active">{% trans 'Feedback index'%}</li>
+{% endblock %}
+{% block content %}
+<h1>{% trans 'Record feedbacks' %}</h1>
+
+{% crispy filter.form %}
+
+{% if object_list %}
+<div class="row">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>{% trans 'Created date' %}</th>
+                <th>{% trans 'Author' %}</th>
+                <th>{% trans 'Text' %}</th>
+                <th>{% trans 'Status' %}</th>
+                {% block extra_header %}{% endblock %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for object in object_list %}
+            <tr>
+                <td><a href="{{object.get_absolute_url}}">{{ object.created }}</a></td>
+                <td>{{ object.user }}</td>
+                <td>{{ object.text | linebreaks }}</td>
+                <td>{{ object.get_status_display }}</td>
+                {% block extra_row %}{% endblock %}
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% include 'pagination_custom/pager.html' with page=page_obj %}
+</div>
+{% else %}
+<p>{% trans 'There is no any feedbacks.' %}</p>
+{% endif %}
+{% endblock %}

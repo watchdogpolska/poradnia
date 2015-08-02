@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 from braces.forms import UserKwargModelFormMixin
-from utilities.forms import SaveButtonMixin
+from atom.forms import SaveButtonMixin
 from .models import Key
 
 

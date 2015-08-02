@@ -35,7 +35,7 @@ urlpatterns = patterns('',
     url(r'^porady/', include('advicer.urls', namespace='advicer')),
     # Utils
     url(r'^autocomplete/', include('autocomplete_light.urls')),
-
+    url(r'^uwagi/', include('tasty_feedback.urls', namespace='tasty_feedback')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:

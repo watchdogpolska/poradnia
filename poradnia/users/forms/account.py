@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 from crispy_forms.layout import Layout, Submit
 from crispy_forms.bootstrap import PrependedText
-from utilities.forms import FormHorizontalMixin, GIODOMixin
+from atom.forms import FormHorizontalMixin, GIODOMixin
 
 
 class SignupForm(FormHorizontalMixin, GIODOMixin, forms.ModelForm):

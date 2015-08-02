@@ -6,7 +6,7 @@ from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
 from cases.models import Case
-from utilities.models import AttachmentBase
+from atom.models import AttachmentBase
 
 
 class AbstractCategory(models.Model):

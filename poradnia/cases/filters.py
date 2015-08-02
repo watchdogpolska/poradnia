@@ -1,6 +1,6 @@
 import django_filters
 from django.utils.translation import ugettext as _
-from utilities.filters import CrispyFilterMixin
+from atom.filters import CrispyFilterMixin
 from users.filters import UserChoiceFilter
 from .models import Case
 

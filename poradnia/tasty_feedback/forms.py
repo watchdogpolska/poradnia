@@ -1,0 +1,23 @@
+from django.forms import ModelForm
+from django.utils.translation import ugettext as _
+from django.core.urlresolvers import reverse
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit
+from braces.forms import UserKwargModelFormMixin
+from .models import Feedback
+
+
+class FeedbackForm(UserKwargModelFormMixin, ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(FeedbackForm, self).__init__(*args, **kwargs)
+        self.helper = getattr(self, 'helper', FormHelper())
+        self.helper.add_input(Submit('action', _('Submit feedback'), css_class="btn-primary"))
+        self.helper.form_action = reverse('tasty_feedback:submit')
+
+    def save(self, *args, **kwargs):
+        self.instance.user = self.user
+        return super(FeedbackForm, self).save(*args, **kwargs)
+
+    class Meta:
+        model = Feedback
+        fields = ('text', )

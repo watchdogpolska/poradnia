@@ -1,5 +1,5 @@
 from django.forms.models import inlineformset_factory
-from utilities.forms import BaseTableFormSet
+from atom.forms import BaseTableFormSet
 from .models import Letter, Attachment
 from .forms import AttachmentForm
 

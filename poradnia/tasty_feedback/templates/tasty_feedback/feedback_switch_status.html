@@ -1,0 +1,13 @@
+{% extends 'tasty_feedback/base.html' %}
+{% load i18n crispy_forms_tags %}
+{% block breadcrumbs_rows %}
+<li><a href="{{object.get_absolute_url}}">{{object}}</a></li>
+<li class="active">{% trans 'Switch status' %}</li>
+{% endblock %}
+
+{% block content %}
+<form method="POST">
+    <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+    <input type="submit" class="btn btn-primary" value="{% trans 'Switch status' %}">
+</form>
+{% endblock %}

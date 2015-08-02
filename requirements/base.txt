@@ -44,6 +44,7 @@ django-filter==0.10.0
 django-autocomplete-light==2.2.4
 django-multiupload==0.5
 https://github.com/sp1ky/django-flatpages-tinymce/archive/3808a58e8f67491a4e7ed72bceca3f6d760a8c98.zip
+https://github.com/ad-m/django-atom/archive/v0.1.0.zip
 django-tinymce==1.5.3
 django_tinycontent==0.5.0
 icalendar==3.9.0

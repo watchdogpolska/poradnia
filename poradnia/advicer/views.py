@@ -6,7 +6,7 @@ from braces.views import (SelectRelatedMixin, LoginRequiredMixin, FormValidMessa
     UserFormKwargsMixin)
 from django_filters.views import FilterView
 from users.utils import PermissionMixin
-from utilities.views import DeleteMessageMixin, FormInitialMixin, FormSetMixin
+from atom.views import DeleteMessageMixin, FormInitialMixin, FormSetMixin
 from .filters import AdviceFilter
 from .models import Advice, Attachment
 from .forms import AdviceForm, AttachmentForm

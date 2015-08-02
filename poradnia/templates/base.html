@@ -12,14 +12,13 @@
   <!--[if lt IE 9]>
   <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
+  <link rel="stylesheet" href="{% static 'tasty_feedback/style.css' %}">
 
-{% block css %}
 {% if debug %}
   <link rel="stylesheet" href="{% static 'css/style.css'%}">
 {% else %}
   <link rel="stylesheet" href="{% static 'css/style.min.css'%}">
 {% endif %}
-{% endblock %}
 {% block extra_css %}{%endblock%} {# TODO: Remove it #}
 </head>
 
@@ -66,6 +65,9 @@
           </div>
         </div>
     </div>
+    {% load tasty_feedback_tags %}
+    {% tasty_feedback_widget %}
+
   </div>
 {% block modal %}{% endblock modal %}
 
@@ -79,6 +81,7 @@
   {% endif %}
   {% block javascript %}
   {% include 'autocomplete_light/static.html' %}
+  <script src="{% static 'tasty_feedback/style.js' %}"></script>
   {% endblock javascript %}
 </body>
 </html>

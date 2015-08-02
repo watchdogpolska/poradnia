@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 from django.utils.translation import ugettext_lazy as _
 import autocomplete_light
 from cases.models import Case
-from utilities.forms import PartialMixin, SingleButtonMixin,  GIODOMixin
+from atom.forms import PartialMixin, SingleButtonMixin,  GIODOMixin
 from .models import Letter, Attachment
 
 
