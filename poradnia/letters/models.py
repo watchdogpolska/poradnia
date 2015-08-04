@@ -75,7 +75,7 @@ class Attachment(AttachmentBase):
 
 @receiver(message_received)
 def mail_process(sender, message, **args):
-    print "I just recieved a messtsage titled %s from a mailbox named %s" % (message.subject,
+    print u"I just recieved a messtsage titled %s from a mailbox named %s" % (message.subject,
                                                                            message.mailbox.name, )
     # new_user + poradnia@ => new_user @ new_user
     # new_user + case => FAIL
@@ -104,7 +104,7 @@ def mail_process(sender, message, **args):
         case = Case(name=message.subject, created_by=user, client=user)
         case.save()
         user.notify(actor=user, verb='registered', target=case, from_email=case.get_email())
-
+    print "Case: ", case
     # Prepare text
     if message.text:
         text = talon.quotations.extract_from(message.text, 'text/plain')
@@ -112,21 +112,19 @@ def mail_process(sender, message, **args):
     else:   # TODO: HTML strip (XSS injection)
         text = talon.quotations.extract_from(message.html, 'text/html')
         signature = message.text.replace(text, '')
-
-    obj = Letter()
-    obj.name = message.subject
-    obj.created_by = user
-    obj.case = case
-    obj.status = Letter.STATUS.done
-    obj.text = text
-    obj.signature = signature
+    obj = Letter(name=message.subject,
+        created_by=user,
+        case=case,
+        status=Letter.STATUS.done,
+        text=text,
+        signature=signature)
     obj.save()
-    obj.send_notification(user, 'created')
-
+    obj.send_notification(actor=user, verb='created')
+    print "Letter: ", obj
     # Convert attachments
     attachments = []
     for attachment in message.attachments.all():
-        attachments.add(Attachment(letter=obj, attachment=File(attachment.document, attachment.get_filename())))
+        attachments.append(Attachment(letter=obj, attachment=File(attachment.document, attachment.get_filename())))
     Attachment.objects.bulk_create(attachments)
     case.update_counters()
 
