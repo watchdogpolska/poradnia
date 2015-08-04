@@ -2,7 +2,7 @@ from django.views.generic import TemplateView
 from braces.views import SelectRelatedMixin, PrefetchRelatedMixin, LoginRequiredMixin
 
 
-class NotificationLostView(SelectRelatedMixin, PrefetchRelatedMixin, LoginRequiredMixin,
+class NotificationListView(SelectRelatedMixin, PrefetchRelatedMixin, LoginRequiredMixin,
         TemplateView):
     template_name = 'notifications/list.html'
     select_related = ['action_content_type', 'target_content_type', 'actor_content_type']
