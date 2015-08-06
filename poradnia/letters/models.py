@@ -75,8 +75,8 @@ class Attachment(AttachmentBase):
 
 @receiver(message_received)
 def mail_process(sender, message, **args):
-    print u"I just recieved a messtsage titled %s from a mailbox named %s" % (message.subject,
-                                                                           message.mailbox.name, )
+    print ("I just recieved a messtsage titled ", message.subject,
+        'from a mailbox named ', message.mailbox.name)
     # new_user + poradnia@ => new_user @ new_user
     # new_user + case => FAIL
     # old_user + case => PASS
@@ -87,7 +87,8 @@ def mail_process(sender, message, **args):
     print "Identified user: ", user
 
     # Skip autoreply messages - see RFC3834
-    if (lambda x: 'Auto-Submitted' in 'x' and x['Auto-Submitted'] == 'auto-replied')(message.get_email_object()):
+    if (lambda x: 'Auto-Submitted' in 'x' and
+            x['Auto-Submitted'] == 'auto-replied')(message.get_email_object()):
         print "Skip"
         return
 
@@ -117,6 +118,7 @@ def mail_process(sender, message, **args):
         case=case,
         status=Letter.STATUS.done,
         text=text,
+        message=message,
         signature=signature)
     obj.save()
     obj.send_notification(actor=user, verb='created')
