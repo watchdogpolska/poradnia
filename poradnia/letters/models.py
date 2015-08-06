@@ -130,4 +130,4 @@ def mail_process(sender, message, **args):
     Attachment.objects.bulk_create(attachments)
     case.update_counters()
 
-    print u"Assing a message ", message.subject, u"%s to case #%s as letter #%s" % (case.pk, obj.pk)
+    # print u"Assing a message ", message.subject, u"%s to case #%s as letter #%s" % (case.pk, obj.pk)
