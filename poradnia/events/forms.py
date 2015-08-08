@@ -2,7 +2,7 @@
 from django import forms
 from letters.forms import PartialMixin
 from django.core.urlresolvers import reverse
-from utilities.forms import AuthorMixin, FormHorizontalMixin, SaveButtonMixin
+from atom.forms import AuthorMixin, FormHorizontalMixin, SaveButtonMixin
 from .models import Event
 
 

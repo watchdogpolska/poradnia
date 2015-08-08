@@ -4,7 +4,7 @@ from django.utils.translation import ugettext as _
 from guardian.forms import BaseObjectPermissionsForm
 from guardian.shortcuts import assign_perm, remove_perm
 from guardian.forms import UserObjectPermissionsForm
-from utilities.forms import SaveButtonMixin
+from atom.forms import SaveButtonMixin
 import autocomplete_light
 
 

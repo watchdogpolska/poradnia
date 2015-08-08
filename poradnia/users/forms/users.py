@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from utilities.forms import SaveButtonMixin, FormHorizontalMixin
+from atom.forms import SaveButtonMixin, FormHorizontalMixin
 from ..models import Profile
 
 

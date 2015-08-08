@@ -4,7 +4,7 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect
 from braces.views import UserFormKwargsMixin, SetHeadlineMixin
 from django.views.generic import UpdateView
-from utilities.views import FormSetMixin
+from atom.views import FormSetMixin
 from ..forms import NewCaseForm, AttachmentForm, LetterForm
 from ..models import Letter, Attachment
 from .fbv import REGISTRATION_TEXT

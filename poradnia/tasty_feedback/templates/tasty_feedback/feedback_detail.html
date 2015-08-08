@@ -1,0 +1,33 @@
+{%extends 'tasty_feedback/base.html' %}
+{% load humanize i18n crispy_forms_tags %}
+{% block breadcrumbs_rows %}
+<li class="active">{{object}}</li>
+{% endblock %}
+{% block content %}
+<div class="panel panel-default">
+  <!-- Default panel contents -->
+  <div class="panel-heading">{{object}}
+    {% block buttons %}
+    <a class="btn btn-default btn-xs pull-right" href="{% url 'tasty_feedback:status' pk=object.pk %}">{% trans "Switch status" %}</a> 
+    {% if object.get_github_link %}<a class="btn btn-default btn-xs pull-right" href="{{object.get_github_link}}"><i class="fa fa-github"></i> GitHub</a>{% endif %}
+    {% endblock %}
+</div>
+<table class="table">
+    <tr>
+        <td>{% trans "user"%}</td>
+        <td>{{object.user}}</td>
+    </tr>
+    <tr>
+        <td>{% trans "Status"%}</td>
+        <td>{{object.status}} {% if object.status_changed %}{% blocktrans with date=object.status_changed %}since {{date}}{% endblocktrans %}{% endif %}</td>
+    </tr>
+    <tr>
+        <td>{% trans "Creation date"%}</td>
+        <td><time datetime="{{object.created}}" title="{{object.created}}">{{object.created | naturaltime}}</time></td>
+    </tr>
+</table>
+<div class="panel-body">
+    {{object.text|linebreaks}}
+</div>
+</div>
+{% endblock %}

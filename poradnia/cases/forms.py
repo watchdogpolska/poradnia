@@ -6,7 +6,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.layout import Submit
-from utilities.forms import HelperMixin, FormHorizontalMixin, SaveButtonMixin
+from atom.forms import HelperMixin, FormHorizontalMixin, SaveButtonMixin
 import autocomplete_light
 from .models import Case, PermissionGroup
 

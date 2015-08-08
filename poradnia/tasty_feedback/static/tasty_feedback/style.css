@@ -1,0 +1,35 @@
+#feedback {
+  width: 400px;
+  position: fixed;
+  bottom: 0;
+  right: 15px;
+  -webkit-transform: translateY(100%) translateY(-45px);
+      -ms-transform: translateY(100%) translateY(-45px);
+          transform: translateY(100%) translateY(-45px);
+  -webkit-transition: .5s;
+          transition: .5s;
+  box-shadow: -10px -10px 5px #EEE;
+  border: 1px solid #555;
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+  background: #F5F5F5;
+
+}
+#feedback.show {
+  -webkit-transform: none;
+      -ms-transform: none;
+          transform: none;
+}
+
+#feedback-header {
+  padding: 15px;
+  cursor: pointer;
+}
+
+#feedback-body {
+  padding: 0 15px 20px 15px;
+}
+#feedback-body p {
+  margin: 0;
+  padding: 0;
+}

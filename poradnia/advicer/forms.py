@@ -4,7 +4,7 @@ from django import forms
 from braces.forms import UserKwargModelFormMixin
 import autocomplete_light
 from cases.models import Case
-from utilities.forms import FormHorizontalMixin, SingleButtonMixin, AuthorMixin, HelperMixin
+from atom.forms import FormHorizontalMixin, SingleButtonMixin, AuthorMixin, HelperMixin
 from .models import Advice, Attachment
 
 

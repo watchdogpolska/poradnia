@@ -1,0 +1,49 @@
+{
+  "name":"poradnia",
+  "scripts":{
+    "postdeploy":"python poradnia/manage.py migrate; echo \"from users.models import User; u, _=User.objects.get_or_create(username='admin', defaults={'email':'admin@example.com', 'is_superuser':True, 'is_staff':True}); u.set_password('admin'); print (u, u.pk); u.save(); print (u, u.pk);\" | python poradnia/manage.py shell --plain;"
+  },
+  "env":{
+    "DJANGO_CONFIGURATION":{
+      "required":true
+    },
+    "DJANGO_EMAIL_HOST_PASSWORD":{
+      "required":true
+    },
+    "DJANGO_EMAIL_HOST_USER":{
+      "required":true
+    },
+    "DJANGO_SECRET_KEY":{
+      "required":true
+    },
+    "DJANGO_SERVER_EMAIL":{
+      "required":true
+    },
+    "DJANGO_SETTINGS_MODULE":{
+      "required":true
+    },
+    "EMAIL_HOST_PASSWORD":{
+      "required":true
+    },
+    "EMAIL_HOST_USER":{
+      "required":true
+    },
+    "NEW_RELIC_APP_NAME":{
+      "required":true
+    },
+    "WHITENOISE_USE":{
+      "required":true
+    }
+  },
+  "addons":[
+    "sendgrid",
+    "newrelic",
+    "cleardb",
+    "memcachier"
+  ],
+  "buildpacks": [
+    {
+      "url": "https://github.com/heroku/heroku-buildpack-python"
+    }
+  ]
+}
