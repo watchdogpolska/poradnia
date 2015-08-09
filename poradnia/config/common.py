@@ -49,7 +49,6 @@ class Common(Configuration):
         'tinymce',
         'flatpages_tinymce',
         'tinycontent',
-        'feedback_custom'
     )
 
     # Apps specific for this project go here.
@@ -64,6 +63,7 @@ class Common(Configuration):
         'notifications_custom',
         'pagination_custom',
         'advicer',
+        'feedback_custom',
         'tasty_feedback',
         # Your stuff: custom apps go here
     )
