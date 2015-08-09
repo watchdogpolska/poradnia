@@ -10,9 +10,9 @@ register = template.Library()
 @stringfilter
 def status2css(status):
     """Converts a status into css style"""
-    return {u'0': 'fa fa-circle-o ',
-        u'1': 'fa fa-dot-circle-o',
-        u'2': 'fa fa-circle'}[status]
+    return {'free': 'fa fa-circle-o ',
+        u'assigned': 'fa fa-dot-circle-o',
+        u'closed': 'fa fa-circle'}[status]
 
 
 @register.filter

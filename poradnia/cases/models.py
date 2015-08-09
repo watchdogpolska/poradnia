@@ -54,7 +54,7 @@ class CaseQuerySet(QuerySet):
 
 
 class Case(models.Model):
-    STATUS = Choices(('0', 'open', _('free')),
+    STATUS = Choices(('0', 'free', _('free')),
                      ('1', 'assigned', _('assigned')),
                      ('2', 'closed', _('closed'))
                      )
