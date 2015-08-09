@@ -1,9 +1,11 @@
+from urllib2 import quote
 from django.db import models
 from model_utils.fields import MonitorField
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-from urllib2 import quote
+from django.db.models.signals import post_save
+from django.core.mail import mail_managers
 from .utils import githubify
 
 
@@ -34,3 +36,12 @@ class Feedback(models.Model):
     class Meta:
         verbose_name = _("Feedback")
         verbose_name_plural = _("Feedbacks")
+
+
+def notify_manager(sender, instance, **kwargs):
+    subject = _("New feedback - %(created)s") % instance.__dict__
+    message = instance.text
+    mail_managers(subject, message)
+
+if getattr(settings, "FEEDBACK_NOTIFY_MANAGERS", True):
+    post_save.connect(notify_manager, sender=Feedback, dispatch_uid="notify_manager")
