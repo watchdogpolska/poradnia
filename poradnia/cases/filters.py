@@ -16,14 +16,20 @@ class StaffCaseFilter(CrispyFilterMixin, django_filters.FilterSet):
     class Meta:
         model = Case
         fields = ['status', 'client', 'name', 'created_on', 'last_send', 'last_action']
-        #order_by = (
-        #    ('deadline', _('Dead-line')),
-        #    ('pk', _('ID')),
-        #    ('client', _('Client')),
-        #    ('created_on', _('Created on')),
-        #    ('last_send', _('Last send')),
-        #    ('last_action', _('Last action')),
-        #)
+        order_by = (
+            ('default', _('Default')),
+            ('deadline', _('Dead-line')),
+            ('pk', _('ID')),
+            ('client', _('Client')),
+            ('created_on', _('Created on')),
+            ('last_send', _('Last send')),
+            ('last_action', _('Last action')),
+        )
+
+    def get_order_by(self, order_choice):
+        if order_choice == 'default':
+            return ['-deadline', 'status', '-last_send', '-last_action']
+        return [order_choice]
 
 
 class UserCaseFilter(CrispyFilterMixin, django_filters.FilterSet):
@@ -35,8 +41,14 @@ class UserCaseFilter(CrispyFilterMixin, django_filters.FilterSet):
         model = Case
         fields = ['status', 'name', 'created_on', 'last_send']
         order_by = (
+            ('default', _('Default')),
             ('pk', _('ID')),
             ('Client', _('Client')),
             ('created_on', _('Created on')),
             ('last_send', _('Last send')),
         )
+
+    def get_order_by(self, order_choice):
+        if order_choice == 'default':
+            return ['-last_send']
+        return [order_choice]
