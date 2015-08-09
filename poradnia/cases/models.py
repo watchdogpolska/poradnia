@@ -54,9 +54,9 @@ class CaseQuerySet(QuerySet):
 
 
 class Case(models.Model):
-    STATUS = Choices(('free', _('free')),
-                     ('open', _('assigned')),
-                     ('closed', _('closed'))
+    STATUS = Choices(('0', 'open', _('free')),
+                     ('1', 'assigned', _('assigned')),
+                     ('2', 'closed', _('closed'))
                      )
     name = models.CharField(max_length=150, verbose_name=_("Subject"))
     tags = models.ManyToManyField(Tag, null=True, blank=True, verbose_name=_("Tags"))

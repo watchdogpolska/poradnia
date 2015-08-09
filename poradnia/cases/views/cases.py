@@ -62,9 +62,13 @@ class CaseListView(PermissionMixin, FilterView):
     def filterset_class(self):
         return StaffCaseFilter if self.request.user.is_staff else UserCaseFilter
 
+    def get_default_ordering(self):
+        return (['-deadline', 'status', '-last_send', '-last_action'] if
+            self.request.user.is_staff else ['-last_send'])
+
     def get_queryset(self, *args, **kwargs):  # TODO: Mixins
         qs = super(CaseListView, self).get_queryset(*args, **kwargs)
-        return qs.select_related('client').prefetch_related('tags')
+        return qs.select_related('client').prefetch_related('tags').order_by(*self.get_default_ordering())
 
     def get_context_data(self, **kwargs):
         context = super(CaseListView, self).get_context_data(**kwargs)

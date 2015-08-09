@@ -16,13 +16,14 @@ class StaffCaseFilter(CrispyFilterMixin, django_filters.FilterSet):
     class Meta:
         model = Case
         fields = ['status', 'client', 'name', 'created_on', 'last_send', 'last_action']
-        order_by = (
-            ('deadline', _('Dead-line')),
-            ('pk', _('ID')),
-            ('client', _('Client')),
-            ('created_on', _('Created on')),
-            ('last_send', _('Last send')),
-        )
+        #order_by = (
+        #    ('deadline', _('Dead-line')),
+        #    ('pk', _('ID')),
+        #    ('client', _('Client')),
+        #    ('created_on', _('Created on')),
+        #    ('last_send', _('Last send')),
+        #    ('last_action', _('Last action')),
+        #)
 
 
 class UserCaseFilter(CrispyFilterMixin, django_filters.FilterSet):
