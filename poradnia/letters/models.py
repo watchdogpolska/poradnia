@@ -3,12 +3,13 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.core.files import File
-from model_utils.fields import MonitorField, StatusField
-from model_utils import Choices
 from django.dispatch import receiver
 from django_mailbox.signals import message_received
 from django_mailbox.models import Message
 from django.contrib.auth import get_user_model
+from model_utils.managers import PassThroughManager
+from model_utils.fields import MonitorField, StatusField
+from model_utils import Choices
 import talon
 from records.models import AbstractRecord
 from template_mail.utils import send_tpl_email
@@ -17,6 +18,13 @@ from atom.models import AttachmentBase
 
 
 talon.init()
+
+
+class LetterQuerySet(models.QuerySet):
+    def for_user(self, user):
+        if user.is_staff:
+            return self
+        return self.filter(status='done')
 
 
 class Letter(AbstractRecord):
@@ -39,6 +47,7 @@ class Letter(AbstractRecord):
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
     message = models.ForeignKey(Message, null=True, blank=True)
+    objects = PassThroughManager.for_queryset_class(LetterQuerySet)()
 
     def __unicode__(self):
         return self.name
@@ -67,6 +76,7 @@ class Letter(AbstractRecord):
     class Meta:
         verbose_name = _('Letter')
         verbose_name_plural = _('Letters')
+        ordering = ['-created_on']
 
 
 class Attachment(AttachmentBase):

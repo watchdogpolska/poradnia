@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-09 23:59+0200\n"
-"PO-Revision-Date: 2015-08-09 23:59+0100\n"
+"POT-Creation-Date: 2015-08-10 11:20+0200\n"
+"PO-Revision-Date: 2015-08-10 11:20+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -170,6 +170,11 @@ msgstr "Wolne sprawy"
 msgid "Event calendar"
 msgstr "Kalendarz wydarzeń"
 
+#: templates/cases/_sidebar.html:25
+#| msgid "Letter"
+msgid "Letters"
+msgstr "Korespondencja"
+
 #: templates/cases/base.html:8
 msgid "Show quote"
 msgstr "Pokaż cytat"
@@ -300,48 +305,3 @@ msgstr "Zaktualizowano uprawniania %(user)s do sprawy %(case)s"
 #, python-format
 msgid "%(user)s granted permissions from %(group)s!"
 msgstr "%(user)s przyznano uprawnienia grupy %(group)s!"
-
-#~ msgid "Files"
-#~ msgstr "Archiwum"
-
-#~ msgid "Advanced"
-#~ msgstr "Zaawansowane"
-
-#~ msgid "with case status %(status)s "
-#~ msgstr "o statusie %(status)s sprawa"
-
-#~ msgid "<a href=\"%(user_link)s\">%(user_filter)s</a>"
-#~ msgstr "<a href=\"%(user_link)s\">%(user_filter)s</a>"
-
-#~ msgid "tagged as %(tag)s"
-#~ msgstr "otagowane przez %(tag)s"
-
-#~ msgid "All cases"
-#~ msgstr "Wszystkie sprawy"
-
-#~ msgid "Ordering"
-#~ msgstr "Sortowanie"
-
-#~ msgid "Update"
-#~ msgstr "Aktualizuj"
-
-#~ msgid "Permission"
-#~ msgstr "Uprawnienie"
-
-#~ msgid "Assign user"
-#~ msgstr "Przypisz użytkownika"
-
-#~ msgid "Update users"
-#~ msgstr "Aktualizuj uprawnienia użytkowników"
-
-#~ msgid "Record"
-#~ msgstr "Wpis"
-
-#~ msgid "Save changes"
-#~ msgstr "Zapisz zmiany"
-
-#~ msgid "Cancel"
-#~ msgstr "Anuluj"
-
-#~ msgid "Legend"
-#~ msgstr "Legenda"

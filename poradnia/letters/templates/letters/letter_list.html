@@ -1,0 +1,15 @@
+{% extends 'letters/base.html' %}
+{% load i18n %}
+{% block content %}
+<ol class="breadcrumb">
+  <li><a href="{% url 'advicer:list'%}">{% trans 'Letter list' %}</a></li>
+</ol>
+
+{% for object in object_list %}
+{% ifchanged %}<h2><a href="{{object.case.get_absolute_url}}">{{object.case}}</a></h2>{% endifchanged %}
+<div class="panel-body msg_container_base row">
+  {% include object.get_template_list with object=object %}
+</div>
+{% endfor %}
+{% include 'pagination_custom/pager.html' with page=page_obj %}
+{% endblock %}

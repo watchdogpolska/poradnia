@@ -2,9 +2,10 @@ from django.views.generic import CreateView
 from django.utils.translation import ugettext_lazy as _
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from braces.views import UserFormKwargsMixin, SetHeadlineMixin
-from django.views.generic import UpdateView
+from braces.views import UserFormKwargsMixin, SetHeadlineMixin, SelectRelatedMixin, PrefetchRelatedMixin
+from django.views.generic import UpdateView, ListView
 from atom.views import FormSetMixin
+from users.utils import PermissionMixin
 from ..forms import NewCaseForm, AttachmentForm, LetterForm
 from ..models import Letter, Attachment
 from .fbv import REGISTRATION_TEXT
@@ -43,6 +44,7 @@ class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Upda
         context = super(LetterUpdateView, self).get_context_data(**kwargs)
         context['case'] = self.object.case
         return context
+
     def get_instance(self):
         return self.object
 
@@ -64,3 +66,10 @@ class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Upda
         resp = super(LetterUpdateView, self).formset_valid(form, formset)
         self.object.send_notification(actor=self.request.user, verb='updated')
         return resp
+
+
+class LetterListView(PermissionMixin, SelectRelatedMixin, PrefetchRelatedMixin, ListView):
+    model = Letter
+    paginate_by = 5
+    select_related = ['created_by', 'modified_by', 'case']
+    prefetch_related = ['attachment_set', ]
