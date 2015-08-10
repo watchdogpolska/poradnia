@@ -5,13 +5,24 @@ from users.filters import UserChoiceFilter
 from .models import Case
 
 
-class StaffCaseFilter(CrispyFilterMixin, django_filters.FilterSet):
+class CaseFilterMixin(object):
+    def __init__(self, *args, **kwargs):
+        super(CaseFilterMixin, self).__init__(*args, **kwargs)
+        self.filters['status'].field.choices.insert(0, ('', u'---------'))
+
+
+class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSet):
     name = django_filters.CharFilter(label=_("Subject"), lookup_type='icontains')
     client = UserChoiceFilter(label=_("Client"))
     created_by = UserChoiceFilter(label=_("Created by"))
     created_on = django_filters.DateRangeFilter(label=_("Created on"))
     last_send = django_filters.DateRangeFilter(label=_("Last send"))
     last_action = django_filters.DateRangeFilter(label=_("Last action"))
+
+    def get_order_by(self, order_choice):
+        if order_choice == 'default':
+            return ['-deadline', 'status', '-last_send', '-last_action']
+        return super(StaffCaseFilter, self).get_order_by(order_choice)
 
     class Meta:
         model = Case
@@ -26,13 +37,8 @@ class StaffCaseFilter(CrispyFilterMixin, django_filters.FilterSet):
             ('last_action', _('Last action')),
         )
 
-    def get_order_by(self, order_choice):
-        if order_choice == 'default':
-            return ['-deadline', 'status', '-last_send', '-last_action']
-        return [order_choice]
 
-
-class UserCaseFilter(CrispyFilterMixin, django_filters.FilterSet):
+class UserCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSet):
     name = django_filters.CharFilter(label=_("Subject"), lookup_type='icontains')
     created_on = django_filters.DateRangeFilter(label=_("Created on"))
     last_send = django_filters.DateRangeFilter(label=_("Last send"))
