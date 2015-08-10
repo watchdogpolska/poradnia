@@ -20,12 +20,12 @@ def add(request, case_pk):
     case = get_object_or_404(Case, pk=case_pk)
     case.perm_check(request.user, 'can_add_record')
 
-    LetterForm = AddLetterForm.partial(case=case, user=request.user)
+    LocalLetterForm = AddLetterForm.partial(case=case, user=request.user)
     context['case'] = case
 
     formset = None
     if request.method == 'POST':
-        form = LetterForm(request.POST, request.FILES)
+        form = LocalLetterForm(request.POST, request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
             formset = AttachmentFormSet(request.POST, request.FILES, instance=obj)
@@ -33,9 +33,10 @@ def add(request, case_pk):
                 obj.save()
                 messages.success(request, _("Letter %(object)s created!") % {'object': obj, })
                 formset.save()
+                obj.send_notification(actor=request.user, verb='created')
                 return HttpResponseRedirect(case.get_absolute_url())
     else:
-        form = LetterForm()
+        form = LocalLetterForm()
     context['form'] = form
     context['formset'] = formset or AttachmentFormSet(instance=None)
     context['headline'] = _('Add letter')

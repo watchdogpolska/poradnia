@@ -5,7 +5,7 @@
 {{block.super}}
 <script type="text/javascript">
   $(function() {
-    $('form tbody tr').formset({addText:"{% trans 'add another'%}", deleteText: "{% trans 'remove'%}"});
+    $('form tbody tr').formset({addText:"{% trans 'add another'%}", deleteText: "{% trans 'remove'%}", prefix: 'attachment_set'});
   });
   $('#form-tab a').click(function (e) {
     e.preventDefault()

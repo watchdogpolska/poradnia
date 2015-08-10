@@ -2,6 +2,11 @@
 {{actor}} napisał:
 {{target.text}}
 
-Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl/{{target.get_absolute_url}}.
+Załączniki pisma:{% for att in target.attachment_set.all %}
+- http://porady.siecobywatelska.pl/{{att.get_absolute_url}}
+{% endfor %}
+
+Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl/{{target.case_get_absolute_url}}.
+
 
 {% if email %}Używaj adresu {{email}} do korespondencji w tej sprawie, dzięki temu wymiana korespondencji będzie sprawniejsza. Dziękujemy za współpracę.{% endif %}

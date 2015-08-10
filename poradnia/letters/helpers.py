@@ -4,4 +4,4 @@ from .models import Letter, Attachment
 from .forms import AttachmentForm
 
 AttachmentFormSet = inlineformset_factory(
-    Letter, Attachment, form=AttachmentForm, formset=BaseTableFormSet)
+    Letter, Attachment, fields=('id', 'attachment'), form=AttachmentForm, formset=BaseTableFormSet)

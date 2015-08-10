@@ -4,7 +4,7 @@
 {{block.super}}
 <script type="text/javascript">
     $(function() {
-        $('form tbody tr').formset({'deleteText': '{% trans "remove"%}', 'addText':'{% trans "add another"%}'});
+        $('form tbody tr').formset({'deleteText': '{% trans "remove"%}', 'addText':'{% trans "add another"%}', prefix: 'attachment_set'});
     })
 </script>
 {% endblock %}

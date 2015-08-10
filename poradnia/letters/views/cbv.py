@@ -18,13 +18,14 @@ class NewCaseCreateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Cre
     inline_model = Attachment
     inline_form_cls = AttachmentForm
 
-    def formset_valid(self, formset, *args, **kwargs):
+    def formset_valid(self, form, formset, *args, **kwargs):
         formset.save()
         messages.success(self.request,
             _("Case about %(object)s created!") % {'object': self.object.name, })
         if self.object.created_by != self.object.client:
             self.object.client.notify(actor=self.request.user, verb='created',
                 from_email=self.object.case.get_email())
+        self.object.send_notification(actor=self.request.user, verb='created')
         if self.request.user.is_anonymous():
             messages.success(self.request, _(REGISTRATION_TEXT) % {'user': self.object.created_by})
         return HttpResponseRedirect(self.object.case.get_absolute_url())
@@ -42,6 +43,8 @@ class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Upda
         context = super(LetterUpdateView, self).get_context_data(**kwargs)
         context['case'] = self.object.case
         return context
+    def get_instance(self):
+        return self.object
 
     def get_object(self):
         obj = super(LetterUpdateView, self).get_object()

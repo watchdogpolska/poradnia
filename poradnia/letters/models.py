@@ -121,7 +121,6 @@ def mail_process(sender, message, **args):
         message=message,
         signature=signature)
     obj.save()
-    obj.send_notification(actor=user, verb='created')
     print "Letter: ", obj
     # Convert attachments
     attachments = []
@@ -129,5 +128,6 @@ def mail_process(sender, message, **args):
         attachments.append(Attachment(letter=obj, attachment=File(attachment.document, attachment.get_filename())))
     Attachment.objects.bulk_create(attachments)
     case.update_counters()
+    obj.send_notification(actor=user, verb='created')
 
     # print u"Assing a message ", message.subject, u"%s to case #%s as letter #%s" % (case.pk, obj.pk)

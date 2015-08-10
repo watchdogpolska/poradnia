@@ -169,7 +169,7 @@ class Case(models.Model):
             return False
         users = get_users_with_perms(self, attach_perms=True)
         check = any('can_send_to_client' in perm for user, perm in users.items())
-        self.status = self.STATUS.open if check else self.STATUS.free
+        self.status = self.STATUS.assigned if check else self.STATUS.free
         if save:
             self.save()
 
@@ -207,7 +207,7 @@ class CaseUserObjectPermission(UserObjectPermissionBase):
     def save(self, *args, **kwargs):
         super(CaseUserObjectPermission, self).save(*args, **kwargs)
         if self.permission.codename == 'can_send_to_client':
-            self.content_object.status = self.content_object.STATUS.open
+            self.content_object.status = self.content_object.STATUS.assigned
             self.content_object.save()
 
     def delete(self, *args, **kwargs):
