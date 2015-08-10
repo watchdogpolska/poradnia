@@ -10,7 +10,7 @@
         {% endif%}
         {% if perms.cases.can_assign %}
         <li class="block-list-item">
-            <a href="{% url 'cases:list' %}?status=free"><i class="fa fa-question-circle"></i> {% trans 'Free cases'%}</a>
+            <a href="{% url 'cases:list' %}?status=0"><i class="fa fa-question-circle"></i> {% trans 'Free cases'%}</a>
         </li>
         {% endif%}
         {% if request.user.is_staff %}
