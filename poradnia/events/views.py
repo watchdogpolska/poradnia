@@ -28,6 +28,11 @@ class EventCreateView(UserFormKwargsMixin, FormValidMessageMixin, CreateView):
         self.case.perm_check(request.user, 'can_add_record')
         return super(EventCreateView, self).dispatch(request, *args, **kwargs)
 
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(EventCreateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs['case'] = self.case
+        return kwargs
+
     def get_form_valid_message(self):
         return _("Success added new event %(event)s") % ({'event': self.object})
 
