@@ -24,7 +24,7 @@ class LetterQuerySet(models.QuerySet):
     def for_user(self, user):
         if user.is_staff:
             return self
-        return self.filter(status='done')
+        return self.filter(status='done').filter(case__in=Case.objects.for_user(user).only('id').all())
 
 
 class Letter(AbstractRecord):
