@@ -21,7 +21,7 @@ class CaseQuerySet(QuerySet):
     def for_user(self, user):
         if user.has_perm('cases.can_view_all'):
             return self
-        return get_objects_for_user(user, 'cases.can_view', self, any_perm=True)
+        return get_objects_for_user(user, 'cases.can_view', self, any_perm=True, use_groups=False)
 
     def with_read_time(self, user):
         return self.prefetch_related('readed_set').filter(readed__user=user)
