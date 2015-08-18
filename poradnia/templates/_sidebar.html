@@ -21,6 +21,11 @@
 		<li class="block-list-item">
 			<a href="/"><i class="fa fa-home"></i> Home</a>
 		</li>
+		{% if perms.tasty_feedback.view_feedback %}
+		<li class="block-list-item">
+			<a href="{% url 'tasty_feedback:list' %}"><i class="fa fa-comment"></i> {% trans 'Feedbacks' %}</a>
+		</li>
+		{% endif %}
 	</ul>
 </div>
 {% include 'users/_sidebar.html' %}
