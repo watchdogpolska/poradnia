@@ -19,7 +19,7 @@
     </tr>
     <tr>
         <td>{% trans "Status"%}</td>
-        <td>{{object.status}} {% if object.status_changed %}{% blocktrans with date=object.status_changed %}since {{date}}{% endblocktrans %}{% endif %}</td>
+        <td>{{object.get_status_display}} {% if object.status_changed %}{% blocktrans with date=object.status_changed %}since {{date}}{% endblocktrans %}{% endif %}</td>
     </tr>
     <tr>
         <td>{% trans "Creation date"%}</td>
