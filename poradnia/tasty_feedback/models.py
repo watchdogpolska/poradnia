@@ -29,7 +29,7 @@ class Feedback(models.Model):
 
     def get_github_link(self):
         if hasattr(settings, 'FEEDBACK_GITHUB_REPO'):
-            body = quote(githubify(self.text))
+            body = quote(githubify(self.text).encode('utf-8'))
             return "%s/issues/new?body=%s" % (settings.FEEDBACK_GITHUB_REPO, body)
         return
 
