@@ -5,8 +5,7 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
-from django.core.mail import mail_managers
-from .utils import githubify
+from .utils import githubify, mail_managers_replyable
 
 
 class Feedback(models.Model):
@@ -41,7 +40,8 @@ class Feedback(models.Model):
 def notify_manager(sender, instance, **kwargs):
     subject = _("New feedback - %(created)s") % instance.__dict__
     message = instance.text
-    mail_managers(subject, message)
+    reply_email = instance.user.email if instance.user else None
+    mail_managers_replyable(subject, message, reply_email=reply_email)
 
 if getattr(settings, "FEEDBACK_NOTIFY_MANAGERS", True):
     post_save.connect(notify_manager, sender=Feedback, dispatch_uid="notify_manager")
