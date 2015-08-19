@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: event 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-07-10 02:31+0200\n"
-"PO-Revision-Date: 2015-07-10 01:36+0100\n"
+"POT-Creation-Date: 2015-08-19 20:00+0200\n"
+"PO-Revision-Date: 2015-08-19 20:02+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -27,47 +27,39 @@ msgstr "Alarm"
 msgid "Alarms"
 msgstr "Alarmy"
 
-#: models.py:34 templates/events/_event_list.html:14
+#: models.py:34 templates/events/_event_list.html:9
 msgid "Dead-line"
 msgstr "Termin"
 
-#: models.py:35 templates/events/_event_list.html:15
+#: models.py:35 templates/events/_event_list.html:10
 msgid "Time"
 msgstr "Czas"
 
-#: models.py:38 templates/events/_event_list.html:16
-msgid "For client"
-msgstr "Dla klienta"
-
-#: models.py:39
-msgid "Unchecked are visible for staff only"
-msgstr "Odznaczone jest widoczne tylko dla zespołu"
-
-#: models.py:40
+#: models.py:36
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: models.py:42
+#: models.py:38
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:43
+#: models.py:39
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:45
+#: models.py:41
 msgid "Modified by"
 msgstr "Zmodyfikowane przez"
 
-#: models.py:49
+#: models.py:45
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
-#: models.py:72
+#: models.py:71
 msgid "Event"
 msgstr "Wydarzenie"
 
-#: models.py:73 templates/events/base.html:5
+#: models.py:72 templates/events/base.html:5 templates/events/base.html.py:10
 msgid "Events"
 msgstr "Wydarzenia"
 
@@ -75,11 +67,11 @@ msgstr "Wydarzenia"
 msgid "A related event "
 msgstr "Powiązane wydarzenie"
 
-#: templates/events/_event_list.html:17
+#: templates/events/_event_list.html:11
 msgid "Triggered"
 msgstr "Zaistniałe"
 
-#: templates/events/_event_list.html:26 templates/events/form.html:8
+#: templates/events/_event_list.html:20 templates/events/form.html:8
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -91,27 +83,173 @@ msgstr "Wykaz miesięcy"
 msgid "Cases"
 msgstr "Sprawy"
 
-#: templates/events/form.html:18
-msgid "Save changes"
-msgstr "Zapisz zmiany"
+#: utils.py:8
+msgid "Monday"
+msgstr "Poniedziałek"
 
-#: templates/events/form.html:19
-msgid "Cancel"
-msgstr "Anuluj"
+#: utils.py:8
+msgid "Tuesday"
+msgstr "Wtorek"
 
-#: views.py:32
+#: utils.py:8
+msgid "Wednesday"
+msgstr "Środa"
+
+#: utils.py:8
+msgid "Thursday"
+msgstr "Czwartek"
+
+#: utils.py:8
+msgid "Friday"
+msgstr "Piątek"
+
+#: utils.py:9
+msgid "Saturday"
+msgstr "Sobota"
+
+#: utils.py:9
+msgid "Sunday"
+msgstr "Niedziela"
+
+#: utils.py:10
+msgid "Mon"
+msgstr "Pon"
+
+#: utils.py:10
+msgid "Tue"
+msgstr "Wt"
+
+#: utils.py:10
+msgid "Wed"
+msgstr "Śr"
+
+#: utils.py:10
+msgid "Thu"
+msgstr "Czw"
+
+#: utils.py:10
+msgid "Fri"
+msgstr "Pi"
+
+#: utils.py:10
+msgid "Sat"
+msgstr "Sob"
+
+#: utils.py:10
+msgid "Sun"
+msgstr "Ndz"
+
+#: utils.py:12
+msgid "January"
+msgstr "Styczeń"
+
+#: utils.py:12
+msgid "February"
+msgstr "Luty"
+
+#: utils.py:12
+msgid "March"
+msgstr "Marzec"
+
+#: utils.py:12
+msgid "April"
+msgstr "Kwiecień"
+
+#: utils.py:12 utils.py:15
+msgid "May"
+msgstr "Maj"
+
+#: utils.py:12
+msgid "June"
+msgstr "Czerwiec"
+
+#: utils.py:13
+msgid "July"
+msgstr "Lipiec"
+
+#: utils.py:13
+msgid "August"
+msgstr "Sierpień"
+
+#: utils.py:13
+msgid "September"
+msgstr "Wrzesień"
+
+#: utils.py:13
+msgid "October"
+msgstr "Październik"
+
+#: utils.py:13
+msgid "November"
+msgstr "Listopad"
+
+#: utils.py:13
+#| msgid "September"
+msgid "December"
+msgstr "Grudzień"
+
+#: utils.py:15
+msgid "Jan"
+msgstr "Sty"
+
+#: utils.py:15
+msgid "Feb"
+msgstr "Lut"
+
+#: utils.py:15
+msgid "Mar"
+msgstr "Mar"
+
+#: utils.py:15
+msgid "Apr"
+msgstr "Kwi"
+
+#: utils.py:15
+msgid "Jun"
+msgstr "Maj"
+
+#: utils.py:15
+msgid "Jul"
+msgstr "Cze"
+
+#: utils.py:16
+msgid "Aug"
+msgstr "Lip"
+
+#: utils.py:16
+msgid "Sep"
+msgstr "Sie"
+
+#: utils.py:16
+msgid "Oct"
+msgstr "Wrz"
+
+#: utils.py:16
+msgid "Nov"
+msgstr "Paź"
+
+#: utils.py:16
+msgid "Dec"
+msgstr "Gru"
+
+#: views.py:37
 #, python-format
 msgid "Success added new event %(event)s"
 msgstr "Dodano wydarzenie %(event)s"
 
-#: views.py:57
+#: views.py:51
 #, python-format
 msgid "Success updated event %(event)s"
 msgstr "Zaktualizowano wydarzenie %(event)s"
 
-#~| msgid "Events"
-#~ msgid "Events list"
-#~ msgstr "Baza wydarzeń"
+#~ msgid "For client"
+#~ msgstr "Dla klienta"
 
-#~ msgid "Text"
-#~ msgstr "Komentarz"
+#~ msgid "Unchecked are visible for staff only"
+#~ msgstr "Odznaczone jest widoczne tylko dla zespołu"
+
+#~ msgid "Save changes"
+#~ msgstr "Zapisz zmiany"
+
+#~ msgid "Cancel"
+#~ msgstr "Anuluj"
