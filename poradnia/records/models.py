@@ -7,14 +7,22 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models.query import QuerySet
 from django.db.models import Q
 from model_utils.managers import PassThroughManager
-from cases.models import Case
+from cases.models import Case, CaseUserObjectPermission
 
 
 class RecordQuerySet(QuerySet):
     def for_user(self, user):
+        qs = self
+        if not user.has_perm('cases.can_view_all'):
+            case_list = (CaseUserObjectPermission.objects.
+                filter(user=user).
+                filter(permission__codename='can_view').
+                filter(permission__content_type=ContentType.objects.get_for_model(Case)).
+                values('content_object_id'))
+            qs = qs.filter(case__in=case_list)
         if user.is_staff:
-            return self
-        return self.filter(Q(event=None) & Q(event=None) & Q(letter__status='done'))
+            return qs
+        return qs.filter(Q(event=None) & Q(event=None) & Q(letter__status='done'))
 
 
 class Record(models.Model):
@@ -60,6 +68,19 @@ class Record(models.Model):
         ordering = ['created_on', 'id']
         verbose_name = _('Record')
         verbose_name_plural = _('Records')
+
+
+class AbstractRecordQuerySet(QuerySet):
+    def for_user(self, user):
+        qs = self
+        if not user.has_perm('cases.can_view_all'):
+            case_list = (CaseUserObjectPermission.objects.
+                filter(user=user).
+                filter(permission__codename='can_view').
+                filter(permission__content_type=ContentType.objects.get_for_model(Case)).
+                values('content_object_id'))
+            qs = qs.filter(case__in=case_list)
+        return qs
 
 
 class AbstractRecord(models.Model):

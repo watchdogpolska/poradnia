@@ -3,8 +3,7 @@ from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.db.models.query import QuerySet
-from records.models import AbstractRecord
+from records.models import AbstractRecord, AbstractRecordQuerySet
 
 
 class Alarm(AbstractRecord):
@@ -15,14 +14,7 @@ class Alarm(AbstractRecord):
         verbose_name_plural = _('Alarms')
 
 
-class EventQuerySet(QuerySet):
-    def for_user(self, user):
-        if user.has_perm('cases.can_view_all'):
-            return self
-        from cases.models import Case
-        case_list = Case.objects.for_user(user).all()
-        return self.filter(case_id__in=case_list)
-
+class EventQuerySet(AbstractRecordQuerySet):
     def untriggered(self):
         return self.filter(alarm__isnull=True)
 

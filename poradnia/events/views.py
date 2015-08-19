@@ -81,7 +81,7 @@ class CalendarEventView(PermissionMixin, SelectRelatedMixin, LoginRequiredMixin,
 
     def get_calendar(self):
         date = (int(self.get_year()), int(self.get_month()))
-        cal = EventCalendar(self.object_list, locale=self.get_user_locale()).formatmonth(*date)
+        cal = EventCalendar(self.object_list).formatmonth(*date)
         return mark_safe(cal)
 
     def get_context_data(self, **kwargs):

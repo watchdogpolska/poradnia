@@ -7,32 +7,24 @@ from django.dispatch import receiver
 from django_mailbox.signals import message_received
 from django_mailbox.models import Message
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.models import ContentType
 from model_utils.managers import PassThroughManager
 from model_utils.fields import MonitorField, StatusField
 from model_utils import Choices
 import talon
-from records.models import AbstractRecord
+from records.models import AbstractRecord, AbstractRecordQuerySet
 from template_mail.utils import send_tpl_email
-from cases.models import Case, CaseUserObjectPermission
+from cases.models import Case
 from atom.models import AttachmentBase
 
 talon.init()
 
 
-class LetterQuerySet(models.QuerySet):
+class LetterQuerySet(AbstractRecordQuerySet):
     def for_user(self, user):
-        qs = self
+        qs = super(LetterQuerySet, self).for_user(user)
         if not user.is_staff:
             qs = qs.filter(status='done')
-        if user.is_superuser:  # Superuser can view all cases
-            return qs
-        case_list = (CaseUserObjectPermission.objects.
-            filter(user=user).
-            filter(permission__codename='can_view').
-            filter(permission__content_type=ContentType.objects.get_for_model(Case)).
-            values('content_object_id'))
-        return qs.filter(case__in=case_list)
+        return qs
 
 
 class Letter(AbstractRecord):
