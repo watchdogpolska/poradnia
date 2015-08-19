@@ -28,9 +28,9 @@ class AbstractCalendar(HTMLCalendar):
         Return a month name as a table row.
         """
         if withyear:
-            s = '%s %s' % (month_name[themonth], theyear)
+            s = u'%s %s' % (month_name[themonth], theyear)
         else:
-            s = '%s' % month_name[themonth]
+            s = u'%s' % month_name[themonth]
         return '<tr><th colspan="7" class="month">%s</th></tr>' % s
 
     def formatweekday(self, day):
@@ -50,7 +50,7 @@ class AbstractCalendar(HTMLCalendar):
                 for event in self.events[day]:
                     body.append(self.get_row_content(event))
                 body.append('</ul>')
-                html = '<span class="day">%d</span> %s' % (day, ''.join(body))
+                html = u'<span class="day">%d</span> %s' % (day, ''.join(body))
                 return self.day_cell(cssclass, html)
             return self.day_cell(cssclass, '<span class="day">%d</span>' % day)
         return self.day_cell('noday', '&nbsp;')
@@ -63,7 +63,7 @@ class AbstractCalendar(HTMLCalendar):
         return {day: list(items) for day, items in groupby(events, self.get_field)}
 
     def day_cell(self, cssclass, body):
-        return '<td class="%s">%s</td>' % (cssclass, body)
+        return u'<td class="%s">%s</td>' % (cssclass, body)
 
     def get_field_name(self):
         return self.field
@@ -79,12 +79,7 @@ class EventCalendar(AbstractCalendar):
     field = 'time'
 
     def get_row_content(self, event):
-        text = ''
-        text += '<li'
-        if event.deadline:
-            text += ' class="deadline"'
-        text += '>'
-        text += '<a href="{0}" title="{1}">'.format(event.get_absolute_url(), event.text)
-        text += esc(event.case)
-        text += '</a></li>'
+        text = (u'<li{0}><a href="{1}" title="{2}">{3}</a></li>'.format(' class="deadline"'
+            if event.deadline else '', event.get_absolute_url(),
+            event.text, esc(event.case)))
         return text
