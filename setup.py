@@ -19,7 +19,7 @@ setup(
     ],
     include_package_data=True,
     install_requires=[
-        'Django>=1.7.1',
+        'Django>=1.7.10',
     ],
     zip_safe=False,
     scripts=['poradnia/manage.py'],
