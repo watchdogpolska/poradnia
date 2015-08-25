@@ -1,6 +1,5 @@
 # Local development dependencies go here
 -r base.txt
-coverage==3.7.1
 Sphinx
 
 # django-debug-toolbar that works with Django 1.5+

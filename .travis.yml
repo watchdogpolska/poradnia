@@ -11,7 +11,7 @@ env:
     - DJANGO_CONFIGURATION="Local"
   matrix:
     - TOX_ENV=py27-dj17
-    - TOX_ENV=py33-dj17
+#    - TOX_ENV=py33-dj17
 #    - TOX_ENV=py27-dj18
 #    - TOX_ENV=py33-dj18
 #    - TOX_ENV=py27-djmaster
