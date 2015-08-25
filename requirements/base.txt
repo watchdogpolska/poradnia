@@ -33,7 +33,7 @@ https://github.com/watchdogpolska/django-avatar/archive/73ad17491ec8fd56e57427fb
 pytz==2015.4
 
 # Your custom requirements go here
-django-guardian==1.2.5
+django-guardian==1.3
 django-notifications-hq==0.7.0
 django-mailbox==4.4.4
 claw==1.0.1
