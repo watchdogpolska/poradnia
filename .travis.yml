@@ -1,22 +1,29 @@
 language: python
-env:
-  - DATABASE_URL=mysql://travis:@localhost/
-python:
-  - "2.7"
-env:
-  - DJANGO=1.7.1
-  - DJANGO=1.8
-  - DJANGO=1.6
+python: 2.7
+
 cache:
   directories:
-    - $HOME/.pip-cache/
+    - $HOME/.cache/pip
+
+env:
+  global:
+    - DATABASE_URL="mysql://root:@localhost/test_feder"
+    - DJANGO_SETTINGS_MODULE="config.settings.tests"
+  matrix:
+#    - TOX_ENV=py27-dj17
+    - TOX_ENV=py27-dj18
+#    - TOX_ENV=py27-djmaster
+    - TOX_ENV=py33-dj18
+#    - TOX_ENV=py33-djmaster
+    - TOX_ENV=coverage
+    - TOX_ENV=flake8
+
+matrix:
+  allow_failures:
+    - env: TOX_ENV=flake8
+
 install:
-  - pip install pip --upgrade
-  - pip install -q Django==$DJANGO --cache-dir $HOME/.pip-cache
-  - pip install pep8 flake8 --cache-dir $HOME/.pip-cache
-  - pip install -r requirements/test.txt --cache-dir $HOME/.pip-cache
-before_script:
-  - "pep8 --exclude=migrations --ignore=E501,E225,E128,E121 poradnia"
-  - flake8
+  - pip install -U pip wheel
+  - pip install tox
 script:
-  - python poradnia/manage.py test
+  - tox -e $TOX_ENV
