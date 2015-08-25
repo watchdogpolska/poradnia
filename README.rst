@@ -9,17 +9,13 @@ poradnia
    :target: https://scrutinizer-ci.com/g/watchdogpolska/poradnia/?branch=master
    :alt: Scrutinizer Code Quality
 
-.. image:: https://landscape.io/github/watchdogpolska/poradnia/master/landscape.svg?style=flat
-   :target: https://landscape.io/github/watchdogpolska/poradnia/master
-   :alt: Code Health
-
-.. image:: https://requires.io/github/ad-m/poradnia/requirements.svg
-     :target: https://requires.io/github/ad-m/poradnia/requirements/
+.. image:: https://requires.io/github/watchdogpolska/poradnia/requirements.svg?branch=master
+     :target: https://requires.io/github/watchdogpolska/poradnia/requirements/?branch=master
      :alt: Requirements Status
 
 .. image:: https://img.shields.io/github/issues/watchdogpolska/poradnia.svg
      :target: https://github.com/watchdogpolska/poradnia/issues
-     :alt: Requirements Status
+     :alt: GitHub issues counter
      
 .. image:: https://img.shields.io/github/license/watchdogpolska/poradnia.svg
      :alt: License
