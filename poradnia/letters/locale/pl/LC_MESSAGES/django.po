@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: letter 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-10 11:18+0200\n"
-"PO-Revision-Date: 2015-08-10 11:19+0100\n"
+"POT-Creation-Date: 2015-08-25 06:31+0200\n"
+"PO-Revision-Date: 2015-08-25 06:32+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -70,51 +70,59 @@ msgstr "Musisz podać adres e-mail klienta lub go wybrać z bazy."
 msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
-#: models.py:31
+#: models.py:34
 msgid "Staff"
 msgstr "Zespół"
 
-#: models.py:31
+#: models.py:34
 msgid "Done"
 msgstr "Wykonane"
 
-#: models.py:36
+#: models.py:39
 msgid "Accepted on"
 msgstr "Zaakceptowane o"
 
-#: models.py:37
+#: models.py:40
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: models.py:38
+#: models.py:41
 msgid "Text"
 msgstr "Treść"
 
-#: models.py:39
+#: models.py:42
 msgid "Signature"
 msgstr "Podpis"
 
-#: models.py:41
+#: models.py:44
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:42
+#: models.py:45
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:44
+#: models.py:47
 msgid "Modified by"
 msgstr "Zmienione o"
 
-#: models.py:48
+#: models.py:51
 msgid "Modified on"
 msgstr "Zmienione przez"
 
-#: models.py:77
+#: models.py:54
+msgid "Raw message contents"
+msgstr "Treść surowej wiadomości"
+
+#: models.py:57
+msgid "Original full content of message"
+msgstr "Oryginalna, pełna treść wiadomości"
+
+#: models.py:87
 msgid "Letter"
 msgstr "List"
 
-#: models.py:78
+#: models.py:88
 msgid "Letters"
 msgstr "Listy"
 
@@ -130,12 +138,25 @@ msgstr "dodaj kolejne"
 msgid "Cases"
 msgstr "Sprawy"
 
-#: templates/letters/_letter_list.html:26 templates/letters/form_edit.html:6
-#: views/cbv.py:38
+#: templates/letters/_letter_list.html:25
+#, python-format
+msgid ""
+"\n"
+"            (updated on <time datetime=\"%(modified_on)s\" title="
+"\"%(modified_on)s\">%(modified_on_natural)s</time> by %(modified_by)s)\n"
+"            "
+msgstr ""
+"\n"
+"            (zaktualizowane <time datetime=\"%(modified_on)s\" title="
+"\"%(modified_on)s\">%(modified_on_natural)s</time> przez %(modified_by)s)\n"
+"            "
+
+#: templates/letters/_letter_list.html:32 templates/letters/form_edit.html:6
+#: views/cbv.py:37
 msgid "Edit"
 msgstr "Edytuj"
 
-#: templates/letters/_letter_list.html:27 templates/letters/form_send.html:7
+#: templates/letters/_letter_list.html:38 templates/letters/form_send.html:7
 msgid "Send"
 msgstr "Wyślij"
 
@@ -148,7 +169,6 @@ msgid "New case"
 msgstr "Nowa sprawa"
 
 #: templates/letters/letter_list.html:5
-#| msgid "Letters"
 msgid "Letter list"
 msgstr "Rejestr korespondencji"
 
@@ -176,7 +196,6 @@ msgid "Letter %(object)s created!"
 msgstr "List %(object)s utworzone"
 
 #: views/fbv.py:42
-#| msgid "Letter"
 msgid "Add letter"
 msgstr "Dodaj list"
 

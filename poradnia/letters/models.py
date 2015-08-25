@@ -50,6 +50,13 @@ class Letter(AbstractRecord):
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
     message = models.ForeignKey(Message, null=True, blank=True)
+    eml = models.FileField(
+        _(u'Raw message contents'),
+        null=True,
+        upload_to="messages",
+        help_text=_(u'Original full content of message')
+    )
+
     objects = PassThroughManager.for_queryset_class(LetterQuerySet)()
 
     def __unicode__(self):
@@ -132,7 +139,8 @@ def mail_process(sender, message, **args):
         status=Letter.STATUS.done,
         text=text,
         message=message,
-        signature=signature)
+        signature=signature,
+        eml=message.eml)
     obj.save()
     print("Letter: ", obj)
     # Convert attachments
