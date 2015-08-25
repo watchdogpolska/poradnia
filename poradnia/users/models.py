@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import re
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from django.db.models import Q
@@ -7,12 +8,12 @@ from django.core.urlresolvers import reverse
 from django.db.models.query import QuerySet
 from django.db.models import Count
 from django.contrib.auth.models import UserManager
-from django.utils import timezone
 from django.template.loader import render_to_string
 from guardian.mixins import GuardianUserMixin
-from model_utils.managers import PassThroughManager
 from template_mail.utils import send_tpl_email
+from model_utils.managers import PassThroughManagerMixin
 from notifications.models import notify_handler as send
+from django.conf import settings
 
 _('Username or e-mail')  # Hack to overwrite django translation
 _('Login')
@@ -28,24 +29,37 @@ class UserQuerySet(QuerySet):
     def with_case_count(self):
         return self.annotate(case_count=Count('case'))
 
+    def registered(self):
+        return self.exclude(pk=settings.ANONYMOUS_USER_ID)
 
-class CustomUserManager(GuardianUserMixin, PassThroughManager.for_queryset_class(UserQuerySet),
-                        UserManager):
 
-    def get_by_email_or_create(self, email, notify=True, **extra_fields):
+class CustomUserManager(PassThroughManagerMixin, GuardianUserMixin, UserManager):
+
+    def get_by_email_or_create(self, email, notify=True):
         try:
             user = self.model.objects.get(email=email)  # Support allauth EmailAddress
         except self.model.DoesNotExist:
-            now = timezone.now()
-            email = self.normalize_email(email)
-            password = self.make_random_password()
-            username = "user-%s" % (User.objects.count(), )  # TOOD: Race cognition
-            user = self.model(username=username, email=email,
-                              is_staff=False, is_active=True,
-                              is_superuser=False, date_joined=now,
-                              **extra_fields)
-            user.set_password(password)
-            user.save(using=self._db)
+            user = self.register_email(email=email, notify=notify)
+        return user
+
+    def email_to_unique_username(self, email, limit=10):
+        limit_org = limit
+        prefix = re.sub(r'[^A-Za-z-]', '_', email)
+        if not User.objects.filter(username=prefix).exists():
+            return prefix
+        while limit > 0:
+            username = "{prefix}-{no}".format(prefix=prefix, no=limit_org - limit + 1)
+            if not User.objects.filter(username=username).exists():
+                return username
+            limit -= 1
+        raise ValueError("This email are completly creapy. I am unable to generate username")
+
+    def register_email(self, email, notify=True, **extra_fields):
+        email = self.normalize_email(email)
+        password = self.make_random_password()
+        username = self.email_to_unique_username(email)
+        user = self.create_user(username, email, password)
+        if notify:
             text = render_to_string('users/email_new_user.html',
                                     {'user': user, 'password': password})
             user.email_user('New registration', text)
@@ -53,11 +67,11 @@ class CustomUserManager(GuardianUserMixin, PassThroughManager.for_queryset_class
 
 
 class User(AbstractUser):
-    objects = CustomUserManager()
+    objects = CustomUserManager.for_queryset_class(UserQuerySet)()
 
     def get_nicename(self):
         if self.first_name or self.last_name:
-            return u"{0} {1}".format(self.first_name, self.last_name)
+            return self.get_full_name()
         return self.username
 
     def __unicode__(self):

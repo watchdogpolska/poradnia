@@ -1,4 +1,2 @@
 # Test dependencies go here.
--r base.txt
-coverage==3.7.1
-flake8==2.4.1
+-r local.txt
