@@ -20,7 +20,7 @@ Pillow==2.9.0
 django-allauth==0.18.0
 
 # For the persistance stores
-MySQL-python==1.2.5
+mysqlclient==1.3.6
 
 # Unicode slugification
 unicode-slugify==0.1.3
