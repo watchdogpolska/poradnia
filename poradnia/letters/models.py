@@ -1,3 +1,4 @@
+from __future__ import print_function
 from django.db import models
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -19,6 +20,7 @@ from atom.models import AttachmentBase
 
 
 claw.init()
+
 
 class LetterQuerySet(AbstractRecordQuerySet):
     def for_user(self, user):
@@ -95,28 +97,28 @@ def mail_process(sender, message, **args):
 
     # Identify user
     user = get_user_model().objects.get_by_email_or_create(message.from_address[0])
-    print "Identified user: ", user
+    print("Identified user: ", user)
 
     # Skip autoreply messages - see RFC3834
     if (lambda x: 'Auto-Submitted' in 'x' and
             x['Auto-Submitted'] == 'auto-replied')(message.get_email_object()):
-        print "Skip"
+        print("Skip")
         return
 
     # Identify case
     try:  # TODO: Is it old case?
         case = Case.objects.by_msg(message).get()
     except Case.MultipleObjectsReturned:  # How many cases?
-        print "Multiple case spam"
+        print("Multiple case spam")
         send_tpl_email('case/email/case_many.txt', message.from_address[0],
             {'subject': message.subject})
         return
     except Case.DoesNotExist:
-        print "Case creating"
+        print("Case creating")
         case = Case(name=message.subject, created_by=user, client=user)
         case.save()
         user.notify(actor=user, verb='registered', target=case, from_email=case.get_email())
-    print "Case: ", case
+    print("Case: ", case)
     # Prepare text
     if message.text:
         text = quotations.extract_from(message.text, 'text/plain')
@@ -132,11 +134,12 @@ def mail_process(sender, message, **args):
         message=message,
         signature=signature)
     obj.save()
-    print "Letter: ", obj
+    print("Letter: ", obj)
     # Convert attachments
     attachments = []
     for attachment in message.attachments.all():
-        attachments.append(Attachment(letter=obj, attachment=File(attachment.document, attachment.get_filename())))
+        attachments.append(Attachment(letter=obj,
+            attachment=File(attachment.document, attachment.get_filename())))
     Attachment.objects.bulk_create(attachments)
     case.update_counters()
     obj.send_notification(actor=user, verb='created')
