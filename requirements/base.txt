@@ -39,7 +39,7 @@ pytz==2015.4
 django-guardian==1.2.5
 django-notifications-hq==0.7.0
 django-mailbox==4.4.4
-talon==1.0.2
+claw==1.0.1
 django-filter==0.10.0
 django-autocomplete-light==2.2.4
 django-multiupload==0.5

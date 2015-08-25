@@ -10,14 +10,15 @@ from django.contrib.auth import get_user_model
 from model_utils.managers import PassThroughManager
 from model_utils.fields import MonitorField, StatusField
 from model_utils import Choices
-import talon
+import claw
+from claw import quotations
 from records.models import AbstractRecord, AbstractRecordQuerySet
 from template_mail.utils import send_tpl_email
 from cases.models import Case
 from atom.models import AttachmentBase
 
-talon.init()
 
+claw.init()
 
 class LetterQuerySet(AbstractRecordQuerySet):
     def for_user(self, user):
@@ -118,10 +119,10 @@ def mail_process(sender, message, **args):
     print "Case: ", case
     # Prepare text
     if message.text:
-        text = talon.quotations.extract_from(message.text, 'text/plain')
+        text = quotations.extract_from(message.text, 'text/plain')
         signature = message.text.replace(text, '')
     else:   # TODO: HTML strip (XSS injection)
-        text = talon.quotations.extract_from(message.html, 'text/html')
+        text = quotations.extract_from(message.html, 'text/html')
         signature = message.text.replace(text, '')
     obj = Letter(name=message.subject,
         created_by=user,
