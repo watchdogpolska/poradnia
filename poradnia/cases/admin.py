@@ -16,6 +16,7 @@ class RecordInline(admin.StackedInline):
 class CaseAdmin(GuardedModelAdmin):
     inlines = [RecordInline]
     list_display = ['name', 'client']
+    list_filter = ['tags', ]
 
 
 @admin.register(PermissionGroup)
