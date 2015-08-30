@@ -152,7 +152,7 @@ class Case(models.Model):
             pass
 
         try:
-            last_send = letters_list.filter(status='done').order_by('-created_on', '-id').all()[0]
+            last_send = letters_list.filter(status='done', created_by__is_staff=True).order_by('-created_on', '-id').all()[0]
             self.last_send = last_send.status_changed or last_send.created_on
         except IndexError:
             self.last_send = None
