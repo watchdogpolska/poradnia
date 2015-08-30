@@ -3,7 +3,7 @@ from django.views.generic import UpdateView, CreateView, DeleteView, DetailView
 from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from braces.views import (SelectRelatedMixin, LoginRequiredMixin, FormValidMessageMixin,
-    UserFormKwargsMixin)
+    UserFormKwargsMixin, StaffuserRequiredMixin)
 from django_filters.views import FilterView
 from users.utils import PermissionMixin
 from atom.views import DeleteMessageMixin, FormInitialMixin, FormSetMixin
@@ -14,7 +14,7 @@ from .forms import AdviceForm, AttachmentForm
 ORDERING_TEXT = _("Ordering")
 
 
-class AdviceList(PermissionMixin, SelectRelatedMixin, FilterView):
+class AdviceList(StaffuserRequiredMixin, PermissionMixin, SelectRelatedMixin, FilterView):
     model = Advice
     filterset_class = AdviceFilter
     select_related = ["person_kind", "created_by", "advicer", "institution_kind"]
@@ -25,8 +25,8 @@ class AdviceList(PermissionMixin, SelectRelatedMixin, FilterView):
         return qs.visible()
 
 
-class AdviceUpdate(FormSetMixin, PermissionMixin, FormValidMessageMixin, UserFormKwargsMixin,
-        UpdateView):
+class AdviceUpdate(StaffuserRequiredMixin, FormSetMixin, PermissionMixin, FormValidMessageMixin,
+                   UserFormKwargsMixin, UpdateView):
     model = Advice
     form_class = AdviceForm
     inline_model = Attachment
@@ -39,20 +39,20 @@ class AdviceUpdate(FormSetMixin, PermissionMixin, FormValidMessageMixin, UserFor
         return self.object
 
 
-class AdviceCreate(FormSetMixin, FormInitialMixin, UserFormKwargsMixin, LoginRequiredMixin,
-        CreateView):
+class AdviceCreate(StaffuserRequiredMixin, FormSetMixin, FormInitialMixin, UserFormKwargsMixin,
+                   LoginRequiredMixin, CreateView):
     model = Advice
     form_class = AdviceForm
     inline_model = Attachment
     inline_form_cls = AttachmentForm
 
 
-class AdviceDelete(PermissionMixin, DeleteMessageMixin, DeleteView):
+class AdviceDelete(StaffuserRequiredMixin, PermissionMixin, DeleteMessageMixin, DeleteView):
     model = Advice
     success_url = reverse_lazy('advicer:list')
     success_message = _("{__unicode__} deleted!")
     hide_field = 'visible'
 
 
-class AdviceDetail(PermissionMixin, DetailView):
+class AdviceDetail(StaffuserRequiredMixin, PermissionMixin, DetailView):
     model = Advice
