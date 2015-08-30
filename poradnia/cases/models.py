@@ -155,7 +155,7 @@ class Case(models.Model):
             last_send = letters_list.filter(status='done').order_by('-created_on', '-id').all()[0]
             self.last_send = last_send.status_changed or last_send.created_on
         except IndexError:
-            pass
+            self.last_send = None
 
         try:
             self.deadline = self.event_set.filter(deadline=True).order_by('time').all()[0]
