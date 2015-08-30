@@ -19,6 +19,7 @@ class AdviceList(StaffuserRequiredMixin, PermissionMixin, SelectRelatedMixin, Fi
     filterset_class = AdviceFilter
     select_related = ["person_kind", "created_by", "advicer", "institution_kind"]
     paginate_by = 25
+    raise_exception = True
 
     def get_queryset(self, *args, **kwargs):
         qs = super(AdviceList, self).get_queryset(*args, **kwargs)
@@ -31,6 +32,7 @@ class AdviceUpdate(StaffuserRequiredMixin, FormSetMixin, PermissionMixin, FormVa
     form_class = AdviceForm
     inline_model = Attachment
     inline_form_cls = AttachmentForm
+    raise_exception = True
 
     def get_form_valid_message(self):
         return _("{0} updated!").format(self.object)
@@ -45,6 +47,7 @@ class AdviceCreate(StaffuserRequiredMixin, FormSetMixin, FormInitialMixin, UserF
     form_class = AdviceForm
     inline_model = Attachment
     inline_form_cls = AttachmentForm
+    raise_exception = True
 
 
 class AdviceDelete(StaffuserRequiredMixin, PermissionMixin, DeleteMessageMixin, DeleteView):
@@ -52,7 +55,9 @@ class AdviceDelete(StaffuserRequiredMixin, PermissionMixin, DeleteMessageMixin, 
     success_url = reverse_lazy('advicer:list')
     success_message = _("{__unicode__} deleted!")
     hide_field = 'visible'
+    raise_exception = True
 
 
 class AdviceDetail(StaffuserRequiredMixin, PermissionMixin, DetailView):
     model = Advice
+    raise_exception = True
