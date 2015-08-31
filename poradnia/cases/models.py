@@ -6,13 +6,14 @@ from django.db.models import Count, Q
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import PermissionDenied
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission
 from model_utils.managers import PassThroughManager
 from model_utils.fields import MonitorField, StatusField
 from model_utils import Choices
 from guardian.models import UserObjectPermissionBase
 from guardian.models import GroupObjectPermissionBase
-from guardian.shortcuts import get_objects_for_user, get_users_with_perms, assign_perm
+from guardian.shortcuts import get_users_with_perms, assign_perm
 from .tags.models import Tag
 
 
@@ -21,7 +22,10 @@ class CaseQuerySet(QuerySet):
     def for_user(self, user):
         if user.has_perm('cases.can_view_all'):
             return self
-        return get_objects_for_user(user, 'cases.can_view', self, any_perm=True, use_groups=False)
+        content_type = ContentType.objects.get_for_model(Case)
+        return self.filter(caseuserobjectpermission__permission__codename='can_view',
+                           caseuserobjectpermission__permission__content_type=content_type,
+                           caseuserobjectpermission__user=self.user)
 
     def with_read_time(self, user):
         return self.prefetch_related('readed_set').filter(readed__user=user)
