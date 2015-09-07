@@ -19,13 +19,6 @@ from template_mail.utils import send_tpl_email
 from .tags.models import Tag
 
 
-try:
-    from django.contrib.auth import get_user_model
-    User = get_user_model()
-except ImportError:
-    from django.contrib.auth.models import User
-
-
 class CaseQuerySet(QuerySet):
 
     def for_user(self, user):
@@ -203,9 +196,9 @@ class Case(models.Model):
             target = self
         for user in qs:
             user.notify(actor=actor,
-                target=target,
-                from_email=self.get_email(),
-                **context)
+                        target=target,
+                        from_email=self.get_email(),
+                        **context)
 
     def save(self, *args, **kwargs):
         created = True if self.pk is None else False
@@ -232,20 +225,31 @@ class CaseGroupObjectPermission(GroupObjectPermissionBase):
     content_object = models.ForeignKey(Case)
 
 
+limit = {'content_type__app_label': 'cases', 'content_type__name': 'case'}
+
+
 class PermissionGroup(models.Model):
-    name = models.CharField(max_length=25, verbose_name=_("Name"))
-    permissions = models.ManyToManyField(Permission, verbose_name=_("Permissions"),
-        limit_choices_to={'content_type__app_label': 'cases', 'content_type__name': 'case'})
+    name = models.CharField(max_length=25,
+                            verbose_name=_("Name"))
+    permissions = models.ManyToManyField(Permission,
+                                         verbose_name=_("Permissions"),
+                                         limit_choices_to=limit)
 
     def __unicode__(self):
         return self.name
 
 
 def notify_new_case(sender, instance, **kwargs):
+    try:
+        from django.contrib.auth import get_user_model
+        User = get_user_model()
+    except ImportError:
+        from django.contrib.auth.models import User
+
     content_type = ContentType.objects.get_for_model(Case)
     users = User.objects.filter(user_permissions__codename='can_view_all',
                                 user_permissions__content_type=content_type).all()
     email = [x.email for x in users.objects.all()]
-    send_tpl_email('cases/email/new_case.html', )
+    send_tpl_email('cases/email/new_case.html', recipient_list=email, context={'case': instance})
 
 post_save.connect(notify_new_case, sender=Case, dispatch_uid="new_case_notify")
