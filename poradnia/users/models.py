@@ -80,8 +80,12 @@ class User(AbstractUser):
             text += ' (team)'
         return text
 
-    def send_template_email(self, template_name, context, from_email, **kwds):
-        return send_tpl_email(template_name, self.email, context, from_email, **kwds)
+    def send_template_email(self, template_name, context=None, from_email=None, **kwds):
+        return send_tpl_email(template_name=template_name,
+                              recipient_list=[self.email],
+                              context=context or {},
+                              from_email=from_email,
+                              **kwds)
 
     def _get_notify_template_name(self, target, verb):
         return '%s/email/%s_%s.txt' % (target._meta.app_label, target._meta.model_name, verb)

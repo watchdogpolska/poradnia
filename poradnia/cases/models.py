@@ -8,13 +8,22 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import PermissionDenied
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import Permission
+from django.db.models.signals import post_save
 from model_utils.managers import PassThroughManager
 from model_utils.fields import MonitorField, StatusField
 from model_utils import Choices
 from guardian.models import UserObjectPermissionBase
 from guardian.models import GroupObjectPermissionBase
 from guardian.shortcuts import get_users_with_perms, assign_perm
+from template_mail.utils import send_tpl_email
 from .tags.models import Tag
+
+
+try:
+    from django.contrib.auth import get_user_model
+    User = get_user_model()
+except ImportError:
+    from django.contrib.auth.models import User
 
 
 class CaseQuerySet(QuerySet):
@@ -230,3 +239,13 @@ class PermissionGroup(models.Model):
 
     def __unicode__(self):
         return self.name
+
+
+def notify_new_case(sender, instance, **kwargs):
+    content_type = ContentType.objects.get_for_model(Case)
+    users = User.objects.filter(user_permissions__codename='can_view_all',
+                                user_permissions__content_type=content_type).all()
+    email = [x.email for x in users.objects.all()]
+    send_tpl_email('cases/email/new_case.html', )
+
+post_save.connect(notify_new_case, sender=Case, dispatch_uid="new_case_notify")

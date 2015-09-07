@@ -117,8 +117,9 @@ def mail_process(sender, message, **args):
         case = Case.objects.by_msg(message).get()
     except Case.MultipleObjectsReturned:  # How many cases?
         print("Multiple case spam")
-        send_tpl_email('case/email/case_many.txt', message.from_address[0],
-            {'subject': message.subject})
+        send_tpl_email(template_name='case/email/case_many.txt',
+                       recipient_list=[message.from_address[0]],
+                       context={'subject': message.subject})
         return
     except Case.DoesNotExist:
         print("Case creating")
@@ -134,13 +135,13 @@ def mail_process(sender, message, **args):
         text = quotations.extract_from(message.html, 'text/html')
         signature = message.text.replace(text, '')
     obj = Letter(name=message.subject,
-        created_by=user,
-        case=case,
-        status=Letter.STATUS.done,
-        text=text,
-        message=message,
-        signature=signature,
-        eml=message.eml)
+                 created_by=user,
+                 case=case,
+                 status=Letter.STATUS.done,
+                 text=text,
+                 message=message,
+                 signature=signature,
+                 eml=message.eml)
     obj.save()
     print("Letter: ", obj)
     # Convert attachments
