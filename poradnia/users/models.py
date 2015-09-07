@@ -62,7 +62,7 @@ class CustomUserManager(PassThroughManagerMixin, GuardianUserMixin, UserManager)
         if notify:
             context = {'user': user, 'password': password}
             send_tpl_email(template_name='users/email_new_user.html',
-                           recipient_list=[self.email],
+                           recipient_list=[email],
                            context=context)
         return user
 
