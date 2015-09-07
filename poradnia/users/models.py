@@ -60,9 +60,10 @@ class CustomUserManager(PassThroughManagerMixin, GuardianUserMixin, UserManager)
         username = self.email_to_unique_username(email)
         user = self.create_user(username, email, password)
         if notify:
-            text = render_to_string('users/email_new_user.html',
-                                    {'user': user, 'password': password})
-            user.email_user('New registration', text)
+            context = {'user': user, 'password': password}
+            send_tpl_email(template_name='users/email_new_user.html',
+                           recipient_list=[self.email],
+                           context=context)
         return user
 
 
