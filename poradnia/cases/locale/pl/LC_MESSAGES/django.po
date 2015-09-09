@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-09-09 16:34+0200\n"
-"PO-Revision-Date: 2015-09-09 16:34+0100\n"
+"POT-Creation-Date: 2015-09-09 17:11+0200\n"
+"PO-Revision-Date: 2015-09-09 17:11+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -184,8 +184,9 @@ msgid "Free cases"
 msgstr "Wolne sprawy"
 
 #: templates/cases/_sidebar.html:18
-msgid "No handled"
-msgstr "Nie obsłużona"
+#| msgid "No handled"
+msgid "Cases no handled"
+msgstr "Sprawy nie obsłużone"
 
 #: templates/cases/_sidebar.html:22
 msgid "Event calendar"

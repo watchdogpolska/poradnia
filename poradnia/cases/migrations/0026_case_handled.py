@@ -31,11 +31,11 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        #migrations.AddField(
-        #    model_name='case',
-        #    name='handled',
-        #    field=models.BooleanField(default=False, verbose_name='Handled'),
-        #    preserve_default=True,
-        #),
+        migrations.AddField(
+           model_name='case',
+           name='handled',
+           field=models.BooleanField(default=False, verbose_name='Handled'),
+           preserve_default=True,
+        ),
         migrations.RunPython(migrate_handled),
     ]

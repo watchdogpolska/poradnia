@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: letter 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-25 06:31+0200\n"
+"POT-Creation-Date: 2015-09-09 17:11+0200\n"
 "PO-Revision-Date: 2015-08-25 06:32+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
@@ -66,63 +66,63 @@ msgstr ""
 msgid "Have to enter user email or select a client"
 msgstr "Musisz podać adres e-mail klienta lub go wybrać z bazy."
 
-#: forms.py:140
+#: forms.py:143
 msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
-#: models.py:34
+#: models.py:45
 msgid "Staff"
 msgstr "Zespół"
 
-#: models.py:34
+#: models.py:45
 msgid "Done"
 msgstr "Wykonane"
 
-#: models.py:39
+#: models.py:50
 msgid "Accepted on"
 msgstr "Zaakceptowane o"
 
-#: models.py:40
+#: models.py:51
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: models.py:41
+#: models.py:52
 msgid "Text"
 msgstr "Treść"
 
-#: models.py:42
+#: models.py:53
 msgid "Signature"
 msgstr "Podpis"
 
-#: models.py:44
+#: models.py:55
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:45
+#: models.py:56
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:47
+#: models.py:58
 msgid "Modified by"
 msgstr "Zmienione o"
 
-#: models.py:51
+#: models.py:62
 msgid "Modified on"
 msgstr "Zmienione przez"
 
-#: models.py:54
+#: models.py:65
 msgid "Raw message contents"
 msgstr "Treść surowej wiadomości"
 
-#: models.py:57
+#: models.py:68
 msgid "Original full content of message"
 msgstr "Oryginalna, pełna treść wiadomości"
 
-#: models.py:87
+#: models.py:98
 msgid "Letter"
 msgstr "List"
 
-#: models.py:88
+#: models.py:99
 msgid "Letters"
 msgstr "Listy"
 
@@ -152,7 +152,7 @@ msgstr ""
 "            "
 
 #: templates/letters/_letter_list.html:32 templates/letters/form_edit.html:6
-#: views/cbv.py:37
+#: views/cbv.py:40
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -168,15 +168,15 @@ msgstr "Dodaj"
 msgid "New case"
 msgstr "Nowa sprawa"
 
-#: templates/letters/letter_list.html:5
+#: templates/letters/letter_filter.html:5
 msgid "Letter list"
 msgstr "Rejestr korespondencji"
 
-#: views/cbv.py:17
+#: views/cbv.py:20
 msgid "Create a new case"
 msgstr "Tworzenie nowej sprawy"
 
-#: views/cbv.py:25
+#: views/cbv.py:28
 #, python-format
 msgid "Case about %(object)s created!"
 msgstr "Sprawa o tytule %(object)s została zarejestrowana!"

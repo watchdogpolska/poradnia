@@ -15,7 +15,7 @@
         {% endif%}
         {% if request.user.is_staff %}
         <li class="block-list-item">
-            <a href="{% url 'cases:list' %}"><i class="fa fa-reply"></i> {% trans 'No handled' %}</a>
+            <a href="{% url 'cases:list' %}?handled=3"><i class="fa fa-reply"></i> {% trans 'Cases no handled' %}</a>
         </li>
 
         <li class="block-list-item">
