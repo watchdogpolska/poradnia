@@ -127,6 +127,9 @@ class AddLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
             obj.status = obj.STATUS.staff if self.user.is_staff else obj.STATUS.done
         obj.created_by = self.user
         obj.case = self.case
+        if obj.status == obj.STATUS.done:
+            self.case.handled = True if self.user.is_staff else False
+            self.case.save()
         if commit:
             obj.save()
         return obj
@@ -150,9 +153,15 @@ class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
         obj.modified_by = self.user
         obj.status = obj.STATUS.done
         obj.save()
+
+        obj.case.handled = True
+        obj.case.save()
+
         obj.send_notification(actor=self.user, verb='send_to_client')
-        msg = Letter(case=obj.case, created_by=self.user, text=self.cleaned_data['comment'],
-            status=obj.STATUS.staff)
+        msg = Letter(case=obj.case,
+                     created_by=self.user,
+                     text=self.cleaned_data['comment'],
+                     status=obj.STATUS.staff)
         msg.save()
         msg.send_notification(actor=self.user, verb='drop_a_note', staff=True)
         return obj

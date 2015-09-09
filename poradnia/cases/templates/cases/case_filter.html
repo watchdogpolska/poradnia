@@ -40,12 +40,14 @@
   </tr></thead>
   <tbody>
     {% for object in object_list %}
-    <tr{% if object.is_handled %} class="success"{% endif %}>
+    <tr>
       <td class="id">{{ object.pk }}</td>
       <td class="client"><a href="{{ object.client.get_absolute_url }}">{{ object.client }}</a></td>
       <td class="subject">
         <span class="{{object.status|status2css}}">
+        {% if request.user.is_staff and not object.handled %}<b>{% endif %}
         <a href="{{ object.get_absolute_url }}">{{ object.name }}</a>
+        {% if request.user.is_staff and not object.handled %}</b>{% endif %}
         ({{ object.letter_count }})
         {% if request.user.is_staff and object.deadline.time %}<span class="label label-warning"><i class="fa fa-fire"></i> {{ object.deadline.time }}</span>{% endif%}
       </td>

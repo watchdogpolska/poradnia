@@ -28,6 +28,7 @@ class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterS
     created_on = django_filters.DateRangeFilter(label=_("Created on"))
     last_send = NullDateRangeFilter(label=_("Last send"), none_label=_("No reply"))
     last_action = django_filters.DateRangeFilter(label=_("Last action"))
+    handled = django_filters.BooleanFilter(label=_("Handled?"))
 
     def get_order_by(self, order_choice):
         if order_choice == 'default':

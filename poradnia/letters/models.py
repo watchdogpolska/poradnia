@@ -1,5 +1,6 @@
 from __future__ import print_function
 from django.db import models
+from django.db.models.signals import post_save
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
@@ -153,6 +154,10 @@ def mail_process(sender, message, **args):
                  signature=signature,
                  eml=message.eml)
     obj.save()
+    if user.is_staff:
+        case.handled = True
+        case.save()
+
     print("Letter: ", obj)
     # Convert attachments
     attachments = []
@@ -162,5 +167,3 @@ def mail_process(sender, message, **args):
     Attachment.objects.bulk_create(attachments)
     case.update_counters()
     obj.send_notification(actor=user, verb='created')
-
-    # print u"Assing a message ", message.subject, u"%s to case #%s as letter #%s" % (case.pk, obj.pk)

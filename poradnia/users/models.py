@@ -8,11 +8,10 @@ from django.core.urlresolvers import reverse
 from django.db.models.query import QuerySet
 from django.db.models import Count
 from django.contrib.auth.models import UserManager
-from django.template.loader import render_to_string
 from guardian.mixins import GuardianUserMixin
 from template_mail.utils import send_tpl_email
 from model_utils.managers import PassThroughManagerMixin
-from notifications.models import notify_handler as send
+# from notifications.models import notify_handler as send
 from django.conf import settings
 
 _('Username or e-mail')  # Hack to overwrite django translation

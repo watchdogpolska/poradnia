@@ -85,6 +85,7 @@ class Case(models.Model):
                                     related_name="case_modified", verbose_name=_("Modified by"))
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
+    handled = models.BooleanField(default=False, verbose_name=_("Handled"))
 
     def status_display(self):
         return self.STATUS[self.status]
@@ -146,6 +147,18 @@ class Case(models.Model):
                        ('can_change_own_record', _("Can change own records")),
                        ('can_change_all_record', _("Can change all records")),
                        )
+
+    def update_handled(self):
+        from letters.models import Letter
+        try:
+            obj = Letter.objects.case(self).filter(status='done').last()
+            if obj.created_by.is_staff:
+                self.handled = True
+            else:
+                self.handled = False
+        except IndexError:
+            self.handled = False
+        self.save()
 
     def update_counters(self, save=True):
         from letters.models import Letter
@@ -233,18 +246,19 @@ class PermissionGroup(models.Model):
         return self.name
 
 
-def notify_new_case(sender, instance, **kwargs):
-    try:
-        from django.contrib.auth import get_user_model
-        User = get_user_model()
-    except ImportError:
-        from django.contrib.auth.models import User
+def notify_new_case(sender, instance, created, **kwargs):
+    if created:
+        try:
+            from django.contrib.auth import get_user_model
+            User = get_user_model()
+        except ImportError:
+            from django.contrib.auth.models import User
 
-    content_type = ContentType.objects.get_for_model(Case)
-    users = User.objects.filter(user_permissions__codename='can_view_all',
-                                user_permissions__content_type=content_type).all()
-    email = [x.email for x in users]
-    send_tpl_email('cases/email/case_new.html', recipient_list=email, context={'case': instance})
+        content_type = ContentType.objects.get_for_model(Case)
+        users = User.objects.filter(user_permissions__codename='can_view_all',
+                                    user_permissions__content_type=content_type).all()
+        email = [x.email for x in users]
+        send_tpl_email('cases/email/case_new.html', recipient_list=email, context={'case': instance})
 
 post_save.connect(notify_new_case, sender=Case, dispatch_uid="new_case_notify")
 

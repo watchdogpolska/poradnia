@@ -31,7 +31,7 @@
         <a class="btn btn-primary" href="{{ object.get_edit_url }}"><i class="fa fa-pencil-square-o"></i> {% trans 'Edit'%}</a>
         {% endif %}
       </div>
-      <h1 class="case-header-title">{{object.name}} <span class="case-header-number">#{{object.pk}}</span></h1>
+      <h1 class="case-header-title{% if user.is_staff and object.handled %} success{% endif %}">{{object.name}} <span class="case-header-number">#{{object.pk}}</span></h1>
       <div class="case-header-meta">
         {% if object.status_changed %}
           <span class="label label-success" title="Ostatnia zmiana stanu: {{ object.status_changed }} dni temu"> <i class="{{object.status|status2css}}"></i> {{object.status_display}}</span>
