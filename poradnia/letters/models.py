@@ -29,6 +29,16 @@ class LetterQuerySet(AbstractRecordQuerySet):
             qs = qs.filter(status='done')
         return qs
 
+    def last_staff_send(self):
+        return self.filter(status='done', created_by__is_staff=True).order_by(
+                '-created_on', '-id').all()[0]
+
+    def last(self):
+        return self.order_by('-created_on', '-id').all()[0]
+
+    def case(self, case):
+        return self.filter(record__case=case)
+
 
 class Letter(AbstractRecord):
     STATUS = Choices(('staff', _('Staff')), ('done', _('Done')))

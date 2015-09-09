@@ -16,7 +16,7 @@ from guardian.models import UserObjectPermissionBase
 from guardian.models import GroupObjectPermissionBase
 from guardian.shortcuts import get_users_with_perms, assign_perm
 from template_mail.utils import send_tpl_email
-from .tags.models import Tag
+from cases.tags.models import Tag
 
 
 class CaseQuerySet(QuerySet):
@@ -28,6 +28,9 @@ class CaseQuerySet(QuerySet):
         return self.filter(caseuserobjectpermission__permission__codename='can_view',
                            caseuserobjectpermission__permission__content_type=content_type,
                            caseuserobjectpermission__user=self.user)
+
+    def with_perm(self):
+        return self.select_related('caseuserobjectpermission')
 
     def with_read_time(self, user):
         return self.prefetch_related('readed_set').filter(readed__user=user)
@@ -51,9 +54,6 @@ class CaseQuerySet(QuerySet):
             result = re.match('^sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl$', email)
             if result:
                 cond = cond | Q(pk=result.group('pk'))
-        # Assosiate by email headers
-        # if message.in_reply_to:
-        #     cond = cond | Q(messages=message.in_reply_to)
         if not cond.children:
             return self.none()
         return self.filter(cond)
@@ -110,7 +110,7 @@ class Case(models.Model):
         return reverse('cases:permission', kwargs={'pk': str(self.pk)})
 
     def get_users_with_perms(self, *args, **kwargs):
-        return get_users_with_perms(self, *args, **kwargs)
+        return get_users_with_perms(self, with_group_users=False, *args, **kwargs)
 
     def __unicode__(self):
         return self.name
@@ -149,16 +149,16 @@ class Case(models.Model):
 
     def update_counters(self, save=True):
         from letters.models import Letter
-        letters_list = Letter.objects.filter(record__case=self)
+        letters_list = Letter.objects.case(self)
         self.letter_count = letters_list.count()
         try:
-            last_action = letters_list.order_by('-created_on', '-id').all()[0]
+            last_action = letters_list.last()
             self.last_action = last_action.created_on
         except IndexError:
             pass
 
         try:
-            last_send = letters_list.filter(status='done', created_by__is_staff=True).order_by('-created_on', '-id').all()[0]
+            last_send = letters_list.last_staff_send()
             self.last_send = last_send.status_changed or last_send.created_on
         except IndexError:
             self.last_send = None
@@ -199,12 +199,6 @@ class Case(models.Model):
                         target=target,
                         from_email=self.get_email(),
                         **context)
-
-    def save(self, *args, **kwargs):
-        created = True if self.pk is None else False
-        super(Case, self).save(*args, **kwargs)
-        if created:
-            self.assign_perm()
 
 
 class CaseUserObjectPermission(UserObjectPermissionBase):
@@ -253,3 +247,10 @@ def notify_new_case(sender, instance, **kwargs):
     send_tpl_email('cases/email/case_new.html', recipient_list=email, context={'case': instance})
 
 post_save.connect(notify_new_case, sender=Case, dispatch_uid="new_case_notify")
+
+
+def assign_perm_new_case(sender, instance, created, **kwargs):
+    if created:
+        instance.assign_perm()
+
+post_save.connect(assign_perm_new_case, sender=Case, dispatch_uid="assign_perm_new_case")
