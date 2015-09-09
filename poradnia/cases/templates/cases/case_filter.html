@@ -26,7 +26,7 @@
 {% crispy filter.form %}
 
 {% if object_list %}
-<table class="table  table-striped table-cases">
+<table class="table  table-striped table-cases table-condensed">
   <thead><tr>
     <th class="id">{% trans 'ID' %}</th>
     <th class="client">{% trans 'Client' %}</th>
@@ -51,8 +51,12 @@
       </td>
       <td class="last_response">{% if object.last_send %}{{ object.last_send|naturaltime }}{% else %}{% trans 'No answer' %}{% endif %}</td>
       {% if request.user.is_staff %}
+        {% ifequal object.last_action object.created_on %}
+            <td colspan="2">{{ object.last_action|naturaltime }}</td>
+        {% else %}
         <td class="last_action">{{ object.last_action|naturaltime }}</td>
         <td class="created_on">{{object.created_on|naturaltime}}</td>
+        {% endifequal %}
       {% endif %}
       {# <td>{{ object.get_readed }}</td> #}
 
