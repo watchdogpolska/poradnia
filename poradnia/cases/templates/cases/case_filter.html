@@ -40,7 +40,7 @@
   </tr></thead>
   <tbody>
     {% for object in object_list %}
-    <tr>
+    <tr{% if object.is_handled %} class="success"{% endif %}>
       <td class="id">{{ object.pk }}</td>
       <td class="client"><a href="{{ object.client.get_absolute_url }}">{{ object.client }}</a></td>
       <td class="subject">
