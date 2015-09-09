@@ -27,7 +27,7 @@ class CaseQuerySet(QuerySet):
         content_type = ContentType.objects.get_for_model(Case)
         return self.filter(caseuserobjectpermission__permission__codename='can_view',
                            caseuserobjectpermission__permission__content_type=content_type,
-                           caseuserobjectpermission__user=self.user)
+                           caseuserobjectpermission__user=user)
 
     def with_perm(self):
         return self.select_related('caseuserobjectpermission')
