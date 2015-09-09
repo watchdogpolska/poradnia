@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-10 11:20+0200\n"
-"PO-Revision-Date: 2015-08-10 11:20+0100\n"
+"POT-Creation-Date: 2015-09-09 03:08+0200\n"
+"PO-Revision-Date: 2015-09-09 03:08+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -19,43 +19,52 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: filters.py:9 filters.py:36 models.py:61 templates/cases/case_filter.html:33
+#: filters.py:11
+msgid "None"
+msgstr "Brak"
+
+#: filters.py:25 filters.py:52 models.py:67
+#: templates/cases/case_filter.html:33
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: filters.py:10 filters.py:23 filters.py:46 models.py:66
+#: filters.py:26 filters.py:44 filters.py:62 models.py:72
 #: templates/cases/case_filter.html:32
 msgid "Client"
 msgstr "Klient"
 
-#: filters.py:11 models.py:76
+#: filters.py:27 models.py:82
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: filters.py:12 filters.py:24 filters.py:37 filters.py:47 models.py:77
+#: filters.py:28 filters.py:45 filters.py:53 filters.py:63 models.py:83
 #: templates/cases/case_filter.html:37
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: filters.py:13 filters.py:25 filters.py:38 filters.py:48 models.py:68
+#: filters.py:29 filters.py:46 filters.py:54 filters.py:64 models.py:74
 msgid "Last send"
 msgstr "Ostatnia odpowiedź"
 
-#: filters.py:14 filters.py:26 models.py:69
+#: filters.py:29
+msgid "No reply"
+msgstr "Brak odpowiedzi"
+
+#: filters.py:30 filters.py:47 models.py:75
 #: templates/cases/case_filter.html:36
 msgid "Last action"
 msgstr "Ostatnia czynność"
 
-#: filters.py:20 filters.py:44
+#: filters.py:41 filters.py:60
 msgid "Default"
 msgstr "Domyślne"
 
-#: filters.py:21 models.py:73 templates/cases/case_detail.html:67
+#: filters.py:42 models.py:79 templates/cases/case_detail.html:67
 #: templates/cases/case_filter.html:33
 msgid "Dead-line"
 msgstr "Termin"
 
-#: filters.py:22 filters.py:45 templates/cases/case_filter.html:31
+#: filters.py:43 filters.py:61 templates/cases/case_filter.html:31
 msgid "ID"
 msgstr "ID"
 
@@ -71,75 +80,75 @@ msgstr "Użytkownik"
 msgid "Permissions group"
 msgstr "Grupa uprawnień"
 
-#: models.py:57
+#: models.py:63
 msgid "free"
 msgstr "wolna"
 
-#: models.py:58
+#: models.py:64
 msgid "assigned"
 msgstr "przypisana"
 
-#: models.py:59
+#: models.py:65
 msgid "closed"
 msgstr "zamknięta"
 
-#: models.py:62
+#: models.py:68
 msgid "Tags"
 msgstr "Tagi"
 
-#: models.py:67
+#: models.py:73
 msgid "Letter count"
 msgstr "Liczba listów"
 
-#: models.py:79
+#: models.py:85
 msgid "Modified by"
 msgstr "Zmodyfikowane przez"
 
-#: models.py:81
+#: models.py:87
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
-#: models.py:133
+#: models.py:139
 msgid "Can view all cases"
 msgstr "Może widzieć wszystkie sprawy"
 
-#: models.py:134
+#: models.py:140
 msgid "Can view"
 msgstr "Może widzieć sprawę"
 
-#: models.py:135
+#: models.py:141
 msgid "Can select client"
 msgstr "Może wybierać klienta"
 
-#: models.py:136
+#: models.py:142
 msgid "Can assign new permissions"
 msgstr "Może nadawać nowe uprawnienia"
 
-#: models.py:137
+#: models.py:143
 msgid "Can send text to client"
 msgstr "Może komunikować z klientem"
 
-#: models.py:138
+#: models.py:144
 msgid "Can assign permission"
 msgstr "Może nadawać uprawnienia"
 
-#: models.py:139
+#: models.py:145
 msgid "Can add record"
 msgstr "Może dodawać wpisy"
 
-#: models.py:140
+#: models.py:146
 msgid "Can change own records"
 msgstr "Może zmieniać własne wpisy"
 
-#: models.py:141
+#: models.py:147
 msgid "Can change all records"
 msgstr "Może zmieniać wszystkie wpisy"
 
-#: models.py:223
+#: models.py:233
 msgid "Name"
 msgstr "Nazwa"
 
-#: models.py:224 templates/cases/_case_form_permission.html:10
+#: models.py:235 templates/cases/_case_form_permission.html:10
 msgid "Permissions"
 msgstr "Uprawnienia"
 
@@ -171,7 +180,6 @@ msgid "Event calendar"
 msgstr "Kalendarz wydarzeń"
 
 #: templates/cases/_sidebar.html:25
-#| msgid "Letter"
 msgid "Letters"
 msgstr "Korespondencja"
 
