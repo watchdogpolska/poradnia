@@ -28,7 +28,7 @@
     <a class="btn btn-info" href="{% url 'keys:list' %}"><i class="fa fa-puzzle-piece "></i> {% trans 'Keys'%}</a>
     {% endif %}
     {% if object == request.user or perms.case.can_view_all %}
-    <a class="btn btn-info" href="{% url 'cases:list' %}?user={{object.username}}"><i class="fa fa-book"></i> {% trans 'Cases'%}</a>
+    <a class="btn btn-info" href="{% url 'cases:list' %}?client={{object.username}}"><i class="fa fa-book"></i> {% trans 'Cases'%}</a>
     {% endif %}
 <!-- End Action buttons -->
 {% endif %}
