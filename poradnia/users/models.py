@@ -102,7 +102,7 @@ class User(AbstractUser):
                      # 'object': kwargs.get('object', None),
                      # 'target': kwargs.get('target', None),
                      }
-        send(recipient=self, **notify_kw)
+        # send(recipient=self, **notify_kw)
 
         if 'target' not in kwargs:
             return
