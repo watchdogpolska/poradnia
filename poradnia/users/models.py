@@ -26,7 +26,7 @@ class UserQuerySet(QuerySet):
         return self
 
     def with_case_count(self):
-        return self.annotate(case_count=Count('case'))
+        return self.annotate(case_count=Count('case_client'))
 
     def registered(self):
         return self.exclude(pk=settings.ANONYMOUS_USER_ID)

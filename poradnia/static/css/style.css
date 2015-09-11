@@ -10415,4 +10415,20 @@ table.month li.deadline {
   background-color: #DFF0D8;
 }
 
+.list-group__elastic {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  -webkit-justify-content: space-around;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
+}
+.list-group__elastic .list-group-item {
+  margin-bottom: 10px;
+}
+
 

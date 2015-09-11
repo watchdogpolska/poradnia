@@ -65,6 +65,9 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
 class UserListView(StaffuserRequiredMixin, PermissionMixin, ListView):
     model = User
-    # These next two lines tell the view to index lookups by username
     slug_field = "username"
     slug_url_kwarg = "username"
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super(UserListView, self).get_queryset(*args, **kwargs)
+        return qs.with_case_count()

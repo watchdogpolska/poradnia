@@ -23,3 +23,12 @@
 .h1.success{
     background-color: #DFF0D8;
 }
+
+.list-group__elastic{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    .list-group-item {
+            margin-bottom: 10px;
+    }
+}
