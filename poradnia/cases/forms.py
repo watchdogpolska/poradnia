@@ -12,6 +12,7 @@ from .models import Case, PermissionGroup
 
 
 class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SaveButtonMixin, forms.ModelForm):
+
     def __init__(self, *args, **kwargs):
         super(CaseForm, self).__init__(*args, **kwargs)
         if 'instance' in kwargs:
@@ -37,10 +38,12 @@ class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SaveButtonMixin, fo
 
 class CaseGroupPermissionForm(HelperMixin, forms.Form):
     action_text = _('Grant')
-    user = forms.ModelChoiceField(queryset=None, required=True,
-        widget=autocomplete_light.ChoiceWidget('UserAutocomplete'), label=_("User"))
+    user = forms.ModelChoiceField(queryset=None,
+                                  required=True,
+                                  widget=autocomplete_light.ChoiceWidget('UserAutocomplete'),
+                                  label=_("User"))
     group = forms.ModelChoiceField(queryset=PermissionGroup.objects.all(),
-        label=_("Permissions group"))
+                                   label=_("Permissions group"))
 
     def __init__(self, user, case=None, *args, **kwargs):
         self.case = case
@@ -51,7 +54,7 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
         self.helper.layout.append(Submit('grant', _('Grant')))
 
         self.helper.form_action = reverse('cases:permission_grant',
-            kwargs={'pk': str(self.case.pk)})
+                                          kwargs={'pk': str(self.case.pk)})
 
     def assign(self):
         perms = [x.codename for x in self.cleaned_data['group'].permissions.all()]
@@ -59,6 +62,8 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
         for perm in perms:
             assign_perm(perm, self.cleaned_data['user'], self.case)
 
-        self.case.send_notification(actor=self.user, verb='grant_group',
-            action_object=self.cleaned_data['user'], action_target=self.cleaned_data['group'],
-            staff=True)
+        self.case.send_notification(actor=self.user,
+                                    verb='grant_group',
+                                    action_object=self.cleaned_data['user'],
+                                    action_target=self.cleaned_data['group'],
+                                    staff=True)
