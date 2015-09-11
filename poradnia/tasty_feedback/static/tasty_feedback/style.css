@@ -8,12 +8,19 @@
           transform: translateY(100%) translateY(-45px);
   -webkit-transition: .5s;
           transition: .5s;
-  box-shadow: -10px -10px 5px #EEE;
   border: 1px solid #555;
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
   background: #F5F5F5;
+}
 
+@media (max-width: 430px) {
+  #feedback {
+    width: auto;
+    left: 15px;
+    height: 80vh;
+    overflow-y: scroll;
+  }
 }
 #feedback.show {
   -webkit-transform: none;
@@ -32,4 +39,10 @@
 #feedback-body p {
   margin: 0;
   padding: 0;
+}
+
+@media print {
+  #feedback {
+    display: none;
+  }
 }
