@@ -18,6 +18,7 @@ from records.models import AbstractRecord, AbstractRecordQuerySet
 from template_mail.utils import send_tpl_email
 from cases.models import Case
 from atom.models import AttachmentBase
+import html2text
 
 
 claw.init()
@@ -142,8 +143,8 @@ def mail_process(sender, message, **args):
     if message.text:
         text = quotations.extract_from(message.text, 'text/plain')
         signature = message.text.replace(text, '')
-    else:   # TODO: HTML strip (XSS injection)
-        text = quotations.extract_from(message.html, 'text/html')
+    else:
+        text = html2text.html2text(quotations.extract_from(message.html, 'text/html'))
         signature = message.text.replace(text, '')
     obj = Letter(name=message.subject,
                  created_by=user,
@@ -162,8 +163,9 @@ def mail_process(sender, message, **args):
     # Convert attachments
     attachments = []
     for attachment in message.attachments.all():
-        attachments.append(Attachment(letter=obj,
-            attachment=File(attachment.document, attachment.get_filename())))
+        att_file = File(attachment.document, attachment.get_filename())
+        att = Attachment(letter=obj, attachment=att_file)
+        attachments.append(att)
     Attachment.objects.bulk_create(attachments)
     case.update_counters()
     obj.send_notification(actor=user, verb='created')
