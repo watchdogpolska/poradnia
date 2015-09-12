@@ -21,7 +21,7 @@ class CaseDetailView(LoginRequiredMixin, TemplateView):  # TODO: Use django.view
     def get_context_data(self, **kwargs):
         context = super(CaseDetailView, self).get_context_data(**kwargs)
         context = {}
-        qs = (Case.objects.prefetch_related('tags').
+        qs = (Case.objects.
               select_related('created_by').
               select_related('triggered').
               select_related('modified_by'))
