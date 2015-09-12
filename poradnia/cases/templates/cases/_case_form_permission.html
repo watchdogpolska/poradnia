@@ -1,5 +1,5 @@
 {% extends "cases/base.html" %}
-{% load staticfiles i18n %}
+{% load staticfiles i18n guardian_tags %}
 
 {% block title %}{{ object }} - {{block.super}}{% endblock %}
 
@@ -21,6 +21,7 @@
 {% endblock %}
 
 {% block content %}
+{% get_obj_perms request.user for object as "case_perms" %}
 <h1>{{object}}</h1>
 <p>{% trans 'Involved in' %}:{% include 'cases/_involved_in.html' %}</p>
 {% block form %} {% endblock %}
