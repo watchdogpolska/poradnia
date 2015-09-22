@@ -95,6 +95,11 @@ class Letter(AbstractRecord):
     def get_send_url(self):
         return reverse('letters:send', kwargs={'pk': self.pk})
 
+    def set_new_case(self):
+        self.case = Case.objects.create(subject=self.name,
+                                        created_by=self.created_by,
+                                        client=self.client)
+
     class Meta:
         verbose_name = _('Letter')
         verbose_name_plural = _('Letters')

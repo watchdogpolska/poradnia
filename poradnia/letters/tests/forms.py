@@ -66,7 +66,7 @@ class AnonymousNewCaseFormMyTests(TestCase):
         self.assertIn(REGISTRATION_SUBJECT, mail.outbox[0].subject)
         self.assertIn('x123@wykop.pl', mail.outbox[0].to)
 
-    def test_send_email_new_case(self):
+    def test_send_email_new_case_to_staff(self):
         form = self.get_bound()
         form.is_valid()
 

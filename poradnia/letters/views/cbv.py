@@ -25,10 +25,12 @@ class NewCaseCreateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Cre
     def formset_valid(self, form, formset, *args, **kwargs):
         formset.save()
         messages.success(self.request,
-            _("Case about %(object)s created!") % {'object': self.object.name, })
-        if self.object.created_by != self.object.client and not self.request.user.is_anonymous():
-            self.object.client.notify(actor=self.request.user, verb='created',
-                from_email=self.object.case.get_email())
+                         _("Case about {object} created!").format(object=self.object.name))
+        if self.object.created_by != self.object.client or self.request.user.is_anonymous():
+            self.object.client.notify(actor=self.object.created_by,
+                                      verb='registered',
+                                      target=self.object.case,
+                                      from_email=self.object.case.get_email())
         if self.request.user.is_anonymous():
             messages.success(self.request, _(REGISTRATION_TEXT) % {'user': self.object.created_by})
         return HttpResponseRedirect(self.object.case.get_absolute_url())
