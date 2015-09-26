@@ -23,8 +23,8 @@ class NewCaseMixin(object):
         self.fail("Mail with template {name} wasn't send (used {tpls}).".format(name=template_name,
                                                                                 tpls=template_list))
 
-    def post(self):
-        return self.client.post(self.url, data=self.get_data())
+    def post(self, data=None):
+        return self.client.post(self.url, data=data or self.get_data())
 
     def get_case(self):
         return Case.objects.filter(name='Lorem ipsum subject example')
@@ -83,6 +83,12 @@ class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
         self.assertEqual(obj.case.client, obj.created_by)
         self.assertEqual(obj.case.client.email, 'my_email@oh-noes.pl')
 
+    def test_user_registered_fail(self):
+        UserFactory(email=self.post_data['email_registration'])
+        resp = self.post()
+        self.assertFalse(resp.context_data['form'].is_valid())
+        self.assertIn('email_registration', resp.context_data['form'].errors)
+
 
 class AdminNewCaseTestCase(NewCaseMixin, TestCase):
     fields = ['name', 'text', 'client', 'email', 'giodo']
@@ -121,5 +127,6 @@ class AdminNewCaseTestCase(NewCaseMixin, TestCase):
 
     def test_user_notification(self):
         self.post()
-        self.assertEqual(mail.outbox[1].extra_headers['Template'], 'cases/email/case_registered.txt')
+        self.assertEqual(mail.outbox[1].extra_headers['Template'],
+            'cases/email/case_registered.txt')
         self.assertIn(self.email, mail.outbox[1].to)

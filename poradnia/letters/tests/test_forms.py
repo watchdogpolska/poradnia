@@ -12,6 +12,8 @@ from letters.forms import NewCaseForm
 from cases.models import Case, CaseUserObjectPermission
 from django.contrib.contenttypes.models import ContentType
 
+from users.factories import UserFactory
+
 REGISTRATION_SUBJECT = 'Rejestracja w Poradni Sieci Obywatelskiej - Watchdog Polska'
 
 
@@ -26,13 +28,10 @@ class AnonymousNewCaseFormMyTests(TestCase):
     def get_form_kwargs(self):
         return dict(user=self.user, data=self.data)
 
-    def get_bound(self):
+    def get_bound(self, **kwargs):
         return NewCaseForm(**self.get_form_kwargs())
 
     def get_user(self):
-        # return User.objects.create_user(username='user',
-        #                                 email='jack@example.com',
-        #                                 password='top_secret')
         return AnonymousUser()
 
     def setUp(self):
@@ -57,15 +56,6 @@ class AnonymousNewCaseFormMyTests(TestCase):
         form.save()
         self.assertEqual(User.objects.count() - u_count, 1)
 
-    def test_send_email(self):
-        form = self.get_bound()
-        form.is_valid()
-        form.save()
-
-        self.assertEqual(len(mail.outbox), 1)
-        self.assertIn(REGISTRATION_SUBJECT, mail.outbox[0].subject)
-        self.assertIn('x123@wykop.pl', mail.outbox[0].to)
-
     def test_send_email_new_case_to_staff(self):
         form = self.get_bound()
         form.is_valid()
@@ -86,5 +76,14 @@ class AnonymousNewCaseFormMyTests(TestCase):
         self.assertIn(self.data['name'], mail.outbox[1].subject)
         self.assertIn(unicode(obj.created_by), mail.outbox[1].subject)
 
-    def fields_compare(self):
+    def test_fields_compare(self):
         self.assertEqual(self.get_bound().fields.keys(), self.fields)
+
+    def test_login_required(self):
+        UserFactory(email=self.data['email_registration'])
+        form = self.get_bound()
+        self.assertIn('email_registration', form.errors)
+
+    def test_login_not_required(self):
+        form = self.get_bound()
+        self.assertNotIn('email_registration', form.errors)
