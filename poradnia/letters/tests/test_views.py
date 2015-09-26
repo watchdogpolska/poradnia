@@ -128,5 +128,39 @@ class AdminNewCaseTestCase(NewCaseMixin, TestCase):
     def test_user_notification(self):
         self.post()
         self.assertEqual(mail.outbox[1].extra_headers['Template'],
-            'cases/email/case_registered.txt')
+                         'cases/email/case_registered.txt')
         self.assertIn(self.email, mail.outbox[1].to)
+
+
+class UserNewCaseTestCase(NewCaseMixin, TestCase):
+    fields = ['name', 'text']
+
+    def get_data(self):
+        return {u'attachment_set-0-DELETE': '',
+                u'attachment_set-0-attachment': '',
+                u'attachment_set-0-id': '',
+                u'attachment_set-0-letter': '',
+                u'attachment_set-1-DELETE': '',
+                u'attachment_set-1-attachment': '',
+                u'attachment_set-1-id': '',
+                u'attachment_set-1-letter': '',
+                u'attachment_set-2-DELETE': '',
+                u'attachment_set-2-attachment': '',
+                u'attachment_set-2-id': '',
+                u'attachment_set-2-letter': '',
+                u'attachment_set-INITIAL_FORMS': '0',
+                u'attachment_set-MAX_NUM_FORMS': '1000',
+                u'attachment_set-MIN_NUM_FORMS': '0',
+                u'attachment_set-TOTAL_FORMS': '3',
+                u'name': 'Lorem ipsum subject example',
+                u'text': 'Lorem ipsum example text'}
+
+    def setUp(self):
+        self.user = UserFactory()
+        self.client.login(username=self.user.username, password='pass')
+
+    def test_user_self_notify(self):
+        self.post()
+        self.assertEqual(mail.outbox[0].extra_headers['Template'],
+                         'cases/email/case_registered.txt')
+        self.assertIn(self.user.email, mail.outbox[0].to)

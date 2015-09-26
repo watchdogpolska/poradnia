@@ -113,7 +113,7 @@ class Attachment(AttachmentBase):
 @receiver(message_received)
 def mail_process(sender, message, **args):
     print (u"I just recieved a messtsage titled ", message.subject.encode('utf-8'),
-        u'from a mailbox named ', message.mailbox.name)
+           u'from a mailbox named ', message.mailbox.name)
     # new_user + poradnia@ => new_user @ new_user
     # new_user + case => FAIL
     # old_user + case => PASS
