@@ -1,12 +1,15 @@
 from django.test import TestCase
 
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 
 from django.core import mail
+
+from guardian.shortcuts import assign_perm
 
 from cases.models import Case
 from letters.models import Letter
 from users.factories import UserFactory
+from cases.factories import CaseFactory
 
 
 class NewCaseMixin(object):
@@ -164,3 +167,70 @@ class UserNewCaseTestCase(NewCaseMixin, TestCase):
         self.assertEqual(mail.outbox[0].extra_headers['Template'],
                          'cases/email/case_registered.txt')
         self.assertIn(self.user.email, mail.outbox[0].to)
+
+
+class AddLetterTestCase(TestCase):
+    post_data = {'attachment_set-0-DELETE': '',
+                 'attachment_set-0-attachment': '',
+                 'attachment_set-0-id': '',
+                 'attachment_set-0-letter': '',
+                 'attachment_set-1-DELETE': '',
+                 'attachment_set-1-attachment': '',
+                 'attachment_set-1-id': '',
+                 'attachment_set-1-letter': '',
+                 'attachment_set-2-DELETE': '',
+                 'attachment_set-2-attachment': '',
+                 'attachment_set-2-id': '',
+                 'attachment_set-2-letter': '',
+                 'attachment_set-INITIAL_FORMS': '0',
+                 'attachment_set-MAX_NUM_FORMS': '1000',
+                 'attachment_set-MIN_NUM_FORMS': '0',
+                 'attachment_set-TOTAL_FORMS': '3',
+                 'name': 'Odp:  Pytanie o dostep do informacji publicznej',
+                 'status': 'done',
+                 'text': 'XX'}
+
+    def setUp(self):
+        self.case = CaseFactory(handled=False)
+        self.url = reverse('letters:add', kwargs={'case_pk': self.case.pk})
+
+    def post(self, data=None):
+        params = self.post_data.copy()
+        params.update(data or {})
+        self.client.login(username=self.user.username, password='pass')
+        assign_perm('can_add_record', self.user, self.case)
+        return self.client.post(self.url, data=params)
+
+    def _test_status_field(self, staff, can_send_to_client, expected, **kwargs):
+        self.user = UserFactory(is_staff=staff)
+        if can_send_to_client:
+            assign_perm('can_send_to_client', self.user, self.case)
+        self.post(data=kwargs)
+        self.assertEqual(Letter.objects.get().status, expected)
+
+    def test_status_field_staff_can_send_to_client_false(self):
+        self._test_status_field(staff=True,
+                                can_send_to_client=False,
+                                expected=Letter.STATUS.staff)
+
+    def test_status_field_user_true(self):
+        self._test_status_field(staff=False,
+                                can_send_to_client=True,
+                                expected=Letter.STATUS.done)
+
+    def test_status_field_user_false(self):
+        self._test_status_field(staff=False,
+                                can_send_to_client=False,
+                                expected=Letter.STATUS.done)
+
+    def test_status_field_staff_can_send(self):
+        self._test_status_field(staff=True,
+                                can_send_to_client=True,
+                                expected=Letter.STATUS.done,
+                                send="X")
+
+    def test_status_field_staff_can_send_staff(self):
+        self._test_status_field(staff=True,
+                                can_send_to_client=True,
+                                expected=Letter.STATUS.staff,
+                                send_staff="X")

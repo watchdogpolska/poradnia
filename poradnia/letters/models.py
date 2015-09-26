@@ -29,7 +29,7 @@ class LetterQuerySet(AbstractRecordQuerySet):
     def for_user(self, user):
         qs = super(LetterQuerySet, self).for_user(user)
         if not user.is_staff:
-            qs = qs.filter(status='done')
+            qs = qs.filter(status=Letter.STATUS.done)
         return qs
 
     def last_staff_send(self):
