@@ -1,4 +1,5 @@
 from __future__ import print_function
+import os
 from django.db import models
 from django.db.models.signals import post_save
 from django.conf import settings
@@ -168,7 +169,12 @@ def mail_process(sender, message, **args):
     # Convert attachments
     attachments = []
     for attachment in message.attachments.all():
-        att_file = File(attachment.document, attachment.get_filename())
+        name = attachment.get_filename()
+        if len(name) > 70:
+            name, ext = os.path.splitext(name)
+            ext = ext[:70]
+            name = name[:70 - len(ext)] + ext
+        att_file = File(attachment.document, name)
         att = Attachment(letter=obj, attachment=att_file)
         attachments.append(att)
     Attachment.objects.bulk_create(attachments)
