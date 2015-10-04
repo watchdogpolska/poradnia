@@ -101,6 +101,13 @@ class Letter(AbstractRecord):
                                         created_by=self.created_by,
                                         client=self.client)
 
+    def send_notification(self, *args, **kwargs):
+        if self.status is Letter.STATUS.done:
+            staff = None
+        else:
+            staff = True
+        return super(Letter, self).send_notification(staff=staff, *args, **kwargs)
+
     class Meta:
         verbose_name = _('Letter')
         verbose_name_plural = _('Letters')

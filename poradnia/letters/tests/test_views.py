@@ -201,6 +201,7 @@ class AddLetterTestCase(TestCase):
         assign_perm('can_add_record', self.user, self.case)
         return self.client.post(self.url, data=params)
 
+    # Test buttons etc.
     def _test_status_field(self, staff, can_send_to_client, expected, **kwargs):
         self.user = UserFactory(is_staff=staff)
         if can_send_to_client:
@@ -227,10 +228,31 @@ class AddLetterTestCase(TestCase):
         self._test_status_field(staff=True,
                                 can_send_to_client=True,
                                 expected=Letter.STATUS.done,
-                                send="X")
+                                send="X",
+                                email_count=5)
 
     def test_status_field_staff_can_send_staff(self):
         self._test_status_field(staff=True,
                                 can_send_to_client=True,
                                 expected=Letter.STATUS.staff,
                                 send_staff="X")
+
+    def _add_random_user(self, case, staff=False):
+        user = UserFactory(is_staff=staff)
+        assign_perm('can_view', user, case)
+        return user
+
+    def _test_email(self, func, status, count):
+        self._add_random_user(self.case, staff=True)
+        self._add_random_user(self.case, staff=True)
+        self._add_random_user(self.case, staff=False)
+        self._add_random_user(self.case, staff=False)
+        func()
+        self.assertEqual(Letter.objects.get().status, status)
+        self.assertEqual(len(mail.outbox), count)
+
+    def test_email_make_done(self):
+        self._test_email(self.test_status_field_staff_can_send, Letter.STATUS.done, 5)
+
+    def test_email_make_staff(self):
+        self._test_email(self.test_status_field_staff_can_send_staff, Letter.STATUS.staff, 2)
