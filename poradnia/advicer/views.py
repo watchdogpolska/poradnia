@@ -53,8 +53,8 @@ class AdviceCreate(StaffuserRequiredMixin, FormSetMixin, FormInitialMixin, UserF
 class AdviceDelete(StaffuserRequiredMixin, PermissionMixin, DeleteMessageMixin, DeleteView):
     model = Advice
     success_url = reverse_lazy('advicer:list')
-    success_message = _("{__unicode__} deleted!")
-    hide_field = 'visible'
+    success_message = _("{subject} deleted!")
+    # hide_field = 'visible'  # TODO: Use fields to hide and not-delete
     raise_exception = True
 
 

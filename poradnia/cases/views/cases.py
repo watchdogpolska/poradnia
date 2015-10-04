@@ -39,16 +39,11 @@ class CaseDetailView(LoginRequiredMixin, TemplateView):  # TODO: Use django.view
             context['forms']['event'] = {'title': _('Event'),
                                          'form': EventForm(user=self.request.user, case=case)}
 
-        qs = (Record.objects.filter(case=case).
-            select_related('letter__created_by', 'letter', 'letter__modified_by').
-            select_related('event__created_by', 'event', 'event__modified_by').
-            select_related('event__alarm', ).
-
-            prefetch_related('letter__attachment_set', 'letter__created_by__avatar_set'))
-
-        if not self.request.user.is_staff:
-            qs = qs.for_user(self.request.user)
-
+        qs = (Record.objects.filter(case=case).for_user(self.request.user).
+              select_related('letter__created_by', 'letter', 'letter__modified_by').
+              select_related('event__created_by', 'event', 'event__modified_by').
+              select_related('event__alarm').
+              prefetch_related('letter__attachment_set', 'letter__created_by__avatar_set'))
         context['record_list'] = qs.all()
         context['casegroup_form'] = CaseGroupPermissionForm(case=case, user=self.request.user)
         return context

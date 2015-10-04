@@ -1,4 +1,5 @@
 from __future__ import print_function
+import os
 from django.db import models
 from django.db.models.signals import post_save
 from django.conf import settings
@@ -28,7 +29,7 @@ class LetterQuerySet(AbstractRecordQuerySet):
     def for_user(self, user):
         qs = super(LetterQuerySet, self).for_user(user)
         if not user.is_staff:
-            qs = qs.filter(status='done')
+            qs = qs.filter(status=Letter.STATUS.done)
         return qs
 
     def last_staff_send(self):
@@ -95,6 +96,18 @@ class Letter(AbstractRecord):
     def get_send_url(self):
         return reverse('letters:send', kwargs={'pk': self.pk})
 
+    def set_new_case(self):
+        self.case = Case.objects.create(subject=self.name,
+                                        created_by=self.created_by,
+                                        client=self.client)
+
+    def send_notification(self, *args, **kwargs):
+        if self.status is Letter.STATUS.done:
+            staff = None
+        else:
+            staff = True
+        return super(Letter, self).send_notification(staff=staff, *args, **kwargs)
+
     class Meta:
         verbose_name = _('Letter')
         verbose_name_plural = _('Letters')
@@ -108,7 +121,7 @@ class Attachment(AttachmentBase):
 @receiver(message_received)
 def mail_process(sender, message, **args):
     print (u"I just recieved a messtsage titled ", message.subject.encode('utf-8'),
-        u'from a mailbox named ', message.mailbox.name)
+           u'from a mailbox named ', message.mailbox.name)
     # new_user + poradnia@ => new_user @ new_user
     # new_user + case => FAIL
     # old_user + case => PASS
@@ -163,7 +176,12 @@ def mail_process(sender, message, **args):
     # Convert attachments
     attachments = []
     for attachment in message.attachments.all():
-        att_file = File(attachment.document, attachment.get_filename())
+        name = attachment.get_filename()
+        if len(name) > 70:
+            name, ext = os.path.splitext(name)
+            ext = ext[:70]
+            name = name[:70 - len(ext)] + ext
+        att_file = File(attachment.document, name)
         att = Attachment(letter=obj, attachment=att_file)
         attachments.append(att)
     Attachment.objects.bulk_create(attachments)

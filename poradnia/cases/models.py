@@ -258,7 +258,9 @@ def notify_new_case(sender, instance, created, **kwargs):
         users = User.objects.filter(user_permissions__codename='can_view_all',
                                     user_permissions__content_type=content_type).all()
         email = [x.email for x in users]
-        send_tpl_email('cases/email/case_new.html', recipient_list=email, context={'case': instance})
+        send_tpl_email('cases/email/case_new.html',
+                       recipient_list=email,
+                       context={'case': instance})
 
 post_save.connect(notify_new_case, sender=Case, dispatch_uid="new_case_notify")
 
