@@ -158,11 +158,11 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
                                              css_class="btn-primary"))
 
     def get_status(self):
-        if self.user_can_send:
-            if 'send_staff' in self.data:
-                return Letter.STATUS.staff
-            return Letter.STATUS.done
         if self.user.is_staff:
+            if self.user_can_send:
+                if 'send_staff' in self.data:
+                    return Letter.STATUS.staff
+                return Letter.STATUS.done
             return Letter.STATUS.staff
         return Letter.STATUS.done
 

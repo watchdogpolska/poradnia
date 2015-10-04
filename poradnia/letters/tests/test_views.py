@@ -233,8 +233,7 @@ class AddLetterTestCase(CaseMixin, TestCase):
         self._test_status_field(staff=True,
                                 can_send_to_client=True,
                                 expected=Letter.STATUS.done,
-                                send="X",
-                                email_count=5)
+                                send="X")
 
     def test_status_field_staff_can_send_staff(self):
         self._test_status_field(staff=True,
