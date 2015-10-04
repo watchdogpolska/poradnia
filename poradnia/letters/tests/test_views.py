@@ -247,20 +247,21 @@ class AddLetterTestCase(CaseMixin, TestCase):
         assign_perm('can_view', user, case)
         return user
 
-    def _test_email(self, func, status, count):
-        self._add_random_user(self.case, staff=True)
-        self._add_random_user(self.case, staff=True)
-        self._add_random_user(self.case, staff=False)
-        self._add_random_user(self.case, staff=False)
+    def _test_email(self, func, status, user_notify, staff_notify=True):
+        user_user = self._add_random_user(self.case, staff=False)
+        user_staff = self._add_random_user(self.case, staff=True)
         func()
         self.assertEqual(Letter.objects.get().status, status)
-        self.assertEqual(len(mail.outbox), count)
+        emails = [x.to[0] for x in mail.outbox
+                  if x.extra_headers['Template'] == 'letters/email/letter_created.txt']
+        self.assertEqual(user_user.email in emails, user_notify)
+        self.assertEqual(user_staff.email in emails, staff_notify)
 
     def test_email_make_done(self):
-        self._test_email(self.test_status_field_staff_can_send, Letter.STATUS.done, 5)
+        self._test_email(self.test_status_field_staff_can_send, Letter.STATUS.done, True)
 
     def test_email_make_staff(self):
-        self._test_email(self.test_status_field_staff_can_send_staff, Letter.STATUS.staff, 2)
+        self._test_email(self.test_status_field_staff_can_send_staff, Letter.STATUS.staff, False)
 
 
 class SendLetterTestCase(CaseMixin, TestCase):
