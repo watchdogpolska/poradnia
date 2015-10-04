@@ -12,7 +12,7 @@ from cases.models import Case
 
 class RecordQuerySet(QuerySet):
     def _for_user_by_view(self, user):
-        if not user.has_perm('cases.can_view_all'):
+        if user.has_perm('cases.can_view_all'):
             return self
         content_type = ContentType.objects.get_for_model(Case)
         return self.filter(case__caseuserobjectpermission__permission__codename='can_view',
