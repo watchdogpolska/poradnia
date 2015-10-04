@@ -207,7 +207,7 @@ class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
                      text=self.cleaned_data['comment'],
                      status=obj.STATUS.staff)
         msg.save()
-        msg.send_notification(actor=self.user, verb='drop_a_note', staff=True)
+        msg.send_notification(actor=self.user, verb='drop_a_note')
         return obj
 
     class Meta:

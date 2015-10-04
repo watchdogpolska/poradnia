@@ -6,10 +6,18 @@ from guardian.shortcuts import assign_perm
 from cases.factories import CaseFactory
 from cases.models import Case
 from letters.models import Letter
+from letters.factories import LetterFactory
 from users.factories import UserFactory
 
 
-class NewCaseMixin(object):
+class CaseMixin(object):
+    def _add_random_user(self, case, staff=False):
+        user = UserFactory(is_staff=staff)
+        assign_perm('can_view', user, case)
+        return user
+
+
+class NewCaseMixin(CaseMixin):
     url = reverse_lazy('letters:add')
     template_name = 'letters/form_new.html'
     fields = None
@@ -166,7 +174,7 @@ class UserNewCaseTestCase(NewCaseMixin, TestCase):
         self.assertIn(self.user.email, mail.outbox[0].to)
 
 
-class AddLetterTestCase(TestCase):
+class AddLetterTestCase(CaseMixin, TestCase):
     post_data = {'attachment_set-0-DELETE': '',
                  'attachment_set-0-attachment': '',
                  'attachment_set-0-id': '',
@@ -253,3 +261,40 @@ class AddLetterTestCase(TestCase):
 
     def test_email_make_staff(self):
         self._test_email(self.test_status_field_staff_can_send_staff, Letter.STATUS.staff, 2)
+
+
+class SendLetterTestCase(CaseMixin, TestCase):
+    note_text = 'Lorem ipsum XYZ123'
+
+    def setUp(self):
+        self.object = LetterFactory(status=Letter.STATUS.staff)
+        self.url = reverse('letters:send', kwargs={'pk': self.object.pk})
+        self.user = UserFactory(is_staff=True, is_superuser=True)
+        self.client.login(username=self.user.username, password='pass')
+
+    def test_provide_form(self):
+        resp = self.client.get(self.url)
+        self.assertContains(resp, self.object)
+        self.assertIn('form', resp.context)
+
+    def _test_send(self):
+        resp = self.client.post(self.url, data={'comment': self.note_text})
+        return resp
+
+    def test_create_a_note(self):
+        self._test_send()
+        new = Letter.objects.last()
+        self.assertNotEqual(new, self.object)
+        self.assertEqual(new.status, Letter.STATUS.staff)
+        self.assertEqual(new.text, self.note_text)
+
+    def test_notify_staff_about_note(self):
+        user1 = self._add_random_user(staff=True, case=self.object.case)
+        user2 = self._add_random_user(staff=False, case=self.object.case)
+
+        self._test_send()
+
+        emails = [x.to[0] for x in mail.outbox
+                  if x.extra_headers['Template'] == 'letters/email/letter_drop_a_note.txt']
+        self.assertEqual(user1.email in emails, True)
+        self.assertEqual(user2.email in emails, False)
