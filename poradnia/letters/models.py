@@ -161,10 +161,20 @@ def mail_process(sender, message, **args):
     else:
         text = html2text.html2text(quotations.extract_from(message.html, 'text/html'))
         signature = message.text.replace(text, '')
+
+    # Calculate status
+    if user.is_staff:
+        if user.has_perm('cases.can_send_to_client', case):
+            status = Letter.STATUS.done
+        else:
+            status = Letter.STATUS.staff
+    else:
+        status = Letter.STATUS.done
+
     obj = Letter(name=message.subject,
                  created_by=user,
                  case=case,
-                 status=Letter.STATUS.done,
+                 status=status,
                  text=text,
                  message=message,
                  signature=signature,
