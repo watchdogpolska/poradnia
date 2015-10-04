@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Letter, Attachment
+
+from .models import Attachment, Letter
 
 
 class AttachmentInline(admin.StackedInline):

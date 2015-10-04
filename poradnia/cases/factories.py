@@ -1,5 +1,6 @@
 import factory
 import factory.fuzzy
+
 from users.factories import UserFactory
 
 

@@ -1,11 +1,14 @@
 from __future__ import absolute_import
-from unittest import skip
-from django.test import TestCase
-from django.core.urlresolvers import reverse_lazy, reverse
 
-from users.factories import UserFactory, StaffFactory
-from .factories import AdviceFactory
+from unittest import skip
+
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.test import TestCase
+
 from advicer.models import Advice
+from users.factories import StaffFactory, UserFactory
+
+from .factories import AdviceFactory
 
 
 class PermissionMixin(object):

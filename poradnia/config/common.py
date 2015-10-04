@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from os.path import join, dirname
+from os.path import dirname, join
 
 from configurations import Configuration, values
 

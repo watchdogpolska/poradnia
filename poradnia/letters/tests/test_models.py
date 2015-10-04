@@ -1,7 +1,7 @@
 from django.test import TestCase
 
-from letters.models import Letter
 from letters.factories import LetterFactory
+from letters.models import Letter
 from users.factories import UserFactory
 
 

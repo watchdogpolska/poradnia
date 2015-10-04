@@ -1,11 +1,11 @@
+import autocomplete_light
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
-from guardian.forms import BaseObjectPermissionsForm
+from guardian.forms import BaseObjectPermissionsForm, UserObjectPermissionsForm
 from guardian.shortcuts import assign_perm, remove_perm
-from guardian.forms import UserObjectPermissionsForm
+
 from atom.forms import SaveButtonMixin
-import autocomplete_light
 
 
 class PermissionsTranslationMixin(object):

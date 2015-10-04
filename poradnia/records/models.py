@@ -1,12 +1,12 @@
-from django.db import models
-
+from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
-from django.utils.translation import ugettext_lazy as _
-from django.db.models.query import QuerySet
+from django.db import models
 from django.db.models import Q
+from django.db.models.query import QuerySet
+from django.utils.translation import ugettext_lazy as _
 from model_utils.managers import PassThroughManager
+
 from cases.models import Case
 
 

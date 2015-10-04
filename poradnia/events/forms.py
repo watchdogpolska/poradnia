@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from letters.forms import PartialMixin
 from django.core.urlresolvers import reverse
+
 from atom.forms import AuthorMixin, FormHorizontalMixin, SaveButtonMixin
+from letters.forms import PartialMixin
+
 from .models import Event
 
 

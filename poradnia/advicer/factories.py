@@ -1,7 +1,8 @@
 import datetime
-import pytz
+
 import factory
 import factory.fuzzy
+import pytz
 
 
 class IssueFactory(factory.django.DjangoModelFactory):

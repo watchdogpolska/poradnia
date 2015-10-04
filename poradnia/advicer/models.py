@@ -1,12 +1,14 @@
 import datetime
-from django.db import models
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
-from cases.models import Case
+
 from atom.models import AttachmentBase
+from cases.models import Case
 
 
 class AbstractCategory(models.Model):

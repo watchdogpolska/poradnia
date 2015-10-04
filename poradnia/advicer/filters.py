@@ -1,7 +1,9 @@
-from django.utils.translation import ugettext_lazy as _
 import django_filters
+from django.utils.translation import ugettext_lazy as _
+
 from atom.filters import CrispyFilterMixin
 from users.filters import UserChoiceFilter
+
 from .models import Advice
 
 

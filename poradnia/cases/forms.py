@@ -1,13 +1,15 @@
 # -*- coding: utf-8 -*-
-from django import forms
-from guardian.shortcuts import assign_perm
-from django.contrib.auth import get_user_model
-from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
+import autocomplete_light
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.layout import Submit
-from atom.forms import HelperMixin, FormHorizontalMixin, SaveButtonMixin
-import autocomplete_light
+from django import forms
+from django.contrib.auth import get_user_model
+from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
+from guardian.shortcuts import assign_perm
+
+from atom.forms import FormHorizontalMixin, HelperMixin, SaveButtonMixin
+
 from .models import Case, PermissionGroup
 
 

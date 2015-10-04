@@ -1,18 +1,21 @@
 from __future__ import absolute_import
-from django.shortcuts import get_object_or_404, redirect
+
+from braces.views import LoginRequiredMixin, UserFormKwargsMixin
 from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect
 from django.utils.translation import ugettext as _
-from django.views.generic import UpdateView, TemplateView
+from django.views.generic import TemplateView, UpdateView
 from django_filters.views import FilterView
-from braces.views import UserFormKwargsMixin, LoginRequiredMixin
-from users.views import PermissionMixin
-from letters.forms import AddLetterForm
+
 from events.forms import EventForm
+from letters.forms import AddLetterForm
 from letters.helpers import AttachmentFormSet
 from records.models import Record
-from ..models import Case
-from ..forms import CaseForm, CaseGroupPermissionForm
+from users.views import PermissionMixin
+
 from ..filters import StaffCaseFilter, UserCaseFilter
+from ..forms import CaseForm, CaseGroupPermissionForm
+from ..models import Case
 
 
 class CaseDetailView(LoginRequiredMixin, TemplateView):  # TODO: Use django.views.generic.DetailView

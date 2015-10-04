@@ -1,15 +1,17 @@
 
-from django.views.generic import UpdateView, CreateView, DeleteView, DetailView
+from braces.views import (FormValidMessageMixin, LoginRequiredMixin, SelectRelatedMixin,
+                          StaffuserRequiredMixin, UserFormKwargsMixin)
 from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-from braces.views import (SelectRelatedMixin, LoginRequiredMixin, FormValidMessageMixin,
-    UserFormKwargsMixin, StaffuserRequiredMixin)
+from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
 from django_filters.views import FilterView
-from users.utils import PermissionMixin
+
 from atom.views import DeleteMessageMixin, FormInitialMixin, FormSetMixin
+from users.utils import PermissionMixin
+
 from .filters import AdviceFilter
-from .models import Advice, Attachment
 from .forms import AdviceForm, AttachmentForm
+from .models import Advice, Attachment
 
 ORDERING_TEXT = _("Ordering")
 

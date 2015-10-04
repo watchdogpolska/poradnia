@@ -1,15 +1,17 @@
+from braces.views import FormValidMessageMixin, UserFormKwargsMixin
+from django.contrib import messages
+from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
+from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
-from django.contrib import messages
 from django.views.generic import FormView
 from django.views.generic.detail import SingleObjectMixin
-from django.core.urlresolvers import reverse
-from django.contrib.auth import get_user_model
-from braces.views import UserFormKwargsMixin, FormValidMessageMixin
+
 from users.forms import TranslatedManageObjectPermissionForm, TranslatedUserObjectPermissionsForm
-from ..models import Case
+
 from ..forms import CaseGroupPermissionForm
+from ..models import Case
 
 
 def assign_perm_check(user, case):

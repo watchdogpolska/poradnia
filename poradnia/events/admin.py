@@ -1,5 +1,7 @@
 from django.contrib import admin
-from .models import Event, Alarm
+
+from .models import Alarm, Event
+
 # Register your models here.
 
 admin.site.register(Event)

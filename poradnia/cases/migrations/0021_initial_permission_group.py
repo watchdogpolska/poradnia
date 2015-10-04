@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 from django.db import migrations
 
-
 PERM_INITIAL = {'wsparcie': (u'can_add_record',
                             u'can_change_own_record',
                             u'can_view',

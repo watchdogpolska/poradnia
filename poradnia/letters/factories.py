@@ -1,8 +1,8 @@
 import factory
 import factory.fuzzy
 
-from users.factories import UserFactory
 from cases.factories import CaseFactory
+from users.factories import UserFactory
 
 
 class LetterFactory(factory.django.DjangoModelFactory):

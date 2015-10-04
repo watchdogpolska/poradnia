@@ -1,6 +1,8 @@
 import base64
-from django.utils.timezone import now
+
 from django.http import HttpResponse
+from django.utils.timezone import now
+
 from .models import Key
 
 

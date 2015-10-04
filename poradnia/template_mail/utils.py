@@ -1,8 +1,9 @@
 import sys
-from django.template import loader, Context
-from django.core.mail import get_connection
+
 from django.conf import settings
+from django.core.mail import get_connection
 from django.core.mail.message import EmailMultiAlternatives
+from django.template import Context, loader
 
 
 def send_mail_with_header(subject, message, from_email, recipient_list,

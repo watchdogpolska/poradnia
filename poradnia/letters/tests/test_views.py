@@ -1,15 +1,12 @@
-from django.test import TestCase
-
-from django.core.urlresolvers import reverse_lazy, reverse
-
 from django.core import mail
-
+from django.core.urlresolvers import reverse, reverse_lazy
+from django.test import TestCase
 from guardian.shortcuts import assign_perm
 
+from cases.factories import CaseFactory
 from cases.models import Case
 from letters.models import Letter
 from users.factories import UserFactory
-from cases.factories import CaseFactory
 
 
 class NewCaseMixin(object):

@@ -1,6 +1,7 @@
+from django.core import mail
 from django.test import TestCase
 from guardian.shortcuts import assign_perm
-from django.core import mail
+
 from users.models import User
 
 

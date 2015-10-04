@@ -1,8 +1,10 @@
 from datetime import datetime
-from django.db import models
+
 from django.conf import settings
 from django.core.urlresolvers import reverse
+from django.db import models
 from django.utils.translation import ugettext_lazy as _
+
 from records.models import AbstractRecord, AbstractRecordQuerySet
 
 

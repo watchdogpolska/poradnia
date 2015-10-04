@@ -1,22 +1,23 @@
 from re import match
+
 from django.conf import settings
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import Count, Q
+from django.db.models import Q, Count
 from django.db.models.query import QuerySet
-from django.utils.translation import ugettext_lazy as _
-from django.core.exceptions import PermissionDenied
-from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import Permission
 from django.db.models.signals import post_save
-from model_utils.managers import PassThroughManager
-from model_utils.fields import MonitorField, StatusField
+from django.utils.translation import ugettext_lazy as _
+from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
+from guardian.shortcuts import assign_perm, get_users_with_perms
 from model_utils import Choices
-from guardian.models import UserObjectPermissionBase
-from guardian.models import GroupObjectPermissionBase
-from guardian.shortcuts import get_users_with_perms, assign_perm
-from template_mail.utils import send_tpl_email
+from model_utils.fields import MonitorField, StatusField
+from model_utils.managers import PassThroughManager
+
 from cases.tags.models import Tag
+from template_mail.utils import send_tpl_email
 
 
 class CaseQuerySet(QuerySet):

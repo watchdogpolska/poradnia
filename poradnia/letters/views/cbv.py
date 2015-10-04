@@ -1,16 +1,18 @@
-from django.views.generic import CreateView
-from django.utils.translation import ugettext_lazy as _
+import django_filters
+from braces.views import (PrefetchRelatedMixin, SelectRelatedMixin, SetHeadlineMixin,
+                          UserFormKwargsMixin)
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from braces.views import UserFormKwargsMixin, SetHeadlineMixin, SelectRelatedMixin, PrefetchRelatedMixin
+from django.utils.translation import ugettext_lazy as _
+from django.views.generic import CreateView, UpdateView
 from django_filters.views import FilterView
-from django.views.generic import UpdateView
-import django_filters
+
 from atom.filters import CrispyFilterMixin
 from atom.views import FormSetMixin
 from users.utils import PermissionMixin
-from ..forms import NewCaseForm, AttachmentForm, LetterForm
-from ..models import Letter, Attachment
+
+from ..forms import AttachmentForm, LetterForm, NewCaseForm
+from ..models import Attachment, Letter
 from .fbv import REGISTRATION_TEXT
 
 

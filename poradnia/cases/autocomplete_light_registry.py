@@ -1,6 +1,8 @@
 import autocomplete_light
-from .models import Case
+
 from users.utils import AutocompletePermissionMixin
+
+from .models import Case
 
 
 class CaseAutocomplete(AutocompletePermissionMixin, autocomplete_light.AutocompleteModelBase):

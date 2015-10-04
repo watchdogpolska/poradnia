@@ -1,10 +1,13 @@
 from datetime import datetime
-from django.utils.translation import ugettext as _
-from django import forms
-from braces.forms import UserKwargModelFormMixin
+
 import autocomplete_light
+from braces.forms import UserKwargModelFormMixin
+from django import forms
+from django.utils.translation import ugettext as _
+
+from atom.forms import AuthorMixin, FormHorizontalMixin, HelperMixin, SingleButtonMixin
 from cases.models import Case
-from atom.forms import FormHorizontalMixin, SingleButtonMixin, AuthorMixin, HelperMixin
+
 from .models import Advice, Attachment
 
 

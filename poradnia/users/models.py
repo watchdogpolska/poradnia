@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 import re
-from django.contrib.auth.models import AbstractUser
-from django.db import models
-from django.db.models import Q
-from django.utils.translation import ugettext_lazy as _
-from django.core.urlresolvers import reverse
-from django.db.models.query import QuerySet
-from django.db.models import Count
-from django.contrib.auth.models import UserManager
-from guardian.mixins import GuardianUserMixin
-from template_mail.utils import send_tpl_email
-from model_utils.managers import PassThroughManagerMixin
+
 # from notifications.models import notify_handler as send
 from django.conf import settings
+from django.contrib.auth.models import AbstractUser, UserManager
+from django.core.urlresolvers import reverse
+from django.db import models
+from django.db.models import Q, Count
+from django.db.models.query import QuerySet
+from django.utils.translation import ugettext_lazy as _
+from guardian.mixins import GuardianUserMixin
+from model_utils.managers import PassThroughManagerMixin
+
+from template_mail.utils import send_tpl_email
 
 _('Username or e-mail')  # Hack to overwrite django translation
 _('Login')

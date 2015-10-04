@@ -1,26 +1,28 @@
 from __future__ import print_function
+
 import os
+
+import claw
+import html2text
+from claw import quotations
+from django.conf import settings
+from django.contrib.auth import get_user_model
+from django.core.files import File
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
-from django.conf import settings
-from django.core.urlresolvers import reverse
-from django.utils.translation import ugettext_lazy as _
-from django.core.files import File
 from django.dispatch import receiver
-from django_mailbox.signals import message_received
+from django.utils.translation import ugettext_lazy as _
 from django_mailbox.models import Message
-from django.contrib.auth import get_user_model
-from model_utils.managers import PassThroughManager
-from model_utils.fields import MonitorField, StatusField
+from django_mailbox.signals import message_received
 from model_utils import Choices
-import claw
-from claw import quotations
+from model_utils.fields import MonitorField, StatusField
+from model_utils.managers import PassThroughManager
+
+from atom.models import AttachmentBase
+from cases.models import Case
 from records.models import AbstractRecord, AbstractRecordQuerySet
 from template_mail.utils import send_tpl_email
-from cases.models import Case
-from atom.models import AttachmentBase
-import html2text
-
 
 claw.init()
 

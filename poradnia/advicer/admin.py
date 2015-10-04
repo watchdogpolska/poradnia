@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Advice, Issue, InstitutionKind, PersonKind, Area
+
+from .models import Advice, Area, InstitutionKind, Issue, PersonKind
 
 
 @admin.register(Advice)

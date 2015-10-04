@@ -1,14 +1,16 @@
-from django.forms import ModelForm
-from django import forms
-from crispy_forms.layout import Submit, BaseInput
-from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
-from django.core.exceptions import ValidationError
-from django.utils.translation import ugettext_lazy as _
 import autocomplete_light
+from crispy_forms.layout import BaseInput, Submit
+from django import forms
+from django.contrib.auth import get_user_model
+from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
+from django.forms import ModelForm
+from django.utils.translation import ugettext_lazy as _
+
+from atom.forms import GIODOMixin, HelperMixin, PartialMixin, SingleButtonMixin
 from cases.models import Case
-from atom.forms import PartialMixin, SingleButtonMixin, GIODOMixin, HelperMixin
-from .models import Letter, Attachment
+
+from .models import Attachment, Letter
 
 CLIEN_FIELD_TEXT = _("Leave empty to use email field and create a new one user.")
 

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.db.models import Count
 
-from django.db import models, migrations
+from django.db import migrations, models
+from django.db.models import Count
 
 
 def delete_empty(apps, schema_editor):
