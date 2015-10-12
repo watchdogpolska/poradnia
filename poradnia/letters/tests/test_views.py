@@ -241,11 +241,6 @@ class AddLetterTestCase(CaseMixin, TestCase):
                                 expected=Letter.STATUS.staff,
                                 send_staff="X")
 
-    def _add_random_user(self, case, staff=False):
-        user = UserFactory(is_staff=staff)
-        assign_perm('can_view', user, case)
-        return user
-
     def _test_email(self, func, status, user_notify, staff_notify=True):
         user_user = self._add_random_user(self.case, staff=False)
         user_staff = self._add_random_user(self.case, staff=True)
@@ -298,3 +293,14 @@ class SendLetterTestCase(CaseMixin, TestCase):
                   if x.extra_headers['Template'] == 'letters/email/letter_drop_a_note.txt']
         self.assertEqual(user1.email in emails, True)
         self.assertEqual(user2.email in emails, False)
+
+    def test_notify_user_about_acceptation(self):
+        user1 = self._add_random_user(staff=True, case=self.object.case)
+        user2 = self._add_random_user(staff=False, case=self.object.case)
+
+        self._test_send()
+
+        emails = [x.to[0] for x in mail.outbox
+                  if x.extra_headers['Template'] == 'letters/email/letter_send_to_client.txt']
+        self.assertEqual(user1.email in emails, True)
+        self.assertEqual(user2.email in emails, True)

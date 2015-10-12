@@ -184,7 +184,9 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
 
 
 class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
-    comment = forms.CharField(widget=forms.widgets.Textarea, label=_("Comment for staff"))
+    comment = forms.CharField(widget=forms.widgets.Textarea,
+                              label=_("Comment for staff"),
+                              required=False)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
@@ -202,12 +204,13 @@ class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
         obj.case.save()
 
         obj.send_notification(actor=self.user, verb='send_to_client')
-        msg = Letter(case=obj.case,
-                     created_by=self.user,
-                     text=self.cleaned_data['comment'],
-                     status=obj.STATUS.staff)
-        msg.save()
-        msg.send_notification(actor=self.user, verb='drop_a_note')
+        if self.cleaned_data['comment']:
+            msg = Letter(case=obj.case,
+                         created_by=self.user,
+                         text=self.cleaned_data['comment'],
+                         status=obj.STATUS.staff)
+            msg.save()
+            msg.send_notification(actor=self.user, verb='drop_a_note')
         return obj
 
     class Meta:
