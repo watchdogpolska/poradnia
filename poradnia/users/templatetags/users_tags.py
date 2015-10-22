@@ -15,5 +15,5 @@ def get_avatar_url(user, width=80, height=80, default=None):
         return get_thumbnail(user.picture, "{width}x{height}".format(width=width, height=height))
     return Gravatar(email=user.email,
                     secure=AVATAR_SSL,
-                    width=width,
+                    size=width,
                     default=default or AVATAR_DEFAULT).thumb
