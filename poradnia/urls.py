@@ -24,8 +24,6 @@ urlpatterns = patterns('',
     url(r'^uzytkownik/', include("users.urls", namespace="users")),
     url(r'^konta/', include('allauth.urls')),
 
-    # Uncomment the next line to enable avatars
-    url(r'^avatar/', include('avatar.urls')),
     # Flatpages
     url(r'^strony/', include('django.contrib.flatpages.urls')),
     url(r'^tinymce/', include('tinymce.urls')),

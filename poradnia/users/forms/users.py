@@ -12,7 +12,7 @@ class UserForm(FormHorizontalMixin, SaveButtonMixin, forms.ModelForm):
         model = get_user_model()
 
         # Constrain the UserForm to just these fields.
-        fields = ("first_name", "last_name")
+        fields = ("first_name", "last_name", 'picture')
 
 
 class ProfileForm(FormHorizontalMixin, SaveButtonMixin, forms.ModelForm):

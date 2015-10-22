@@ -6,6 +6,8 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 
+from sorl.thumbnail.admin import AdminImageMixin
+
 from .models import User
 
 
@@ -28,6 +30,6 @@ class MyUserCreationForm(UserCreationForm):
 
 
 @admin.register(User)
-class UserAdmin(AuthUserAdmin):
+class UserAdmin(AdminImageMixin, AuthUserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm

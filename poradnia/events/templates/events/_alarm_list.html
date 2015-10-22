@@ -1,8 +1,8 @@
-{% load guardian_tags crispy_forms_tags humanize avatar_tags i18n %}
+{% load guardian_tags crispy_forms_tags humanize users_tags i18n %}
 <div class="row obj_container base_sent">
     {% if not object.event.created_by.is_staff %}
     <div class="col-md-2 col-xs-2 avatar">
-        {% avatar object.event.created_by %}
+        <img src="{% get_avatar_url object.event.created_by %}">
     </div>
     {% endif %}
     <div class="col-md-10 col-xs-10">
@@ -17,7 +17,7 @@
     </div>
     {% if object.event.created_by.is_staff %}
     <div class="col-md-2 col-xs-2 avatar">
-        {% avatar object.event.created_by %}
+        <img src="{% get_avatar_url object.event.created_by %}">
     </div>
     {% endif %}
 

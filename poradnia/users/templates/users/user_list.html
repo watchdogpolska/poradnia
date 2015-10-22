@@ -1,5 +1,5 @@
 {% extends "users/base.html" %}
-{% load static i18n avatar_tags %}
+{% load static i18n users_tags %}
 
 {% block title %}{% trans 'Users index'%}{% endblock %}
 
@@ -28,7 +28,7 @@
       <div class="list-group list-group__elastic">
           {% for user in user_list %}
             <a href="{% url 'users:detail' user.username %}" class="list-group-item{%if user.is_staff%} staff{%endif%}">
-              <h4 class="list-group-item-heading">{% avatar user %} {{ user.get_nicename }}</h4>
+              <h4 class="list-group-item-heading"><img src="{% get_avatar_url user %}"> {{ user.get_nicename }}</h4>
               <p class="list-group-item-text">{% trans 'Case count' %}: {{ user.case_count }}</p>
             </a>
           {% endfor %}

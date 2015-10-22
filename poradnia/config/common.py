@@ -49,6 +49,7 @@ class Common(Configuration):
         'tinymce',
         'flatpages_tinymce',
         'tinycontent',
+        'sorl.thumbnail',
     )
 
     # Apps specific for this project go here.
@@ -274,7 +275,7 @@ class Common(Configuration):
                 'level': 'ERROR',
                 'filters': ['require_debug_false'],
                 'class': 'django.utils.log.AdminEmailHandler'
-            }
+            },
         },
         'loggers': {
             'django.request': {
