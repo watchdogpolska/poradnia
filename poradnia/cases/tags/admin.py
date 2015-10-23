@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db.models import Count
 
-from .models import Style, Tag
+from cases.tags.models import Style, Tag
 
 
 # Register your models here.

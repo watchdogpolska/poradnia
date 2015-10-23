@@ -13,9 +13,9 @@ from letters.helpers import AttachmentFormSet
 from records.models import Record
 from users.views import PermissionMixin
 
-from ..filters import StaffCaseFilter, UserCaseFilter
-from ..forms import CaseForm, CaseGroupPermissionForm
-from ..models import Case
+from cases.filters import StaffCaseFilter, UserCaseFilter
+from cases.forms import CaseForm, CaseGroupPermissionForm
+from cases.models import Case
 
 
 class CaseDetailView(LoginRequiredMixin, TemplateView):  # TODO: Use django.views.generic.DetailView

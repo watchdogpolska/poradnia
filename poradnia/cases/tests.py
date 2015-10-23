@@ -1,6 +1,8 @@
-from .factories import CaseFactory
+from cases.factories import CaseFactory
 from letters.factories import LetterFactory
+from users.factories import UserFactory
 from django.test import TestCase
+from cases.filters import StaffCaseFilter
 
 
 class CaseDetailViewTestCase(TestCase):
@@ -25,3 +27,20 @@ class CaseDetailViewTestCase(TestCase):
         self.assertNotContains(resp, obj.name)
         self.assertContains(resp, obj2.name)
 
+
+class StaffCaseFilterTestCase(TestCase):
+    def test_hide_permission(self):
+        def get_fields(user):
+            return StaffCaseFilter(user=user).form.fields
+        self.assertNotIn('permission', get_fields(UserFactory(is_staff=True)))
+        self.assertNotIn('permission', get_fields(UserFactory(is_staff=False)))
+        self.assertIn('permission', get_fields(UserFactory(is_staff=True, is_superuser=True)))
+
+    def get_permission_filter_qs(self, user, **kwargs):
+        admin = UserFactory(is_staff=True, is_superuser=True)
+        return StaffCaseFilter(user=admin, data={'permission': user.pk}).qs.filter(**kwargs)
+
+    def test_permission_filter(self):
+        obj = CaseFactory()
+        self.assertFalse(self.get_permission_filter_qs(user=UserFactory(), pk=obj.pk).exists())
+        self.assertTrue(self.get_permission_filter_qs(user=obj.created_by, pk=obj.pk).exists())
