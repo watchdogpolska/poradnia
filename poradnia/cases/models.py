@@ -108,9 +108,6 @@ class Case(models.Model):
     def get_edit_url(self):
         return reverse('cases:edit', kwargs={'pk': str(self.pk)})
 
-    def get_permission_url(self):
-        return reverse('cases:permission', kwargs={'pk': str(self.pk)})
-
     def get_users_with_perms(self, *args, **kwargs):
         return get_users_with_perms(self, with_group_users=False, *args, **kwargs)
 
@@ -120,17 +117,20 @@ class Case(models.Model):
     def get_email(self):
         return settings.PORADNIA_EMAIL_OUTPUT % self.__dict__
 
-    def get_by_email(self, email):
+    @classmethod
+    def get_by_email(cls, email):
         filter_param = match(settings.PORADNIA_EMAIL_INPUT, email)
         if not filter_param:
-            raise self.DoesNotExist
-        return self.objects.get(**filter_param.groupdict())
+            raise cls.DoesNotExist
+        return cls.objects.get(**filter_param.groupdict())
 
+    # TODO: Remove
     def perm_check(self, user, perm):
         if not (user.has_perm('cases.' + perm) or user.has_perm('cases.' + perm, self)):
             raise PermissionDenied
         return True
 
+    # TODO: Remove
     def view_perm_check(self, user):
         if not (user.has_perm('cases.can_view_all') or user.has_perm('cases.can_view', self)):
             raise PermissionDenied
@@ -187,8 +187,12 @@ class Case(models.Model):
     def status_update(self, save=True):
         if self.status == self.STATUS.closed:
             return False
-        users = get_users_with_perms(self, attach_perms=True)
-        check = any('can_send_to_client' in perm for user, perm in users.items())
+        content_type = ContentType.objects.get_for_model(Case)
+        qs = CaseUserObjectPermission.objects.filter(permission__codename='can_send_to_client',
+                                                     permission__content_type=content_type,
+                                                     content_object=self,
+                                                     user__is_staff=True)
+        check = qs.exists()
         self.status = self.STATUS.assigned if check else self.STATUS.free
         if save:
             self.save()
@@ -202,6 +206,7 @@ class Case(models.Model):
             assign_perm('can_view', self.client, self)  # assign client
             assign_perm('can_add_record', self.client, self)  # assign client
 
+    # TODO: Remove
     def send_notification(self, actor, target=None, staff=None, **context):
         qs = self.get_users_with_perms().exclude(pk=actor.pk)
         if staff is not None:
