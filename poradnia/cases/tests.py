@@ -9,7 +9,7 @@ class CaseDetailViewTestCase(TestCase):
         self.client.login(username=self.object.created_by.username, password='pass')
 
     def test_can_view(self):
-        self.client.get(self.obj.get_absolute_url())
+        self.client.get(self.object.get_absolute_url())
 
     def test_display_letter(self):
         obj = LetterFactory(case=self.object)
