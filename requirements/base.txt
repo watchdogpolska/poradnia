@@ -36,7 +36,7 @@ django-guardian==1.3
 django-notifications-hq==0.7.0
 django-mailbox==4.4.4
 claw==1.3.0
-django-filter==0.11.0
+django-filter==0.10.0
 django-autocomplete-light==2.2.10
 django-multiupload==0.5
 https://github.com/sp1ky/django-flatpages-tinymce/archive/3808a58e8f67491a4e7ed72bceca3f6d760a8c98.zip
