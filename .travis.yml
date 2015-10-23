@@ -12,6 +12,10 @@ env:
   matrix:
     - TOX_ENV=coverage-py27-dj17
     - TOX_ENV=flake8
+    - TOX_ENV=py27-dj18
+    - TOX_ENV=py27-djmaster
+    - TOX_ENV=py33-dj18
+    - TOX_ENV=py33-djmaster
 
 matrix:
   allow_failures:
