@@ -56,9 +56,13 @@ class CaseListView(PermissionMixin, FilterView):
     model = Case
     paginate_by = 25
 
-    @property
-    def filterset_class(self):
+    def get_filterset_class(self, *args, **kwargs):
         return StaffCaseFilter if self.request.user.is_staff else UserCaseFilter
+
+    def get_filterset_kwargs(self, *args, **kwargs):
+        kw = super(CaseListView, self).get_filterset_kwargs(*args, **kwargs)
+        kw['user'] = self.request.user
+        return kw
 
     def get_queryset(self, *args, **kwargs):  # TODO: Mixins
         qs = super(CaseListView, self).get_queryset(*args, **kwargs)

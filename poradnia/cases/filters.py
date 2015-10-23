@@ -18,7 +18,8 @@ class NullDateRangeFilter(django_filters.DateRangeFilter):
 
 
 class CaseFilterMixin(object):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user=None, *args, **kwargs):
+        self.user = user
         super(CaseFilterMixin, self).__init__(*args, **kwargs)
         self.filters['status'].field.choices.insert(0, ('', u'---------'))
 
@@ -31,6 +32,12 @@ class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterS
     last_send = NullDateRangeFilter(label=_("Last send"), none_label=_("No reply"))
     last_action = django_filters.DateRangeFilter(label=_("Last action"))
     handled = django_filters.BooleanFilter(label=_("Handled?"))
+    permission = UserChoiceFilter(label=_("Has access by"), action=lambda qs, x: qs.for_user(x))
+
+    def __init__(self, *args, **kwargs):
+        super(StaffCaseFilter, self).__init__(*args, **kwargs)
+        if not self.user.is_superuser:
+            del self.filters['permission']
 
     def get_order_by(self, order_choice):
         if order_choice == 'default':
