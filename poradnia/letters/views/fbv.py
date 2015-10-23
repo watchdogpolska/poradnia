@@ -1,14 +1,15 @@
-from django.shortcuts import render, get_object_or_404
-from django.http import HttpResponseRedirect
-from django.contrib.auth.decorators import login_required
-from cases.models import Case
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
 from django.utils.translation import ugettext as _
-from ..helpers import AttachmentFormSet
+
+from cases.models import Case
+
 # from crispy_forms.helper import FormHelper
 from ..forms import AddLetterForm, SendLetterForm
+from ..helpers import AttachmentFormSet
 from ..models import Letter
-
 
 REGISTRATION_TEXT = _("User  %(user)s registered! You will receive a password by mail. " +
     "Log in to get access to archive")

@@ -7,9 +7,11 @@ Production Configurations
 - Use sendgird to sendemails
 - Use MEMCACHIER on Heroku
 '''
-from configurations import values
-from .common import Common
 from os import environ
+
+from configurations import values
+
+from .common import Common
 
 
 class Production(Common):

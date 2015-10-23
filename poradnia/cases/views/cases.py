@@ -1,18 +1,21 @@
 from __future__ import absolute_import
-from django.shortcuts import get_object_or_404, redirect
+
+from braces.views import LoginRequiredMixin, UserFormKwargsMixin
 from django.contrib import messages
+from django.shortcuts import get_object_or_404, redirect
 from django.utils.translation import ugettext as _
-from django.views.generic import UpdateView, TemplateView
+from django.views.generic import TemplateView, UpdateView
 from django_filters.views import FilterView
-from braces.views import UserFormKwargsMixin, LoginRequiredMixin
-from users.views import PermissionMixin
-from letters.forms import AddLetterForm
+
 from events.forms import EventForm
+from letters.forms import AddLetterForm
 from letters.helpers import AttachmentFormSet
 from records.models import Record
-from ..models import Case
-from ..forms import CaseForm, CaseGroupPermissionForm
+from users.views import PermissionMixin
+
 from ..filters import StaffCaseFilter, UserCaseFilter
+from ..forms import CaseForm, CaseGroupPermissionForm
+from ..models import Case
 
 
 class CaseDetailView(LoginRequiredMixin, TemplateView):  # TODO: Use django.views.generic.DetailView
@@ -21,7 +24,7 @@ class CaseDetailView(LoginRequiredMixin, TemplateView):  # TODO: Use django.view
     def get_context_data(self, **kwargs):
         context = super(CaseDetailView, self).get_context_data(**kwargs)
         context = {}
-        qs = (Case.objects.prefetch_related('tags').
+        qs = (Case.objects.
               select_related('created_by').
               select_related('triggered').
               select_related('modified_by'))
@@ -39,16 +42,11 @@ class CaseDetailView(LoginRequiredMixin, TemplateView):  # TODO: Use django.view
             context['forms']['event'] = {'title': _('Event'),
                                          'form': EventForm(user=self.request.user, case=case)}
 
-        qs = (Record.objects.filter(case=case).
-            select_related('letter__created_by', 'letter', 'letter__modified_by').
-            select_related('event__created_by', 'event', 'event__modified_by').
-            select_related('event__alarm', ).
-
-            prefetch_related('letter__attachment_set', 'letter__created_by__avatar_set'))
-
-        if not self.request.user.is_staff:
-            qs = qs.for_user(self.request.user)
-
+        qs = (Record.objects.filter(case=case).for_user(self.request.user).
+              select_related('letter__created_by', 'letter', 'letter__modified_by').
+              select_related('event__created_by', 'event', 'event__modified_by').
+              select_related('event__alarm').
+              prefetch_related('letter__attachment_set', 'letter__created_by__avatar_set'))
         context['record_list'] = qs.all()
         context['casegroup_form'] = CaseGroupPermissionForm(case=case, user=self.request.user)
         return context

@@ -1,6 +1,6 @@
 from django import template
-from ..utils import get_form
 
+from ..utils import get_form
 
 register = template.Library()
 

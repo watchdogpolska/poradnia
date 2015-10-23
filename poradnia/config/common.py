@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-from os.path import join, dirname
+from os.path import dirname, join
 
 from configurations import Configuration, values
 
@@ -38,7 +38,6 @@ class Common(Configuration):
     )
     THIRD_PARTY_APPS = (
         'crispy_forms',  # Form layouts
-        'avatar',  # for user avatars
         'allauth',  # registration
         'allauth.account',  # registration
         'allauth.socialaccount',  # registration
@@ -49,6 +48,7 @@ class Common(Configuration):
         'tinymce',
         'flatpages_tinymce',
         'tinycontent',
+        'sorl.thumbnail',
     )
 
     # Apps specific for this project go here.
@@ -61,10 +61,10 @@ class Common(Configuration):
         'records',
         'events',
         'notifications_custom',
-        'pagination_custom',
         'advicer',
         'feedback_custom',
         'tasty_feedback',
+        'bootstrap_pagination',
         # Your stuff: custom apps go here
     )
 
@@ -274,7 +274,7 @@ class Common(Configuration):
                 'level': 'ERROR',
                 'filters': ['require_debug_false'],
                 'class': 'django.utils.log.AdminEmailHandler'
-            }
+            },
         },
         'loggers': {
             'django.request': {

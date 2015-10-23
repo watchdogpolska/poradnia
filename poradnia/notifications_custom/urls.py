@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django.conf.urls import patterns, url
+
 from . import views
+
 urlpatterns = patterns('notifications_custom.views',
     url(r'^$', views.NotificationListView.as_view(), name='all'),
 )

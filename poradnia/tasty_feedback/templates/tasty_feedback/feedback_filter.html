@@ -1,9 +1,9 @@
 {% extends 'tasty_feedback/base.html' %}
-{% load humanize i18n crispy_forms_tags %}
+{% load humanize i18n crispy_forms_tags bootstrap_pagination %}
 {% block breadcrumbs_rows %}
 <li class="active">{% trans 'Feedback index'%}</li>
 {% endblock %}
-{% block content %}
+{% block feedback_content %}
 <h1>{% trans 'Record feedbacks' %}</h1>
 
 {% crispy filter.form %}
@@ -32,7 +32,7 @@
             {% endfor %}
         </tbody>
     </table>
-    {% include 'pagination_custom/pager.html' with page=page_obj %}
+    <div class="text-center">{% bootstrap_paginate page_obj %}</div>
 </div>
 {% else %}
 <p>{% trans 'There is no any feedbacks.' %}</p>

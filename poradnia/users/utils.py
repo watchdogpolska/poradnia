@@ -1,6 +1,6 @@
+from braces.views import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from guardian.shortcuts import get_perms
-from braces.views import LoginRequiredMixin
 
 
 def has_perms(user, perms, obj=None, required_all=True):

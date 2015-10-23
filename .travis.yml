@@ -23,3 +23,6 @@ install:
   - pip install tox
 script:
   - tox -e $TOX_ENV
+
+notifications:
+  slack: watchdogpolska:mQq180xGu9UcuJgK73hVWECD

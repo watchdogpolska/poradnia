@@ -1,7 +1,7 @@
 from os.path import splitext
+
 from django import template
 from django.template.defaultfilters import stringfilter
-
 
 register = template.Library()
 

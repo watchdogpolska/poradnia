@@ -1,5 +1,5 @@
-from tasty_feedback.forms import FeedbackForm
 from atom.forms import FormHorizontalMixin, SingleButtonMixin
+from tasty_feedback.forms import FeedbackForm
 
 
 class CustomFeedbackForm(FormHorizontalMixin, SingleButtonMixin, FeedbackForm):

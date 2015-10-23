@@ -1,5 +1,5 @@
-import string
 import random
+import string
 
 
 def make_random_password(length=75):

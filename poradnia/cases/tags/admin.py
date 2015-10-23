@@ -1,6 +1,9 @@
 from django.contrib import admin
 from django.db.models import Count
-from .models import Tag, Style
+
+from .models import Style, Tag
+
+
 # Register your models here.
 
 

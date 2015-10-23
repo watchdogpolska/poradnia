@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-
-from django.template import Context, loader
-from django.http import HttpResponseServerError
 from django.conf import settings
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, patterns, url
 from django.conf.urls.static import static
-from django.views.generic import TemplateView
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
+from django.http import HttpResponseServerError
+from django.template import Context, loader
+from django.views.generic import TemplateView
+
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -24,8 +24,6 @@ urlpatterns = patterns('',
     url(r'^uzytkownik/', include("users.urls", namespace="users")),
     url(r'^konta/', include('allauth.urls')),
 
-    # Uncomment the next line to enable avatars
-    url(r'^avatar/', include('avatar.urls')),
     # Flatpages
     url(r'^strony/', include('django.contrib.flatpages.urls')),
     url(r'^tinymce/', include('tinymce.urls')),

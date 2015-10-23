@@ -1,7 +1,10 @@
+from __future__ import absolute_import
+from django.core import mail
 from django.test import TestCase
 from guardian.shortcuts import assign_perm
-from django.core import mail
+from users.factories import UserFactory
 from users.models import User
+from users.forms import UserForm
 
 
 class UserTestCase(TestCase):
@@ -20,18 +23,13 @@ class UserTestCase(TestCase):
 
     def test_email_to_username(self):
         self._create_user('example@example.com', 'example_example_com')
-        self._create_user('example@example.com', 'example_example_com-1')
-        self._create_user('example@example.com', 'example_example_com-2')
-        self._create_user('example@example.com', 'example_example_com-3')
-        self._create_user('example@example.com', 'example_example_com-4')
-        self._create_user('example@example.com', 'example_example_com-5')
-        self._create_user('example@example.com', 'example_example_com-6')
-        self._create_user('example@example.com', 'example_example_com-7')
-        self._create_user('example@example.com', 'example_example_com-8')
-        self._create_user('example@example.com', 'example_example_com-9')
-        self._create_user('example@example.com', 'example_example_com-10')
+        for i in range(1, 11):
+            self._create_user('example@example.com', 'example_example_com-' + str(i))
         with self.assertRaises(ValueError):
             self._create_user('example@example.com', 'example_example_com-11')
+
+    def test_has_picture(self):
+        self.assertTrue(UserFactory().picture)
 
 
 class UserQuerySetTestCase(TestCase):
@@ -56,3 +54,8 @@ class UserQuerySetTestCase(TestCase):
 
     def test_register_email_notify(self):
         self._register_email_count(notify=False, count=0)
+
+
+class UserFormTestCase(TestCase):
+    def test_has_avatar(self):
+        self.assertIn('picture', UserForm().fields)

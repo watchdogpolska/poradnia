@@ -1,6 +1,6 @@
-from django.utils.module_loading import import_string
 from django.conf import settings
 from django.core.mail.message import EmailMultiAlternatives
+from django.utils.module_loading import import_string
 
 
 def get_form(genre='submit'):

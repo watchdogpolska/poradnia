@@ -1,9 +1,10 @@
-from django.forms import ModelForm
-from django.utils.translation import ugettext as _
-from django.core.urlresolvers import reverse
+from braces.forms import UserKwargModelFormMixin
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from braces.forms import UserKwargModelFormMixin
+from django.core.urlresolvers import reverse
+from django.forms import ModelForm
+from django.utils.translation import ugettext as _
+
 from .models import Feedback
 
 

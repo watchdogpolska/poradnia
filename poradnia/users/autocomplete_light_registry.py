@@ -1,6 +1,8 @@
 import autocomplete_light
-from .models import User
+
 from users.utils import AutocompletePermissionMixin
+
+from .models import User
 
 
 class UserAutocomplete(AutocompletePermissionMixin, autocomplete_light.AutocompleteModelBase):

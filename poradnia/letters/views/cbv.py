@@ -1,13 +1,18 @@
-from django.views.generic import CreateView
-from django.utils.translation import ugettext_lazy as _
+import django_filters
+from braces.views import (PrefetchRelatedMixin, SelectRelatedMixin, SetHeadlineMixin,
+                          UserFormKwargsMixin)
 from django.contrib import messages
 from django.http import HttpResponseRedirect
-from braces.views import UserFormKwargsMixin, SetHeadlineMixin, SelectRelatedMixin, PrefetchRelatedMixin
-from django.views.generic import UpdateView, ListView
+from django.utils.translation import ugettext_lazy as _
+from django.views.generic import CreateView, UpdateView
+from django_filters.views import FilterView
+
+from atom.filters import CrispyFilterMixin
 from atom.views import FormSetMixin
 from users.utils import PermissionMixin
-from ..forms import NewCaseForm, AttachmentForm, LetterForm
-from ..models import Letter, Attachment
+
+from ..forms import AttachmentForm, LetterForm, NewCaseForm
+from ..models import Attachment, Letter
 from .fbv import REGISTRATION_TEXT
 
 
@@ -22,10 +27,11 @@ class NewCaseCreateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Cre
     def formset_valid(self, form, formset, *args, **kwargs):
         formset.save()
         messages.success(self.request,
-            _("Case about %(object)s created!") % {'object': self.object.name, })
-        if self.object.created_by != self.object.client and not self.request.user.is_anonymous():
-            self.object.client.notify(actor=self.request.user, verb='created',
-                from_email=self.object.case.get_email())
+                         _("Case about {object} created!").format(object=self.object.name))
+        self.object.client.notify(actor=self.object.created_by,
+                                  verb='registered',
+                                  target=self.object.case,
+                                  from_email=self.object.case.get_email())
         if self.request.user.is_anonymous():
             messages.success(self.request, _(REGISTRATION_TEXT) % {'user': self.object.created_by})
         return HttpResponseRedirect(self.object.case.get_absolute_url())
@@ -67,7 +73,27 @@ class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Upda
         return resp
 
 
-class LetterListView(PermissionMixin, SelectRelatedMixin, PrefetchRelatedMixin, ListView):
+class StaffLetterFilter(CrispyFilterMixin, django_filters.FilterSet):
+    def __init__(self, *args, **kwargs):
+        super(StaffLetterFilter, self).__init__(*args, **kwargs)
+        self.filters['status'].field.choices.insert(0, ('', u'---------'))
+
+    class Meta:
+        model = Letter
+        fields = ['status', ]
+
+
+class UserLetterFilter(CrispyFilterMixin, django_filters.FilterSet):
+    class Meta:
+        model = Letter
+        fields = []
+
+
+class LetterListView(PermissionMixin, SelectRelatedMixin, PrefetchRelatedMixin, FilterView):
+    @property
+    def filterset_class(self):
+        return StaffLetterFilter if self.request.user.is_staff else UserLetterFilter
+
     model = Letter
     paginate_by = 5
     select_related = ['created_by', 'modified_by', 'case']

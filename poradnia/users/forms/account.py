@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
+from crispy_forms.bootstrap import PrependedText
+from crispy_forms.layout import Layout, Submit
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
-from crispy_forms.layout import Layout, Submit
-from crispy_forms.bootstrap import PrependedText
+
 from atom.forms import FormHorizontalMixin, GIODOMixin
 
 

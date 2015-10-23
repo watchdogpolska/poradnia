@@ -14,6 +14,7 @@ django-model-utils==2.3.1
 
 # images
 Pillow==3.0.0
+sorl-thumbnail==12.3
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
@@ -27,8 +28,6 @@ unicode-slugify==0.1.3
 django-autoslug==1.9.3
 
 # Useful things
-# django-avatar==2.0
-https://github.com/watchdogpolska/django-avatar/archive/73ad17491ec8fd56e57427fb8aea1a032e02b29b.zip
 # Time zones support
 pytz==2015.6
 
@@ -46,3 +45,5 @@ django-tinymce==2.0.5
 django-tinycontent==0.5.1
 icalendar==3.9.1
 html2text==2015.6.21
+pyGravatar==0.0.6
+django-bootstrap-pagination==1.5.1

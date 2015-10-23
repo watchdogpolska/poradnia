@@ -1,13 +1,29 @@
-from django.forms import ModelForm
+import autocomplete_light
+from crispy_forms.layout import BaseInput, Submit
 from django import forms
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
 from django.core.exceptions import ValidationError
+from django.core.urlresolvers import reverse
+from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
-import autocomplete_light
+
+from atom.forms import GIODOMixin, HelperMixin, PartialMixin, SingleButtonMixin
 from cases.models import Case
-from atom.forms import PartialMixin, SingleButtonMixin,  GIODOMixin
-from .models import Letter, Attachment
+
+from .models import Attachment, Letter
+
+CLIEN_FIELD_TEXT = _("Leave empty to use email field and create a new one user.")
+
+EMAIL_TEXT = _("""The user account will be created automatically, so you have
+access to the archive and data about persons responsible for the case.""")
+
+CASE_NAME_TEXT = _(""""Short description of the case for organizational purposes.
+The institution name and two words will suffice.""")
+
+
+class SimpleSubmit(BaseInput):
+    input_type = 'submit'
+    field_classes = 'btn'
 
 
 class UserEmailField(forms.EmailField):
@@ -28,26 +44,28 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, autocomplete_ligh
     attachment_file_field = 'attachment'
     action_text = _("Report case")
 
-    client = forms.ModelChoiceField(queryset=get_user_model().objects.none(), label=_("Client"),
-        required=False, help_text=_("Leave empty to use email field and create a new one user."),
-        widget=autocomplete_light.ChoiceWidget('UserAutocomplete'))
-    email = forms.EmailField(required=False, label=_("User e-mail"))
-    email_registration = UserEmailField(required=True, help_text=_("The user account will be " +
-    "created automatically, so you have access to the archive and data about persons " +
-    "responsible for the case."), label=_("E-mail"))
+    client = forms.ModelChoiceField(queryset=get_user_model().objects.none(),
+                                    label=_("Client"),
+                                    required=False,
+                                    help_text=CLIEN_FIELD_TEXT,
+                                    widget=autocomplete_light.ChoiceWidget('UserAutocomplete'))
+    email = forms.EmailField(required=False,
+                             label=_("User e-mail"))
+    email_registration = UserEmailField(required=True,
+                                        help_text=EMAIL_TEXT,
+                                        label=_("E-mail"))
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         super(NewCaseForm, self).__init__(*args, **kwargs)
         self.helper.form_tag = False
         self.helper.form_method = 'post'
-        self.fields['name'].help_text = _("Short description of the case for organizational " +
-            "purposes. The institution name and two words will suffice.")
+        self.fields['name'].help_text = CASE_NAME_TEXT
 
         if self._is_super_staff():
             self.fields['client'].initial = self.user
             self.fields['client'].queryset = (get_user_model().objects.
-                for_user(self.user).all())
+                                              for_user(self.user).all())
         else:
             del self.fields['client']
             del self.fields['email']
@@ -67,7 +85,7 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, autocomplete_ligh
         if self.user.has_perm('cases.can_select_client') and \
                 not (self.cleaned_data.get('email') or self.cleaned_data.get('client')):
             raise ValidationError(_("Have to enter user email or select a client"))
-        return self.cleaned_data
+        return super(NewCaseForm, self).clean()
 
     def get_user(self):
         if self.user.is_anonymous():
@@ -78,7 +96,6 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, autocomplete_ligh
     def get_client(self, user):
         if self.user.is_anonymous() and self.cleaned_data['email_registration']:
             return user
-
         if not self.user.has_perm('cases.can_select_client'):
             return self.user
         elif self.cleaned_data['client']:
@@ -109,35 +126,67 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, autocomplete_ligh
         model = Letter
 
 
-class AddLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
+class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         self.case = kwargs.pop('case')
+        self.user_can_send = self.user.has_perm('cases.can_send_to_client', self.case)
         super(AddLetterForm, self).__init__(*args, **kwargs)
         self.helper.form_action = reverse('letters:add', kwargs={'case_pk': self.case.pk})
         self.helper.form_tag = False
+        self._add_buttons()
         self.fields['name'].initial = "Odp: %s" % (self.case)
-        if not self.user.has_perm('cases.can_send_to_client'):
-            del self.fields['status']
+
+    def _add_buttons(self):
+        if self.user_can_send:
+            self.helper.add_input(Submit(name='send',
+                                         value=_("Reply to all"),
+                                         css_class="btn-primary"))
+            self.helper.add_input(SimpleSubmit(name='send_staff',
+                                               input_type='submit',
+                                               value=_("Reply to staff"),
+                                               css_class="btn-default"))
+        else:
+            if self.user.is_staff:
+                self.helper.add_input(Submit(name='send',
+                                             value=_("Reply to staff"),
+                                             css_class="btn-primary"))
+            else:
+                self.helper.add_input(Submit(name='send',
+                                             value=_("Reply"),
+                                             css_class="btn-primary"))
+
+    def get_status(self):
+        if self.user.is_staff:
+            if self.user_can_send:
+                if 'send_staff' in self.data:
+                    return Letter.STATUS.staff
+                return Letter.STATUS.done
+            return Letter.STATUS.staff
+        return Letter.STATUS.done
 
     def save(self, commit=True, *args, **kwargs):
         obj = super(AddLetterForm, self).save(commit=False, *args, **kwargs)
-        if not self.user.has_perm('cases.can_send_to_client'):  # if user or student
-            obj.status = obj.STATUS.staff if self.user.is_staff else obj.STATUS.done
+        obj.status = self.get_status()
         obj.created_by = self.user
         obj.case = self.case
+        if obj.status == obj.STATUS.done:
+            self.case.handled = True if self.user.is_staff else False
+            self.case.save()
         if commit:
             obj.save()
         return obj
 
     class Meta:
-        fields = ['name', 'text', 'status']
+        fields = ['name', 'text']
         model = Letter
 
 
 class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
-    comment = forms.CharField(widget=forms.widgets.Textarea, label=_("Comment for staff"))
+    comment = forms.CharField(widget=forms.widgets.Textarea,
+                              label=_("Comment for staff"),
+                              required=False)
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
@@ -150,11 +199,18 @@ class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
         obj.modified_by = self.user
         obj.status = obj.STATUS.done
         obj.save()
+
+        obj.case.handled = True
+        obj.case.save()
+
         obj.send_notification(actor=self.user, verb='send_to_client')
-        msg = Letter(case=obj.case, created_by=self.user, text=self.cleaned_data['comment'],
-            status=obj.STATUS.staff)
-        msg.save()
-        msg.send_notification(actor=self.user, verb='drop_a_note', staff=True)
+        if self.cleaned_data['comment']:
+            msg = Letter(case=obj.case,
+                         created_by=self.user,
+                         text=self.cleaned_data['comment'],
+                         status=obj.STATUS.staff)
+            msg.save()
+            msg.send_notification(actor=self.user, verb='drop_a_note')
         return obj
 
     class Meta:

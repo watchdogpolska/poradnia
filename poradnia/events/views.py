@@ -1,20 +1,23 @@
 import locale
+
+from braces.views import (FormValidMessageMixin, LoginRequiredMixin, SelectRelatedMixin,
+                          UserFormKwargsMixin)
 from dateutil.relativedelta import relativedelta
-from django.utils.html import mark_safe
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
-from django.utils.translation import ugettext as _
-from django.views.generic import MonthArchiveView, ArchiveIndexView, CreateView, UpdateView
-from django.views.generic.list import BaseListView
-from django.utils.timezone import now
 from django.conf import settings
-from braces.views import (SelectRelatedMixin, LoginRequiredMixin, UserFormKwargsMixin,
-    FormValidMessageMixin)
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.utils.html import mark_safe
+from django.utils.timezone import now
+from django.utils.translation import ugettext as _
+from django.views.generic import ArchiveIndexView, CreateView, MonthArchiveView, UpdateView
+from django.views.generic.list import BaseListView
+
 from cases.models import Case
-from users.utils import PermissionMixin
 from keys.mixins import KeyAuthMixin
-from .models import Event
+from users.utils import PermissionMixin
+
 from .forms import EventForm
+from .models import Event
 from .utils import EventCalendar
 
 

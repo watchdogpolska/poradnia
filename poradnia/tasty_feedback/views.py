@@ -1,12 +1,12 @@
-from django_filters.views import FilterView
-from django.views.generic import DetailView, DeleteView, CreateView
-from braces.views import SelectRelatedMixin
-from django.http import HttpResponseRedirect
-from django.core.urlresolvers import reverse_lazy
-from django.utils.translation import ugettext as _
+from braces.views import (FormValidMessageMixin, LoginRequiredMixin, PermissionRequiredMixin,
+                          SelectRelatedMixin, UserFormKwargsMixin)
 from django.contrib import messages
-from braces.views import (UserFormKwargsMixin, FormValidMessageMixin, PermissionRequiredMixin,
-    LoginRequiredMixin)
+from django.core.urlresolvers import reverse_lazy
+from django.http import HttpResponseRedirect
+from django.utils.translation import ugettext as _
+from django.views.generic import CreateView, DeleteView, DetailView
+from django_filters.views import FilterView
+
 from .models import Feedback
 from .utils import get_filter, get_form
 

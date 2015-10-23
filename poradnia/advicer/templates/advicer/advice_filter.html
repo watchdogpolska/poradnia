@@ -1,5 +1,5 @@
 {% extends 'advicer/base.html' %}
-{% load humanize i18n crispy_forms_tags %}
+{% load humanize i18n crispy_forms_tags bootstrap_pagination %}
 {% block breadcrumbs_rows %}
     <li class="active">{% trans 'Advice index'%}</li>
 {% endblock %}
@@ -46,7 +46,9 @@
                 {% endfor %}
             </tbody>
         </table>
-        {% include 'pagination_custom/pager.html' with page=page_obj %}
+        <div class="text-center">
+            {% bootstrap_paginate page_obj %}
+        </div>
     </div>
 </div>
 {% else %}

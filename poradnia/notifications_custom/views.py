@@ -1,5 +1,5 @@
+from braces.views import LoginRequiredMixin, PrefetchRelatedMixin, SelectRelatedMixin
 from django.views.generic import TemplateView
-from braces.views import SelectRelatedMixin, PrefetchRelatedMixin, LoginRequiredMixin
 
 
 class NotificationListView(SelectRelatedMixin, PrefetchRelatedMixin, LoginRequiredMixin,

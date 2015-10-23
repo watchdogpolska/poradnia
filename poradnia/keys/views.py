@@ -1,13 +1,15 @@
-from django.views.generic import CreateView, DeleteView, ListView, DetailView
-from django.core.urlresolvers import reverse_lazy as reverse
-from django.utils.translation import ugettext_lazy as _
-from django.utils.timezone import now
 from braces.views import UserFormKwargsMixin
-from users.utils import PermissionMixin
-from atom.views import DeleteMessageMixin
-from .models import Key
-from .forms import KeyForm
 from django.contrib import messages
+from django.core.urlresolvers import reverse_lazy as reverse
+from django.utils.timezone import now
+from django.utils.translation import ugettext_lazy as _
+from django.views.generic import CreateView, DeleteView, DetailView, ListView
+
+from atom.views import DeleteMessageMixin
+from users.utils import PermissionMixin
+
+from .forms import KeyForm
+from .models import Key
 
 
 class KeyCreateView(PermissionMixin, UserFormKwargsMixin, CreateView):

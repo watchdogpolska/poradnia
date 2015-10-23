@@ -30,6 +30,7 @@ $block-list-inidicator-color: $block-list-link-color !default;
 		display: block;
 		transition: .4s background-color;
 		padding: $block-list-item-padding-vertical $block-list-item-padding-horizontal;
+		word-wrap: break-all;
 		> a {
 			display: block;
 			color: $block-list-link-color;
@@ -98,6 +99,7 @@ $block-list-inidicator-color: $block-list-link-color !default;
 		transform: none;
 		height: 100%;
 		top: 0;
+		max-width: 240px;
 	}
 	body.show-sidebar &{
 		transform: none;

@@ -1,28 +1,29 @@
-from django.db import models
-
+from django.contrib.contenttypes import generic
 from django.contrib.contenttypes.fields import GenericRelation
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes import generic
-from django.utils.translation import ugettext_lazy as _
-from django.db.models.query import QuerySet
+from django.db import models
 from django.db.models import Q
+from django.db.models.query import QuerySet
+from django.utils.translation import ugettext_lazy as _
 from model_utils.managers import PassThroughManager
-from cases.models import Case, CaseUserObjectPermission
+
+from cases.models import Case
 
 
 class RecordQuerySet(QuerySet):
+    def _for_user_by_view(self, user):
+        if user.has_perm('cases.can_view_all'):
+            return self
+        content_type = ContentType.objects.get_for_model(Case)
+        return self.filter(case__caseuserobjectpermission__permission__codename='can_view',
+                           case__caseuserobjectpermission__permission__content_type=content_type,
+                           case__caseuserobjectpermission__user=user)
+
     def for_user(self, user):
-        qs = self
-        if not user.has_perm('cases.can_view_all'):
-            case_list = (CaseUserObjectPermission.objects.
-                filter(user=user).
-                filter(permission__codename='can_view').
-                filter(permission__content_type=ContentType.objects.get_for_model(Case)).
-                values('content_object_id'))
-            qs = qs.filter(case__in=case_list)
+        qs = self._for_user_by_view(user)
         if user.is_staff:
             return qs
-        return qs.filter(Q(event=None) & Q(event=None) & Q(letter__status='done'))
+        return qs.filter(Q(event=None) & Q(alarm=None) & Q(letter__status='done'))
 
 
 class Record(models.Model):
@@ -72,15 +73,12 @@ class Record(models.Model):
 
 class AbstractRecordQuerySet(QuerySet):
     def for_user(self, user):
-        qs = self
-        if not user.has_perm('cases.can_view_all'):
-            case_list = (CaseUserObjectPermission.objects.
-                filter(user=user).
-                filter(permission__codename='can_view').
-                filter(permission__content_type=ContentType.objects.get_for_model(Case)).
-                values('content_object_id'))
-            qs = qs.filter(case__in=case_list)
-        return qs
+        if user.has_perm('cases.can_view_all'):
+            return self
+        content_type = ContentType.objects.get_for_model(Case)
+        return self.filter(case__caseuserobjectpermission__permission__codename='can_view',
+                           case__caseuserobjectpermission__permission__content_type=content_type,
+                           case__caseuserobjectpermission__user=user)
 
 
 class AbstractRecord(models.Model):

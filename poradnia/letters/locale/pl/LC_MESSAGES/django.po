@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: letter 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-08-25 06:31+0200\n"
-"PO-Revision-Date: 2015-08-25 06:32+0100\n"
+"POT-Creation-Date: 2015-09-26 21:21+0200\n"
+"PO-Revision-Date: 2015-09-26 21:21+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -19,110 +19,124 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: forms.py:19
-#, python-format
-msgid "E-mail %(email)s are already used. Please log in."
-msgstr "Adres e-mail %(email)s jest aktualnie w użyciu. Proszę, zaloguj się."
-
-#: forms.py:29
-msgid "Report case"
-msgstr "Zgłoś sprawę"
-
-#: forms.py:31
-msgid "Client"
-msgstr "Klient"
-
-#: forms.py:32
+#: forms.py:13
 msgid "Leave empty to use email field and create a new one user."
 msgstr ""
 "Pozostaw puste, aby wykorzystać pole adresu e-mail i utworzyć nowego "
 "użytkownika."
 
-#: forms.py:34
-msgid "User e-mail"
-msgstr "E-mail użytkownika"
-
-#: forms.py:35
+#: forms.py:15
 msgid ""
-"The user account will be created automatically, so you have access to the "
-"archive and data about persons responsible for the case."
+"The user account will be created automatically, so you have\n"
+"access to the archive and data about persons responsible for the case."
 msgstr ""
 "Konto użytkownika zostanie utworzone automatycznie, dzięki czemu będziesz "
 "mieć dostęp do archiwum zawierającego wszystkie Twoje sprawy."
 
-#: forms.py:37
-msgid "E-mail"
-msgstr "E-mail"
-
-#: forms.py:44
+#: forms.py:18
 msgid ""
-"Short description of the case for organizational purposes. The institution "
-"name and two words will suffice."
+"\"Short description of the case for organizational purposes.\n"
+"The institution name and two words will suffice."
 msgstr ""
 "Podaj nazwę instytucji i typ problemu np. „brak odpowiedzi”, „ochrona danych "
 "osobowych” itp."
 
-#: forms.py:69
+#: forms.py:33
+#, python-format
+msgid "E-mail %(email)s are already used. Please log in."
+msgstr "Adres e-mail %(email)s jest aktualnie w użyciu. Proszę, zaloguj się."
+
+#: forms.py:43
+msgid "Report case"
+msgstr "Zgłoś sprawę"
+
+#: forms.py:46
+msgid "Client"
+msgstr "Klient"
+
+#: forms.py:51
+msgid "User e-mail"
+msgstr "E-mail użytkownika"
+
+#: forms.py:54
+msgid "E-mail"
+msgstr "E-mail"
+
+#: forms.py:85
 msgid "Have to enter user email or select a client"
 msgstr "Musisz podać adres e-mail klienta lub go wybrać z bazy."
 
-#: forms.py:140
+#: forms.py:142
+#| msgid "Send to all"
+msgid "Reply to all"
+msgstr "Odpowiedź wszystkim"
+
+#: forms.py:146 forms.py:151
+#| msgid "Send to staff"
+msgid "Reply to staff"
+msgstr "Odpowiedź dla zespołu"
+
+#: forms.py:155
+msgid "Reply"
+msgstr "Odpowiedź"
+
+#: forms.py:185
 msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
-#: models.py:34
+#: models.py:47
 msgid "Staff"
 msgstr "Zespół"
 
-#: models.py:34
+#: models.py:47
 msgid "Done"
 msgstr "Wykonane"
 
-#: models.py:39
+#: models.py:52
 msgid "Accepted on"
 msgstr "Zaakceptowane o"
 
-#: models.py:40
+#: models.py:53
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: models.py:41
+#: models.py:54
 msgid "Text"
 msgstr "Treść"
 
-#: models.py:42
+#: models.py:55
 msgid "Signature"
 msgstr "Podpis"
 
-#: models.py:44
+#: models.py:57
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:45
+#: models.py:58
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:47
+#: models.py:60
 msgid "Modified by"
 msgstr "Zmienione o"
 
-#: models.py:51
+#: models.py:64
 msgid "Modified on"
 msgstr "Zmienione przez"
 
-#: models.py:54
+#: models.py:67
 msgid "Raw message contents"
 msgstr "Treść surowej wiadomości"
 
-#: models.py:57
+#: models.py:70
 msgid "Original full content of message"
 msgstr "Oryginalna, pełna treść wiadomości"
 
-#: models.py:87
+#: models.py:105
 msgid "Letter"
 msgstr "List"
 
-#: models.py:88
+#: models.py:106
 msgid "Letters"
 msgstr "Listy"
 
@@ -152,7 +166,7 @@ msgstr ""
 "            "
 
 #: templates/letters/_letter_list.html:32 templates/letters/form_edit.html:6
-#: views/cbv.py:37
+#: views/cbv.py:41
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -168,18 +182,18 @@ msgstr "Dodaj"
 msgid "New case"
 msgstr "Nowa sprawa"
 
-#: templates/letters/letter_list.html:5
+#: templates/letters/letter_filter.html:5
 msgid "Letter list"
 msgstr "Rejestr korespondencji"
 
-#: views/cbv.py:17
+#: views/cbv.py:20
 msgid "Create a new case"
 msgstr "Tworzenie nowej sprawy"
 
-#: views/cbv.py:25
-#, python-format
-msgid "Case about %(object)s created!"
-msgstr "Sprawa o tytule %(object)s została zarejestrowana!"
+#: views/cbv.py:28
+#, python-brace-format
+msgid "Case about {object} created!"
+msgstr "Sprawa o tytule {object} została zarejestrowana!"
 
 #: views/fbv.py:13
 #, python-format
