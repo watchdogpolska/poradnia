@@ -15,7 +15,7 @@ class CaseTestCase(TestCase):
         self.object = CaseFactory()
 
     def test_get_edit_url(self):
-        self.assertEqual(self.object.get_edit_url(), '/sprawy/sprawa-1/edytuj/')
+        self.assertEqual(CaseFactory(pk=50).get_edit_url(), '/sprawy/sprawa-50/edytuj/')
 
     @override_settings(PORADNIA_EMAIL_INPUT='case-(?P<pk>\d+)@example.com')
     def test_get_by_email(self):
@@ -55,6 +55,8 @@ class CaseTestCase(TestCase):
         self.object.status = Case.STATUS.closed
         self.object.status_update()
         self.assertEqual(self.object.status, Case.STATUS.closed)
+        self.object.status_update(reopen=True)
+        self.assertEqual(self.object.status, Case.STATUS.free)
 
 
 class CaseDetailViewTestCase(TestCase):

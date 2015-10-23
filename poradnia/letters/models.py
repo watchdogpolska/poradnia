@@ -162,7 +162,7 @@ def mail_process(sender, message, **args):
         text = html2text.html2text(quotations.extract_from(message.html, 'text/html'))
         signature = message.text.replace(text, '')
 
-    # Calculate status
+    # Calculate letter status
     if user.is_staff:
         if user.has_perm('cases.can_send_to_client', case):
             status = Letter.STATUS.done
@@ -171,6 +171,12 @@ def mail_process(sender, message, **args):
     else:
         status = Letter.STATUS.done
 
+    # Update case status (re-open)
+    if not user.is_staff and case.status == Case.STATUS.closed:
+        case.status_update(reopen=True)
+    if user.is_staff:
+        case.handled = True
+        case.save()
     obj = Letter(name=message.subject,
                  created_by=user,
                  case=case,
@@ -180,9 +186,6 @@ def mail_process(sender, message, **args):
                  signature=signature,
                  eml=message.eml)
     obj.save()
-    if user.is_staff:
-        case.handled = True
-        case.save()
 
     print("Letter: ", obj)
     # Convert attachments

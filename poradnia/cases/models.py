@@ -184,8 +184,8 @@ class Case(models.Model):
         if save:
             self.save()
 
-    def status_update(self, save=True):
-        if self.status == self.STATUS.closed:
+    def status_update(self, reopen=False, save=True):
+        if self.status == self.STATUS.closed and not reopen:
             return False
         content_type = ContentType.objects.get_for_model(Case)
         qs = CaseUserObjectPermission.objects.filter(permission__codename='can_send_to_client',

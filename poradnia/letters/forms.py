@@ -174,6 +174,8 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         if obj.status == obj.STATUS.done:
             self.case.handled = True if self.user.is_staff else False
             self.case.save()
+        if not self.user.is_staff and self.case.status == Case.STATUS.closed:
+            self.case.status_update(reopen=True)
         if commit:
             obj.save()
         return obj
