@@ -61,10 +61,10 @@ class Common(Configuration):
         'records',
         'events',
         'notifications_custom',
-        'pagination_custom',
         'advicer',
         'feedback_custom',
         'tasty_feedback',
+        'bootstrap_pagination',
         # Your stuff: custom apps go here
     )
 

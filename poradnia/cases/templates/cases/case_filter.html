@@ -1,5 +1,5 @@
 {% extends "cases/base.html" %}
-{% load crispy_forms_tags humanize i18n cases_tags %}
+{% load crispy_forms_tags humanize i18n cases_tags bootstrap_pagination %}
 
 {% block extra_css %}
 <style>
@@ -66,8 +66,11 @@
     {% endfor %}
   </tbody>
 </table>
-<p>{% trans 'Legend of status' %} <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title='{% trans 'Cases have status changed by staff.'%}'></i>: {% for status in statuses %}<span class="label label-success"><i class="{{status.0|status2css}}"></i> {{status.0|status2display}}</span> {% endfor %}
-{% include 'pagination_custom/pager.html' with page=page_obj %}
+<p>{% trans 'Legend of status' %} <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title='{% trans 'Cases have status changed by staff.'%}'></i>: {% for status in statuses %}<span class="label label-success"><i class="{{status.0|status2css}}"></i> {{status.0|status2display}}</span> {% endfor %}</p>
+<div class="text-center">
+    {% bootstrap_paginate page_obj %}
+</div>
+
 {% else %}
 <p>{% trans 'There is no cases.' %}<a href="{% url 'letters:add' %}">{% trans 'Do more of these!' %}</a></p>
 {% endif %}

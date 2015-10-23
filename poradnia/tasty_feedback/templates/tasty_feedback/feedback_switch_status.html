@@ -5,7 +5,7 @@
 <li class="active">{% trans 'Switch status' %}</li>
 {% endblock %}
 
-{% block content %}
+{% block feedback_content %}
 <form method="POST">
     <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
     <input type="submit" class="btn btn-primary" value="{% trans 'Switch status' %}">
