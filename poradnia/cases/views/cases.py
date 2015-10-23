@@ -46,7 +46,7 @@ class CaseDetailView(LoginRequiredMixin, TemplateView):  # TODO: Use django.view
               select_related('letter__created_by', 'letter', 'letter__modified_by').
               select_related('event__created_by', 'event', 'event__modified_by').
               select_related('event__alarm').
-              prefetch_related('letter__attachment_set', 'letter__created_by__avatar_set'))
+              prefetch_related('letter__attachment_set'))
         context['record_list'] = qs.all()
         context['casegroup_form'] = CaseGroupPermissionForm(case=case, user=self.request.user)
         return context
