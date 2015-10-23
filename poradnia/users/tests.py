@@ -2,9 +2,9 @@ from __future__ import absolute_import
 from django.core import mail
 from django.test import TestCase
 from guardian.shortcuts import assign_perm
-from .factories import UserFactory
+from users.factories import UserFactory
 from users.models import User
-from .forms import UserForm
+from users.forms import UserForm
 
 
 class UserTestCase(TestCase):
@@ -23,7 +23,7 @@ class UserTestCase(TestCase):
 
     def test_email_to_username(self):
         self._create_user('example@example.com', 'example_example_com')
-        for i in range(1, 10):
+        for i in range(1, 11):
             self._create_user('example@example.com', 'example_example_com-' + str(i))
         with self.assertRaises(ValueError):
             self._create_user('example@example.com', 'example_example_com-11')
