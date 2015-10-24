@@ -1,11 +1,12 @@
 from __future__ import absolute_import
 from django.core import mail
 from django.core.urlresolvers import reverse_lazy
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from guardian.shortcuts import assign_perm
 from users.factories import UserFactory
 from users.models import User
 from users.forms import UserForm
+from users.views import UserListView
 
 
 class UserTestCase(TestCase):
@@ -93,3 +94,71 @@ class UserDetailViewTestCase(TestCase):
         assign_perm('cases.can_assign', user)
         self.login(user=user)
         self.assertContains(self.get(), url)
+
+
+class UserListViewTestCase(TestCase):
+    url = reverse_lazy('users:list')
+
+    def setUp(self):
+        self.user_list = UserFactory.create_batch(size=1, is_staff=False)
+        self.staff_list = UserFactory.create_batch(size=1, is_staff=True)
+        self.object_list = self.user_list + self.staff_list
+
+    def test_permission_access_and_filter(self):
+        self.client.login(username=UserFactory().username, password='pass')
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 302)
+
+        self.client.login(username=UserFactory(is_staff=True).username, password='pass')
+        resp = self.client.get(self.url)
+        self.assertContains(resp, self.staff_list[0].username)
+        self.assertNotContains(resp, self.user_list[0].username)
+
+        user = UserFactory(is_staff=True)
+        assign_perm('users.can_view_other', user)
+        self.client.login(username=user.username, password='pass')
+        resp = self.client.get(self.url)
+        self.assertContains(resp, self.object_list[0].username)
+        self.assertContains(resp, self.object_list[0].username)
+
+    def test_contains_filter(self):
+        self.client.login(username=UserFactory(is_staff=True).username, password='pass')
+        resp = self.client.get(self.url)
+        self.assertIn('filter', resp.context)
+
+    def get_view(self, **kwargs):
+        return self.client.get(self.url, data=kwargs).context_data['view']
+
+    def test_get_is_staff_choice(self):
+        self.client.login(username=UserFactory(is_staff=True).username, password='pass')
+        self.assertEqual(self.get_view().get_is_staff_choice(), 0)  # Default
+        self.assertEqual(self.get_view(is_staff='a').get_is_staff_choice(), 0)  # Non-num
+        self.assertEqual(self.get_view(is_staff='5').get_is_staff_choice(), 0)  # Too large
+        self.assertEqual(self.get_view(is_staff=1).get_is_staff_choice(), 1)  # Correct
+
+    def _test_get_queryset(self, iss, **kwargs):
+        qs = self.get_view(**kwargs).get_queryset()
+        qs = qs.filter(pk=UserFactory(is_staff=iss).pk)
+        return qs.exists()
+
+    def test_get_queryset_is_staff_choice(self):
+        self.client.login(username=UserFactory(is_staff=True, is_superuser=True).username,
+                          password='pass')
+        # 0 - _
+        self.assertTrue(self._test_get_queryset(iss=True))
+        self.assertTrue(self._test_get_queryset(iss=False))
+        # 1 - is_staff=True
+        self.assertTrue(self._test_get_queryset(iss=True, is_staff='1'))
+        self.assertFalse(self._test_get_queryset(iss=False, is_staff='1'))
+        # 2 - is_staff=False
+        self.assertTrue(self._test_get_queryset(iss=False, is_staff='2'))
+        self.assertFalse(self._test_get_queryset(iss=True, is_staff='2'))
+
+    def test_get_context_data_is_staff(self):
+        self.client.login(username=UserFactory(is_staff=True, is_superuser=True).username,
+                          password='pass')
+        resp = self.client.get(self.url, data={'is_staff': 1})
+        context_data = resp.context_data
+        self.assertIn('is_staff', context_data)
+        self.assertEqual(context_data['is_staff']['selected'], 1)
+        self.assertIn('choices', context_data['is_staff'])

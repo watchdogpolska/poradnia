@@ -1,0 +1,51 @@
+{% extends "users/base.html" %}
+{% load static i18n users_tags crispy_forms_tags querystring_tags bootstrap_pagination %}
+
+{% block title %}{% trans 'Users index'%}{% endblock %}
+
+{% block breadcrumbs_rows%}
+<li class="active">{% trans 'Users index'%}</li>
+{% endblock %}
+
+{% block extra_css%}
+<style>
+  .staff {
+    background-color: #FF7474;
+}
+</style>
+{%endblock%}
+{% block users_content %}
+<h2>{% trans 'Users'%}</h2>
+{% if not perms.users.can_view_other %}
+<p>
+  {% trans "You don't have access to data of all our users. Mostly you have access to staff and own profile." %}
+</p>
+{% endif %}
+
+<div class="row">
+    {% crispy filter.form %}
+    <ul class="nav nav-tabs">
+      {% for key, value in is_staff.choices %}
+      <li role="presentation"{% ifequal key is_staff.selected %} class="active"{% endifequal %}><a href="?{% query_update is_staff=key page='' %}">{{value.0}}</a></li>
+      {% endfor %}
+  </ul>
+</div>
+    <div class="list-group list-group__elastic row">
+      {% for user in object_list %}
+        <a 
+          href="{% url 'users:detail' user.username %}"
+          class="list-group-item{%if user.is_staff%} staff{%endif%}">
+              <h4 class="list-group-item-heading">
+                <img src="{% get_avatar_url user %}">
+                {{ user.get_nicename }}
+              </h4>
+              <p class="list-group-item-text">
+                {% trans 'Case count' %}: {{ user.case_count }}
+              </p>
+        </a>
+      {% endfor %}
+    </div>
+<div class="row text-center">
+{% bootstrap_paginate page_obj %}
+</div>
+{% endblock %}

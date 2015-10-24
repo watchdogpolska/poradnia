@@ -49,6 +49,7 @@ class Common(Configuration):
         'flatpages_tinymce',
         'tinycontent',
         'sorl.thumbnail',
+        'atom',
     )
 
     # Apps specific for this project go here.
