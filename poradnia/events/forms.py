@@ -2,13 +2,14 @@
 from django import forms
 from django.core.urlresolvers import reverse
 
-from atom.forms import AuthorMixin, FormHorizontalMixin, SaveButtonMixin
+from atom.forms import AuthorMixin
+from atom.ext.crispy_forms import FormHorizontalMixin, SingleButtonMixin
 from letters.forms import PartialMixin
 
 from .models import Event
 
 
-class EventForm(PartialMixin, AuthorMixin, FormHorizontalMixin, SaveButtonMixin, forms.ModelForm):
+class EventForm(PartialMixin, AuthorMixin, FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         self.case = kwargs.pop('case')

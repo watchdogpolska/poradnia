@@ -6,7 +6,8 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
 from django_filters.views import FilterView
 
-from atom.views import DeleteMessageMixin, FormInitialMixin, FormSetMixin
+from atom.views import DeleteMessageMixin, FormInitialMixin
+from atom.ext.crispy_forms.views import FormSetMixin
 from users.utils import PermissionMixin
 
 from .filters import AdviceFilter

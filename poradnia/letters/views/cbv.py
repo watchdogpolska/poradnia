@@ -8,7 +8,7 @@ from django.views.generic import CreateView, UpdateView
 from django_filters.views import FilterView
 
 from atom.filters import CrispyFilterMixin
-from atom.views import FormSetMixin
+from atom.ext.crispy_forms.views import FormSetMixin
 from users.utils import PermissionMixin
 
 from ..forms import AttachmentForm, LetterForm, NewCaseForm

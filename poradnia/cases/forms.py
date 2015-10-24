@@ -8,12 +8,12 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from guardian.shortcuts import assign_perm
 
-from atom.forms import FormHorizontalMixin, HelperMixin, SaveButtonMixin
+from atom.ext.crispy_forms.forms import FormHorizontalMixin, HelperMixin, SingleButtonMixin
 
 from .models import Case, PermissionGroup
 
 
-class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SaveButtonMixin, forms.ModelForm):
+class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CaseForm, self).__init__(*args, **kwargs)

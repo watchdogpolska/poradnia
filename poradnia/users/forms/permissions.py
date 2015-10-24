@@ -5,7 +5,7 @@ from django.utils.translation import ugettext as _
 from guardian.forms import BaseObjectPermissionsForm, UserObjectPermissionsForm
 from guardian.shortcuts import assign_perm, remove_perm
 
-from atom.forms import SaveButtonMixin
+from atom.ext.crispy_forms.forms import SingleButtonMixin
 
 
 class PermissionsTranslationMixin(object):
@@ -15,12 +15,12 @@ class PermissionsTranslationMixin(object):
             for key, value in self.fields['permissions'].choices]
 
 
-class TranslatedUserObjectPermissionsForm(SaveButtonMixin, PermissionsTranslationMixin,
+class TranslatedUserObjectPermissionsForm(SingleButtonMixin, PermissionsTranslationMixin,
         UserObjectPermissionsForm):
     pass
 
 
-class TranslatedManageObjectPermissionForm(SaveButtonMixin, PermissionsTranslationMixin,
+class TranslatedManageObjectPermissionForm(SingleButtonMixin, PermissionsTranslationMixin,
         BaseObjectPermissionsForm):
     users = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(), required=True,
         widget=autocomplete_light.MultipleChoiceWidget('UserAutocomplete'))

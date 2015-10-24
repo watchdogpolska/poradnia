@@ -1,12 +1,12 @@
 from braces.forms import UserKwargModelFormMixin
 from django.forms import ModelForm
 
-from atom.forms import SaveButtonMixin
+from atom.ext.crispy_forms.forms import SingleButtonMixin
 
 from .models import Key
 
 
-class KeyForm(UserKwargModelFormMixin, SaveButtonMixin, ModelForm):
+class KeyForm(UserKwargModelFormMixin, SingleButtonMixin, ModelForm):
     class Meta:
         model = Key
         fields = ['description', ]
