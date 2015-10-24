@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 from django.core import mail
+from django.core.urlresolvers import reverse_lazy
 from django.test import TestCase
 from guardian.shortcuts import assign_perm
 from users.factories import UserFactory
@@ -8,6 +9,7 @@ from users.forms import UserForm
 
 
 class UserTestCase(TestCase):
+
     def test_get_user_by_get_by_email_or_create(self):
         self.assertEqual(User.objects.count(), 1)
         new_user = User.objects.get_by_email_or_create('sarah@example.com')
@@ -33,6 +35,7 @@ class UserTestCase(TestCase):
 
 
 class UserQuerySetTestCase(TestCase):
+
     def test_for_user_manager(self):
         u1 = User.objects.create(username="X-1")
         u2 = User.objects.create(username="X-2", is_staff=True)
@@ -57,5 +60,36 @@ class UserQuerySetTestCase(TestCase):
 
 
 class UserFormTestCase(TestCase):
+
     def test_has_avatar(self):
         self.assertIn('picture', UserForm().fields)
+
+
+class UserDetailViewTestCase(TestCase):
+
+    def setUp(self):
+        self.object = UserFactory(is_staff=False)
+
+    def login(self, user=None):
+        self.client.login(username=(user or self.object).username, password='pass')
+
+    def get(self):
+        return self.client.get(self.object.get_absolute_url())
+
+    def own_resp(self):
+        self.login()
+        return self.get()
+
+    def test_contains_username(self):
+        self.assertContains(self.own_resp(), self.object.username)
+
+    def test_contains_assigned_cases(self):
+        url = reverse_lazy('cases:list') + '?permission='+str(self.object.pk)
+        self.login()
+        self.assertNotContains(self.own_resp(), url)
+
+        user = UserFactory()
+        assign_perm('users.can_view_other', user)
+        assign_perm('cases.can_assign', user)
+        self.login(user=user)
+        self.assertContains(self.get(), url)

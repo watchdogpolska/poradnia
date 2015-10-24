@@ -16,19 +16,38 @@
 <p><span><b>{% trans 'Description'%}:</b></span>{{object.description}}</p>
 {% endif %}
 
-{% if object == request.user or perms.case.can_view_all %}
+<!-- Start Action buttons -->
 
-    {% if object == request.user %}
-    <a class="btn btn-primary" href="{% url 'users:update' %}">{% trans 'About me' %}</a>
-    <a class="btn btn-info" href="{% url 'users:profile' %}">{% trans 'Profile' %}</a>
-    {# <a class="btn btn-primary" href="{% url 'account_email' %}">{% trans 'E-Mail'%}</a> #}
-    <a class="btn btn-info" href="{% url 'account_change_password' %}"><i class="fa fa-key"></i> {% trans 'Password change'%}</a>
-    <a class="btn btn-info" href="{% url 'keys:list' %}"><i class="fa fa-puzzle-piece "></i> {% trans 'Keys'%}</a>
-    {% endif %}
-    {% if object == request.user or perms.case.can_view_all %}
-    <a class="btn btn-info" href="{% url 'cases:list' %}?client={{object.pk}}"><i class="fa fa-book"></i> {% trans 'Cases'%}</a>
-    {% endif %}
-<!-- End Action buttons -->
+{% if object == request.user %}
+<a class="btn btn-primary" href="{% url 'users:update' %}">
+    {% trans 'About me' %}
+</a>
+<a class="btn btn-info" href="{% url 'users:profile' %}">
+{% trans 'Profile' %}
+</a>
+<a class="btn btn-info" href="{% url 'account_change_password' %}">
+    <i class="fa fa-key"></i>
+    {% trans 'Password change'%}
+</a>
+<a class="btn btn-info" href="{% url 'keys:list' %}">
+    <i class="fa fa-puzzle-piece "></i>
+    {% trans 'Keys'%}
+</a>
 {% endif %}
+
+{% if object == request.user or perms.cases.can_view_all %}
+<a class="btn btn-info" href="{% url 'cases:list' %}?client={{object.pk}}">
+    <i class="fa fa-book"></i>
+    {% trans 'Cases as client'%}
+</a>
+{% endif %}
+
+{% if perms.cases.can_assign %}
+<a class="btn btn-info" href="{% url 'cases:list' %}?permission={{object.pk}}">
+    <i class="fa fa-book"></i>
+    {% trans 'Assigned cases'%}
+</a>
+{% endif %}
+<!-- End Action buttons -->
 
 {% endblock content %}
