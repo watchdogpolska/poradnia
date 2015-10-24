@@ -88,7 +88,9 @@ class StaffCaseFilterTestCase(TestCase):
             return StaffCaseFilter(user=user).form.fields
         self.assertNotIn('permission', get_fields(UserFactory(is_staff=True)))
         self.assertNotIn('permission', get_fields(UserFactory(is_staff=False)))
-        self.assertIn('permission', get_fields(UserFactory(is_staff=True, is_superuser=True)))
+        user = UserFactory(is_staff=True)
+        assign_perm('cases.can_assign', user)
+        self.assertIn('permission', get_fields(user))
 
     def get_permission_filter_qs(self, user, **kwargs):
         admin = UserFactory(is_staff=True, is_superuser=True)
