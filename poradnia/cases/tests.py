@@ -1,13 +1,15 @@
 from cases.factories import CaseFactory
 from letters.factories import LetterFactory
 from users.factories import UserFactory
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from cases.filters import StaffCaseFilter
 from django.core.urlresolvers import reverse_lazy
 from cases.models import Case
 from django.test.utils import override_settings
 from guardian.shortcuts import assign_perm
 from django.core.exceptions import PermissionDenied
+from django.contrib.admin.sites import AdminSite
+from cases.admin import CaseAdmin
 
 
 class CaseTestCase(TestCase):
@@ -119,3 +121,28 @@ class CaseListViewTestCase(TestCase):
     def test_filtersetclass_for_staff(self):
         self._test_filtersetclass(True, UserFactory(is_staff=True))
         self._test_filtersetclass(False, UserFactory(is_staff=False))
+
+
+class CaseAdminTestCase(TestCase):
+    def setUp(self):
+        self.site = AdminSite()
+
+    def assertIsValid(self, model_admin, model):  # See django/tests/modeladmin/tests.py#L602
+        admin_obj = model_admin(model, self.site)
+        errors = admin_obj.check(model)
+        expected = []
+        self.assertEqual(errors, expected)
+
+    def test_is_valid(self):
+        self.assertIsValid(CaseAdmin, Case)
+
+    def test_record_count(self):
+        case = CaseFactory()
+        LetterFactory.create_batch(size=25, case=case)
+        admin_obj = CaseAdmin(Case, AdminSite())
+        request = RequestFactory().get(reverse_lazy('admin:cases_case_changelist'))
+        request.user = UserFactory(is_staff=True, is_superuser=True)
+        qs = admin_obj.get_queryset(request)
+        obj = qs.get(pk=case.pk)
+        self.assertTrue(hasattr(obj, 'record_count'))
+        self.assertEqual(admin_obj.record_count(obj), 25)

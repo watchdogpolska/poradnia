@@ -17,8 +17,15 @@ class RecordInline(admin.StackedInline):
 @admin.register(Case)
 class CaseAdmin(GuardedModelAdmin):
     inlines = [RecordInline]
-    list_display = ['name', 'client']
+    list_display = ['name', 'client', 'record_count']
     list_filter = ['tags', ]
+
+    def record_count(self, obj):
+        return obj.record_count
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super(CaseAdmin, self).get_queryset(*args, **kwargs)
+        return qs.with_record_count()
 
 
 @admin.register(PermissionGroup)
