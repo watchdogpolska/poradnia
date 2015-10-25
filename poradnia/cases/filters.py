@@ -29,10 +29,6 @@ class CaseFilterMixin(object):
 class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSet):
     name = django_filters.CharFilter(label=_("Subject"), lookup_type='icontains')
     client = UserChoiceFilter(label=_("Client"))
-    created_by = UserChoiceFilter(label=_("Created by"))
-    created_on = django_filters.DateRangeFilter(label=_("Created on"))
-    last_send = NullDateRangeFilter(label=_("Last send"), none_label=_("No reply"))
-    last_action = django_filters.DateRangeFilter(label=_("Last action"))
     handled = django_filters.BooleanFilter(label=_("Handled?"))
     permission = UserChoiceFilter(label=_("Has access by"), action=lambda qs, x: qs.for_user(x))
 

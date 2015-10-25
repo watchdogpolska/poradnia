@@ -103,11 +103,16 @@ class StaffCaseFilterTestCase(TestCase):
         self.assertFalse(self.get_permission_filter_qs(user=UserFactory(), pk=obj.pk).exists())
         self.assertTrue(self.get_permission_filter_qs(user=obj.created_by, pk=obj.pk).exists())
 
+    def _get_filter(self, user=None, choice='default'):
+        return StaffCaseFilter(user=user or UserFactory()).get_order_by(choice)
+
     def test_order_by(self):
-        def get_filter(choice='default'):
-            return StaffCaseFilter(user=UserFactory()).get_order_by(choice)
-        self.assertEqual(get_filter(), ['-deadline', 'status', '-last_send', '-last_action'])
-        self.assertEqual(get_filter('status'), ['status'])
+        self.assertEqual(self._get_filter(), ['-deadline', 'status', '-last_send'])
+        self.assertEqual(self._get_filter(choice='status'), ['status'])
+
+    def test_form_fields(self):
+        self.assertEqual(self.get_filter().form.fields,
+                         ['status', 'client', 'name', 'handled', 'permission'])
 
 
 class CaseListViewTestCase(TestCase):
