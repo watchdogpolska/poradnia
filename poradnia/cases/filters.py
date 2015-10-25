@@ -8,6 +8,7 @@ from .models import Case
 
 
 class NullDateRangeFilter(django_filters.DateRangeFilter):
+
     def __init__(self, none_label=None, *args, **kwargs):
         if not none_label:
             none_label = _('None')
@@ -18,6 +19,7 @@ class NullDateRangeFilter(django_filters.DateRangeFilter):
 
 
 class CaseFilterMixin(object):
+
     def __init__(self, user=None, *args, **kwargs):
         self.user = user
         super(CaseFilterMixin, self).__init__(*args, **kwargs)
@@ -36,7 +38,7 @@ class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterS
 
     def __init__(self, *args, **kwargs):
         super(StaffCaseFilter, self).__init__(*args, **kwargs)
-        if not self.user.is_superuser:
+        if not self.user.has_perm('cases.can_assign'):
             del self.filters['permission']
 
     def get_order_by(self, order_choice):

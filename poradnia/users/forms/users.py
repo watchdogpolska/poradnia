@@ -1,12 +1,12 @@
 from django import forms
 from django.contrib.auth import get_user_model
 
-from atom.forms import FormHorizontalMixin, SaveButtonMixin
+from atom.ext.crispy_forms.forms import FormHorizontalMixin, SingleButtonMixin
 
 from ..models import Profile
 
 
-class UserForm(FormHorizontalMixin, SaveButtonMixin, forms.ModelForm):
+class UserForm(FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
     class Meta:
         # Set this form to use the User model.
         model = get_user_model()
@@ -15,7 +15,7 @@ class UserForm(FormHorizontalMixin, SaveButtonMixin, forms.ModelForm):
         fields = ("first_name", "last_name", 'picture')
 
 
-class ProfileForm(FormHorizontalMixin, SaveButtonMixin, forms.ModelForm):
+class ProfileForm(FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
     class Meta:
         model = Profile
         fields = ("description", "www")

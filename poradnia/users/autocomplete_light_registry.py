@@ -8,4 +8,7 @@ from .models import User
 class UserAutocomplete(AutocompletePermissionMixin, autocomplete_light.AutocompleteModelBase):
     search_fields = ['first_name', 'last_name', 'username']
     model = User
+
+    def choice_value(self, choice):
+        return "{name} ({email})".format(name=choice.get_nicename(), email=choice.email)
 autocomplete_light.register(User, UserAutocomplete)

@@ -5,14 +5,15 @@ from braces.forms import UserKwargModelFormMixin
 from django import forms
 from django.utils.translation import ugettext as _
 
-from atom.forms import AuthorMixin, FormHorizontalMixin, HelperMixin, SingleButtonMixin
+from atom.forms import AuthorMixin
+from atom.ext.crispy_forms.forms import FormHorizontalMixin, HelperMixin, SingleButtonMixin
 from cases.models import Case
 
 from .models import Advice, Attachment
 
 
 class AdviceForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, AuthorMixin,
-        autocomplete_light.ModelForm):
+                 autocomplete_light.ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AdviceForm, self).__init__(*args, **kwargs)
@@ -25,7 +26,7 @@ class AdviceForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin
     class Meta:
         model = Advice
         fields = ['case', 'subject', 'grant_on', 'issues', 'area',
-            'person_kind', 'institution_kind', 'advicer', 'comment']
+                  'person_kind', 'institution_kind', 'advicer', 'comment']
 
 
 class AttachmentForm(HelperMixin, forms.ModelForm):

@@ -5,7 +5,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 
-from atom.forms import FormHorizontalMixin, GIODOMixin
+from atom.ext.crispy_forms.forms import FormHorizontalMixin
+from atom.ext.tinycontent.forms import GIODOMixin
 
 
 class SignupForm(FormHorizontalMixin, GIODOMixin, forms.ModelForm):

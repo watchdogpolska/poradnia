@@ -7,7 +7,9 @@ from django.core.urlresolvers import reverse
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 
-from atom.forms import GIODOMixin, HelperMixin, PartialMixin, SingleButtonMixin
+from atom.ext.tinycontent.forms import GIODOMixin
+from atom.forms import PartialMixin
+from atom.ext.crispy_forms.forms import HelperMixin, SingleButtonMixin
 from cases.models import Case
 
 from .models import Attachment, Letter
