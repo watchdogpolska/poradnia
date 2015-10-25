@@ -107,7 +107,7 @@ class StaffCaseFilterTestCase(TestCase):
         return StaffCaseFilter(user=user or UserFactory()).get_order_by(choice)
 
     def test_order_by(self):
-        self.assertEqual(self._get_filter(), ['-deadline', 'status', '-last_send'])
+        self.assertEqual(self._get_filter(), ['-deadline', 'status', '-last_send', '-last_action'])
         self.assertEqual(self._get_filter(choice='status'), ['status'])
 
     def test_form_fields(self):
