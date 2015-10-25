@@ -116,3 +116,9 @@ class AdviceDetailTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
     def setUp(self):
         super(AdviceDetailTestCase, self).setUp()
         self.url = reverse('advicer:detail', kwargs={'pk': self.instance.pk})
+
+    def test_linebreaks_in_comment(self):
+        obj = AdviceFactory(created_by=self.user, comment="Lorem\nipsum")
+        self.login()
+        resp = self.client.get(obj.get_absolute_url())
+        self.assertContains(resp, 'Lorem<br />ipsum')

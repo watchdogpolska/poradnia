@@ -83,7 +83,7 @@
             </tr>
             {% endif %}
         </table>
-        {{object.comment}}
+        {{object.comment | linebreaks }}
         {% if object.attachment_set.all %}
         <h2>{% trans 'Attachments' %}</h2>
         <ul>
