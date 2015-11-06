@@ -4,7 +4,7 @@ from crispy_forms.layout import Layout
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy as _l
 
-from atom.ext.cirspy_forms.forms import SingleButtonMixin
+from atom.ext.crispy_forms.forms import SingleButtonMixin
 
 
 class CustomLoginForm(SingleButtonMixin, LoginForm):

@@ -162,3 +162,13 @@ class UserListViewTestCase(TestCase):
         self.assertIn('is_staff', context_data)
         self.assertEqual(context_data['is_staff']['selected'], 1)
         self.assertIn('choices', context_data['is_staff'])
+
+
+class LoginPageTestCase(TestCase):
+    url = reverse_lazy('account_login')
+
+    def test_login_page_integrate(self):
+        resp = self.client.get(self.url)
+        self.assertContains(resp, '<form ')
+        self.assertContains(resp, 'login')
+        self.assertContains(resp, 'password')
