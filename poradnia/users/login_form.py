@@ -1,10 +1,10 @@
 from allauth.account.forms import LoginForm
 from crispy_forms.bootstrap import PrependedText
-from crispy_forms.layout import Layout, Submit
+from crispy_forms.layout import Layout
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy as _l
 
-from atom.forms import SingleButtonMixin
+from atom.ext.cirspy_forms.forms import SingleButtonMixin
 
 
 class CustomLoginForm(SingleButtonMixin, LoginForm):
