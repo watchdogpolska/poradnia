@@ -191,7 +191,7 @@ def mail_process(sender, message, **args):
     # Convert attachments
     attachments = []
     for attachment in message.attachments.all():
-        name = attachment.get_filename()
+        name = attachment.get_filename() or 'Unknown.bin'
         if len(name) > 70:
             name, ext = os.path.splitext(name)
             ext = ext[:70]
