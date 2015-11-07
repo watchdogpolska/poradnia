@@ -10,5 +10,5 @@ class UserAutocomplete(AutocompletePermissionMixin, autocomplete_light.Autocompl
     model = User
 
     def choice_label(self, choice):
-        return "{name} ({email})".format(name=choice.get_nicename(), email=choice.email)
+        return u"{name} ({email})".format(name=choice.get_nicename(), email=choice.email)
 autocomplete_light.register(User, UserAutocomplete)
