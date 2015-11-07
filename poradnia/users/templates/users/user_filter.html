@@ -40,7 +40,10 @@
                 {{ user.get_nicename }}
               </h4>
               <p class="list-group-item-text">
-                {% trans 'Case count' %}: {{ user.case_count }}
+                {% trans 'Client cases' %}: {{ user.case_count }}<br>
+                {% if perms.cases.can_assign %}
+                {% trans 'Cases assigned' %}: {{ user.case_assigned }}
+                {% endif %}
               </p>
         </a>
       {% endfor %}

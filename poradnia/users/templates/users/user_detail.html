@@ -38,7 +38,7 @@
 {% if object == request.user or perms.cases.can_view_all %}
 <a class="btn btn-info" href="{% url 'cases:list' %}?client={{object.pk}}">
     <i class="fa fa-book"></i>
-    {% trans 'Cases as client'%}
+    {% trans 'Client cases' %}
 </a>
 {% endif %}
 

@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-10-23 00:53+0200\n"
-"PO-Revision-Date: 2015-10-23 00:53+0100\n"
+"POT-Creation-Date: 2015-11-08 00:05+0100\n"
+"PO-Revision-Date: 2015-11-08 00:06+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -19,7 +19,7 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: forms/account.py:25
+#: forms/account.py:26
 msgid "Signup"
 msgstr "Rejestracja"
 
@@ -31,34 +31,35 @@ msgstr "Nazwa użytkownika / użytkowniczki"
 msgid "Username or e-mail"
 msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
 
-#: models.py:73
+#: models.py:77
 msgid "Avatar"
 msgstr "Avatar"
 
-#: models.py:127 templates/users/_sidebar.html:3
+#: models.py:132 templates/users/_sidebar.html:3
 #: templates/users/user_detail.html:3 templates/users/user_form.html:4
 #: templates/users/user_form.html.py:15
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: models.py:128 templates/users/base.html:5 templates/users/user_list.html:20
+#: models.py:133 templates/users/base.html:5
+#: templates/users/user_filter.html:18
 msgid "Users"
 msgstr "Użytkownicy / użytkowniczki"
 
-#: models.py:133 templates/users/user_detail.html:16
+#: models.py:138 templates/users/user_detail.html:16
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:134
+#: models.py:139
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: models.py:137 templates/users/profile_form.html:7
-#: templates/users/profile_form.html:10 templates/users/user_detail.html:23
+#: models.py:142 templates/users/profile_form.html:7
+#: templates/users/profile_form.html:10 templates/users/user_detail.html:26
 msgid "Profile"
 msgstr "Profil"
 
-#: models.py:138
+#: models.py:143
 msgid "Profiles"
 msgstr "Profile"
 
@@ -87,31 +88,31 @@ msgstr "Zaloguj"
 msgid "Users are member of staff."
 msgstr "Użytkownik jest członkiem zespołu"
 
-#: templates/users/user_detail.html:22
+#: templates/users/user_detail.html:23
 msgid "About me"
 msgstr "O mnie"
 
-#: templates/users/user_detail.html:25
+#: templates/users/user_detail.html:30
 msgid "Password change"
 msgstr "Zmiana hasła"
 
-#: templates/users/user_detail.html:26
+#: templates/users/user_detail.html:34
 msgid "Keys"
 msgstr "Klucze"
 
-#: templates/users/user_detail.html:29
-msgid "Cases"
-msgstr "Sprawy"
+#: templates/users/user_detail.html:41 templates/users/user_filter.html:43
+msgid "Client cases"
+msgstr "Sprawy klienta"
 
-#: templates/users/user_form.html:8
-msgid "Account"
-msgstr "Konto"
+#: templates/users/user_detail.html:48
+msgid "Assigned cases"
+msgstr "Przypisane sprawy"
 
-#: templates/users/user_list.html:4 templates/users/user_list.html.py:7
+#: templates/users/user_filter.html:4 templates/users/user_filter.html.py:7
 msgid "Users index"
 msgstr "Wykaz użytkowników"
 
-#: templates/users/user_list.html:24
+#: templates/users/user_filter.html:21
 msgid ""
 "You don't have access to data of all our users. Mostly you have access to "
 "staff and own profile."
@@ -119,60 +120,22 @@ msgstr ""
 "Nie masz dostepu do danych wszystkich użytkowników. W większości tylko do "
 "profilu członków zespołu i swojego."
 
-#: templates/users/user_list.html:32
-msgid "Case count"
-msgstr "Liczba spraw"
+#: templates/users/user_filter.html:45
+msgid "Cases assigned"
+msgstr "Sprawy przypisane"
 
-#~ msgid "Add avatar"
-#~ msgstr "Dodaj avatar"
+#: templates/users/user_form.html:8
+msgid "Account"
+msgstr "Konto"
 
-#~ msgid "Your current avatar: "
-#~ msgstr "Twój obecny avatar:"
+#: views.py:64
+msgid "All users"
+msgstr "Wszyscy użytkownicy / -ki"
 
-#~ msgid "Avatar choices: "
-#~ msgstr "Dostępne avatary:"
+#: views.py:65
+msgid "Staff"
+msgstr "Zespół"
 
-#~ msgid "You haven't uploaded an avatar yet. Please upload one now."
-#~ msgstr "Nie masz obecnie żadnego avataru. prosimy dodać nowy."
-
-#~ msgid "Upload New Image"
-#~ msgstr "Dodaj nowy obraz"
-
-#~ msgid "Change"
-#~ msgstr "Zmień"
-
-#~ msgid "Choose avatar"
-#~ msgstr "Wybierz avatar"
-
-#~ msgid "Upload a new avatar"
-#~ msgstr "Wyślij nowy avatar "
-
-#~ msgid "Delete confirmation"
-#~ msgstr "Potwierdzenie usuwania"
-
-#~ msgid "Please select the avatars that you would like to delete."
-#~ msgstr "Prosimy wybrać avatar, który chcesz usunąć."
-
-#~ msgid ""
-#~ "You have no avatars to delete. Please <a href=\"%(avatar_change_url)s"
-#~ "\">upload one</a> now."
-#~ msgstr ""
-#~ "Nie masz avatarów. Prosimy <a href=\"%(avatar_change_url)s\">dodaj</a>"
-
-#~ msgid "Delete These"
-#~ msgstr "Usuń wybrane"
-
-#~ msgid "Sign In"
-#~ msgstr "Logowanie"
-
-#~ msgid "Update"
-#~ msgstr "Aktualizuj"
-
-#~ msgid "Cancel"
-#~ msgstr "Anuluj"
-
-#~ msgid "My Info"
-#~ msgstr "Moje informacje"
-
-#~ msgid "Your profile"
-#~ msgstr "Twój profil"
+#: views.py:66
+msgid "Clients"
+msgstr "Klienci"

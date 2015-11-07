@@ -7,6 +7,7 @@ from users.factories import UserFactory
 from users.models import User
 from users.forms import UserForm
 from users.views import UserListView
+from cases.factories import CaseFactory
 
 
 class UserTestCase(TestCase):
@@ -47,6 +48,22 @@ class UserQuerySetTestCase(TestCase):
         self.assertQuerysetEqual(list(qs), [repr(u2), repr(u3)], ordered=False)
         qs = User.objects.for_user(u3).registered().all()
         self.assertQuerysetEqual(list(qs), [repr(u1), repr(u2), repr(u3)], ordered=False)
+
+    def test_with_case_count(self):
+        user = UserFactory()
+        CaseFactory.create_batch(size=25, client=user)
+        self.assertEqual(User.objects.with_case_count().get(pk=user.pk).case_count, 25)
+        self.assertEqual(User.objects.with_case_count().get(pk=UserFactory().pk).case_count, 0)
+
+    def with_case_count_assigned(self):
+        user = UserFactory()
+        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned, 0)
+        for obj in CaseFactory.create_batch(size=5):
+            assign_perm('cases.can_view', user, obj)
+        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned, 5)
+        for obj in CaseFactory.create_batch(size=5):
+            assign_perm('cases.can_view', user, obj)
+        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned, 10)
 
     def _register_email_count(self, notify, count):
         u = User.objects.register_email(email='sarah@example.com', notify=notify)
