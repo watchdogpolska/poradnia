@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: pl_PL\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-08 00:05+0100\n"
-"PO-Revision-Date: 2015-11-08 00:06+0100\n"
+"POT-Creation-Date: 2015-11-08 01:14+0100\n"
+"PO-Revision-Date: 2015-11-08 01:14+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language: pl_PL\n"
@@ -35,31 +35,35 @@ msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
 msgid "Avatar"
 msgstr "Avatar"
 
-#: models.py:132 templates/users/_sidebar.html:3
+#: models.py:78
+msgid "Codename"
+msgstr "Kryptonim"
+
+#: models.py:136 templates/users/_sidebar.html:3
 #: templates/users/user_detail.html:3 templates/users/user_form.html:4
 #: templates/users/user_form.html.py:15
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: models.py:133 templates/users/base.html:5
+#: models.py:137 templates/users/base.html:5
 #: templates/users/user_filter.html:18
 msgid "Users"
 msgstr "Użytkownicy / użytkowniczki"
 
-#: models.py:138 templates/users/user_detail.html:16
+#: models.py:142 templates/users/user_detail.html:16
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:139
+#: models.py:143
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: models.py:142 templates/users/profile_form.html:7
+#: models.py:146 templates/users/profile_form.html:7
 #: templates/users/profile_form.html:10 templates/users/user_detail.html:26
 msgid "Profile"
 msgstr "Profil"
 
-#: models.py:143
+#: models.py:147
 msgid "Profiles"
 msgstr "Profile"
 

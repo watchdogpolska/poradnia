@@ -75,6 +75,10 @@ class CustomUserManager(PassThroughManagerMixin, GuardianUserMixin, UserManager)
 class User(AbstractUser):
     objects = CustomUserManager.for_queryset_class(UserQuerySet)()
     picture = ImageField(upload_to='avatars', verbose_name=_("Avatar"), null=True, blank=True)
+    codename = models.CharField(max_length=15, null=True, blank=True, verbose_name=_("Codename"))
+
+    def get_codename(self):
+        return self.codename or self.get_nicename()
 
     def get_nicename(self):
         if self.first_name or self.last_name:
