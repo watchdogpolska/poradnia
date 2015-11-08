@@ -55,7 +55,7 @@ class UserQuerySetTestCase(TestCase):
         self.assertEqual(User.objects.with_case_count().get(pk=user.pk).case_count, 25)
         self.assertEqual(User.objects.with_case_count().get(pk=UserFactory().pk).case_count, 0)
 
-    def with_case_count_assigned(self):
+    def test_with_case_count_assigned(self):
         user = UserFactory()
         self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned, 0)
         for obj in CaseFactory.create_batch(size=5):
