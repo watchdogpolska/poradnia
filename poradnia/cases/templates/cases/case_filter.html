@@ -33,8 +33,8 @@
     <th class="subject">{% trans 'Subject' %} {% if user.is_staff %}[{% trans 'Dead-line'%}] {% endif %}</th>
     <th class="last_response">{% trans 'Last response' %}</th>
     {% if user.is_staff %}
-      <th class="last_action">{% trans 'Last action' %}</th>
-      <th class="created_on">{% trans 'Created on' %}</th>
+    <th class="last_action">{% trans 'Last action' %}</th>
+    <th class="created_on">{% trans 'Created on' %}</th>
     {% endif %}
     {# <th>All readed?</th> #}
   </tr></thead>
@@ -45,34 +45,46 @@
       <td class="client"><a href="{{ object.client.get_absolute_url }}">{{ object.client }}</a></td>
       <td class="subject">
         <span class="{{object.status|status2css}}">
-        {% if request.user.is_staff and not object.handled %}<b>{% endif %}
-        <a href="{{ object.get_absolute_url }}">{{ object.name }}</a>
-        {% if request.user.is_staff and not object.handled %}</b>{% endif %}
-        ({{ object.letter_count }})
-        {% if request.user.is_staff and object.deadline.time %}<span class="label label-warning"><i class="fa fa-fire"></i> {{ object.deadline.time }}</span>{% endif%}
-      </td>
-      <td class="last_response">{% if object.last_send %}{{ object.last_send|naturaltime }}{% else %}{% trans 'No answer' %}{% endif %}</td>
-      {% if request.user.is_staff %}
+          {% if request.user.is_staff and not object.handled %}<b>{% endif %}
+          <a href="{{ object.get_absolute_url }}">{{ object.name }}</a>
+          {% if request.user.is_staff and not object.handled %}</b>{% endif %}
+
+          ({{ object.letter_count }})
+
+          {% if request.user.is_staff and object.deadline.time %}
+          <span class="label label-warning">
+            <i class="fa fa-fire"></i> {{ object.deadline.time }}
+          </span>
+          {% endif%}
+          
+          {% if request.user.is_staff and object.caseuserobjectpermission_set.all %}
+          {% for obj in object.caseuserobjectpermission_set.all %}
+            <span class="label label-info">{{obj.user.get_codename}}</span>
+          {% endfor %}
+          {% endif %}
+        </td>
+        <td class="last_response">{% if object.last_send %}{{ object.last_send|naturaltime }}{% else %}{% trans 'No answer' %}{% endif %}</td>
+        {% if request.user.is_staff %}
         {% ifequal object.last_action object.created_on %}
-            <td colspan="2" class="last_action">{{ object.last_action|naturaltime }}</td>
+        <td colspan="2" class="last_action">{{ object.last_action|naturaltime }}</td>
         {% else %}
-            <td class="last_action">{{ object.last_action|naturaltime }}</td>
-            <td class="created_on">{{object.created_on|naturaltime}}</td>
+        <td class="last_action">{{ object.last_action|naturaltime }}</td>
+        <td class="created_on">{{object.created_on|naturaltime}}</td>
         {% endifequal %}
-      {% endif %}
-      {# <td>{{ object.get_readed }}</td> #}
+        {% endif %}
+        {# <td>{{ object.get_readed }}</td> #}
 
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-<p>{% trans 'Legend of status' %} <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title='{% trans 'Cases have status changed by staff.'%}'></i>: {% for status in statuses %}<span class="label label-success"><i class="{{status.0|status2css}}"></i> {{status.0|status2display}}</span> {% endfor %}</p>
-<div class="text-center">
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+  <p>{% trans 'Legend of status' %} <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title='{% trans 'Cases have status changed by staff.'%}'></i>: {% for status in statuses %}<i class="{{status.0|status2css}}"></i> {{status.0|status2display}} {% endfor %}</p>
+  <div class="text-center">
     {% bootstrap_paginate page_obj %}
-</div>
+  </div>
 
-{% else %}
-<p>{% trans 'There is no cases.' %}<a href="{% url 'letters:add' %}">{% trans 'Do more of these!' %}</a></p>
-{% endif %}
+  {% else %}
+  <p>{% trans 'There is no cases.' %}<a href="{% url 'letters:add' %}">{% trans 'Do more of these!' %}</a></p>
+  {% endif %}
 
-{% endblock %}
+  {% endblock %}
