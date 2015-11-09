@@ -34,3 +34,7 @@ script:
 
 notifications:
   slack: watchdogpolska:mQq180xGu9UcuJgK73hVWECD
+
+after_script:
+- rm $HOME/.cache/pip/log/*
+
