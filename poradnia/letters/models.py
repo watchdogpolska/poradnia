@@ -134,7 +134,7 @@ def mail_process(sender, message, **args):
     print("Identified user: ", user)
 
     # Skip autoreply messages - see RFC3834
-    if (lambda x: 'Auto-Submitted' in 'x' and
+    if (lambda x: 'Auto-Submitted' in x and
             x['Auto-Submitted'] == 'auto-replied')(message.get_email_object()):
         print("Skip")
         return
