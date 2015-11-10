@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 import re
-
-# from notifications.models import notify_handler as send
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.urlresolvers import reverse
