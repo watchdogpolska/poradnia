@@ -1,0 +1,7 @@
+project_identifier: poradnia
+api_key_env: CROWDIN_API_KEY
+
+files:
+  -
+    source: '/poradnia/**/locale/en/LC_MESSAGES/django.po'
+    translation: '/poradnia/**/locale/%two_letters_code%/LC_MESSAGES/django.po'

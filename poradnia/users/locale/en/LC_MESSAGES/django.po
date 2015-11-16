@@ -3,110 +3,106 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: pl_PL\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-16 18:24+0100\n"
-"PO-Revision-Date: 2015-10-23 00:53+0100\n"
-"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
-"Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
-"Language: pl_PL\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.5.4\n"
 
 #: users/forms/account.py:26
 msgid "Signup"
-msgstr "Rejestracja"
+msgstr ""
 
 #: users/login_form.py:15 users/models.py:19
 msgid "Login"
-msgstr "Nazwa użytkownika / użytkowniczki"
+msgstr ""
 
 #: users/models.py:18
 msgid "Username or e-mail"
-msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
+msgstr ""
 
 #: users/models.py:72
 msgid "Avatar"
-msgstr "Avatar"
+msgstr ""
 
 #: users/models.py:126 users/templates/users/_sidebar.html:3
 #: users/templates/users/user_detail.html:3
 #: users/templates/users/user_form.html:4
 #: users/templates/users/user_form.html:15
 msgid "User"
-msgstr "Użytkownik / użytkowniczka"
+msgstr ""
 
 #: users/models.py:127 users/templates/users/base.html:5
 #: users/templates/users/user_filter.html:18
 msgid "Users"
-msgstr "Użytkownicy / użytkowniczki"
+msgstr ""
 
 #: users/models.py:132 users/templates/users/user_detail.html:16
 msgid "Description"
-msgstr "Opis"
+msgstr ""
 
 #: users/models.py:133
 msgid "Homepage"
-msgstr "Strona domowa"
+msgstr ""
 
 #: users/models.py:136 users/templates/users/profile_form.html:7
 #: users/templates/users/profile_form.html:10
 #: users/templates/users/user_detail.html:26
 msgid "Profile"
-msgstr "Profil"
+msgstr ""
 
 #: users/models.py:137
 msgid "Profiles"
-msgstr "Profile"
+msgstr ""
 
 #: users/templates/users/_sidebar.html:8
 #, python-format
 msgid "%(user)s"
-msgstr "%(user)s"
+msgstr ""
 
 #: users/templates/users/_sidebar.html:12
 msgid "Users list"
-msgstr "Wykaz użytkowników"
+msgstr ""
 
 #: users/templates/users/_sidebar.html:16
 msgid "Logout"
-msgstr "Wyloguj"
+msgstr ""
 
 #: users/templates/users/_sidebar.html:20
 msgid "Sign Up"
-msgstr "Rejestracja"
+msgstr ""
 
 #: users/templates/users/_sidebar.html:23
 msgid "Log In"
-msgstr "Zaloguj"
+msgstr ""
 
 #: users/templates/users/user_detail.html:13
 msgid "Users are member of staff."
-msgstr "Użytkownik jest członkiem zespołu"
+msgstr ""
 
 #: users/templates/users/user_detail.html:23
 msgid "About me"
-msgstr "O mnie"
+msgstr ""
 
 #: users/templates/users/user_detail.html:30
 msgid "Password change"
-msgstr "Zmiana hasła"
+msgstr ""
 
 #: users/templates/users/user_detail.html:34
 msgid "Keys"
-msgstr "Klucze"
+msgstr ""
 
 #: users/templates/users/user_detail.html:41
-#, fuzzy
-#| msgid "Case count"
 msgid "Cases as client"
-msgstr "Liczba spraw"
+msgstr ""
 
 #: users/templates/users/user_detail.html:48
 msgid "Assigned cases"
@@ -115,23 +111,21 @@ msgstr ""
 #: users/templates/users/user_filter.html:4
 #: users/templates/users/user_filter.html:7
 msgid "Users index"
-msgstr "Wykaz użytkowników"
+msgstr ""
 
 #: users/templates/users/user_filter.html:21
 msgid ""
 "You don't have access to data of all our users. Mostly you have access to "
 "staff and own profile."
 msgstr ""
-"Nie masz dostepu do danych wszystkich użytkowników. W większości tylko do "
-"profilu członków zespołu i swojego."
 
 #: users/templates/users/user_filter.html:43
 msgid "Case count"
-msgstr "Liczba spraw"
+msgstr ""
 
 #: users/templates/users/user_form.html:8
 msgid "Account"
-msgstr "Konto"
+msgstr ""
 
 #: users/views.py:64
 msgid "All users"
@@ -144,60 +138,3 @@ msgstr ""
 #: users/views.py:66
 msgid "Clients"
 msgstr ""
-
-#~ msgid "Cases"
-#~ msgstr "Sprawy"
-
-#~ msgid "Add avatar"
-#~ msgstr "Dodaj avatar"
-
-#~ msgid "Your current avatar: "
-#~ msgstr "Twój obecny avatar:"
-
-#~ msgid "Avatar choices: "
-#~ msgstr "Dostępne avatary:"
-
-#~ msgid "You haven't uploaded an avatar yet. Please upload one now."
-#~ msgstr "Nie masz obecnie żadnego avataru. prosimy dodać nowy."
-
-#~ msgid "Upload New Image"
-#~ msgstr "Dodaj nowy obraz"
-
-#~ msgid "Change"
-#~ msgstr "Zmień"
-
-#~ msgid "Choose avatar"
-#~ msgstr "Wybierz avatar"
-
-#~ msgid "Upload a new avatar"
-#~ msgstr "Wyślij nowy avatar "
-
-#~ msgid "Delete confirmation"
-#~ msgstr "Potwierdzenie usuwania"
-
-#~ msgid "Please select the avatars that you would like to delete."
-#~ msgstr "Prosimy wybrać avatar, który chcesz usunąć."
-
-#~ msgid ""
-#~ "You have no avatars to delete. Please <a href=\"%(avatar_change_url)s"
-#~ "\">upload one</a> now."
-#~ msgstr ""
-#~ "Nie masz avatarów. Prosimy <a href=\"%(avatar_change_url)s\">dodaj</a>"
-
-#~ msgid "Delete These"
-#~ msgstr "Usuń wybrane"
-
-#~ msgid "Sign In"
-#~ msgstr "Logowanie"
-
-#~ msgid "Update"
-#~ msgstr "Aktualizuj"
-
-#~ msgid "Cancel"
-#~ msgstr "Anuluj"
-
-#~ msgid "My Info"
-#~ msgstr "Moje informacje"
-
-#~ msgid "Your profile"
-#~ msgstr "Twój profil"

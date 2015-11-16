@@ -3,254 +3,240 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: event 0.0.1\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-16 18:24+0100\n"
-"PO-Revision-Date: 2015-08-19 20:02+0100\n"
-"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
-"Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
-"Language: pl_PL\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.5.4\n"
 
 #: events/models.py:15
 msgid "Alarm"
-msgstr "Alarm"
+msgstr ""
 
 #: events/models.py:16
 msgid "Alarms"
-msgstr "Alarmy"
+msgstr ""
 
 #: events/models.py:28 events/templates/events/_event_list.html:9
 msgid "Dead-line"
-msgstr "Termin"
+msgstr ""
 
 #: events/models.py:29 events/templates/events/_event_list.html:10
 msgid "Time"
-msgstr "Czas"
+msgstr ""
 
 #: events/models.py:30
 msgid "Subject"
-msgstr "Przedmiot"
+msgstr ""
 
 #: events/models.py:32
 msgid "Created by"
-msgstr "Utworzone przez"
+msgstr ""
 
 #: events/models.py:33
 msgid "Created on"
-msgstr "Utworzone o"
+msgstr ""
 
 #: events/models.py:35
 msgid "Modified by"
-msgstr "Zmodyfikowane przez"
+msgstr ""
 
 #: events/models.py:39
 msgid "Modified on"
-msgstr "Zmodyfikowane o"
+msgstr ""
 
 #: events/models.py:65
 msgid "Event"
-msgstr "Wydarzenie"
+msgstr ""
 
 #: events/models.py:66 events/templates/events/base.html:5
 #: events/templates/events/base.html:10
 msgid "Events"
-msgstr "Wydarzenia"
+msgstr ""
 
 #: events/templates/events/_alarm_list.html:13
 msgid "A related event "
-msgstr "Powiązane wydarzenie"
+msgstr ""
 
 #: events/templates/events/_event_list.html:11
 msgid "Triggered"
-msgstr "Zaistniałe"
+msgstr ""
 
 #: events/templates/events/_event_list.html:20
 #: events/templates/events/form.html:8
 msgid "Edit"
-msgstr "Edytuj"
+msgstr ""
 
 #: events/templates/events/event_archive.html:4
 msgid "Months index"
-msgstr "Wykaz miesięcy"
+msgstr ""
 
 #: events/templates/events/form.html:6
 msgid "Cases"
-msgstr "Sprawy"
+msgstr ""
 
 #: events/utils.py:8
 msgid "Monday"
-msgstr "Poniedziałek"
+msgstr ""
 
 #: events/utils.py:8
 msgid "Tuesday"
-msgstr "Wtorek"
+msgstr ""
 
 #: events/utils.py:8
 msgid "Wednesday"
-msgstr "Środa"
+msgstr ""
 
 #: events/utils.py:8
 msgid "Thursday"
-msgstr "Czwartek"
+msgstr ""
 
 #: events/utils.py:8
 msgid "Friday"
-msgstr "Piątek"
+msgstr ""
 
 #: events/utils.py:9
 msgid "Saturday"
-msgstr "Sobota"
+msgstr ""
 
 #: events/utils.py:9
 msgid "Sunday"
-msgstr "Niedziela"
+msgstr ""
 
 #: events/utils.py:10
 msgid "Mon"
-msgstr "Pon"
+msgstr ""
 
 #: events/utils.py:10
 msgid "Tue"
-msgstr "Wt"
+msgstr ""
 
 #: events/utils.py:10
 msgid "Wed"
-msgstr "Śr"
+msgstr ""
 
 #: events/utils.py:10
 msgid "Thu"
-msgstr "Czw"
+msgstr ""
 
 #: events/utils.py:10
 msgid "Fri"
-msgstr "Pi"
+msgstr ""
 
 #: events/utils.py:10
 msgid "Sat"
-msgstr "Sob"
+msgstr ""
 
 #: events/utils.py:10
 msgid "Sun"
-msgstr "Ndz"
+msgstr ""
 
 #: events/utils.py:12
 msgid "January"
-msgstr "Styczeń"
+msgstr ""
 
 #: events/utils.py:12
 msgid "February"
-msgstr "Luty"
+msgstr ""
 
 #: events/utils.py:12
 msgid "March"
-msgstr "Marzec"
+msgstr ""
 
 #: events/utils.py:12
 msgid "April"
-msgstr "Kwiecień"
+msgstr ""
 
 #: events/utils.py:12 events/utils.py:15
 msgid "May"
-msgstr "Maj"
+msgstr ""
 
 #: events/utils.py:12
 msgid "June"
-msgstr "Czerwiec"
+msgstr ""
 
 #: events/utils.py:13
 msgid "July"
-msgstr "Lipiec"
+msgstr ""
 
 #: events/utils.py:13
 msgid "August"
-msgstr "Sierpień"
+msgstr ""
 
 #: events/utils.py:13
 msgid "September"
-msgstr "Wrzesień"
+msgstr ""
 
 #: events/utils.py:13
 msgid "October"
-msgstr "Październik"
+msgstr ""
 
 #: events/utils.py:13
 msgid "November"
-msgstr "Listopad"
+msgstr ""
 
 #: events/utils.py:13
 msgid "December"
-msgstr "Grudzień"
+msgstr ""
 
 #: events/utils.py:15
 msgid "Jan"
-msgstr "Sty"
+msgstr ""
 
 #: events/utils.py:15
 msgid "Feb"
-msgstr "Lut"
+msgstr ""
 
 #: events/utils.py:15
 msgid "Mar"
-msgstr "Mar"
+msgstr ""
 
 #: events/utils.py:15
 msgid "Apr"
-msgstr "Kwi"
+msgstr ""
 
 #: events/utils.py:15
 msgid "Jun"
-msgstr "Maj"
+msgstr ""
 
 #: events/utils.py:15
 msgid "Jul"
-msgstr "Cze"
+msgstr ""
 
 #: events/utils.py:16
 msgid "Aug"
-msgstr "Lip"
+msgstr ""
 
 #: events/utils.py:16
 msgid "Sep"
-msgstr "Sie"
+msgstr ""
 
 #: events/utils.py:16
 msgid "Oct"
-msgstr "Wrz"
+msgstr ""
 
 #: events/utils.py:16
 msgid "Nov"
-msgstr "Paź"
+msgstr ""
 
 #: events/utils.py:16
 msgid "Dec"
-msgstr "Gru"
+msgstr ""
 
 #: events/views.py:40
 #, python-format
 msgid "Success added new event %(event)s"
-msgstr "Dodano wydarzenie %(event)s"
+msgstr ""
 
 #: events/views.py:54
 #, python-format
 msgid "Success updated event %(event)s"
-msgstr "Zaktualizowano wydarzenie %(event)s"
-
-#~ msgid "For client"
-#~ msgstr "Dla klienta"
-
-#~ msgid "Unchecked are visible for staff only"
-#~ msgstr "Odznaczone jest widoczne tylko dla zespołu"
-
-#~ msgid "Save changes"
-#~ msgstr "Zapisz zmiany"
-
-#~ msgid "Cancel"
-#~ msgstr "Anuluj"
+msgstr ""

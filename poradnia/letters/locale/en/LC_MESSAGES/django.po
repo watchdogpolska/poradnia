@@ -3,152 +3,144 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
+#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: letter 0.0.1\n"
+"Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-16 18:24+0100\n"
-"PO-Revision-Date: 2015-09-26 21:21+0100\n"
-"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
-"Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
-"Language: pl_PL\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.5.4\n"
 
 #: letters/forms.py:17
 msgid "Leave empty to use email field and create a new one user."
 msgstr ""
-"Pozostaw puste, aby wykorzystać pole adresu e-mail i utworzyć nowego "
-"użytkownika."
 
 #: letters/forms.py:19
 msgid ""
 "The user account will be created automatically, so you have\n"
 "access to the archive and data about persons responsible for the case."
 msgstr ""
-"Konto użytkownika zostanie utworzone automatycznie, dzięki czemu będziesz "
-"mieć dostęp do archiwum zawierającego wszystkie Twoje sprawy."
 
 #: letters/forms.py:22
 msgid ""
 "\"Short description of the case for organizational purposes.\n"
 "The institution name and two words will suffice."
 msgstr ""
-"Podaj nazwę instytucji i typ problemu np. „brak odpowiedzi”, „ochrona danych "
-"osobowych” itp."
 
 #: letters/forms.py:37
 #, python-format
 msgid "E-mail %(email)s are already used. Please log in."
-msgstr "Adres e-mail %(email)s jest aktualnie w użyciu. Proszę, zaloguj się."
+msgstr ""
 
 #: letters/forms.py:47
 msgid "Report case"
-msgstr "Zgłoś sprawę"
+msgstr ""
 
 #: letters/forms.py:50
 msgid "Client"
-msgstr "Klient"
+msgstr ""
 
 #: letters/forms.py:55
 msgid "User e-mail"
-msgstr "E-mail użytkownika"
+msgstr ""
 
 #: letters/forms.py:58
 msgid "E-mail"
-msgstr "E-mail"
+msgstr ""
 
 #: letters/forms.py:89
 msgid "Have to enter user email or select a client"
-msgstr "Musisz podać adres e-mail klienta lub go wybrać z bazy."
+msgstr ""
 
 #: letters/forms.py:146
 msgid "Reply to all"
-msgstr "Odpowiedź wszystkim"
+msgstr ""
 
 #: letters/forms.py:150 letters/forms.py:155
 msgid "Reply to staff"
-msgstr "Odpowiedź dla zespołu"
+msgstr ""
 
 #: letters/forms.py:159
 msgid "Reply"
-msgstr "Odpowiedź"
+msgstr ""
 
 #: letters/forms.py:192
 msgid "Comment for staff"
-msgstr "Komentarz dla zespołu"
+msgstr ""
 
 #: letters/models.py:49
 msgid "Staff"
-msgstr "Zespół"
+msgstr ""
 
 #: letters/models.py:49
 msgid "Done"
-msgstr "Wykonane"
+msgstr ""
 
 #: letters/models.py:54
 msgid "Accepted on"
-msgstr "Zaakceptowane o"
+msgstr ""
 
 #: letters/models.py:55
 msgid "Subject"
-msgstr "Przedmiot"
+msgstr ""
 
 #: letters/models.py:56
 msgid "Text"
-msgstr "Treść"
+msgstr ""
 
 #: letters/models.py:57
 msgid "Signature"
-msgstr "Podpis"
+msgstr ""
 
 #: letters/models.py:59
 msgid "Created by"
-msgstr "Utworzone przez"
+msgstr ""
 
 #: letters/models.py:60
 msgid "Created on"
-msgstr "Utworzone o"
+msgstr ""
 
 #: letters/models.py:62
 msgid "Modified by"
-msgstr "Zmienione o"
+msgstr ""
 
 #: letters/models.py:66
 msgid "Modified on"
-msgstr "Zmienione przez"
+msgstr ""
 
 #: letters/models.py:69
 msgid "Raw message contents"
-msgstr "Treść surowej wiadomości"
+msgstr ""
 
 #: letters/models.py:72
 msgid "Original full content of message"
-msgstr "Oryginalna, pełna treść wiadomości"
+msgstr ""
 
 #: letters/models.py:114
 msgid "Letter"
-msgstr "List"
+msgstr ""
 
 #: letters/models.py:115
 msgid "Letters"
-msgstr "Listy"
+msgstr ""
 
 #: letters/templates/letters/_form.html:7
 msgid "remove"
-msgstr "usuń"
+msgstr ""
 
 #: letters/templates/letters/_form.html:7
 msgid "add another"
-msgstr "dodaj kolejne"
+msgstr ""
 
 #: letters/templates/letters/_form.html:14
 msgid "Cases"
-msgstr "Sprawy"
+msgstr ""
 
 #: letters/templates/letters/_letter_list.html:24
 #, python-format
@@ -158,41 +150,37 @@ msgid ""
 "\"%(modified_on)s\">%(modified_on_natural)s</time> by %(modified_by)s)\n"
 "            "
 msgstr ""
-"\n"
-"            (zaktualizowane <time datetime=\"%(modified_on)s\" title="
-"\"%(modified_on)s\">%(modified_on_natural)s</time> przez %(modified_by)s)\n"
-"            "
 
 #: letters/templates/letters/_letter_list.html:31
 #: letters/templates/letters/form_edit.html:6 letters/views/cbv.py:43
 msgid "Edit"
-msgstr "Edytuj"
+msgstr ""
 
 #: letters/templates/letters/_letter_list.html:37
 #: letters/templates/letters/form_send.html:7
 msgid "Send"
-msgstr "Wyślij"
+msgstr ""
 
 #: letters/templates/letters/form_add.html:5
 msgid "Add"
-msgstr "Dodaj"
+msgstr ""
 
 #: letters/templates/letters/form_new.html:4
 msgid "New case"
-msgstr "Nowa sprawa"
+msgstr ""
 
 #: letters/templates/letters/letter_filter.html:5
 msgid "Letter list"
-msgstr "Rejestr korespondencji"
+msgstr ""
 
 #: letters/views/cbv.py:22
 msgid "Create a new case"
-msgstr "Tworzenie nowej sprawy"
+msgstr ""
 
 #: letters/views/cbv.py:30
 #, python-brace-format
 msgid "Case about {object} created!"
-msgstr "Sprawa o tytule {object} została zarejestrowana!"
+msgstr ""
 
 #: letters/views/fbv.py:14
 #, python-format
@@ -200,45 +188,25 @@ msgid ""
 "User  %(user)s registered! You will receive a password by mail. Log in to "
 "get access to archive"
 msgstr ""
-"Konto %(user)s utworzone! Hasło otrzymasz na adres e-mail. Zaloguj się, aby "
-"uzyskać dostęp do archiwum."
 
 #: letters/views/fbv.py:35
 #, python-format
 msgid "Letter %(object)s created!"
-msgstr "List %(object)s utworzone"
+msgstr ""
 
 #: letters/views/fbv.py:43
 msgid "Add letter"
-msgstr "Dodaj list"
+msgstr ""
 
 #: letters/views/fbv.py:59
 msgid "It doesn't make sense."
-msgstr "To nie ma sensu."
+msgstr ""
 
 #: letters/views/fbv.py:69
 #, python-format
 msgid "Letter %(object)s send!"
-msgstr "List %(object)s wysłany!"
+msgstr ""
 
 #: letters/views/fbv.py:75
 msgid "Send to client"
-msgstr "Wyślij do klienta"
-
-#~ msgid "File"
-#~ msgstr "Plik"
-
-#~ msgid "Attachment"
-#~ msgstr "Załącznik"
-
-#~ msgid "Attachments"
-#~ msgstr "Załączniki"
-
-#~ msgid "Letter %(object)s updated!"
-#~ msgstr "List %(object)s zaktualizowany!"
-
-#~ msgid "Save changes"
-#~ msgstr "Zapisz zmiany"
-
-#~ msgid "Cancel"
-#~ msgstr "Anuluj"
+msgstr ""
