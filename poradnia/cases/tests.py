@@ -12,6 +12,44 @@ from django.contrib.admin.sites import AdminSite
 from cases.admin import CaseAdmin
 
 
+class CaseQuerySetTestCase(TestCase):
+    def setUp(self):
+        self.user = UserFactory()
+
+    def test_for_user_cant(self):
+        self.assertFalse(Case.objects.for_user(self.user).filter(pk=CaseFactory().pk).exists())
+
+    def test_for_user_can_view_all(self):
+        assign_perm('cases.can_view_all', self.user)
+        self.assertTrue(Case.objects.for_user(self.user).filter(pk=CaseFactory().pk).exists())
+
+    def test_for_user_can_view_client(self): # perm set by signal
+        self.assertTrue(Case.objects.for_user(self.user).filter(pk=CaseFactory(created_by=self.user).pk).exists())
+
+    def test_for_user_can_view_created(self): # perm set by signal
+        self.assertTrue(Case.objects.for_user(self.user).filter(pk=CaseFactory(client=self.user).pk).exists())
+
+    def test_with_perm(self):
+        CaseFactory.create_batch(size=25)
+        with self.assertNumQueries(2):
+            qs = Case.objects.with_perm().all()
+            for obj in qs:
+                list(obj.caseuserobjectpermission_set.all())
+
+    def test_with_record_count(self):
+        obj = CaseFactory()
+        LetterFactory.create_batch(size=25, case=obj)
+        self.assertEqual(Case.objects.filter(pk=obj.pk).with_record_count().get().record_count, 25)
+
+    def test_by_involved_in(self):
+        # TODO
+        self.assertTrue(True)
+
+    def test_by_msg(self):
+        # TODO
+        self.assertTrue(True)
+
+
 class CaseTestCase(TestCase):
     def setUp(self):
         self.object = CaseFactory()
@@ -101,7 +139,9 @@ class StaffCaseFilterTestCase(TestCase):
     def test_permission_filter(self):
         obj = CaseFactory()
         self.assertFalse(self.get_permission_filter_qs(user=UserFactory(), pk=obj.pk).exists())
-        self.assertTrue(self.get_permission_filter_qs(user=obj.created_by, pk=obj.pk).exists())
+        user = UserFactory(is_staff=True)
+        assign_perm('cases.can_view', user, obj)
+        self.assertTrue(self.get_permission_filter_qs(user=user, pk=obj.pk).exists())
 
     def _get_filter(self, user=None, choice='default'):
         return StaffCaseFilter(user=user or UserFactory()).get_order_by(choice)
@@ -113,9 +153,9 @@ class StaffCaseFilterTestCase(TestCase):
     def test_form_fields(self):
         su_user = UserFactory(is_staff=True, is_superuser=True)
         self.assertEqual(StaffCaseFilter(user=su_user).form.fields.keys(),
-                         ['status', 'client', 'name', 'handled', 'permission', 'o'])
+                         ['status', 'handled', 'client', 'name', 'permission', 'o'])
         self.assertEqual(StaffCaseFilter(user=UserFactory(is_staff=True)).form.fields.keys(),
-                         ['status', 'client', 'name', 'handled', 'o'])
+                         ['status', 'handled', 'client', 'name', 'o'])
 
 
 class CaseListViewTestCase(TestCase):
