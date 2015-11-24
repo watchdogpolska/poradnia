@@ -1,23 +1,20 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: event 0.0.1\n"
+"Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-16 18:24+0100\n"
-"PO-Revision-Date: 2015-08-19 20:02+0100\n"
-"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
-"Language-Team: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"PO-Revision-Date: 2015-11-24 09:52-0500\n"
+"Last-Translator: ad-m <naczelnik@jawnosc.tk>\n"
+"Language-Team: Polish\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.5.4\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: poradnia\n"
+"X-Crowdin-Language: pl\n"
+"X-Crowdin-File: /events/locale/en/LC_MESSAGES/django.po\n"
 
 #: events/models.py:15
 msgid "Alarm"
@@ -207,19 +204,19 @@ msgstr "Kwi"
 
 #: events/utils.py:15
 msgid "Jun"
-msgstr "Maj"
+msgstr "Cze"
 
 #: events/utils.py:15
 msgid "Jul"
-msgstr "Cze"
-
-#: events/utils.py:16
-msgid "Aug"
 msgstr "Lip"
 
 #: events/utils.py:16
-msgid "Sep"
+msgid "Aug"
 msgstr "Sie"
+
+#: events/utils.py:16
+msgid "Sep"
+msgstr "Wrz"
 
 #: events/utils.py:16
 msgid "Oct"
@@ -243,14 +240,3 @@ msgstr "Dodano wydarzenie %(event)s"
 msgid "Success updated event %(event)s"
 msgstr "Zaktualizowano wydarzenie %(event)s"
 
-#~ msgid "For client"
-#~ msgstr "Dla klienta"
-
-#~ msgid "Unchecked are visible for staff only"
-#~ msgstr "Odznaczone jest widoczne tylko dla zespołu"
-
-#~ msgid "Save changes"
-#~ msgstr "Zapisz zmiany"
-
-#~ msgid "Cancel"
-#~ msgstr "Anuluj"

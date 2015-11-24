@@ -1,40 +1,36 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.0.1\n"
+"Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2015-11-16 18:24+0100\n"
-"PO-Revision-Date: 2015-07-25 13:37+0100\n"
-"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
-"Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
-"Language: pl\n"
+"PO-Revision-Date: 2015-11-24 09:52-0500\n"
+"Last-Translator: ad-m <naczelnik@jawnosc.tk>\n"
+"Language-Team: Polish\n"
+"Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.5.4\n"
-"X-Poedit-SourceCharset: UTF-8\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"X-Generator: crowdin.com\n"
+"X-Crowdin-Project: poradnia\n"
+"X-Crowdin-Language: pl\n"
+"X-Crowdin-File: /templates/locale/en/LC_MESSAGES/django.po\n"
 
 #: config/common.py:295
 msgid "Polish"
-msgstr ""
+msgstr "Polski"
 
 #: config/common.py:296
 msgid "English"
-msgstr ""
+msgstr "Angielski"
 
 #: feedback_custom/filters.py:10
 msgid "User"
-msgstr ""
+msgstr "Użytkownik"
 
 #: templates/_sidebar.html:26
 msgid "Feedbacks"
-msgstr ""
+msgstr "Uwagi"
 
 #: templates/account/email.html:7
 msgid "Account"
@@ -77,13 +73,8 @@ msgid "Warning:"
 msgstr "Uwaga:"
 
 #: templates/account/email.html:47
-msgid ""
-"You currently do not have any e-mail address set up. You should really add "
-"an e-mail address so you can receive notifications, reset your password, etc."
-msgstr ""
-"Obecnie nie masz ustawionych żadnych adresów e-mail. Powinieneś / powinnaś "
-"wprowadzić adres e-mail, aby otrzymywać powiadomienia i móc zresetować hasło "
-"itd."
+msgid "You currently do not have any e-mail address set up. You should really add an e-mail address so you can receive notifications, reset your password, etc."
+msgstr "Obecnie nie masz ustawionych żadnych adresów e-mail. Powinieneś / powinnaś wprowadzić adres e-mail, aby otrzymywać powiadomienia i móc zresetować hasło itd."
 
 #: templates/account/email.html:52
 msgid "Add E-mail Address"
@@ -106,12 +97,8 @@ msgstr "Potwierdź adres e-mail"
 
 #: templates/account/email_confirm.html:17
 #, python-format
-msgid ""
-"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
-"address for user %(user_display)s."
-msgstr ""
-"Prosimy o potwierdzenie, że adres <a href=\"mailto:%(email)s\">%(email)s</a> "
-"należy do użytkownika / użytkowniczki %(user_display)s."
+msgid "Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail address for user %(user_display)s."
+msgstr "Prosimy o potwierdzenie, że adres <a href=\"mailto:%(email)s\">%(email)s</a> należy do użytkownika / użytkowniczki %(user_display)s."
 
 #: templates/account/email_confirm.html:21
 msgid "Confirm"
@@ -119,21 +106,13 @@ msgstr "Potwierdź"
 
 #: templates/account/email_confirm.html:28
 #, python-format
-msgid ""
-"This e-mail confirmation link expired or is invalid. Please <a href="
-"\"%(email_url)s\">issue a new e-mail confirmation request</a>."
-msgstr ""
-"Ten link potwierdzenia adresu e-mail jest przeterminowany lub nieprawidłowy. "
-"Proszę <a href=\"%(email_url)s\">zażądaj nowego potwierdzenia e-maila</a>."
+msgid "This e-mail confirmation link expired or is invalid. Please <a href=\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+msgstr "Ten link potwierdzenia adresu e-mail jest przeterminowany lub nieprawidłowy. Proszę <a href=\"%(email_url)s\">zażądaj nowego potwierdzenia e-maila</a>."
 
 #: templates/account/email_confirmed.html:14
 #, python-format
-msgid ""
-"You have confirmed that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-"
-"mail address for user %(user_display)s."
-msgstr ""
-"Potwierdziłeś, że adres <a href=\"mailto:%(email)s\">%(email)s</a> należy do "
-"użytkownika %(user_display)s."
+msgid "You have confirmed that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail address for user %(user_display)s."
+msgstr "Potwierdziłeś, że adres <a href=\"mailto:%(email)s\">%(email)s</a> należy do użytkownika %(user_display)s."
 
 #: templates/account/login.html:8 templates/account/login.html.py:11
 msgid "Sign In"
@@ -141,12 +120,8 @@ msgstr "Zaloguj się"
 
 #: templates/account/login.html:14
 #, python-format
-msgid ""
-"Please sign in with one of your existing third party accounts. Or, <a href="
-"\"%(signup_url)s\">sign up</a> for a %(site_name)s account and sign in below:"
-msgstr ""
-"Zaloguj się proszę z użyciem kont partnerskich, albo <a href=\"%(signup_url)s"
-"\">zarejestruj się</a> na stronie %(site_name)s i zaloguj się poniżej:"
+msgid "Please sign in with one of your existing third party accounts. Or, <a href=\"%(signup_url)s\">sign up</a> for a %(site_name)s account and sign in below:"
+msgstr "Zaloguj się proszę z użyciem kont partnerskich, albo <a href=\"%(signup_url)s\">zarejestruj się</a> na stronie %(site_name)s i zaloguj się poniżej:"
 
 #: templates/account/login.html:22
 msgid "or"
@@ -226,11 +201,8 @@ msgid "Delete Password"
 msgstr "Usuwanie hasła"
 
 #: templates/account/password_delete.html:9
-msgid ""
-"You may delete your password since you are currently logged in using OpenID."
-msgstr ""
-"Możesz usunąć swoje hasła, gdyż obecnie jesteś zalogowany z wykorzystaniem "
-"OpenID."
+msgid "You may delete your password since you are currently logged in using OpenID."
+msgstr "Możesz usunąć swoje hasła, gdyż obecnie jesteś zalogowany z wykorzystaniem OpenID."
 
 #: templates/account/password_delete.html:12
 msgid "delete my password"
@@ -253,12 +225,8 @@ msgid "Password Reset"
 msgstr "Reset hasła"
 
 #: templates/account/password_reset.html:15
-msgid ""
-"Forgotten your password? Enter your e-mail address below, and we'll send you "
-"an e-mail allowing you to reset it."
-msgstr ""
-"Zapomniałeś/-aś swojego hasła? Wpisz poniżej swój adres e-mail, a my wyślemy "
-"do Ciebie e-mail umożliwiający zresetowanie hasła."
+msgid "Forgotten your password? Enter your e-mail address below, and we'll send you an e-mail allowing you to reset it."
+msgstr "Zapomniałeś/-aś swojego hasła? Wpisz poniżej swój adres e-mail, a my wyślemy do Ciebie e-mail umożliwiający zresetowanie hasła."
 
 #: templates/account/password_reset.html:20
 msgid "Reset My Password"
@@ -266,16 +234,11 @@ msgstr "Zresetuj moje hasło"
 
 #: templates/account/password_reset.html:23
 msgid "Please contact us if you have any trouble resetting your password."
-msgstr ""
-"Prosimy, skontaktuj się, jeżeli masz jakiekolwiek trudności z resetem hasła. "
+msgstr "Prosimy, skontaktuj się, jeżeli masz jakiekolwiek trudności z resetem hasła. "
 
 #: templates/account/password_reset_done.html:15
-msgid ""
-"We have sent you an e-mail. Please contact us if you do not receive it "
-"within a few minutes."
-msgstr ""
-"Wysłaliśmy do Ciebie e-mail. Skontaktuj się, jeżeli nie otrzymasz go w ciągu "
-"kilku minut."
+msgid "We have sent you an e-mail. Please contact us if you do not receive it within a few minutes."
+msgstr "Wysłaliśmy do Ciebie e-mail. Skontaktuj się, jeżeli nie otrzymasz go w ciągu kilku minut."
 
 #: templates/account/password_reset_from_key.html:10
 msgid "Bad Token"
@@ -283,14 +246,8 @@ msgstr "Zły token"
 
 #: templates/account/password_reset_from_key.html:14
 #, python-format
-msgid ""
-"The password reset link was invalid, possibly because it has already been "
-"used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</"
-"a>."
-msgstr ""
-"Link resetu hasła jest nieprawidłowy, prawdopodobnie z powodu wcześniejszego "
-"użycia. Zażądaj <a href=\"%(passwd_reset_url)s\">nowego resetu hasła</a>, "
-"proszę."
+msgid "The password reset link was invalid, possibly because it has already been used.  Please request a <a href=\"%(passwd_reset_url)s\">new password reset</a>."
+msgstr "Link resetu hasła jest nieprawidłowy, prawdopodobnie z powodu wcześniejszego użycia. Zażądaj <a href=\"%(passwd_reset_url)s\">nowego resetu hasła</a>, proszę."
 
 #: templates/account/password_reset_from_key.html:20
 msgid "change password"
@@ -316,8 +273,7 @@ msgstr "Rejestracja"
 
 #: templates/account/signup.html:13
 #, python-format
-msgid ""
-"Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
+msgid "Already have an account? Then please <a href=\"%(login_url)s\">sign in</a>."
 msgstr "Masz konto? Jeżeli tak, to <a href=\"%(login_url)s\">zaloguj się</a>."
 
 #: templates/account/signup.html:14
@@ -341,40 +297,19 @@ msgid "Verify Your E-mail Address"
 msgstr "Potwierdź swój adres e-mail."
 
 #: templates/account/verification_sent.html:13
-msgid ""
-"We have sent an e-mail for verification. Follow the link provided to "
-"finalize the signup process. Please contact us if you do not receive it "
-"within a few minutes."
-msgstr ""
-"Wysłaliśmy do Ciebie wiadomość, która ma służyć upewnieniu się, że chcesz "
-"być z nami w kontakcie. Kliknij w link, który otrzymasz na podany przez "
-"Ciebie adres e-mail, aby ukończyć rejestrację.<br><br>Powiadom nas, jeśli "
-"nie otrzymasz wiadomości w ciągu kilku minut. "
+msgid "We have sent an e-mail for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes."
+msgstr "Wysłaliśmy do Ciebie wiadomość, która ma służyć upewnieniu się, że chcesz być z nami w kontakcie. Kliknij w link, który otrzymasz na podany przez Ciebie adres e-mail, aby ukończyć rejestrację.<br><br>Powiadom nas, jeśli nie otrzymasz wiadomości w ciągu kilku minut. "
 
 #: templates/account/verified_email_required.html:13
-msgid ""
-"This part of the site requires us to verify that you are who you claim to "
-"be. For this purpose, we require that you verify ownership of your e-mail "
-"address. "
-msgstr ""
-"Ta część strona wymaga weryfikacji, że jesteś tym za kogo się podajesz. W "
-"tym celu wymagamy weryfikacji adresu e-mail."
+msgid "This part of the site requires us to verify that you are who you claim to be. For this purpose, we require that you verify ownership of your e-mail address. "
+msgstr "Ta część strona wymaga weryfikacji, że jesteś tym za kogo się podajesz. W tym celu wymagamy weryfikacji adresu e-mail."
 
 #: templates/account/verified_email_required.html:15
-msgid ""
-"We have sent an e-mail to you for verification. Please click on the link "
-"inside this e-mail. Please contact us if you do not receive it within a few "
-"minutes."
-msgstr ""
-"Wysłaliśmy do Ciebie e-mail weryfikacji. Kliknij w odnośnik zawarty w treści "
-"wiadomości, proszę. Jeżeli nie otrzymasz wiadomości w ciągu kilku minut - "
-"skontaktuj się z nami."
+msgid "We have sent an e-mail to you for verification. Please click on the link inside this e-mail. Please contact us if you do not receive it within a few minutes."
+msgstr "Wysłaliśmy do Ciebie e-mail weryfikacji. Kliknij w odnośnik zawarty w treści wiadomości, proszę. Jeżeli nie otrzymasz wiadomości w ciągu kilku minut - skontaktuj się z nami."
 
 #: templates/account/verified_email_required.html:17
 #, python-format
-msgid ""
-"<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-"
-"mail address</a>."
-msgstr ""
-"<strong>Notatka:</strong> możesz <a href=\"%(email_url)s\">zmienić swój "
-"adres e-mail</a>."
+msgid "<strong>Note:</strong> you can still <a href=\"%(email_url)s\">change your e-mail address</a>."
+msgstr "<strong>Notatka:</strong> możesz <a href=\"%(email_url)s\">zmienić swój adres e-mail</a>."
+
