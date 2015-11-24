@@ -13,6 +13,10 @@ poradnia
      :target: https://requires.io/github/watchdogpolska/poradnia/requirements/?branch=master
      :alt: Requirements Status
 
+.. image:: https://img.shields.io/badge/translations-pl%20|%20en-brightgreen.svg
+     :target: https://crowdin.com/project/poradnia
+     :alt: Translations
+
 .. image:: https://img.shields.io/github/issues/watchdogpolska/poradnia.svg
      :target: https://github.com/watchdogpolska/poradnia/issues
      :alt: GitHub issues counter
