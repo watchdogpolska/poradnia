@@ -38,8 +38,9 @@ class PermissionChoiceFilter(django_filters.ModelChoiceFilter):
 class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSet):
     name = django_filters.CharFilter(label=_("Subject"), lookup_type='icontains')
     client = UserChoiceFilter(label=_("Client"))
-    handled = django_filters.BooleanFilter(label=_("Handled?"))
     permission = PermissionChoiceFilter()
+    handled = django_filters.BooleanFilter(label=_("Replied"))
+    status = django_filters.MultipleChoiceFilter(label=_("Status"), choices=Case.STATUS)
 
     def __init__(self, *args, **kwargs):
         super(StaffCaseFilter, self).__init__(*args, **kwargs)

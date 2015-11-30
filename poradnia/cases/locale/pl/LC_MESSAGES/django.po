@@ -2,16 +2,17 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-24 15:46+0100\n"
-"PO-Revision-Date: 2015-11-24 09:52-0500\n"
-"Last-Translator: ad-m <naczelnik@jawnosc.tk>\n"
+"POT-Creation-Date: 2015-11-30 06:33+0100\n"
+"PO-Revision-Date: 2015-11-30 06:33+0100\n"
+"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: crowdin.com\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.5.4\n"
 "X-Crowdin-Project: poradnia\n"
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /cases/locale/en/LC_MESSAGES/django.po\n"
@@ -24,47 +25,51 @@ msgstr "Brak"
 msgid "Has access by"
 msgstr "Osoba przypisana"
 
-#: filters.py:39 filters.py:70 models.py:65
+#: filters.py:39 filters.py:71 models.py:65
 #: templates/cases/case_filter.html:33
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: filters.py:40 filters.py:62 filters.py:80 models.py:70
+#: filters.py:40 filters.py:63 filters.py:81 models.py:70
 #: templates/cases/case_filter.html:32
 msgid "Client"
 msgstr "Klient"
 
-#: filters.py:41
-msgid "Handled?"
-msgstr "Obsłużona?"
+#: filters.py:42
+msgid "Replied"
+msgstr "Odpowiedziana"
 
-#: filters.py:48
+#: filters.py:43
+msgid "Status"
+msgstr "Status"
+
+#: filters.py:49
 msgid "Any state"
 msgstr "Dowolny stan"
 
-#: filters.py:59 filters.py:78
+#: filters.py:60 filters.py:79
 msgid "Default"
 msgstr "Domyślne"
 
-#: filters.py:60 models.py:77 templates/cases/case_detail.html:67
+#: filters.py:61 models.py:77 templates/cases/case_detail.html:67
 #: templates/cases/case_filter.html:33
 msgid "Dead-line"
 msgstr "Termin"
 
-#: filters.py:61 filters.py:79 templates/cases/case_filter.html:31
+#: filters.py:62 filters.py:80 templates/cases/case_filter.html:31
 msgid "ID"
 msgstr "ID"
 
-#: filters.py:63 filters.py:71 filters.py:81 models.py:81
+#: filters.py:64 filters.py:72 filters.py:82 models.py:81
 #: templates/cases/case_filter.html:37
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: filters.py:64 filters.py:72 filters.py:82 models.py:72
+#: filters.py:65 filters.py:73 filters.py:83 models.py:72
 msgid "Last send"
 msgstr "Ostatnia odpowiedź"
 
-#: filters.py:65 models.py:73 templates/cases/case_filter.html:36
+#: filters.py:66 models.py:73 templates/cases/case_filter.html:36
 msgid "Last action"
 msgstr "Ostatnia czynność"
 
@@ -179,19 +184,11 @@ msgstr "Nowa sprawa"
 msgid "Cases index"
 msgstr "Wykaz spraw"
 
-#: templates/cases/_sidebar.html:13
-msgid "Free cases"
-msgstr "Wolne sprawy"
-
-#: templates/cases/_sidebar.html:18
-msgid "Cases no handled"
-msgstr "Sprawy nie obsłużone"
-
-#: templates/cases/_sidebar.html:22
+#: templates/cases/_sidebar.html:14
 msgid "Event calendar"
 msgstr "Kalendarz wydarzeń"
 
-#: templates/cases/_sidebar.html:29
+#: templates/cases/_sidebar.html:21
 msgid "Letters"
 msgstr "Korespondencja"
 
@@ -217,9 +214,12 @@ msgstr "Edytuj"
 
 #: templates/cases/case_detail.html:41
 #, python-format
-msgid "Created by <a href=\"%(created_url)s\">%(created_user)s</a> on\n"
+msgid ""
+"Created by <a href=\"%(created_url)s\">%(created_user)s</a> on\n"
 "        %(created_on)s for <a href=\"%(client_url)s\">%(client_user)s</a>"
-msgstr "Utworzona przez <a href=\"%(created_url)s\">%(created_user)s</a> %(created_on)s dla <a href=\"%(client_url)s\">%(client_user)s</a>"
+msgstr ""
+"Utworzona przez <a href=\"%(created_url)s\">%(created_user)s</a> "
+"%(created_on)s dla <a href=\"%(client_url)s\">%(client_user)s</a>"
 
 #: templates/cases/case_detail.html:51
 msgid "Workflow"
@@ -272,7 +272,11 @@ msgstr "Legenda statusów"
 
 #: templates/cases/case_filter.html:69
 msgid "Cases have status changed by staff."
-msgstr "Zgłoszona przez Ciebie sprawa otrzymuje najpierw status \"wolna\". To znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na \"przypisana\". A gdy już Ci pomożemy \"zakończona\"."
+msgstr ""
+"Zgłoszona przez Ciebie sprawa otrzymuje najpierw status \"wolna\". To "
+"znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. "
+"Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na \"przypisana"
+"\". A gdy już Ci pomożemy \"zakończona\"."
 
 #: templates/cases/case_filter.html:75
 msgid "There is no cases."
@@ -319,3 +323,11 @@ msgstr "Zaktualizowano uprawniania %(user)s do sprawy %(case)s"
 msgid "%(user)s granted permissions from %(group)s!"
 msgstr "%(user)s przyznano uprawnienia grupy %(group)s!"
 
+#~ msgid "Handled?"
+#~ msgstr "Obsłużona?"
+
+#~ msgid "Free cases"
+#~ msgstr "Wolne sprawy"
+
+#~ msgid "Cases no handled"
+#~ msgstr "Sprawy nie obsłużone"
