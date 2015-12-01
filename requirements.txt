@@ -2,7 +2,7 @@
 #	requirements.txt in the root directory of a project.
 pylibmc==1.5.0
 django-heroku-memcacheify==0.8
-whitenoise==2.0.4
+whitenoise==2.0.6
 newrelic
 psycopg2==2.6.1
 -r requirements/production.txt
