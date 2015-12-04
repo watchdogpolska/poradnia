@@ -1,13 +1,11 @@
 from __future__ import absolute_import
 
-from unittest import skip
-
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.test import TestCase
 
 from advicer.models import Advice
 from users.factories import StaffFactory, UserFactory
-
+from guardian.shortcuts import assign_perm
 from .factories import AdviceFactory
 
 
@@ -44,6 +42,11 @@ class InstanceMixin(object):
         self.login()
         resp = self.client.get(self.url)
         self.assertContains(resp, self.instance.subject)
+
+    def test_hide_unvisible(self):
+        self.login()
+        resp = self.client.get(AdviceFactory(advicer=self.user, visible=False).get_absolute_url())
+        self.assertEqual(resp.status_code, 404)
 
 
 class AdviceListTestCase(PermissionMixin, TemplateUsedMixin, TestCase):
@@ -97,7 +100,6 @@ class AdviceDeleteTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
         self.instance = AdviceFactory(advicer=self.user)
         self.url = reverse('advicer:delete', kwargs={'pk': self.instance.pk})
 
-    @skip("TODO: Add update field to view")
     def test_field_update(self):
         self.login()
         self.assertTrue(self.instance.visible)
@@ -107,7 +109,7 @@ class AdviceDeleteTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
     def test_object_delete(self):
         self.login()
         self.client.post(self.url)
-        self.assertFalse(Advice.objects.filter(pk=self.instance.pk).exists())
+        self.assertFalse(Advice.objects.visible().filter(pk=self.instance.pk).exists())
 
 
 class AdviceDetailTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, TestCase):
@@ -122,3 +124,21 @@ class AdviceDetailTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
         self.login()
         resp = self.client.get(obj.get_absolute_url())
         self.assertContains(resp, 'Lorem<br />ipsum')
+
+
+class AdviceQuerySetTestCase(TestCase):
+    def test_for_user(self):
+        self.assertFalse(Advice.objects.for_user(UserFactory()).filter(pk=AdviceFactory().pk).exists())
+        # has perm
+        user = UserFactory()
+        assign_perm('advicer.can_view_all_advices', user)
+        self.assertTrue(Advice.objects.for_user(user).filter(pk=AdviceFactory().pk).exists())
+        # advicer
+        user = UserFactory()
+        self.assertTrue(Advice.objects.for_user(user).filter(pk=AdviceFactory(advicer=user).pk).exists())
+        # created_by
+        self.assertTrue(Advice.objects.for_user(user).filter(pk=AdviceFactory(created_by=user).pk).exists())
+
+    def test_visible(self):
+        self.assertTrue(Advice.objects.visible().filter(pk=AdviceFactory(visible=True).pk).exists())
+        self.assertFalse(Advice.objects.visible().filter(pk=AdviceFactory(visible=False).pk).exists())

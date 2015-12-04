@@ -5,18 +5,10 @@
         <li class="block-list-item"><a href="{% url 'letters:add' %}"><i class="fa fa-pencil"></i> {% trans 'New case'%}</a></li>
         {% if request.user.is_authenticated %}
         <li class="block-list-item">
-            <a href="{% url 'cases:list' %}"><i class="fa fa-book"></i> {% trans 'Cases index'%}</a>
-        </li>
-        {% endif%}
-        {% if perms.cases.can_assign %}
-        <li class="block-list-item">
-            <a href="{% url 'cases:list' %}?status=0"><i class="fa fa-question-circle"></i> {% trans 'Free cases'%}</a>
+            <a href="{% url 'cases:list' %}?status=0&amp;status=1"><i class="fa fa-book"></i> {% trans 'Cases index'%}</a>
         </li>
         {% endif%}
         {% if request.user.is_staff %}
-        <li class="block-list-item">
-            <a href="{% url 'cases:list' %}?handled=3"><i class="fa fa-reply"></i> {% trans 'Cases no handled' %}</a>
-        </li>
 
         <li class="block-list-item">
             <a href="{% url 'events:calendar' %}"><i class="fa fa-calendar"></i> {% trans 'Event calendar' %}</a>

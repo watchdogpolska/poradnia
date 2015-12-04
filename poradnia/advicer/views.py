@@ -3,10 +3,10 @@ from braces.views import (FormValidMessageMixin, LoginRequiredMixin, SelectRelat
                           StaffuserRequiredMixin, UserFormKwargsMixin)
 from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import CreateView, DeleteView, DetailView, UpdateView
+from django.views.generic import CreateView, DetailView, UpdateView
 from django_filters.views import FilterView
 
-from atom.views import DeleteMessageMixin, FormInitialMixin
+from atom.views import FormInitialMixin, ActionView, ActionMessageMixin
 from atom.ext.crispy_forms.views import FormSetMixin
 from users.utils import PermissionMixin
 
@@ -17,20 +17,23 @@ from .models import Advice, Attachment
 ORDERING_TEXT = _("Ordering")
 
 
-class AdviceList(StaffuserRequiredMixin, PermissionMixin, SelectRelatedMixin, FilterView):
+class VisibleMixin(object):
+    def get_queryset(self, *args, **kwargs):
+        qs = super(VisibleMixin, self).get_queryset(*args, **kwargs)
+        return qs.visible()
+
+
+class AdviceList(StaffuserRequiredMixin, PermissionMixin, SelectRelatedMixin, VisibleMixin,
+                 FilterView):
     model = Advice
     filterset_class = AdviceFilter
     select_related = ["person_kind", "created_by", "advicer", "institution_kind"]
     paginate_by = 25
     raise_exception = True
 
-    def get_queryset(self, *args, **kwargs):
-        qs = super(AdviceList, self).get_queryset(*args, **kwargs)
-        return qs.visible()
-
 
 class AdviceUpdate(StaffuserRequiredMixin, FormSetMixin, PermissionMixin, FormValidMessageMixin,
-                   UserFormKwargsMixin, UpdateView):
+                   UserFormKwargsMixin, VisibleMixin, UpdateView):
     model = Advice
     form_class = AdviceForm
     inline_model = Attachment
@@ -53,14 +56,18 @@ class AdviceCreate(StaffuserRequiredMixin, FormSetMixin, FormInitialMixin, UserF
     raise_exception = True
 
 
-class AdviceDelete(StaffuserRequiredMixin, PermissionMixin, DeleteMessageMixin, DeleteView):
+class AdviceDelete(StaffuserRequiredMixin, PermissionMixin, ActionView, VisibleMixin,
+                   ActionMessageMixin):
     model = Advice
     success_url = reverse_lazy('advicer:list')
     success_message = _("{subject} deleted!")
-    # hide_field = 'visible'  # TODO: Use fields to hide and not-delete
+    template_name_suffix = '_confirm_delete'
     raise_exception = True
 
+    def action(self):
+        Advice.objects.filter(pk=self.object.pk).update(visible=False)
 
-class AdviceDetail(StaffuserRequiredMixin, PermissionMixin, DetailView):
+
+class AdviceDetail(StaffuserRequiredMixin, PermissionMixin, VisibleMixin, DetailView):
     model = Advice
     raise_exception = True

@@ -31,10 +31,7 @@ class CaseQuerySet(QuerySet):
                            caseuserobjectpermission__user=user)
 
     def with_perm(self):
-        return self.select_related('caseuserobjectpermission')
-
-    def with_read_time(self, user):
-        return self.prefetch_related('readed_set').filter(readed__user=user)
+        return self.prefetch_related('caseuserobjectpermission_set')
 
     def with_record_count(self):
         return self.annotate(record_count=Count('record'))

@@ -1,0 +1,137 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.0.1\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-12-04 18:17+0100\n"
+"PO-Revision-Date: 2015-12-04 18:18+0100\n"
+"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: pl_PL\n"
+
+#: forms/account.py:26
+msgid "Signup"
+msgstr ""
+
+#: login_form.py:15 models.py:19
+msgid "Login"
+msgstr ""
+
+#: models.py:18
+msgid "Username or e-mail"
+msgstr ""
+
+#: models.py:76
+msgid "Avatar"
+msgstr ""
+
+#: models.py:131 templates/users/_sidebar.html:3
+#: templates/users/user_detail.html:3 templates/users/user_form.html:4
+#: templates/users/user_form.html.py:15
+msgid "User"
+msgstr ""
+
+#: models.py:132 templates/users/base.html:5
+#: templates/users/user_filter.html:18
+msgid "Users"
+msgstr ""
+
+#: models.py:137 templates/users/user_detail.html:16
+msgid "Description"
+msgstr ""
+
+#: models.py:138
+msgid "Homepage"
+msgstr ""
+
+#: models.py:141 templates/users/profile_form.html:7
+#: templates/users/profile_form.html:10 templates/users/user_detail.html:26
+msgid "Profile"
+msgstr ""
+
+#: models.py:142
+msgid "Profiles"
+msgstr ""
+
+#: templates/users/_sidebar.html:8
+#, python-format
+msgid "%(user)s"
+msgstr ""
+
+#: templates/users/_sidebar.html:12
+msgid "Users list"
+msgstr ""
+
+#: templates/users/_sidebar.html:16
+msgid "Logout"
+msgstr ""
+
+#: templates/users/_sidebar.html:20
+msgid "Sign Up"
+msgstr ""
+
+#: templates/users/_sidebar.html:23
+msgid "Log In"
+msgstr ""
+
+#: templates/users/user_detail.html:13
+msgid "Users are member of staff."
+msgstr ""
+
+#: templates/users/user_detail.html:23
+msgid "About me"
+msgstr ""
+
+#: templates/users/user_detail.html:30
+msgid "Password change"
+msgstr ""
+
+#: templates/users/user_detail.html:34
+msgid "Keys"
+msgstr ""
+
+#: templates/users/user_detail.html:41 templates/users/user_filter.html:43
+msgid "Client cases"
+msgstr ""
+
+#: templates/users/user_detail.html:48
+msgid "Assigned cases"
+msgstr ""
+
+#: templates/users/user_filter.html:4 templates/users/user_filter.html.py:7
+msgid "Users index"
+msgstr ""
+
+#: templates/users/user_filter.html:21
+msgid ""
+"You don't have access to data of all our users. Mostly you have access to "
+"staff and own profile."
+msgstr ""
+
+#: templates/users/user_filter.html:45
+msgid "Cases assigned"
+msgstr ""
+
+#: templates/users/user_form.html:8
+msgid "Account"
+msgstr ""
+
+#: views.py:64
+msgid "All users"
+msgstr ""
+
+#: views.py:65
+msgid "Staff"
+msgstr ""
+
+#: views.py:66
+msgid "Clients"
+msgstr ""
