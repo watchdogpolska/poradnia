@@ -27,7 +27,11 @@ class UserQuerySet(QuerySet):
         return self
 
     def with_case_count(self):
-        return self.annotate(case_count=Count('case_client'))
+        return self.annotate(case_count=Count('case_client', distinct=True))
+
+    def with_case_count_assigned(self):
+        c = models.Count('caseuserobjectpermission__content_object_id', distinct=True)
+        return self.annotate(case_assigned=c)
 
     def registered(self):
         return self.exclude(pk=settings.ANONYMOUS_USER_ID)
@@ -122,6 +126,7 @@ class User(AbstractUser):
         return reverse('users:detail', kwargs={'username': self.username})
 
     class Meta:
+        ordering = ['pk', ]
         permissions = (("can_view_other", "Can view other"),)
         verbose_name = _("User")
         verbose_name_plural = _("Users")

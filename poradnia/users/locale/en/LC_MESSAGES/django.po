@@ -3,138 +3,135 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
+"Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-16 18:24+0100\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
+"POT-Creation-Date: 2015-12-04 18:17+0100\n"
+"PO-Revision-Date: 2015-12-04 18:18+0100\n"
+"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.5.4\n"
+"Language: pl_PL\n"
 
-#: users/forms/account.py:26
+#: forms/account.py:26
 msgid "Signup"
 msgstr ""
 
-#: users/login_form.py:15 users/models.py:19
+#: login_form.py:15 models.py:19
 msgid "Login"
 msgstr ""
 
-#: users/models.py:18
+#: models.py:18
 msgid "Username or e-mail"
 msgstr ""
 
-#: users/models.py:72
+#: models.py:76
 msgid "Avatar"
 msgstr ""
 
-#: users/models.py:126 users/templates/users/_sidebar.html:3
-#: users/templates/users/user_detail.html:3
-#: users/templates/users/user_form.html:4
-#: users/templates/users/user_form.html:15
+#: models.py:131 templates/users/_sidebar.html:3
+#: templates/users/user_detail.html:3 templates/users/user_form.html:4
+#: templates/users/user_form.html.py:15
 msgid "User"
 msgstr ""
 
-#: users/models.py:127 users/templates/users/base.html:5
-#: users/templates/users/user_filter.html:18
+#: models.py:132 templates/users/base.html:5
+#: templates/users/user_filter.html:18
 msgid "Users"
 msgstr ""
 
-#: users/models.py:132 users/templates/users/user_detail.html:16
+#: models.py:137 templates/users/user_detail.html:16
 msgid "Description"
 msgstr ""
 
-#: users/models.py:133
+#: models.py:138
 msgid "Homepage"
 msgstr ""
 
-#: users/models.py:136 users/templates/users/profile_form.html:7
-#: users/templates/users/profile_form.html:10
-#: users/templates/users/user_detail.html:26
+#: models.py:141 templates/users/profile_form.html:7
+#: templates/users/profile_form.html:10 templates/users/user_detail.html:26
 msgid "Profile"
 msgstr ""
 
-#: users/models.py:137
+#: models.py:142
 msgid "Profiles"
 msgstr ""
 
-#: users/templates/users/_sidebar.html:8
+#: templates/users/_sidebar.html:8
 #, python-format
 msgid "%(user)s"
 msgstr ""
 
-#: users/templates/users/_sidebar.html:12
+#: templates/users/_sidebar.html:12
 msgid "Users list"
 msgstr ""
 
-#: users/templates/users/_sidebar.html:16
+#: templates/users/_sidebar.html:16
 msgid "Logout"
 msgstr ""
 
-#: users/templates/users/_sidebar.html:20
+#: templates/users/_sidebar.html:20
 msgid "Sign Up"
 msgstr ""
 
-#: users/templates/users/_sidebar.html:23
+#: templates/users/_sidebar.html:23
 msgid "Log In"
 msgstr ""
 
-#: users/templates/users/user_detail.html:13
+#: templates/users/user_detail.html:13
 msgid "Users are member of staff."
 msgstr ""
 
-#: users/templates/users/user_detail.html:23
+#: templates/users/user_detail.html:23
 msgid "About me"
 msgstr ""
 
-#: users/templates/users/user_detail.html:30
+#: templates/users/user_detail.html:30
 msgid "Password change"
 msgstr ""
 
-#: users/templates/users/user_detail.html:34
+#: templates/users/user_detail.html:34
 msgid "Keys"
 msgstr ""
 
-#: users/templates/users/user_detail.html:41
-msgid "Cases as client"
+#: templates/users/user_detail.html:41 templates/users/user_filter.html:43
+msgid "Client cases"
 msgstr ""
 
-#: users/templates/users/user_detail.html:48
+#: templates/users/user_detail.html:48
 msgid "Assigned cases"
 msgstr ""
 
-#: users/templates/users/user_filter.html:4
-#: users/templates/users/user_filter.html:7
+#: templates/users/user_filter.html:4 templates/users/user_filter.html.py:7
 msgid "Users index"
 msgstr ""
 
-#: users/templates/users/user_filter.html:21
+#: templates/users/user_filter.html:21
 msgid ""
 "You don't have access to data of all our users. Mostly you have access to "
 "staff and own profile."
 msgstr ""
 
-#: users/templates/users/user_filter.html:43
-msgid "Case count"
+#: templates/users/user_filter.html:45
+msgid "Cases assigned"
 msgstr ""
 
-#: users/templates/users/user_form.html:8
+#: templates/users/user_form.html:8
 msgid "Account"
 msgstr ""
 
-#: users/views.py:64
+#: views.py:64
 msgid "All users"
 msgstr ""
 
-#: users/views.py:65
+#: views.py:65
 msgid "Staff"
 msgstr ""
 
-#: users/views.py:66
+#: views.py:66
 msgid "Clients"
 msgstr ""

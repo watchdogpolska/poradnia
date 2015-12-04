@@ -79,7 +79,10 @@ class UserListView(StaffuserRequiredMixin, PermissionMixin, FilterView):
     def get_queryset(self, *args, **kwargs):
         qs = super(UserListView, self).get_queryset(*args, **kwargs)
         qs = qs.filter(**self.IS_STAFF_FILTER[self.get_is_staff_choice()][1])
-        return qs.with_case_count()
+        qs = qs.with_case_count()
+        if self.request.user.has_perm('cases.can_assign'):
+            qs = qs.with_case_count_assigned()
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super(UserListView, self).get_context_data(**kwargs)
