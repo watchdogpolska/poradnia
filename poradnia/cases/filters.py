@@ -1,11 +1,11 @@
 import django_filters
+from atom.filters import CrispyFilterMixin
+from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 
-from atom.filters import CrispyFilterMixin
 from users.filters import UserChoiceFilter
 
 from .models import Case
-from django.contrib.auth import get_user_model
 
 
 class NullDateRangeFilter(django_filters.DateRangeFilter):

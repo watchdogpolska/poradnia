@@ -1,5 +1,5 @@
-from django.conf import settings
 from django import template
+from django.conf import settings
 from gravatar import Gravatar
 from sorl.thumbnail import get_thumbnail
 

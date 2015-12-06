@@ -1,13 +1,15 @@
 from __future__ import absolute_import
+
 from django.core import mail
 from django.core.urlresolvers import reverse_lazy
-from django.test import TestCase, RequestFactory
+from django.test import RequestFactory, TestCase
 from guardian.shortcuts import assign_perm
-from users.factories import UserFactory
-from users.models import User
-from users.forms import UserForm
-from users.views import UserListView
+
 from cases.factories import CaseFactory
+from users.factories import UserFactory
+from users.forms import UserForm
+from users.models import User
+from users.views import UserListView
 
 
 class UserTestCase(TestCase):

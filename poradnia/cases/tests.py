@@ -1,15 +1,16 @@
-from cases.factories import CaseFactory
-from letters.factories import LetterFactory
-from users.factories import UserFactory
-from django.test import TestCase, RequestFactory
-from cases.filters import StaffCaseFilter
+from django.contrib.admin.sites import AdminSite
+from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
-from cases.models import Case
+from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
 from guardian.shortcuts import assign_perm
-from django.core.exceptions import PermissionDenied
-from django.contrib.admin.sites import AdminSite
+
 from cases.admin import CaseAdmin
+from cases.factories import CaseFactory
+from cases.filters import StaffCaseFilter
+from cases.models import Case
+from letters.factories import LetterFactory
+from users.factories import UserFactory
 
 
 class CaseQuerySetTestCase(TestCase):

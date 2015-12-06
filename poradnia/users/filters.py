@@ -4,10 +4,11 @@ except:
     from urllib import urlencode  # noqa
 
 import autocomplete_light
-from django.contrib.auth import get_user_model
-from django_filters import ModelChoiceFilter
 import django_filters
 from atom.filters import CrispyFilterMixin
+from django.contrib.auth import get_user_model
+from django_filters import ModelChoiceFilter
+
 from users.models import User
 
 

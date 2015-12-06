@@ -2,10 +2,11 @@ from __future__ import absolute_import
 
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.test import TestCase
+from guardian.shortcuts import assign_perm
 
 from advicer.models import Advice
 from users.factories import StaffFactory, UserFactory
-from guardian.shortcuts import assign_perm
+
 from .factories import AdviceFactory
 
 
