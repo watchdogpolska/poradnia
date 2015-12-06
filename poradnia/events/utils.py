@@ -1,3 +1,4 @@
+from __future__ import unicode_literals
 from calendar import HTMLCalendar
 from datetime import date
 from itertools import groupby
@@ -6,14 +7,14 @@ from django.utils.html import conditional_escape as esc
 from django.utils.translation import ugettext_lazy as _
 
 day_name = [_('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'),
-    _('Saturday'), _('Sunday')]
+            _('Saturday'), _('Sunday')]
 day_abbr = [_('Mon'), _('Tue'), _('Wed'), _('Thu'), _('Fri'), _('Sat'), _('Sun')]
 
 month_name = [_('January'), _('February'), _('March'), _('April'), _('May'), _('June'),
-    _('July'), _('August'), _('September'), _('October'), _('November'), _('December')]
+              _('July'), _('August'), _('September'), _('October'), _('November'), _('December')]
 
 month_abbr = [_('Jan'), _('Feb'), _('Mar'), _('Apr'), _('May'), _('Jun'), _('Jul'),
-    _('Aug'), _('Sep'), _('Oct'), _('Nov'), _('Dec')]
+              _('Aug'), _('Sep'), _('Oct'), _('Nov'), _('Dec')]
 
 
 class AbstractCalendar(HTMLCalendar):
@@ -28,9 +29,9 @@ class AbstractCalendar(HTMLCalendar):
         Return a month name as a table row.
         """
         if withyear:
-            s = u'%s %s' % (month_name[themonth], theyear)
+            s = '%s %s' % (month_name[themonth-1], theyear)
         else:
-            s = u'%s' % month_name[themonth]
+            s = '%s' % month_name[themonth]
         return '<tr><th colspan="7" class="month">%s</th></tr>' % s
 
     def formatweekday(self, day):
@@ -50,7 +51,7 @@ class AbstractCalendar(HTMLCalendar):
                 for event in self.events[day]:
                     body.append(self.get_row_content(event))
                 body.append('</ul>')
-                html = u'<span class="day">%d</span> %s' % (day, ''.join(body))
+                html = '<span class="day">%d</span> %s' % (day, ''.join(body))
                 return self.day_cell(cssclass, html)
             return self.day_cell(cssclass, '<span class="day">%d</span>' % day)
         return self.day_cell('noday', '&nbsp;')
@@ -63,7 +64,7 @@ class AbstractCalendar(HTMLCalendar):
         return {day: list(items) for day, items in groupby(events, self.get_field)}
 
     def day_cell(self, cssclass, body):
-        return u'<td class="%s">%s</td>' % (cssclass, body)
+        return '<td class="%s">%s</td>' % (cssclass, body)
 
     def get_field_name(self):
         return self.field
@@ -79,7 +80,9 @@ class EventCalendar(AbstractCalendar):
     field = 'time'
 
     def get_row_content(self, event):
-        text = (u'<li{0}><a href="{1}" title="{2}">{3}</a></li>'.format(' class="deadline"'
-            if event.deadline else '', event.get_absolute_url(),
-            event.text, esc(event.case)))
+        text = ('<li{class_attr}><a href="{link}" title="{title}">{content}</a></li>'.format(
+                    class_attr=' class="deadline"' if event.deadline else '',
+                    link=event.get_absolute_url(),
+                    title=event.text,
+                    content=esc(event.case)))
         return text
