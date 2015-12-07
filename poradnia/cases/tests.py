@@ -14,6 +14,7 @@ from cases.factories import CaseFactory
 from cases.filters import StaffCaseFilter
 from cases.models import Case
 from letters.factories import LetterFactory
+from letters.models import Letter
 from users.factories import UserFactory
 
 
@@ -107,20 +108,19 @@ class CaseTestCase(TestCase):
         self.object.update_counters()
         self.assertEqual(self.object.last_received, None)
 
+    def _make_letter(self):  # Hack for Travis
+        o = LetterFactory(case=self.object, created_by__is_staff=False)
+        return Letter.objects.get(pk=o.pk)
+
     def test_update_counters_last_received_setup(self):
-        l = LetterFactory(case=self.object, created_by__is_staff=False)
+        l = self._make_letter()
         self.object.update_counters()
         self.assertEqual(l.created_on, self.object.last_received)
 
     def test_update_counters_last_received_update(self):
-        now = datetime.datetime.utcnow().replace(tzinfo=utc)
-        LetterFactory(case=self.object,
-                      created_on=now+timedelta(days=2),
-                      created_by__is_staff=False)
+        self._make_letter()
         self.object.update_counters()
-        new = LetterFactory(case=self.object,
-                            created_on=now+timedelta(days=3),
-                            created_by__is_staff=False)
+        new = self._make_letter()
         self.object.update_counters()
         self.assertEqual(new.created_on, self.object.last_received)
 
