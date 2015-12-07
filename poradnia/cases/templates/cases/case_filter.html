@@ -32,7 +32,7 @@
     <th class="client">{% trans 'Client' %}</th>
     <th class="subject">{% trans 'Subject' %} {% if user.is_staff %}[{% trans 'Dead-line'%}] {% endif %}</th>
     {% if user.is_staff %}
-    <th class="last_received">{% trans 'Last action' %}</th>
+    <th class="last_received">{% trans 'Last received' %}</th>
     {% else %}
     <th class="last_response">{% trans 'Last response' %}</th>
     {% endif %}
@@ -57,8 +57,11 @@
           {% endif%}
           
           {% if request.user.is_staff and object.caseuserobjectpermission_set.all %}
-          {% for obj in object.caseuserobjectpermission_set.all %}
-            <span class="label label-info">{{obj.user.get_codename}}</span>
+          {% regroup object.caseuserobjectpermission_set.all by user as user_list %}
+          {% for user in user_list %}
+              <span class="label label-info" title="{% for item in user.list %}{% trans item.permission.name %},{% endfor %}">
+              {{ user.grouper.get_codename }}
+              </span>
           {% endfor %}
           {% endif %}
         </td>
@@ -69,11 +72,11 @@
               {{object.last_received}}
             </span>
           {% else %}
-            {% trans 'No received any' %}
+            {% trans 'No received' %}
           {% endif %}
         </th>
         {% else %}
-        <td class="last_response">{% if object.last_send %}{{ object.last_send|naturaltime }}{% else %}{% trans 'No answer' %}{% endif %}</td>
+        <tr class="last_response">{% if object.last_send %}{{ object.last_send|naturaltime }}{% else %}{% trans 'No answer' %}{% endif %}</tr>
         {% endif %}
 
       </tr>
