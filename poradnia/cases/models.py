@@ -37,7 +37,9 @@ class CaseQuerySet(QuerySet):
         return self.annotate(record_count=Count('record'))
 
     def with_involved_staff(self):
-        qs = CaseUserObjectPermission.objects.filter(user__is_staff=True).all()
+        qs = (CaseUserObjectPermission.objects.filter(user__is_staff=True).
+              select_related('permission', 'user').
+              all())
         return self.prefetch_related(Prefetch('caseuserobjectpermission_set', queryset=qs))
 
     def by_involved_in(self, user, by_user=True, by_group=False):
