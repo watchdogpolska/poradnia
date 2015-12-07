@@ -38,6 +38,9 @@ class LetterQuerySet(AbstractRecordQuerySet):
         return self.filter(status='done', created_by__is_staff=True).order_by(
                 '-created_on', '-id').all()[0]
 
+    def last_received(self):
+        return self.filter(created_by__is_staff=False).order_by('-created_on', '-id').all()[0]
+
     def last(self):
         return self.order_by('-created_on', '-id').all()[0]
 

@@ -6,7 +6,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Prefetch
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
@@ -15,7 +15,7 @@ from guardian.shortcuts import assign_perm, get_users_with_perms
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 from model_utils.managers import PassThroughManager
-
+from cases.utils import get_user_model
 from cases.tags.models import Tag
 from template_mail.utils import send_tpl_email
 
@@ -35,6 +35,12 @@ class CaseQuerySet(QuerySet):
 
     def with_record_count(self):
         return self.annotate(record_count=Count('record'))
+
+    def with_involved_staff(self):
+        qs = (CaseUserObjectPermission.objects.filter(user__is_staff=True).
+              select_related('permission', 'user').
+              all())
+        return self.prefetch_related(Prefetch('caseuserobjectpermission_set', queryset=qs))
 
     def by_involved_in(self, user, by_user=True, by_group=False):
         condition = Q()
@@ -71,6 +77,7 @@ class Case(models.Model):
     letter_count = models.IntegerField(default=0, verbose_name=_("Letter count"))
     last_send = models.DateTimeField(null=True, blank=True, verbose_name=_("Last send"))
     last_action = models.DateTimeField(null=True, blank=True, verbose_name=_("Last action"))
+    last_received = models.DateTimeField(null=True, blank=True, verbose_name=_("Last received"))
     deadline = models.ForeignKey('events.Event',
                                  null=True,
                                  blank=True,
@@ -175,9 +182,16 @@ class Case(models.Model):
             self.last_send = None
 
         try:
+            last_received = letters_list.last_received()
+            self.last_received = last_received.created_on
+        except IndexError:
+            self.last_received = None
+
+        try:
             self.deadline = self.event_set.filter(deadline=True).order_by('time').all()[0]
         except IndexError:
             self.deadline = None
+
         if save:
             self.save()
 
@@ -251,12 +265,7 @@ class PermissionGroup(models.Model):
 
 def notify_new_case(sender, instance, created, **kwargs):
     if created:
-        try:
-            from django.contrib.auth import get_user_model
-            User = get_user_model()
-        except ImportError:
-            from django.contrib.auth.models import User
-
+        User = get_user_model()
         content_type = ContentType.objects.get_for_model(Case)
         users = User.objects.filter(user_permissions__codename='can_view_all',
                                     user_permissions__content_type=content_type).all()

@@ -6,12 +6,18 @@ from ..models import Profile
 
 
 class UserForm(FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(UserForm, self).__init__(*args, **kwargs)
+        if (not self.instance or
+                self.instance and not self.instance.is_staff):
+            del self.fields['codename']
+
     class Meta:
         # Set this form to use the User model.
         model = get_user_model()
 
         # Constrain the UserForm to just these fields.
-        fields = ("first_name", "last_name", 'picture')
+        fields = ("first_name", "last_name", 'picture', 'codename')
 
 
 class ProfileForm(FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):

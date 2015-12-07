@@ -65,7 +65,10 @@ class CaseListView(PermissionMixin, FilterView):
 
     def get_queryset(self, *args, **kwargs):  # TODO: Mixins
         qs = super(CaseListView, self).get_queryset(*args, **kwargs)
-        return qs.select_related('client').prefetch_related('tags')
+        qs = qs.select_related('client').prefetch_related('tags')
+        if self.request.user.is_staff:
+            qs = qs.with_involved_staff()
+        return qs
 
     def get_context_data(self, **kwargs):
         context = super(CaseListView, self).get_context_data(**kwargs)
