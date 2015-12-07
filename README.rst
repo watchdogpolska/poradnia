@@ -24,6 +24,10 @@ poradnia
 .. image:: https://img.shields.io/github/license/watchdogpolska/poradnia.svg
      :alt: License
 
+.. image:: https://badge.waffle.io/watchdogpolska/poradnia.svg?label=ready&title=Ready 
+     :target: https://waffle.io/watchdogpolska/poradnia 
+     :alt: 'Stories in Ready'
+
 Settings
 ------------
 
