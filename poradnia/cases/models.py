@@ -76,6 +76,7 @@ class Case(models.Model):
     letter_count = models.IntegerField(default=0, verbose_name=_("Letter count"))
     last_send = models.DateTimeField(null=True, blank=True, verbose_name=_("Last send"))
     last_action = models.DateTimeField(null=True, blank=True, verbose_name=_("Last action"))
+    last_received = models.DateTimeField(null=True, blank=True, verbose_name=_("Last received"))
     deadline = models.ForeignKey('events.Event',
                                  null=True,
                                  blank=True,
@@ -180,9 +181,16 @@ class Case(models.Model):
             self.last_send = None
 
         try:
+            last_received = letters_list.last_received()
+            self.last_received = last_received.created_on
+        except IndexError:
+            self.last_received = None
+
+        try:
             self.deadline = self.event_set.filter(deadline=True).order_by('time').all()[0]
         except IndexError:
             self.deadline = None
+
         if save:
             self.save()
 

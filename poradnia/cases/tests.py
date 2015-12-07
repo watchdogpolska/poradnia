@@ -1,8 +1,12 @@
+import datetime
+from datetime import timedelta
 from django.contrib.admin.sites import AdminSite
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
+from django.utils.timezone import utc
+
 from guardian.shortcuts import assign_perm
 
 from cases.admin import CaseAdmin
@@ -99,6 +103,27 @@ class CaseTestCase(TestCase):
         self.object.status_update(reopen=True)
         self.assertEqual(self.object.status, Case.STATUS.free)
 
+    def test_update_counters_last_received_default(self):
+        self.object.update_counters()
+        self.assertEqual(self.object.last_received, None)
+
+    def test_update_counters_last_received_setup(self):
+        l = LetterFactory(case=self.object, created_by__is_staff=False)
+        self.object.update_counters()
+        self.assertEqual(l.created_on, self.object.last_received)
+
+    def test_update_counters_last_received_update(self):
+        now = datetime.datetime.utcnow().replace(tzinfo=utc)
+        LetterFactory(case=self.object,
+                      created_on=now+timedelta(days=2),
+                      created_by__is_staff=False)
+        self.object.update_counters()
+        new = LetterFactory(case=self.object,
+                            created_on=now+timedelta(days=3),
+                            created_by__is_staff=False)
+        self.object.update_counters()
+        self.assertEqual(new.created_on, self.object.last_received)
+
 
 class CaseDetailViewTestCase(TestCase):
     def setUp(self):
@@ -148,7 +173,7 @@ class StaffCaseFilterTestCase(TestCase):
         return StaffCaseFilter(user=user or UserFactory()).get_order_by(choice)
 
     def test_order_by(self):
-        self.assertEqual(self._get_filter(), ['-deadline', 'status', '-last_send', '-last_action'])
+        self.assertEqual(self._get_filter(), ['-deadline', 'status', '-last_received', '-last_send', '-last_action'])
         self.assertEqual(self._get_filter(choice='status'), ['status'])
 
     def test_form_fields(self):

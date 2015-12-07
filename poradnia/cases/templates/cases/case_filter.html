@@ -31,12 +31,11 @@
     <th class="id">{% trans 'ID' %}</th>
     <th class="client">{% trans 'Client' %}</th>
     <th class="subject">{% trans 'Subject' %} {% if user.is_staff %}[{% trans 'Dead-line'%}] {% endif %}</th>
-    <th class="last_response">{% trans 'Last response' %}</th>
     {% if user.is_staff %}
-    <th class="last_action">{% trans 'Last action' %}</th>
-    <th class="created_on">{% trans 'Created on' %}</th>
+    <th class="last_received">{% trans 'Last action' %}</th>
+    {% else %}
+    <th class="last_response">{% trans 'Last response' %}</th>
     {% endif %}
-    {# <th>All readed?</th> #}
   </tr></thead>
   <tbody>
     {% for object in object_list %}
@@ -63,16 +62,19 @@
           {% endfor %}
           {% endif %}
         </td>
-        <td class="last_response">{% if object.last_send %}{{ object.last_send|naturaltime }}{% else %}{% trans 'No answer' %}{% endif %}</td>
-        {% if request.user.is_staff %}
-        {% ifequal object.last_action object.created_on %}
-        <td colspan="2" class="last_action">{{ object.last_action|naturaltime }}</td>
+        {% if user.is_staff %}
+        <th class="last_received">
+          {% if object.last_received %}
+            <span title="{{object.last_received|naturaltime}}">
+              {{object.last_received}}
+            </span>
+          {% else %}
+            {% trans 'No received any' %}
+          {% endif %}
+        </th>
         {% else %}
-        <td class="last_action">{{ object.last_action|naturaltime }}</td>
-        <td class="created_on">{{object.created_on|naturaltime}}</td>
-        {% endifequal %}
+        <td class="last_response">{% if object.last_send %}{{ object.last_send|naturaltime }}{% else %}{% trans 'No answer' %}{% endif %}</td>
         {% endif %}
-        {# <td>{{ object.get_readed }}</td> #}
 
       </tr>
       {% endfor %}
