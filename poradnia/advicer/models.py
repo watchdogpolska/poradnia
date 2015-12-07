@@ -1,13 +1,14 @@
 import datetime
 
+from atom.models import AttachmentBase
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
+from model_utils.managers import PassThroughManager
 
-from atom.models import AttachmentBase
 from cases.models import Case
 
 
@@ -71,7 +72,6 @@ class Advice(models.Model):
                                null=True,
                                blank=True)
     issues = models.ManyToManyField(Issue,
-                                    null=True,
                                     verbose_name=_("Issues"),
                                     blank=True)
     area = models.ForeignKey(Area,
@@ -111,7 +111,7 @@ class Advice(models.Model):
     comment = models.TextField(verbose_name=_("Comment"),
                                null=True,
                                blank=True)
-    objects = AdviceQuerySet.as_manager()
+    objects = PassThroughManager.for_queryset_class(AdviceQuerySet)()
 
     def __unicode__(self):
         return self.subject or _("Advice #%d") % (self.pk)

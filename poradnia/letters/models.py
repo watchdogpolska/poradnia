@@ -1,9 +1,10 @@
-from __future__ import print_function
+from __future__ import print_function, unicode_literals
 
 import os
 
 import claw
 import html2text
+from atom.models import AttachmentBase
 from claw import quotations
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -19,7 +20,6 @@ from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 from model_utils.managers import PassThroughManager
 
-from atom.models import AttachmentBase
 from cases.models import Case
 from records.models import AbstractRecord, AbstractRecordQuerySet
 from template_mail.utils import send_tpl_email
@@ -122,8 +122,9 @@ class Attachment(AttachmentBase):
 
 @receiver(message_received)
 def mail_process(sender, message, **args):
-    print (u"I just recieved a messtsage titled ", message.subject.encode('utf-8'),
-           u'from a mailbox named ', message.mailbox.name)
+    print ("I just recieved a messsage titled {title} " +
+           "from a mailbox {mbox}".format(title=message.subject.encode('utf-8'),
+                                          mbox=message.mailbox.name))
     # new_user + poradnia@ => new_user @ new_user
     # new_user + case => FAIL
     # old_user + case => PASS
@@ -134,9 +135,10 @@ def mail_process(sender, message, **args):
     print("Identified user: ", user)
 
     # Skip autoreply messages - see RFC3834
-    if (lambda x: 'Auto-Submitted' in 'x' and
+    if (lambda x: 'Auto-Submitted' in x and
             x['Auto-Submitted'] == 'auto-replied')(message.get_email_object()):
-        print("Skip")
+        print("Delete .eml from {email} as auto-replied".format(email=message.from_address[0]))
+        message.eml.delete(save=True)
         return
 
     # Identify case

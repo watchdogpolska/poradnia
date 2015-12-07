@@ -7,15 +7,14 @@ from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView, UpdateView
 from django_filters.views import FilterView
 
+from cases.filters import StaffCaseFilter, UserCaseFilter
+from cases.forms import CaseForm, CaseGroupPermissionForm
+from cases.models import Case
 from events.forms import EventForm
 from letters.forms import AddLetterForm
 from letters.helpers import AttachmentFormSet
 from records.models import Record
 from users.views import PermissionMixin
-
-from cases.filters import StaffCaseFilter, UserCaseFilter
-from cases.forms import CaseForm, CaseGroupPermissionForm
-from cases.models import Case
 
 
 class CaseDetailView(LoginRequiredMixin, TemplateView):  # TODO: Use django.views.generic.DetailView

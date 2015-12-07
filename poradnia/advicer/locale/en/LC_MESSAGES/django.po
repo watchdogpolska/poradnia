@@ -1,0 +1,255 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-16 18:24+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: advicer/filters.py:11 advicer/filters.py:22 advicer/models.py:90
+#: advicer/templates/advicer/advice_detail.html:70
+#: advicer/templates/advicer/advice_filter.html:28
+msgid "Advicer"
+msgstr ""
+
+#: advicer/filters.py:12 advicer/models.py:96
+#: advicer/templates/advicer/advice_filter.html:27
+msgid "Created by"
+msgstr ""
+
+#: advicer/filters.py:13
+msgid "Created on"
+msgstr ""
+
+#: advicer/filters.py:19 advicer/models.py:99
+#: advicer/templates/advicer/advice_filter.html:26
+msgid "Creation date"
+msgstr ""
+
+#: advicer/filters.py:20 advicer/models.py:108
+msgid "Modification date"
+msgstr ""
+
+#: advicer/filters.py:21
+msgid "ID"
+msgstr ""
+
+#: advicer/filters.py:23 advicer/models.py:42
+msgid "Person kind"
+msgstr ""
+
+#: advicer/filters.py:24 advicer/models.py:49
+msgid "Institution kind"
+msgstr ""
+
+#: advicer/forms.py:24
+msgid "Select from cases which do you have a permission"
+msgstr ""
+
+#: advicer/models.py:16
+msgid "Name"
+msgstr ""
+
+#: advicer/models.py:28
+msgid "Issue"
+msgstr ""
+
+#: advicer/models.py:29 advicer/models.py:75
+#: advicer/templates/advicer/advice_detail.html:43
+msgid "Issues"
+msgstr ""
+
+#: advicer/models.py:35 advicer/models.py:79
+#: advicer/templates/advicer/advice_detail.html:50
+msgid "Area"
+msgstr ""
+
+#: advicer/models.py:36
+msgid "Areas"
+msgstr ""
+
+#: advicer/models.py:43
+msgid "Person kinds"
+msgstr ""
+
+#: advicer/models.py:50
+msgid "Institution kinds"
+msgstr ""
+
+#: advicer/models.py:68 advicer/templates/advicer/advice_detail.html:35
+msgid "Case"
+msgstr ""
+
+#: advicer/models.py:70 advicer/templates/advicer/advice_filter.html:29
+msgid "Subject"
+msgstr ""
+
+#: advicer/models.py:84
+msgid "Kind of person "
+msgstr ""
+
+#: advicer/models.py:86 advicer/templates/advicer/advice_filter.html:31
+msgid "Kind of institution"
+msgstr ""
+
+#: advicer/models.py:91
+msgid "Person who give a advice"
+msgstr ""
+
+#: advicer/models.py:94 advicer/templates/advicer/advice_detail.html:28
+msgid "Grant on"
+msgstr ""
+
+#: advicer/models.py:103
+msgid "Modified by"
+msgstr ""
+
+#: advicer/models.py:110
+msgid "Visible"
+msgstr ""
+
+#: advicer/models.py:111
+msgid "Comment"
+msgstr ""
+
+#: advicer/models.py:117
+#, python-format
+msgid "Advice #%d"
+msgstr ""
+
+#: advicer/models.py:124
+msgid "Can view all advices"
+msgstr ""
+
+#: advicer/models.py:126
+msgid "Advice"
+msgstr ""
+
+#: advicer/models.py:127
+msgid "Advices"
+msgstr ""
+
+#: advicer/models.py:134
+msgid "Attachment"
+msgstr ""
+
+#: advicer/models.py:135 advicer/templates/advicer/advice_detail.html:88
+msgid "Attachments"
+msgstr ""
+
+#: advicer/templates/advicer/_sidebar.html:4
+msgid "Register"
+msgstr ""
+
+#: advicer/templates/advicer/_sidebar.html:7
+#: advicer/templates/advicer/base.html:3 advicer/templates/advicer/base.html:7
+msgid "Advice list"
+msgstr ""
+
+#: advicer/templates/advicer/advice_confirm_delete.html:5
+msgid "Confirm delete"
+msgstr ""
+
+#: advicer/templates/advicer/advice_confirm_delete.html:11
+#, python-format
+msgid "Delete %(object)s"
+msgstr ""
+
+#: advicer/templates/advicer/advice_confirm_delete.html:12
+msgid "Cancel"
+msgstr ""
+
+#: advicer/templates/advicer/advice_detail.html:14
+msgid "Edit"
+msgstr ""
+
+#: advicer/templates/advicer/advice_detail.html:17
+msgid "Delete"
+msgstr ""
+
+#: advicer/templates/advicer/advice_detail.html:57
+#: advicer/templates/advicer/advice_filter.html:30
+msgid "Kind of person"
+msgstr ""
+
+#: advicer/templates/advicer/advice_detail.html:64
+msgid "Kind of istitution"
+msgstr ""
+
+#: advicer/templates/advicer/advice_detail.html:75
+msgid "Created"
+msgstr ""
+
+#: advicer/templates/advicer/advice_detail.html:76
+#, python-format
+msgid ""
+"%(created)s on <time datetime=\"%(created_on_date)s\">"
+"%(created_on_natural)s</time>"
+msgstr ""
+
+#: advicer/templates/advicer/advice_detail.html:81
+msgid "Modified"
+msgstr ""
+
+#: advicer/templates/advicer/advice_detail.html:82
+#, python-format
+msgid ""
+"%(modified_by)s on <time datetime=\"%(modified_on_date)s\">"
+"%(modified_on_natural)s</time>"
+msgstr ""
+
+#: advicer/templates/advicer/advice_filter.html:4
+msgid "Advice index"
+msgstr ""
+
+#: advicer/templates/advicer/advice_filter.html:11
+msgid "Record advices"
+msgstr ""
+
+#: advicer/templates/advicer/advice_filter.html:14
+#: advicer/templates/advicer/advice_form.html:18
+msgid "Add"
+msgstr ""
+
+#: advicer/templates/advicer/advice_filter.html:57
+#, python-format
+msgid ""
+"There is no any records. <a href=\"%(create_url)s\">Add one</a> of these! "
+msgstr ""
+
+#: advicer/templates/advicer/advice_form.html:8
+msgid "remove"
+msgstr ""
+
+#: advicer/templates/advicer/advice_form.html:8
+msgid "add another"
+msgstr ""
+
+#: advicer/templates/advicer/advice_form.html:16
+msgid "Update"
+msgstr ""
+
+#: advicer/views.py:17
+msgid "Ordering"
+msgstr ""
+
+#: advicer/views.py:41
+#, python-brace-format
+msgid "{0} updated!"
+msgstr ""
+
+#: advicer/views.py:59
+#, python-brace-format
+msgid "{subject} deleted!"
+msgstr ""

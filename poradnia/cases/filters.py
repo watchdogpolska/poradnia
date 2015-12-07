@@ -1,7 +1,8 @@
 import django_filters
+from atom.filters import CrispyFilterMixin
+from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 
-from atom.filters import CrispyFilterMixin
 from users.filters import UserChoiceFilter
 
 from .models import Case
@@ -26,16 +27,26 @@ class CaseFilterMixin(object):
         self.filters['status'].field.choices.insert(0, ('', u'---------'))
 
 
+class PermissionChoiceFilter(django_filters.ModelChoiceFilter):
+    def __init__(self, *args, **kwargs):
+        kwargs.update(dict(label=_("Has access by"),
+                           action=lambda qs, x: qs.for_user(x),
+                           queryset=get_user_model().objects.filter(is_staff=True).all()))
+        super(PermissionChoiceFilter, self).__init__(*args, **kwargs)
+
+
 class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSet):
     name = django_filters.CharFilter(label=_("Subject"), lookup_type='icontains')
     client = UserChoiceFilter(label=_("Client"))
-    handled = django_filters.BooleanFilter(label=_("Handled?"))
-    permission = UserChoiceFilter(label=_("Has access by"), action=lambda qs, x: qs.for_user(x))
+    permission = PermissionChoiceFilter()
+    handled = django_filters.BooleanFilter(label=_("Replied"))
+    status = django_filters.MultipleChoiceFilter(label=_("Status"), choices=Case.STATUS)
 
     def __init__(self, *args, **kwargs):
         super(StaffCaseFilter, self).__init__(*args, **kwargs)
         if not self.user.has_perm('cases.can_assign'):
             del self.filters['permission']
+        self.filters['handled'].field.widget.choices[0] = (1, _("Any state"))
 
     def get_order_by(self, order_choice):
         if order_choice == 'default':

@@ -1,0 +1,212 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-16 18:24+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: letters/forms.py:17
+msgid "Leave empty to use email field and create a new one user."
+msgstr ""
+
+#: letters/forms.py:19
+msgid ""
+"The user account will be created automatically, so you have\n"
+"access to the archive and data about persons responsible for the case."
+msgstr ""
+
+#: letters/forms.py:22
+msgid ""
+"\"Short description of the case for organizational purposes.\n"
+"The institution name and two words will suffice."
+msgstr ""
+
+#: letters/forms.py:37
+#, python-format
+msgid "E-mail %(email)s are already used. Please log in."
+msgstr ""
+
+#: letters/forms.py:47
+msgid "Report case"
+msgstr ""
+
+#: letters/forms.py:50
+msgid "Client"
+msgstr ""
+
+#: letters/forms.py:55
+msgid "User e-mail"
+msgstr ""
+
+#: letters/forms.py:58
+msgid "E-mail"
+msgstr ""
+
+#: letters/forms.py:89
+msgid "Have to enter user email or select a client"
+msgstr ""
+
+#: letters/forms.py:146
+msgid "Reply to all"
+msgstr ""
+
+#: letters/forms.py:150 letters/forms.py:155
+msgid "Reply to staff"
+msgstr ""
+
+#: letters/forms.py:159
+msgid "Reply"
+msgstr ""
+
+#: letters/forms.py:192
+msgid "Comment for staff"
+msgstr ""
+
+#: letters/models.py:49
+msgid "Staff"
+msgstr ""
+
+#: letters/models.py:49
+msgid "Done"
+msgstr ""
+
+#: letters/models.py:54
+msgid "Accepted on"
+msgstr ""
+
+#: letters/models.py:55
+msgid "Subject"
+msgstr ""
+
+#: letters/models.py:56
+msgid "Text"
+msgstr ""
+
+#: letters/models.py:57
+msgid "Signature"
+msgstr ""
+
+#: letters/models.py:59
+msgid "Created by"
+msgstr ""
+
+#: letters/models.py:60
+msgid "Created on"
+msgstr ""
+
+#: letters/models.py:62
+msgid "Modified by"
+msgstr ""
+
+#: letters/models.py:66
+msgid "Modified on"
+msgstr ""
+
+#: letters/models.py:69
+msgid "Raw message contents"
+msgstr ""
+
+#: letters/models.py:72
+msgid "Original full content of message"
+msgstr ""
+
+#: letters/models.py:114
+msgid "Letter"
+msgstr ""
+
+#: letters/models.py:115
+msgid "Letters"
+msgstr ""
+
+#: letters/templates/letters/_form.html:7
+msgid "remove"
+msgstr ""
+
+#: letters/templates/letters/_form.html:7
+msgid "add another"
+msgstr ""
+
+#: letters/templates/letters/_form.html:14
+msgid "Cases"
+msgstr ""
+
+#: letters/templates/letters/_letter_list.html:24
+#, python-format
+msgid ""
+"\n"
+"            (updated on <time datetime=\"%(modified_on)s\" title="
+"\"%(modified_on)s\">%(modified_on_natural)s</time> by %(modified_by)s)\n"
+"            "
+msgstr ""
+
+#: letters/templates/letters/_letter_list.html:31
+#: letters/templates/letters/form_edit.html:6 letters/views/cbv.py:43
+msgid "Edit"
+msgstr ""
+
+#: letters/templates/letters/_letter_list.html:37
+#: letters/templates/letters/form_send.html:7
+msgid "Send"
+msgstr ""
+
+#: letters/templates/letters/form_add.html:5
+msgid "Add"
+msgstr ""
+
+#: letters/templates/letters/form_new.html:4
+msgid "New case"
+msgstr ""
+
+#: letters/templates/letters/letter_filter.html:5
+msgid "Letter list"
+msgstr ""
+
+#: letters/views/cbv.py:22
+msgid "Create a new case"
+msgstr ""
+
+#: letters/views/cbv.py:30
+#, python-brace-format
+msgid "Case about {object} created!"
+msgstr ""
+
+#: letters/views/fbv.py:14
+#, python-format
+msgid ""
+"User  %(user)s registered! You will receive a password by mail. Log in to "
+"get access to archive"
+msgstr ""
+
+#: letters/views/fbv.py:35
+#, python-format
+msgid "Letter %(object)s created!"
+msgstr ""
+
+#: letters/views/fbv.py:43
+msgid "Add letter"
+msgstr ""
+
+#: letters/views/fbv.py:59
+msgid "It doesn't make sense."
+msgstr ""
+
+#: letters/views/fbv.py:69
+#, python-format
+msgid "Letter %(object)s send!"
+msgstr ""
+
+#: letters/views/fbv.py:75
+msgid "Send to client"
+msgstr ""

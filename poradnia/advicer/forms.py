@@ -1,12 +1,12 @@
 from datetime import datetime
 
 import autocomplete_light
+from atom.ext.crispy_forms.forms import FormHorizontalMixin, HelperMixin, SingleButtonMixin
+from atom.forms import AuthorMixin
 from braces.forms import UserKwargModelFormMixin
 from django import forms
 from django.utils.translation import ugettext as _
 
-from atom.forms import AuthorMixin
-from atom.ext.crispy_forms.forms import FormHorizontalMixin, HelperMixin, SingleButtonMixin
 from cases.models import Case
 
 from .models import Advice, Attachment

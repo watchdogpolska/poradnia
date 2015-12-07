@@ -1,0 +1,242 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-11-16 18:24+0100\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: events/models.py:15
+msgid "Alarm"
+msgstr ""
+
+#: events/models.py:16
+msgid "Alarms"
+msgstr ""
+
+#: events/models.py:28 events/templates/events/_event_list.html:9
+msgid "Dead-line"
+msgstr ""
+
+#: events/models.py:29 events/templates/events/_event_list.html:10
+msgid "Time"
+msgstr ""
+
+#: events/models.py:30
+msgid "Subject"
+msgstr ""
+
+#: events/models.py:32
+msgid "Created by"
+msgstr ""
+
+#: events/models.py:33
+msgid "Created on"
+msgstr ""
+
+#: events/models.py:35
+msgid "Modified by"
+msgstr ""
+
+#: events/models.py:39
+msgid "Modified on"
+msgstr ""
+
+#: events/models.py:65
+msgid "Event"
+msgstr ""
+
+#: events/models.py:66 events/templates/events/base.html:5
+#: events/templates/events/base.html:10
+msgid "Events"
+msgstr ""
+
+#: events/templates/events/_alarm_list.html:13
+msgid "A related event "
+msgstr ""
+
+#: events/templates/events/_event_list.html:11
+msgid "Triggered"
+msgstr ""
+
+#: events/templates/events/_event_list.html:20
+#: events/templates/events/form.html:8
+msgid "Edit"
+msgstr ""
+
+#: events/templates/events/event_archive.html:4
+msgid "Months index"
+msgstr ""
+
+#: events/templates/events/form.html:6
+msgid "Cases"
+msgstr ""
+
+#: events/utils.py:8
+msgid "Monday"
+msgstr ""
+
+#: events/utils.py:8
+msgid "Tuesday"
+msgstr ""
+
+#: events/utils.py:8
+msgid "Wednesday"
+msgstr ""
+
+#: events/utils.py:8
+msgid "Thursday"
+msgstr ""
+
+#: events/utils.py:8
+msgid "Friday"
+msgstr ""
+
+#: events/utils.py:9
+msgid "Saturday"
+msgstr ""
+
+#: events/utils.py:9
+msgid "Sunday"
+msgstr ""
+
+#: events/utils.py:10
+msgid "Mon"
+msgstr ""
+
+#: events/utils.py:10
+msgid "Tue"
+msgstr ""
+
+#: events/utils.py:10
+msgid "Wed"
+msgstr ""
+
+#: events/utils.py:10
+msgid "Thu"
+msgstr ""
+
+#: events/utils.py:10
+msgid "Fri"
+msgstr ""
+
+#: events/utils.py:10
+msgid "Sat"
+msgstr ""
+
+#: events/utils.py:10
+msgid "Sun"
+msgstr ""
+
+#: events/utils.py:12
+msgid "January"
+msgstr ""
+
+#: events/utils.py:12
+msgid "February"
+msgstr ""
+
+#: events/utils.py:12
+msgid "March"
+msgstr ""
+
+#: events/utils.py:12
+msgid "April"
+msgstr ""
+
+#: events/utils.py:12 events/utils.py:15
+msgid "May"
+msgstr ""
+
+#: events/utils.py:12
+msgid "June"
+msgstr ""
+
+#: events/utils.py:13
+msgid "July"
+msgstr ""
+
+#: events/utils.py:13
+msgid "August"
+msgstr ""
+
+#: events/utils.py:13
+msgid "September"
+msgstr ""
+
+#: events/utils.py:13
+msgid "October"
+msgstr ""
+
+#: events/utils.py:13
+msgid "November"
+msgstr ""
+
+#: events/utils.py:13
+msgid "December"
+msgstr ""
+
+#: events/utils.py:15
+msgid "Jan"
+msgstr ""
+
+#: events/utils.py:15
+msgid "Feb"
+msgstr ""
+
+#: events/utils.py:15
+msgid "Mar"
+msgstr ""
+
+#: events/utils.py:15
+msgid "Apr"
+msgstr ""
+
+#: events/utils.py:15
+msgid "Jun"
+msgstr ""
+
+#: events/utils.py:15
+msgid "Jul"
+msgstr ""
+
+#: events/utils.py:16
+msgid "Aug"
+msgstr ""
+
+#: events/utils.py:16
+msgid "Sep"
+msgstr ""
+
+#: events/utils.py:16
+msgid "Oct"
+msgstr ""
+
+#: events/utils.py:16
+msgid "Nov"
+msgstr ""
+
+#: events/utils.py:16
+msgid "Dec"
+msgstr ""
+
+#: events/views.py:40
+#, python-format
+msgid "Success added new event %(event)s"
+msgstr ""
+
+#: events/views.py:54
+#, python-format
+msgid "Success updated event %(event)s"
+msgstr ""

@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 import autocomplete_light
 
 from users.utils import AutocompletePermissionMixin
@@ -10,5 +12,5 @@ class UserAutocomplete(AutocompletePermissionMixin, autocomplete_light.Autocompl
     model = User
 
     def choice_label(self, choice):
-        return u"{name} ({email})".format(name=choice.get_nicename(), email=choice.email)
+        return "{name} ({email})".format(name=choice.get_nicename(), email=choice.email)
 autocomplete_light.register(User, UserAutocomplete)

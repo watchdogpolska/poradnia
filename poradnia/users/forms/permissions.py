@@ -1,11 +1,10 @@
 import autocomplete_light
+from atom.ext.crispy_forms.forms import SingleButtonMixin
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 from guardian.forms import BaseObjectPermissionsForm, UserObjectPermissionsForm
 from guardian.shortcuts import assign_perm, remove_perm
-
-from atom.ext.crispy_forms.forms import SingleButtonMixin
 
 
 class PermissionsTranslationMixin(object):

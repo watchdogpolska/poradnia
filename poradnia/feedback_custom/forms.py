@@ -1,4 +1,5 @@
 from atom.ext.crispy_forms.forms import FormHorizontalMixin, SingleButtonMixin
+
 from tasty_feedback.forms import FeedbackForm
 
 
