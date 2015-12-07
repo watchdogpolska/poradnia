@@ -1,13 +1,15 @@
 from __future__ import absolute_import
+
 from django.core import mail
 from django.core.urlresolvers import reverse_lazy
-from django.test import TestCase, RequestFactory
+from django.test import RequestFactory, TestCase
 from guardian.shortcuts import assign_perm
-from users.factories import UserFactory
-from users.models import User
-from users.forms import UserForm
-from users.views import UserListView
+
 from cases.factories import CaseFactory
+from users.factories import UserFactory
+from users.forms import UserForm
+from users.models import User
+from users.views import UserListView
 
 
 class UserTestCase(TestCase):
@@ -34,6 +36,19 @@ class UserTestCase(TestCase):
 
     def test_has_picture(self):
         self.assertTrue(UserFactory().picture)
+
+    def test_has_codename(self):
+        self.assertTrue(UserFactory().codename)
+
+    def test_get_codename(self):
+        self.assertEqual(User(username="X", codename="ELA").get_codename(), "ELA")
+        self.assertEqual(User(username="X").get_codename(), "X")
+
+    def test_get_nicename(self):
+        self.assertEqual(User(username="X",
+                              first_name="John",
+                              last_name="Smith").get_codename(), "John Smith")
+        self.assertEqual(User(username="X").get_codename(), "X")
 
 
 class UserQuerySetTestCase(TestCase):
@@ -81,6 +96,14 @@ class UserFormTestCase(TestCase):
 
     def test_has_avatar(self):
         self.assertIn('picture', UserForm().fields)
+
+    def test_codename_visibility(self):
+        # Show for staff
+        self.assertIn('codename', UserForm(instance=UserFactory(is_staff=True)).fields)
+        # Non-show for non-staff
+        self.assertNotIn('codename', UserForm(instance=UserFactory(is_staff=False)).fields)
+        # Non show for new object
+        self.assertNotIn('codename', UserForm().fields)
 
 
 class UserDetailViewTestCase(TestCase):

@@ -1,15 +1,21 @@
-from cases.factories import CaseFactory
-from letters.factories import LetterFactory
-from users.factories import UserFactory
-from django.test import TestCase, RequestFactory
-from cases.filters import StaffCaseFilter
-from django.core.urlresolvers import reverse_lazy
-from cases.models import Case
-from django.test.utils import override_settings
-from guardian.shortcuts import assign_perm
-from django.core.exceptions import PermissionDenied
+import datetime
+from datetime import timedelta
 from django.contrib.admin.sites import AdminSite
+from django.core.exceptions import PermissionDenied
+from django.core.urlresolvers import reverse_lazy
+from django.test import RequestFactory, TestCase
+from django.test.utils import override_settings
+from django.utils.timezone import utc
+
+from guardian.shortcuts import assign_perm
+
 from cases.admin import CaseAdmin
+from cases.factories import CaseFactory
+from cases.filters import StaffCaseFilter
+from cases.models import Case
+from letters.factories import LetterFactory
+from letters.models import Letter
+from users.factories import UserFactory
 
 
 class CaseQuerySetTestCase(TestCase):
@@ -98,6 +104,26 @@ class CaseTestCase(TestCase):
         self.object.status_update(reopen=True)
         self.assertEqual(self.object.status, Case.STATUS.free)
 
+    def test_update_counters_last_received_default(self):
+        self.object.update_counters()
+        self.assertEqual(self.object.last_received, None)
+
+    def _make_letter(self):  # Hack for Travis
+        o = LetterFactory(case=self.object, created_by__is_staff=False)
+        return Letter.objects.get(pk=o.pk)
+
+    def test_update_counters_last_received_setup(self):
+        l = self._make_letter()
+        self.object.update_counters()
+        self.assertEqual(l.created_on, self.object.last_received)
+
+    def test_update_counters_last_received_update(self):
+        self._make_letter()
+        self.object.update_counters()
+        new = self._make_letter()
+        self.object.update_counters()
+        self.assertEqual(new.created_on, self.object.last_received)
+
 
 class CaseDetailViewTestCase(TestCase):
     def setUp(self):
@@ -147,7 +173,7 @@ class StaffCaseFilterTestCase(TestCase):
         return StaffCaseFilter(user=user or UserFactory()).get_order_by(choice)
 
     def test_order_by(self):
-        self.assertEqual(self._get_filter(), ['-deadline', 'status', '-last_send', '-last_action'])
+        self.assertEqual(self._get_filter(), ['-deadline', 'status', '-last_received', '-last_send', '-last_action'])
         self.assertEqual(self._get_filter(choice='status'), ['status'])
 
     def test_form_fields(self):

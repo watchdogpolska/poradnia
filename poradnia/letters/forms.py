@@ -1,4 +1,7 @@
 import autocomplete_light
+from atom.ext.crispy_forms.forms import HelperMixin, SingleButtonMixin
+from atom.ext.tinycontent.forms import GIODOMixin
+from atom.forms import PartialMixin
 from crispy_forms.layout import BaseInput, Submit
 from django import forms
 from django.contrib.auth import get_user_model
@@ -7,9 +10,6 @@ from django.core.urlresolvers import reverse
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 
-from atom.ext.tinycontent.forms import GIODOMixin
-from atom.forms import PartialMixin
-from atom.ext.crispy_forms.forms import HelperMixin, SingleButtonMixin
 from cases.models import Case
 
 from .models import Attachment, Letter

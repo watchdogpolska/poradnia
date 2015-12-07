@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
+from atom.ext.crispy_forms.forms import FormHorizontalMixin, SingleButtonMixin
+from atom.forms import AuthorMixin
 from django import forms
 from django.core.urlresolvers import reverse
 
-from atom.forms import AuthorMixin
-from atom.ext.crispy_forms.forms import FormHorizontalMixin, SingleButtonMixin
 from letters.forms import PartialMixin
 
 from .models import Event

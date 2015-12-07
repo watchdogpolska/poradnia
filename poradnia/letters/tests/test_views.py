@@ -5,8 +5,8 @@ from guardian.shortcuts import assign_perm
 
 from cases.factories import CaseFactory
 from cases.models import Case
-from letters.models import Letter
 from letters.factories import LetterFactory
+from letters.models import Letter
 from users.factories import UserFactory
 
 

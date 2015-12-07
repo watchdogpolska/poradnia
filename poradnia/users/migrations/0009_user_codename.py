@@ -1,20 +1,20 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import sorl.thumbnail.fields
-from django.db import migrations, models
+from django.db import models, migrations
 
 
 class Migration(migrations.Migration):
+
     dependencies = [
-        ('users', '0005_auto_20150712_1524'),
+        ('users', '0008_auto_20151108_0017'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='user',
-            name='picture',
-            field=sorl.thumbnail.fields.ImageField(upload_to=b'avatars', null=True, verbose_name='Avatar', blank=True),
+            name='codename',
+            field=models.CharField(max_length=15, null=True, verbose_name='Codename', blank=True),
             preserve_default=True,
         ),
     ]

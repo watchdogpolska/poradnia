@@ -4,6 +4,7 @@ import os
 
 import claw
 import html2text
+from atom.models import AttachmentBase
 from claw import quotations
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -19,7 +20,6 @@ from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 from model_utils.managers import PassThroughManager
 
-from atom.models import AttachmentBase
 from cases.models import Case
 from records.models import AbstractRecord, AbstractRecordQuerySet
 from template_mail.utils import send_tpl_email
@@ -37,6 +37,9 @@ class LetterQuerySet(AbstractRecordQuerySet):
     def last_staff_send(self):
         return self.filter(status='done', created_by__is_staff=True).order_by(
                 '-created_on', '-id').all()[0]
+
+    def last_received(self):
+        return self.filter(created_by__is_staff=False).order_by('-created_on', '-id').all()[0]
 
     def last(self):
         return self.order_by('-created_on', '-id').all()[0]

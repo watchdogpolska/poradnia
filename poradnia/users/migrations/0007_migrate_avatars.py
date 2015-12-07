@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-from django.conf import settings
-from django.db import models, migrations
 
+from django.conf import settings
+from django.db import migrations, models
 
 if 'avatar' in settings.INSTALLED_APPS:
     def migrate_avatar(apps, schema_editor):

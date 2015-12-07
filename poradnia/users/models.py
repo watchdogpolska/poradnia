@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
+
 import re
+
 from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.urlresolvers import reverse
@@ -9,11 +11,10 @@ from django.db.models import Q, Count
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
 from guardian.mixins import GuardianUserMixin
-from sorl.thumbnail import ImageField
 from model_utils.managers import PassThroughManagerMixin
+from sorl.thumbnail import ImageField
 
 from template_mail.utils import send_tpl_email
-
 
 _('Username or e-mail')  # Hack to overwrite django translation
 _('Login')
@@ -74,6 +75,10 @@ class CustomUserManager(PassThroughManagerMixin, GuardianUserMixin, UserManager)
 class User(AbstractUser):
     objects = CustomUserManager.for_queryset_class(UserQuerySet)()
     picture = ImageField(upload_to='avatars', verbose_name=_("Avatar"), null=True, blank=True)
+    codename = models.CharField(max_length=15, null=True, blank=True, verbose_name=_("Codename"))
+
+    def get_codename(self):
+        return self.codename or self.get_nicename()
 
     def get_nicename(self):
         if self.first_name or self.last_name:

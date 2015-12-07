@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-04 18:16+0100\n"
-"PO-Revision-Date: 2015-12-04 18:16+0100\n"
+"POT-Creation-Date: 2015-12-07 00:59+0100\n"
+"PO-Revision-Date: 2015-12-07 01:04+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -17,47 +17,53 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /users/locale/en/LC_MESSAGES/django.po\n"
 
-#: forms/account.py:26
+#: forms/account.py:25
 msgid "Signup"
 msgstr "Rejestracja"
 
-#: login_form.py:15 models.py:19
+#: login_form.py:14 models.py:20
 msgid "Login"
 msgstr "Nazwa użytkownika / użytkowniczki"
 
-#: models.py:18
+#: models.py:19
 msgid "Username or e-mail"
 msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
 
-#: models.py:76
+#: models.py:77
 msgid "Avatar"
 msgstr "Avatar"
 
-#: models.py:131 templates/users/_sidebar.html:3
+#: models.py:78
+msgid "Codename"
+msgstr "Kryptonim"
+
+#: models.py:136 templates/users/_sidebar.html:3
 #: templates/users/user_detail.html:3 templates/users/user_form.html:4
 #: templates/users/user_form.html.py:15
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: models.py:132 templates/users/base.html:5
+#: models.py:137 templates/users/base.html:5
 #: templates/users/user_filter.html:18
+#| msgid "Users list"
 msgid "Users"
-msgstr "Użytkownicy / użytkowniczki"
+msgstr "Wykaz użytkowników"
 
-#: models.py:137 templates/users/user_detail.html:16
+#: models.py:142 templates/users/user_detail.html:16
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:138
+#: models.py:143
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: models.py:141 templates/users/profile_form.html:7
+#: models.py:146 templates/users/profile_form.html:7
 #: templates/users/profile_form.html:10 templates/users/user_detail.html:26
 msgid "Profile"
 msgstr "Profil"
 
-#: models.py:142
+#: models.py:147
+#| msgid "Profile"
 msgid "Profiles"
 msgstr "Profile"
 
@@ -99,7 +105,6 @@ msgid "Keys"
 msgstr "Klucze"
 
 #: templates/users/user_detail.html:41 templates/users/user_filter.html:43
-#| msgid "Clients"
 msgid "Client cases"
 msgstr "Sprawy klienta"
 
@@ -120,7 +125,6 @@ msgstr ""
 "profilu członków zespołu i swojego."
 
 #: templates/users/user_filter.html:45
-#| msgid "Cases as client"
 msgid "Cases assigned"
 msgstr "Sprawy przypisane"
 
@@ -128,15 +132,15 @@ msgstr "Sprawy przypisane"
 msgid "Account"
 msgstr "Konto"
 
-#: views.py:64
+#: views.py:65
 msgid "All users"
 msgstr "Wszyscy użytkownicy"
 
-#: views.py:65
+#: views.py:66
 msgid "Staff"
 msgstr "Zespoł"
 
-#: views.py:66
+#: views.py:67
 msgid "Clients"
 msgstr "Klienci"
 

@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin
 from django.core.urlresolvers import reverse
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
 from django_filters.views import FilterView
+
+from .filters import UserFilter
 from .forms import ProfileForm, UserForm
-from django.utils.translation import ugettext_lazy as _
 from .models import Profile, User
 from .utils import PermissionMixin
-from .filters import UserFilter
 
 
 class UserDetailView(PermissionMixin, DetailView):

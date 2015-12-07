@@ -6,6 +6,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     email = factory.LazyAttribute(lambda obj: '%s@example.com' % obj.username)
     password = factory.PostGenerationMethodCall('set_password', 'pass')
     picture = factory.django.ImageField()
+    codename = factory.Sequence(lambda n: 'U_%d' % n)
 
     class Meta:
         model = 'users.User'  # Equivalent to ``model = myapp.models.User``
