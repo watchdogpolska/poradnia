@@ -244,5 +244,5 @@ class LetterForm(SingleButtonMixin, PartialMixin, ModelForm):  # eg. edit form
         return obj
 
     class Meta:
-        fields = ['name', 'text', 'status']
+        fields = ['name', 'text']
         model = Letter
