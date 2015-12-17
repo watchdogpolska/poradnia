@@ -3,23 +3,23 @@ from __future__ import unicode_literals
 
 from django.db import migrations
 
-PERM_INITIAL = {'wsparcie': (u'can_add_record',
-                            u'can_change_own_record',
-                            u'can_view',
-                            u'can_view_all'
+PERM_INITIAL = {'wsparcie': ('can_add_record',
+                             'can_change_own_record',
+                             'can_view',
+                            'can_view_all'
                              ),
                 'obserwator': (
-                            u'can_view',
-                            u'can_view_all'),
-                'klient': (u'can_add_record',
-                           u'can_send_to_client',
-                           u'can_view'),
+                            'can_view',
+                            'can_view_all'),
+                'klient': ('can_add_record',
+                           'can_send_to_client',
+                           'can_view'),
                 'admin': '__all__',
                 }
 
 
 def get_perm(p, codenames=None):
-    qs = p.objects.filter(**{'content_type__app_label': 'cases', 'content_type__name': 'case'})
+    qs = p.objects.filter(**{'content_type__app_label': 'cases', 'content_type__model': 'case'})
     if codenames is not '__all__':
         qs = qs.filter(codename__in=codenames)
     return qs.all()
