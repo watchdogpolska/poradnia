@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
-from django.db import migrations, models
+import django
+from django.db import migrations
 import django.contrib.sites.models
 
 
@@ -11,11 +11,15 @@ class Migration(migrations.Migration):
         ('sites', '0002_set_site_domain_and_name'),
     ]
 
-    operations = [
-        migrations.AlterModelManagers(
-            name='site',
-            managers=[
-                ('objects', django.contrib.sites.models.SiteManager()),
-            ],
-        ),
-    ]
+    if django.VERSION[:2] >= (1, 8):
+        operations = [
+            migrations.AlterModelManagers(
+                name='site',
+                managers=[
+                    ('objects', django.contrib.sites.models.SiteManager()),
+                ],
+            ),
+        ]
+    else:
+        operations = [
+        ]

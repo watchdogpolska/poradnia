@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
-
+import django
 from django.db import migrations, models
 import django.core.validators
 import users.models
@@ -11,14 +11,19 @@ class Migration(migrations.Migration):
     dependencies = [
         ('users', '0009_user_codename'),
     ]
+    if django.VERSION[:2] >= (1, 8):
+        operations = [
+            migrations.AlterModelManagers(
+                name='user',
+                managers=[
+                    ('objects', users.models.CustomUserManager()),
+                ],
+            ),
+        ]
+    else:
+        operations = []
 
-    operations = [
-        migrations.AlterModelManagers(
-            name='user',
-            managers=[
-                ('objects', users.models.CustomUserManager()),
-            ],
-        ),
+    operations += [
         migrations.AlterField(
             model_name='user',
             name='email',
