@@ -1,7 +1,7 @@
 # Pro-tip: Try not to put anything here. There should be no dependency in
 #	production that isn't in development.
 -r base.txt
-
+Django==1.8.7
 gunicorn==19.4.1
 django-storages==1.1.8
 Collectfast==0.2.3
