@@ -1,4 +1,4 @@
-from .local import Local  # noqa
+from .local import *
 
 
 class DisableMigrations(object):
@@ -9,6 +9,4 @@ class DisableMigrations(object):
     def __getitem__(self, item):
         return "notmigrations"
 
-
-class Test(Local):
-    MIGRATION_MODULES = DisableMigrations()
+MIGRATION_MODULES = DisableMigrations()
