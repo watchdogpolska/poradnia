@@ -30,7 +30,6 @@ pytz==2015.7
 
 # Your custom requirements go here
 django-guardian==1.3.2
-django-notifications-hq==0.7.1
 django-mailbox==4.4.5
 claw==1.3.0
 django-filter==0.11.0

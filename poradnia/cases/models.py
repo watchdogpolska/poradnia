@@ -14,7 +14,6 @@ from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import assign_perm, get_users_with_perms
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
-from model_utils.managers import PassThroughManager
 from cases.utils import get_user_model
 from cases.tags.models import Tag
 from template_mail.utils import send_tpl_email
@@ -82,7 +81,7 @@ class Case(models.Model):
                                  null=True,
                                  blank=True,
                                  related_name='event_deadline', verbose_name=_("Dead-line"))
-    objects = PassThroughManager.for_queryset_class(CaseQuerySet)()
+    objects = CaseQuerySet.as_manager()
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL, related_name="case_created", verbose_name=_("Created by"))
     created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))

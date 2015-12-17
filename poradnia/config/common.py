@@ -8,14 +8,15 @@ https://docs.djangoproject.com/en/dev/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
+from __future__ import absolute_import, unicode_literals
 import environ
 from django.utils.translation import ugettext_lazy as _
 
+ROOT_DIR = environ.Path(__file__) - 3
+
+APPS_DIR = ROOT_DIR.path('poradnia')
+
 env = environ.Env()
-
-ROOT_DIR = environ.Path(__file__) - 2
-
-APPS_DIR = ROOT_DIR.path('foundation')
 
 # APP CONFIGURATION
 DJANGO_APPS = (
@@ -39,7 +40,6 @@ THIRD_PARTY_APPS = (
     'allauth.account',  # registration
     'allauth.socialaccount',  # registration
     'guardian',
-    'notifications',
     'django_mailbox',
     'autocomplete_light',
     'tinymce',
@@ -58,7 +58,6 @@ LOCAL_APPS = (
     'letters',
     'records',
     'events',
-    'notifications_custom',
     'advicer',
     'feedback_custom',
     'tasty_feedback',
@@ -108,7 +107,7 @@ SECRET_KEY = env.str("SECRET_KEY", default="CHANGEME!!!")
 # FIXTURE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FIXTURE_DIRS
 FIXTURE_DIRS = (
-    APPS_DIR.path('fixtures'),
+    str(APPS_DIR.path('fixtures')),
 )
 # END FIXTURE CONFIGURATION
 
@@ -177,7 +176,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
 TEMPLATE_DIRS = (
-    APPS_DIR.path('templates'),
+    str(APPS_DIR.path('templates')),
 )
 
 TEMPLATE_LOADERS = (
@@ -191,14 +190,14 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # STATIC FILE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-ROOT_DIR
-STATIC_ROOT = APPS_DIR.path('staticfiles')
+STATIC_ROOT = str(APPS_DIR.path('staticfiles'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = (
-    APPS_DIR.path('static'),
+    str(APPS_DIR.path('static')),
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
@@ -210,7 +209,7 @@ STATICFILES_FINDERS = (
 
 # MEDIA CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-ROOT_DIR
-MEDIA_ROOT = APPS_DIR.path('media')
+MEDIA_ROOT = str(APPS_DIR.path('media'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
 MEDIA_URL = '/media/'
@@ -291,7 +290,7 @@ LANGUAGES = (
   ('en', _('English')),
 )
 
-LOCALE_PATHS = APPS_DIR.path('templates/locale')
+LOCALE_PATHS = (str(APPS_DIR.path('templates/locale')),)
 
 PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
 PORADNIA_EMAIL_INPUT = "^sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl$"

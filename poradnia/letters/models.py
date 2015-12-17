@@ -18,7 +18,6 @@ from django_mailbox.models import Message
 from django_mailbox.signals import message_received
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
-from model_utils.managers import PassThroughManager
 
 from cases.models import Case
 from records.models import AbstractRecord, AbstractRecordQuerySet
@@ -75,7 +74,7 @@ class Letter(AbstractRecord):
         help_text=_(u'Original full content of message')
     )
 
-    objects = PassThroughManager.for_queryset_class(LetterQuerySet)()
+    objects = LetterQuerySet.as_manager()
 
     def __unicode__(self):
         return self.name

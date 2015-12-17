@@ -5,7 +5,6 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
-from model_utils.managers import PassThroughManager
 
 from cases.models import Case
 
@@ -43,7 +42,7 @@ class Record(models.Model):
         null=True,
     )
     related_object = generic.GenericForeignKey('content_type', 'object_id')
-    objects = PassThroughManager.for_queryset_class(RecordQuerySet)()
+    objects = RecordQuerySet.as_manager()
 
     @property  # We use OneToOneField as possible
     def content_object(self):

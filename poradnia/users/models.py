@@ -11,7 +11,6 @@ from django.db.models import Q, Count
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
 from guardian.mixins import GuardianUserMixin
-from model_utils.managers import PassThroughManagerMixin
 from sorl.thumbnail import ImageField
 
 from template_mail.utils import send_tpl_email
@@ -38,7 +37,7 @@ class UserQuerySet(QuerySet):
         return self.exclude(pk=settings.ANONYMOUS_USER_ID)
 
 
-class CustomUserManager(PassThroughManagerMixin, GuardianUserMixin, UserManager):
+class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
 
     def get_by_email_or_create(self, email, notify=True):
         try:
@@ -72,10 +71,10 @@ class CustomUserManager(PassThroughManagerMixin, GuardianUserMixin, UserManager)
         return user
 
 
-class User(AbstractUser):
-    objects = CustomUserManager.for_queryset_class(UserQuerySet)()
+class User(GuardianUserMixin, AbstractUser):
     picture = ImageField(upload_to='avatars', verbose_name=_("Avatar"), null=True, blank=True)
     codename = models.CharField(max_length=15, null=True, blank=True, verbose_name=_("Codename"))
+    objects = CustomUserManager()
 
     def get_codename(self):
         return self.codename or self.get_nicename()

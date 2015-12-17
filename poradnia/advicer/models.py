@@ -7,7 +7,6 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
-from model_utils.managers import PassThroughManager
 
 from cases.models import Case
 
@@ -111,7 +110,7 @@ class Advice(models.Model):
     comment = models.TextField(verbose_name=_("Comment"),
                                null=True,
                                blank=True)
-    objects = PassThroughManager.for_queryset_class(AdviceQuerySet)()
+    objects = AdviceQuerySet.as_manager()
 
     def __unicode__(self):
         return self.subject or _("Advice #%d") % (self.pk)
