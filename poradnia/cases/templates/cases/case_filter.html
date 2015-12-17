@@ -32,7 +32,7 @@
     <th class="client">{% trans 'Client' %}</th>
     <th class="subject">{% trans 'Subject' %} {% if user.is_staff %}[{% trans 'Dead-line'%}] {% endif %}</th>
     {% if user.is_staff %}
-    <th class="last_received">{% trans 'Last received' %}</th>
+    <th class="last_action">&nbsp;</th>
     {% else %}
     <th class="last_response">{% trans 'Last response' %}</th>
     {% endif %}
@@ -66,13 +66,13 @@
           {% endif %}
         </td>
         {% if user.is_staff %}
-        <td class="last_received">
-          {% if object.last_received %}
-            <span title="{{object.last_received|naturaltime}}">
-              {{object.last_received}}
+        <td class="last_action">
+          {% if object.last_action %}
+            <span title="{{object.last_action|naturaltime}}">
+              {{object.last_action}}
             </span>
           {% else %}
-            {% trans 'No received' %}
+            {% trans 'No action' %}
           {% endif %}
         </td>
         {% else %}

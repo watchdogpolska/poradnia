@@ -50,7 +50,7 @@ class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterS
 
     def get_order_by(self, order_choice):
         if order_choice == 'default':
-            return ['-deadline', 'status', '-last_received', '-last_send', '-last_action']
+            return ['-last_action', ]
         return super(StaffCaseFilter, self).get_order_by(order_choice)
 
     class Meta:

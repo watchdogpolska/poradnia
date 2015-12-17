@@ -234,8 +234,6 @@ class LetterForm(SingleButtonMixin, PartialMixin, ModelForm):  # eg. edit form
         super(LetterForm, self).__init__(*args, **kwargs)
         self.helper.form_action = kwargs['instance'].get_edit_url()
         self.helper.form_method = 'post'
-        if not self.user.has_perm('cases.can_send_to_client'):
-            del self.fields['status']
 
     def save(self, commit=True, *args, **kwargs):
         obj = super(LetterForm, self).save(commit=False, *args, **kwargs)
@@ -244,5 +242,5 @@ class LetterForm(SingleButtonMixin, PartialMixin, ModelForm):  # eg. edit form
         return obj
 
     class Meta:
-        fields = ['name', 'text', 'status']
+        fields = ['name', 'text']
         model = Letter
