@@ -1,5 +1,3 @@
-import datetime
-
 from atom.models import AttachmentBase
 from django.conf import settings
 from django.core.urlresolvers import reverse
@@ -7,7 +5,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
-
+from django.utils.timezone import now
 from cases.models import Case
 
 
@@ -89,7 +87,7 @@ class Advice(models.Model):
                                 verbose_name=_("Advicer"),
                                 help_text=_("Person who give a advice"),
                                 limit_choices_to={'is_staff': True})
-    grant_on = models.DateTimeField(default=datetime.datetime.now,
+    grant_on = models.DateTimeField(default=now,
                                     verbose_name=_("Grant on"))
     created_by = models.ForeignKey(settings.AUTH_USER_MODEL,
                                    verbose_name=_("Created by"),

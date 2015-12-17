@@ -68,7 +68,7 @@ class Case(models.Model):
                      ('2', 'closed', _('closed'))
                      )
     name = models.CharField(max_length=150, verbose_name=_("Subject"))
-    tags = models.ManyToManyField(Tag, null=True, blank=True, verbose_name=_("Tags"))
+    tags = models.ManyToManyField(Tag, blank=True, verbose_name=_("Tags"))
     status = StatusField()
     status_changed = MonitorField(monitor='status')
     client = models.ForeignKey(
