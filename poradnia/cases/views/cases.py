@@ -25,7 +25,6 @@ class CaseDetailView(LoginRequiredMixin, TemplateView):  # TODO: Use django.view
         context = {}
         qs = (Case.objects.
               select_related('created_by').
-              select_related('triggered').
               select_related('modified_by'))
         case = get_object_or_404(qs, pk=self.kwargs['pk'])
         case.view_perm_check(self.request.user)
