@@ -306,3 +306,5 @@ FEEDBACK_FORM_SUBMIT = 'feedback_custom.forms.FeedbackForm'
 FEEDBACK_GITHUB_REPO = 'https://github.com/watchdogpolska/poradnia'
 
 DJANGO_MAILBOX_STORE_ORIGINAL_MESSAGE = True
+
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
