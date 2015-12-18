@@ -6,7 +6,7 @@ Local Configurations
 - Uses console backend for emails
 - Use Django Debug Toolbar
 '''
-from .common import *
+from .common import *  # noqa
 # DEBUG
 DEBUG = env('DEBUG', default=True)
 TEMPLATE_DEBUG = DEBUG

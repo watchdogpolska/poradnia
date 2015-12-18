@@ -2,7 +2,7 @@
 '''
 Production Configurations
 '''
-from .common import *
+from .common import *  # noqa
 # SECRET KEY
 SECRET_KEY = env('SECRET_KEY')
 # END SECRET KEY
