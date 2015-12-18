@@ -132,16 +132,16 @@ def mail_process(sender, message, **args):
     # old_user + case => PASS
     # many_case => FAIL
 
-    # Identify user
-    user = get_user_model().objects.get_by_email_or_create(message.from_address[0])
-    print("Identified user: ", user)
-
     # Skip autoreply messages - see RFC3834
     if (lambda x: 'Auto-Submitted' in x and
             x['Auto-Submitted'] == 'auto-replied')(message.get_email_object()):
         print("Delete .eml from {email} as auto-replied".format(email=message.from_address[0]))
         message.eml.delete(save=True)
         return
+
+    # Identify user
+    user = get_user_model().objects.get_by_email_or_create(message.from_address[0])
+    print("Identified user: ", user)
 
     # Identify case
     try:  # TODO: Is it old case?
