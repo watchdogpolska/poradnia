@@ -28,6 +28,9 @@ poradnia
   :target: https://www.quantifiedcode.com/app/project/0b4753d4b3bd41f797b40458c3cea67a
   :alt: Code issues
 
+.. image:: https://coveralls.io/repos/watchdogpolska/poradnia/badge.svg?branch=master&service=github
+  :target: https://coveralls.io/github/watchdogpolska/poradnia?branch=master 
+
 Settings
 ------------
 
