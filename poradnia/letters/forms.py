@@ -145,6 +145,9 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
             self.helper.add_input(Submit(name='send',
                                          value=_("Reply to all"),
                                          css_class="btn-primary"))
+            self.helper.add_input(Submit(name='project',
+                                         value=_("Save to review"),
+                                         css_class="btn-primary"))
             self.helper.add_input(SimpleSubmit(name='send_staff',
                                                input_type='submit',
                                                value=_("Reply to staff"),
@@ -154,18 +157,21 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
                 self.helper.add_input(Submit(name='send',
                                              value=_("Reply to staff"),
                                              css_class="btn-primary"))
+                self.helper.add_input(Submit(name='project',
+                                             value=_("Save to review"),
+                                             css_class="btn-primary"))
             else:
                 self.helper.add_input(Submit(name='send',
                                              value=_("Reply"),
                                              css_class="btn-primary"))
 
     def get_status(self):
-        if self.user.is_staff:
-            if self.user_can_send:
-                if 'send_staff' in self.data:
-                    return Letter.STATUS.staff
-                return Letter.STATUS.done
+        if not self.user.is_staff:
+            return Letter.STATUS.done
+        if not self.user_can_send:
             return Letter.STATUS.staff
+        if 'send_staff' in self.data or 'project' in self.data:
+                return Letter.STATUS.staff
         return Letter.STATUS.done
 
     def save(self, commit=True, *args, **kwargs):
@@ -175,7 +181,11 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         obj.case = self.case
         if obj.status == obj.STATUS.done:
             self.case.handled = True if self.user.is_staff else False
+        if self.user.is_staff and 'project' in self.data:
+            self.case.has_project = True
             self.case.save()
+        if self.user.is_staff and obj.status == Letter.STATUS.done:
+            self.case.has_project = False
         if not self.user.is_staff and self.case.status == Case.STATUS.closed:
             self.case.status_update(reopen=True)
         if commit:

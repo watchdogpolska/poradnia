@@ -90,6 +90,7 @@ class Case(models.Model):
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
     handled = models.BooleanField(default=False, verbose_name=_("Handled"))
+    has_project = models.BooleanField(default=False, verbose_name=_("Has project"))
 
     def status_display(self):
         return self.STATUS[self.status]
