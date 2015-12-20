@@ -179,15 +179,17 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         obj.status = self.get_status()
         obj.created_by = self.user
         obj.case = self.case
-        if obj.status == obj.STATUS.done:
-            self.case.handled = True if self.user.is_staff else False
-        if self.user.is_staff and 'project' in self.data:
-            self.case.has_project = True
-            self.case.save()
-        if self.user.is_staff and obj.status == Letter.STATUS.done:
-            self.case.has_project = False
-        if not self.user.is_staff and self.case.status == Case.STATUS.closed:
-            self.case.status_update(reopen=True)
+        if self.user.is_staff:
+            if 'project' in self.data:
+                self.case.has_project = True
+            elif obj.status == Letter.STATUS.done:
+                self.case.has_project = False
+                self.case.handled = True
+        else:
+            self.case.handled = False
+            if self.case.status == Case.STATUS.closed:
+                self.case.status_update(reopen=True, save=False)
+        self.case.save()
         if commit:
             obj.save()
         return obj
@@ -215,6 +217,7 @@ class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
         obj.save()
 
         obj.case.handled = True
+        obj.case.has_project = False
         obj.case.save()
 
         obj.send_notification(actor=self.user, verb='send_to_client')

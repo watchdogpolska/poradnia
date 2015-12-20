@@ -13,7 +13,7 @@ from django.views.generic import TemplateView
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    url(r'^$', 
+    url(r'^$',
         TemplateView.as_view(template_name='pages/home.html'),
         name="home"),
     url(r'^admin/', include(admin.site.urls)),

@@ -179,18 +179,10 @@ class AddLetterTestCase(CaseMixin, TestCase):
                  'attachment_set-0-attachment': '',
                  'attachment_set-0-id': '',
                  'attachment_set-0-letter': '',
-                 'attachment_set-1-DELETE': '',
-                 'attachment_set-1-attachment': '',
-                 'attachment_set-1-id': '',
-                 'attachment_set-1-letter': '',
-                 'attachment_set-2-DELETE': '',
-                 'attachment_set-2-attachment': '',
-                 'attachment_set-2-id': '',
-                 'attachment_set-2-letter': '',
                  'attachment_set-INITIAL_FORMS': '0',
                  'attachment_set-MAX_NUM_FORMS': '1000',
                  'attachment_set-MIN_NUM_FORMS': '0',
-                 'attachment_set-TOTAL_FORMS': '3',
+                 'attachment_set-TOTAL_FORMS': '1',
                  'name': 'Odp:  Pytanie o dostep do informacji publicznej',
                  'status': 'done',
                  'text': 'XX'}
@@ -206,12 +198,15 @@ class AddLetterTestCase(CaseMixin, TestCase):
         assign_perm('can_add_record', self.user, self.case)
         return self.client.post(self.url, data=params)
 
-    # Test buttons etc.
-    def _test_status_field(self, staff, can_send_to_client, expected, **kwargs):
-        self.user = UserFactory(is_staff=staff)
+    def resp_user(self, staff, can_send_to_client, **kwargs):
+        user = UserFactory(is_staff=staff)
         if can_send_to_client:
-            assign_perm('can_send_to_client', self.user, self.case)
-        self.post(data=kwargs)
+            assign_perm('can_send_to_client', user, self.case)
+        resp = self.post(data=kwargs)
+
+    def _test_status_field(staff, can_send_to_client, **kwargs):
+        self.resp_user(can_send_to_client=can_send_to_client,
+                       staff=staff)
         self.assertEqual(Letter.objects.get().status, expected)
 
     def test_status_field_staff_can_send_to_client_false(self):
@@ -256,6 +251,46 @@ class AddLetterTestCase(CaseMixin, TestCase):
 
     def test_email_make_staff(self):
         self._test_email(self.test_status_field_staff_can_send_staff, Letter.STATUS.staff, False)
+
+
+class ProjectAddLetterTestCase(CaseMixin, TestCase):
+    post_data = {'attachment_set-0-DELETE': '',
+                 'attachment_set-0-attachment': '',
+                 'attachment_set-0-id': '',
+                 'attachment_set-0-letter': '',
+                 'attachment_set-INITIAL_FORMS': '0',
+                 'attachment_set-MAX_NUM_FORMS': '1000',
+                 'attachment_set-MIN_NUM_FORMS': '0',
+                 'attachment_set-TOTAL_FORMS': '1',
+                 'name': 'Odp:  Pytanie o dostep do informacji publicznej',
+                 'text': 'XX'}
+
+    def setUp(self):
+        self.case = CaseFactory(has_project=False)
+        self.url = reverse('letters:add', kwargs={'case_pk': self.case.pk})
+
+    def post(self, data=None):
+        params = self.post_data.copy()
+        params.update(data or {})
+        self.client.login(username=self.user.username, password='pass')
+        assign_perm('can_add_record', self.user, self.case)
+        return self.client.post(self.url, data=params)
+
+    def resp_user(self, staff, can_send_to_client=False, **kwargs):
+        user = UserFactory(is_staff=staff)
+        if can_send_to_client:
+            assign_perm('can_send_to_client', user, self.case)
+        return self.post(data=kwargs)
+
+    def test_save_non_staff(self):
+        self.resp_user(staff=False, save='Yes')
+        self.case.refresh_from_db()
+        self.assertEqual(self.case.has_project, False)
+
+    def test_project_voluntier(self):
+        self.resp_user(staff=True, can_send_to_client=True, project='Hell yeah!')
+        self.case.refresh_from_db()
+        self.assertEqual(self.case.has_project, True)
 
 
 class SendLetterTestCase(CaseMixin, TestCase):
@@ -304,3 +339,10 @@ class SendLetterTestCase(CaseMixin, TestCase):
                   if x.extra_headers['Template'] == 'letters/email/letter_send_to_client.txt']
         self.assertEqual(user1.email in emails, True)
         self.assertEqual(user2.email in emails, True)
+
+    def test_update_project(self):
+        self.object.case.has_project = True
+        self.object.case.save()
+        self._test_send()
+        self.object.case.refresh_from_db()
+        self.assertEqual(self.object.case.has_project, False)
