@@ -109,9 +109,20 @@ FIXTURE_DIRS = (
 )
 # END FIXTURE CONFIGURATION
 
-# EMAIL CONFIGURATION
-EMAIL_BACKEND = env.email_url(default='consolemail://')
-# END EMAIL CONFIGURATION
+# EMAIL
+EMAIL = env.email_url(default='consolemail://')
+EMAIL_BACKEND = EMAIL['EMAIL_BACKEND']
+EMAIL_HOST = EMAIL['EMAIL_HOST']
+EMAIL_HOST_PASSWORD = EMAIL['EMAIL_HOST_PASSWORD']
+EMAIL_HOST_USER = EMAIL['EMAIL_HOST_USER']
+EMAIL_PORT = EMAIL['EMAIL_PORT']
+
+DEFAULT_FROM_EMAIL = env.str('DJANGO_DEFAULT_FROM_EMAIL',
+                             'poradnia <noreply@porady.siecobywatelska.pl>')
+EMAIL_SUBJECT_PREFIX = env.str('DJANGO_EMAIL_SUBJECT_PREFIX', '[poradnia] ')
+EMAIL_USE_TLS = env.bool('DJANGO_EMAIL_USE_TLS', True)
+SERVER_EMAIL = EMAIL_HOST_USER
+# END EMAIL
 
 # MANAGER CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
