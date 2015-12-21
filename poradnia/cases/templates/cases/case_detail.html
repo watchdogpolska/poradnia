@@ -38,6 +38,9 @@
         {% else %}
           <span class="label label-success" title="Ostatnia zmiana 7 dni temu"> <i class="fa fa-folder-open-o"></i> {{ object.status }}</span>
         {%endif%}
+        {% if request.user.is_staff and object.has_project %}
+          {% include 'cases/_project_badge.html' %}
+        {% endif %}
         {%blocktrans with object.created_by.get_absolute_url as created_url and object.created_by as created_user and object.created_on|naturaltime as created_on and object.client.get_absolute_url as client_url and object.client as client_user%}Created by <a href="{{created_url}}">{{created_user}}</a> on
         {{created_on}} for <a href="{{client_url}}">{{client_user}}</a>{% endblocktrans %}
       </div>
