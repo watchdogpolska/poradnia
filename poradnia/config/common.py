@@ -110,12 +110,11 @@ FIXTURE_DIRS = (
 # END FIXTURE CONFIGURATION
 
 # EMAIL
-EMAIL = env.email_url(default='consolemail://')
-EMAIL_BACKEND = EMAIL['EMAIL_BACKEND']
-EMAIL_HOST = EMAIL['EMAIL_HOST']
-EMAIL_HOST_PASSWORD = EMAIL['EMAIL_HOST_PASSWORD']
-EMAIL_HOST_USER = EMAIL['EMAIL_HOST_USER']
-EMAIL_PORT = EMAIL['EMAIL_PORT']
+EMAIL_BACKEND = env.str('DJANGO_EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_HOST = env.str('DJANGO_EMAIL_HOST', '')
+EMAIL_HOST_PASSWORD = env.str('DJANGO_EMAIL_HOST_PASSWORD', '')
+EMAIL_HOST_USER = env.str('DJANGO_EMAIL_HOST_USER', '')
+EMAIL_PORT = env.str('DJANGO_EMAIL_PORT', '')
 
 DEFAULT_FROM_EMAIL = env.str('DJANGO_DEFAULT_FROM_EMAIL',
                              'poradnia <noreply@porady.siecobywatelska.pl>')
