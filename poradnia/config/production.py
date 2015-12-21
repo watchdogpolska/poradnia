@@ -4,7 +4,7 @@ Production Configurations
 '''
 from .common import *  # noqa
 # SECRET KEY
-SECRET_KEY = env('SECRET_KEY')
+SECRET_KEY = env.str('DJANGO_SECRET_KEY')
 # END SECRET KEY
 
 # SITE CONFIGURATION
@@ -15,14 +15,14 @@ ALLOWED_HOSTS = ["*"]
 
 # EMAIL
 EMAIL_BACKEND = env.email_url(default='consolemail://')
-DEFAULT_FROM_EMAIL = env(env='DEFAULT_FROM_EMAIL',
-                         default='poradnia <noreply@porady.siecobywatelska.pl>')
-EMAIL_HOST = env('EMAIL_HOST')
-EMAIL_HOST_PASSWORD = env('EMAIL_HOST_PASSWORD')
-EMAIL_HOST_USER = env('EMAIL_HOST_USER')
-EMAIL_PORT = env.int('EMAIL_PORT')
-EMAIL_SUBJECT_PREFIX = env('EMAIL_SUBJECT_PREFIX', default='[poradnia] ')
-EMAIL_USE_TLS = env.bool('EMAIL_USE_TLS', defualt=True)
+DEFAULT_FROM_EMAIL = env.str('DJANGO_DEFAULT_FROM_EMAIL', 
+                             'poradnia <noreply@porady.siecobywatelska.pl>')
+EMAIL_HOST = env('DJANGO_EMAIL_HOST')
+EMAIL_HOST_PASSWORD = env('DJANGO_EMAIL_HOST_PASSWORD')
+EMAIL_HOST_USER = env('DJANGO_EMAIL_HOST_USER')
+EMAIL_PORT = env.int('DJANGO_EMAIL_PORT')
+EMAIL_SUBJECT_PREFIX = env('DJANGO_EMAIL_SUBJECT_PREFIX', default='[poradnia] ')
+EMAIL_USE_TLS = env.bool('DJANGO_EMAIL_USE_TLS', defualt=True)
 SERVER_EMAIL = EMAIL_HOST_USER
 # END EMAIL
 
@@ -39,7 +39,7 @@ TEMPLATE_LOADERS = (
 # Your production stuff: Below this line define 3rd party libary settings
 # Ustaw wartość twojego DSN
 RAVEN_CONFIG = {
-    'dsn': environ.get('RAVEN_DSN', 'http://example.com'),
+    'dsn': env.str('RAVEN_DSN', 'http://example.com'),
 }
 
 INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
