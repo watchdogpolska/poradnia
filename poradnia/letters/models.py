@@ -176,11 +176,20 @@ def mail_process(sender, message, **args):
         status = Letter.STATUS.done
 
     # Update case status (re-open)
+    case_updated = False
     if not user.is_staff and case.status == Case.STATUS.closed:
-        case.status_update(reopen=True)
+        case.status_update(reopen=True, save=False)
+        case_updated = True
     if user.is_staff:
         case.handled = True
+        case_updated = True
+    if user.is_staff and status == Letter.STATUS.done:
+        case.has_project = False
+        case_updated = True
+
+    if case_updated:
         case.save()
+
     obj = Letter(name=message.subject,
                  created_by=user,
                  case=case,

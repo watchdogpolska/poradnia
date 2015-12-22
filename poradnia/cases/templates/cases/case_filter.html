@@ -55,6 +55,10 @@
             <i class="fa fa-fire"></i> {{ object.deadline.time }}
           </span>
           {% endif%}
+
+          {% if request.user.is_staff and object.has_project %}
+          {% include 'cases/_project_badge.html' %}
+          {% endif %}
           
           {% if request.user.is_staff and object.caseuserobjectpermission_set.all %}
           {% regroup object.caseuserobjectpermission_set.all by user as user_list %}
