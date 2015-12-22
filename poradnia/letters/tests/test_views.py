@@ -199,14 +199,15 @@ class AddLetterTestCase(CaseMixin, TestCase):
         return self.client.post(self.url, data=params)
 
     def resp_user(self, staff, can_send_to_client, **kwargs):
-        user = UserFactory(is_staff=staff)
+        self.user = UserFactory(is_staff=staff)
         if can_send_to_client:
-            assign_perm('can_send_to_client', user, self.case)
-        resp = self.post(data=kwargs)
+            assign_perm('can_send_to_client', self.user, self.case)
+        return self.post(data=kwargs)
 
-    def _test_status_field(staff, can_send_to_client, **kwargs):
+    def _test_status_field(self, staff, can_send_to_client, expected, **kwargs):
         self.resp_user(can_send_to_client=can_send_to_client,
-                       staff=staff)
+                       staff=staff,
+                       **kwargs)
         self.assertEqual(Letter.objects.get().status, expected)
 
     def test_status_field_staff_can_send_to_client_false(self):
@@ -235,6 +236,12 @@ class AddLetterTestCase(CaseMixin, TestCase):
                                 can_send_to_client=True,
                                 expected=Letter.STATUS.staff,
                                 send_staff="X")
+
+    def test_status_field_staff_project(self):
+        self._test_status_field(staff=True,
+                                can_send_to_client=True,
+                                expected=Letter.STATUS.staff,
+                                project="X")
 
     def _test_email(self, func, status, user_notify, staff_notify=True):
         user_user = self._add_random_user(self.case, staff=False)
@@ -277,9 +284,9 @@ class ProjectAddLetterTestCase(CaseMixin, TestCase):
         return self.client.post(self.url, data=params)
 
     def resp_user(self, staff, can_send_to_client=False, **kwargs):
-        user = UserFactory(is_staff=staff)
+        self.user = UserFactory(is_staff=staff)
         if can_send_to_client:
-            assign_perm('can_send_to_client', user, self.case)
+            assign_perm('can_send_to_client', self.user, self.case)
         return self.post(data=kwargs)
 
     def test_save_non_staff(self):
