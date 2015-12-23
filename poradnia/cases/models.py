@@ -14,8 +14,9 @@ from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import assign_perm, get_users_with_perms
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
-from cases.utils import get_user_model
+
 from cases.tags.models import Tag
+from cases.utils import get_user_model
 from template_mail.utils import send_tpl_email
 
 

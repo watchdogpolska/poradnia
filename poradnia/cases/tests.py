@@ -1,12 +1,12 @@
 import datetime
 from datetime import timedelta
+
 from django.contrib.admin.sites import AdminSite
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
 from django.utils.timezone import utc
-
 from guardian.shortcuts import assign_perm
 
 from cases.admin import CaseAdmin

@@ -3,6 +3,7 @@
 Production Configurations
 '''
 from .common import *  # noqa
+
 # SECRET KEY
 SECRET_KEY = env.str('DJANGO_SECRET_KEY')
 # END SECRET KEY

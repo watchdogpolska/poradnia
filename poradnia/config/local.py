@@ -7,6 +7,7 @@ Local Configurations
 - Use Django Debug Toolbar
 '''
 from .common import *  # noqa
+
 # DEBUG
 DEBUG = env('DEBUG', default=True)
 TEMPLATE_DEBUG = DEBUG
