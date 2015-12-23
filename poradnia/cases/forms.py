@@ -34,7 +34,7 @@ class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, 
     class Meta:
         # Set this form to use the User model.
         model = Case
-        fields = ("name", "status", "tags")
+        fields = ("name", "status")
 
 
 class CaseGroupPermissionForm(HelperMixin, forms.Form):

@@ -15,7 +15,6 @@ from guardian.shortcuts import assign_perm, get_users_with_perms
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
-from cases.tags.models import Tag
 from cases.utils import get_user_model
 from template_mail.utils import send_tpl_email
 
@@ -69,7 +68,6 @@ class Case(models.Model):
                      ('2', 'closed', _('closed'))
                      )
     name = models.CharField(max_length=150, verbose_name=_("Subject"))
-    tags = models.ManyToManyField(Tag, blank=True, verbose_name=_("Tags"))
     status = StatusField()
     status_changed = MonitorField(monitor='status')
     client = models.ForeignKey(

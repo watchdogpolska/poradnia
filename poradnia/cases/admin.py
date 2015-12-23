@@ -18,7 +18,6 @@ class RecordInline(admin.StackedInline):
 class CaseAdmin(GuardedModelAdmin):
     inlines = [RecordInline]
     list_display = ['name', 'client', 'record_count']
-    list_filter = ['tags', ]
 
     def record_count(self, obj):
         return obj.record_count

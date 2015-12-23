@@ -55,7 +55,6 @@ LOCAL_APPS = (
     'users',  # custom users app
     'keys',
     'cases',
-    'cases.tags',
     'letters',
     'records',
     'events',
