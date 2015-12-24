@@ -14,7 +14,7 @@ ALLOWED_HOSTS = ["*"]
 # END SITE CONFIGURATION
 
 # EMAIL
-EMAIL_BACKEND = env.email_url(default='consolemail://')
+EMAIL_BACKEND = env.str('DJANGO_EMAIL_BACKEND')
 DEFAULT_FROM_EMAIL = env.str('DJANGO_DEFAULT_FROM_EMAIL',
                              'poradnia <noreply@porady.siecobywatelska.pl>')
 EMAIL_HOST = env.str('DJANGO_EMAIL_HOST')
