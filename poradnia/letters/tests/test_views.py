@@ -9,6 +9,8 @@ from letters.factories import LetterFactory
 from letters.models import Letter
 from users.factories import UserFactory
 
+from .compat import refresh_from_db
+
 
 class CaseMixin(object):
     def _add_random_user(self, case, staff=False):
@@ -291,12 +293,12 @@ class ProjectAddLetterTestCase(CaseMixin, TestCase):
 
     def test_save_non_staff(self):
         self.resp_user(staff=False, save='Yes')
-        self.case.refresh_from_db()
+        self.case = refresh_from_db(self.case)
         self.assertEqual(self.case.has_project, False)
 
     def test_project_voluntier(self):
         self.resp_user(staff=True, can_send_to_client=True, project='Hell yeah!')
-        self.case.refresh_from_db()
+        self.case = refresh_from_db(self.case)
         self.assertEqual(self.case.has_project, True)
 
 
@@ -351,5 +353,5 @@ class SendLetterTestCase(CaseMixin, TestCase):
         self.object.case.has_project = True
         self.object.case.save()
         self._test_send()
-        self.object.case.refresh_from_db()
+        self.object.case = refresh_from_db(self.object.case)
         self.assertEqual(self.object.case.has_project, False)
