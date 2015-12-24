@@ -11,9 +11,4 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
-            model_name='case',
-            name='tags',
-            field=models.ManyToManyField(to='tags.Tag', verbose_name='Tags', blank=True),
-        ),
     ]
