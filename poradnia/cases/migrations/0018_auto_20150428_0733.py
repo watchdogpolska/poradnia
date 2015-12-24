@@ -76,10 +76,4 @@ class Migration(migrations.Migration):
             field=models.CharField(max_length=150, verbose_name='Subject'),
             preserve_default=True,
         ),
-        migrations.AlterField(
-            model_name='case',
-            name='tags',
-            field=models.ManyToManyField(to='tags.Tag', null=True, verbose_name='Tags', blank=True),
-            preserve_default=True,
-        ),
     ]
