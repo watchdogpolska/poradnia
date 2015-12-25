@@ -63,6 +63,8 @@ class CaseQuerySet(QuerySet):
 
 
 class Case(models.Model):
+    STAFF_ORDER_DEFAULT_FIELD = 'last_action'
+    USER_ORDER_DEFAULT_FIELD = 'last_send'
     STATUS = Choices(('0', 'free', _('free')),
                      ('1', 'assigned', _('assigned')),
                      ('2', 'closed', _('closed'))
@@ -228,6 +230,38 @@ class Case(models.Model):
                         target=target,
                         from_email=self.get_email(),
                         **context)
+
+    def get_next_for_user(self, user, **kwargs):
+        return self.get_next_or_prev_for_user(is_next=True, user=user)
+
+    def get_prev_for_user(self, user, **kwargs):
+        return self.get_next_or_prev_for_user(is_next=False, user=user)
+
+    def get_next_or_prev_for_user(self, is_next, user, **kwargs):
+
+        op = 'gt' if is_next else 'lt'
+        order = '' if is_next else '-'
+        if user.is_staff:
+            field_name = self.STAFF_ORDER_DEFAULT_FIELD
+        else:
+            field_name = self.USER_ORDER_DEFAULT_FIELD
+        param = getattr(self, field_name)
+        q = Q()
+        if param:
+            q = q | Q(**{'%s__%s' % (field_name, op): param})
+        if self.pk:
+            q = q | Q(**{field_name: param, 'pk__%s' % op: self.pk})
+        manager = self.__class__._default_manager.using(self._state.db).filter(**kwargs)
+        qs = manager.filter(q).order_by(
+            '%s%s' % (order, field_name), '%spk' % order
+        )
+        qs = qs.for_user(user)
+
+        try:
+            return qs[0]
+        except IndexError:
+            raise self.DoesNotExist("%s matching query does not exist." %
+                                    self.__class__._meta.object_name)
 
 
 class CaseUserObjectPermission(UserObjectPermissionBase):

@@ -28,27 +28,42 @@ class CaseDetailView(LoginRequiredMixin, TemplateView):  # TODO: Use django.view
               select_related('modified_by').
               select_related('advice').
               select_related('deadline'))
-        case = get_object_or_404(qs, pk=self.kwargs['pk'])
-        case.view_perm_check(self.request.user)
+        self.object = get_object_or_404(qs, pk=self.kwargs['pk'])
+        self.object.view_perm_check(self.request.user)
 
         # Readed.update(user=request.user, case=case)
 
-        context['object'] = case
+        context['object'] = self.object
         context['forms'] = {}
         context['forms']['letter'] = {'title': _('Letter'),
-                                      'form': AddLetterForm(user=self.request.user, case=case),
+                                      'form': AddLetterForm(user=self.request.user,
+                                                            case=self.object),
                                       'formset': AttachmentFormSet(instance=None)}
         if self.request.user.is_staff:
             context['forms']['event'] = {'title': _('Event'),
-                                         'form': EventForm(user=self.request.user, case=case)}
-
-        qs = (Record.objects.filter(case=case).for_user(self.request.user).
+                                         'form': EventForm(user=self.request.user,
+                                                           case=self.object)}
+        qs = (Record.objects.filter(case=self.object).for_user(self.request.user).
               select_related('letter__created_by', 'letter', 'letter__modified_by').
               select_related('event__created_by', 'event', 'event__modified_by').
               select_related('event__alarm').
               prefetch_related('letter__attachment_set'))
         context['record_list'] = qs.all()
-        context['casegroup_form'] = CaseGroupPermissionForm(case=case, user=self.request.user)
+        context['casegroup_form'] = CaseGroupPermissionForm(case=self.object,
+                                                            user=self.request.user)
+
+        # Get next or prev objects
+        try:
+            context['next'] = self.object.get_next_for_user(self.request.user)
+        except Case.DoesNotExist:
+            context['next'] = None
+
+        # Get next or prev objects
+        try:
+            context['previous'] = self.object.get_prev_for_user(self.request.user)
+        except Case.DoesNotExist:
+            context['previous'] = None
+
         return context
 
 

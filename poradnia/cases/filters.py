@@ -48,7 +48,7 @@ class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterS
 
     def get_order_by(self, order_choice):
         if order_choice == 'default':
-            return ['-last_action', ]
+            return ['-%s' % (self._meta.model.STAFF_ORDER_DEFAULT_FIELD)]
         return super(StaffCaseFilter, self).get_order_by(order_choice)
 
     class Meta:
@@ -84,5 +84,5 @@ class UserCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSe
 
     def get_order_by(self, order_choice):
         if order_choice == 'default':
-            return ['-last_send']
+            return ['-%s' % (self._meta.model.USER_ORDER_DEFAULT_FIELD)]
         return [order_choice]
