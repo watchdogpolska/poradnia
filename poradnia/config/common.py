@@ -316,3 +316,5 @@ FEEDBACK_GITHUB_REPO = 'https://github.com/watchdogpolska/poradnia'
 DJANGO_MAILBOX_STORE_ORIGINAL_MESSAGE = True
 
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
+EMAIL_BACKEND = env.str('DJANGO_EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')

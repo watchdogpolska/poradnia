@@ -11,9 +11,7 @@ from .models import Case
 class NullDateRangeFilter(django_filters.DateRangeFilter):
 
     def __init__(self, none_label=None, *args, **kwargs):
-        if not none_label:
-            none_label = _('None')
-        self.options[6] = (none_label,
+        self.options[6] = (none_label or _('None'),
                            lambda qs, name: qs.filter(**{"%s__isnull" % name: True})
                            )
         super(NullDateRangeFilter, self).__init__(*args, **kwargs)
