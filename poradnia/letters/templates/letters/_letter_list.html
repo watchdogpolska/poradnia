@@ -4,6 +4,15 @@
     <div class="panel {{ object.created_by.is_staff|yesno:'panel-primary,panel-default' }}  timeline-comment">
         <div class="panel-heading"><i class="fa fa-envelope"></i> <i class="fa fa-reply{% if object.status == 'done'%}-all{% endif %}"></i> {{object}}</div>
         <div class="panel-body">
+            {% if request.user.is_staff %}
+            <div class="panel-status">
+            {% if object.status == 'done'%}
+                {% trans 'Everybody' %}
+            {% else %}
+                {% trans 'Staff' %}
+            {% endif %}
+            </div>
+            {% endif %}
             <p>{{object.text|linebreaks}}</p>
             {% if object.signature %}
             <blockquote>{{object.signature | linebreaks}}</blockquote>

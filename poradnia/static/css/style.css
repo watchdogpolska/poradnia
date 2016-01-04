@@ -10431,4 +10431,15 @@ table.month li.deadline {
   margin-bottom: 10px;
 }
 
+.panel-body {
+  position: relative;
+}
+
+.panel-status {
+  position: absolute;
+  right: 15px;
+  top: 15px;
+  opacity: 0.5;
+}
+
 
