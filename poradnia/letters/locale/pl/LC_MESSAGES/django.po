@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-23 18:10+0100\n"
-"PO-Revision-Date: 2015-12-23 18:10+0100\n"
+"POT-Creation-Date: 2016-01-04 03:57+0100\n"
+"PO-Revision-Date: 2016-01-04 03:58+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -84,7 +84,7 @@ msgstr "Odpowiedź"
 msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
-#: models.py:51
+#: models.py:51 templates/letters/_letter_list.html:12
 msgid "Staff"
 msgstr "Zespół"
 
@@ -152,7 +152,11 @@ msgstr "dodaj kolejne"
 msgid "Cases"
 msgstr "Sprawy"
 
-#: templates/letters/_letter_list.html:24
+#: templates/letters/_letter_list.html:10
+msgid "Everybody"
+msgstr "Wszyscy"
+
+#: templates/letters/_letter_list.html:33
 #, python-format
 msgid ""
 "\n"
@@ -165,12 +169,12 @@ msgstr ""
 "\"%(modified_on)s\">%(modified_on_natural)s</time> przez %(modified_by)s)\n"
 "            "
 
-#: templates/letters/_letter_list.html:31 templates/letters/form_edit.html:6
+#: templates/letters/_letter_list.html:40 templates/letters/form_edit.html:6
 #: views/cbv.py:43
 msgid "Edit"
 msgstr "Edytuj"
 
-#: templates/letters/_letter_list.html:37 templates/letters/form_send.html:7
+#: templates/letters/_letter_list.html:46 templates/letters/form_send.html:7
 msgid "Send"
 msgstr "Wyślij"
 
