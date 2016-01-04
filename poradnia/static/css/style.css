@@ -10442,4 +10442,9 @@ table.month li.deadline {
   opacity: 0.5;
 }
 
+.label {
+  margin-right: 2px;
+  margin-left: 2px;
+}
+
 
