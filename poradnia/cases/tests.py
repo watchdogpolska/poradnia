@@ -6,7 +6,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
-from django.utils.timezone import utc
+from django.utils.timezone import now
 from guardian.shortcuts import assign_perm
 
 from cases.admin import CaseAdmin
@@ -29,10 +29,10 @@ class CaseQuerySetTestCase(TestCase):
         assign_perm('cases.can_view_all', self.user)
         self.assertTrue(Case.objects.for_user(self.user).filter(pk=CaseFactory().pk).exists())
 
-    def test_for_user_can_view_client(self): # perm set by signal
+    def test_for_user_can_view_client(self):  # perm set by signal
         self.assertTrue(Case.objects.for_user(self.user).filter(pk=CaseFactory(created_by=self.user).pk).exists())
 
-    def test_for_user_can_view_created(self): # perm set by signal
+    def test_for_user_can_view_created(self):  # perm set by signal
         self.assertTrue(Case.objects.for_user(self.user).filter(pk=CaseFactory(client=self.user).pk).exists())
 
     def test_with_perm(self):
@@ -54,6 +54,27 @@ class CaseQuerySetTestCase(TestCase):
     def test_by_msg(self):
         # TODO
         self.assertTrue(True)
+
+    def test_order_for_user(self):
+        a = repr(CaseFactory(name="CaseA",
+                             last_action=now()+timedelta(days=0),
+                             last_send=now()+timedelta(days=+1)))
+        b = repr(CaseFactory(name="CaseB",
+                             last_action=now()+timedelta(days=+2),
+                             last_send=now()+timedelta(days=-1)))
+        c = repr(CaseFactory(name="CaseC",
+                             last_action=now()+timedelta(days=-1),
+                             last_send=now()+timedelta(days=+3)))
+        user = UserFactory(is_staff=True)
+        self.assertQuerysetEqual(Case.objects.order_for_user(user, True).all(),
+                                 [c, a, b])
+        self.assertQuerysetEqual(Case.objects.order_for_user(user, False).all(),
+                                 [b, a, c])
+        user = UserFactory(is_staff=False)
+        self.assertQuerysetEqual(Case.objects.order_for_user(user, True).all(),
+                                 [b, a, c])
+        self.assertQuerysetEqual(Case.objects.order_for_user(user, False).all(),
+                                 [c, a, b])
 
 
 class CaseTestCase(TestCase):

@@ -61,6 +61,16 @@ class CaseQuerySet(QuerySet):
             return self.none()
         return self.filter(cond)
 
+    def order_for_user(self, user, is_next):
+        order = '' if is_next else '-'
+        if user.is_staff:
+            field_name = self.model.STAFF_ORDER_DEFAULT_FIELD
+        else:
+            field_name = self.model.USER_ORDER_DEFAULT_FIELD
+        return self.order_by(
+            '%s%s' % (order, field_name), '%spk' % order
+        )
+
 
 class Case(models.Model):
     STAFF_ORDER_DEFAULT_FIELD = 'last_action'
@@ -238,9 +248,7 @@ class Case(models.Model):
         return self.get_next_or_prev_for_user(is_next=False, user=user)
 
     def get_next_or_prev_for_user(self, is_next, user, **kwargs):
-
         op = 'gt' if is_next else 'lt'
-        order = '' if is_next else '-'
         if user.is_staff:
             field_name = self.STAFF_ORDER_DEFAULT_FIELD
         else:
@@ -252,9 +260,8 @@ class Case(models.Model):
         if self.pk:
             q = q | Q(**{field_name: param, 'pk__%s' % op: self.pk})
         manager = self.__class__._default_manager.using(self._state.db).filter(**kwargs)
-        qs = manager.filter(q).order_by(
-            '%s%s' % (order, field_name), '%spk' % order
-        )
+        qs = manager.filter(q)
+        qs = qs.order_for_user(user=user, is_next=is_next)
         qs = qs.for_user(user)
 
         try:
