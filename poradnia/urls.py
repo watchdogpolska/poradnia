@@ -17,6 +17,7 @@ urlpatterns = patterns('',
         TemplateView.as_view(template_name='pages/home.html'),
         name="home"),
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^navsearch/', include('navsearch.urls', namespace="navsearch")),
 
     # User management
     url(r'^uzytkownik/klucze', include('keys.urls', namespace="keys")),

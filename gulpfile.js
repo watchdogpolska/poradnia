@@ -49,6 +49,7 @@ var config = (function () {
                 path.bower + '/jquery/dist/jquery.js',
                 path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
                 path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
+                path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/modal.js',
                 path.bower + '/moment/moment.js',
                 path.bower + '/moment/locale/pl.js',
                 path.bower + '/pikaday-time/pikaday.js',

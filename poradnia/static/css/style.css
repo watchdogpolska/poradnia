@@ -8981,4 +8981,8 @@ table.month li.deadline {
   margin-left: 2px;
 }
 
+#navigation_autocomplete {
+  width: 100%;
+}
+
 

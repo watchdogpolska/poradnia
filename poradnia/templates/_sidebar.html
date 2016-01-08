@@ -1,32 +1,24 @@
-{%load i18n%}
+{%load i18n %}
 <div class="sidebar-header">
-	<a href="{% url 'home' %}">
-		<div class="logo"></div>
-		<p>Poradnia</p>
-	</a>
-	<p><a href="http://siecobywatelska.pl">Sieci Watchdog</a></p>
+    <a href="{% url 'home' %}">
+        <div class="logo"></div>
+        <p>Poradnia</p>
+    </a>
+    <p><a href="http://siecobywatelska.pl">Sieci Watchdog</a></p>
 </div>
-{% comment %}
-<div class="stats">
-	<ul>
-		{# 		{% notifications_unread as unread_count%} #}
-		{% url 'notifications:all' as notification_all_url %}
-		<li><a href="{{notification_all_url}}"><div class="icon"><i class="fa fa-trophy"></i></div><div class="text">{{unread_count}}</div></a></li>
-		<li><a href=""><div class="icon"><i class="fa fa-envelope"></i></div><div class="text">2</div></a></li>
-	</ul>
-</div>
-{% endcomment %}
 <div class="block-list">
-	<ul class="block-list-list">
-		<li class="block-list-item">
-			<a href="/"><i class="fa fa-home"></i> Home</a>
-		</li>
-		{% if perms.tasty_feedback.view_feedback %}
-		<li class="block-list-item">
-			<a href="{% url 'tasty_feedback:list' %}"><i class="fa fa-comment"></i> {% trans 'Feedbacks' %}</a>
-		</li>
-		{% endif %}
-	</ul>
+    <ul class="block-list-list">
+        {% if request.user.is_authenticated %}
+        <li class="block-list-item">
+            <a href="#" data-toggle="modal" data-target="#navsearch_modal"><i class="fa fa-search"></i> Search</a>
+        </li>
+        {% endif %}
+        {% if perms.tasty_feedback.view_feedback %}
+        <li class="block-list-item">
+            <a href="{% url 'tasty_feedback:list' %}"><i class="fa fa-comment"></i> {% trans 'Feedbacks' %}</a>
+        </li>
+        {% endif %}
+    </ul>
 </div>
 {% include 'users/_sidebar.html' %}
 {% include 'advicer/_sidebar.html' %}

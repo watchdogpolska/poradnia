@@ -83,7 +83,12 @@
     {% tasty_feedback_widget %}
 
   </div>
-{% block modal %}{% endblock modal %}
+{% if user.is_authenticated %}
+    {% include '_modal.html' %}
+{% endif %}
+
+{% block modal %}
+{% endblock modal %}
 
 <!-- Le javascript
   ================================================== -->
@@ -95,6 +100,9 @@
   {% endif %}
   {% block javascript %}
   {% include 'autocomplete_light/static.html' %}
+  {% if user.is_authenticated %}
+      {% include 'navsearch/script.html' %}
+  {% endif %}
   <script src="{% static 'tasty_feedback/style.js' %}"></script>
   {% endblock javascript %}
 </body>

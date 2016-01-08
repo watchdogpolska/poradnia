@@ -1,0 +1,23 @@
+{% for object in cases_id %}
+<a class="div choice" href="{{object.get_absolute_url}}">
+    <i class="fa fa-bolt"></i> 
+    {{ object }}
+    <span class="badge">
+    # {{object.pk}}
+    </span>
+</a>
+{% endfor %}
+
+{% for object in cases %}
+<a class="div choice" href="{{object.get_absolute_url}}">
+    <i class="fa fa-book"></i>
+    {{ object }}
+</a>
+{% endfor %}
+
+{% for object in users %}
+<a class="div choice" href="{{object.get_absolute_url}}">
+    <i class="fa fa-user"></i> 
+    {{ object }}
+</a>
+{% endfor %}

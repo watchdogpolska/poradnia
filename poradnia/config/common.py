@@ -62,6 +62,7 @@ LOCAL_APPS = (
     'feedback_custom',
     'tasty_feedback',
     'bootstrap_pagination',
+    'navsearch'
     # Your stuff: custom apps go here
 )
 
