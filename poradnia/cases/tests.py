@@ -200,9 +200,9 @@ class StaffCaseFilterTestCase(TestCase):
     def test_form_fields(self):
         su_user = UserFactory(is_staff=True, is_superuser=True)
         self.assertEqual(StaffCaseFilter(user=su_user).form.fields.keys(),
-                         ['status', 'handled', 'client', 'name', 'permission', 'o'])
+                         ['status', 'handled', 'id', 'client', 'name', 'permission', 'o'])
         self.assertEqual(StaffCaseFilter(user=UserFactory(is_staff=True)).form.fields.keys(),
-                         ['status', 'handled', 'client', 'name', 'o'])
+                         ['status', 'handled', 'id', 'client', 'name', 'o'])
 
 
 class CaseListViewTestCase(TestCase):
