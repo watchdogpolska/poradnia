@@ -77,7 +77,6 @@ class UserCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSe
         order_by = (
             ('default', _('Default')),
             ('pk', _('ID')),
-            ('Client', _('Client')),
             ('created_on', _('Created on')),
             ('last_send', _('Last send')),
         )
