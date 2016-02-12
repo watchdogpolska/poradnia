@@ -10,9 +10,8 @@ env:
     - DATABASE_URL="mysql://root:@localhost/test_feder"
     - DJANGO_CONFIGURATION="Local"
   matrix:
-    - TOX_ENV=coverage-py27-dj17
     - TOX_ENV=flake8
-    - TOX_ENV=py27-dj18
+    - TOX_ENV=coverage-py27-dj18
     - TOX_ENV=py27-djmaster
     - TOX_ENV=py33-dj18
     - TOX_ENV=py33-djmaster
