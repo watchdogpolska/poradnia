@@ -37,11 +37,11 @@ urlpatterns = patterns('',
     url(r'^uwagi/', include('tasty_feedback.urls', namespace='tasty_feedback')),
 ) + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-if settings.DEBUG:
-    import debug_toolbar
-    urlpatterns += patterns('',
-                            url(r'^__debug__/', include(debug_toolbar.urls)),
-                            )
+#if settings.DEBUG:
+#    import debug_toolbar
+#    urlpatterns += patterns('',
+#        url(r'^__debug__/', include(debug_toolbar.urls)),
+#    )
 
 
 def handler500(request):
