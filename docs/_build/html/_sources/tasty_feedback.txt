@@ -1,8 +1,0 @@
-Cases
-======
-.. automodule:: tasty_feedback.models
-    :members:
-.. automodule:: tasty_feedback.views
-    :members:
-.. automodule:: tasty_feedback.forms
-    :members:

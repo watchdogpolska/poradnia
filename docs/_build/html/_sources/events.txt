@@ -1,8 +1,0 @@
-Cases
-======
-.. automodule:: events.models
-    :members:
-.. automodule:: events.views
-    :members:
-.. automodule:: events.forms
-    :members:

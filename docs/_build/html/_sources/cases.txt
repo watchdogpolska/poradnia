@@ -1,8 +1,0 @@
-Cases
-======
-.. automodule:: cases.models
-    :members:
-.. automodule:: cases.views
-    :members:
-.. automodule:: cases.forms
-    :members:

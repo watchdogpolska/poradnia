@@ -40,5 +40,4 @@ bower_components/
 
 # Upload's directory
 poradnia/media/
-
-
+docs/_build/

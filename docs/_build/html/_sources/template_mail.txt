@@ -1,8 +1,0 @@
-Cases
-======
-.. automodule:: template_mail.models
-    :members:
-.. automodule:: template_mail.views
-    :members:
-.. automodule:: template_mail.forms
-    :members:

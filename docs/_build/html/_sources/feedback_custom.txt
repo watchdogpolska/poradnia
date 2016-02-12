@@ -1,8 +1,0 @@
-Cases
-======
-.. automodule:: feedback_custom.models
-    :members:
-.. automodule:: feedback_custom.views
-    :members:
-.. automodule:: feedback_custom.forms
-    :members:
