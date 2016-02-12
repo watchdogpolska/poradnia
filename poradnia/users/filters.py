@@ -3,7 +3,7 @@ try:
 except:
     from urllib import urlencode  # noqa
 
-import autocomplete_light
+import autocomplete_light.shortcuts as autocomplete_light
 import django_filters
 from atom.filters import CrispyFilterMixin
 from django.contrib.auth import get_user_model

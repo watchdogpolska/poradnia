@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import autocomplete_light
+import autocomplete_light.shortcuts as autocomplete_light
 from atom.ext.crispy_forms.forms import FormHorizontalMixin, HelperMixin, SingleButtonMixin
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.layout import Submit

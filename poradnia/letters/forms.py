@@ -1,4 +1,4 @@
-import autocomplete_light
+import autocomplete_light.shortcuts as autocomplete_light
 from atom.ext.crispy_forms.forms import HelperMixin, SingleButtonMixin
 from atom.ext.tinycontent.forms import GIODOMixin
 from atom.forms import PartialMixin

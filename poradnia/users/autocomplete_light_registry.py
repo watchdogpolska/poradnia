@@ -1,6 +1,6 @@
 from __future__ import unicode_literals
 
-import autocomplete_light
+import autocomplete_light.shortcuts as autocomplete_light
 
 from users.utils import AutocompletePermissionMixin
 

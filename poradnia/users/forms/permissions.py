@@ -1,4 +1,4 @@
-import autocomplete_light
+import autocomplete_light.shortcuts as autocomplete_light
 from atom.ext.crispy_forms.forms import SingleButtonMixin
 from django import forms
 from django.contrib.auth import get_user_model
