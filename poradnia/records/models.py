@@ -32,15 +32,10 @@ class Record(models.Model):
     event = models.OneToOneField('events.Event', null=True, blank=True)
     alarm = models.OneToOneField('events.Alarm', null=True, blank=True)
 
-    content_type = models.ForeignKey(
-        ContentType,
-        null=True,
-        blank=True,
-    )
-    object_id = models.PositiveIntegerField(
-        null=True,
-    )
+    content_type = models.ForeignKey(ContentType, null=True, blank=True)
+    object_id = models.PositiveIntegerField(null=True)
     related_object = GenericForeignKey('content_type', 'object_id')
+
     objects = RecordQuerySet.as_manager()
 
     @property  # We use OneToOneField as possible
