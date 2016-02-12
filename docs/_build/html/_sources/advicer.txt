@@ -1,0 +1,10 @@
+Cases
+======
+.. automodule:: advicer.models
+    :members:
+
+.. automodule:: advicer.views
+    :members:
+
+.. automodule:: advicer.forms
+    :members:

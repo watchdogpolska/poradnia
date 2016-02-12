@@ -1,0 +1,160 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>advicer.views &mdash; Poradnia 0.1 - dokumentacja</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="top" title="Poradnia 0.1 - dokumentacja" href="../../index.html" />
+    <link rel="up" title="Kod modułu" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Kod źródłowy modułu advicer.views</h1><div class="highlight"><pre>
+
+<span class="kn">from</span> <span class="nn">atom.ext.crispy_forms.views</span> <span class="kn">import</span> <span class="n">FormSetMixin</span>
+<span class="kn">from</span> <span class="nn">atom.views</span> <span class="kn">import</span> <span class="n">ActionMessageMixin</span><span class="p">,</span> <span class="n">ActionView</span><span class="p">,</span> <span class="n">FormInitialMixin</span>
+<span class="kn">from</span> <span class="nn">braces.views</span> <span class="kn">import</span> <span class="p">(</span><span class="n">FormValidMessageMixin</span><span class="p">,</span> <span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">SelectRelatedMixin</span><span class="p">,</span>
+                          <span class="n">StaffuserRequiredMixin</span><span class="p">,</span> <span class="n">UserFormKwargsMixin</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse_lazy</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django.views.generic</span> <span class="kn">import</span> <span class="n">CreateView</span><span class="p">,</span> <span class="n">DetailView</span><span class="p">,</span> <span class="n">UpdateView</span>
+<span class="kn">from</span> <span class="nn">django_filters.views</span> <span class="kn">import</span> <span class="n">FilterView</span>
+
+<span class="kn">from</span> <span class="nn">users.utils</span> <span class="kn">import</span> <span class="n">PermissionMixin</span>
+
+<span class="kn">from</span> <span class="nn">.filters</span> <span class="kn">import</span> <span class="n">AdviceFilter</span>
+<span class="kn">from</span> <span class="nn">.forms</span> <span class="kn">import</span> <span class="n">AdviceForm</span><span class="p">,</span> <span class="n">AttachmentForm</span>
+<span class="kn">from</span> <span class="nn">.models</span> <span class="kn">import</span> <span class="n">Advice</span><span class="p">,</span> <span class="n">Attachment</span>
+
+<span class="n">ORDERING_TEXT</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;Ordering&quot;</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="VisibleMixin"><a class="viewcode-back" href="../../modules/advicer.html#advicer.views.VisibleMixin">[dokumenty]</a><span class="k">class</span> <span class="nc">VisibleMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+<div class="viewcode-block" id="VisibleMixin.get_queryset"><a class="viewcode-back" href="../../modules/advicer.html#advicer.views.VisibleMixin.get_queryset">[dokumenty]</a>    <span class="k">def</span> <span class="nf">get_queryset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="n">qs</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">VisibleMixin</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">get_queryset</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">qs</span><span class="o">.</span><span class="n">visible</span><span class="p">()</span></div></div>
+
+
+<div class="viewcode-block" id="AdviceList"><a class="viewcode-back" href="../../modules/advicer.html#advicer.views.AdviceList">[dokumenty]</a><span class="k">class</span> <span class="nc">AdviceList</span><span class="p">(</span><span class="n">StaffuserRequiredMixin</span><span class="p">,</span> <span class="n">PermissionMixin</span><span class="p">,</span> <span class="n">SelectRelatedMixin</span><span class="p">,</span> <span class="n">VisibleMixin</span><span class="p">,</span>
+                 <span class="n">FilterView</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Advice</span>
+    <span class="n">filterset_class</span> <span class="o">=</span> <span class="n">AdviceFilter</span>
+    <span class="n">select_related</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;person_kind&quot;</span><span class="p">,</span> <span class="s2">&quot;created_by&quot;</span><span class="p">,</span> <span class="s2">&quot;advicer&quot;</span><span class="p">,</span> <span class="s2">&quot;institution_kind&quot;</span><span class="p">]</span>
+    <span class="n">paginate_by</span> <span class="o">=</span> <span class="mi">25</span>
+    <span class="n">raise_exception</span> <span class="o">=</span> <span class="bp">True</span></div>
+
+
+<div class="viewcode-block" id="AdviceUpdate"><a class="viewcode-back" href="../../modules/advicer.html#advicer.views.AdviceUpdate">[dokumenty]</a><span class="k">class</span> <span class="nc">AdviceUpdate</span><span class="p">(</span><span class="n">StaffuserRequiredMixin</span><span class="p">,</span> <span class="n">FormSetMixin</span><span class="p">,</span> <span class="n">PermissionMixin</span><span class="p">,</span> <span class="n">FormValidMessageMixin</span><span class="p">,</span>
+                   <span class="n">UserFormKwargsMixin</span><span class="p">,</span> <span class="n">VisibleMixin</span><span class="p">,</span> <span class="n">UpdateView</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Advice</span>
+    <span class="n">form_class</span> <span class="o">=</span> <span class="n">AdviceForm</span>
+    <span class="n">inline_model</span> <span class="o">=</span> <span class="n">Attachment</span>
+    <span class="n">inline_form_cls</span> <span class="o">=</span> <span class="n">AttachmentForm</span>
+    <span class="n">raise_exception</span> <span class="o">=</span> <span class="bp">True</span>
+
+<div class="viewcode-block" id="AdviceUpdate.get_form_valid_message"><a class="viewcode-back" href="../../modules/advicer.html#advicer.views.AdviceUpdate.get_form_valid_message">[dokumenty]</a>    <span class="k">def</span> <span class="nf">get_form_valid_message</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;{0} updated!&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="AdviceUpdate.get_instance"><a class="viewcode-back" href="../../modules/advicer.html#advicer.views.AdviceUpdate.get_instance">[dokumenty]</a>    <span class="k">def</span> <span class="nf">get_instance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">object</span></div></div>
+
+
+<div class="viewcode-block" id="AdviceCreate"><a class="viewcode-back" href="../../modules/advicer.html#advicer.views.AdviceCreate">[dokumenty]</a><span class="k">class</span> <span class="nc">AdviceCreate</span><span class="p">(</span><span class="n">StaffuserRequiredMixin</span><span class="p">,</span> <span class="n">FormSetMixin</span><span class="p">,</span> <span class="n">FormInitialMixin</span><span class="p">,</span> <span class="n">UserFormKwargsMixin</span><span class="p">,</span>
+                   <span class="n">LoginRequiredMixin</span><span class="p">,</span> <span class="n">CreateView</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Advice</span>
+    <span class="n">form_class</span> <span class="o">=</span> <span class="n">AdviceForm</span>
+    <span class="n">inline_model</span> <span class="o">=</span> <span class="n">Attachment</span>
+    <span class="n">inline_form_cls</span> <span class="o">=</span> <span class="n">AttachmentForm</span>
+    <span class="n">raise_exception</span> <span class="o">=</span> <span class="bp">True</span></div>
+
+
+<div class="viewcode-block" id="AdviceDelete"><a class="viewcode-back" href="../../modules/advicer.html#advicer.views.AdviceDelete">[dokumenty]</a><span class="k">class</span> <span class="nc">AdviceDelete</span><span class="p">(</span><span class="n">StaffuserRequiredMixin</span><span class="p">,</span> <span class="n">PermissionMixin</span><span class="p">,</span> <span class="n">ActionView</span><span class="p">,</span> <span class="n">VisibleMixin</span><span class="p">,</span>
+                   <span class="n">ActionMessageMixin</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Advice</span>
+    <span class="n">success_url</span> <span class="o">=</span> <span class="n">reverse_lazy</span><span class="p">(</span><span class="s1">&#39;advicer:list&#39;</span><span class="p">)</span>
+    <span class="n">success_message</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s2">&quot;{subject} deleted!&quot;</span><span class="p">)</span>
+    <span class="n">template_name_suffix</span> <span class="o">=</span> <span class="s1">&#39;_confirm_delete&#39;</span>
+    <span class="n">raise_exception</span> <span class="o">=</span> <span class="bp">True</span>
+
+<div class="viewcode-block" id="AdviceDelete.action"><a class="viewcode-back" href="../../modules/advicer.html#advicer.views.AdviceDelete.action">[dokumenty]</a>    <span class="k">def</span> <span class="nf">action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">Advice</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">pk</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">object</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">visible</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span></div></div>
+
+
+<div class="viewcode-block" id="AdviceDetail"><a class="viewcode-back" href="../../modules/advicer.html#advicer.views.AdviceDetail">[dokumenty]</a><span class="k">class</span> <span class="nc">AdviceDetail</span><span class="p">(</span><span class="n">StaffuserRequiredMixin</span><span class="p">,</span> <span class="n">PermissionMixin</span><span class="p">,</span> <span class="n">VisibleMixin</span><span class="p">,</span> <span class="n">DetailView</span><span class="p">):</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">Advice</span>
+    <span class="n">raise_exception</span> <span class="o">=</span> <span class="bp">True</span></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Kod modułu</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Szybkie wyszukiwanie</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Szukaj" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Wprowadź szukany termin lub nazwę modułu, klasy lub funkcji.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Adam Dobrawy.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

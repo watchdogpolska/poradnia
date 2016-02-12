@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Case &mdash; Poradnia 0.1 - dokumentacja</title>
+    
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/translations.js"></script>
+    <link rel="top" title="Poradnia 0.1 - dokumentacja" href="../index.html" />
+    <link rel="prev" title="Cases" href="template_mail.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="case">
+<h1>Case<a class="headerlink" href="#case" title="Stały odnośnik do tego nagłówka">¶</a></h1>
+<div class="section" id="module-users.models">
+<span id="users"></span><h2>Users<a class="headerlink" href="#module-users.models" title="Stały odnośnik do tego nagłówka">¶</a></h2>
+<dl class="class">
+<dt id="users.models.Profile">
+<em class="property">class </em><code class="descclassname">users.models.</code><code class="descname">Profile</code><span class="sig-paren">(</span><em>user</em>, <em>description</em>, <em>www</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/users/models.html#Profile"><span class="viewcode-link">[źródło]</span></a><a class="headerlink" href="#users.models.Profile" title="Stały odnośnik do tej definicji">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parametry:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user_id</strong> (<em>OneToOneField</em>) &#8211; User</li>
+<li><strong>description</strong> (<em>TextField</em>) &#8211; Opis</li>
+<li><strong>www</strong> (<em>URLField</em>) &#8211; Strona domowa</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="class">
+<dt id="users.models.User">
+<em class="property">class </em><code class="descclassname">users.models.</code><code class="descname">User</code><span class="sig-paren">(</span><em>id</em>, <em>password</em>, <em>last_login</em>, <em>is_superuser</em>, <em>username</em>, <em>first_name</em>, <em>last_name</em>, <em>email</em>, <em>is_staff</em>, <em>is_active</em>, <em>date_joined</em>, <em>picture</em>, <em>codename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/users/models.html#User"><span class="viewcode-link">[źródło]</span></a><a class="headerlink" href="#users.models.User" title="Stały odnośnik do tej definicji">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parametry:</th><td class="field-body"><ul class="first last simple">
+<li><strong>id</strong> (<em>AutoField</em>) &#8211; Id</li>
+<li><strong>password</strong> (<em>CharField</em>) &#8211; Hasło</li>
+<li><strong>last_login</strong> (<em>DateTimeField</em>) &#8211; Data ostatniego logowania</li>
+<li><strong>is_superuser</strong> (<em>BooleanField</em>) &#8211; Oznacza, że ten użytkownik ma wszystkie uprawnienia bez jawnego przypisywania ich.</li>
+<li><strong>username</strong> (<em>CharField</em>) &#8211; Wymagane. 30 znaków lub mniej. Tylko litery, cyfry i znaki &#64;/./+/-/_.</li>
+<li><strong>first_name</strong> (<em>CharField</em>) &#8211; Imię</li>
+<li><strong>last_name</strong> (<em>CharField</em>) &#8211; Nazwisko</li>
+<li><strong>email</strong> (<em>EmailField</em>) &#8211; Adres email</li>
+<li><strong>is_staff</strong> (<em>BooleanField</em>) &#8211; Oznacza czy użytkownik może zalogować się do panelu admina.</li>
+<li><strong>is_active</strong> (<em>BooleanField</em>) &#8211; Oznacza czy użytkownika należy uważać za aktywnego. Odznacz to, zamiast usuwać konta.</li>
+<li><strong>date_joined</strong> (<em>DateTimeField</em>) &#8211; Data przyłączenia</li>
+<li><strong>picture</strong> (<em>ImageField</em>) &#8211; Avatar</li>
+<li><strong>codename</strong> (<em>CharField</em>) &#8211; Kryptonim</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+<div class="section" id="module-users.views">
+<span id="views"></span><h2>Views<a class="headerlink" href="#module-users.views" title="Stały odnośnik do tego nagłówka">¶</a></h2>
+</div>
+<div class="section" id="module-users.forms">
+<span id="forms"></span><h2>Forms<a class="headerlink" href="#module-users.forms" title="Stały odnośnik do tego nagłówka">¶</a></h2>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="../index.html">Spis treści</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Case</a><ul>
+<li><a class="reference internal" href="#module-users.models">Users</a></li>
+<li><a class="reference internal" href="#module-users.views">Views</a></li>
+<li><a class="reference internal" href="#module-users.forms">Forms</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="template_mail.html" title="poprzedni rozdział">Cases</a></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>Ta strona</h3>
+    <ul class="this-page-menu">
+      <li><a href="../_sources/modules/users.txt"
+            rel="nofollow">Pokaż źródło</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Szybkie wyszukiwanie</h3>
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Szukaj" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Wprowadź szukany termin lub nazwę modułu, klasy lub funkcji.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+      |
+      <a href="../_sources/modules/users.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>

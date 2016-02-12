@@ -1,0 +1,8 @@
+Cases
+======
+.. automodule:: records.models
+    :members:
+.. automodule:: records.views
+    :members:
+.. automodule:: records.forms
+    :members:

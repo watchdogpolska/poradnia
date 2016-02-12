@@ -1,0 +1,8 @@
+Cases
+======
+.. automodule:: navsearch.models
+    :members:
+.. automodule:: navsearch.views
+    :members:
+.. automodule:: navsearch.forms
+    :members:

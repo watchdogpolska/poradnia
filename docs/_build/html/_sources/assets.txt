@@ -1,0 +1,8 @@
+Cases
+======
+.. automodule:: assets.models
+    :members:
+.. automodule:: assets.views
+    :members:
+.. automodule:: assets.forms
+    :members:

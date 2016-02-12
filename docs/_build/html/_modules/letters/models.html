@@ -1,0 +1,304 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>letters.models &mdash; Poradnia 0.1 - dokumentacja</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="top" title="Poradnia 0.1 - dokumentacja" href="../../index.html" />
+    <link rel="up" title="Kod modułu" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Kod źródłowy modułu letters.models</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">print_function</span><span class="p">,</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="kn">import</span> <span class="nn">claw</span>
+<span class="kn">import</span> <span class="nn">html2text</span>
+<span class="kn">from</span> <span class="nn">atom.models</span> <span class="kn">import</span> <span class="n">AttachmentBase</span>
+<span class="kn">from</span> <span class="nn">claw</span> <span class="kn">import</span> <span class="n">quotations</span>
+<span class="kn">from</span> <span class="nn">django.conf</span> <span class="kn">import</span> <span class="n">settings</span>
+<span class="kn">from</span> <span class="nn">django.contrib.auth</span> <span class="kn">import</span> <span class="n">get_user_model</span>
+<span class="kn">from</span> <span class="nn">django.core.files</span> <span class="kn">import</span> <span class="n">File</span>
+<span class="kn">from</span> <span class="nn">django.core.urlresolvers</span> <span class="kn">import</span> <span class="n">reverse</span>
+<span class="kn">from</span> <span class="nn">django.db</span> <span class="kn">import</span> <span class="n">models</span>
+<span class="kn">from</span> <span class="nn">django.db.models.signals</span> <span class="kn">import</span> <span class="n">post_save</span>
+<span class="kn">from</span> <span class="nn">django.dispatch</span> <span class="kn">import</span> <span class="n">receiver</span>
+<span class="kn">from</span> <span class="nn">django.utils.translation</span> <span class="kn">import</span> <span class="n">ugettext_lazy</span> <span class="k">as</span> <span class="n">_</span>
+<span class="kn">from</span> <span class="nn">django_mailbox.models</span> <span class="kn">import</span> <span class="n">Message</span>
+<span class="kn">from</span> <span class="nn">django_mailbox.signals</span> <span class="kn">import</span> <span class="n">message_received</span>
+<span class="kn">from</span> <span class="nn">model_utils</span> <span class="kn">import</span> <span class="n">Choices</span>
+<span class="kn">from</span> <span class="nn">model_utils.fields</span> <span class="kn">import</span> <span class="n">MonitorField</span><span class="p">,</span> <span class="n">StatusField</span>
+
+<span class="kn">from</span> <span class="nn">cases.models</span> <span class="kn">import</span> <span class="n">Case</span>
+<span class="kn">from</span> <span class="nn">records.models</span> <span class="kn">import</span> <span class="n">AbstractRecord</span><span class="p">,</span> <span class="n">AbstractRecordQuerySet</span>
+<span class="kn">from</span> <span class="nn">template_mail.utils</span> <span class="kn">import</span> <span class="n">send_tpl_email</span>
+
+<span class="n">claw</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+
+
+<span class="k">class</span> <span class="nc">LetterQuerySet</span><span class="p">(</span><span class="n">AbstractRecordQuerySet</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">for_user</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
+        <span class="n">qs</span> <span class="o">=</span> <span class="nb">super</span><span class="p">(</span><span class="n">LetterQuerySet</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">for_user</span><span class="p">(</span><span class="n">user</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_staff</span><span class="p">:</span>
+            <span class="n">qs</span> <span class="o">=</span> <span class="n">qs</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="n">Letter</span><span class="o">.</span><span class="n">STATUS</span><span class="o">.</span><span class="n">done</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">qs</span>
+
+    <span class="k">def</span> <span class="nf">last_staff_send</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">status</span><span class="o">=</span><span class="s1">&#39;done&#39;</span><span class="p">,</span> <span class="n">created_by__is_staff</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span>
+                <span class="s1">&#39;-created_on&#39;</span><span class="p">,</span> <span class="s1">&#39;-id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">last_received</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">created_by__is_staff</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created_on&#39;</span><span class="p">,</span> <span class="s1">&#39;-id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">last</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">order_by</span><span class="p">(</span><span class="s1">&#39;-created_on&#39;</span><span class="p">,</span> <span class="s1">&#39;-id&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">case</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">case</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">record__case</span><span class="o">=</span><span class="n">case</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="Letter"><a class="viewcode-back" href="../../modules/letters.html#letters.models.Letter">[dokumenty]</a><span class="k">class</span> <span class="nc">Letter</span><span class="p">(</span><span class="n">AbstractRecord</span><span class="p">):</span>
+    <span class="n">STATUS</span> <span class="o">=</span> <span class="n">Choices</span><span class="p">((</span><span class="s1">&#39;staff&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Staff&#39;</span><span class="p">)),</span> <span class="p">(</span><span class="s1">&#39;done&#39;</span><span class="p">,</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Done&#39;</span><span class="p">)))</span>
+    <span class="n">GENRE</span> <span class="o">=</span> <span class="n">Choices</span><span class="p">(</span><span class="s1">&#39;mail&#39;</span><span class="p">,</span> <span class="s1">&#39;comment&#39;</span><span class="p">)</span>
+    <span class="n">genre</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">choices</span><span class="o">=</span><span class="n">GENRE</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">GENRE</span><span class="o">.</span><span class="n">comment</span><span class="p">,</span> <span class="n">max_length</span><span class="o">=</span><span class="mi">20</span><span class="p">)</span>
+    <span class="n">status</span> <span class="o">=</span> <span class="n">StatusField</span><span class="p">(</span><span class="n">db_index</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">status_changed</span> <span class="o">=</span> <span class="n">MonitorField</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;status&#39;</span><span class="p">)</span>
+    <span class="n">accept</span> <span class="o">=</span> <span class="n">MonitorField</span><span class="p">(</span><span class="n">monitor</span><span class="o">=</span><span class="s1">&#39;status&#39;</span><span class="p">,</span> <span class="n">when</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;done&#39;</span><span class="p">],</span> <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Accepted on&quot;</span><span class="p">))</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">CharField</span><span class="p">(</span><span class="n">max_length</span><span class="o">=</span><span class="mi">250</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Subject&quot;</span><span class="p">))</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Text&quot;</span><span class="p">))</span>
+    <span class="n">signature</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">TextField</span><span class="p">(</span><span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Signature&quot;</span><span class="p">),</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">created_by</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span>
+        <span class="n">settings</span><span class="o">.</span><span class="n">AUTH_USER_MODEL</span><span class="p">,</span> <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;letter_created_by&#39;</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Created by&quot;</span><span class="p">))</span>
+    <span class="n">created_on</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span><span class="n">auto_now_add</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Created on&quot;</span><span class="p">))</span>
+    <span class="n">modified_by</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">settings</span><span class="o">.</span><span class="n">AUTH_USER_MODEL</span><span class="p">,</span>
+                                    <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Modified by&quot;</span><span class="p">),</span>
+                                    <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+                                    <span class="n">related_name</span><span class="o">=</span><span class="s1">&#39;letter_modified_by&#39;</span><span class="p">)</span>
+    <span class="n">modified_on</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">DateTimeField</span><span class="p">(</span>
+        <span class="n">auto_now</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">verbose_name</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s2">&quot;Modified on&quot;</span><span class="p">))</span>
+    <span class="n">message</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Message</span><span class="p">,</span> <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">blank</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">eml</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">FileField</span><span class="p">(</span>
+        <span class="n">_</span><span class="p">(</span><span class="s1">u&#39;Raw message contents&#39;</span><span class="p">),</span>
+        <span class="n">null</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">upload_to</span><span class="o">=</span><span class="s2">&quot;messages&quot;</span><span class="p">,</span>
+        <span class="n">help_text</span><span class="o">=</span><span class="n">_</span><span class="p">(</span><span class="s1">u&#39;Original full content of message&#39;</span><span class="p">)</span>
+    <span class="p">)</span>
+
+    <span class="n">objects</span> <span class="o">=</span> <span class="n">LetterQuerySet</span><span class="o">.</span><span class="n">as_manager</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">__unicode__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">get_users</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">force_all</span><span class="o">=</span><span class="bp">False</span><span class="p">):</span>
+        <span class="n">users_to_notify</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_users_with_perms</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">STATUS</span><span class="o">.</span><span class="n">staff</span> <span class="ow">or</span> <span class="n">force_all</span><span class="p">:</span>
+            <span class="n">users_to_notify</span> <span class="o">=</span> <span class="n">users_to_notify</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="n">is_staff</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">users_to_notify</span>
+
+    <span class="k">def</span> <span class="nf">get_absolute_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">case_url</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">record</span><span class="o">.</span><span class="n">case_get_absolute_url</span><span class="p">()</span>
+        <span class="k">return</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">#letter-</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">case_url</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">is_done</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">(</span><span class="bp">True</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="bp">self</span><span class="o">.</span><span class="n">STATUS</span><span class="o">.</span><span class="n">done</span> <span class="k">else</span> <span class="bp">False</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">get_edit_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;letters:edit&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;pk&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">get_send_url</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">reverse</span><span class="p">(</span><span class="s1">&#39;letters:send&#39;</span><span class="p">,</span> <span class="n">kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;pk&#39;</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">pk</span><span class="p">})</span>
+
+    <span class="k">def</span> <span class="nf">set_new_case</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">case</span> <span class="o">=</span> <span class="n">Case</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">create</span><span class="p">(</span><span class="n">subject</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                                        <span class="n">created_by</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">created_by</span><span class="p">,</span>
+                                        <span class="n">client</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">client</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">send_notification</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">staff</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">status</span> <span class="ow">is</span> <span class="n">Letter</span><span class="o">.</span><span class="n">STATUS</span><span class="o">.</span><span class="n">done</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;staff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">kwargs</span><span class="p">[</span><span class="s1">&#39;staff&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">Letter</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">send_notification</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">class</span> <span class="nc">Meta</span><span class="p">:</span>
+        <span class="n">verbose_name</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Letter&#39;</span><span class="p">)</span>
+        <span class="n">verbose_name_plural</span> <span class="o">=</span> <span class="n">_</span><span class="p">(</span><span class="s1">&#39;Letters&#39;</span><span class="p">)</span>
+        <span class="n">ordering</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;-created_on&#39;</span><span class="p">]</span></div>
+
+
+<div class="viewcode-block" id="Attachment"><a class="viewcode-back" href="../../modules/letters.html#letters.models.Attachment">[dokumenty]</a><span class="k">class</span> <span class="nc">Attachment</span><span class="p">(</span><span class="n">AttachmentBase</span><span class="p">):</span>
+    <span class="n">letter</span> <span class="o">=</span> <span class="n">models</span><span class="o">.</span><span class="n">ForeignKey</span><span class="p">(</span><span class="n">Letter</span><span class="p">)</span></div>
+
+
+<span class="nd">@receiver</span><span class="p">(</span><span class="n">message_received</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">mail_process</span><span class="p">(</span><span class="n">sender</span><span class="p">,</span> <span class="n">message</span><span class="p">,</span> <span class="o">**</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">print</span> <span class="p">(</span><span class="s2">&quot;I just recieved a messsage titled {title} &quot;</span> <span class="o">+</span>
+           <span class="s2">&quot;from a mailbox {mbox}&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">subject</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">),</span>
+                                          <span class="n">mbox</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">mailbox</span><span class="o">.</span><span class="n">name</span><span class="p">))</span>
+    <span class="c1"># new_user + poradnia@ =&gt; new_user @ new_user</span>
+    <span class="c1"># new_user + case =&gt; FAIL</span>
+    <span class="c1"># old_user + case =&gt; PASS</span>
+    <span class="c1"># many_case =&gt; FAIL</span>
+
+    <span class="c1"># Skip autoreply messages - see RFC3834</span>
+    <span class="k">if</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="s1">&#39;Auto-Submitted&#39;</span> <span class="ow">in</span> <span class="n">x</span> <span class="ow">and</span>
+            <span class="n">x</span><span class="p">[</span><span class="s1">&#39;Auto-Submitted&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="s1">&#39;auto-replied&#39;</span><span class="p">)(</span><span class="n">message</span><span class="o">.</span><span class="n">get_email_object</span><span class="p">()):</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Delete .eml from {email} as auto-replied&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">email</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">from_address</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+        <span class="n">message</span><span class="o">.</span><span class="n">eml</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">save</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Identify user</span>
+    <span class="n">user</span> <span class="o">=</span> <span class="n">get_user_model</span><span class="p">()</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get_by_email_or_create</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">from_address</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Identified user: &quot;</span><span class="p">,</span> <span class="n">user</span><span class="p">)</span>
+
+    <span class="c1"># Identify case</span>
+    <span class="k">try</span><span class="p">:</span>  <span class="c1"># TODO: Is it old case?</span>
+        <span class="n">case</span> <span class="o">=</span> <span class="n">Case</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">by_msg</span><span class="p">(</span><span class="n">message</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+    <span class="k">except</span> <span class="n">Case</span><span class="o">.</span><span class="n">MultipleObjectsReturned</span><span class="p">:</span>  <span class="c1"># How many cases?</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Multiple case spam&quot;</span><span class="p">)</span>
+        <span class="n">send_tpl_email</span><span class="p">(</span><span class="n">template_name</span><span class="o">=</span><span class="s1">&#39;case/email/case_many.txt&#39;</span><span class="p">,</span>
+                       <span class="n">recipient_list</span><span class="o">=</span><span class="p">[</span><span class="n">message</span><span class="o">.</span><span class="n">from_address</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span>
+                       <span class="n">context</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;subject&#39;</span><span class="p">:</span> <span class="n">message</span><span class="o">.</span><span class="n">subject</span><span class="p">})</span>
+        <span class="k">return</span>
+    <span class="k">except</span> <span class="n">Case</span><span class="o">.</span><span class="n">DoesNotExist</span><span class="p">:</span>
+        <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Case creating&quot;</span><span class="p">)</span>
+        <span class="n">case</span> <span class="o">=</span> <span class="n">Case</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span> <span class="n">created_by</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">client</span><span class="o">=</span><span class="n">user</span><span class="p">)</span>
+        <span class="n">case</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+        <span class="n">user</span><span class="o">.</span><span class="n">notify</span><span class="p">(</span><span class="n">actor</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">verb</span><span class="o">=</span><span class="s1">&#39;registered&#39;</span><span class="p">,</span> <span class="n">target</span><span class="o">=</span><span class="n">case</span><span class="p">,</span> <span class="n">from_email</span><span class="o">=</span><span class="n">case</span><span class="o">.</span><span class="n">get_email</span><span class="p">())</span>
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Case: &quot;</span><span class="p">,</span> <span class="n">case</span><span class="p">)</span>
+    <span class="c1"># Prepare text</span>
+    <span class="k">if</span> <span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">quotations</span><span class="o">.</span><span class="n">extract_from</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;text/plain&#39;</span><span class="p">)</span>
+        <span class="n">signature</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="n">html2text</span><span class="o">.</span><span class="n">html2text</span><span class="p">(</span><span class="n">quotations</span><span class="o">.</span><span class="n">extract_from</span><span class="p">(</span><span class="n">message</span><span class="o">.</span><span class="n">html</span><span class="p">,</span> <span class="s1">&#39;text/html&#39;</span><span class="p">))</span>
+        <span class="n">signature</span> <span class="o">=</span> <span class="n">message</span><span class="o">.</span><span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">text</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="c1"># Calculate letter status</span>
+    <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_staff</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">has_perm</span><span class="p">(</span><span class="s1">&#39;cases.can_send_to_client&#39;</span><span class="p">,</span> <span class="n">case</span><span class="p">):</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">Letter</span><span class="o">.</span><span class="n">STATUS</span><span class="o">.</span><span class="n">done</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">status</span> <span class="o">=</span> <span class="n">Letter</span><span class="o">.</span><span class="n">STATUS</span><span class="o">.</span><span class="n">staff</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">status</span> <span class="o">=</span> <span class="n">Letter</span><span class="o">.</span><span class="n">STATUS</span><span class="o">.</span><span class="n">done</span>
+
+    <span class="c1"># Update case status (re-open)</span>
+    <span class="n">case_updated</span> <span class="o">=</span> <span class="bp">False</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">user</span><span class="o">.</span><span class="n">is_staff</span> <span class="ow">and</span> <span class="n">case</span><span class="o">.</span><span class="n">status</span> <span class="o">==</span> <span class="n">Case</span><span class="o">.</span><span class="n">STATUS</span><span class="o">.</span><span class="n">closed</span><span class="p">:</span>
+        <span class="n">case</span><span class="o">.</span><span class="n">status_update</span><span class="p">(</span><span class="n">reopen</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">save</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+        <span class="n">case_updated</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_staff</span><span class="p">:</span>
+        <span class="n">case</span><span class="o">.</span><span class="n">handled</span> <span class="o">=</span> <span class="bp">True</span>
+        <span class="n">case_updated</span> <span class="o">=</span> <span class="bp">True</span>
+    <span class="k">if</span> <span class="n">user</span><span class="o">.</span><span class="n">is_staff</span> <span class="ow">and</span> <span class="n">status</span> <span class="o">==</span> <span class="n">Letter</span><span class="o">.</span><span class="n">STATUS</span><span class="o">.</span><span class="n">done</span><span class="p">:</span>
+        <span class="n">case</span><span class="o">.</span><span class="n">has_project</span> <span class="o">=</span> <span class="bp">False</span>
+        <span class="n">case_updated</span> <span class="o">=</span> <span class="bp">True</span>
+
+    <span class="k">if</span> <span class="n">case_updated</span><span class="p">:</span>
+        <span class="n">case</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="n">obj</span> <span class="o">=</span> <span class="n">Letter</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">subject</span><span class="p">,</span>
+                 <span class="n">created_by</span><span class="o">=</span><span class="n">user</span><span class="p">,</span>
+                 <span class="n">case</span><span class="o">=</span><span class="n">case</span><span class="p">,</span>
+                 <span class="n">status</span><span class="o">=</span><span class="n">status</span><span class="p">,</span>
+                 <span class="n">text</span><span class="o">=</span><span class="n">text</span><span class="p">,</span>
+                 <span class="n">message</span><span class="o">=</span><span class="n">message</span><span class="p">,</span>
+                 <span class="n">signature</span><span class="o">=</span><span class="n">signature</span><span class="p">,</span>
+                 <span class="n">eml</span><span class="o">=</span><span class="n">message</span><span class="o">.</span><span class="n">eml</span><span class="p">)</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
+
+    <span class="k">print</span><span class="p">(</span><span class="s2">&quot;Letter: &quot;</span><span class="p">,</span> <span class="n">obj</span><span class="p">)</span>
+    <span class="c1"># Convert attachments</span>
+    <span class="n">attachments</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">attachment</span> <span class="ow">in</span> <span class="n">message</span><span class="o">.</span><span class="n">attachments</span><span class="o">.</span><span class="n">all</span><span class="p">():</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="n">attachment</span><span class="o">.</span><span class="n">get_filename</span><span class="p">()</span> <span class="ow">or</span> <span class="s1">&#39;Unknown.bin&#39;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">name</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">70</span><span class="p">:</span>
+            <span class="n">name</span><span class="p">,</span> <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+            <span class="n">ext</span> <span class="o">=</span> <span class="n">ext</span><span class="p">[:</span><span class="mi">70</span><span class="p">]</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">[:</span><span class="mi">70</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">ext</span><span class="p">)]</span> <span class="o">+</span> <span class="n">ext</span>
+        <span class="n">att_file</span> <span class="o">=</span> <span class="n">File</span><span class="p">(</span><span class="n">attachment</span><span class="o">.</span><span class="n">document</span><span class="p">,</span> <span class="n">name</span><span class="p">)</span>
+        <span class="n">att</span> <span class="o">=</span> <span class="n">Attachment</span><span class="p">(</span><span class="n">letter</span><span class="o">=</span><span class="n">obj</span><span class="p">,</span> <span class="n">attachment</span><span class="o">=</span><span class="n">att_file</span><span class="p">)</span>
+        <span class="n">attachments</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">att</span><span class="p">)</span>
+    <span class="n">Attachment</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">bulk_create</span><span class="p">(</span><span class="n">attachments</span><span class="p">)</span>
+    <span class="n">case</span><span class="o">.</span><span class="n">update_counters</span><span class="p">()</span>
+    <span class="n">obj</span><span class="o">.</span><span class="n">send_notification</span><span class="p">(</span><span class="n">actor</span><span class="o">=</span><span class="n">user</span><span class="p">,</span> <span class="n">verb</span><span class="o">=</span><span class="s1">&#39;created&#39;</span><span class="p">)</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Kod modułu</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Szybkie wyszukiwanie</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Szukaj" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Wprowadź szukany termin lub nazwę modułu, klasy lub funkcji.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      
+      
+      
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

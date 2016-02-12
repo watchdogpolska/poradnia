@@ -1,0 +1,81 @@
+/home/adas/.virtualenvs/poradnia/local/lib/python2.7/site-packages/guardian/admin.py:118: RemovedInDjango110Warning: django.conf.urls.patterns() is deprecated and will be removed in Django 1.10. Update your urlpatterns to be a list of django.conf.urls.url() instances instead.
+  name='%s_%s_permissions_manage_group' % info),
+
+/home/adas/.virtualenvs/poradnia/local/lib/pyth<module 'feedback_custom.forms' from '/home/adas/Devel/poradnia/poradnia/feedback_custom/forms.pyc'>
+reading sources... [ 40%] modules/navsearch
+<module 'navsearch.models' from '/home/adas/Devel/poradnia/poradnia/navsearch/models.pyc'>
+<module 'navsearch.vie/home/adas/Devel/poradnia/docs/modules/feedback_custom.rst:2: WARNING: Title underline too short.
+
+Feedback_Custom
+======
+/home/adas/Devel/poradnia/docs/modules/feedback_custom.rst:3: WARNING: autodoc: failed to import module u'feedback_custom.models'; the following exception was raised:
+Traceback (most recent call last):
+  File "/home/adas/.virtualenvs/poradnia/local/lib/python2.7/site-packages/sphinx/ext/autodoc.py", line 385, in import_looking for now-outdated files... none found
+pickling environment... done
+checking consistency... done
+preparing documents... done
+writing output... [ 16%] index
+writing output... [ 33%] modules/feedback_custom
+writing output... [ 50%] modules/navsearch
+writing output... [ 66%] modules/notifications_custom
+writing output... [ 83%] modules/records
+writing output... [100%] modules/template_mail
+
+generating indices... genindex py-modindex
+highlighting module code... [ 11%] keys.models
+highlighting module code... [ 22%] cases.models
+highlighting module code... [ 33%] users.models
+highlighting module code... [ 44%] advicer.models
+highlighting module code... [ 55%] events.models
+highlighting module code... [ 66%] tinycontent.models
+highlighting module code... [ 77%] letters.models
+highlighting module code... [ 88%] tasty_feedback.models
+highlighting module code... [100%] records.models
+
+writing additional pages... search
+copying static files... done
+copying extra files... done
+dumping search index in English (code: en) ... done
+dumping object inventory... done
+build succeeded, 14 warnings.
+
+Build finished. The HTML pages are in _build/html.
+ING: autodoc: failed to import module u'notifications_custom.models'; the following exception was raised:
+Traceback (most recent call last):
+  File "/home/adas/.virtualenvs/poradnia/local/lib/python2.7/site-packages/sphinx/ext/autodoc.py", line 385, in import_object
+    __import__(self.modname)
+ImportError: No module named models
+/home/adas/Devel/poradnia/docs/modules/notifications_custom.rst:9: WARNING: autodoc: failed to import module u'notifications_custom.forms'; the following exception was raised:
+Traceback (most recent call last):
+  File "/home/adas/.virtualenvs/poradnia/local/lib/python2.7/site-packages/sphinx/ext/autodoc.py", line 385, in import_object
+    __import__(self.modname)
+ImportError: No module named forms
+/home/adas/Devel/poradnia/docs/modules/records.rst:2: WARNING: Title underline too short.
+
+Records
+======
+/home/adas/Devel/poradnia/docs/modules/records.rst:6: WARNING: autodoc: failed to import module u'records.views'; the following exception was raised:
+Traceback (most recent call last):
+  File "/home/adas/.virtualenvs/poradnia/local/lib/python2.7/site-packages/sphinx/ext/autodoc.py", line 385, in import_object
+    __import__(self.modname)
+ImportError: No module named views
+/home/adas/Devel/poradnia/docs/modules/records.rst:9: WARNING: autodoc: failed to import module u'records.forms'; the following exception was raised:
+Traceback (most recent call last):
+  File "/home/adas/.virtualenvs/poradnia/local/lib/python2.7/site-packages/sphinx/ext/autodoc.py", line 385, in import_object
+    __import__(self.modname)
+ImportError: No module named forms
+/home/adas/Devel/poradnia/docs/modules/template_mail.rst:3: WARNING: autodoc: failed to import module u'template_mail.models'; the following exception was raised:
+Traceback (most recent call last):
+  File "/home/adas/.virtualenvs/poradnia/local/lib/python2.7/site-packages/sphinx/ext/autodoc.py", line 385, in import_object
+    __import__(self.modname)
+ImportError: No module named models
+/home/adas/Devel/poradnia/docs/modules/template_mail.rst:6: WARNING: autodoc: failed to import module u'template_mail.views'; the following exception was raised:
+Traceback (most recent call last):
+  File "/home/adas/.virtualenvs/poradnia/local/lib/python2.7/site-packages/sphinx/ext/autodoc.py", line 385, in import_object
+    __import__(self.modname)
+ImportError: No module named views
+/home/adas/Devel/poradnia/docs/modules/template_mail.rst:9: WARNING: autodoc: failed to import module u'template_mail.forms'; the following exception was raised:
+Traceback (most recent call last):
+  File "/home/adas/.virtualenvs/poradnia/local/lib/python2.7/site-packages/sphinx/ext/autodoc.py", line 385, in import_object
+    __import__(self.modname)
+ImportError: No module named forms

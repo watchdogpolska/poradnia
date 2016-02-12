@@ -1,0 +1,240 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>model_utils.choices &mdash; Poradnia 0.1 - dokumentacja</title>
+    
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    '../../',
+        VERSION:     '0.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/translations.js"></script>
+    <link rel="top" title="Poradnia 0.1 - dokumentacja" href="../../index.html" />
+    <link rel="up" title="Kod modułu" href="../index.html" />
+   
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head>
+  <body role="document">  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Kod źródłowy modułu model_utils.choices</h1><div class="highlight"><pre>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">unicode_literals</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+
+
+<span class="k">class</span> <span class="nc">Choices</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A class to encapsulate handy functionality for lists of choices</span>
+<span class="sd">    for a Django model field.</span>
+
+<span class="sd">    Each argument to ``Choices`` is a choice, represented as either a</span>
+<span class="sd">    string, a two-tuple, or a three-tuple.</span>
+
+<span class="sd">    If a single string is provided, that string is used as the</span>
+<span class="sd">    database representation of the choice as well as the</span>
+<span class="sd">    human-readable presentation.</span>
+
+<span class="sd">    If a two-tuple is provided, the first item is used as the database</span>
+<span class="sd">    representation and the second the human-readable presentation.</span>
+
+<span class="sd">    If a triple is provided, the first item is the database</span>
+<span class="sd">    representation, the second a valid Python identifier that can be</span>
+<span class="sd">    used as a readable label in code, and the third the human-readable</span>
+<span class="sd">    presentation. This is most useful when the database representation</span>
+<span class="sd">    must sacrifice readability for some reason: to achieve a specific</span>
+<span class="sd">    ordering, to use an integer rather than a character field, etc.</span>
+
+<span class="sd">    Regardless of what representation of each choice is originally</span>
+<span class="sd">    given, when iterated over or indexed into, a ``Choices`` object</span>
+<span class="sd">    behaves as the standard Django choices list of two-tuples.</span>
+
+<span class="sd">    If the triple form is used, the Python identifier names can be</span>
+<span class="sd">    accessed as attributes on the ``Choices`` object, returning the</span>
+<span class="sd">    database representation. (If the single or two-tuple forms are</span>
+<span class="sd">    used and the database representation happens to be a valid Python</span>
+<span class="sd">    identifier, the database representation itself is available as an</span>
+<span class="sd">    attribute on the ``Choices`` object, returning itself.)</span>
+
+<span class="sd">    Option groups can also be used with ``Choices``; in that case each</span>
+<span class="sd">    argument is a tuple consisting of the option group name and a list</span>
+<span class="sd">    of options, where each option in the list is either a string, a</span>
+<span class="sd">    two-tuple, or a triple as outlined above.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">choices</span><span class="p">):</span>
+        <span class="c1"># list of choices expanded to triples - can include optgroups</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_triples</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># list of choices as (db, human-readable) - can include optgroups</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_doubles</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="c1"># dictionary mapping db representation to human-readable</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># dictionary mapping Python identifier to db representation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_identifier_map</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="c1"># set of db representations</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db_values</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="p">(</span><span class="n">choices</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">_store</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">triple</span><span class="p">,</span> <span class="n">triple_collector</span><span class="p">,</span> <span class="n">double_collector</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_identifier_map</span><span class="p">[</span><span class="n">triple</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_display_map</span><span class="p">[</span><span class="n">triple</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">=</span> <span class="n">triple</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_db_values</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">triple</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="n">triple_collector</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">triple</span><span class="p">)</span>
+        <span class="n">double_collector</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">triple</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">triple</span><span class="p">[</span><span class="mi">2</span><span class="p">]))</span>
+
+
+    <span class="k">def</span> <span class="nf">_process</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">choices</span><span class="p">,</span> <span class="n">triple_collector</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span> <span class="n">double_collector</span><span class="o">=</span><span class="bp">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">triple_collector</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">triple_collector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triples</span>
+        <span class="k">if</span> <span class="n">double_collector</span> <span class="ow">is</span> <span class="bp">None</span><span class="p">:</span>
+            <span class="n">double_collector</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_doubles</span>
+
+        <span class="n">store</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">c</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">_store</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">triple_collector</span><span class="p">,</span> <span class="n">double_collector</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">choice</span> <span class="ow">in</span> <span class="n">choices</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">choice</span><span class="p">,</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">choice</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span><span class="p">:</span>
+                    <span class="n">store</span><span class="p">(</span><span class="n">choice</span><span class="p">)</span>
+                <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">choice</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">choice</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">(</span><span class="nb">list</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">)):</span>
+                        <span class="c1"># option group</span>
+                        <span class="n">group_name</span> <span class="o">=</span> <span class="n">choice</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+                        <span class="n">subchoices</span> <span class="o">=</span> <span class="n">choice</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+                        <span class="n">tc</span> <span class="o">=</span> <span class="p">[]</span>
+                        <span class="n">triple_collector</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">group_name</span><span class="p">,</span> <span class="n">tc</span><span class="p">))</span>
+                        <span class="n">dc</span> <span class="o">=</span> <span class="p">[]</span>
+                        <span class="n">double_collector</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">group_name</span><span class="p">,</span> <span class="n">dc</span><span class="p">))</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">_process</span><span class="p">(</span><span class="n">subchoices</span><span class="p">,</span> <span class="n">tc</span><span class="p">,</span> <span class="n">dc</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">store</span><span class="p">((</span><span class="n">choice</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">choice</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">choice</span><span class="p">[</span><span class="mi">1</span><span class="p">]))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                        <span class="s2">&quot;Choices can&#39;t take a list of length </span><span class="si">%s</span><span class="s2">, only 2 or 3&quot;</span>
+                        <span class="o">%</span> <span class="nb">len</span><span class="p">(</span><span class="n">choice</span><span class="p">)</span>
+                        <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">store</span><span class="p">((</span><span class="n">choice</span><span class="p">,</span> <span class="n">choice</span><span class="p">,</span> <span class="n">choice</span><span class="p">))</span>
+
+
+    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_doubles</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">iter</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_doubles</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attname</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_identifier_map</span><span class="p">[</span><span class="n">attname</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">attname</span><span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_display_map</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+
+    <span class="k">def</span> <span class="nf">__add__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">):</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="n">other</span><span class="o">.</span><span class="n">_triples</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">other</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Choices</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_triples</span> <span class="o">+</span> <span class="n">other</span><span class="p">))</span>
+
+
+    <span class="k">def</span> <span class="nf">__radd__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="c1"># radd is never called for matching types, so we don&#39;t check here</span>
+        <span class="n">other</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">other</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Choices</span><span class="p">(</span><span class="o">*</span><span class="p">(</span><span class="n">other</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triples</span><span class="p">))</span>
+
+
+    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">other</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">):</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triples</span> <span class="o">==</span> <span class="n">other</span><span class="o">.</span><span class="n">_triples</span>
+        <span class="k">return</span> <span class="bp">False</span>
+
+
+    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">(</span><span class="si">%s</span><span class="s1">)&#39;</span> <span class="o">%</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="o">.</span><span class="n">__name__</span><span class="p">,</span>
+            <span class="s1">&#39;, &#39;</span><span class="o">.</span><span class="n">join</span><span class="p">((</span><span class="s2">&quot;</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="nb">repr</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_triples</span><span class="p">))</span>
+            <span class="p">)</span>
+
+
+    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_db_values</span>
+
+
+    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">__class__</span><span class="p">(</span><span class="o">*</span><span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_triples</span><span class="p">,</span> <span class="n">memo</span><span class="p">))</span>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Kod modułu</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Szybkie wyszukiwanie</h3>
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Szukaj" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Wprowadź szukany termin lub nazwę modułu, klasy lub funkcji.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2016, Adam Dobrawy.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.3.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.7</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
