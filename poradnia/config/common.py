@@ -319,3 +319,15 @@ DJANGO_MAILBOX_STORE_ORIGINAL_MESSAGE = True
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 EMAIL_BACKEND = env.str('DJANGO_EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+
+
+TEMPLATES = [
+    {
+        'BACKEND': 'django.template.backends.django.DjangoTemplates',
+        'DIRS': TEMPLATE_DIRS,
+        'APP_DIRS': True,
+        'OPTIONS': {
+            'context_processors': TEMPLATE_CONTEXT_PROCESSORS,
+        },
+    },
+]

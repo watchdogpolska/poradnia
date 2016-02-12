@@ -1,7 +1,7 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from .views import AutocompleteView
 
-urlpatterns = patterns('',
+urlpatterns = [
     url(r'^$', AutocompleteView.as_view(), name="navigation_autocomplete"),
-)
+]

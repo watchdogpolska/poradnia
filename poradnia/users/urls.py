@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 
 from users import views
 
-urlpatterns = patterns('',
+urlpatterns = [
     # URL pattern for the UserListView  # noqa
     url(
         regex=r'^$',
@@ -34,4 +34,4 @@ urlpatterns = patterns('',
         view=views.ProfileUpdateView.as_view(),
         name='profile'
     ),
-)
+]
