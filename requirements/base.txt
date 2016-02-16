@@ -30,7 +30,7 @@ pytz==2015.7
 
 # Your custom requirements go here
 django-guardian==1.4.1
-django-mailbox==4.4.5
+django-mailbox==4.4.6
 claw==1.3.0
 django-filter==0.12.0
 django-autocomplete-light==2.3.3 # rq.filter: <3.0.0
