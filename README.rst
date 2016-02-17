@@ -69,8 +69,7 @@ If you'd like to take advantage of live reloading and Sass / Compass CSS compila
 
 Make sure that nodejs_ is installed. Then in the project root run::
 
-.. note::
-    TODO
+.. note:: TODO
 
 It's time to write the code!!!
 
