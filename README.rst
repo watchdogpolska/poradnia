@@ -37,34 +37,32 @@ Getting up and running
 ----------------------
 
 The steps below will get you up and running with a local development environment. We assume you have the following installed
-First make sure to install all requires OS-level libraries and application (dependencies):
+First make sure to install all requires OS-level libraries and application (dependencies)::
 
     $ sudo apt-get install python2.7 mariadb-server git libmariadbclient-dev virtualenv python-dev libffi-dev libssl-dev libjpeg-dev libpng12-dev libxml2-dev libxslt1-dev python-dev
 
-Next to create and activate a virtualenv_: 
+Next to create and activate a virtualenv_::
     
     $ virtualenv env
     $ source env/bin/activate
-    
-    .. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
 
+    .. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
 
 Next to open a terminal at the project root and install the requirements for local development::
 
     $ pip install pip wheel -U
     $ pip install -r requirements/local.txt
 
-
-Next to create MySQL database:
+Next to create MySQL database::
     
     $ echo "CREATE DATABASE poradnia CHARACTER SET utf8 COLLATE utf8_polish_ci;" | mysql
 
-Next to set up enviroment variables
+Next to set up enviroment variables::
 
     $ export DJANGO_SETTINGS_MODULE="config.local"
     $ export DATABASE_URL="mysql://user:pass@localhost/poradnia"
 
-Next to push migrations into database
+Next to push migrations into database::
 
     $ python poradnia/manage.py migrate
 
@@ -72,7 +70,7 @@ You can now run the usual Django ``runserver`` command::
 
     $ python poradnia/manage.py runserver
 
-To run tests use: 
+To run tests use::
 
     $ function run_test(){ DATABASE_URL="sqlite://" DJANGO_SETTINGS_MODULE='config.tests' python manage.py test $@ -v2}
     $ run_test poradnia
@@ -83,12 +81,9 @@ If you'd like to take advantage of live reloading and Sass / Compass CSS compila
 
 Make sure that nodejs_ is installed. Then in the project root run::
 
-.. note:: TODO (see 207_)
-
-    .. _issue-207: https://github.com/watchdogpolska/poradnia/issues/207
+.. note:: TODO (see issue #207)
 
 It's time to write the code!!!
-
 
 Deployment
 ------------
