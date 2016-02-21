@@ -73,7 +73,7 @@ class UserCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSe
 
     class Meta:
         model = Case
-        fields = ['status', 'name', 'created_on', 'last_send']
+        fields = ['name', 'created_on', 'last_send']
         order_by = (
             ('default', _('Default')),
             ('pk', _('ID')),

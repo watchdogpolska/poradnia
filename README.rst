@@ -59,9 +59,10 @@ You can now run the usual Django ``runserver`` command (replace ``yourapp`` with
 
     $ python poradnia/manage.py runserver
 
-To run tests use: 
+To run tests use::
     $ function run_test(){ DATABASE_URL="sqlite://" DJANGO_SETTINGS_MODULE='config.tests' python manage.py test $@ -v2}
-    $ run_test poradnia
+    $ pip install -r requirements/test.txt 
+    $ run_test
 
 **Live reloading and Sass CSS compilation**
 
