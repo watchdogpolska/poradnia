@@ -21,9 +21,12 @@ class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, 
 
     def save(self, commit=True, *args, **kwargs):
         obj = super(CaseForm, self).save(commit=False, *args, **kwargs)
-        if obj.pk:  # update
+        if obj.pk:  # old
             obj.modified_by = self.user
-            obj.send_notification(self.user, staff=True, verb='updated')
+            verb, staff_only = (('closed', False)
+                                if obj.status == Case.STATUS.closed
+                                else ('updated', True))
+            obj.send_notification(self.user, staff=staff_only, verb=verb)
         else:  # new
             obj.send_notification(self.user, staff=True, verb='created')
             obj.created_by = self.user
