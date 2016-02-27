@@ -1,6 +1,6 @@
-import datetime
 from datetime import timedelta
 
+import django
 from django.contrib.admin.sites import AdminSite
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
@@ -224,7 +224,10 @@ class CaseAdminTestCase(TestCase):
 
     def assertIsValid(self, model_admin, model):  # See django/tests/modeladmin/tests.py#L602
         admin_obj = model_admin(model, self.site)
-        errors = admin_obj.check()
+        if django.VERSION > (1, 9):
+            errors = admin_obj.check()
+        else:
+            errors = admin_obj.check(model)
         expected = []
         self.assertEqual(errors, expected)
 
