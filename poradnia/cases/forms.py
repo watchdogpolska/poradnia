@@ -35,7 +35,6 @@ class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, 
         return obj
 
     class Meta:
-        # Set this form to use the User model.
         model = Case
         fields = ("name", "status")
 
