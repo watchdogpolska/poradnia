@@ -47,8 +47,11 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
         return user
 
     def email_to_unique_username(self, email, limit=10):
+        SUFFIX_LEN = 3  # "-10"
+        max_length = User._meta.get_field('username').max_length - SUFFIX_LEN
         limit_org = limit
         prefix = re.sub(r'[^A-Za-z-]', '_', email)
+        prefix = prefix[:max_length]
         if not User.objects.filter(username=prefix).exists():
             return prefix
         while limit > 0:
