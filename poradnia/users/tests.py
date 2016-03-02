@@ -37,7 +37,7 @@ class UserTestCase(TestCase):
     def test_login_email(self):  # Test for regresion #204
         max_length = User._meta.get_field('username').max_length
         email = 'very-long-email-which-make-broken-username@example.com'
-        self.assertLess(len(User.objects.email_to_unique_username(email)), max_length)
+        self.assertLessEqual(len(User.objects.email_to_unique_username(email)), max_length)
 
     def test_has_picture(self):
         self.assertTrue(UserFactory().picture)
