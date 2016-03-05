@@ -20,7 +20,6 @@ class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, 
             self.helper.form_action = kwargs['instance'].get_edit_url()
 
     def save(self, commit=True, *args, **kwargs):
-        import ipdb; ipdb.set_trace()
         obj = super(CaseForm, self).save(commit=False, *args, **kwargs)
         if obj.pk:  # old
             obj.modified_by = self.user

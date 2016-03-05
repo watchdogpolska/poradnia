@@ -4,8 +4,7 @@ from braces.views import LoginRequiredMixin, UserFormKwargsMixin
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.translation import ugettext as _
-from django.views.generic import TemplateView, UpdateView, FormView
-from django.views.generic.detail import SingleObjectMixin
+from django.views.generic import TemplateView, UpdateView
 from django_filters.views import FilterView
 
 from cases.filters import StaffCaseFilter, UserCaseFilter
