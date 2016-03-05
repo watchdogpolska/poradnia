@@ -31,6 +31,9 @@
         {% if 'change_case' in case_perms %}
         <a class="btn btn-primary" href="{{ object.get_edit_url }}"><i class="fa fa-pencil-square-o"></i> {% trans 'Edit'%}</a>
         {% endif %}
+        {% if 'can_close_case' in case_perms %}
+        <a class="btn btn-primary" href="{{ object.get_close_url }}"><i class="fa fa-pencil-square-o"></i> {% trans 'Close'%}</a>
+        {% endif %}
       </div>
       <h1 class="case-header-title{% if user.is_staff and object.handled %} success{% endif %}">{{object.name}} <span class="case-header-number">#{{object.pk}}</span></h1>
       <div class="case-header-meta">

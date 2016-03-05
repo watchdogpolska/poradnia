@@ -4,11 +4,12 @@ from braces.views import LoginRequiredMixin, UserFormKwargsMixin
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.translation import ugettext as _
-from django.views.generic import TemplateView, UpdateView
+from django.views.generic import TemplateView, UpdateView, FormView
+from django.views.generic.detail import SingleObjectMixin
 from django_filters.views import FilterView
 
 from cases.filters import StaffCaseFilter, UserCaseFilter
-from cases.forms import CaseForm, CaseGroupPermissionForm
+from cases.forms import CaseForm, CaseGroupPermissionForm, CaseCloseForm
 from cases.models import Case
 from events.forms import EventForm
 from letters.forms import AddLetterForm
@@ -105,4 +106,20 @@ class CaseUpdateView(UserFormKwargsMixin, UpdateView):
     def form_valid(self, form):
         obj = form.save()
         messages.success(self.request, _('Successful updated "%(object)s".') % {'object': obj})
+        return redirect(obj)
+
+
+class CaseCloseView(UserFormKwargsMixin, UpdateView):
+    form_class = CaseCloseForm
+    template_name = 'cases/case_close.html'
+    model = Case
+
+    def get_object(self):
+        obj = super(CaseCloseView, self).get_object()
+        obj.perm_check(self.request.user, 'can_close_case')
+        return obj
+
+    def form_valid(self, form):
+        obj = form.save()
+        messages.success(self.request, _('Successfully closed "%(object)s".') % {'object': obj})
         return redirect(obj)
