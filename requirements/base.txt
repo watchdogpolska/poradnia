@@ -43,4 +43,4 @@ icalendar==3.9.2
 html2text==2016.1.8
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.6.1
-raven==5.11.0
+raven==5.11.1
