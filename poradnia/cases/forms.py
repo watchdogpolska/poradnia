@@ -3,7 +3,6 @@ import autocomplete_light.shortcuts as autocomplete_light
 from atom.ext.crispy_forms.forms import FormHorizontalMixin, HelperMixin, SingleButtonMixin
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.layout import Submit
-from crispy_forms.helper import FormHelper
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.urlresolvers import reverse
