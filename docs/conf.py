@@ -341,13 +341,12 @@ def process_docstring(app, what, name, obj, options, lines):
 def process_django_view(app, what, name, obj, options, lines):
     from django.db import models
 
-    if inspect.isclass(obj) and not issubclass(obj, models.Model):
-        import ipdb; ipdb.set_trace();
     res = get_resolver()
     for key, url_struct in res.reverse_dict.items():
         if (hasattr(key, 'view_class') and key.view_class == obj) or key == obj:
             lines.append(":param url: %s\n" % url_struct[0][0][0])
     return lines
+
 
 def setup(app):
     app.connect('autodoc-process-docstring', process_docstring)

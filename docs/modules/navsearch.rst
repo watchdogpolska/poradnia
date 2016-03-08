@@ -1,5 +1,5 @@
 Navsearch
-======
+=========
 
 Models
 ------
@@ -9,9 +9,4 @@ Models
 Views
 -----
 .. automodule:: navsearch.views
-    :members:
-
-Forms
------
-.. automodule:: navsearch.forms
     :members:

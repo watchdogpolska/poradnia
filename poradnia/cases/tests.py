@@ -1,6 +1,6 @@
-import datetime
 from datetime import timedelta
 
+import django
 from django.contrib.admin.sites import AdminSite
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
@@ -224,7 +224,10 @@ class CaseAdminTestCase(TestCase):
 
     def assertIsValid(self, model_admin, model):  # See django/tests/modeladmin/tests.py#L602
         admin_obj = model_admin(model, self.site)
-        errors = admin_obj.check(model)
+        if django.VERSION > (1, 9):
+            errors = admin_obj.check()
+        else:
+            errors = admin_obj.check(model)
         expected = []
         self.assertEqual(errors, expected)
 
@@ -241,3 +244,20 @@ class CaseAdminTestCase(TestCase):
         obj = qs.get(pk=case.pk)
         self.assertTrue(hasattr(obj, 'record_count'))
         self.assertEqual(admin_obj.record_count(obj), 25)
+
+class CaseCloseTestCase(TestCase):
+    def setUp(self):
+        self.user = UserFactory()
+        self.object = CaseFactory()
+        self.client.login(username=self.user.username, password='pass')
+
+    def test_close_case(self):
+        assign_perm('cases.can_close_case', self.user, self.object)
+        resp = self.client.post(self.object.get_close_url())
+        self.assertEqual(
+            resp.context['target'].status,
+            Case.STATUS.closed)
+
+    def test_close_case_not_permitted(self):
+        resp = self.client.get(self.object.get_close_url())
+        self.assertEqual(resp.status_code, 403)

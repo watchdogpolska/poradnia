@@ -21,9 +21,12 @@ class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, 
 
     def save(self, commit=True, *args, **kwargs):
         obj = super(CaseForm, self).save(commit=False, *args, **kwargs)
-        if obj.pk:  # update
+        if obj.pk:  # old
             obj.modified_by = self.user
-            obj.send_notification(self.user, staff=True, verb='updated')
+            verb, staff_only = (('closed', False)
+                                if obj.status == Case.STATUS.closed
+                                else ('updated', True))
+            obj.send_notification(self.user, staff=staff_only, verb=verb)
         else:  # new
             obj.send_notification(self.user, staff=True, verb='created')
             obj.created_by = self.user
@@ -32,7 +35,6 @@ class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, 
         return obj
 
     class Meta:
-        # Set this form to use the User model.
         model = Case
         fields = ("name", "status")
 
@@ -68,3 +70,26 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
                                     action_object=self.cleaned_data['user'],
                                     action_target=self.cleaned_data['group'],
                                     staff=True)
+
+
+class CaseCloseForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
+
+    def __init__(self, *args, **kwargs):
+        super(CaseCloseForm, self).__init__(*args, **kwargs)
+        self.helper.add_input(Submit('action', _('Close'), css_class="btn-primary"))
+
+        if 'instance' in kwargs:
+            self.helper.form_action = kwargs['instance'].get_close_url()
+
+    def save(self, commit=True, *args, **kwargs):
+        obj = super(CaseCloseForm, self).save(commit=False, *args, **kwargs)
+        obj.modified_by = self.user
+        obj.status = Case.STATUS.closed
+        obj.send_notification(self.user, staff=False, verb='closed')
+        if commit:
+            obj.save()
+        return obj
+
+    class Meta:
+        model = Case
+        fields = ()

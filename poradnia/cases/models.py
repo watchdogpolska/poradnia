@@ -123,6 +123,9 @@ class Case(models.Model):
     def get_edit_url(self):
         return reverse('cases:edit', kwargs={'pk': str(self.pk)})
 
+    def get_close_url(self):
+        return reverse('cases:close', kwargs={'pk': str(self.pk)})
+
     def get_users_with_perms(self, *args, **kwargs):
         return get_users_with_perms(self, with_group_users=False, *args, **kwargs)
 
@@ -162,6 +165,7 @@ class Case(models.Model):
                        ('can_add_record', _('Can add record')),
                        ('can_change_own_record', _("Can change own records")),
                        ('can_change_all_record', _("Can change all records")),
+                       ('can_close_case', _("Can close case"))
                        )
 
     def update_handled(self):

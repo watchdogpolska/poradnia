@@ -22,7 +22,6 @@ class CaseFilterMixin(object):
     def __init__(self, user=None, *args, **kwargs):
         self.user = user
         super(CaseFilterMixin, self).__init__(*args, **kwargs)
-        self.filters['status'].field.choices.insert(0, ('', u'---------'))
 
 
 class PermissionChoiceFilter(django_filters.ModelChoiceFilter):
@@ -44,6 +43,7 @@ class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterS
         super(StaffCaseFilter, self).__init__(*args, **kwargs)
         if not self.user.has_perm('cases.can_assign'):
             del self.filters['permission']
+        self.filters['status'].field.choices.insert(0, ('', u'---------'))
         self.filters['handled'].field.widget.choices[0] = (1, _("Any state"))
 
     def get_order_by(self, order_choice):
@@ -73,7 +73,7 @@ class UserCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSe
 
     class Meta:
         model = Case
-        fields = ['status', 'name', 'created_on', 'last_send']
+        fields = ['name', 'created_on', 'last_send']
         order_by = (
             ('default', _('Default')),
             ('pk', _('ID')),
