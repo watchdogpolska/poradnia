@@ -58,6 +58,7 @@ LOCAL_APPS = (
     'letters',
     'records',
     'events',
+    'stats',
     'advicer',
     'feedback_custom',
     'tasty_feedback',

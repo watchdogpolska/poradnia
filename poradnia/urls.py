@@ -32,6 +32,7 @@ urlpatterns = [
     url(r'^listy/', include('letters.urls', namespace='letters')),
     url(r'^wydarzenia/', include('events.urls', namespace='events')),
     url(r'^porady/', include('advicer.urls', namespace='advicer')),
+    url(r'^statystyki/', include('stats.urls', namespace='stats')),
     # Utils
     url(r'^autocomplete/', include('autocomplete_light.urls')),
     url(r'^uwagi/', include('tasty_feedback.urls', namespace='tasty_feedback')),
