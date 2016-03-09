@@ -29,7 +29,7 @@ django-autoslug==1.9.3
 pytz==2015.7
 
 # Your custom requirements go here
-django-guardian==1.4.1
+django-guardian==1.4.2
 django-mailbox==4.4.6
 claw==1.3.0
 django-filter==0.12.0
