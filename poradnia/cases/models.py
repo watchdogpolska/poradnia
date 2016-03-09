@@ -293,7 +293,7 @@ class CaseGroupObjectPermission(GroupObjectPermissionBase):
     content_object = models.ForeignKey(Case)
 
 
-limit = {'content_type__app_label': 'cases', 'content_type__name': 'case'}
+limit = {'content_type__app_label': 'cases', 'content_type__model': 'case'}
 
 
 class PermissionGroup(models.Model):
