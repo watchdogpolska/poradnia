@@ -95,7 +95,7 @@
   </table>
   <p>{% trans 'Legend of status' %} <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title='{% trans 'Cases have status changed by staff.'%}'></i>: {% for status in statuses %}<i class="{{status.0|status2css}}"></i> {{status.0|status2display}} {% endfor %}</p>
   <div class="text-center">
-    {% bootstrap_paginate page_obj %}
+    {% bootstrap_paginate page_obj  show_first_last="true" %}
   </div>
 
   {% else %}
