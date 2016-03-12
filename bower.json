@@ -15,9 +15,9 @@
     "tests"
   ],
   "dependencies": {
-    "font-awesome": "~4.3.0",
+    "font-awesome": "4.5.0",
     "bootstrap-sass": "~3.3.4",
-    "pikaday-time": "~1.3.3",
-    "moment": "~2.10.3"
+    "pikaday-time": "1.4.0",
+    "moment": "2.12.0"
   }
 }

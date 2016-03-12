@@ -95,7 +95,7 @@ gulp.task('scss', function () {
             sourcemap: true
         }
     )
-        .pipe(prefix("last 1 version", "> 1%", "ie 8", "ie 7"))
+        .pipe(prefix())
         .pipe(gulp.dest(config.scss.output))
         .pipe(livereload())
         .pipe(rename({extname: '.min.css'}))
