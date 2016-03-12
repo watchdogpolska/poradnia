@@ -67,17 +67,25 @@
           <p>Use this document as a way to quick start any new project.</p>
           {% endblock content %}
         </div>
-          <div class="footer">
-            {% tinycontent 'footer' %}
-            <div class="footer-right">Sieć Obywatelska - Watchdog Polska</div>
-            <div class="footer-left">
-              silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
-              <a href="https://github.com/watchdogpolska/poradnia"><i class="fa fa-github"></i> Github</a>
-            </div>
-            <div class="footer-center">Strona wykorzystuje cookies</div>
-            {% endtinycontent %}
+        <div class="footer">
+          {% tinycontent 'footer' %}
+          <div class="footer-right">Sieć Obywatelska - Watchdog Polska</div>
+          <div class="footer-left">
+            silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
+            <a href="https://github.com/watchdogpolska/poradnia"><i class="fa fa-github"></i> Github</a>
+          </div>
+          <div class="footer-center">Strona wykorzystuje cookies</div>
+          {% endtinycontent %}
+        </div>
+        <div class="footer row">
+          <div class="col-xs-12 col-md-8 col-md-push-2 col-lg-6 col-lg-push-3">
+            <p class="text-center">
+              <img src="{% static '/static/images/baner.png' %}" alt="" class="img-responsive">
+              Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji, finansowanego z Funduszy EOG.
+            </p>
           </div>
         </div>
+      </div>
     </div>
     {% load tasty_feedback_tags %}
     {% tasty_feedback_widget %}
