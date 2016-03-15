@@ -22,4 +22,4 @@ def case_stats_view(request):
         .order_by(F('year'), F('month'))
     )
 
-    return JsonResponse(json.dumps(list(qs)), safe=False)
+    return JsonResponse(list(qs), safe=False)
