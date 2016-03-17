@@ -1,5 +1,5 @@
 from django.db.models import F, Func, IntegerField, Case, Sum, When
-from braces.views import JSONResponseMixin
+from braces.views import JSONResponseMixin, SuperuserRequiredMixin
 from django.views.generic import TemplateView
 from django.views.generic import View
 from cases.models import Case as CaseModel
@@ -10,11 +10,15 @@ class ApiListViewMixin(JSONResponseMixin):
         return self.render_json_response(list(self.get_object_list()))
 
 
-class StatsCaseView(TemplateView):
+class StatsIndexView(TemplateView):
+    template_name = 'stats/index.html'
+
+
+class StatsCaseView(SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/cases.html'
 
 
-class StatsCaseApiView(ApiListViewMixin, View):
+class StatsCaseApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
     def get_object_list(self):
         return (
             CaseModel.objects.annotate(
