@@ -1,15 +1,15 @@
 import json
 
-from django.db.models import F, Func, Count, IntegerField
+from django.db.models import F, Func, Count, IntegerField, Case, Sum, When
 from django.http import JsonResponse
 from django.views.generic import TemplateView
 
-from cases.models import Case
+from cases.models import Case as CaseModel
 
 
 def case_stats_api_view(request):
     qs = (
-        Case.objects.annotate(
+        CaseModel.objects.annotate(
             month=Func(F('created_on'),
             function='month',
             output_field=IntegerField())
@@ -19,8 +19,28 @@ def case_stats_api_view(request):
             output_field=IntegerField())
         ).values('month','year')
         .annotate(
-            count=Count(F('id'))
-        ).values('month','year','count')
+            count_open=Sum(
+                Case(
+                    When(status=CaseModel.STATUS.free, then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            count_assigned=Sum(
+                Case(
+                    When(status=CaseModel.STATUS.assigned, then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            count_closed=Sum(
+                Case(
+                    When(status=CaseModel.STATUS.closed, then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            )
+        ).values('month', 'year', 'count_open', 'count_assigned', 'count_closed')
         .order_by(F('year'), F('month'))
     )
 
