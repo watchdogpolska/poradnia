@@ -19,7 +19,7 @@
 <script src="{% static 'stats/chart.js' %}" charset="utf-8"></script>
 <script>
 $(function() {
-d3.json("/statystyki/api/sprawy/", status_chart);
+d3.json("{% url 'stats:case_stats_api' %}", status_chart);
 });
 </script>
 {% endblock %}
