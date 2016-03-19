@@ -18,6 +18,10 @@ class StatsCaseView(SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/cases.html'
 
 
+class StatsCaseRenderView(SuperuserRequiredMixin, TemplateView):
+    template_name = 'stats/render/cases.html'
+
+
 class StatsCaseApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
     def get_object_list(self):
         return (
