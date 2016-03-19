@@ -10,19 +10,8 @@
 {% endblock %}
 
 {%block content%}
-<svg class="chart"></svg>
+<iframe class="render content", scrolling="no", seamless="seamless", src="{% url 'stats:case_stats_render' %}">
 {%endblock%}
-
-{% block javascript %}
-{{block.super}}
-<script src="//d3js.org/d3.v3.min.js" charset="utf-8"></script>
-<script src="{% static 'stats/chart.js' %}" charset="utf-8"></script>
-<script>
-$(function() {
-d3.json("{% url 'stats:case_stats_api' %}", status_chart);
-});
-</script>
-{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'stats/style.css'%}">

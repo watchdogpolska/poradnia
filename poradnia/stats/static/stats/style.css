@@ -1,3 +1,9 @@
+.render {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border: none
+}
 .axis text {
   font: 10px sans-serif;
 }
