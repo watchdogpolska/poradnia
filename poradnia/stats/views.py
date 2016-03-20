@@ -35,27 +35,27 @@ class StatsCaseApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
                                   output_field=IntegerField())
             ).values('month', 'year')
             .annotate(
-                count_open=Sum(
+                open=Sum(
                     Case(
                         When(status=CaseModel.STATUS.free, then=1),
                         default=0,
                         output_field=IntegerField()
                     )
                 ),
-                count_assigned=Sum(
+                assigned=Sum(
                     Case(
                         When(status=CaseModel.STATUS.assigned, then=1),
                         default=0,
                         output_field=IntegerField()
                     )
                 ),
-                count_closed=Sum(
+                closed=Sum(
                     Case(
                         When(status=CaseModel.STATUS.closed, then=1),
                         default=0,
                         output_field=IntegerField()
                     )
                 )
-            ).values('month', 'year', 'count_open', 'count_assigned', 'count_closed')
+            ).values('month', 'year', 'open', 'assigned', 'closed')
             .order_by(F('year'), F('month'))
         )

@@ -50,7 +50,7 @@ function status_chart(error, data) {
   });
 
   x.domain(d3.extent(data, function(d) { return d.date; }));
-  y.domain([0, d3.max(data, function(d) { return d.count_closed + d.count_assigned + d.count_open; })]);
+  y.domain([0, d3.max(data, function(d) { return d.closed + d.assigned + d.open; })]);
   xAxis.ticks(data.length);
 
   color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
