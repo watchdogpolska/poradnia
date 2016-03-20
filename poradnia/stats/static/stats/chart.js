@@ -8,8 +8,7 @@ var x = d3.time.scale()
 var y = d3.scale.linear()
     .range([height, 0]);
 
-var color = d3.scale.linear()
-    .range(["#abcdef", "#123456"]);
+var color = d3.scale.category20c();
 
 var xAxis = d3.svg.axis()
     .scale(x)
@@ -20,6 +19,7 @@ var yAxis = d3.svg.axis()
     .orient("left");
 
 var area = d3.svg.area()
+    .interpolate("basis")
     .x(function(d) { return x(d.date); })
     .y0(function(d) { return y(d.y0); })
     .y1(function(d) { return y(d.y0 + d.y); });
@@ -48,10 +48,10 @@ function status_chart(error, data) {
 
   x.domain(d3.extent(data, function(d) { return d.date; }));
   y.domain([0, d3.max(data, function(d) { return d.count_closed + d.count_assigned + d.count_open; })]);
-  color.domain([0, data.length]);
   xAxis.ticks(data.length);
 
   var statusNames = d3.keys(data[0]).filter(function(key) { return key !== "date"; });
+  color.domain(statusNames);
 
   var statuses = stack(statusNames.map(function(status) {
       return {
@@ -79,5 +79,5 @@ function status_chart(error, data) {
   status.append("path")
       .attr("class", "area")
       .attr("d", function(d) { return area(d.values); })
-      .style("fill", function(d, i) { return color(i); });
+      .style("fill", function(d, i) { return color(d.status); });
 }
