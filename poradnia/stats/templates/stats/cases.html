@@ -10,7 +10,9 @@
 {% endblock %}
 
 {%block content%}
-<iframe class="render content", scrolling="no", seamless="seamless", src="{% url 'stats:case_stats_render' %}">
+<div class="render">
+  <iframe src="{% url 'stats:case_stats_render' %}">
+</div>
 {%endblock%}
 
 {% block extra_css %}

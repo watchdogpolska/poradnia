@@ -28,8 +28,11 @@ var stack = d3.layout.stack()
     .values(function(d) { return d.values; });
 
 var chart = d3.select(".chart")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
+    .attr("viewBox", "0 0 " +
+                     (width + margin.left + margin.right)
+                     + " "
+                     + (height + margin.top + margin.bottom))
+    .attr("preserveAspectRatio", "xMinYMin meet")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
