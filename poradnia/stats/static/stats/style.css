@@ -23,3 +23,11 @@
   stroke: #000;
   shape-rendering: crispEdges;
 }
+
+.legend text {
+  font: 10px sans-serif;
+}
+
+.legend rect {
+  stroke-width: 2;
+}

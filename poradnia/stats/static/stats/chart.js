@@ -2,6 +2,9 @@ var margin = {top: 20, right: 30, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
+var legendRectSize = 16,
+    legendSpacing = 4;
+
 var x = d3.time.scale()
     .range([0, width]);
 
@@ -80,4 +83,27 @@ function status_chart(error, data) {
       .attr("class", "area")
       .attr("d", function(d) { return area(d.values); })
       .style("fill", function(d, i) { return color(d.status); });
+
+  var legend = chart.selectAll('.legend')
+      .data(color.domain())
+    .enter()
+      .append('g')
+      .attr('class', 'legend')
+      .attr('transform', function(d, i) {
+        var height = legendRectSize + legendSpacing;
+        var horz = legendRectSize;
+        var vert = i * height;
+        return 'translate(' + horz + ',' + vert + ')';
+      });
+
+  legend.append('rect')
+      .attr('width', legendRectSize)
+      .attr('height', legendRectSize)
+      .style('fill', color)
+      .style('stroke', color);
+
+  legend.append('text')
+      .attr('x', legendSpacing + legendRectSize)
+      .attr('y', legendSpacing + legendRectSize / 2)
+      .text(function(d) { return d; });
 }
