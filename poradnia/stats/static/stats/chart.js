@@ -31,8 +31,8 @@ var stack = d3.layout.stack()
     .values(function(d) { return d.values; });
 
 var chart = d3.select(".chart")
-    .attr("viewBox", "0 0 " +
-                     (width + margin.left + margin.right)
+    .attr("viewBox", "0 0 "
+                     + (width + margin.left + margin.right)
                      + " "
                      + (height + margin.top + margin.bottom))
     .attr("preserveAspectRatio", "xMinYMin meet")
@@ -53,10 +53,9 @@ function status_chart(error, data) {
   y.domain([0, d3.max(data, function(d) { return d.count_closed + d.count_assigned + d.count_open; })]);
   xAxis.ticks(data.length);
 
-  var statusNames = d3.keys(data[0]).filter(function(key) { return key !== "date"; });
-  color.domain(statusNames);
+  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
 
-  var statuses = stack(statusNames.map(function(status) {
+  var statuses = stack(color.domain().map(function(status) {
       return {
         status: status,
         values: data.map(function(d) {
