@@ -1,9 +1,11 @@
-from django.db.models import F, Func, IntegerField, Case, Sum, When
+from django.db.models import F, Func, IntegerField, Case, Sum, When, Min
 from braces.views import JSONResponseMixin, SuperuserRequiredMixin
 from django.views.generic import TemplateView
 from django.views.generic import View
 from cases.models import Case as CaseModel
+from letters.models import Letter as LetterModel
 
+SECONDS_IN_A_DAY = 60 * 60 * 24
 
 class ApiListViewMixin(JSONResponseMixin):
     def get(self, request, *args, **kwargs):
@@ -59,3 +61,38 @@ class StatsCaseApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
             ).values('month', 'year', 'open', 'assigned', 'closed')
             .order_by(F('year'), F('month'))
         )
+
+
+class StatsCaseReactionApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
+    def get_object_list(self):
+        qs = (
+            CaseModel.objects.filter(
+                letter__status=LetterModel.STATUS.done
+            ).filter(
+                letter__created_by__is_staff=True
+            ).annotate(
+                first_accepted=Min('letter__accept')
+            # ).annotate(
+            #     delta=ExpressionWrapper(
+            #         F('letter__accept') - F('created_on'),
+            #         output_field=IntegerField()
+            #     )  # Django bug?
+            ).values(
+                'first_accepted', 'created_on'
+            )
+        )
+
+        temp = {}
+        for el in qs:
+            key = (el['created_on'].month, el['created_on'].year)
+            time_delta = (el['first_accepted'] - el['created_on']).total_seconds()
+            if key in temp:
+                temp[key].append(time_delta)
+            else:
+                temp[key] = [time_delta]
+
+
+        return [{
+            'date': str(date[0]).zfill(2) + '.' + str(date[1]),
+            'reaction time': int(sum(deltas) / len(deltas) / SECONDS_IN_A_DAY)
+        } for date, deltas in temp.iteritems()]
