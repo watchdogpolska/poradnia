@@ -63,6 +63,10 @@ class StatsCaseCreatedApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
         )
 
 
+class StatsCaseReactionRenderView(SuperuserRequiredMixin, TemplateView):
+    template_name = 'stats/render/cases/reaction.html'
+
+
 class StatsCaseReactionApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
     def get_object_list(self):
         qs = (
@@ -82,17 +86,17 @@ class StatsCaseReactionApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
             )
         )
 
-        temp = {}
+        deltas = {}
         for el in qs:
-            key = (el['created_on'].month, el['created_on'].year)
+            date = str(el['created_on'].year) + '.' + str(el['created_on'].month).zfill(2)
             time_delta = (el['first_accepted'] - el['created_on']).total_seconds()
-            if key in temp:
-                temp[key].append(time_delta)
+            if date in deltas:
+                deltas[date].append(time_delta)
             else:
-                temp[key] = [time_delta]
+                deltas[date] = [time_delta]
 
 
         return [{
-            'date': str(date[0]).zfill(2) + '.' + str(date[1]),
-            'reaction time': int(sum(deltas) / len(deltas) / SECONDS_IN_A_DAY)
-        } for date, deltas in temp.iteritems()]
+            'date': date,
+            'time_delta': int(sum(deltas[date]) / len(deltas[date]) / SECONDS_IN_A_DAY)
+        } for date in sorted(deltas.keys())]
