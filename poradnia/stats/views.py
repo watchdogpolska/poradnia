@@ -63,6 +63,10 @@ class StatsCaseCreatedApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
         )
 
 
+class StatsCaseReactionView(SuperuserRequiredMixin, TemplateView):
+    template_name = 'stats/cases/reaction.html'
+
+
 class StatsCaseReactionRenderView(SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/cases/reaction.html'
 
