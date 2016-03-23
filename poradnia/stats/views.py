@@ -16,15 +16,15 @@ class StatsIndexView(TemplateView):
     template_name = 'stats/index.html'
 
 
-class StatsCaseView(SuperuserRequiredMixin, TemplateView):
-    template_name = 'stats/cases.html'
+class StatsCaseCreatedView(SuperuserRequiredMixin, TemplateView):
+    template_name = 'stats/cases/cases.html'
 
 
-class StatsCaseRenderView(SuperuserRequiredMixin, TemplateView):
-    template_name = 'stats/render/cases.html'
+class StatsCaseCreatedRenderView(SuperuserRequiredMixin, TemplateView):
+    template_name = 'stats/cases/render/cases.html'
 
 
-class StatsCaseApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
+class StatsCaseCreatedApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
     def get_object_list(self):
         return (
             CaseModel.objects.annotate(

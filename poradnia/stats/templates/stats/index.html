@@ -12,7 +12,7 @@
 {% trans 'Stats'%}:
 <ul>
     {% if user.is_superuser %}
-    <li><a href="{% url 'stats:case_stats' %}">{% trans 'Case by status' %}</a></li>
+    <li><a href="{% url 'stats:case_stats_created' %}">{% trans 'Case by status' %}</a></li>
     {% endif %}
 </ul>
 {%endblock%}
