@@ -1,4 +1,4 @@
-from django.db.models import F, Func, IntegerField, Case, Sum, When, Min
+from django.db.models import F, Func, IntegerField, Case, Sum, When, Min, Count
 from braces.views import JSONResponseMixin, SuperuserRequiredMixin
 from django.views.generic import TemplateView
 from django.views.generic import View
@@ -99,8 +99,32 @@ class StatsCaseReactionApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
             else:
                 deltas[date] = [time_delta]
 
-
         return [{
             'date': date,
             'time_delta': int(sum(deltas[date]) / len(deltas[date]) / SECONDS_IN_A_DAY)
         } for date in sorted(deltas.keys())]
+
+class StatsCaseUnansweredApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
+    def get_object_list(self):
+        qs =  (
+            CaseModel.objects.filter(
+                                        last_send=None
+            ).annotate(
+                        month=Func(F('created_on'),
+                                   function='month',
+                                   output_field=IntegerField())
+            ).annotate(
+                        year=Func(F('created_on'),
+                                  function='year',
+                                  output_field=IntegerField())
+            ).values('month', 'year')
+        ).annotate(
+            count=Count('pk')
+        ).values(
+            'month', 'year', 'count'
+        ).order_by(F('year'), F('month'))
+        
+        return [{
+            'date': str(el['year']) + '.' + str(el['month']).zfill(2),
+            'count': el['count']
+        } for el in qs]
