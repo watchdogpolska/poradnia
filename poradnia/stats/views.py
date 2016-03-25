@@ -104,6 +104,15 @@ class StatsCaseReactionApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
             'time_delta': int(sum(deltas[date]) / len(deltas[date]) / SECONDS_IN_A_DAY)
         } for date in sorted(deltas.keys())]
 
+
+class StatsCaseUnansweredView(SuperuserRequiredMixin, TemplateView):
+    template_name = 'stats/cases/unanswered.html'
+
+
+class StatsCaseUnansweredRenderView(SuperuserRequiredMixin, TemplateView):
+    template_name = 'stats/render/cases/unanswered.html'
+
+
 class StatsCaseUnansweredApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
     def get_object_list(self):
         qs =  (
@@ -123,7 +132,7 @@ class StatsCaseUnansweredApiView(SuperuserRequiredMixin, ApiListViewMixin, View)
         ).values(
             'month', 'year', 'count'
         ).order_by(F('year'), F('month'))
-        
+
         return [{
             'date': str(el['year']) + '.' + str(el['month']).zfill(2),
             'count': el['count']

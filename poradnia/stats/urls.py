@@ -9,6 +9,8 @@ urlpatterns = [
     url(r'^api/sprawy/bez_odpowiedzi$', views.StatsCaseUnansweredApiView.as_view(), name="case_stats_unanswered_api"),
     url(r'^render/sprawy/utworzone$', views.StatsCaseCreatedRenderView.as_view(), name="case_stats_created_render"),
     url(r'^render/sprawy/czas_reakcji$', views.StatsCaseReactionRenderView.as_view(), name="case_stats_reaction_render"),
+    url(r'^render/sprawy/bez_odpowiedzi$', views.StatsCaseUnansweredRenderView.as_view(), name="case_stats_unanswered_render"),
     url(r'^sprawy/utworzone$', views.StatsCaseCreatedView.as_view(), name="case_stats_created"),
     url(r'^sprawy/czas_reakcji$', views.StatsCaseReactionView.as_view(), name="case_stats_reaction"),
+    url(r'^sprawy/bez_odpowiedzi$', views.StatsCaseUnansweredView.as_view(), name="case_stats_unanswered"),
 ]
