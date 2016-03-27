@@ -17,11 +17,11 @@ class StatsIndexView(TemplateView):
 
 
 class StatsCaseCreatedView(SuperuserRequiredMixin, TemplateView):
-    template_name = 'stats/cases/cases_created.html'
+    template_name = 'stats/cases/created.html'
 
 
 class StatsCaseCreatedRenderView(SuperuserRequiredMixin, TemplateView):
-    template_name = 'stats/render/cases/cases_created.html'
+    template_name = 'stats/render/cases/created.html'
 
 
 class StatsCaseCreatedApiView(SuperuserRequiredMixin, ApiListViewMixin, View):

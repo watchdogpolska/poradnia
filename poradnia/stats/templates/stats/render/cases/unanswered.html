@@ -4,7 +4,7 @@
 <script src="{% static 'stats/chart_unanswered.js' %}" charset="utf-8"></script>
 <script>
 
-d3.json("{% url 'stats:case_stats_unanswered_api' %}", status_chart);
+d3.json("{% url 'stats:case_unanswered_api' %}", status_chart);
 
 </script>
 <link rel="stylesheet" href="{% static 'stats/style.css'%}">
