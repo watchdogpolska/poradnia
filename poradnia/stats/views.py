@@ -1,11 +1,19 @@
 from django.db.models import F, Func, IntegerField, Case, Sum, When, Min, Count
-from braces.views import JSONResponseMixin, SuperuserRequiredMixin
+from django.shortcuts import redirect
+from braces.views import JSONResponseMixin, LoginRequiredMixin, SuperuserRequiredMixin
 from django.views.generic import TemplateView
 from django.views.generic import View
 from cases.models import Case as CaseModel
 from letters.models import Letter as LetterModel
 
 SECONDS_IN_A_DAY = 60 * 60 * 24
+
+def raise_unless_unauthenticated(view, request):
+    # Hack from SO due to https://github.com/brack3t/django-braces/issues/181 bug
+    if not request.user.is_authenticated():
+        return redirect('/konta/login/?next=%s' % request.path)
+    return None
+
 
 class ApiListViewMixin(JSONResponseMixin):
     def get(self, request, *args, **kwargs):
@@ -16,15 +24,17 @@ class StatsIndexView(TemplateView):
     template_name = 'stats/index.html'
 
 
-class StatsCaseCreatedView(SuperuserRequiredMixin, TemplateView):
+class StatsCaseCreatedView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/cases/created.html'
+    raise_exception = raise_unless_unauthenticated
 
-
-class StatsCaseCreatedRenderView(SuperuserRequiredMixin, TemplateView):
+class StatsCaseCreatedRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/cases/created.html'
+    raise_exception = raise_unless_unauthenticated
 
+class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
+    raise_exception = raise_unless_unauthenticated
 
-class StatsCaseCreatedApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
     def get_object_list(self):
         return (
             CaseModel.objects.annotate(
@@ -63,15 +73,19 @@ class StatsCaseCreatedApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
         )
 
 
-class StatsCaseReactionView(SuperuserRequiredMixin, TemplateView):
+class StatsCaseReactionView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/cases/reaction.html'
+    raise_exception = raise_unless_unauthenticated
 
 
-class StatsCaseReactionRenderView(SuperuserRequiredMixin, TemplateView):
+class StatsCaseReactionRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/cases/reaction.html'
+    raise_exception = raise_unless_unauthenticated
 
 
-class StatsCaseReactionApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
+class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
+    raise_exception = raise_unless_unauthenticated
+
     def get_object_list(self):
         qs = (
             CaseModel.objects.filter(
@@ -105,15 +119,19 @@ class StatsCaseReactionApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
         } for date in sorted(deltas.keys())]
 
 
-class StatsCaseUnansweredView(SuperuserRequiredMixin, TemplateView):
+class StatsCaseUnansweredView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/cases/unanswered.html'
+    raise_exception = raise_unless_unauthenticated
 
 
-class StatsCaseUnansweredRenderView(SuperuserRequiredMixin, TemplateView):
+class StatsCaseUnansweredRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/cases/unanswered.html'
+    raise_exception = raise_unless_unauthenticated
 
 
-class StatsCaseUnansweredApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
+class StatsCaseUnansweredApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
+    raise_exception = raise_unless_unauthenticated
+
     def get_object_list(self):
         qs =  (
             CaseModel.objects.filter(
