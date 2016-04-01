@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-12-07 00:59+0100\n"
+"POT-Creation-Date: 2016-04-01 02:45+0200\n"
 "PO-Revision-Date: 2015-12-07 01:04+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
@@ -21,49 +21,47 @@ msgstr ""
 msgid "Signup"
 msgstr "Rejestracja"
 
-#: login_form.py:14 models.py:20
+#: login_form.py:14 models.py:19
 msgid "Login"
 msgstr "Nazwa użytkownika / użytkowniczki"
 
-#: models.py:19
+#: models.py:18
 msgid "Username or e-mail"
 msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
 
-#: models.py:77
+#: models.py:78
 msgid "Avatar"
 msgstr "Avatar"
 
-#: models.py:78
+#: models.py:79
 msgid "Codename"
 msgstr "Kryptonim"
 
-#: models.py:136 templates/users/_sidebar.html:3
+#: models.py:138 templates/users/_sidebar.html:3
 #: templates/users/user_detail.html:3 templates/users/user_form.html:4
 #: templates/users/user_form.html.py:15
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: models.py:137 templates/users/base.html:5
+#: models.py:139 templates/users/base.html:5
 #: templates/users/user_filter.html:18
-#| msgid "Users list"
 msgid "Users"
 msgstr "Wykaz użytkowników"
 
-#: models.py:142 templates/users/user_detail.html:16
+#: models.py:144 templates/users/user_detail.html:16
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:143
+#: models.py:145
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: models.py:146 templates/users/profile_form.html:7
+#: models.py:148 templates/users/profile_form.html:7
 #: templates/users/profile_form.html:10 templates/users/user_detail.html:26
 msgid "Profile"
 msgstr "Profil"
 
-#: models.py:147
-#| msgid "Profile"
+#: models.py:149
 msgid "Profiles"
 msgstr "Profile"
 

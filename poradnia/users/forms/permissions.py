@@ -1,4 +1,4 @@
-import autocomplete_light.shortcuts as autocomplete_light
+from autocomplete_light.shortcuts import MultipleChoiceWidget
 from atom.ext.crispy_forms.forms import SingleButtonMixin
 from django import forms
 from django.contrib.auth import get_user_model
@@ -11,20 +11,20 @@ class PermissionsTranslationMixin(object):
     def __init__(self, *args, **kwargs):
         super(PermissionsTranslationMixin, self).__init__(*args, **kwargs)
         self.fields['permissions'].choices = [(key, _(value))
-            for key, value in self.fields['permissions'].choices]
+                                              for key, value in self.fields['permissions'].choices]
 
 
 class TranslatedUserObjectPermissionsForm(SingleButtonMixin, PermissionsTranslationMixin,
-        UserObjectPermissionsForm):
+                                          UserObjectPermissionsForm):
     pass
 
 
 class TranslatedManageObjectPermissionForm(SingleButtonMixin, PermissionsTranslationMixin,
-        BaseObjectPermissionsForm):
+                                           BaseObjectPermissionsForm):
     users = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(), required=True,
-        widget=autocomplete_light.MultipleChoiceWidget('UserAutocomplete'))
+                                           widget=MultipleChoiceWidget('UserAutocomplete'))
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, actor, *args, **kwargs):
         self.user = kwargs.pop('user')
         self.staff_only = kwargs.pop('staff_only', False)
         super(TranslatedManageObjectPermissionForm, self).__init__(*args, **kwargs)

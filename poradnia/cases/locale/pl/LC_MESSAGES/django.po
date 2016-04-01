@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-03-07 21:30+0100\n"
-"PO-Revision-Date: 2016-03-07 21:30+0100\n"
+"POT-Creation-Date: 2016-04-01 02:45+0200\n"
+"PO-Revision-Date: 2016-04-01 02:46+0200\n"
 "Last-Translator: Tomasz Zając <zajactomasz1@yahoo.com>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -51,12 +51,12 @@ msgstr "Dowolny stan"
 msgid "Default"
 msgstr "Domyślne"
 
-#: filters.py:59 models.py:94 templates/cases/case_detail.html.py:74
+#: filters.py:59 models.py:94 templates/cases/case_detail.html:74
 #: templates/cases/case_filter.html:33
 msgid "Dead-line"
 msgstr "Termin"
 
-#: filters.py:60 filters.py:79 templates/cases/case_filter.html.py:31
+#: filters.py:60 filters.py:79 templates/cases/case_filter.html:31
 msgid "ID"
 msgstr "ID"
 
@@ -76,19 +76,19 @@ msgstr "Ostatnia czynność"
 msgid "Last received"
 msgstr "Ostatnio otrzymano"
 
-#: forms.py:44 forms.py:58
+#: forms.py:43 forms.py:57
 msgid "Grant"
 msgstr "Przyznaj"
 
-#: forms.py:48
+#: forms.py:47
 msgid "User"
 msgstr "Użytkownik"
 
-#: forms.py:50
+#: forms.py:49
 msgid "Permissions group"
 msgstr "Grupa uprawnień"
 
-#: forms.py:80 templates/cases/case_close.html.py:9
+#: forms.py:79 templates/cases/case_close.html:9
 #: templates/cases/case_detail.html:35
 msgid "Close"
 msgstr "Zamknij"
@@ -173,13 +173,13 @@ msgstr "Może zamknąć sprawę"
 msgid "Name"
 msgstr "Nazwa"
 
-#: models.py:303 templates/cases/_case_form_permission.html.py:10
+#: models.py:303 templates/cases/_case_form_permission.html:10
 msgid "Permissions"
 msgstr "Uprawnienia"
 
 #: templates/cases/_case_form_permission.html:8
-#: templates/cases/_sidebar.html:3 templates/cases/base.html.py:3
-#: templates/cases/case_close.html:7 templates/cases/case_detail.html.py:19
+#: templates/cases/_sidebar.html:3 templates/cases/base.html:3
+#: templates/cases/case_close.html:7 templates/cases/case_detail.html:19
 #: templates/cases/case_form.html:7
 msgid "Cases"
 msgstr "Sprawy"
@@ -201,7 +201,7 @@ msgstr "Projekt"
 msgid "New case"
 msgstr "Nowa sprawa"
 
-#: templates/cases/_sidebar.html:8 templates/cases/case_filter.html.py:20
+#: templates/cases/_sidebar.html:8 templates/cases/case_filter.html:20
 msgid "Cases index"
 msgstr "Wykaz spraw"
 
@@ -229,7 +229,7 @@ msgstr "dodaj kolejne"
 msgid "remove"
 msgstr "usuń"
 
-#: templates/cases/case_detail.html:32 templates/cases/case_form.html.py:9
+#: templates/cases/case_detail.html:32 templates/cases/case_form.html:9
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -317,8 +317,8 @@ msgstr "Dodaj nowego użytkownika"
 
 #: templates/cases/case_form_permission_update.html:5
 #, python-format
-msgid "Update permission of  %(user)s"
-msgstr "Aktualizacja uprawnień użytkownika %(user)s"
+msgid "Update permission of %(action_user)s"
+msgstr "Aktualizacja uprawnień użytkownika %(action_user)s"
 
 #: views/cases.py:38
 msgid "Letter"
@@ -338,17 +338,17 @@ msgstr "Pomyślnie zaktualizowano \"%(object)s\""
 msgid "Successfully closed \"%(object)s\"."
 msgstr "Pomyślnie zamknięto \"%(object)s\""
 
-#: views/permissions.py:42
+#: views/permissions.py:44
 #, python-format
 msgid "Success granted permission of %(user)s to %(case)s"
 msgstr "Nadano uprawnienia %(user)s do sprawy %(case)s"
 
-#: views/permissions.py:74
+#: views/permissions.py:85
 #, python-format
 msgid "Updated permission %(user)s to %(case)s!"
 msgstr "Zaktualizowano uprawniania %(user)s do sprawy %(case)s"
 
-#: views/permissions.py:87
+#: views/permissions.py:98
 #, python-format
 msgid "%(user)s granted permissions from %(group)s!"
 msgstr "%(user)s przyznano uprawnienia grupy %(group)s!"
