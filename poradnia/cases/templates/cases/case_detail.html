@@ -31,7 +31,7 @@
         {% if 'change_case' in case_perms %}
         <a class="btn btn-primary" href="{{ object.get_edit_url }}"><i class="fa fa-pencil-square-o"></i> {% trans 'Edit'%}</a>
         {% endif %}
-        {% if 'can_close_case' in case_perms %}
+        {% if 'can_close_case' in case_perms and object.status != object.STATUS.closed %}
         <a class="btn btn-primary" href="{{ object.get_close_url }}"><i class="fa fa-close"></i> {% trans 'Close'%}</a>
         {% endif %}
       </div>
