@@ -40,7 +40,7 @@ https://github.com/ad-m/django-atom/archive/v0.11.0.zip
 django-tinymce==2.3.0
 django-tinycontent==0.5.1
 icalendar==3.9.2
-html2text==2016.1.8
+html2text==2016.4.2
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.6.1
 raven==5.12.0
