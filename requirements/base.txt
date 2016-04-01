@@ -15,7 +15,7 @@ sorl-thumbnail==12.3
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==0.24.1
+django-allauth==0.25.2
 
 # For the persistance stores
 mysqlclient==1.3.7
@@ -26,21 +26,21 @@ django-autoslug==1.9.3
 
 # Useful things
 # Time zones support
-pytz==2015.7
+pytz==2016.3
 
 # Your custom requirements go here
-django-guardian==1.4.1
-django-mailbox==4.4.6
+django-guardian==1.4.2
+django-mailbox==4.4.7
 claw==1.3.0
-django-filter==0.12.0
+django-filter==0.13.0
 django-autocomplete-light==2.3.3 # rq.filter: <3.0.0
 django-multiupload==0.5
 https://github.com/ad-m/django-flatpages-tinymce/archive/patch-1.zip
 https://github.com/ad-m/django-atom/archive/v0.11.0.zip
-django-tinymce==2.2.0
+django-tinymce==2.3.0
 django-tinycontent==0.5.1
 icalendar==3.9.2
 html2text==2016.1.8
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.6.1
-raven==5.11.1
+raven==5.12.0
