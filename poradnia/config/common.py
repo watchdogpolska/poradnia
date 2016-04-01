@@ -292,6 +292,7 @@ LOGGING = {
 # Your common stuff: Below this line define 3rd party library settings
 # Guardian settings
 ANONYMOUS_USER_ID = -1
+ANONYMOUS_USER_NAME = 'AnonymousUser'
 GUARDIAN_MONKEY_PATCH = False
 
 LANGUAGES = (

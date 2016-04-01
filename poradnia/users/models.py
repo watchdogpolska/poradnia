@@ -11,6 +11,7 @@ from django.db.models import Q, Count
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
 from guardian.mixins import GuardianUserMixin
+from guardian.utils import get_anonymous_user
 from sorl.thumbnail import ImageField
 
 from template_mail.utils import send_tpl_email
@@ -34,7 +35,8 @@ class UserQuerySet(QuerySet):
         return self.annotate(case_assigned=c)
 
     def registered(self):
-        return self.exclude(pk=settings.ANONYMOUS_USER_ID)
+        user = get_anonymous_user()
+        return self.exclude(pk=user.pk)
 
 
 class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
