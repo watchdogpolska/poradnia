@@ -29,8 +29,8 @@ django-autoslug==1.9.3
 pytz==2016.3
 
 # Your custom requirements go here
-django-guardian==1.4.2
-django-mailbox==4.4.7
+django-guardian==1.4.4
+django-mailbox==4.4.8
 claw==1.3.0
 django-filter==0.13.0
 django-autocomplete-light==2.3.3 # rq.filter: <3.0.0
@@ -40,7 +40,7 @@ https://github.com/ad-m/django-atom/archive/v0.11.0.zip
 django-tinymce==2.3.0
 django-tinycontent==0.5.1
 icalendar==3.9.2
-html2text==2016.1.8
+html2text==2016.4.2
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.6.1
 raven==5.12.0
