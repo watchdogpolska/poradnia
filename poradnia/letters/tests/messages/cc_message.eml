@@ -1,0 +1,72 @@
+Return-path: <SRS0=OLHwAW=NS=gmail.com=[[CENZURA___1]]@porady.siecobywatelska.pl>
+Envelope-to: sprawa-639@porady.siecobywatelska.pl
+Delivery-date: Mon, 18 Jan 2016 15:31:15 +0100
+Received: from mail-wm0-f53.google.com ([74.125.82.53])
+    by s50.hekko.net.pl with esmtps (TLSv1:RC4-SHA:128)
+    (Exim 4.86)
+    (envelope-from <[[CENZURA___1]]@gmail.com>)
+    id 1aLApt-0001Qw-5m
+    for sprawa-639@porady.siecobywatelska.pl; Mon, 18 Jan 2016 15:31:15 +0100
+Received: by mail-wm0-f53.google.com with SMTP id 123so54686333wmz.0
+        for <sprawa-639@porady.siecobywatelska.pl>; Mon, 18 Jan 2016 06:31:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20120113;
+        h=mime-version:sender:in-reply-to:references:date:message-id:subject
+         :from:to:cc:content-type;
+        bh=LbP/fPx6ZsmQjMYGpsXWdWVAgdqLqsEWwM+sRSgHoOA=;
+        b=Sn0OFXgg27Y/hj1XBcRxO9uqbWZRX4szxAkdulBpZSJ16j0Qt/M1QTCaOeQqi4Blhx
+         5gyXlCTUL22y0capWMXGdj+1uh+XYhWOgQm/M6rwmS1AKJg/Cg0haDF+GUL10p/Fa9m/
+         ekxs9wG2zWPodA2gBnly6chKaYGcU6SoUknDIoEXBOtPpuxIoJqP9wcG1VgWdsZ0mLRQ
+         s+4MKkW8Gq0tyCcLqjWbetmu39lBZVxhqf8xxKfHhYuxm25nZL7Q8qQ07Vq5CSzdeFU9
+         zsVyrVJS9ctcor98LOHLQ4JyEPeXRszAHu4PdNXbwM39AENhg9PuvG+S1aDpUd4jZDBN
+         ZHhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20130820;
+        h=x-gm-message-state:mime-version:sender:in-reply-to:references:date
+         :message-id:subject:from:to:cc:content-type;
+        bh=LbP/fPx6ZsmQjMYGpsXWdWVAgdqLqsEWwM+sRSgHoOA=;
+        b=GUU0JkLxeml9YdL/81Dn8fo3r29ThQOeyMJ6yR1OYqZcuOptMxoXQIprejq7WUPMk9
+         oTaElkjzGcUMI1UbI4ir/2MlVUgnySIQRVdpzByZfV9HO1bewUHPpITjv3ZMRSyjQTm1
+         5sUNGzThPpoiBZlzP8JUtHY2psDuRoMlcZdnIetxtQAgcNrYBunlpujRkE1aknbu0ic9
+         P/3p2yloRAQ7vqPYWpfX4GFcqTEd9u5tjEov0yhr5kVQUaP7dCMY+gLmXkR5bWkR6Vi5
+         V2j8OLVR7cmBfn5PN8AM6BkCB+9sxNX6StMgR22BVmlPNwGlZTnkrOHhwqmHI1vqKNsG
+         o9Qg==
+X-Gm-Message-State: AG10YORTnMYxOPX07fA6oWnGUUfXun0cm3k8g1z6L8PAUklzrt9NvF+4W0Z2o1THAc7wPaRU+ooR6TJxOJaMeQ==
+MIME-Version: 1.0
+X-Received: by 10.28.89.195 with SMTP id n186mr14064388wmb.49.1453127471205;
+ Mon, 18 Jan 2016 06:31:11 -0800 (PST)
+Sender: [[CENZURA___1]]@gmail.com
+Received: by 10.194.44.193 with HTTP; Mon, 18 Jan 2016 06:31:10 -0800 (PST)
+In-Reply-To: <CADA-hANw2VYyHyc7H4iVN3vG0NxCpmQmbZ2i7TrdR6xQG025Wg@mail.gmail.com>
+References: <CADA-hAPfhNTPZDekQc=QASQ7RqP3x43UGA_GiCNoPxuMxDWZ9Q@mail.gmail.com>
+    <CAM-EUyU_4eewg3aPMtvuQfRECDQqFTzf1aM==xkvaZ_N3t35WQ@mail.gmail.com>
+    <CADA-hAPauTGKLp__h+LxiWYHwSdGKHFWoHVUsRAyaAVswOQ+OQ@mail.gmail.com>
+    <CADToESei37f2qgM8foncE8bDn1-1AtNf-DFrhPkw-XDFCkHbwg@mail.gmail.com>
+    <CADA-hANsoa2ACD_9P=-HPchXP5=LcdZTEu97oQZ3+YUYyP-DKg@mail.gmail.com>
+    <CADToESdsJC4JM+7NOEs96FjnirVO65m=7i9MNPAAb7VSjNKzTQ@mail.gmail.com>
+    <CADA-hAMyucMtW=H_1dPZrxAvH=_Y4AOKCJNiB+2z4VpqP2JX6w@mail.gmail.com>
+    <CADA-hANfd0eG1rOE=8V055KGWMTSmApuso5f2FeLBgFHvhzZhw@mail.gmail.com>
+    <CADA-hAOf5+9FKjXswtddLdBjVbR35RhQzeZFRw9sGwx1egURLA@mail.gmail.com>
+    <CADA-hAOvFNt3kBFhmOdOoKE3Br7uKBReaAMw9R-2sNwpkVQUkQ@mail.gmail.com>
+    <CADA-hAPzVQJM3JQaDcHP7pYspiLRtxwSuJuyEYDxA8K8f8CLRw@mail.gmail.com>
+    <CADToEScBHdroDuvmZO8haL9YJZqKJPyvxQ4pzK2wLC_zB7R13A@mail.gmail.com>
+    <CADA-hAPHHf67UgjUq3feKnLhbKfVvo4kX5EGEcpy9PFhcKb3ug@mail.gmail.com>
+    <CADToESfZAreYxOMTUZfjuVmf61EuKZd5hoFxM918Ec_Xpsq8ug@mail.gmail.com>
+    <CADA-hAMRorz1js+F+FRcnar0w_AV0u+vd5CYoFteR4TQBQW1Cw@mail.gmail.com>
+    <CADA-hAN7=SswKDv7-vOpgxUEzSY5UCnyupp4Z+8rgfgkS9CSQA@mail.gmail.com>
+    <CADA-hAMDtnG2zcrKhsLR5b481Om2pFs+5Y01U3Nk8OYqExhkXg@mail.gmail.com>
+    <CADA-hAO269QbsKwsoz_ZLOujjgtKX7G2rzuW4jg_t2wViNiKKQ@mail.gmail.com>
+    <CADA-hAMQGveuUQecfY6RC8ZhjUO5pWFvMVeC_FdSO3CB4KVbCA@mail.gmail.com>
+    <CADA-hAMdKtO8DffDSXzh9wfMLnN4QA17gr+nM0Wa5S6djYvBzA@mail.gmail.com>
+    <CADA-hAMrV6CwQjJnU9HaibQAtdFBKwW_fi=zgJMLm1sSNRfeBQ@mail.gmail.com>
+    <CADA-hANw2VYyHyc7H4iVN3vG0NxCpmQmbZ2i7TrdR6xQG025Wg@mail.gmail.com>
+Date: Mon, 18 Jan 2016 15:31:10 +0100
+X-Google-Sender-Auth: AI--1s9Gft81_B4rgIjb4BJIXiQ
+Message-ID: <CADA-hAMtV7STFy3+z04tVj3MYPooqpdzqpQ4cv-c9tLDZzfjKQ@mail.gmail.com>
+Subject: Re: Szymon Osowski - sprawa Stowarzyszenia "Ruska Bursa"
+From: user@example.com
+To: =?UTF-8?Q?Szymon_Osowski_Sie=C4=87_Obywatelska_Watchdog_Polska?= <[[CENZURA___5]]@siecobywatelska.pl>
+Cc: sprawa-639@porady.siecobywatelska.pl, 
+    =?UTF-8?B?UGF1bGEgS8WCdWNpxYRza2E=?= <[[CENZURA___4]]@siecobywatelska.pl>
+Content-Type: multipart/mixed; boundary=001a114128a2bd14ab05299c9a07
+X-HEKKO: 74.125.82.53:
