@@ -3,16 +3,10 @@ from django.shortcuts import redirect
 from braces.views import JSONResponseMixin, LoginRequiredMixin, SuperuserRequiredMixin
 from django.views.generic import TemplateView
 from django.views.generic import View
+
 from cases.models import Case as CaseModel
 from letters.models import Letter as LetterModel
-
-SECONDS_IN_A_DAY = 60 * 60 * 24
-
-def raise_unless_unauthenticated(view, request):
-    # Hack from SO due to https://github.com/brack3t/django-braces/issues/181 bug
-    if not request.user.is_authenticated():
-        return redirect('/konta/login/?next=%s' % request.path)
-    return None
+from .utils import raise_unless_unauthenticated, fill_gaps, SECONDS_IN_A_DAY
 
 
 class ApiListViewMixin(JSONResponseMixin):
@@ -28,9 +22,11 @@ class StatsCaseCreatedView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateV
     template_name = 'stats/cases/created.html'
     raise_exception = raise_unless_unauthenticated
 
+
 class StatsCaseCreatedRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/cases/created.html'
     raise_exception = raise_unless_unauthenticated
+
 
 class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
     raise_exception = raise_unless_unauthenticated
