@@ -35,6 +35,7 @@ urlpatterns = [
     # Utils
     url(r'^autocomplete/', include('autocomplete_light.urls')),
     url(r'^uwagi/', include('tasty_feedback.urls', namespace='tasty_feedback')),
+    url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 #if settings.DEBUG:
