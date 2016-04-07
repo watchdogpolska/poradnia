@@ -50,6 +50,11 @@ class EventUpdateView(UserFormKwargsMixin, FormValidMessageMixin, UpdateView):
         obj.case.perm_check(self.request.user, 'can_add_record')
         return obj
 
+    def get_form_kwargs(self, *args, **kwargs):
+        kwargs = super(EventUpdateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs['case'] = self.object.case
+        return kwargs
+
     def get_form_valid_message(self):
         return _("Success updated event %(event)s") % {'event': self.object}
 
