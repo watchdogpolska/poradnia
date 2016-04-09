@@ -127,7 +127,6 @@ class ReceiveEmailTestCase(TestCase):
         mail_process(sender=self.mailbox, message=msg)
         self.assertEqual(user, msg.letter_set.all()[0].created_by)
 
-    @unittest.expectedFailure
     def test_cc_message(self):
         case = CaseFactory(pk=639)
         message = self._get_email_object('cc_message.eml')
