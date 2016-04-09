@@ -1,27 +1,26 @@
 from __future__ import print_function, unicode_literals
 
 import os
+from os.path import basename
 
 import claw
 import html2text
-from atom.models import AttachmentBase
+from cases.models import Case
 from claw import quotations
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.files import File
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from django_mailbox.models import Message
 from django_mailbox.signals import message_received
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
-
-from cases.models import Case
 from records.models import AbstractRecord, AbstractRecordQuerySet
 from template_mail.utils import send_tpl_email
+from .utils import date_random_path
 
 claw.init()
 
@@ -118,8 +117,23 @@ class Letter(AbstractRecord):
         ordering = ['-created_on']
 
 
-class Attachment(AttachmentBase):
+class Attachment(models.Model):
     letter = models.ForeignKey(Letter)
+    attachment = models.FileField(upload_to=date_random_path, verbose_name=_("File"))
+
+    @property
+    def filename(self):
+        return basename(self.attachment.name)
+
+    def __unicode__(self):
+        return "%s" % (self.filename)
+
+    def get_absolute_url(self):
+        return self.attachment.url
+
+    class Meta:
+        verbose_name = _('Attachment')
+        verbose_name_plural = _('Attachments')
 
 
 @receiver(message_received)
