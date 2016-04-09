@@ -50,14 +50,12 @@ class CaseQuerySet(QuerySet):
         return self.filter(condition)
 
     def by_msg(self, message):
-        cond = Q()
         envelope = message.get_email_object().get('Envelope-To')
         result = match('^sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl$', envelope)
         if result:
-            cond = cond | Q(pk=result.group('pk'))
-        if not cond.children:
+            return self.filter(pk=result.group('pk'))
+        else:
             return self.none()
-        return self.filter(cond)
 
     def order_for_user(self, user, is_next):
         order = '' if is_next else '-'
