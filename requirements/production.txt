@@ -3,8 +3,5 @@
 -r base.txt
 Django==1.8.12 # rq.filter: >=1.8,<1.9
 gunicorn==19.4.5
-django-storages==1.4
-Collectfast==0.2.3
 gevent==1.1.1
 boto==2.39.0
-
