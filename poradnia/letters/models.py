@@ -159,12 +159,6 @@ def mail_process(sender, message, **args):
     # Identify case
     try:  # TODO: Is it old case?
         case = Case.objects.by_msg(message).get()
-    except Case.MultipleObjectsReturned:  # How many cases?
-        print("Multiple case spam")
-        send_tpl_email(template_name='case/email/case_many.txt',
-                       recipient_list=[message.from_address[0]],
-                       context={'subject': message.subject})
-        return
     except Case.DoesNotExist:
         print("Case creating")
         case = Case(name=message.subject, created_by=user, client=user)
