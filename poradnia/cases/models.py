@@ -50,10 +50,9 @@ class CaseQuerySet(QuerySet):
         return self.filter(condition)
 
     def by_msg(self, message):
-        import re
         cond = Q()
         envelope = message.get_email_object().get('Envelope-To')
-        result = re.match('^sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl$', envelope)
+        result = match('^sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl$', envelope)
         if result:
             cond = cond | Q(pk=result.group('pk'))
         if not cond.children:
