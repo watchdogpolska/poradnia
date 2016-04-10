@@ -23,10 +23,11 @@ var yAxis = d3.svg.axis()
 
 var parseDate = d3.time.format("%Y-%m-%d").parse;
 
-var line = d3.svg.line()
-    .interpolate("basis")
+var area = d3.svg.area()
+    .interpolate("monotone")
     .x(function(d) { return x(d.date); })
-    .y(function(d) { return y(d.time_delta); });
+    .y0(function(d) { return y(0); })
+    .y1(function(d) { return y(d.time_delta); });
 
 var chart = d3.select(".chart")
     .attr("viewBox", "0 0 "
@@ -60,9 +61,10 @@ function reaction_chart(error, data) {
 
   chart.append("path")
       .datum(data)
-      .attr("class", "line")
-      .attr("d", line)
-      .style("stroke", color("time_delta"))
+      .attr("class", "area")
+      .attr("d", area)
+      .style("fill", color("time_delta"));
+
 
   var legend = chart.selectAll('.legend')
       .data(color.domain())

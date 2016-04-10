@@ -24,7 +24,7 @@ var yAxis = d3.svg.axis()
 var parseDate = d3.time.format("%Y-%m-%d").parse;
 
 var area = d3.svg.area()
-    .interpolate("basis")
+    .interpolate("monotone")
     .x(function(d) { return x(d.date); })
     .y0(function(d) { return y(d.y0); })
     .y1(function(d) { return y(d.y0 + d.y); });
@@ -80,7 +80,7 @@ function status_chart(error, data) {
   status.append("path")
       .attr("class", "area")
       .attr("d", function(d) { return area(d.values); })
-      .style("fill", function(d, i) { return color(d.status); });
+      .style("fill", function(d) { return color(d.status); });
 
   var legend = chart.selectAll('.legend')
       .data(color.domain())
