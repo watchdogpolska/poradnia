@@ -21,6 +21,8 @@ var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
 
+var parseDate = d3.time.format("%Y-%m-%d").parse;
+
 var area = d3.svg.area()
     .interpolate("monotone")
     .x(function(d) { return x(d.date); })
@@ -39,7 +41,6 @@ var chart = d3.select(".chart")
 function status_chart(error, data) {
   if (error) throw error;
 
-  var parseDate = d3.time.format("%Y.%m").parse;
   data.forEach(function(d) {
     d.date = parseDate(d.date);
   });

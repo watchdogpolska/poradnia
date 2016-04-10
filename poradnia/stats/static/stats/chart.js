@@ -21,6 +21,8 @@ var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
 
+var parseDate = d3.time.format("%Y-%m-%d").parse;
+
 var area = d3.svg.area()
     .interpolate("basis")
     .x(function(d) { return x(d.date); })
@@ -42,11 +44,8 @@ var chart = d3.select(".chart")
 function status_chart(error, data) {
   if (error) throw error;
 
-  var parseDate = d3.time.format("%Y%m").parse;
   data.forEach(function(d) {
-    d.date = parseDate(d.year.toString() + d.month.toString());
-    delete d.year;
-    delete d.month;
+    d.date = parseDate(d.date);
   });
 
   x.domain(d3.extent(data, function(d) { return d.date; }));
