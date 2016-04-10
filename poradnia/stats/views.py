@@ -1,3 +1,6 @@
+from datetime import datetime
+from dateutil.rrule import MONTHLY
+
 from django.db.models import F, Func, IntegerField, Case, Sum, When, Min, Count
 from django.shortcuts import redirect
 from braces.views import JSONResponseMixin, LoginRequiredMixin, SuperuserRequiredMixin
@@ -11,7 +14,7 @@ from .utils import raise_unless_unauthenticated, GapFiller, SECONDS_IN_A_DAY, DA
 
 class ApiListViewMixin(JSONResponseMixin):
     def get(self, request, *args, **kwargs):
-        return self.render_json_response(list(self.get_object_list()))
+        return self.render_json_response(self.get_object_list())
 
 
 class StatsIndexView(TemplateView):
@@ -32,7 +35,7 @@ class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLis
     raise_exception = raise_unless_unauthenticated
 
     def get_object_list(self):
-        return (
+        qs = list(
             CaseModel.objects.annotate(
                                         month=Func(F('created_on'),
                                                    function='month',
@@ -68,6 +71,20 @@ class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLis
             .order_by(F('year'), F('month'))
         )
 
+        qs = [{
+            'date': datetime(obj['year'], obj['month'], 1),
+            'open': obj['open'],
+            'assigned': obj['assigned'],
+            'closed': obj['closed']
+        } for obj in qs]
+
+        return GapFiller(
+            qs,
+            MONTHLY,
+            'date',
+            DATE_FORMAT
+        ).fill_gaps()
+
 
 class StatsCaseReactionView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/cases/reaction.html'
@@ -101,18 +118,25 @@ class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLi
         )
 
         deltas = {}
-        for el in qs:
-            date = str(el['created_on'].year) + '.' + str(el['created_on'].month).zfill(2)
-            time_delta = (el['first_accepted'] - el['created_on']).total_seconds()
+        for obj in qs:
+            date = datetime(obj['created_on'].year, obj['created_on'].month, 1)
+            time_delta = (obj['first_accepted'] - obj['created_on']).total_seconds()
             if date in deltas:
                 deltas[date].append(time_delta)
             else:
                 deltas[date] = [time_delta]
 
-        return [{
+        qs = [{
             'date': date,
             'time_delta': int(sum(deltas[date]) / len(deltas[date]) / SECONDS_IN_A_DAY)
         } for date in sorted(deltas.keys())]
+
+        return GapFiller(
+            qs,
+            MONTHLY,
+            'date',
+            DATE_FORMAT
+        ).fill_gaps()
 
 
 class StatsCaseUnansweredView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
@@ -147,7 +171,14 @@ class StatsCaseUnansweredApiView(LoginRequiredMixin, SuperuserRequiredMixin, Api
             'month', 'year', 'count'
         ).order_by(F('year'), F('month'))
 
-        return [{
-            'date': str(el['year']) + '.' + str(el['month']).zfill(2),
-            'count': el['count']
-        } for el in qs]
+        qs = [{
+            'date': datetime(obj['year'], obj['month'], 1),
+            'count': obj['count']
+        } for obj in qs]
+
+        return GapFiller(
+            qs,
+            MONTHLY,
+            'date',
+            DATE_FORMAT
+        ).fill_gaps()
