@@ -6,7 +6,7 @@ from django.views.generic import View
 
 from cases.models import Case as CaseModel
 from letters.models import Letter as LetterModel
-from .utils import raise_unless_unauthenticated, fill_gaps, SECONDS_IN_A_DAY
+from .utils import raise_unless_unauthenticated, GapFiller, SECONDS_IN_A_DAY, DATE_FORMAT
 
 
 class ApiListViewMixin(JSONResponseMixin):
