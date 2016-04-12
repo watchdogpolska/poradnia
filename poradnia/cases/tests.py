@@ -253,7 +253,7 @@ class CaseCloseTestCase(TestCase):
 
     def test_close_case(self):
         assign_perm('cases.can_close_case', self.user, self.object)
-        resp = self.client.post(self.object.get_close_url())
+        resp = self.client.post(self.object.get_close_url(), {'notify': True})
         self.assertEqual(
             resp.context['target'].status,
             Case.STATUS.closed)
