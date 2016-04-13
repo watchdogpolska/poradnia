@@ -9,7 +9,7 @@ def delete_empty(apps, schema_editor):
     # We get the model from the versioned app registry;
     # if we directly import it, it'll be the wrong version
     Case = apps.get_model("cases", "Case")
-    pks = Case.objects.annotate(record_count=Count('record')).filter(record_count=0).values('id')
+    pks = [x[0] for x in Case.objects.annotate(record_count=Count('record')).filter(record_count=0).values_list('id')]
     Case.objects.filter(pk__in=pks).update(status='2')
 
 
