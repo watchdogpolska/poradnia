@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-import datetime
+from django.utils.timezone import now
 
 from django.conf import settings
 from django.db import migrations, models
@@ -56,7 +56,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='advice',
             name='grant_on',
-            field=models.DateTimeField(default=datetime.datetime.now, verbose_name='Grant on'),
+            field=models.DateTimeField(default=now, verbose_name='Grant on'),
             preserve_default=True,
         ),
         migrations.AlterField(
