@@ -138,8 +138,8 @@ class Attachment(models.Model):
 
 @receiver(message_received)
 def mail_process(sender, message, **args):
-    print ('I just recieved a messsage "{title}"" '.format(title=message.subject.encode('utf-8')) +
-           'in mailbox {mbox}'.format(mbox=message.mailbox.name))
+    # print ('I just recieved a messsage "{title}"" '.format(title=message.subject.encode('utf-8')) +
+    #        'in mailbox {mbox}'.format(mbox=message.mailbox.name))
     # new_user + poradnia@ => new_user @ new_user
     # new_user + case => FAIL
     # old_user + case => PASS
