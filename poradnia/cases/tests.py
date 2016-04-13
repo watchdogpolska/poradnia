@@ -8,6 +8,7 @@ from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
 from django.utils.timezone import now
 from guardian.shortcuts import assign_perm
+from django.core import mail
 
 from cases.admin import CaseAdmin
 from cases.factories import CaseFactory
@@ -16,6 +17,7 @@ from cases.models import Case
 from letters.factories import LetterFactory
 from letters.models import Letter
 from users.factories import UserFactory
+from cases.forms import CaseCloseForm
 
 
 class CaseQuerySetTestCase(TestCase):
@@ -245,7 +247,8 @@ class CaseAdminTestCase(TestCase):
         self.assertTrue(hasattr(obj, 'record_count'))
         self.assertEqual(admin_obj.record_count(obj), 25)
 
-class CaseCloseTestCase(TestCase):
+
+class CaseCloseViewTestCase(TestCase):
     def setUp(self):
         self.user = UserFactory()
         self.object = CaseFactory()
@@ -261,3 +264,17 @@ class CaseCloseTestCase(TestCase):
     def test_close_case_not_permitted(self):
         resp = self.client.get(self.object.get_close_url())
         self.assertEqual(resp.status_code, 403)
+
+
+class CaseCloseFormTestCase(TestCase):
+    form = CaseCloseForm
+
+    def setUp(self):
+        self.user = UserFactory()
+        self.object = CaseFactory()
+
+    def test_close_notify(self):
+        self.form({'notify': False}, user=self.user, instance=self.object).save()
+        self.assertEqual(len(mail.outbox), 0)
+        self.form({'notify': True}, user=self.user, instance=self.object).save()
+        self.assertEqual(len(mail.outbox), 1)

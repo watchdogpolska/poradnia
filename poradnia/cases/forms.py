@@ -81,11 +81,11 @@ class CaseCloseForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
         if 'instance' in kwargs:
             self.helper.form_action = kwargs['instance'].get_close_url()
 
-    def save(self, notify=False, commit=True, *args, **kwargs):
+    def save(self, commit=True, *args, **kwargs):
         obj = super(CaseCloseForm, self).save(commit=False, *args, **kwargs)
         obj.modified_by = self.user
         obj.status = Case.STATUS.closed
-        if notify:
+        if self.cleaned_data['notify']:
             obj.send_notification(self.user, staff=False, verb='closed')
         if commit:
             obj.save()

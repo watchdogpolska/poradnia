@@ -119,7 +119,6 @@ class CaseCloseView(UserFormKwargsMixin, UpdateView):
         return obj
 
     def form_valid(self, form):
-        notify = form.cleaned_data['notify']
-        obj = form.save(notify=notify)
+        obj = form.save()
         messages.success(self.request, _('Successfully closed "%(object)s".') % {'object': obj})
         return redirect(obj)
