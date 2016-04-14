@@ -66,26 +66,7 @@ function status_chart(error, data) {
       .attr("d", area)
       .style("fill", color("count"));
 
-  var legend = chart.selectAll('.legend')
-      .data(color.domain())
-    .enter()
-      .append('g')
-      .attr('class', 'legend')
-      .attr('transform', function(d, i) {
-        var height = legendRectSize + legendSpacing;
-        var horz = legendRectSize;
-        var vert = i * height;
-        return 'translate(' + horz + ',' + vert + ')';
-      });
+  var legend = d3Legend(color.domain(), {'legendSpacing': legendSpacing, 'legendRectSize': legendRectSize});
 
-  legend.append('rect')
-      .attr('width', legendRectSize)
-      .attr('height', legendRectSize)
-      .style('fill', color)
-      .style('stroke', color);
-
-  legend.append('text')
-      .attr('x', legendSpacing + legendRectSize)
-      .attr('y', legendSpacing + legendRectSize / 2)
-      .text(function(d) { return d; });
+  chart.call(legend)
 }
