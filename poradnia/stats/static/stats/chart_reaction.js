@@ -38,39 +38,6 @@ var chart = d3.select(".chart")
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-function legendWrapper(domain, config) {
-
-  var domain = domain,
-      config = config;
-
-  function legend(vis) {
-
-      var legend = vis.selectAll('.legend')
-          .data(domain)
-        .enter()
-          .append('g')
-          .attr('class', 'legend')
-          .attr('transform', function(d, i) {
-            var height = config.legendRectSize + config.legendSpacing;
-            var horz = config.legendRectSize;
-            var vert = i * height;
-            return 'translate(' + horz + ',' + vert + ')';
-          });
-
-      legend.append('rect')
-          .attr('width', config.legendRectSize)
-          .attr('height', config.legendRectSize)
-          .style('fill', (function(d) { return color(d); }));
-
-      legend.append('text')
-          .attr('x', config.legendSpacing + config.legendRectSize)
-          .attr('y', config.legendSpacing + config.legendRectSize / 2)
-          .text(function(d) { return d; });
-      }
-
-  return legend;
-}
-
 function reaction_chart(error, data) {
   if (error) throw error;
 
@@ -98,7 +65,7 @@ function reaction_chart(error, data) {
       .attr("d", area)
       .style("fill", color("time_delta"));
 
-  var legend = legendWrapper(color.domain(), {'legendSpacing': legendSpacing, 'legendRectSize': legendRectSize});
+  var legend = d3Legend(color.domain(), {'legendSpacing': legendSpacing, 'legendRectSize': legendRectSize});
 
   chart.call(legend);
 }
