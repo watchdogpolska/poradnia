@@ -27,7 +27,7 @@ class CaseFilterMixin(object):
 class PermissionChoiceFilter(django_filters.ModelChoiceFilter):
     def __init__(self, *args, **kwargs):
         kwargs.update(dict(label=_("Has access by"),
-                           action=lambda qs, x: qs.for_user(x),
+                           action=lambda qs, x: qs.for_assign(x),
                            queryset=get_user_model().objects.filter(is_staff=True).all()))
         super(PermissionChoiceFilter, self).__init__(*args, **kwargs)
 

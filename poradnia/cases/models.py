@@ -21,13 +21,16 @@ from template_mail.utils import send_tpl_email
 
 class CaseQuerySet(QuerySet):
 
-    def for_user(self, user):
-        if user.has_perm('cases.can_view_all'):
-            return self
+    def for_assign(self, user):
         content_type = ContentType.objects.get_for_model(Case)
         return self.filter(caseuserobjectpermission__permission__codename='can_view',
                            caseuserobjectpermission__permission__content_type=content_type,
                            caseuserobjectpermission__user=user)
+
+    def for_user(self, user):
+        if user.has_perm('cases.can_view_all'):
+            return self
+        return self.for_assign(user)
 
     def with_perm(self):
         return self.prefetch_related('caseuserobjectpermission_set')

@@ -2,27 +2,30 @@ from datetime import timedelta
 
 import django
 from django.contrib.admin.sites import AdminSite
+from django.core import mail
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
 from django.utils.timezone import now
 from guardian.shortcuts import assign_perm
-from django.core import mail
 
 from cases.admin import CaseAdmin
 from cases.factories import CaseFactory
 from cases.filters import StaffCaseFilter
+from cases.forms import CaseCloseForm
 from cases.models import Case
 from letters.factories import LetterFactory
 from letters.models import Letter
 from users.factories import UserFactory
-from cases.forms import CaseCloseForm
 
 
 class CaseQuerySetTestCase(TestCase):
     def setUp(self):
         self.user = UserFactory()
+
+    def test_for_assign_cant(self):
+        self.assertFalse(Case.objects.for_user(self.user).filter(pk=CaseFactory().pk).exists())
 
     def test_for_user_cant(self):
         self.assertFalse(Case.objects.for_user(self.user).filter(pk=CaseFactory().pk).exists())
@@ -31,11 +34,13 @@ class CaseQuerySetTestCase(TestCase):
         assign_perm('cases.can_view_all', self.user)
         self.assertTrue(Case.objects.for_user(self.user).filter(pk=CaseFactory().pk).exists())
 
-    def test_for_user_can_view_client(self):  # perm set by signal
-        self.assertTrue(Case.objects.for_user(self.user).filter(pk=CaseFactory(created_by=self.user).pk).exists())
+    def test_for_assign_can_view_client(self):  # perm set by signal
+        self.assertTrue(Case.objects.for_assign(self.user).filter(
+            pk=CaseFactory(created_by=self.user).pk).exists())
 
-    def test_for_user_can_view_created(self):  # perm set by signal
-        self.assertTrue(Case.objects.for_user(self.user).filter(pk=CaseFactory(client=self.user).pk).exists())
+    def test_for_assign_can_view_created(self):  # perm set by signal
+        self.assertTrue(Case.objects.for_assign(self.user).filter(
+            pk=CaseFactory(client=self.user).pk).exists())
 
     def test_with_perm(self):
         CaseFactory.create_batch(size=25)
@@ -59,14 +64,14 @@ class CaseQuerySetTestCase(TestCase):
 
     def test_order_for_user(self):
         a = repr(CaseFactory(name="CaseA",
-                             last_action=now()+timedelta(days=0),
-                             last_send=now()+timedelta(days=+1)))
+                             last_action=now() + timedelta(days=0),
+                             last_send=now() + timedelta(days=+1)))
         b = repr(CaseFactory(name="CaseB",
-                             last_action=now()+timedelta(days=+2),
-                             last_send=now()+timedelta(days=-1)))
+                             last_action=now() + timedelta(days=+2),
+                             last_send=now() + timedelta(days=-1)))
         c = repr(CaseFactory(name="CaseC",
-                             last_action=now()+timedelta(days=-1),
-                             last_send=now()+timedelta(days=+3)))
+                             last_action=now() + timedelta(days=-1),
+                             last_send=now() + timedelta(days=+3)))
         user = UserFactory(is_staff=True)
         self.assertQuerysetEqual(Case.objects.order_for_user(user, True).all(),
                                  [c, a, b])
