@@ -332,3 +332,4 @@ TEMPLATES = [
         },
     },
 ]
+FILTERS_HELP_TEXT_FILTER = False
