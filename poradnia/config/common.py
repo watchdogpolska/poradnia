@@ -52,6 +52,7 @@ THIRD_PARTY_APPS = (
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
+    'auth_imap',
     'users',  # custom users app
     'keys',
     'cases',
@@ -236,6 +237,7 @@ AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     'guardian.backends.ObjectPermissionBackend',
     "allauth.account.auth_backends.AuthenticationBackend",
+    "auth_imap.backends.IMAPAuthBackend",
 )
 
 # Some really nice defaults
@@ -332,3 +334,5 @@ TEMPLATES = [
         },
     },
 ]
+
+AUTH_IMAP_HOSTS = {'siecobywatelska.pl': {'host': 'mail.siecobywatelska.pl'}}
