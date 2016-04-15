@@ -1,11 +1,19 @@
-from unittest import skip
+import os
+
 from datetime import datetime
+from unittest import skip
 
 from dateutil.rrule import MONTHLY, WEEKLY, DAILY
 from django.test import TestCase
 from django.core.urlresolvers import reverse
 from users.factories import UserFactory
 from stats.utils import GapFiller, DATE_FORMAT
+
+def skip_non_mysql(f):
+    if os.environ['DATABASE_URL'].startswith('mysql'):
+        return f
+    else:
+        return skip("Non MySQL")(f)
 
 class StatsCaseCreatedTestCase(TestCase):
     def setUp(self):
@@ -26,7 +34,7 @@ class StatsCaseCreatedTestCase(TestCase):
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)
 
-    @skip("SQLite Error")
+    @skip_non_mysql
     def test_permission_superuser(self):
         user = UserFactory(is_superuser=True)
         self.client.login(username=user.username, password='pass')
@@ -54,7 +62,7 @@ class StatsCaseUnansweredTestCase(TestCase):
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)
 
-    @skip("SQLite Error")
+    @skip_non_mysql
     def test_permission_superuser(self):
         user = UserFactory(is_superuser=True)
         self.client.login(username=user.username, password='pass')
@@ -82,7 +90,6 @@ class StatsCaseReactionTestCase(TestCase):
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)
 
-    # @skip("SQLite Error")
     def test_permission_superuser(self):
         user = UserFactory(is_superuser=True)
         self.client.login(username=user.username, password='pass')
