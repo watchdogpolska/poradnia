@@ -38,7 +38,3 @@ class IMAPAuthBackend(object):
             user.is_staff = server.get('staff', False)
             user.save()
         return user
-
-    def get(self):
-        from .settings import HOSTS
-        return HOSTS

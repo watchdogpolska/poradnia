@@ -37,6 +37,11 @@ class IMAPAuthBackendTestCase(TestCase):
         self.assertEqual(user, None)
 
     @patch('auth_imap.settings.HOSTS', new={'example.com': {'host': 'example.com'}})
+    def test_skip_nonmail(self):
+        user = IMAPAuthBackend().authenticate("login", "X")
+        self.assertEqual(user, None)
+
+    @patch('auth_imap.settings.HOSTS', new={'example.com': {'host': 'example.com'}})
     def test_auth_success(self):
         user = IMAPAuthBackend().authenticate("login@example.com", "X", imap_cls=AuthSuccessMock)
         self.assertNotEqual(user, None)
@@ -56,11 +61,8 @@ class IMAPAuthBackendTestCase(TestCase):
         self.assertEqual(user.is_staff, True)
 
 
-class SystemCheckTestCase(TestCase):
+class CheckTestCase(TestCase):
     def test_checks(self):
-        """ Test custom system checks
-        :return: None
-        """
         self.assertFalse(check_settings(None))
 
         with self.settings(AUTHENTICATION_BACKENDS=()):
