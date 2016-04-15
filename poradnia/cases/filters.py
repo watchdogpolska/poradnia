@@ -53,7 +53,7 @@ class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterS
 
     class Meta:
         model = Case
-        fields = ['id', 'status', 'client', 'name', ]
+        fields = ['id', 'status', 'client', 'name', 'has_project']
         order_by = (
             ('default', _('Default')),
             ('deadline', _('Dead-line')),
