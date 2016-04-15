@@ -1,14 +1,15 @@
-import unittest
 import datetime
-from os.path import join, dirname
 from datetime import timedelta
-from email import message_from_file
+from os.path import dirname, join
 
 from django.test import TestCase
 from django.utils.timezone import utc
 from django_mailbox.models import Mailbox
+from guardian.shortcuts import assign_perm
 
 from cases.factories import CaseFactory
+from cases.models import Case
+from email import message_from_file
 from letters.factories import LetterFactory
 from letters.models import Letter, mail_process
 from users.factories import UserFactory
@@ -81,7 +82,7 @@ class LastQuerySetTestCase(TestCase):
         new = LetterFactory(case=self.case,
                             created_by__is_staff=False)
         self.assertEqual(Letter.objects.case(self.case).last_received(), new)
-        t = self.now-timedelta(days=10)
+        t = self.now - timedelta(days=10)
         old = LetterFactory(created_on=t,
                             case=self.case,
                             created_by__is_staff=False)
@@ -90,10 +91,10 @@ class LastQuerySetTestCase(TestCase):
         self.assertEqual(Letter.objects.case(self.case).last_received(), new)
 
     def test_lr_new_letter_from_staff(self):
-        l = LetterFactory(created_on=self.now+timedelta(days=2),
+        l = LetterFactory(created_on=self.now + timedelta(days=2),
                           case=self.case,
                           created_by__is_staff=False)
-        LetterFactory(created_on=self.now+timedelta(days=10),
+        LetterFactory(created_on=self.now + timedelta(days=10),
                       case=self.case,
                       created_by__is_staff=True)
         self.assertEqual(Letter.objects.case(self.case).last_received(), l)
@@ -111,8 +112,8 @@ class LastQuerySetTestCase(TestCase):
 
 class ReceiveEmailTestCase(TestCase):
     def setUp(self):
-        self.mailbox = Mailbox.objects.create(from_email='from@example.com')
         super(TestCase, self).setUp()
+        self.mailbox = Mailbox.objects.create(from_email='from@example.com')
 
     @staticmethod
     def _get_email_object(filename):  # See coddingtonbear/django-mailbox#89
@@ -120,19 +121,39 @@ class ReceiveEmailTestCase(TestCase):
         fp = open(path, 'rb')
         return message_from_file(fp)
 
+    def get_message(self, filename):
+        message = self._get_email_object(filename)
+        msg = self.mailbox._process_message(message)
+        msg.save()
+        return msg
+
     def test_user_identification(self):
         user = UserFactory(email='user@example.com')
-        message = self._get_email_object('cc_message.eml')
-        msg = self.mailbox._process_message(message)
-        mail_process(sender=self.mailbox, message=msg)
-        self.assertEqual(user, msg.letter_set.all()[0].created_by)
+        message = self.get_message('cc_message.eml')
+        mail_process(sender=self.mailbox, message=message)
+        self.assertEqual(user, message.letter_set.all()[0].created_by)
 
     def test_cc_message(self):
         case = CaseFactory(pk=639)
-        message = self._get_email_object('cc_message.eml')
-        msg = self.mailbox._process_message(message)
-        msg.save()
+        message = self.get_message('cc_message.eml')
+        mail_process(sender=self.mailbox, message=message)
+        self.assertEqual(case, message.letter_set.all()[0].case)
+
+    def test_closed_to_free(self):
+        case = CaseFactory(pk=639, status=Case.STATUS.closed)
+        message = self.get_message('cc_message.eml')
+        mail_process(sender=self.mailbox, message=message)
+
+        case.refresh_from_db()
+        self.assertEqual(case.status, Case.STATUS.free)
+
+    def test_closed_to_assigned(self):
+        staff = UserFactory(is_staff=True)
+        case = CaseFactory(pk=639, status=Case.STATUS.closed)
+        assign_perm('cases.can_send_to_client', staff, case)
+        msg = self.get_message('cc_message.eml')
 
         mail_process(sender=self.mailbox, message=msg)
 
-        self.assertEqual(case, msg.letter_set.all()[0].case)
+        case.refresh_from_db()
+        self.assertEqual(case.status, Case.STATUS.assigned)
