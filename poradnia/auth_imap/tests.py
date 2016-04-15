@@ -31,6 +31,11 @@ class IMAPAuthBackendTestCase(TestCase):
                                                     email="joanna@example.com",
                                                     password="X")
 
+    @patch('auth_imap.settings.HOSTS', new={})
+    def test_empty_setting(self):
+        user = IMAPAuthBackend().authenticate("login@example.com", "X", imap_cls=AuthSuccessMock)
+        self.assertEqual(user, None)
+
     @patch('auth_imap.settings.HOSTS', new={'example.com': {'host': 'example.com'}})
     def test_auth_success(self):
         user = IMAPAuthBackend().authenticate("login@example.com", "X", imap_cls=AuthSuccessMock)
@@ -42,6 +47,13 @@ class IMAPAuthBackendTestCase(TestCase):
     def test_auth_user_create(self):
         user = IMAPAuthBackend().authenticate("login2@example.com", "X", imap_cls=AuthFailedMock)
         self.assertEqual(user, None)
+
+    @patch('auth_imap.settings.HOSTS', new={'example.com': {'host': 'example.com',
+                                                            'staff': True}})
+    def test_set_staff(self):
+        user = IMAPAuthBackend().authenticate("login@example.com", "X", imap_cls=AuthSuccessMock)
+        self.assertNotEqual(user, None)
+        self.assertEqual(user.is_staff, True)
 
 
 class SystemCheckTestCase(TestCase):

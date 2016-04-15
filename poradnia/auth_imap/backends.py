@@ -31,7 +31,10 @@ class IMAPAuthBackend(object):
         try:
             user = User.objects.get(email=username)
         except User.DoesNotExist:
-            user = User.objects.create_user(username=username, email=username, password='')
+            user = User.objects.create_user(username=username,
+                                            email=username,
+                                            is_staff=server.get('staff', False),
+                                            password='')
             user.set_unusable_password()
             user.save()
         return user
