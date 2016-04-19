@@ -6,6 +6,7 @@ cache:
     - $HOME/.cache/pip
 
 env:
+  fast_finish: true
   global:
     - DATABASE_URL="mysql://root:@localhost/test_feder"
     - DJANGO_CONFIGURATION="Local"
