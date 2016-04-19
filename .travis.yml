@@ -11,20 +11,20 @@ env:
     - DJANGO_CONFIGURATION="Local"
   matrix:
     - TOX_ENV=flake8
-    - TOX_ENV=py27-dj18-coverage
-    - TOX_ENV=py27-dj19
-    - TOX_ENV=py27-djmaster
-    - TOX_ENV=py33-dj18
-    - TOX_ENV=py33-djmaster
+    - TOX_ENV=py27-dj18-coveralls
+    - TOX_ENV=py27-dj19-coveralls
+    - TOX_ENV=py27-djmaster-coveralls
+    - TOX_ENV=py33-dj18-coveralls
+    - TOX_ENV=py33-djmaster-coveralls
 
 matrix:
   allow_failures:
     - env: TOX_ENV=flake8
-    - env: TOX_ENV=py27-dj19
-    - env: TOX_ENV=py27-djmaster
-    - env: TOX_ENV=py33-dj18
-    - env: TOX_ENV=py33-djmaster
-    - env: TOX_ENV=py33-dj19
+    - env: TOX_ENV=py27-dj19-coveralls
+    - env: TOX_ENV=py27-djmaster-coveralls
+    - env: TOX_ENV=py33-dj18-coveralls
+    - env: TOX_ENV=py33-djmaster-coveralls
+    - env: TOX_ENV=py33-dj19-coveralls
 
 
 install:
@@ -38,4 +38,3 @@ notifications:
 
 after_script:
 - rm $HOME/.cache/pip/log/*
-
