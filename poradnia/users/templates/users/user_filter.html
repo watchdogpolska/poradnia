@@ -30,9 +30,9 @@
       {% endfor %}
   </ul>
 </div>
-    <div class="list-group list-group__elastic row">
+    <div class="list-group row">
       {% for user in object_list %}
-        <a 
+        <a
           href="{% url 'users:detail' user.username %}"
           class="list-group-item{%if user.is_staff%} staff{%endif%}">
               <h4 class="list-group-item-heading">
@@ -42,7 +42,9 @@
               <p class="list-group-item-text">
                 {% trans 'Client cases' %}: {{ user.case_count }}<br>
                 {% if perms.cases.can_assign %}
-                {% trans 'Cases assigned' %}: {{ user.case_assigned }}
+                {% trans 'Cases assigned' %}:<br>
+                {% trans 'active' %}: {{ user.case_assigned_active }}
+                {% trans 'closed' %}: {{ user.case_assigned_closed }}
                 {% endif %}
               </p>
         </a>
