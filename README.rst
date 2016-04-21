@@ -1,6 +1,10 @@
 poradnia
 ==============================
 
+.. image:: https://badges.gitter.im/watchdogpolska/poradnia.svg
+   :alt: Join the chat at https://gitter.im/watchdogpolska/poradnia
+   :target: https://gitter.im/watchdogpolska/poradnia?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+
 .. image:: https://codeclimate.com/github/watchdogpolska/poradnia/badges/gpa.svg
    :target: https://codeclimate.com/github/watchdogpolska/poradnia
    :alt: Code Climate
