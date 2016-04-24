@@ -32,6 +32,13 @@ class UserQuerySet(QuerySet):
         return self.annotate(case_count=Count('case_client', distinct=True))
 
     def with_case_count_assigned(self):
+        free = Count(
+                        Case(
+                            When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.free, then='caseuserobjectpermission__content_object__pk'),
+                            default=None,
+                            output_field=IntegerField()),
+                    distinct=True)
+
         active = Count(
                         Case(
                             When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.assigned, then='caseuserobjectpermission__content_object__pk'),
@@ -46,7 +53,10 @@ class UserQuerySet(QuerySet):
                             output_field=IntegerField()),
                     distinct=True)
 
-        return self.annotate(case_assigned_active=active, case_assigned_closed=closed)
+        return self.annotate(case_assigned_sum=free + active + closed,
+                             case_assigned_free=free,
+                             case_assigned_active=active,
+                             case_assigned_closed=closed)
 
     def registered(self):
         user = get_anonymous_user()

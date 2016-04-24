@@ -30,26 +30,50 @@
       {% endfor %}
   </ul>
 </div>
-    <div class="list-group row">
-      {% for user in object_list %}
-        <a
-          href="{% url 'users:detail' user.username %}"
-          class="list-group-item{%if user.is_staff%} staff{%endif%}">
-              <h4 class="list-group-item-heading">
-                <img src="{% get_avatar_url user %}">
-                {{ user.get_nicename }}
-              </h4>
-              <p class="list-group-item-text">
-                {% trans 'Client cases' %}: {{ user.case_count }}<br>
-                {% if perms.cases.can_assign %}
-                {% trans 'Cases assigned' %}:<br>
-                {% trans 'active' %}: {{ user.case_assigned_active }}
-                {% trans 'closed' %}: {{ user.case_assigned_closed }}
-                {% endif %}
-              </p>
+
+<table class="table table-condensed table-users">
+  <thead><tr>
+    <th class="user">{% trans 'User' %}</th>
+    <th class="client_cases">{% trans 'Client cases' %}</th>
+    {% if perms.cases.can_assign %}
+    <th class="free_cases">{% trans 'Assigned cases sum' %}</th>
+    <th class="free_cases">{% trans 'Free' %}</th>
+    <th class="assigned_cases">{% trans 'Active' %}</th>
+    <th class="closed_cases">{% trans 'Closed' %}</th>
+    {% endif %}
+  </tr></thead>
+  <tbody>
+    {% for user in object_list %}
+    <tr {%if user.is_staff%}class="staff"{%endif%}>
+      <td>
+        <a href="{% url 'users:detail' user.username %}">  <!--TODO - handle table-users style in a css file -->
+          <div style="height:100%;width:100%">
+            <img src="{% get_avatar_url user %}"> {{ user.get_nicename }}
+          </div>
         </a>
-      {% endfor %}
-    </div>
+      </td>
+      <td>
+        {{ user.case_count }}
+      </td>
+      {% if perms.cases.can_assign %}
+      <td>
+        {{ user.case_assigned_sum }}
+      </td>
+      <td>
+        {{ user.case_assigned_free }}
+      </td>
+      <td>
+        {{ user.case_assigned_active }}
+      </td>
+      <td>
+        {{ user.case_assigned_closed }}
+      </td>
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
 <div class="row text-center">
 {% bootstrap_paginate page_obj  show_first_last="true" %}
 </div>
