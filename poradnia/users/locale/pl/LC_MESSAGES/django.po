@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-04-01 02:45+0200\n"
+"POT-Creation-Date: 2016-04-24 23:21+0200\n"
 "PO-Revision-Date: 2015-12-07 01:04+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
@@ -21,47 +21,47 @@ msgstr ""
 msgid "Signup"
 msgstr "Rejestracja"
 
-#: login_form.py:14 models.py:19
+#: login_form.py:14 models.py:21
 msgid "Login"
 msgstr "Nazwa użytkownika / użytkowniczki"
 
-#: models.py:18
+#: models.py:20
 msgid "Username or e-mail"
 msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
 
-#: models.py:78
+#: models.py:104
 msgid "Avatar"
 msgstr "Avatar"
 
-#: models.py:79
+#: models.py:105
 msgid "Codename"
 msgstr "Kryptonim"
 
-#: models.py:138 templates/users/_sidebar.html:3
-#: templates/users/user_detail.html:3 templates/users/user_form.html:4
-#: templates/users/user_form.html.py:15
+#: models.py:164 templates/users/_sidebar.html.py:3
+#: templates/users/user_detail.html:3 templates/users/user_filter.html:36
+#: templates/users/user_form.html.py:4 templates/users/user_form.html:15
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: models.py:139 templates/users/base.html:5
+#: models.py:165 templates/users/base.html.py:5
 #: templates/users/user_filter.html:18
 msgid "Users"
 msgstr "Wykaz użytkowników"
 
-#: models.py:144 templates/users/user_detail.html:16
+#: models.py:170 templates/users/user_detail.html.py:16
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:145
+#: models.py:171
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: models.py:148 templates/users/profile_form.html:7
+#: models.py:174 templates/users/profile_form.html.py:7
 #: templates/users/profile_form.html:10 templates/users/user_detail.html:26
 msgid "Profile"
 msgstr "Profil"
 
-#: models.py:149
+#: models.py:175
 msgid "Profiles"
 msgstr "Profile"
 
@@ -102,7 +102,7 @@ msgstr "Zmiana hasła"
 msgid "Keys"
 msgstr "Klucze"
 
-#: templates/users/user_detail.html:41 templates/users/user_filter.html:43
+#: templates/users/user_detail.html:41 templates/users/user_filter.html:37
 msgid "Client cases"
 msgstr "Sprawy klienta"
 
@@ -122,9 +122,21 @@ msgstr ""
 "Nie masz dostepu do danych wszystkich użytkowników. W większości tylko do "
 "profilu członków zespołu i swojego."
 
-#: templates/users/user_filter.html:45
-msgid "Cases assigned"
-msgstr "Sprawy przypisane"
+#: templates/users/user_filter.html:39
+msgid "Assigned cases sum"
+msgstr "Przypisane sprawy"
+
+#: templates/users/user_filter.html:40
+msgid "Free"
+msgstr "Wolne"
+
+#: templates/users/user_filter.html:41
+msgid "Active"
+msgstr "Aktywne"
+
+#: templates/users/user_filter.html:42
+msgid "Closed"
+msgstr "Zamknięte"
 
 #: templates/users/user_form.html:8
 msgid "Account"
@@ -141,6 +153,3 @@ msgstr "Zespoł"
 #: views.py:67
 msgid "Clients"
 msgstr "Klienci"
-
-#~ msgid "Case count"
-#~ msgstr "Liczba spraw"

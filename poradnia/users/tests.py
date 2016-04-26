@@ -6,6 +6,7 @@ from django.test import TestCase
 from guardian.shortcuts import assign_perm, get_perms
 
 from cases.factories import CaseFactory
+from cases.models import Case
 from users.factories import UserFactory
 from users.forms import TranslatedUserObjectPermissionsForm
 from users.forms import UserForm
@@ -77,13 +78,23 @@ class UserQuerySetTestCase(TestCase):
 
     def test_with_case_count_assigned(self):
         user = UserFactory()
-        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned, 0)
-        for obj in CaseFactory.create_batch(size=5):
-            assign_perm('cases.can_view', user, obj)
-        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned, 5)
-        for obj in CaseFactory.create_batch(size=5):
-            assign_perm('cases.can_view', user, obj)
-        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned, 10)
+        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_sum, 0)
+
+        for size, status in [(1, Case.STATUS.free), (2, Case.STATUS.assigned), (3, Case.STATUS.closed)]:
+            for obj in CaseFactory.create_batch(size=size, status=status):
+                assign_perm('cases.can_view', user, obj)
+        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_free, 1)
+        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_active, 2)
+        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_closed, 3)
+        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_sum, 6)
+
+        for size, status in [(4, Case.STATUS.free), (5, Case.STATUS.assigned), (6, Case.STATUS.closed)]:
+            for obj in CaseFactory.create_batch(size=size, status=status):
+                assign_perm('cases.can_view', user, obj)
+        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_free, 5)
+        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_active, 7)
+        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_closed, 9)
+        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_sum, 21)
 
     def _register_email_count(self, notify, count):
         u = User.objects.register_email(email='sarah@example.com', notify=notify)

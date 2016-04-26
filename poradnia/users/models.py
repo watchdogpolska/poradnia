@@ -7,13 +7,14 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Case, When, IntegerField
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
 from guardian.mixins import GuardianUserMixin
 from guardian.utils import get_anonymous_user
 from sorl.thumbnail import ImageField
 
+from cases.models import Case as CaseModel
 from template_mail.utils import send_tpl_email
 
 _('Username or e-mail')  # Hack to overwrite django translation
@@ -31,8 +32,31 @@ class UserQuerySet(QuerySet):
         return self.annotate(case_count=Count('case_client', distinct=True))
 
     def with_case_count_assigned(self):
-        c = models.Count('caseuserobjectpermission__content_object_id', distinct=True)
-        return self.annotate(case_assigned=c)
+        free = Count(
+                        Case(
+                            When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.free, then='caseuserobjectpermission__content_object__pk'),
+                            default=None,
+                            output_field=IntegerField()),
+                    distinct=True)
+
+        active = Count(
+                        Case(
+                            When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.assigned, then='caseuserobjectpermission__content_object__pk'),
+                            default=None,
+                            output_field=IntegerField()),
+                    distinct=True)
+
+        closed = Count(
+                        Case(
+                            When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.closed, then='caseuserobjectpermission__content_object__pk'),
+                            default=None,
+                            output_field=IntegerField()),
+                    distinct=True)
+
+        return self.annotate(case_assigned_sum=free + active + closed,
+                             case_assigned_free=free,
+                             case_assigned_active=active,
+                             case_assigned_closed=closed)
 
     def registered(self):
         user = get_anonymous_user()
