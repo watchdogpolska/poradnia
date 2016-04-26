@@ -9,7 +9,6 @@ poradnia
      :target: https://requires.io/github/watchdogpolska/poradnia/requirements/?branch=master
      :alt: Requirements Status
 
-
 .. image:: https://img.shields.io/github/issues/watchdogpolska/poradnia.svg
      :target: https://github.com/watchdogpolska/poradnia/issues
      :alt: GitHub issues counter
@@ -21,12 +20,12 @@ poradnia
      :target: https://waffle.io/watchdogpolska/poradnia 
      :alt: 'Stories in High'
 
-.. image:: https://www.quantifiedcode.com/api/v1/project/0b4753d4b3bd41f797b40458c3cea67a/badge.svg
-  :target: https://www.quantifiedcode.com/app/project/0b4753d4b3bd41f797b40458c3cea67a
-  :alt: Code issues
-
 .. image:: https://coveralls.io/repos/watchdogpolska/poradnia/badge.svg?branch=master&service=github
   :target: https://coveralls.io/github/watchdogpolska/poradnia?branch=master 
+
+.. image:: https://badges.gitter.im/watchdogpolska/poradnia.svg
+  :target: https://gitter.im/watchdogpolska/poradnia?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge 
+  :alt: Gitter
 
 Settings
 ------------
