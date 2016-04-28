@@ -1,21 +1,20 @@
-import os
-
 from datetime import datetime
-from unittest import skip
+from unittest import skipUnless
 
 from dateutil.rrule import MONTHLY, WEEKLY, DAILY
+from django.db import connection
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+
+from cases.factories import CaseFactory
+from cases.models import Case
+from letters.factories import LetterFactory
+from letters.models import Letter
 from users.factories import UserFactory
 from stats.utils import GapFiller, DATE_FORMAT
 
-def skip_non_mysql(f):
-    if os.environ['DATABASE_URL'].startswith('mysql'):
-        return f
-    else:
-        return skip("Non MySQL")(f)
 
-class StatsCaseCreatedTestCase(TestCase):
+class StatsCaseCreatedPermissionTestCase(TestCase):
     def setUp(self):
         self.api_url = reverse('stats:case_created_api')
         self.render_url = reverse('stats:case_created_render')
@@ -34,7 +33,7 @@ class StatsCaseCreatedTestCase(TestCase):
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)
 
-    @skip_non_mysql
+    @skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
     def test_permission_superuser(self):
         user = UserFactory(is_superuser=True)
         self.client.login(username=user.username, password='pass')
@@ -43,7 +42,7 @@ class StatsCaseCreatedTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
 
 
-class StatsCaseUnansweredTestCase(TestCase):
+class StatsCaseUnansweredPermissionTestCase(TestCase):
     def setUp(self):
         self.api_url = reverse('stats:case_unanswered_api')
         self.render_url = reverse('stats:case_unanswered_render')
@@ -62,7 +61,7 @@ class StatsCaseUnansweredTestCase(TestCase):
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)
 
-    @skip_non_mysql
+    @skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
     def test_permission_superuser(self):
         user = UserFactory(is_superuser=True)
         self.client.login(username=user.username, password='pass')
@@ -71,7 +70,7 @@ class StatsCaseUnansweredTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
 
 
-class StatsCaseReactionTestCase(TestCase):
+class StatsCaseReactionPermissionTestCase(TestCase):
     def setUp(self):
         self.api_url = reverse('stats:case_reaction_api')
         self.render_url = reverse('stats:case_reaction_render')
@@ -98,7 +97,257 @@ class StatsCaseReactionTestCase(TestCase):
             self.assertEqual(resp.status_code, 200)
 
 
-class FillGapsTestCase(TestCase):
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsCaseCreatedApiTestCase(TestCase):
+    def setUp(self):
+        self.url = reverse('stats:case_created_api')
+
+    def _prepare_cases(self, db_data):
+        for size, status, created_on in db_data:
+            for obj in CaseFactory.create_batch(size=size, status=status):
+                obj.created_on = created_on
+                obj.save()
+
+    def test_no_cases(self):
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+
+        result = self.client.get(self.url).json()
+        expected = []
+        self.assertEqual(result, expected)
+
+    def test_basic(self):
+        db_data = [
+            (1, Case.STATUS.free, datetime(2015, 1, 2)),
+            (2, Case.STATUS.assigned, datetime(2015, 1, 2)),
+            (3, Case.STATUS.closed, datetime(2015, 1, 2)),
+            (2, Case.STATUS.free, datetime(2015, 2, 2)),
+            (1, Case.STATUS.assigned, datetime(2015, 2, 2))
+        ]
+
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+        self._prepare_cases(db_data)
+
+        result = self.client.get(self.url).json()
+        expected = [
+            {'date': "2015-01-01", 'open': 1, 'assigned': 2, 'closed': 3},
+            {'date': "2015-02-01", 'open': 2, 'assigned': 1, 'closed': 0}
+        ]
+        self.assertEqual(result, expected)
+
+    def test_gap_by_month(self):
+        db_data = [
+            (1, Case.STATUS.free, datetime(2015, 1, 2)),
+            (2, Case.STATUS.assigned, datetime(2015, 1, 2)),
+            (3, Case.STATUS.closed, datetime(2015, 1, 2)),
+            (2, Case.STATUS.free, datetime(2015, 3, 2)),
+            (1, Case.STATUS.assigned, datetime(2015, 3, 2))
+        ]
+
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+        self._prepare_cases(db_data)
+
+        result = self.client.get(self.url).json()
+        expected = [
+            {'date': "2015-01-01", 'open': 1, 'assigned': 2, 'closed': 3},
+            {'date': "2015-02-01", 'open': 0, 'assigned': 0, 'closed': 0},
+            {'date': "2015-03-01", 'open': 2, 'assigned': 1, 'closed': 0}
+        ]
+        self.assertEqual(result, expected)
+
+
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsCaseReactionApiTestCase(TestCase):
+    def setUp(self):
+        self.url = reverse('stats:case_reaction_api')
+        self.staff_user = UserFactory(is_staff=True)
+        self.non_staff_user = UserFactory(is_staff=False)
+
+    def _prepare_cases(self, db_data):
+        for created_on, letter_data in db_data:
+            for obj in CaseFactory.create_batch(size=1):
+                obj.letter_set.set(self._prepare_letters(letter_data, obj))
+                obj.created_on = created_on
+                obj.save()
+
+    def _prepare_letters(self, letter_data, case):
+        letters = []
+        for accept, created_by, status in letter_data:
+            obj = LetterFactory.create_batch(size=1, created_by=created_by, case=case, status=status)[0]
+            obj.accept = accept
+            obj.save()
+            letters.append(obj)
+        return letters
+
+    def test_no_cases(self):
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+
+        result = self.client.get(self.url).json()
+        expected = []
+        self.assertEqual(result, expected)
+
+    def test_basic(self):
+        db_data = [
+            (
+                datetime(2015, 1, 2),
+                [(datetime(2015, 4, 2), self.staff_user, Letter.STATUS.done)]
+            ),
+            (
+                datetime(2015, 2, 3),
+                [(datetime(2015, 4, 3), self.staff_user, Letter.STATUS.done)]
+            ),
+        ]
+
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+        self._prepare_cases(db_data)
+
+        result = self.client.get(self.url).json()
+        expected = [
+            {'date': "2015-01-01", 'time_delta': 89},
+            {'date': "2015-02-01", 'time_delta': 58}
+        ]
+        self.assertEqual(result, expected)
+
+    def test_letter_from_non_staff(self):
+        db_data = [
+            (
+                datetime(2015, 1, 2),
+                [(datetime(2015, 4, 2), self.non_staff_user, Letter.STATUS.done)]
+            )
+        ]
+
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+        self._prepare_cases(db_data)
+
+        result = self.client.get(self.url).json()
+        expected = []
+        self.assertEqual(result, expected)
+
+    def test_many_letters(self):
+        db_data = [
+            (
+                datetime(2015, 1, 2),
+                [
+                    (datetime(2015, 3, 2), self.staff_user, Letter.STATUS.done),
+                    (datetime(2015, 4, 2), self.staff_user, Letter.STATUS.done)
+                ]
+            )
+        ]
+
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+        self._prepare_cases(db_data)
+
+        result = self.client.get(self.url).json()
+        expected = [
+            {'date': "2015-01-01", 'time_delta': 59}
+        ]
+        self.assertEqual(result, expected)
+
+    def test_not_done(self):
+        db_data = [
+            (
+                datetime(2015, 1, 2),
+                [(datetime(2015, 3, 2), self.staff_user, Letter.STATUS.staff)]
+            )
+        ]
+
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+        self._prepare_cases(db_data)
+
+        result = self.client.get(self.url).json()
+        expected = []
+        self.assertEqual(result, expected)
+
+    def test_gap_by_month(self):
+        db_data = [
+            (
+                datetime(2015, 1, 2),
+                [(datetime(2015, 4, 2), self.staff_user, Letter.STATUS.done)]
+            ),
+            (
+                datetime(2015, 3, 3),
+                [(datetime(2015, 3, 4), self.staff_user, Letter.STATUS.done)]
+            )
+        ]
+
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+        self._prepare_cases(db_data)
+
+        result = self.client.get(self.url).json()
+        expected = [
+            {'date': "2015-01-01", 'time_delta': 89},
+            {'date': "2015-02-01", 'time_delta': 0},
+            {'date': "2015-03-01", 'time_delta': 1}
+        ]
+        self.assertEqual(result, expected)
+
+
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsCaseUnansweredApiTestCase(TestCase):
+    def setUp(self):
+        self.url = reverse('stats:case_unanswered_api')
+
+    def _prepare_cases(self, db_data):
+        for size, sent, created_on in db_data:
+            last_send = datetime(2015, 1, 2) if sent else None
+            for obj in CaseFactory.create_batch(size=size, last_send=last_send):
+                obj.created_on = created_on
+                obj.save()
+
+    def test_no_cases(self):
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+
+        result = self.client.get(self.url).json()
+        expected = []
+        self.assertEqual(result, expected)
+
+    def test_basic(self):
+        db_data = [
+            (1, False, datetime(2015, 1, 2)),
+            (1, True, datetime(2015, 1, 2)),
+            (2, False, datetime(2015, 2, 2))
+        ]
+
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+        self._prepare_cases(db_data)
+
+        result = self.client.get(self.url).json()
+        expected = [
+            {'date': "2015-01-01", 'count': 1},
+            {'date': "2015-02-01", 'count': 2}
+        ]
+        self.assertEqual(result, expected)
+
+    def test_gap_by_month(self):
+        db_data = [
+            (1, False, datetime(2015, 1, 2)),
+            (2, False, datetime(2015, 3, 2))
+        ]
+
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+        self._prepare_cases(db_data)
+
+        result = self.client.get(self.url).json()
+        expected = [
+            {'date': "2015-01-01", 'count': 1},
+            {'date': "2015-02-01", 'count': 0},
+            {'date': "2015-03-01", 'count': 2}
+        ]
+        self.assertEqual(result, expected)
+
+
+class GapFillerTestCase(TestCase):
     def setUp(self):
         self.date_key = 'date'
         self.date_format = DATE_FORMAT
