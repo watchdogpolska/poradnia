@@ -4,4 +4,4 @@
 Django==1.8.12 # rq.filter: >=1.8,<1.9
 gunicorn==19.4.5
 gevent==1.1.1
-boto==2.39.0
+boto==2.40.0
