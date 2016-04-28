@@ -212,3 +212,16 @@ class FillGapsTestCase(TestCase):
             {'date': "2015-03-01", 'a': 3, 'b': 4}
         ]
         self.assertEqual(result, expected)
+
+    def test_one_element(self):
+        qs = [
+            {'date': datetime(2015, 1, 1), 'param': 1}
+        ]
+
+        gf = GapFiller(qs, MONTHLY, self.date_key, self.date_format)
+
+        result = gf.fill_gaps()
+        expected = [
+            {'date': "2015-01-01", 'param': 1}
+        ]
+        self.assertEqual(result, expected)

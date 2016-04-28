@@ -22,6 +22,9 @@ class GapFiller(object):
         self.date_format = date_format
 
     def fill_gaps(self):
+        if len(self.qs) == 1:
+            return [self._convert_date(self.qs[0])]
+
         ans = []
         params = None
 
