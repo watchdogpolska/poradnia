@@ -2,8 +2,10 @@ var margin = {top: 20, right: 30, bottom: 30, left: 40},
     width = 960 - margin.left - margin.right,
     height = 500 - margin.top - margin.bottom;
 
-var legendRectSize = 16,
-    legendSpacing = 4;
+var legendConfig = {
+  'rectSize': 16,
+  'spacing': 4
+};
 
 var x = d3.time.scale()
     .range([0, width]);

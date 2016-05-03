@@ -15,7 +15,7 @@ function created_chart(error, data) {
   });
 
   setAxisDomains(color, x, y, "date", data);
-  
+
   var statuses = stack(color.domain().map(function(status) {
       return {
         status: status,
@@ -37,6 +37,6 @@ function created_chart(error, data) {
 
   drawAxes(chart, xAxis, yAxis);
 
-  var legend = d3Legend(color.domain(), {'legendSpacing': legendSpacing, 'legendRectSize': legendRectSize});
+  var legend = d3Legend(color.domain(), legendConfig);
   chart.call(legend);
 }

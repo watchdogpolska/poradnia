@@ -21,6 +21,6 @@ function reaction_chart(error, data) {
 
   drawAxes(chart, xAxis, yAxis);
 
-  var legend = d3Legend(color.domain(), {'legendSpacing': legendSpacing, 'legendRectSize': legendRectSize});
+  var legend = d3Legend(color.domain(), legendConfig);
   chart.call(legend);
 }
