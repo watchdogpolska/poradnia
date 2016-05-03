@@ -7,15 +7,6 @@ var area = d3.svg.area()
 var stack = d3.layout.stack()
     .values(function(d) { return d.values; });
 
-var chart = d3.select(".chart")
-    .attr("viewBox", "0 0 "
-                     + (width + margin.left + margin.right)
-                     + " "
-                     + (height + margin.top + margin.bottom))
-    .attr("preserveAspectRatio", "xMinYMin meet")
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
 function created_chart(error, data) {
   if (error) throw error;
 
@@ -23,12 +14,8 @@ function created_chart(error, data) {
     d.date = parseDate(d.date);
   });
 
-  x.domain(d3.extent(data, function(d) { return d.date; }));
-  y.domain([0, d3.max(data, function(d) { return d.closed + d.assigned + d.open; })]);
-  xAxis.ticks(data.length);
-
-  color.domain(d3.keys(data[0]).filter(function(key) { return key !== "date"; }));
-
+  setAxisDomains(color, x, y, "date", data);
+  
   var statuses = stack(color.domain().map(function(status) {
       return {
         status: status,
@@ -37,15 +24,6 @@ function created_chart(error, data) {
         })
       }
   }));
-
-  chart.append("g")
-      .attr("class", "x axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(xAxis);
-
-  chart.append("g")
-      .attr("class", "y axis")
-      .call(yAxis);
 
   var status = chart.selectAll(".status")
       .data(statuses)
@@ -57,7 +35,8 @@ function created_chart(error, data) {
       .attr("d", function(d) { return area(d.values); })
       .style("fill", function(d) { return color(d.status); });
 
-      var legend = d3Legend(color.domain(), {'legendSpacing': legendSpacing, 'legendRectSize': legendRectSize});
+  drawAxes(chart, xAxis, yAxis);
 
-      chart.call(legend);
+  var legend = d3Legend(color.domain(), {'legendSpacing': legendSpacing, 'legendRectSize': legendRectSize});
+  chart.call(legend);
 }
