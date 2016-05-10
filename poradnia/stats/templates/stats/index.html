@@ -12,9 +12,9 @@
 {% trans 'Stats'%}:
 <ul>
     {% if user.is_superuser %}
-    <li><a href="{% url 'stats:case_created' %}">{% trans 'Case by status' %}</a></li>
-    <li><a href="{% url 'stats:case_reaction' %}">{% trans 'Case reaction time' %}</a></li>
-    <li><a href="{% url 'stats:case_unanswered' %}">{% trans 'Unanswered cases' %}</a></li>
+    <li><a href="{% url 'stats:case_created' %}">{% trans 'Cases created' %}</a></li>
+    <li><a href="{% url 'stats:case_reaction' %}">{% trans 'Cases reaction time' %}</a></li>
+    <li><a href="{% url 'stats:case_unanswered' %}">{% trans 'Cases unanswered' %}</a></li>
     {% endif %}
 </ul>
 {%endblock%}

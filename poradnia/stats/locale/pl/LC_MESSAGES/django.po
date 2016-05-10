@@ -1,0 +1,59 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: poradnia\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2016-05-10 21:49+0200\n"
+"PO-Revision-Date: 2016-05-03 19:15+0200\n"
+"Last-Translator: rwakulszowa <zajactomasz1@yahoo.com>\n"
+"Language-Team: Polish\n"
+"Language: pl_PL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.8.4\n"
+"X-Crowdin-Project: poradnia\n"
+"X-Crowdin-Language: pl\n"
+"X-Crowdin-File: /records/locale/en/LC_MESSAGES/django.po\n"
+
+#: templates/stats/cases/created.html:3 templates/stats/cases/created.html:8
+#: templates/stats/index.html.py:15
+msgid "Cases created"
+msgstr "Utworzone sprawy"
+
+#: templates/stats/cases/created.html:7 templates/stats/cases/reaction.html:7
+#: templates/stats/cases/unanswered.html:7 templates/stats/index.html.py:3
+#: templates/stats/index.html:7 templates/stats/index.html.py:12
+msgid "Stats"
+msgstr "Statystyki"
+
+#: templates/stats/cases/reaction.html:3 templates/stats/cases/reaction.html:8
+#: templates/stats/index.html.py:16
+msgid "Cases reaction time"
+msgstr "Czas reakcji dla spraw"
+
+#: templates/stats/cases/unanswered.html:3
+#: templates/stats/cases/unanswered.html:8 templates/stats/index.html.py:17
+msgid "Cases unanswered"
+msgstr "Sprawy bez odpowiedzi"
+
+#: views.py:77
+msgid "open"
+msgstr "otwarte"
+
+#: views.py:78
+msgid "assigned"
+msgstr "przypisane"
+
+#: views.py:79
+msgid "closed"
+msgstr "zamknięte"
+
+#: views.py:132
+msgid "reaction time"
+msgstr "czas reakcji"
+
+#: views.py:177
+msgid "count"
+msgstr "ilość"

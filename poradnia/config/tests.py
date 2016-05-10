@@ -10,3 +10,5 @@ class DisableMigrations(object):
         return "notmigrations"
 
 MIGRATION_MODULES = DisableMigrations()
+USE_L10N = False
+USE_I18N = False

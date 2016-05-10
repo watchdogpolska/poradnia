@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% load staticfiles i18n %}
-{% block title %}{% trans 'Case status stats' %} - {{block.super}}{% endblock %}
+{% block title %}{% trans 'Cases created' %} - {{block.super}}{% endblock %}
 
 {% block breadcrumbs %}
 <ol class="breadcrumb">
   <li><a href="{% url 'stats:index'%}">{% trans 'Stats'%}</a></li>
-  <li class="active">{% trans 'Case status stats' %}</li>
+  <li class="active">{% trans 'Cases created' %}</li>
 </ol>
 {% endblock %}
 
