@@ -17,13 +17,14 @@ var color = d3.scale.category20c();
 
 var xAxis = d3.svg.axis()
     .scale(x)
-    .orient("bottom");
+    .orient("bottom")
+    .tickFormat(tickFormat);
 
 var yAxis = d3.svg.axis()
     .scale(y)
     .orient("left");
 
-var parseDate = d3.time.format("%Y-%m-%d").parse;
+var parseDate = localeFormat.timeFormat("%Y-%m-%d").parse;
 
 var chart = d3.select(".chart")
   .attr("viewBox", "0 0 "
