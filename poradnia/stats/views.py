@@ -3,7 +3,6 @@ from dateutil.rrule import MONTHLY
 
 from django.db.models import F, Func, IntegerField, Case, Sum, When, Min, Count
 from django.shortcuts import redirect
-from django.utils.translation import ugettext as _
 from braces.views import JSONResponseMixin, LoginRequiredMixin, SuperuserRequiredMixin
 from django.views.generic import TemplateView
 from django.views.generic import View
@@ -74,9 +73,9 @@ class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLis
 
         qs = [{
             'date': datetime(obj['year'], obj['month'], 1),
-            _('open'): obj['open'],
-            _('assigned'): obj['assigned'],
-            _('closed'): obj['closed']
+            'open': obj['open'],
+            'assigned': obj['assigned'],
+            'closed': obj['closed']
         } for obj in qs]
 
         return GapFiller(
@@ -129,7 +128,7 @@ class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLi
 
         qs = [{
             'date': date,
-            _('reaction time'): int(sum(deltas[date]) / len(deltas[date]) / SECONDS_IN_A_DAY)
+            'reaction_time': int(sum(deltas[date]) / len(deltas[date]) / SECONDS_IN_A_DAY)
         } for date in sorted(deltas.keys())]
 
         return GapFiller(
@@ -174,7 +173,7 @@ class StatsCaseUnansweredApiView(LoginRequiredMixin, SuperuserRequiredMixin, Api
 
         qs = [{
             'date': datetime(obj['year'], obj['month'], 1),
-            _('count'): obj['count']
+            'count': obj['count']
         } for obj in qs]
 
         return GapFiller(

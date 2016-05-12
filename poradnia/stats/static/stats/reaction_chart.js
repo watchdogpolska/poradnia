@@ -2,7 +2,7 @@ var area = d3.svg.area()
     .interpolate("monotone")
     .x(function(d) { return x(d.date); })
     .y0(function(d) { return y(0); })
-    .y1(function(d) { return y(d[color.domain()[0]]); });
+    .y1(function(d) { return y(d.reaction_time); });
 
 function reaction_chart(error, data) {
   if (error) throw error;
@@ -17,7 +17,7 @@ function reaction_chart(error, data) {
       .datum(data)
       .attr("class", "area")
       .attr("d", area)
-      .style("fill", color(color.domain()[0]));
+      .style("fill", color("reaction_time"));
 
   drawAxes(chart, xAxis, yAxis);
 

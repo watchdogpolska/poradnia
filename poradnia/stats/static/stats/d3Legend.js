@@ -25,7 +25,7 @@ function d3Legend(domain, config) {
       legend.append('text')
           .attr('x', config.spacing + config.rectSize)
           .attr('y', config.spacing + config.rectSize / 2)
-          .text(function(d) { return d; });
+          .text(function(d) { return printable[d]; });
       }
 
   return legend;

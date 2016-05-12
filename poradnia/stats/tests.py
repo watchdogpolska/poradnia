@@ -207,8 +207,8 @@ class StatsCaseReactionApiTestCase(TestCase):
 
         result = self.client.get(self.url).json()
         expected = [
-            {'date': "2015-01-01", 'reaction time': 89},
-            {'date': "2015-02-01", 'reaction time': 58}
+            {'date': "2015-01-01", 'reaction_time': 89},
+            {'date': "2015-02-01", 'reaction_time': 58}
         ]
         self.assertEqual(result, expected)
 
@@ -245,7 +245,7 @@ class StatsCaseReactionApiTestCase(TestCase):
 
         result = self.client.get(self.url).json()
         expected = [
-            {'date': "2015-01-01", 'reaction time': 59}
+            {'date': "2015-01-01", 'reaction_time': 59}
         ]
         self.assertEqual(result, expected)
 
@@ -283,9 +283,9 @@ class StatsCaseReactionApiTestCase(TestCase):
 
         result = self.client.get(self.url).json()
         expected = [
-            {'date': "2015-01-01", 'reaction time': 89},
-            {'date': "2015-02-01", 'reaction time': 0},
-            {'date': "2015-03-01", 'reaction time': 1}
+            {'date': "2015-01-01", 'reaction_time': 89},
+            {'date': "2015-02-01", 'reaction_time': 0},
+            {'date': "2015-03-01", 'reaction_time': 1}
         ]
         self.assertEqual(result, expected)
 
