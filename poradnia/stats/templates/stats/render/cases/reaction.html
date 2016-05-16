@@ -1,10 +1,9 @@
 {% extends 'stats/render/base.html' %}
 {% load staticfiles %}
 {% block js %}
-<script src="{% static 'stats/reaction_chart.js' %}" charset="utf-8"></script>
 <script>
 
-d3.json("{% url 'stats:case_reaction_api' %}", reaction_chart);
+timeSeriesChart()("{% url 'stats:case_reaction_api' %}", ["reaction_time"]);
 
 </script>
 {% endblock %}

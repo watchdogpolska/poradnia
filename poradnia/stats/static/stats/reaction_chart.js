@@ -11,7 +11,7 @@ function reaction_chart(error, data) {
     d.date = parseDate(d.date);
   });
 
-  setAxisDomains(color, x, y, "date", data);
+  setAxisDomains(color, x, y, ["reaction_time"], data);
 
   chart.append("path")
       .datum(data)

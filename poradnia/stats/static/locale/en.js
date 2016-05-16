@@ -18,7 +18,7 @@ var tickFormat = localeFormat.timeFormat.multi([
     ["%Y", function() { return true; }]
 ]);
 
-var printable = {
+var mapping = {
     "date": "Date",
     "open": "Open",
     "closed": "Closed",

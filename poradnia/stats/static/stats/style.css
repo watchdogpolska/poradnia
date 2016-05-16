@@ -25,11 +25,7 @@
 }
 
 .legend text {
-  font: 10px sans-serif;
-}
-
-.legend rect {
-  stroke-width: 2;
+  font: 11px sans-serif;
 }
 
 .line {
