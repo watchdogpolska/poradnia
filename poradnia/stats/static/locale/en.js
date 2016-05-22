@@ -24,5 +24,8 @@ var mapping = {
     "closed": "Closed",
     "assigned": "Assigned",
     "reaction_time": "Reaction time",
-    "count": "Count"
+    "count": "Count",
+    "max": "Max.",
+    "min": "Min.",
+    "mean": "Mean"
 };

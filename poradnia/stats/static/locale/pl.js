@@ -24,5 +24,8 @@ var mapping = {
     "closed": "Zamknięte",
     "assigned": "Przypisane",
     "reaction_time": "Czas reakcji",
-    "count": "Ilość"
+    "count": "Ilość",
+    "max": "Max.",
+    "min": "Min.",
+    "mean": "Śr."
 };

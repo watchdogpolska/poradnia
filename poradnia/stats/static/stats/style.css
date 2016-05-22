@@ -32,3 +32,13 @@
   fill: none;
   stroke-width: 1.5px;
 }
+
+.extra rect {
+  stroke-width: 2.5px;
+  stroke: #abc;
+  fill: none;
+}
+
+.extra text {
+  font: 13px sans-serif;
+}

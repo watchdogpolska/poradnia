@@ -1,14 +1,21 @@
 function timeSeriesChart() {
   var margin = {top: 20, right: 30, bottom: 30, left: 40},
-      width = 960 - margin.left - margin.right,
-      height = 500 - margin.top - margin.bottom;
+      width = 960,
+      height = 500,
+      chartWidth = width - margin.left - margin.right,
+      chartHeight = 400 - margin.top,
+      extraWidth = width - margin.left - margin.right,
+      extraHeight = 100 - margin.bottom - margin.top,
+      extraSpacing = 100,
+      extraMargin = 10;
 
   var legendRowHeight = 16,
       legendGap = 4;
 
-  var x = d3.time.scale().range([0, width]),
-      y = d3.scale.linear().range([height, 0]),
-      color = d3.scale.category20c();
+  var x = d3.time.scale().range([0, chartWidth]),
+      y = d3.scale.linear().range([chartHeight, 0]),
+      color = d3.scale.category20c(),
+      extraX = d3.scale.linear().range([0, extraWidth]);
 
   var xAxis = d3.svg.axis()
       .scale(x)
@@ -19,14 +26,15 @@ function timeSeriesChart() {
       .scale(y)
       .orient("left");
 
-  var chart = d3.select(".chart")
-    .attr("viewBox", "0 0 "
-                     + (width + margin.left + margin.right)
-                     + " "
-                     + (height + margin.top + margin.bottom))
-    .attr("preserveAspectRatio", "xMinYMin meet")
-    .append("g")
-    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+  var svg = d3.select(".chart")
+      .attr("viewBox", "0 0 "
+                       + width
+                       + " "
+                       + height)
+      .attr("preserveAspectRatio", "xMinYMin meet");
+
+  var chart = svg.append("g")
+      .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
   var area = d3.svg.area()
       .interpolate("monotone")
@@ -37,26 +45,30 @@ function timeSeriesChart() {
       .gap(legendGap)
       .mapping(mapping);
 
+  var extra = d3_extra.extra();
+
+  var extraContainer = svg.append("g")
+      .attr("transform", "translate(" + margin.left + "," + chartHeight + ")");
+
   function f(url, keys) {
 
     d3.json(url, function(error, data) {
       if (error) throw error;
 
       var parseDate = localeFormat.timeFormat("%Y-%m-%d").parse;
-
       data.forEach(function(d) {
         d.date = parseDate(d.date);
       });
 
       color.domain(keys);
-
       x.domain(d3.extent(data, function(d) { return d.date; }));
-
       y.domain([0, d3.max(data, function(d) {
         return d3.sum(color.domain().map(function(key) {
           return d[key];
         }))
       })]);
+
+      legend.color(color);
 
       if (keys.length >= 1) {
         // stack
@@ -100,18 +112,69 @@ function timeSeriesChart() {
 
       chart.append("g")
           .attr("class", "x axis")
-          .attr("transform", "translate(0," + height + ")")
+          .attr("transform", "translate(0," + chartHeight + ")")
           .call(xAxis);
 
       chart.append("g")
           .attr("class", "y axis")
           .call(yAxis);
 
-      legend.color(color);
-
       chart.append("g")
           .attr("class", "legend")
           .call(legend);
+
+      extra.data(data);
+
+      extra.extras([
+          function(data) {
+            return {
+              label: "max",
+              value: d3.max(data, function(d) {
+                return d3.sum(keys.map(function(key) { return d[key]; }))
+              })
+            }
+          },
+          function(data) {
+            return {
+              label: "min",
+              value: d3.min(data, function(d) {
+                return d3.sum(keys.map(function(key) { return d[key]; }))
+              })
+            }
+          },
+          function(data) {
+            return {
+              label: "mean",
+              value: d3.mean(data, function(d) {
+                return d3.sum(keys.map(function(key) { return d[key]; }))
+              }).toFixed(2)
+            }
+          }
+      ]).refresh();
+
+      var extraG = extraContainer.selectAll(".extra")
+          .data(extra.values())
+        .enter().append("g")
+          .attr("class", "extra")
+          .attr("transform", function(d, i) { return "translate(" + (i * extraSpacing + extraMargin) + ", " + extraHeight + ")"; });
+
+      extraG.append("rect")
+          .attr("width", extraSpacing - 2 * extraMargin)
+          .attr("height", extraHeight)
+          .attr("rx", 10);
+
+      extraG.append("text")
+          .attr("x", extraSpacing / 2 - extraMargin)
+          .attr("y", 20)
+          .attr("text-anchor", "middle")
+          .text(function(d) { return mapping[d.label]; });
+
+      extraG.append("text")
+          .attr("x", extraSpacing / 2 - extraMargin)
+          .attr("y", 40)
+          .attr("text-anchor", "middle")
+          .text(function(d) { return d.value; });
+
     });
   }
 
