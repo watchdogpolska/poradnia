@@ -11,7 +11,7 @@ from cases.models import Case
 from letters.factories import LetterFactory
 from letters.models import Letter
 from users.factories import UserFactory
-from stats.utils import GapFiller, DATE_FORMAT
+from stats.utils import GapFiller, DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY
 
 
 class StatsCaseCreatedPermissionTestCase(TestCase):
@@ -131,8 +131,8 @@ class StatsCaseCreatedApiTestCase(TestCase):
 
         result = self.client.get(self.url).json()
         expected = [
-            {'date': "2015-01-01", 'open': 1, 'assigned': 2, 'closed': 3},
-            {'date': "2015-02-01", 'open': 2, 'assigned': 1, 'closed': 0}
+            {'date': "2015-01", 'open': 1, 'assigned': 2, 'closed': 3},
+            {'date': "2015-02", 'open': 2, 'assigned': 1, 'closed': 0}
         ]
         self.assertEqual(result, expected)
 
@@ -151,9 +151,9 @@ class StatsCaseCreatedApiTestCase(TestCase):
 
         result = self.client.get(self.url).json()
         expected = [
-            {'date': "2015-01-01", 'open': 1, 'assigned': 2, 'closed': 3},
-            {'date': "2015-02-01", 'open': 0, 'assigned': 0, 'closed': 0},
-            {'date': "2015-03-01", 'open': 2, 'assigned': 1, 'closed': 0}
+            {'date': "2015-01", 'open': 1, 'assigned': 2, 'closed': 3},
+            {'date': "2015-02", 'open': 0, 'assigned': 0, 'closed': 0},
+            {'date': "2015-03", 'open': 2, 'assigned': 1, 'closed': 0}
         ]
         self.assertEqual(result, expected)
 
@@ -207,8 +207,8 @@ class StatsCaseReactionApiTestCase(TestCase):
 
         result = self.client.get(self.url).json()
         expected = [
-            {'date': "2015-01-01", 'reaction_time': 89},
-            {'date': "2015-02-01", 'reaction_time': 58}
+            {'date': "2015-01", 'reaction_time': 89},
+            {'date': "2015-02", 'reaction_time': 58}
         ]
         self.assertEqual(result, expected)
 
@@ -245,7 +245,7 @@ class StatsCaseReactionApiTestCase(TestCase):
 
         result = self.client.get(self.url).json()
         expected = [
-            {'date': "2015-01-01", 'reaction_time': 59}
+            {'date': "2015-01", 'reaction_time': 59}
         ]
         self.assertEqual(result, expected)
 
@@ -283,9 +283,9 @@ class StatsCaseReactionApiTestCase(TestCase):
 
         result = self.client.get(self.url).json()
         expected = [
-            {'date': "2015-01-01", 'reaction_time': 89},
-            {'date': "2015-02-01", 'reaction_time': 0},
-            {'date': "2015-03-01", 'reaction_time': 1}
+            {'date': "2015-01", 'reaction_time': 89},
+            {'date': "2015-02", 'reaction_time': 0},
+            {'date': "2015-03", 'reaction_time': 1}
         ]
         self.assertEqual(result, expected)
 
@@ -323,8 +323,8 @@ class StatsCaseUnansweredApiTestCase(TestCase):
 
         result = self.client.get(self.url).json()
         expected = [
-            {'date': "2015-01-01", 'count': 1},
-            {'date': "2015-02-01", 'count': 2}
+            {'date': "2015-01", 'count': 1},
+            {'date': "2015-02", 'count': 2}
         ]
         self.assertEqual(result, expected)
 
@@ -340,9 +340,9 @@ class StatsCaseUnansweredApiTestCase(TestCase):
 
         result = self.client.get(self.url).json()
         expected = [
-            {'date': "2015-01-01", 'count': 1},
-            {'date': "2015-02-01", 'count': 0},
-            {'date': "2015-03-01", 'count': 2}
+            {'date': "2015-01", 'count': 1},
+            {'date': "2015-02", 'count': 0},
+            {'date': "2015-03", 'count': 2}
         ]
         self.assertEqual(result, expected)
 
@@ -350,97 +350,80 @@ class StatsCaseUnansweredApiTestCase(TestCase):
 class GapFillerTestCase(TestCase):
     def setUp(self):
         self.date_key = 'date'
-        self.date_format = DATE_FORMAT
 
     def test_single_month_gap(self):
         qs = [
-            {'date': datetime(2015, 1, 1), 'param': 1},
-            {'date': datetime(2015, 3, 1), 'param': 3}
+            {'date': "2015-01", 'param': 1},
+            {'date': "2015-03", 'param': 3}
         ]
 
-        gf = GapFiller(qs, MONTHLY, self.date_key, self.date_format)
+        gf = GapFiller(qs, MONTHLY, self.date_key, DATE_FORMAT_MONTHLY)
 
         result = gf.fill_gaps()
         expected = [
-            {'date': "2015-01-01", 'param': 1},
-            {'date': "2015-02-01", 'param': 0},
-            {'date': "2015-03-01", 'param': 3}
+            {'date': "2015-01", 'param': 1},
+            {'date': "2015-02", 'param': 0},
+            {'date': "2015-03", 'param': 3}
         ]
         self.assertEqual(result, expected)
 
     def test_single_week_gap(self):
         qs = [
-            {'date': datetime(2015, 1, 5), 'param': 1},
-            {'date': datetime(2015, 1, 19), 'param': 3}
+            {'date': "2015-01", 'param': 1},
+            {'date': "2015-03", 'param': 3}
         ]
 
-        gf = GapFiller(qs, WEEKLY, self.date_key, self.date_format)
+        gf = GapFiller(qs, WEEKLY, self.date_key, DATE_FORMAT_WEEKLY)
 
         result = gf.fill_gaps()
         expected = [
-            {'date': "2015-01-05", 'param': 1},
-            {'date': "2015-01-12", 'param': 0},
-            {'date': "2015-01-19", 'param': 3}
-        ]
-        self.assertEqual(result, expected)
-
-    def test_single_day_gap(self):
-        qs = [
-            {'date': datetime(2015, 1, 1), 'param': 1},
-            {'date': datetime(2015, 1, 3), 'param': 3}
-        ]
-
-        gf = GapFiller(qs, DAILY, self.date_key, self.date_format)
-
-        result = gf.fill_gaps()
-        expected = [
-            {'date': "2015-01-01", 'param': 1},
-            {'date': "2015-01-02", 'param': 0},
-            {'date': "2015-01-03", 'param': 3}
+            {'date': "2015-01", 'param': 1},
+            {'date': "2015-02", 'param': 0},
+            {'date': "2015-03", 'param': 3}
         ]
         self.assertEqual(result, expected)
 
     def test_multiple_month_gaps(self):
         qs = [
-            {'date': datetime(2015, 1, 1), 'param': 1},
-            {'date': datetime(2015, 3, 1), 'param': 3},
-            {'date': datetime(2015, 7, 1), 'param': 7}
+            {'date': "2015-01", 'param': 1},
+            {'date': "2015-03", 'param': 3},
+            {'date': "2015-07", 'param': 7}
         ]
 
-        gf = GapFiller(qs, MONTHLY, self.date_key, self.date_format)
+        gf = GapFiller(qs, MONTHLY, self.date_key, DATE_FORMAT_MONTHLY)
 
         result = gf.fill_gaps()
         expected = [
-            {'date': "2015-01-01", 'param': 1},
-            {'date': "2015-02-01", 'param': 0},
-            {'date': "2015-03-01", 'param': 3},
-            {'date': "2015-04-01", 'param': 0},
-            {'date': "2015-05-01", 'param': 0},
-            {'date': "2015-06-01", 'param': 0},
-            {'date': "2015-07-01", 'param': 7}
+            {'date': "2015-01", 'param': 1},
+            {'date': "2015-02", 'param': 0},
+            {'date': "2015-03", 'param': 3},
+            {'date': "2015-04", 'param': 0},
+            {'date': "2015-05", 'param': 0},
+            {'date': "2015-06", 'param': 0},
+            {'date': "2015-07", 'param': 7}
         ]
         self.assertEqual(result, expected)
 
     def test_no_gaps(self):
         qs = [
-            {'date': datetime(2015, 1, 1), 'param': 1},
-            {'date': datetime(2015, 1, 2), 'param': 0},
-            {'date': datetime(2015, 1, 3), 'param': 3}
+            {'date': "2015-01", 'param': 1},
+            {'date': "2015-02", 'param': 0},
+            {'date': "2015-03", 'param': 3}
         ]
 
-        gf = GapFiller(qs, WEEKLY, self.date_key, self.date_format)
+        gf = GapFiller(qs, WEEKLY, self.date_key, DATE_FORMAT_WEEKLY)
 
         result = gf.fill_gaps()
         expected = [
-            {'date': "2015-01-01", 'param': 1},
-            {'date': "2015-01-02", 'param': 0},
-            {'date': "2015-01-03", 'param': 3}
+            {'date': "2015-01", 'param': 1},
+            {'date': "2015-02", 'param': 0},
+            {'date': "2015-03", 'param': 3}
         ]
         self.assertEqual(result, expected)
 
     def test_empty_qs(self):
         qs = []
-        gf = GapFiller(qs, WEEKLY, self.date_key, self.date_format)
+        gf = GapFiller(qs, WEEKLY, self.date_key, DATE_FORMAT_WEEKLY)
 
         result = gf.fill_gaps()
         expected = []
@@ -448,29 +431,29 @@ class GapFillerTestCase(TestCase):
 
     def test_multiple_params(self):
         qs = [
-            {'date': datetime(2015, 1, 1), 'a': 1, 'b': 1},
-            {'date': datetime(2015, 3, 1), 'a': 3, 'b': 4}
+            {'date': "2015-01", 'a': 1, 'b': 1},
+            {'date': "2015-03", 'a': 3, 'b': 4}
         ]
 
-        gf = GapFiller(qs, MONTHLY, self.date_key, self.date_format)
+        gf = GapFiller(qs, MONTHLY, self.date_key, DATE_FORMAT_MONTHLY)
 
         result = gf.fill_gaps()
         expected = [
-            {'date': "2015-01-01", 'a': 1, 'b': 1},
-            {'date': "2015-02-01", 'a': 0, 'b': 0},
-            {'date': "2015-03-01", 'a': 3, 'b': 4}
+            {'date': "2015-01", 'a': 1, 'b': 1},
+            {'date': "2015-02", 'a': 0, 'b': 0},
+            {'date': "2015-03", 'a': 3, 'b': 4}
         ]
         self.assertEqual(result, expected)
 
     def test_one_element(self):
         qs = [
-            {'date': datetime(2015, 1, 1), 'param': 1}
+            {'date': "2015-01", 'param': 1}
         ]
 
-        gf = GapFiller(qs, MONTHLY, self.date_key, self.date_format)
+        gf = GapFiller(qs, MONTHLY, self.date_key, DATE_FORMAT_MONTHLY)
 
         result = gf.fill_gaps()
         expected = [
-            {'date': "2015-01-01", 'param': 1}
+            {'date': "2015-01", 'param': 1}
         ]
         self.assertEqual(result, expected)

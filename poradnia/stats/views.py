@@ -9,7 +9,7 @@ from django.views.generic import View
 
 from cases.models import Case as CaseModel
 from letters.models import Letter as LetterModel
-from .utils import raise_unless_unauthenticated, GapFiller, SECONDS_IN_A_DAY, DATE_FORMAT
+from .utils import raise_unless_unauthenticated, GapFiller, SECONDS_IN_A_DAY, DATE_FORMAT_MONTHLY
 
 
 class ApiListViewMixin(JSONResponseMixin):
@@ -72,7 +72,7 @@ class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLis
         )
 
         qs = [{
-            'date': datetime(obj['year'], obj['month'], 1),
+            'date': "{0:04d}-{1:02d}".format(obj['year'], obj['month']),
             'open': obj['open'],
             'assigned': obj['assigned'],
             'closed': obj['closed']
@@ -82,7 +82,7 @@ class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLis
             qs,
             MONTHLY,
             'date',
-            DATE_FORMAT
+            DATE_FORMAT_MONTHLY
         ).fill_gaps()
 
 
@@ -119,7 +119,7 @@ class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLi
 
         deltas = {}
         for obj in qs:
-            date = datetime(obj['created_on'].year, obj['created_on'].month, 1)
+            date = "{0:04d}-{1:02d}".format(obj['created_on'].year, obj['created_on'].month)
             time_delta = (obj['first_accepted'] - obj['created_on']).total_seconds()
             if date in deltas:
                 deltas[date].append(time_delta)
@@ -135,7 +135,7 @@ class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLi
             qs,
             MONTHLY,
             'date',
-            DATE_FORMAT
+            DATE_FORMAT_MONTHLY
         ).fill_gaps()
 
 
@@ -172,7 +172,7 @@ class StatsCaseUnansweredApiView(LoginRequiredMixin, SuperuserRequiredMixin, Api
         ).order_by(F('year'), F('month'))
 
         qs = [{
-            'date': datetime(obj['year'], obj['month'], 1),
+            'date': "{0:04d}-{1:02d}".format(obj['year'], obj['month']),
             'count': obj['count']
         } for obj in qs]
 
@@ -180,5 +180,5 @@ class StatsCaseUnansweredApiView(LoginRequiredMixin, SuperuserRequiredMixin, Api
             qs,
             MONTHLY,
             'date',
-            DATE_FORMAT
+            DATE_FORMAT_MONTHLY
         ).fill_gaps()
