@@ -55,7 +55,7 @@ function timeSeriesChart() {
     d3.json(url, function(error, data) {
       if (error) throw error;
 
-      var parseDate = localeFormat.timeFormat("%Y-%m-%d").parse;
+      var parseDate = localeFormat.timeFormat("%Y-%m").parse;
       data.forEach(function(d) {
         d.date = parseDate(d.date);
       });

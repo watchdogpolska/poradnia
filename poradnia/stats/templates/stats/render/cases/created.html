@@ -1,9 +1,11 @@
 {% extends 'stats/render/base.html' %}
 {% load staticfiles %}
 {% block js %}
+<script src="{% static 'stats/time_series_chart.js' %}" charset="utf-8"></script>
+<script src="{% static 'stats/cases/created.js' %}" charset="utf-8"></script>
 <script>
 
-timeSeriesChart()("{% url 'stats:case_created_api' %}", ["open", "assigned", "closed"]);
+createdChart("{% url 'stats:case_created_api' %}");
 
 </script>
 {% endblock %}
