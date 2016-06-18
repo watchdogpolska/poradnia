@@ -2,7 +2,7 @@
 django-environ==0.4.0
 
 # Forms
-django-braces==1.8.1
+django-braces==1.9.0
 django-crispy-forms==1.6.0
 django-floppyforms==1.6.2
 
@@ -26,20 +26,20 @@ django-autoslug==1.9.3
 
 # Useful things
 # Time zones support
-pytz==2016.3
+pytz==2016.4
 
 # Your custom requirements go here
 django-guardian==1.4.4
-django-mailbox==4.4.8
+django-mailbox==4.5.2
 claw==1.3.0
 django-filter==0.13.0
 django-autocomplete-light==2.3.3 # rq.filter: <3.0.0
 https://github.com/ad-m/django-flatpages-tinymce/archive/patch-1.zip
 https://github.com/ad-m/django-atom/archive/v0.11.0.zip
 django-tinymce==2.3.0
-django-tinycontent==0.5.1
-icalendar==3.9.2
-html2text==2016.4.2
+django-tinycontent==0.6.0
+icalendar==3.10
+html2text==2016.5.29
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.6.1
-raven==5.13.0
+raven==5.20.0
