@@ -157,3 +157,11 @@ class ReceiveEmailTestCase(TestCase):
 
         case.refresh_from_db()
         self.assertEqual(case.status, Case.STATUS.assigned)
+
+    def test_utf8_message(self):
+        case = CaseFactory(pk=639)
+        message = self.get_message('utf8_message.eml')
+        mail_process(sender=self.mailbox, message=message)
+
+        case.refresh_from_db()
+        self.assertEqual(case.status, Case.STATUS.free)
