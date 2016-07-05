@@ -7,7 +7,7 @@ from .models import Advice, Area, InstitutionKind, Issue, PersonKind
 class RegisterAdmin(admin.ModelAdmin):
     readonly_fields = ('created_on', 'created_by', 'modified_by', 'modified_on')
     list_display = ['created_on', 'advicer', '__unicode__', 'person_kind', 'institution_kind',
-        'visible']
+                    'visible']
     list_display_links = ['__unicode__']
     list_filter = ['created_on', 'grant_on', 'advicer', 'visible']
 
