@@ -1,7 +1,8 @@
 from datetime import datetime
 
 import autocomplete_light.shortcuts as autocomplete_light
-from atom.ext.crispy_forms.forms import FormHorizontalMixin, HelperMixin, SingleButtonMixin
+from atom.ext.crispy_forms.forms import (FormHorizontalMixin, HelperMixin,
+                                         SingleButtonMixin)
 from atom.forms import AuthorMixin
 from braces.forms import UserKwargModelFormMixin
 from django import forms

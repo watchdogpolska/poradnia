@@ -1,5 +1,6 @@
-from braces.views import (FormValidMessageMixin, LoginRequiredMixin, PermissionRequiredMixin,
-                          SelectRelatedMixin, UserFormKwargsMixin)
+from braces.views import (FormValidMessageMixin, LoginRequiredMixin,
+                          PermissionRequiredMixin, SelectRelatedMixin,
+                          UserFormKwargsMixin)
 from django.contrib import messages
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect

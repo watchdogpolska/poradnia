@@ -1,8 +1,8 @@
 import django_filters
 from atom.ext.crispy_forms.views import FormSetMixin
 from atom.filters import CrispyFilterMixin
-from braces.views import (PrefetchRelatedMixin, SelectRelatedMixin, SetHeadlineMixin,
-                          UserFormKwargsMixin)
+from braces.views import (PrefetchRelatedMixin, SelectRelatedMixin,
+                          SetHeadlineMixin, UserFormKwargsMixin)
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext_lazy as _

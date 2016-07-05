@@ -1,8 +1,9 @@
 from __future__ import unicode_literals
-from django.utils.timezone import now
 
-import string
 import random
+import string
+
+from django.utils.timezone import now
 
 
 def prefix_gen(size=10, chars=string.ascii_uppercase + string.digits + string.ascii_lowercase):

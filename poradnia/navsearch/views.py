@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.views.generic import TemplateView
+
 from cases.models import Case
 from users.models import User
 

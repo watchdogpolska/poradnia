@@ -8,8 +8,7 @@ from guardian.shortcuts import assign_perm, get_perms
 from cases.factories import CaseFactory
 from cases.models import Case
 from users.factories import UserFactory
-from users.forms import TranslatedUserObjectPermissionsForm
-from users.forms import UserForm
+from users.forms import TranslatedUserObjectPermissionsForm, UserForm
 from users.models import User
 
 

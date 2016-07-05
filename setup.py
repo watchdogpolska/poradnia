@@ -7,6 +7,7 @@ except ImportError:
     from distutils.core import setup
 
 import poradnia
+
 version = poradnia.__version__
 
 setup(

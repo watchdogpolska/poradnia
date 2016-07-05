@@ -1,4 +1,5 @@
-from braces.views import LoginRequiredMixin, PrefetchRelatedMixin, SelectRelatedMixin
+from braces.views import (LoginRequiredMixin, PrefetchRelatedMixin,
+                          SelectRelatedMixin)
 from django.views.generic import TemplateView
 
 

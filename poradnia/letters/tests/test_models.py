@@ -1,5 +1,6 @@
 import datetime
 from datetime import timedelta
+from email import message_from_file
 from os.path import dirname, join
 
 from django.test import TestCase
@@ -9,7 +10,6 @@ from guardian.shortcuts import assign_perm
 
 from cases.factories import CaseFactory
 from cases.models import Case
-from email import message_from_file
 from letters.factories import LetterFactory
 from letters.models import Letter, mail_process
 from users.factories import UserFactory

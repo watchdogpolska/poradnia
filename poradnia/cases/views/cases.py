@@ -8,7 +8,7 @@ from django.views.generic import TemplateView, UpdateView
 from django_filters.views import FilterView
 
 from cases.filters import StaffCaseFilter, UserCaseFilter
-from cases.forms import CaseForm, CaseGroupPermissionForm, CaseCloseForm
+from cases.forms import CaseCloseForm, CaseForm, CaseGroupPermissionForm
 from cases.models import Case
 from events.forms import EventForm
 from letters.forms import AddLetterForm

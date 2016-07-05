@@ -2,9 +2,9 @@
 
 from django.conf.urls import url
 
-from . import views
-
 import notifications
+
+from . import views
 
 urlpatterns = [url(r'^$', views.NotificationListView.as_view(), name='all'),]
 

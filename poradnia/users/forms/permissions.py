@@ -1,5 +1,5 @@
-from autocomplete_light.shortcuts import MultipleChoiceWidget
 from atom.ext.crispy_forms.forms import SingleButtonMixin
+from autocomplete_light.shortcuts import MultipleChoiceWidget
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
