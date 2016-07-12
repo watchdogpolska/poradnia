@@ -55,9 +55,11 @@ Next to open a terminal at the project root and install the requirements for loc
 
 Next to create MySQL database::
     # if you are using Ubuntu 14.04, you may need to find a workaround for the following two commands
-    sudo systemctl start mariadb
-    sudo systemctl enable mariadb
-
+    $ sudo systemctl start mariadb
+    $ sudo systemctl enable mariadb
+    
+    $ mysql_tzinfo_to_sql /usr/share/zoneinfo | sudo mysql mysql
+    
     $ echo "CREATE DATABASE poradnia CHARACTER SET utf8 COLLATE utf8_polish_ci;" | sudo mysql
     $ echo "CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';" | sudo mysql
     $ echo "GRANT ALL PRIVILEGES ON poradnia . * TO 'user'@'localhost';" | sudo mysql
