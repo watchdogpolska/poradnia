@@ -20,7 +20,7 @@ class StatsCaseCreatedPermissionTestCase(TestCase):
         self.render_url = reverse('stats:case_created_render')
         self.main_url = reverse('stats:case_created')
 
-    def test_permission_not_logged_in(self):
+    def test_permission_forbidden(self):
         user = UserFactory(is_superuser=False)
         self.client.login(username=user.username, password='pass')
         for url in[self.api_url, self.render_url, self.main_url]:
