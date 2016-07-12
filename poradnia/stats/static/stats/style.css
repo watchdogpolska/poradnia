@@ -1,0 +1,44 @@
+.render {
+  position: relative;
+  width: 100%;
+  height: 0;
+  padding-bottom: 60%;
+}
+
+.render iframe {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  left: 0; top: 0;
+  border: none;
+}
+
+.axis text {
+  font: 10px sans-serif;
+}
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.legend text {
+  font: 11px sans-serif;
+}
+
+.line {
+  fill: none;
+  stroke-width: 1.5px;
+}
+
+.extra rect {
+  stroke-width: 2.5px;
+  stroke: #abc;
+  fill: none;
+}
+
+.extra text {
+  font: 13px sans-serif;
+}
