@@ -58,11 +58,11 @@ Next to create MySQL database::
     $ sudo systemctl start mariadb
     $ sudo systemctl enable mariadb
     
-    $ mysql_tzinfo_to_sql /usr/share/zoneinfo | sudo mysql mysql
+    $ mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
     
-    $ echo "CREATE DATABASE poradnia CHARACTER SET utf8 COLLATE utf8_polish_ci;" | sudo mysql
-    $ echo "CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';" | sudo mysql
-    $ echo "GRANT ALL PRIVILEGES ON poradnia . * TO 'user'@'localhost';" | sudo mysql
+    $ echo "CREATE DATABASE poradnia CHARACTER SET utf8 COLLATE utf8_polish_ci;" | mysql -u root
+    $ echo "CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';" | mysql -u root
+    $ echo "GRANT ALL PRIVILEGES ON poradnia . * TO 'user'@'localhost'; FLUSH PRIVILEGES;" | mysql -u root
 
 Next to set up enviroment variables::
 
