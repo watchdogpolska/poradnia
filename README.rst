@@ -39,7 +39,7 @@ Getting up and running
 The steps below will get you up and running with a local development environment. We assume you have the following installed
 First make sure to install all requires OS-level libraries and application (dependencies)::
 
-    $ sudo apt-get install python2.7 mariadb-server git libmariadbclient-dev virtualenv python-dev libffi-dev libssl-dev libjpeg-dev libpng12-dev libxml2-dev libxslt1-dev python-dev
+    $ sudo apt-get install python2.7 mariadb-server git libmariadbclient-dev virtualenv python-dev libffi-dev libssl-dev libjpeg-dev libpng12-dev libxml2-dev libxslt1-dev build-essential
 
 Next to create and activate a virtualenv_::
     
@@ -54,8 +54,13 @@ Next to open a terminal at the project root and install the requirements for loc
     $ pip install -r requirements/local.txt
 
 Next to create MySQL database::
-    
-    $ echo "CREATE DATABASE poradnia CHARACTER SET utf8 COLLATE utf8_polish_ci;" | mysql
+    # if you are using Ubuntu 14.04, you may need to find a workaround for the following two commands
+    sudo systemctl start mariadb
+    sudo systemctl enable mariadb
+
+    $ echo "CREATE DATABASE poradnia CHARACTER SET utf8 COLLATE utf8_polish_ci;" | sudo mysql
+    $ echo "CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';" | sudo mysql
+    $ echo "GRANT ALL PRIVILEGES ON poradnia . * TO 'user'@'localhost';" | sudo mysql
 
 Next to set up enviroment variables::
 
