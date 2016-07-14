@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load staticfiles i18n %}
+{% block title %}{% trans 'Stats' %} - {{block.super}}{% endblock %}
+
+{% block breadcrumbs %}
+<ol class="breadcrumb">
+  <li class="active">{% trans 'Stats'%}</li>
+</ol>
+{% endblock %}
+
+{% block content %}
+{% trans 'Stats'%}:
+<ul>
+    {% if user.is_superuser %}
+    <li><a href="{% url 'stats:case_created' %}">{% trans 'Cases created' %}</a></li>
+    <li><a href="{% url 'stats:case_reaction' %}">{% trans 'Cases reaction time' %}</a></li>
+    <li><a href="{% url 'stats:case_unanswered' %}">{% trans 'Cases unanswered' %}</a></li>
+    {% endif %}
+</ul>
+{%endblock%}
