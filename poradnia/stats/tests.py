@@ -2,9 +2,10 @@ from datetime import datetime
 from unittest import skipUnless
 
 from dateutil.rrule import MONTHLY, WEEKLY, DAILY
-from django.db import connection
-from django.test import TestCase
 from django.core.urlresolvers import reverse
+from django.db import connection
+from django.http.response import HttpResponse
+from django.test import TestCase
 
 from cases.factories import CaseFactory
 from cases.models import Case
@@ -12,6 +13,12 @@ from letters.factories import LetterFactory
 from letters.models import Letter
 from users.factories import UserFactory
 from stats.utils import GapFiller, DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY
+
+def polyfill_http_response_json():
+    try:
+        getattr(HttpResponse, 'json')
+    except AttributeError:
+        setattr(HttpResponse, 'json', lambda x: json.loads(x.content))
 
 
 class StatsCaseCreatedPermissionTestCase(TestCase):
@@ -100,6 +107,7 @@ class StatsCaseReactionPermissionTestCase(TestCase):
 @skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
 class StatsCaseCreatedApiTestCase(TestCase):
     def setUp(self):
+        polyfill_http_response_json()
         self.url = reverse('stats:case_created_api')
 
     def _prepare_cases(self, db_data):
@@ -128,7 +136,6 @@ class StatsCaseCreatedApiTestCase(TestCase):
         user = UserFactory(is_superuser=True)
         self.client.login(username=user.username, password='pass')
         self._prepare_cases(db_data)
-
         result = self.client.get(self.url).json()
         expected = [
             {'date': "2015-01", 'open': 1, 'assigned': 2, 'closed': 3},
@@ -161,6 +168,7 @@ class StatsCaseCreatedApiTestCase(TestCase):
 @skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
 class StatsCaseReactionApiTestCase(TestCase):
     def setUp(self):
+        polyfill_http_response_json()
         self.url = reverse('stats:case_reaction_api')
         self.staff_user = UserFactory(is_staff=True)
         self.non_staff_user = UserFactory(is_staff=False)
@@ -168,7 +176,7 @@ class StatsCaseReactionApiTestCase(TestCase):
     def _prepare_cases(self, db_data):
         for created_on, letter_data in db_data:
             for obj in CaseFactory.create_batch(size=1):
-                obj.letter_set.set(self._prepare_letters(letter_data, obj))
+                obj.letter_set = self._prepare_letters(letter_data, obj)
                 obj.created_on = created_on
                 obj.save()
 
@@ -293,6 +301,7 @@ class StatsCaseReactionApiTestCase(TestCase):
 @skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
 class StatsCaseUnansweredApiTestCase(TestCase):
     def setUp(self):
+        polyfill_http_response_json()
         self.url = reverse('stats:case_unanswered_api')
 
     def _prepare_cases(self, db_data):
