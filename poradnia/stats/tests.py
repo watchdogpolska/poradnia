@@ -14,10 +14,12 @@ from letters.models import Letter
 from users.factories import UserFactory
 from stats.utils import GapFiller, DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY
 
+
 def polyfill_http_response_json():
     try:
         getattr(HttpResponse, 'json')
     except AttributeError:
+        import json
         setattr(HttpResponse, 'json', lambda x: json.loads(x.content))
 
 
