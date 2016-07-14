@@ -38,7 +38,7 @@ Getting up and running
 The steps below will get you up and running with a local development environment. We assume you have the following installed
 First make sure to install all requires OS-level libraries and application (dependencies)::
 
-    $ sudo apt-get install python2.7 mariadb-server git libmariadbclient-dev virtualenv python-dev libffi-dev libssl-dev libjpeg-dev libpng12-dev libxml2-dev libxslt1-dev python-dev
+    $ sudo apt-get install python2.7 mariadb-server git libmariadbclient-dev virtualenv python-dev libffi-dev libssl-dev libjpeg-dev libpng12-dev libxml2-dev libxslt1-dev python-dev libjpeg62
 
 Next to create and activate a virtualenv_::
     
