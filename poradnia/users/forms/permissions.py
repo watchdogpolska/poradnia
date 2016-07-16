@@ -24,7 +24,7 @@ class TranslatedManageObjectPermissionForm(SingleButtonMixin, PermissionsTransla
     users = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(), required=True,
                                            widget=MultipleChoiceWidget('UserAutocomplete'))
 
-    def __init__(self, actor, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         self.staff_only = kwargs.pop('staff_only', False)
         super(TranslatedManageObjectPermissionForm, self).__init__(*args, **kwargs)
