@@ -8,25 +8,20 @@ cache:
 env:
   fast_finish: true
   global:
-    - DATABASE_URL="mysql://root:@localhost/test_feder"
+    - DATABASE_URL="mysql://root:@localhost/test_poradnia"
     - DJANGO_CONFIGURATION="Local"
   matrix:
     - TOX_ENV=flake8
     - TOX_ENV=py27-dj18-coveralls
     - TOX_ENV=py27-dj19-coveralls
     - TOX_ENV=py27-djmaster-coveralls
-    - TOX_ENV=py33-dj18-coveralls
-    - TOX_ENV=py33-djmaster-coveralls
+    - TOX_ENV=py34-dj19-coveralls
 
 matrix:
   allow_failures:
     - env: TOX_ENV=flake8
-    - env: TOX_ENV=py27-dj19-coveralls
     - env: TOX_ENV=py27-djmaster-coveralls
-    - env: TOX_ENV=py33-dj18-coveralls
-    - env: TOX_ENV=py33-djmaster-coveralls
-    - env: TOX_ENV=py33-dj19-coveralls
-
+    - env: TOX_ENV=py34-dj19-coveralls
 
 install:
   - pip install -U pip wheel
