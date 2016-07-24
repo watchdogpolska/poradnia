@@ -11,6 +11,7 @@ from .common import *  # noqa
 # DEBUG
 DEBUG = env('DEBUG', default=True)
 TEMPLATE_DEBUG = DEBUG
+TEMPLATES[0]['OPTIONS']['debug'] = TEMPLATE_DEBUG
 # END DEBUG
 
 # django-extensions
