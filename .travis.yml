@@ -12,7 +12,6 @@ env:
     - DJANGO_CONFIGURATION="Local"
   matrix:
     - TOX_ENV=flake8
-    - TOX_ENV=py27-dj18-coveralls
     - TOX_ENV=py27-dj19-coveralls
     - TOX_ENV=py27-djmaster-coveralls
     - TOX_ENV=py34-dj19-coveralls
