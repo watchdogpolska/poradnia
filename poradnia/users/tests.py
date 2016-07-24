@@ -125,30 +125,44 @@ class UserDetailViewTestCase(TestCase):
 
     def setUp(self):
         self.object = UserFactory(is_staff=False)
+        self.url = self.object.get_absolute_url()
+        self.client_filter_url = reverse_lazy('cases:list') + '?client=' + str(self.object.pk)
+        self.permission_filter_url = (reverse_lazy('cases:list') + '?permission=' +
+                                      str(self.object.pk))
 
-    def login(self, user=None):
-        self.client.login(username=(user or self.object).username, password='pass')
+    def test_can_view_self(self):
+        self.client.login(username=self.object, password='pass')
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
 
-    def get(self):
-        return self.client.get(self.object.get_absolute_url())
+    def test_need_permission(self):
+        user = UserFactory()
+        self.client.login(username=user, password='pass')
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 403)
 
-    def own_resp(self):
-        self.login()
-        return self.get()
+    def test_has_permission_to_view(self):
+        user = UserFactory()
+        assign_perm("users.can_view_other", user)
+        self.client.login(username=user, password='pass')
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
 
-    def test_contains_username(self):
-        self.assertContains(self.own_resp(), self.object.username)
+    def test_has_link_to_self_assigned_cases(self):
+        self.client.login(username=self.object, password='pass')
+        resp = self.client.get(self.url)
+        self.assertContains(resp, self.client_filter_url)
+        self.assertNotContains(resp, self.permission_filter_url)
 
-    def test_contains_assigned_cases(self):
-        url = reverse_lazy('cases:list') + '?permission=' + str(self.object.pk)
-        self.login()
-        self.assertNotContains(self.own_resp(), url)
-
+    def test_has_link_to_user_assigned_cases(self):
         user = UserFactory()
         assign_perm('users.can_view_other', user)
         assign_perm('cases.can_assign', user)
-        self.login(user=user)
-        self.assertContains(self.get(), url)
+        self.client.login(username=user, password='pass')
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, self.client_filter_url)
+        self.assertContains(resp, self.permission_filter_url)
 
 
 class UserListViewTestCase(TestCase):
