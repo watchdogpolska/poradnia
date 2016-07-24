@@ -2,8 +2,6 @@
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin
 from django.core.urlresolvers import reverse
 from django.contrib.auth.mixins import PermissionRequiredMixin
-from django.http import HttpResponseForbidden
-from django.shortcuts import redirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
 from django_filters.views import FilterView
@@ -18,19 +16,13 @@ class UserDetailView(PermissionRequiredMixin, DetailView):
     model = User
     slug_field = "username"
     slug_url_kwarg = "username"
+    permission_required = "users.can_view_other"
+    raise_exception = True
 
-    def handle_no_permission(self):
-        if self.request.user.is_anonymous():
-            return redirect('/konta/login/?next=%s' % self.request.path)
-        else:
-            return HttpResponseForbidden("403 - not authorized")
-
-    def has_permission(self):
-        user = self.request.user
-        if user.has_perm("users.can_view_other") or self.request.path.startswith("/uzytkownik/{}/".format(user.username)):
+    def has_permission(self, *args, **kwargs):
+        if self.kwargs['username'] == self.request.user.username:
             return True
-        else:
-            return False
+        return super(UserDetailView, self).has_permission(*args, **kwargs)
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
