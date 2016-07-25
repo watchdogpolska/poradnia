@@ -54,6 +54,7 @@ Next to open a terminal at the project root and install the requirements for loc
     $ pip install -r requirements/local.txt
 
 Next to create MySQL database::
+
     # if you are using Ubuntu 14.04, you may need to find a workaround for the following two commands
     $ sudo systemctl start mariadb
     $ sudo systemctl enable mariadb
