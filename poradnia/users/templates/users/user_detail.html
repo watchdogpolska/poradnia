@@ -35,7 +35,7 @@
 </a>
 {% endif %}
 
-{% if object == request.user or perms.cases.can_view_all %}
+{% if object == request.user or perms.cases.can_assign %}
 <a class="btn btn-info" href="{% url 'cases:list' %}?client={{object.pk}}">
     <i class="fa fa-book"></i>
     {% trans 'Client cases' %}
