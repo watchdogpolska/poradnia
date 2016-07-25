@@ -329,6 +329,7 @@ TEMPLATES = [
         'DIRS': TEMPLATE_DIRS,
         'APP_DIRS': True,
         'OPTIONS': {
+            'debug': TEMPLATE_DEBUG,
             'context_processors': TEMPLATE_CONTEXT_PROCESSORS,
         },
     },
