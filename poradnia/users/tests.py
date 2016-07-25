@@ -130,6 +130,11 @@ class UserDetailViewTestCase(TestCase):
         self.permission_filter_url = (reverse_lazy('cases:list') + '?permission=' +
                                       str(self.object.pk))
 
+    def test_no_redirect_loop_no_auth(self):
+        resp = self.client.get(self.url, follow=True)
+        import ipdb; ipdb.set_trace();
+        self.assertEqual(len(resp.redirect_chain), 1)
+
     def test_can_view_self(self):
         self.client.login(username=self.object, password='pass')
         resp = self.client.get(self.url)
