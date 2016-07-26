@@ -28,7 +28,7 @@ class UserTestCase(TestCase):
         self.assertEqual(username, username)
         User.objects.create_user(username=username)
 
-    def test_emaTeil_to_username(self):
+    def test_email_to_username(self):
         self._create_user('example@example.com', 'example_example_com')
         for i in range(1, 11):
             self._create_user('example@example.com', 'example_example_com-' + str(i))
