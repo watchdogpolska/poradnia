@@ -23,4 +23,4 @@ class UserForm(FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
 class ProfileForm(FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ("description", "www")
+        fields = ("description", "www", "event_reminder_time")
