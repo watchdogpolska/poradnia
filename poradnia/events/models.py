@@ -3,9 +3,22 @@ from datetime import datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import Model
 from django.utils.translation import ugettext_lazy as _
+from model_utils.tracker import FieldTracker
 
 from records.models import AbstractRecord, AbstractRecordQuerySet
+from users.models import User, Profile
+
+
+class Reminder(models.Model):
+    event = models.OneToOneField('Event', related_name='user_alarms')
+    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    triggered = models.BooleanField(default=False)
+
+    class Meta:
+        verbose_name = _('Reminder')
+        verbose_name_plural = _('Reminders')
 
 
 class Alarm(AbstractRecord):
@@ -38,6 +51,7 @@ class Event(AbstractRecord):
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
     objects = EventQuerySet.as_manager()
+    tracker = FieldTracker(fields=('time',))
 
     def get_absolute_url(self):
         case_url = self.record.case_get_absolute_url()
@@ -53,6 +67,24 @@ class Event(AbstractRecord):
         obj = Alarm(event=self, case=self.case)
         obj.save()
         return obj
+
+    def save(self, *args, **kwargs):
+        time_changed = self.tracker.has_changed('time')
+        super(Event, self).save(*args, **kwargs)
+
+        # if deadline is not set or Event already exists but time was not changed, do nothing
+        if not self.deadline or not time_changed:
+            return
+
+        # for each staff user involved in case create or update Reminder about Event
+        for user in self.case.get_users_with_perms():
+            if user.is_staff:
+                try:
+                    if user.profile.event_reminder_time > 0:
+                        Reminder.objects.update_or_create(event=self, user=user, defaults={'triggered': False})
+                except Profile.DoesNotExist:
+                    pass
+
 
     @property
     def triggered(self):

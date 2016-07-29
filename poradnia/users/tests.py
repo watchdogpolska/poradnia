@@ -1,14 +1,14 @@
 from __future__ import absolute_import
 
 from django.core import mail
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.test import TestCase
 from django.utils import timezone
 from guardian.shortcuts import assign_perm, get_perms
 
 from cases.factories import CaseFactory
 from cases.models import Case
-from users.factories import UserFactory
+from users.factories import UserFactory, StaffFactory
 from users.forms import TranslatedUserObjectPermissionsForm, UserForm
 from users.models import User
 
@@ -270,3 +270,49 @@ class TranslatedUserObjectPermissionsFormTestCase(TestCase):
         form.save_obj_perms()
         self.assertFalse(self.user.has_perm('users.change_user', self.obj))
         self.assertEqual(get_perms(self.user, self.obj), [])
+
+
+class UserProfileViewTestCase(TestCase):
+    url = reverse('users:profile')
+    login_page = reverse('account_login')
+
+    def setUp(self):
+        self.regular_user = UserFactory()
+        self.staff_user = StaffFactory()
+
+    def test_profile_page_not_visible_for_anonymous(self):
+        response = self.client.get(self.url)
+        self.assertIn(self.login_page, response.url)
+
+    def test_profile_page_visible_for_authenticated(self):
+        self.client.login(username=self.regular_user.username, password='pass')
+
+        response = self.client.get(self.url)
+        self.assertContains(response, self.regular_user.username)
+
+    def test_event_reminder_setting_visible_for_staff_only(self):
+        self.client.login(username=self.regular_user.username, password='pass')
+
+        response = self.client.get(self.url)
+        self.assertNotContains(response, 'reminder')
+
+        self.client.login(username=self.staff_user.username, password='pass')
+
+        response = self.client.get(self.url)
+        self.assertContains(response, 'reminder')
+
+    def test_store_user_profile(self):
+        self.client.login(username=self.regular_user.username, password='pass')
+        www = 'http://example.com'
+        description = 'asd'
+
+        response = self.client.post(self.url, {
+            'www': www,
+            'description': description,
+        })
+
+        expected_redirect = reverse('users:detail', kwargs={'username': self.regular_user.username})
+        self.assertRedirects(response, expected_redirect)
+
+        self.assertEqual(self.regular_user.profile.www, www)
+        self.assertEqual(self.regular_user.profile.description, description)

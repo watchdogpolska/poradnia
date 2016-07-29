@@ -15,3 +15,12 @@ class UserFactory(factory.django.DjangoModelFactory):
 
 class StaffFactory(UserFactory):
     is_staff = True
+
+
+class ProfileFactory(factory.django.DjangoModelFactory):
+    user = factory.SubFactory(UserFactory)
+    description = factory.fuzzy.FuzzyText()
+    www = factory.fuzzy.FuzzyText()
+
+    class Meta:
+        model = 'users.Profile'
