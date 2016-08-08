@@ -1,5 +1,5 @@
-$block-list-item-hover-bg: lighten($brand-primary, 10%) !default;
-$block-list-item-selected-bg: darken($brand-primary, 10%) !default;
+$block-list-item-hover-bg: lighten(#4C4C4C, 10%) !default;
+$block-list-item-selected-bg: darken(#4C4C4C, 10%) !default;
 
 $block-list-item-padding-vertical: 0em !default;
 $block-list-item-padding-horizontal: 1em !default;
@@ -90,7 +90,7 @@ $block-list-inidicator-color: $block-list-link-color !default;
 	overflow-y: auto;
 	width: 90%;
 	z-index: #{ $zindex-navbar - 1};
-	background: $brand-primary;
+	background: #4C4C4C;
 	// min-height: 100vh;
 	transform: translateX(-100%);
 	transition: transform 0.5s;
