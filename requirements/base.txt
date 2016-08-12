@@ -41,5 +41,5 @@ django-tinycontent==0.6.0
 icalendar==3.10
 html2text==2016.5.29
 pyGravatar==0.0.6
-django-bootstrap-pagination==1.6.1
+django-bootstrap-pagination==1.6.2
 raven==5.23.0
