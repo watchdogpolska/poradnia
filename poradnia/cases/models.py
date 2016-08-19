@@ -6,7 +6,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import Count, Prefetch, Q
+from django.db.models import (F, Q, Count, Func, IntegerField,
+                              Prefetch)
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save
 from django.utils.translation import ugettext_lazy as _
@@ -74,6 +75,17 @@ class CaseQuerySet(QuerySet):
         return self.order_by(
             '%s%s' % (order, field_name), '%spk' % order
         )
+
+    def with_month_year(self):
+        return self.annotate(
+                month=Func(F('created_on'),
+                           function='month',
+                           output_field=IntegerField())
+            ).annotate(
+                year=Func(F('created_on'),
+                          function='year',
+                          output_field=IntegerField())
+            )
 
 
 class Case(models.Model):

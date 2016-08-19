@@ -11,14 +11,15 @@ from django.contrib.auth import get_user_model
 from django.core.files import File
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.db.models import F, Q, Func, IntegerField
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
-from django_mailbox.models import Message
-from django_mailbox.signals import message_received
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
 from cases.models import Case
+from django_mailbox.models import Message
+from django_mailbox.signals import message_received
 from records.models import AbstractRecord, AbstractRecordQuerySet
 from template_mail.utils import send_tpl_email
 
@@ -47,6 +48,16 @@ class LetterQuerySet(AbstractRecordQuerySet):
     def case(self, case):
         return self.filter(record__case=case)
 
+    def with_month_year(self):
+        return self.annotate(
+                month=Func(F('created_on'),
+                           function='month',
+                           output_field=IntegerField())
+            ).annotate(
+                year=Func(F('created_on'),
+                          function='year',
+                          output_field=IntegerField())
+            )
 
 class Letter(AbstractRecord):
     STATUS = Choices(('staff', _('Staff')), ('done', _('Done')))

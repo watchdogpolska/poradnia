@@ -35,17 +35,9 @@ class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLis
     raise_exception = raise_unless_unauthenticated
 
     def get_object_list(self):
-        qs = list(
-            CaseModel.objects.annotate(
-                                        month=Func(F('created_on'),
-                                                   function='month',
-                                                   output_field=IntegerField())
+        qs = CaseModel.objects.with_month_year().values(
+            'month', 'year'
             ).annotate(
-                        year=Func(F('created_on'),
-                                  function='year',
-                                  output_field=IntegerField())
-            ).values('month', 'year')
-            .annotate(
                 open=Sum(
                     Case(
                         When(status=CaseModel.STATUS.free, then=1),
@@ -67,11 +59,13 @@ class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLis
                         output_field=IntegerField()
                     )
                 )
-            ).values('month', 'year', 'open', 'assigned', 'closed')
-            .order_by(F('year'), F('month'))
-        )
+            ).values(
+            'month', 'year', 'open', 'assigned', 'closed'
+            ).order_by(
+            F('year'), F('month')
+            )
 
-        qs = [{
+        result = [{
             'date': "{0:04d}-{1:02d}".format(obj['year'], obj['month']),
             'open': obj['open'],
             'assigned': obj['assigned'],
@@ -79,7 +73,7 @@ class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLis
         } for obj in qs]
 
         return GapFiller(
-            qs,
+            result,
             MONTHLY,
             'date',
             DATE_FORMAT_MONTHLY
@@ -107,11 +101,11 @@ class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLi
                 letter__created_by__is_staff=True
             ).annotate(
                 first_accepted=Min('letter__accept')
-            # ).annotate(
-            #     delta=ExpressionWrapper(
-            #         F('letter__accept') - F('created_on'),
-            #         output_field=IntegerField()
-            #     )  # Django bug?
+                # ).annotate(
+                #     delta=ExpressionWrapper(
+                #         F('letter__accept') - F('created_on'),
+                #         output_field=IntegerField()
+                #     )  # Django bug?
             ).values(
                 'first_accepted', 'created_on'
             )
@@ -126,13 +120,13 @@ class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLi
             else:
                 deltas[date] = [time_delta]
 
-        qs = [{
+        result = [{
             'date': date,
             'reaction_time': int(sum(deltas[date]) / len(deltas[date]) / SECONDS_IN_A_DAY)
         } for date in sorted(deltas.keys())]
 
         return GapFiller(
-            qs,
+            result,
             MONTHLY,
             'date',
             DATE_FORMAT_MONTHLY
@@ -149,22 +143,15 @@ class StatsCaseUnansweredRenderView(LoginRequiredMixin, SuperuserRequiredMixin, 
     raise_exception = raise_unless_unauthenticated
 
 
-class StatsCaseUnansweredApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
+class StatsCaseUnansweredApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin,
+                                 View):
     raise_exception = raise_unless_unauthenticated
 
     def get_object_list(self):
-        qs =  (
-            CaseModel.objects.filter(
-                                        last_send=None
-            ).annotate(
-                        month=Func(F('created_on'),
-                                   function='month',
-                                   output_field=IntegerField())
-            ).annotate(
-                        year=Func(F('created_on'),
-                                  function='year',
-                                  output_field=IntegerField())
-            ).values('month', 'year')
+        qs = CaseModel.objects.filter(
+            last_send=None
+        ).with_month_year().values(
+            'month', 'year'
         ).annotate(
             count=Count('pk')
         ).values(
@@ -174,6 +161,55 @@ class StatsCaseUnansweredApiView(LoginRequiredMixin, SuperuserRequiredMixin, Api
         qs = [{
             'date': "{0:04d}-{1:02d}".format(obj['year'], obj['month']),
             'count': obj['count']
+        } for obj in qs]
+
+        return GapFiller(
+            qs,
+            MONTHLY,
+            'date',
+            DATE_FORMAT_MONTHLY
+        ).fill_gaps()
+
+
+class StatsLetterCreatedView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+    template_name = 'stats/letters/created.html'
+    raise_exception = raise_unless_unauthenticated
+
+
+class StatsLetterCreatedRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+    template_name = 'stats/render/letters/created.html'
+    raise_exception = raise_unless_unauthenticated
+
+
+class StatsLetterCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
+    raise_exception = raise_unless_unauthenticated
+
+    def get_object_list(self):
+        qs = LetterModel.objects.with_month_year().values(
+            'month', 'year'
+        ).annotate(
+                staff=Sum(
+                    Case(
+                        When(created_by__is_staff=True, then=1),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                ),
+                client=Sum(
+                    Case(
+                        When(created_by__is_staff=False, then=1),
+                        default=0,
+                        output_field=IntegerField()
+                    )
+                ),
+            ).values(
+            'month', 'year', 'client', 'staff'
+        ).order_by(F('year'), F('month'))
+
+        qs = [{
+            'date': "{0:04d}-{1:02d}".format(obj['year'], obj['month']),
+            'staff': obj['staff'],
+            'client': obj['client']
         } for obj in qs]
 
         return GapFiller(

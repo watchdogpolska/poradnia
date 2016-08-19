@@ -27,5 +27,7 @@ var mapping = {
     "count": "Count",
     "max": "Max.",
     "min": "Min.",
-    "mean": "Mean"
+    "mean": "Mean",
+    "staff": "Staff",
+    "client": "Client"
 };
