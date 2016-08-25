@@ -95,6 +95,6 @@ class LetterListView(PermissionMixin, SelectRelatedMixin, PrefetchRelatedMixin, 
         return StaffLetterFilter if self.request.user.is_staff else UserLetterFilter
 
     model = Letter
-    paginate_by = 5
+    paginate_by = 20
     select_related = ['created_by', 'modified_by', 'case']
     prefetch_related = ['attachment_set', ]
