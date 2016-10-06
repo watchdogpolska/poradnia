@@ -59,6 +59,7 @@ class LetterQuerySet(AbstractRecordQuerySet):
                           output_field=IntegerField())
             )
 
+
 class Letter(AbstractRecord):
     STATUS = Choices(('staff', _('Staff')), ('done', _('Done')))
     GENRE = Choices('mail', 'comment')
