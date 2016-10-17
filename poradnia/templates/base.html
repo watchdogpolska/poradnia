@@ -161,6 +161,14 @@
     })
   </script>
   {% endblock javascript %}
+  <script type="text/javascript">
+    if(Cookies.get('pomagamy_jawnosc_logged') != '1'){
+      $('#pomagamy_jawnosc').modal();
+    }
+    $('#pomagamy_jawnosc').on('hidden.bs.modal', function (e) {
+      Cookies.set('pomagamy_jawnosc_logged', '1', { expires: 3 });
+    })
+  </script>
 </body>
 </html>
 
