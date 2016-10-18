@@ -27,7 +27,7 @@ SERVER_EMAIL = env.str('DJANGO_SERVER_EMAIL')
 
 # TEMPLATE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
-TEMPLATE_LOADERS = (
+TEMPLATES[0]['OPTIONS']['loaders'] = (
     ('django.template.loaders.cached.Loader', (
         'django.template.loaders.filesystem.Loader',
         'django.template.loaders.app_directories.Loader',
