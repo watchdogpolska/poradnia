@@ -3,6 +3,7 @@ from __future__ import absolute_import
 from django.core import mail
 from django.core.urlresolvers import reverse_lazy
 from django.test import TestCase
+from django.utils import timezone
 from guardian.shortcuts import assign_perm, get_perms
 
 from cases.factories import CaseFactory
@@ -54,6 +55,12 @@ class UserTestCase(TestCase):
                               first_name="John",
                               last_name="Smith").get_codename(), "John Smith")
         self.assertEqual(User(username="X").get_codename(), "X")
+
+    def test_created_on(self):
+        now = timezone.now()
+        created_on = UserFactory().created_on
+        diff_seconds = (created_on - now).total_seconds()
+        self.assertLess(diff_seconds, 5)  # allow small latency
 
 
 class UserQuerySetTestCase(TestCase):
