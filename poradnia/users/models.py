@@ -103,6 +103,7 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
 class User(GuardianUserMixin, AbstractUser):
     picture = ImageField(upload_to='avatars', verbose_name=_("Avatar"), null=True, blank=True)
     codename = models.CharField(max_length=15, null=True, blank=True, verbose_name=_("Codename"))
+    created_on = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name=_("Created on"))
     objects = CustomUserManager()
 
     def get_codename(self):
