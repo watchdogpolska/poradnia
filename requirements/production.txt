@@ -1,7 +1,7 @@
 # Pro-tip: Try not to put anything here. There should be no dependency in
 #	production that isn't in development.
 -r base.txt
-Django==1.9.9 # rq.filter: >=1.9,<1.10
+Django==1.9.11 # rq.filter: >=1.9,<1.10
 gunicorn==19.6.0
 gevent==1.1.2
 boto==2.42.0
