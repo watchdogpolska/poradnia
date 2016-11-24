@@ -44,6 +44,17 @@ class RemindersTestCase(TestCase):
         _ = EventFactory(case=case)
         self.assertFalse(Reminder.objects.exists())
 
+    def test_not_create_reminder_for_staff_user_with_disabled_reminders(self):
+        staff_user = UserFactory(is_staff=True)
+        ProfileFactory(user=staff_user)
+        staff_user.profile.event_reminder_time = 0
+        staff_user.profile.save()
+
+        case = CaseFactory(created_by=staff_user)
+        self.assertFalse(Reminder.objects.exists())
+        _ = EventFactory(case=case)
+        self.assertFalse(Reminder.objects.exists())
+
     def test_not_create_reminder_if_no_deadline(self):
         self.assertFalse(Reminder.objects.exists())
         _ = EventFactory(case=self.staff_case, deadline=False)
