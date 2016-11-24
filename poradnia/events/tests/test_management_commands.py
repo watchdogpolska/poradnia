@@ -1,6 +1,5 @@
 from __future__ import print_function
 
-import unittest
 from datetime import timedelta
 from unittest import TestCase
 
@@ -41,7 +40,6 @@ class RemindersCommandsTestCase(TestCase):
         self.assertTrue(self.user.reminder_set.get(event=event_should_trigger).triggered)
         self.assertFalse(self.user.reminder_set.get(event=event_should_not_trigger).triggered)
 
-    @unittest.skip("Sending mails not implemented")
     def test_sending_notification(self):
         stdout = StringIO()
 
@@ -51,6 +49,12 @@ class RemindersCommandsTestCase(TestCase):
 
         # check if mail was sent
         self.assertEqual(len(mail.outbox), 1)
+
+        email = mail.outbox.pop()
+        self.assertIn(self.user.email, email.recipients())
+        self.assertIn(str(event_to_trigger.case.id), email.subject)
+        self.assertIn(event_to_trigger.text, email.body)
+        self.assertIn(str(event_to_trigger.case), email.body)
 
     def test_removing_past_reminders(self):
         stdout = StringIO()
