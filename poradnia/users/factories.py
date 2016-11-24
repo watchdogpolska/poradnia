@@ -1,4 +1,5 @@
 import factory
+import factory.fuzzy
 
 
 class UserFactory(factory.django.DjangoModelFactory):
