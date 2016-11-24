@@ -6,7 +6,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('users', '0012_user_created_on'),
     ]
@@ -16,6 +15,8 @@ class Migration(migrations.Migration):
             model_name='profile',
             name='event_reminder_time',
             field=models.IntegerField(
-                choices=[(0, 'No reminder'), (1, '1 day'), (3, '3 days'), (7, '7 days')], default=1),
+                choices=[(0, 'No reminder'), (1, '1 day'), (3, '3 days'),
+                         (7, '7 days')], default=1,
+                verbose_name='Event Reminder Time'),
         ),
     ]
