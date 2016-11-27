@@ -12,6 +12,7 @@ from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
 from guardian.mixins import GuardianUserMixin
 from guardian.utils import get_anonymous_user
+from model_utils.choices import Choices
 from sorl.thumbnail import ImageField
 
 from cases.models import Case as CaseModel
@@ -167,9 +168,19 @@ class User(GuardianUserMixin, AbstractUser):
 
 
 class Profile(models.Model):
+    EVENT_REMINDER_CHOICE = Choices(
+        (0, "no_reminder", _("No reminder")),
+        (1, "one_day", _("1 day")),
+        (3, "three_days", _("3 days")),
+        (7, "seven_days", _("7 days")),
+    )
     user = models.OneToOneField(User, primary_key=True)
     description = models.TextField(blank=True, verbose_name=_("Description"))
     www = models.URLField(null=True, blank=True, verbose_name=_("Homepage"))
+    event_reminder_time = models.IntegerField(
+        choices=EVENT_REMINDER_CHOICE, default=EVENT_REMINDER_CHOICE.one_day,
+        verbose_name=_("Event Reminder Time")
+    )
 
     class Meta:
         verbose_name = _("Profile")
