@@ -30,8 +30,10 @@ class RemindersCommandsTestCase(TestCase):
         stdout = StringIO()
 
         # event in 2 and 4 days from now
-        event_should_trigger = EventFactory(case=self.case, time=timezone.now() + timedelta(days=2))
-        event_should_not_trigger = EventFactory(case=self.case, time=timezone.now() + timedelta(days=4))
+        event_should_trigger = EventFactory(case=self.case,
+                                            time=timezone.now() + timedelta(days=2))
+        event_should_not_trigger = EventFactory(case=self.case,
+                                                time=timezone.now() + timedelta(days=4))
 
         self.assertTrue(self.user.reminder_set.all().count() == 2)
 

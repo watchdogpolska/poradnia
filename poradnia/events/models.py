@@ -3,12 +3,11 @@ from datetime import datetime
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import Model
 from django.utils.translation import ugettext_lazy as _
 from model_utils.tracker import FieldTracker
 
 from records.models import AbstractRecord, AbstractRecordQuerySet
-from users.models import User, Profile
+from users.models import Profile
 
 
 class Reminder(models.Model):
@@ -81,10 +80,11 @@ class Event(AbstractRecord):
             if user.is_staff:
                 try:
                     if user.profile.event_reminder_time > 0:
-                        Reminder.objects.update_or_create(event=self, user=user, defaults={'triggered': False})
+                        Reminder.objects.update_or_create(event=self,
+                                                          user=user,
+                                                          defaults={'triggered': False})
                 except Profile.DoesNotExist:
                     pass
-
 
     @property
     def triggered(self):

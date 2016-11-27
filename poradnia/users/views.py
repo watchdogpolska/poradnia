@@ -68,7 +68,9 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
         if not self.request.user.is_staff:
             exclude = ('event_reminder_time',)
 
-            self.form_class = modelform_factory(model=self.model, form=self.form_class, exclude=exclude)
+            self.form_class = modelform_factory(model=self.model,
+                                                form=self.form_class,
+                                                exclude=exclude)
 
         return super(ProfileUpdateView, self).get_form(*args, **kwargs)
 

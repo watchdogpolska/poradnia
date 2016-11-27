@@ -25,7 +25,10 @@ class Command(BaseCommand):
             notification_deadline = datetime.timedelta(days=deadline_days)
             if today + notification_deadline > reminder.event.time:
                 print("Sending notification about {} to user {}".format(reminder.event, reminder.user))
-                reminder.user.notify(actor=reminder.user, verb='alert', target=reminder.event, from_email=reminder.event.case.get_email())
+                reminder.user.notify(actor=reminder.user,
+                                     verb='alert',
+                                     target=reminder.event,
+                                     from_email=reminder.event.case.get_email())
                 reminder.triggered = True
                 reminder.save()
 
