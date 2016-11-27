@@ -1,7 +1,7 @@
 from datetime import datetime
 from unittest import skipUnless
 
-from dateutil.rrule import MONTHLY, WEEKLY, DAILY
+from dateutil.rrule import MONTHLY, WEEKLY
 from django.core.urlresolvers import reverse
 from django.db import connection
 from django.http.response import HttpResponse
@@ -11,8 +11,8 @@ from cases.factories import CaseFactory
 from cases.models import Case
 from letters.factories import LetterFactory
 from letters.models import Letter
-from users.factories import UserFactory
 from stats.utils import GapFiller, DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY
+from users.factories import UserFactory
 
 
 def polyfill_http_response_json():
@@ -37,7 +37,6 @@ class StatsCaseCreatedPermissionTestCase(TestCase):
             self.assertEqual(resp.status_code, 403)
 
     def test_permission_not_logged_in(self):
-        user = UserFactory(is_superuser=False)
         for url in[self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)

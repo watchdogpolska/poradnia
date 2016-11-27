@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from braces.views import (LoginRequiredMixin, StaffuserRequiredMixin,
-                          UserFormKwargsMixin)
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from braces.views import UserFormKwargsMixin
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
@@ -51,7 +51,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         return User.objects.get(username=self.request.user.username)
 
 
-class ProfileUpdateView(UserFormKwargsMixin, LoginRequiredMixin, UpdateView):
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ProfileForm
     model = Profile
 

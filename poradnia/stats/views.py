@@ -1,15 +1,13 @@
-from datetime import datetime
+from braces.views import JSONResponseMixin
 from dateutil.rrule import MONTHLY
-
-from django.db.models import F, Func, IntegerField, Case, Sum, When, Min, Count
-from django.shortcuts import redirect
-from braces.views import JSONResponseMixin, LoginRequiredMixin, SuperuserRequiredMixin
+from django.db.models import F, IntegerField, Case, Sum, When, Min, Count
 from django.views.generic import TemplateView
 from django.views.generic import View
 
 from cases.models import Case as CaseModel
 from letters.models import Letter as LetterModel
-from .utils import raise_unless_unauthenticated, GapFiller, SECONDS_IN_A_DAY, DATE_FORMAT_MONTHLY
+from users.utils import SuperuserRequiredMixin
+from .utils import GapFiller, SECONDS_IN_A_DAY, DATE_FORMAT_MONTHLY, NoPermissionHandlerMixin
 
 
 class ApiListViewMixin(JSONResponseMixin):
@@ -21,18 +19,24 @@ class StatsIndexView(TemplateView):
     template_name = 'stats/index.html'
 
 
-class StatsCaseCreatedView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+class StatsCaseCreatedView(NoPermissionHandlerMixin, SuperuserRequiredMixin,
+                           TemplateView):
     template_name = 'stats/cases/created.html'
-    raise_exception = raise_unless_unauthenticated
+    raise_exception = True
+    redirect_unauthenticated_users = True
 
 
-class StatsCaseCreatedRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+class StatsCaseCreatedRenderView(NoPermissionHandlerMixin,
+                                 SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/cases/created.html'
-    raise_exception = raise_unless_unauthenticated
+    raise_exception = True
+    redirect_unauthenticated_users = True
 
 
-class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
-    raise_exception = raise_unless_unauthenticated
+class StatsCaseCreatedApiView(NoPermissionHandlerMixin, SuperuserRequiredMixin,
+                              ApiListViewMixin, View):
+    raise_exception = True
+    redirect_unauthenticated_users = True
 
     def get_object_list(self):
         qs = CaseModel.objects.with_month_year().values(
@@ -80,18 +84,15 @@ class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLis
         ).fill_gaps()
 
 
-class StatsCaseReactionView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+class StatsCaseReactionView(SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/cases/reaction.html'
-    raise_exception = raise_unless_unauthenticated
 
 
-class StatsCaseReactionRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+class StatsCaseReactionRenderView(SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/cases/reaction.html'
-    raise_exception = raise_unless_unauthenticated
 
 
-class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
-    raise_exception = raise_unless_unauthenticated
+class StatsCaseReactionApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
 
     def get_object_list(self):
         qs = (
@@ -133,19 +134,15 @@ class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLi
         ).fill_gaps()
 
 
-class StatsCaseUnansweredView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+class StatsCaseUnansweredView(SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/cases/unanswered.html'
-    raise_exception = raise_unless_unauthenticated
 
 
-class StatsCaseUnansweredRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+class StatsCaseUnansweredRenderView(SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/cases/unanswered.html'
-    raise_exception = raise_unless_unauthenticated
 
 
-class StatsCaseUnansweredApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin,
-                                 View):
-    raise_exception = raise_unless_unauthenticated
+class StatsCaseUnansweredApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
 
     def get_object_list(self):
         qs = CaseModel.objects.filter(
@@ -171,18 +168,15 @@ class StatsCaseUnansweredApiView(LoginRequiredMixin, SuperuserRequiredMixin, Api
         ).fill_gaps()
 
 
-class StatsLetterCreatedView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+class StatsLetterCreatedView(SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/letters/created.html'
-    raise_exception = raise_unless_unauthenticated
 
 
-class StatsLetterCreatedRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+class StatsLetterCreatedRenderView(SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/letters/created.html'
-    raise_exception = raise_unless_unauthenticated
 
 
-class StatsLetterCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
-    raise_exception = raise_unless_unauthenticated
+class StatsLetterCreatedApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
 
     def get_object_list(self):
         qs = LetterModel.objects.with_month_year().values(
