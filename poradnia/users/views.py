@@ -2,6 +2,7 @@
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin
 from django.core.urlresolvers import reverse
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.forms import modelform_factory
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
 from django_filters.views import FilterView
@@ -61,6 +62,17 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get_object(self):
         # Only get the User record for the user making the request
         return Profile.objects.get_or_create(user=self.request.user)[0]
+
+    def get_form(self, *args, **kwargs):
+        # dynamically exclude event_reminder_time if user is not a staff member
+        if not self.request.user.is_staff:
+            exclude = ('event_reminder_time',)
+
+            self.form_class = modelform_factory(model=self.model,
+                                                form=self.form_class,
+                                                exclude=exclude)
+
+        return super(ProfileUpdateView, self).get_form(*args, **kwargs)
 
 
 class UserListView(StaffuserRequiredMixin, PermissionMixin, FilterView):

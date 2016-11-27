@@ -2,241 +2,247 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-16 18:24+0100\n"
-"PO-Revision-Date: 2015-11-24 09:52-0500\n"
-"Last-Translator: ad-m <naczelnik@jawnosc.tk>\n"
+"POT-Creation-Date: 2016-11-24 21:25+0100\n"
+"PO-Revision-Date: 2016-11-24 21:33+0100\n"
+"Last-Translator: Karol <karol@ppkt.eu>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
-"X-Generator: crowdin.com\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
+"X-Generator: Poedit 1.8.11\n"
 "X-Crowdin-Project: poradnia\n"
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /events/locale/en/LC_MESSAGES/django.po\n"
 
-#: events/models.py:15
+#: models.py:20
+msgid "Reminder"
+msgstr "Przypomnienie"
+
+#: models.py:21
+msgid "Reminders"
+msgstr "Przypomnienia"
+
+#: models.py:28
 msgid "Alarm"
 msgstr "Alarm"
 
-#: events/models.py:16
+#: models.py:29
 msgid "Alarms"
 msgstr "Alarmy"
 
-#: events/models.py:28 events/templates/events/_event_list.html:9
+#: models.py:41 templates/events/_event_list.html:9
 msgid "Dead-line"
 msgstr "Termin"
 
-#: events/models.py:29 events/templates/events/_event_list.html:10
+#: models.py:42 templates/events/_event_list.html:10
 msgid "Time"
 msgstr "Czas"
 
-#: events/models.py:30
+#: models.py:43
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: events/models.py:32
+#: models.py:45
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: events/models.py:33
+#: models.py:46
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: events/models.py:35
+#: models.py:48
 msgid "Modified by"
 msgstr "Zmodyfikowane przez"
 
-#: events/models.py:39
+#: models.py:52
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
-#: events/models.py:65
+#: models.py:97
 msgid "Event"
 msgstr "Wydarzenie"
 
-#: events/models.py:66 events/templates/events/base.html:5
-#: events/templates/events/base.html:10
+#: models.py:98 templates/events/base.html:5 templates/events/base.html:10
 msgid "Events"
 msgstr "Wydarzenia"
 
-#: events/templates/events/_alarm_list.html:13
+#: templates/events/_alarm_list.html:13
 msgid "A related event "
 msgstr "Powiązane wydarzenie"
 
-#: events/templates/events/_event_list.html:11
+#: templates/events/_event_list.html:11
 msgid "Triggered"
 msgstr "Zaistniałe"
 
-#: events/templates/events/_event_list.html:20
-#: events/templates/events/form.html:8
+#: templates/events/_event_list.html:20 templates/events/form.html:8
 msgid "Edit"
 msgstr "Edytuj"
 
-#: events/templates/events/event_archive.html:4
+#: templates/events/event_archive.html:4
 msgid "Months index"
 msgstr "Wykaz miesięcy"
 
-#: events/templates/events/form.html:6
+#: templates/events/form.html:6
 msgid "Cases"
 msgstr "Sprawy"
 
-#: events/utils.py:8
+#: utils.py:10
 msgid "Monday"
 msgstr "Poniedziałek"
 
-#: events/utils.py:8
+#: utils.py:10
 msgid "Tuesday"
 msgstr "Wtorek"
 
-#: events/utils.py:8
+#: utils.py:10
 msgid "Wednesday"
 msgstr "Środa"
 
-#: events/utils.py:8
+#: utils.py:10
 msgid "Thursday"
 msgstr "Czwartek"
 
-#: events/utils.py:8
+#: utils.py:10
 msgid "Friday"
 msgstr "Piątek"
 
-#: events/utils.py:9
+#: utils.py:11
 msgid "Saturday"
 msgstr "Sobota"
 
-#: events/utils.py:9
+#: utils.py:11
 msgid "Sunday"
 msgstr "Niedziela"
 
-#: events/utils.py:10
+#: utils.py:12
 msgid "Mon"
 msgstr "Pon"
 
-#: events/utils.py:10
+#: utils.py:12
 msgid "Tue"
 msgstr "Wt"
 
-#: events/utils.py:10
+#: utils.py:12
 msgid "Wed"
 msgstr "Śr"
 
-#: events/utils.py:10
+#: utils.py:12
 msgid "Thu"
 msgstr "Czw"
 
-#: events/utils.py:10
+#: utils.py:12
 msgid "Fri"
 msgstr "Pi"
 
-#: events/utils.py:10
+#: utils.py:12
 msgid "Sat"
 msgstr "Sob"
 
-#: events/utils.py:10
+#: utils.py:12
 msgid "Sun"
 msgstr "Ndz"
 
-#: events/utils.py:12
+#: utils.py:14
 msgid "January"
 msgstr "Styczeń"
 
-#: events/utils.py:12
+#: utils.py:14
 msgid "February"
 msgstr "Luty"
 
-#: events/utils.py:12
+#: utils.py:14
 msgid "March"
 msgstr "Marzec"
 
-#: events/utils.py:12
+#: utils.py:14
 msgid "April"
 msgstr "Kwiecień"
 
-#: events/utils.py:12 events/utils.py:15
+#: utils.py:14 utils.py:17
 msgid "May"
 msgstr "Maj"
 
-#: events/utils.py:12
+#: utils.py:14
 msgid "June"
 msgstr "Czerwiec"
 
-#: events/utils.py:13
+#: utils.py:15
 msgid "July"
 msgstr "Lipiec"
 
-#: events/utils.py:13
+#: utils.py:15
 msgid "August"
 msgstr "Sierpień"
 
-#: events/utils.py:13
+#: utils.py:15
 msgid "September"
 msgstr "Wrzesień"
 
-#: events/utils.py:13
+#: utils.py:15
 msgid "October"
 msgstr "Październik"
 
-#: events/utils.py:13
+#: utils.py:15
 msgid "November"
 msgstr "Listopad"
 
-#: events/utils.py:13
+#: utils.py:15
 msgid "December"
 msgstr "Grudzień"
 
-#: events/utils.py:15
+#: utils.py:17
 msgid "Jan"
 msgstr "Sty"
 
-#: events/utils.py:15
+#: utils.py:17
 msgid "Feb"
 msgstr "Lut"
 
-#: events/utils.py:15
+#: utils.py:17
 msgid "Mar"
 msgstr "Mar"
 
-#: events/utils.py:15
+#: utils.py:17
 msgid "Apr"
 msgstr "Kwi"
 
-#: events/utils.py:15
+#: utils.py:17
 msgid "Jun"
 msgstr "Cze"
 
-#: events/utils.py:15
+#: utils.py:17
 msgid "Jul"
 msgstr "Lip"
 
-#: events/utils.py:16
+#: utils.py:18
 msgid "Aug"
 msgstr "Sie"
 
-#: events/utils.py:16
+#: utils.py:18
 msgid "Sep"
 msgstr "Wrz"
 
-#: events/utils.py:16
+#: utils.py:18
 msgid "Oct"
 msgstr "Wrz"
 
-#: events/utils.py:16
+#: utils.py:18
 msgid "Nov"
 msgstr "Paź"
 
-#: events/utils.py:16
+#: utils.py:18
 msgid "Dec"
 msgstr "Gru"
 
-#: events/views.py:40
+#: views.py:41
 #, python-format
 msgid "Success added new event %(event)s"
 msgstr "Dodano wydarzenie %(event)s"
 
-#: events/views.py:54
+#: views.py:60
 #, python-format
 msgid "Success updated event %(event)s"
 msgstr "Zaktualizowano wydarzenie %(event)s"
-

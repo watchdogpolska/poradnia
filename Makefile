@@ -23,4 +23,4 @@ server:
 	python poradnia/manage.py runserver
 
 drop_test_databases:
-	echo "drop database test_poradnia; drop database test_poradnia_1; drop database test_poradnia_2; drop database test_poradnia_3; drop database test_poradnia_4;" | python manage.py dbshell
+	echo "drop database test_poradnia; drop database test_poradnia_1; drop database test_poradnia_2; drop database test_poradnia_3; drop database test_poradnia_4;" | python poradnia/manage.py dbshell
