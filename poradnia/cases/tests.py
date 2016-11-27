@@ -284,3 +284,19 @@ class CaseCloseFormTestCase(TestCase):
         self.assertEqual(len(mail.outbox), 0)
         self.form({'notify': True}, user=self.user, instance=self.object).save()
         self.assertEqual(len(mail.outbox), 1)
+
+
+class UserPermissionViewTestCase(TestCase):
+
+    def setUp(self):
+        self.user = UserFactory(is_superuser=True)
+        self.object = CaseFactory()
+        self.client.login(username=self.user, password='pass')
+        self.url = reverse_lazy('cases:permission_add', kwargs={
+            'pk': self.object.pk
+        })
+
+    def test_view_loads_correctly(self):
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, self.object.name)
