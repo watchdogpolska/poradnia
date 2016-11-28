@@ -84,15 +84,24 @@ class StatsCaseCreatedApiView(NoPermissionHandlerMixin, SuperuserRequiredMixin,
         ).fill_gaps()
 
 
-class StatsCaseReactionView(SuperuserRequiredMixin, TemplateView):
+class StatsCaseReactionView(NoPermissionHandlerMixin, SuperuserRequiredMixin,
+                            TemplateView):
     template_name = 'stats/cases/reaction.html'
+    raise_exception = True
+    redirect_unauthenticated_users = True
 
 
-class StatsCaseReactionRenderView(SuperuserRequiredMixin, TemplateView):
+class StatsCaseReactionRenderView(NoPermissionHandlerMixin,
+                                  SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/cases/reaction.html'
+    raise_exception = True
+    redirect_unauthenticated_users = True
 
 
-class StatsCaseReactionApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
+class StatsCaseReactionApiView(NoPermissionHandlerMixin, SuperuserRequiredMixin,
+                               ApiListViewMixin, View):
+    raise_exception = True
+    redirect_unauthenticated_users = True
 
     def get_object_list(self):
         qs = (
@@ -134,15 +143,24 @@ class StatsCaseReactionApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
         ).fill_gaps()
 
 
-class StatsCaseUnansweredView(SuperuserRequiredMixin, TemplateView):
+class StatsCaseUnansweredView(NoPermissionHandlerMixin, SuperuserRequiredMixin,
+                              TemplateView):
     template_name = 'stats/cases/unanswered.html'
+    raise_exception = True
+    redirect_unauthenticated_users = True
 
 
-class StatsCaseUnansweredRenderView(SuperuserRequiredMixin, TemplateView):
+class StatsCaseUnansweredRenderView(NoPermissionHandlerMixin,
+                                    SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/cases/unanswered.html'
+    raise_exception = True
+    redirect_unauthenticated_users = True
 
 
-class StatsCaseUnansweredApiView(SuperuserRequiredMixin, ApiListViewMixin, View):
+class StatsCaseUnansweredApiView(NoPermissionHandlerMixin, SuperuserRequiredMixin,
+                                 ApiListViewMixin, View):
+    raise_exception = True
+    redirect_unauthenticated_users = True
 
     def get_object_list(self):
         qs = CaseModel.objects.filter(

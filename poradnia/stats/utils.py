@@ -82,6 +82,7 @@ class GapFiller(object):
                                 freq=self.freq,
                                 dtstart=datetime.strptime(start, date_format),
                                 until=datetime.strptime(end, date_format)))
+
     def _get_params(self):
         if hasattr(self, 'params'):
             return self.params

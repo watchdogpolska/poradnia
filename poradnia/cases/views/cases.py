@@ -18,7 +18,7 @@ from records.models import Record
 from users.views import PermissionMixin
 
 
-class CaseDetailView(LoginRequiredMixin, TemplateView):  # TODO: Use django.views.generic.DetailView
+class CaseDetailView(LoginRequiredMixin, TemplateView):
     template_name = 'cases/case_detail.html'
 
     def get_context_data(self, **kwargs):
