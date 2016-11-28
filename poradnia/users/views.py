@@ -10,7 +10,7 @@ from django_filters.views import FilterView
 from .filters import UserFilter
 from .forms import ProfileForm, UserForm
 from .models import Profile, User
-from .utils import PermissionMixin
+from .utils import PermissionMixin, StaffuserRequiredMixin
 
 
 class UserDetailView(PermissionRequiredMixin, DetailView):
@@ -62,6 +62,11 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get_object(self):
         # Only get the User record for the user making the request
         return Profile.objects.get_or_create(user=self.request.user)[0]
+
+    def get_form_kwargs(self):
+        kwargs = super(ProfileUpdateView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
 
 class UserListView(StaffuserRequiredMixin, PermissionMixin, FilterView):
