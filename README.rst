@@ -38,7 +38,7 @@ Getting up and running
 The steps below will get you up and running with a local development environment. We assume you have the following installed
 First make sure to install all requires OS-level libraries and application (dependencies)::
 
-    $ sudo apt-get install python2.7 mariadb-server git libmariadbclient-dev virtualenv python-dev libffi-dev libssl-dev libjpeg-dev libpng12-dev libxml2-dev libxslt1-dev build-essential libjpeg62
+    $ make install_os
 
 Next to create and activate a virtualenv_::
 
@@ -49,8 +49,7 @@ Next to create and activate a virtualenv_::
 
 Next to open a terminal at the project root and install the requirements for local development::
 
-    $ pip install pip wheel -U
-    $ pip install -r requirements/local.txt
+    $ make install_devs
 
 Next to create MySQL database::
 
@@ -66,22 +65,24 @@ Next to create MySQL database::
 
 Next to set up enviroment variables::
 
-    $ export DJANGO_SETTINGS_MODULE="config.local"
     $ export DATABASE_URL="mysql://user:pass@localhost/poradnia"
 
 Next to push migrations into database::
 
-    $ python poradnia/manage.py migrate
+    $ make migrate
 
 You can now run the usual Django ``runserver`` command::
 
-    $ python poradnia/manage.py runserver
+    $ make server
 
 To run tests use::
 
-    $ function run_test(){ DATABASE_URL="sqlite://" DJANGO_SETTINGS_MODULE='config.tests' python manage.py test $@ -v2}
-    $ pip install -r requirements/test.txt 
-    $ run_test
+    $ make test
+
+If you like you can use run tests in parallel by use::
+
+    $ make test_parallel
+
 
 **Live reloading and Sass CSS compilation**
 
