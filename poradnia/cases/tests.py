@@ -289,9 +289,11 @@ class CaseCloseFormTestCase(TestCase):
 class UserPermissionViewTestCase(TestCase):
 
     def setUp(self):
-        self.user = UserFactory(is_superuser=True)
+        self.actor = UserFactory()
+        self.user_with_permission = UserFactory()
         self.object = CaseFactory()
-        self.client.login(username=self.user, password='pass')
+        assign_perm('cases.can_assign', self.actor)
+        self.client.login(username=self.actor, password='pass')
         self.url = reverse_lazy('cases:permission_add', kwargs={
             'pk': self.object.pk
         })
@@ -300,3 +302,14 @@ class UserPermissionViewTestCase(TestCase):
         resp = self.client.get(self.url)
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, self.object.name)
+
+    def test_invalid_user_used(self):
+        resp = self.client.post(self.url, data={'users': [self.user_with_permission.pk],
+                                                'permissions': ['can_view', ]})
+        self.assertEqual(resp.status_code, 200)
+
+    def test_valid_user_used(self):
+        assign_perm('users.can_view_other', self.actor)
+        resp = self.client.post(self.url, data={'users': [self.user_with_permission.pk],
+                                                'permissions': ['can_view', ]})
+        self.assertEqual(resp.status_code, 302)

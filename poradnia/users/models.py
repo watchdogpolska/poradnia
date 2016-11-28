@@ -26,7 +26,7 @@ class UserQuerySet(QuerySet):
 
     def for_user(self, user):
         if not user.has_perm('users.can_view_other'):
-            return self.filter(Q(username=user.username) | Q(is_staff=True))
+            return self.filter(Q(pk=user.pk) | Q(is_staff=True))
         return self
 
     def with_case_count(self):
@@ -34,25 +34,28 @@ class UserQuerySet(QuerySet):
 
     def with_case_count_assigned(self):
         free = Count(
-                        Case(
-                            When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.free, then='caseuserobjectpermission__content_object__pk'),
-                            default=None,
-                            output_field=IntegerField()),
-                    distinct=True)
+            Case(
+                When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.free,
+                     then='caseuserobjectpermission__content_object__pk'),
+                default=None,
+                output_field=IntegerField()),
+            distinct=True)
 
         active = Count(
-                        Case(
-                            When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.assigned, then='caseuserobjectpermission__content_object__pk'),
-                            default=None,
-                            output_field=IntegerField()),
-                    distinct=True)
+            Case(
+                When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.assigned,
+                     then='caseuserobjectpermission__content_object__pk'),
+                default=None,
+                output_field=IntegerField()),
+            distinct=True)
 
         closed = Count(
-                        Case(
-                            When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.closed, then='caseuserobjectpermission__content_object__pk'),
-                            default=None,
-                            output_field=IntegerField()),
-                    distinct=True)
+            Case(
+                When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.closed,
+                     then='caseuserobjectpermission__content_object__pk'),
+                default=None,
+                output_field=IntegerField()),
+            distinct=True)
 
         return self.annotate(case_assigned_sum=free + active + closed,
                              case_assigned_free=free,
@@ -104,7 +107,10 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
 class User(GuardianUserMixin, AbstractUser):
     picture = ImageField(upload_to='avatars', verbose_name=_("Avatar"), null=True, blank=True)
     codename = models.CharField(max_length=15, null=True, blank=True, verbose_name=_("Codename"))
-    created_on = models.DateTimeField(auto_now_add=True, null=True, blank=True, verbose_name=_("Created on"))
+    created_on = models.DateTimeField(auto_now_add=True,
+                                      null=True,
+                                      blank=True,
+                                      verbose_name=_("Created on"))
     objects = CustomUserManager()
 
     def get_codename(self):

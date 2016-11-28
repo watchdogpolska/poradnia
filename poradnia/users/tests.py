@@ -1,16 +1,18 @@
 from __future__ import absolute_import
 
 from django.core import mail
-from django.core.urlresolvers import reverse_lazy, reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.test import TestCase
 from django.utils import timezone
 from guardian.shortcuts import assign_perm, get_perms
 
 from cases.factories import CaseFactory
 from cases.models import Case
-from users.factories import UserFactory, StaffFactory
+from users.factories import StaffFactory, UserFactory
 from users.forms import TranslatedUserObjectPermissionsForm, UserForm
 from users.models import User
+
+from users.forms import TranslatedManageObjectPermissionForm
 
 
 class UserTestCase(TestCase):
@@ -66,15 +68,13 @@ class UserTestCase(TestCase):
 class UserQuerySetTestCase(TestCase):
 
     def test_for_user_manager(self):
-        u1 = User.objects.create(username="X-1")
-        u2 = User.objects.create(username="X-2", is_staff=True)
-        u3 = User.objects.create(username="X-3", is_staff=True, is_superuser=True)
-        qs = User.objects.for_user(u1).registered().all()
-        self.assertQuerysetEqual(list(qs), [repr(u1), repr(u2), repr(u3)], ordered=False)
-        qs = User.objects.for_user(u2).registered().all()
-        self.assertQuerysetEqual(list(qs), [repr(u2), repr(u3)], ordered=False)
-        qs = User.objects.for_user(u3).registered().all()
-        self.assertQuerysetEqual(list(qs), [repr(u1), repr(u2), repr(u3)], ordered=False)
+        UserFactory()
+        u1 = UserFactory()
+        u2 = UserFactory(is_staff=True)
+        u3 = UserFactory(is_staff=True, is_superuser=True)
+        self.assertEqual(User.objects.for_user(u1).registered().count(), 3)  # self + 2 staff
+        self.assertEqual(User.objects.for_user(u2).registered().count(), 2)  # 2 staff with self
+        self.assertEqual(User.objects.for_user(u3).registered().count(), 4)  # all
 
     def test_with_case_count(self):
         user = UserFactory()
@@ -84,23 +84,32 @@ class UserQuerySetTestCase(TestCase):
 
     def test_with_case_count_assigned(self):
         user = UserFactory()
-        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_sum, 0)
+        self.assertEqual(User.objects.with_case_count_assigned().get(
+            pk=user.pk).case_assigned_sum, 0)
 
-        for size, status in [(1, Case.STATUS.free), (2, Case.STATUS.assigned), (3, Case.STATUS.closed)]:
+        SIZE_PATTERN = [(1, Case.STATUS.free),
+                        (2, Case.STATUS.assigned),
+                        (3, Case.STATUS.closed)]
+        for size, status in SIZE_PATTERN:
             for obj in CaseFactory.create_batch(size=size, status=status):
                 assign_perm('cases.can_view', user, obj)
-        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_free, 1)
-        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_active, 2)
-        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_closed, 3)
-        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_sum, 6)
+        user = User.objects.with_case_count_assigned().get(pk=user.pk)
+        self.assertEqual(user.case_assigned_free, 1)
+        self.assertEqual(user.case_assigned_active, 2)
+        self.assertEqual(user.case_assigned_closed, 3)
+        self.assertEqual(user.case_assigned_sum, 6)
 
-        for size, status in [(4, Case.STATUS.free), (5, Case.STATUS.assigned), (6, Case.STATUS.closed)]:
+        SIZE_PATTERN_UPDATED = [(4, Case.STATUS.free),
+                                (5, Case.STATUS.assigned),
+                                (6, Case.STATUS.closed)]
+        for size, status in SIZE_PATTERN_UPDATED:
             for obj in CaseFactory.create_batch(size=size, status=status):
                 assign_perm('cases.can_view', user, obj)
-        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_free, 5)
-        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_active, 7)
-        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_closed, 9)
-        self.assertEqual(User.objects.with_case_count_assigned().get(pk=user.pk).case_assigned_sum, 21)
+        user_updated = User.objects.with_case_count_assigned().get(pk=user.pk)
+        self.assertEqual(user_updated.case_assigned_free, 5)
+        self.assertEqual(user_updated.case_assigned_active, 7)
+        self.assertEqual(user_updated.case_assigned_closed, 9)
+        self.assertEqual(user_updated.case_assigned_sum, 21)
 
     def _register_email_count(self, notify, count):
         u = User.objects.register_email(email='sarah@example.com', notify=notify)
@@ -133,8 +142,8 @@ class UserDetailViewTestCase(TestCase):
     def setUp(self):
         self.object = UserFactory(is_staff=False)
         self.url = self.object.get_absolute_url()
-        self.client_filter_url = reverse_lazy('cases:list') + '?client=' + str(self.object.pk)
-        self.permission_filter_url = (reverse_lazy('cases:list') + '?permission=' +
+        self.client_filter_url = reverse('cases:list') + '?client=' + str(self.object.pk)
+        self.permission_filter_url = (reverse('cases:list') + '?permission=' +
                                       str(self.object.pk))
 
     def test_no_redirect_loop_if_no_auth(self):
@@ -270,6 +279,22 @@ class TranslatedUserObjectPermissionsFormTestCase(TestCase):
         form.save_obj_perms()
         self.assertFalse(self.user.has_perm('users.change_user', self.obj))
         self.assertEqual(get_perms(self.user, self.obj), [])
+
+
+class TranslatedManageObjectPermissionFormTestCase(TestCase):
+    def test_limit_choices_of_users(self):
+        obj = UserFactory()
+        managed_user = UserFactory()
+        form = TranslatedManageObjectPermissionForm(data={'permissions': ['change_user', ],
+                                                          'users': [managed_user.pk]},
+                                                    actor=managed_user,
+                                                    obj=obj)
+        self.assertTrue(form.is_valid())
+        form = TranslatedManageObjectPermissionForm(data={'permissions': ['change_user', ],
+                                                          'users': [UserFactory().pk]},
+                                                    actor=managed_user,
+                                                    obj=obj)
+        self.assertFalse(form.is_valid())
 
 
 class UserProfileViewTestCase(TestCase):

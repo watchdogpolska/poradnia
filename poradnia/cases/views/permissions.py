@@ -1,4 +1,4 @@
-from braces.views import FormValidMessageMixin, UserFormKwargsMixin
+from braces.views import FormValidMessageMixin
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
@@ -7,7 +7,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.views.generic import FormView
 from django.views.generic.detail import SingleObjectMixin
-from guardian.shortcuts import get_perms
+from guardian.shortcuts import assign_perm, get_perms
 
 from users.forms import (TranslatedManageObjectPermissionForm,
                          TranslatedUserObjectPermissionsForm)
@@ -25,7 +25,7 @@ def assign_perm_check(user, case):
     return True
 
 
-class UserPermissionCreateView(UserFormKwargsMixin, FormView):
+class UserPermissionCreateView(FormView):
     form_class = TranslatedManageObjectPermissionForm
     template_name = 'cases/case_form_permission_add.html'
 
@@ -33,7 +33,7 @@ class UserPermissionCreateView(UserFormKwargsMixin, FormView):
         kwargs = super(UserPermissionCreateView, self).get_form_kwargs(*args, **kwargs)
         self.case = get_object_or_404(Case, pk=self.kwargs['pk'])
         assign_perm_check(self.request.user, self.case)
-        kwargs.update({'obj': self.case})
+        kwargs.update({'obj': self.case, 'actor': self.request.user})
         return kwargs
 
     def form_valid(self, form):
@@ -41,8 +41,8 @@ class UserPermissionCreateView(UserFormKwargsMixin, FormView):
         for user in form.cleaned_data['users']:
             self.case.send_notification(actor=self.request.user, staff=True, verb='granted')
             messages.success(self.request,
-                _("Success granted permission of %(user)s to %(case)s") %
-                {'user': user, 'case': self.case})
+                             _("Success granted permission of %(user)s to %(case)s").
+                             format(user=user, case=self.case))
         self.case.status_update()
         return super(UserPermissionCreateView, self).form_valid(form)
 
@@ -64,7 +64,8 @@ class UserPermissionUpdateView(FormValidMessageMixin, FormView):
         self.case = get_object_or_404(Case, pk=self.kwargs['pk'])
         assign_perm_check(self.request.user, self.case)
         self.action_user = get_object_or_404(get_user_model(), username=self.kwargs['username'])
-        kwargs.update({'user': self.action_user, 'obj': self.case})
+        kwargs.update({'user': self.action_user,
+                       'obj': self.case})
         del kwargs['initial']
         return kwargs
 
@@ -87,6 +88,22 @@ class UserPermissionUpdateView(FormValidMessageMixin, FormView):
 
     def get_success_url(self):
         return reverse('cases:detail', kwargs={'pk': str(self.case.pk)})
+
+    def test_view_loads_correctly(self):
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertContains(resp, self.object.name)
+
+    def test_invalid_user_used(self):
+        resp = self.client.post(self.url, data={'permissions': ['can_view', ],
+                                                'user': self.user_with_permission.pk})
+        self.assertEqual(resp.status_code, 200)
+
+    def test_valid_user_used(self):
+        assign_perm('users.can_view_other', self.user)
+        resp = self.client.post(self.url, data={'permissions': ['can_view', ],
+                                                'user': self.user_with_permission.pk})
+        self.assertEqual(resp.status_code, 302)
 
 
 class CaseGroupPermissionView(FormValidMessageMixin, SingleObjectMixin, FormView):

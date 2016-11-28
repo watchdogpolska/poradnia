@@ -25,11 +25,10 @@ class TranslatedManageObjectPermissionForm(SingleButtonMixin, PermissionsTransla
                                            widget=MultipleChoiceWidget('UserAutocomplete'))
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
+        self.actor = kwargs.pop('actor')
         self.staff_only = kwargs.pop('staff_only', False)
         super(TranslatedManageObjectPermissionForm, self).__init__(*args, **kwargs)
-        # Update queryset dynamically
-        self.fields['users'].queryset = get_user_model().objects.for_user(self.user).all()
+        self.fields['users'].queryset = get_user_model().objects.for_user(self.actor).all()
 
     def are_obj_perms_required(self):
         return True
