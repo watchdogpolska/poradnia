@@ -1,22 +1,20 @@
 from __future__ import print_function
 
 from datetime import timedelta
-from unittest import TestCase
 
-from django.core import mail
+from django.core import mail, management
+from django.test import TestCase
 from django.utils import timezone
 
 from cases.factories import CaseFactory
 from events.factories import EventFactory
 from events.models import Reminder
-from users.factories import StaffFactory, ProfileFactory
+from users.factories import ProfileFactory, StaffFactory
 
 try:
     from StringIO import StringIO
 except ImportError:
     from io import StringIO
-
-from django.core import management
 
 
 class RemindersCommandsTestCase(TestCase):
