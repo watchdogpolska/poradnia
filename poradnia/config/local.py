@@ -24,7 +24,7 @@ INSTALLED_APPS += ('autofixture',)
 # django-debug-toolbar
 
 INSTALLED_APPS += ('debug_toolbar',)
-
+MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware', )
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
     'debug_toolbar.panels.timer.TimerPanel',
