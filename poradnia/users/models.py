@@ -12,6 +12,7 @@ from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
 from guardian.mixins import GuardianUserMixin
 from guardian.utils import get_anonymous_user
+from model_utils.choices import Choices
 from sorl.thumbnail import ImageField
 
 from cases.models import Case as CaseModel
@@ -25,7 +26,7 @@ class UserQuerySet(QuerySet):
 
     def for_user(self, user):
         if not user.has_perm('users.can_view_other'):
-            return self.filter(Q(username=user.username) | Q(is_staff=True))
+            return self.filter(Q(pk=user.pk) | Q(is_staff=True))
         return self
 
     def with_case_count(self):
@@ -33,25 +34,28 @@ class UserQuerySet(QuerySet):
 
     def with_case_count_assigned(self):
         free = Count(
-                        Case(
-                            When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.free, then='caseuserobjectpermission__content_object__pk'),
-                            default=None,
-                            output_field=IntegerField()),
-                    distinct=True)
+            Case(
+                When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.free,
+                     then='caseuserobjectpermission__content_object__pk'),
+                default=None,
+                output_field=IntegerField()),
+            distinct=True)
 
         active = Count(
-                        Case(
-                            When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.assigned, then='caseuserobjectpermission__content_object__pk'),
-                            default=None,
-                            output_field=IntegerField()),
-                    distinct=True)
+            Case(
+                When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.assigned,
+                     then='caseuserobjectpermission__content_object__pk'),
+                default=None,
+                output_field=IntegerField()),
+            distinct=True)
 
         closed = Count(
-                        Case(
-                            When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.closed, then='caseuserobjectpermission__content_object__pk'),
-                            default=None,
-                            output_field=IntegerField()),
-                    distinct=True)
+            Case(
+                When(caseuserobjectpermission__content_object__status=CaseModel.STATUS.closed,
+                     then='caseuserobjectpermission__content_object__pk'),
+                default=None,
+                output_field=IntegerField()),
+            distinct=True)
 
         return self.annotate(case_assigned_sum=free + active + closed,
                              case_assigned_free=free,
@@ -103,6 +107,10 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
 class User(GuardianUserMixin, AbstractUser):
     picture = ImageField(upload_to='avatars', verbose_name=_("Avatar"), null=True, blank=True)
     codename = models.CharField(max_length=15, null=True, blank=True, verbose_name=_("Codename"))
+    created_on = models.DateTimeField(auto_now_add=True,
+                                      null=True,
+                                      blank=True,
+                                      verbose_name=_("Created on"))
     objects = CustomUserManager()
 
     def get_codename(self):
@@ -166,9 +174,19 @@ class User(GuardianUserMixin, AbstractUser):
 
 
 class Profile(models.Model):
+    EVENT_REMINDER_CHOICE = Choices(
+        (0, "no_reminder", _("No reminder")),
+        (1, "one_day", _("1 day")),
+        (3, "three_days", _("3 days")),
+        (7, "seven_days", _("7 days")),
+    )
     user = models.OneToOneField(User, primary_key=True)
     description = models.TextField(blank=True, verbose_name=_("Description"))
     www = models.URLField(null=True, blank=True, verbose_name=_("Homepage"))
+    event_reminder_time = models.IntegerField(
+        choices=EVENT_REMINDER_CHOICE, default=EVENT_REMINDER_CHOICE.one_day,
+        verbose_name=_("Event Reminder Time")
+    )
 
     class Meta:
         verbose_name = _("Profile")

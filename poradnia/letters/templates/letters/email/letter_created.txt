@@ -8,7 +8,11 @@ Załączniki pisma:{% for att in target.attachment_set.all %}
 {% endfor %}
 {% endif %}
 
-Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl/{{target.case_get_absolute_url}}.
-
+Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl/{{target.get_absolute_url}}.
 
 {% if email %}Używaj adresu {{email}} do korespondencji w tej sprawie, dzięki temu wymiana korespondencji będzie sprawniejsza. Dziękujemy za współpracę.{% endif %}
+----
+WESPRZYJ działanie naszej poradni
+WEJDŹ na ➡ http://pomagam.pl/jawnosc
+WPŁAĆ dowolną kwotę na zbiórkę "Prawnicy dla jawności"
+POMÓŻ NAM POMAGAĆ INNYM!

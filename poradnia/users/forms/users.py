@@ -1,4 +1,5 @@
 from atom.ext.crispy_forms.forms import FormHorizontalMixin, SingleButtonMixin
+from braces.forms import UserKwargModelFormMixin
 from django import forms
 from django.contrib.auth import get_user_model
 
@@ -20,7 +21,13 @@ class UserForm(FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
         fields = ("first_name", "last_name", 'picture', 'codename')
 
 
-class ProfileForm(FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
+class ProfileForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super(ProfileForm, self).__init__(*args, **kwargs)
+        # dynamically exclude event_reminder_time if user is not a staff member
+        if not self.user.is_staff:
+            del self.fields['event_reminder_time']
+
     class Meta:
         model = Profile
-        fields = ("description", "www")
+        fields = ("description", "www", "event_reminder_time")

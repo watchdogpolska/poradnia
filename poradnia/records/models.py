@@ -76,7 +76,7 @@ class AbstractRecordQuerySet(QuerySet):
 
 
 class AbstractRecord(models.Model):
-    record_general = GenericRelation('Record', related_query_name='record')
+    record_general = GenericRelation('records.Record', related_query_name='record')
     case = models.ForeignKey(Case)
 
     def show_modifier(self):
