@@ -39,11 +39,11 @@ urlpatterns = [
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
-#if settings.DEBUG:
-#    import debug_toolbar
-#    urlpatterns += patterns('',
-#        url(r'^__debug__/', include(debug_toolbar.urls)),
-#    )
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += [
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    ]
 
 
 def handler500(request):
