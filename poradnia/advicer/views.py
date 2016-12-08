@@ -28,7 +28,8 @@ class AdviceList(StaffuserRequiredMixin, PermissionMixin, SelectRelatedMixin, Vi
                  FilterView):
     model = Advice
     filterset_class = AdviceFilter
-    select_related = ["person_kind", "created_by", "advicer", "institution_kind"]
+    select_related = ["person_kind", "created_by", "advicer", "institution_kind",
+                      "case__client"]
     paginate_by = 25
     raise_exception = True
 

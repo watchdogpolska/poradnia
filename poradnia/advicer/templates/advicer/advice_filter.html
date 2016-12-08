@@ -27,8 +27,8 @@
                     <th>{% trans 'Created by' %}</th>
                     <th>{% trans 'Advicer' %}</th>
                     <th>{% trans 'Subject' %}</th>
-                    <th>{% trans 'Kind of person' %}</th>
-                    <th>{% trans 'Kind of institution' %}</th>
+                    <th>{% trans 'Case' %}</th>
+                    <th>{% trans 'Client of case' %}</th>
                 </tr>
             </thead>
             <tbody>
@@ -40,8 +40,13 @@
                         <td>{{ object.advicer }}</td>
                     {% endif %}
                     <td><a href="{{ object.get_absolute_url }}">{{ object }}</a></td>
-                    <td>{{ object.person_kind }}</td>
-                    <td>{{ object.institution_kind }}</td>
+                    {% if object.case %}
+                    <td><a href="{{ object.case.client.get_absolute_url }}">{{ object.case.client }}</a>
+                    <td><a href="{{ object.case.pk }}">{{ object.case }}</a></td>
+                    {% else %}
+                    <td>-</td>
+                    <td>-</td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
             </tbody>

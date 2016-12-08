@@ -4,8 +4,8 @@
 {% block breadcrumbs_rows %}
     <li class="active">{{object}}</a>
 {% endblock %}
-{% block content %}
 
+{% block content %}
 <div class="row">
     <div class="col-xs-18">
         <h1 class="pull-left">{{object}}</h1>
@@ -19,81 +19,95 @@
         </div>
     </div>
 </div>
+
 <div class="row">
-    <div class="col-xs-18">
-        <table class="table">
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+        <div class="panel-heading">{% trans 'Statistic data' %}</div>
+            <table class="table">
+                {% if object.case %}
+                <tr>
+                    <td>{% trans 'Case'%}</td>
+                    <td><a href="{{object.case.get_absolute_url}}">{{object.case}}</td>
+                </tr>
+                {% endif %}
+                {% if object.issues.all %}
+                <tr>
+                    <td>{% trans 'Issues'%}</td>
+                    <td>{% for obj in object.issues.all%}{{obj}}{% if not forloop.last%},{% endif%}{% endfor%}</td>
+                </tr>
+                {% endif %}
 
-            {% if object.grant_on %}
-            <tr>
-                <td>{% trans 'Grant on'%}</td>
-                <td><time datetime="{{object.grant_on|date:'Y-m-d h:m:sT'}}">{{object.grant_on |naturaltime }}</time></td>
-            </tr>
-            {% endif %}
+                {% if object.area %}
+                <tr>
+                    <td>{% trans 'Area'%}</td>
+                    <td>{{object.area}}</td>
+                </tr>
+                {% endif %}
 
-            {% if object.case %}
-            <tr>
-                <td>{% trans 'Case'%}</td>
-                <td><a href="{{object.case.get_absolute_url}}">{{object.case}}</td>
-            </tr>
-            {% endif %}
+                {% if object.person_kind %}
+                <tr>
+                    <td>{% trans 'Kind of person'%}</td>
+                    <td>{{object.person_kind}}</td>
+                </tr>
+                {% endif %}
 
+                {% if object.institution_kind %}
+                <tr>
+                    <td>{% trans 'Kind of istitution'%}</td>
+                    <td>{{object.institution_kind }}</td>
+                </tr>
+                {% endif %}
 
-            {% if object.issues.all %}
-            <tr>
-                <td>{% trans 'Issues'%}</td>
-                <td>{% for obj in object.issues.all%}{{obj}}{% if not forloop.last%},{% endif%}{% endfor%}</td>
-            </tr>
-            {% endif %}
+                <tr>
+                    <td>{% trans 'We helped?'%}</td>
+                    <td>{{object.helped}}</td>
+                </tr>
 
-            {% if object.area %}
-            <tr>
-                <td>{% trans 'Area'%}</td>
-                <td>{{object.area}}</td>
-            </tr>
-            {% endif %}
+            </table>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="panel panel-default">
+        <div class="panel-heading">{% trans 'Details'%}</div>
+            <table class="table">
+                {% if object.grant_on %}
+                <tr>
+                    <td>{% trans 'Grant on'%}</td>
+                    <td>
+                        <time datetime="{{object.grant_on|date:'Y-m-d h:m:sT'}}">{{object.grant_on |naturaltime }}</time>
+                    </td>
+                </tr>
+                {% endif %} 
+                <tr>
+                    <td>{% trans 'Created'%}</td>
+                    <td><img src="{% get_avatar_url object.created_by %}"> {% blocktrans with object.created_by as created and object.created_on|naturaltime as created_on_natural and object.created_on|date:'Y-m-d h:m:sT' as created_on_date %}{{created}} on <time datetime="{{created_on_date}}">{{created_on_natural}}</time>{% endblocktrans %}</td>
+                </tr>
 
-            {% if object.person_kind %}
-            <tr>
-                <td>{% trans 'Kind of person'%}</td>
-                <td>{{object.person_kind}}</td>
-            </tr>
-            {% endif %}
+                {% if object.modified_by %}
+                <tr>
+                    <td>{% trans 'Modified'%}</td>
+                    <td><img src="{% get_avatar_url object.modified_by %}">{% blocktrans with object.modified_by as modified_by and object.modified_on|naturaltime as modified_on_natural and object.modified_on|date:'Y-m-d h:m:sT' as modified_on_date %}{{modified_by}} on <time datetime="{{modified_on_date}}">{{modified_on_natural}}</time>{% endblocktrans %}</td>
+                </tr>
+                {% endif %}
+                <tr>
+                    <td>{% trans 'Advicer'%}</td>
+                    <td>{{object.advicer}}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
 
-            {% if object.institution_kind %}
-            <tr>
-                <td>{% trans 'Kind of istitution'%}</td>
-                <td>{{object.institution_kind }}</td>
-            </tr>
-            {% endif %}
-
-            <tr>
-                <td>{% trans 'Advicer'%}</td>
-                <td>{{object.advicer}}</td>
-            </tr>
-
-            <tr>
-                <td>{% trans 'Created'%}</td>
-                <td><img src="{% get_avatar_url object.created_by %}"> {% blocktrans with object.created_by as created and object.created_on|naturaltime as created_on_natural and object.created_on|date:'Y-m-d h:m:sT' as created_on_date %}{{created}} on <time datetime="{{created_on_date}}">{{created_on_natural}}</time>{% endblocktrans %}</td>
-            </tr>
-
-            {% if object.modified_by %}
-            <tr>
-                <td>{% trans 'Modified'%}</td>
-                <td><img src="{% get_avatar_url object.modified_by %}">{% blocktrans with object.modified_by as modified_by and object.modified_on|naturaltime as modified_on_natural and object.modified_on|date:'Y-m-d h:m:sT' as modified_on_date %}{{modified_by}} on <time datetime="{{modified_on_date}}">{{modified_on_natural}}</time>{% endblocktrans %}</td>
-            </tr>
-            {% endif %}
-        </table>
-        {{object.comment | linebreaks }}
-        {% if object.attachment_set.all %}
+<div class="row">
+    {{object.comment | linebreaks }}
+    {% if object.attachment_set.all %}
         <h2>{% trans 'Attachments' %}</h2>
         <ul>
         {% for object in object.attachment_set.all %}
             <li><a href="{{object.get_absolute_url}}">{{object}}</a></li>
         {% endfor %}
         </ul>
-        {% endif %}
-
-    </div>
+    {% endif %}
 </div>
-
 {% endblock %}

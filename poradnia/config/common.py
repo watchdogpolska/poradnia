@@ -48,6 +48,7 @@ THIRD_PARTY_APPS = (
     'tinycontent',
     'sorl.thumbnail',
     'atom',
+    'import_export'
 )
 
 # Apps specific for this project go here.

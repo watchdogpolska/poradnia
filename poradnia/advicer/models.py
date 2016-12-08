@@ -11,7 +11,7 @@ from cases.models import Case
 
 
 class AbstractCategory(models.Model):
-    name = models.CharField(max_length=50,
+    name = models.CharField(max_length=100,
                             verbose_name=_("Name"))
 
     def __unicode__(self):
@@ -24,22 +24,22 @@ class AbstractCategory(models.Model):
 class Issue(AbstractCategory):
 
     class Meta:
-        verbose_name = _("Issue")
-        verbose_name_plural = _("Issues")
+        verbose_name = _("The thematic scope of the request")
+        verbose_name_plural = _("Thematic scopes of requests")
 
 
 class Area(AbstractCategory):
 
     class Meta:
-        verbose_name = _("Area")
-        verbose_name_plural = _("Areas")
+        verbose_name = _("Problem regarding the right to information")
+        verbose_name_plural = _("Problems regarding the right to information")
 
 
 class PersonKind(AbstractCategory):
 
     class Meta:
-        verbose_name = _("Person kind")
-        verbose_name_plural = _("Person kinds")
+        verbose_name = _("Type of person who reporting the advice")
+        verbose_name_plural = _("Types of people who report to for advice")
 
 
 class InstitutionKind(AbstractCategory):
@@ -70,18 +70,18 @@ class Advice(models.Model):
                                null=True,
                                blank=True)
     issues = models.ManyToManyField(Issue,
-                                    verbose_name=_("Issues"),
+                                    verbose_name=Issue._meta.verbose_name_plural,
                                     blank=True)
     area = models.ForeignKey(Area,
                              null=True,
-                             verbose_name=_("Area"),
+                             verbose_name=Area._meta.verbose_name,
                              blank=True)
     person_kind = models.ForeignKey(PersonKind,
                                     null=True,
                                     blank=True,
-                                    verbose_name=_("Kind of person "))
+                                    verbose_name=PersonKind._meta.verbose_name)
     institution_kind = models.ForeignKey(InstitutionKind,
-                                         verbose_name=_("Kind of institution"),
+                                         verbose_name=InstitutionKind._meta.verbose_name,
                                          null=True,
                                          blank=True)
     advicer = models.ForeignKey(settings.AUTH_USER_MODEL,
@@ -95,11 +95,12 @@ class Advice(models.Model):
                                    related_name='advice_created_by')
     created_on = models.DateTimeField(auto_now_add=True,
                                       verbose_name=_("Creation date"))
-    modified_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL,
-        null=True,
-        verbose_name=_("Modified by"),
-        related_name='advice_modified_by')
+    helped = models.NullBooleanField(verbose_name=_("We helped?"),
+                                     blank=True)
+    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                    null=True,
+                                    verbose_name=_("Modified by"),
+                                    related_name='advice_modified_by')
     modified_on = models.DateTimeField(auto_now=True,
                                        null=True,
                                        blank=True,
