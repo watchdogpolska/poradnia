@@ -64,3 +64,13 @@
 </div>
 {% endif %}
 {% endblock %}
+
+{% block extra_css %}
+{{block.super}}
+<style>
+select#id_person_kind, select#id_area, select#id_issues, select#id_institution_kind, select#id_helped {
+    width: 100%;
+}
+</style>
+
+{% endblock %}
