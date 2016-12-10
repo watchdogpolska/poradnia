@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-24 21:25+0100\n"
+"POT-Creation-Date: 2016-12-10 01:08+0100\n"
 "PO-Revision-Date: 2016-11-24 21:33+0100\n"
 "Last-Translator: Karol <karol@ppkt.eu>\n"
 "Language-Team: Polish\n"
@@ -17,57 +17,58 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /events/locale/en/LC_MESSAGES/django.po\n"
 
-#: models.py:20
+#: apps.py:7 models.py:98 templates/events/base.html:5
+#: templates/events/base.html:10
+msgid "Events"
+msgstr "Wydarzenia"
+
+#: models.py:19
 msgid "Reminder"
 msgstr "Przypomnienie"
 
-#: models.py:21
+#: models.py:20
 msgid "Reminders"
 msgstr "Przypomnienia"
 
-#: models.py:28
+#: models.py:27
 msgid "Alarm"
 msgstr "Alarm"
 
-#: models.py:29
+#: models.py:28
 msgid "Alarms"
 msgstr "Alarmy"
 
-#: models.py:41 templates/events/_event_list.html:9
+#: models.py:40 templates/events/_event_list.html:9
 msgid "Dead-line"
 msgstr "Termin"
 
-#: models.py:42 templates/events/_event_list.html:10
+#: models.py:41 templates/events/_event_list.html:10
 msgid "Time"
 msgstr "Czas"
 
-#: models.py:43
+#: models.py:42
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: models.py:45
+#: models.py:44
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:46
+#: models.py:45
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:48
+#: models.py:47
 msgid "Modified by"
 msgstr "Zmodyfikowane przez"
 
-#: models.py:52
+#: models.py:51
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
 #: models.py:97
 msgid "Event"
 msgstr "Wydarzenie"
-
-#: models.py:98 templates/events/base.html:5 templates/events/base.html:10
-msgid "Events"
-msgstr "Wydarzenia"
 
 #: templates/events/_alarm_list.html:13
 msgid "A related event "

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-16 18:24+0100\n"
+"POT-Creation-Date: 2016-12-10 01:08+0100\n"
 "PO-Revision-Date: 2015-11-24 09:52-0500\n"
 "Last-Translator: ad-m <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
@@ -10,22 +10,22 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: crowdin.com\n"
 "X-Crowdin-Project: poradnia\n"
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /records/locale/en/LC_MESSAGES/django.po\n"
 
-#: records/models.py:70
-msgid "Record"
-msgstr "Wpis"
-
-#: records/models.py:71
+#: apps.py:7 models.py:65
 msgid "Records"
 msgstr "Wpis"
 
-#: records/models.py:110
+#: models.py:64
+msgid "Record"
+msgstr "Wpis"
+
+#: models.py:104
 #, python-format
 msgid "%(object)s (#%(pk)d) in case #%(case_id)d"
 msgstr "%(object)s (#%(pk)d) w sprawie #%(case_id)d"
-

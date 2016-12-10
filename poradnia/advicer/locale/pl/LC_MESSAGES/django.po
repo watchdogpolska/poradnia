@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-08 17:27+0100\n"
-"PO-Revision-Date: 2016-12-08 17:27+0100\n"
+"POT-Creation-Date: 2016-12-10 01:08+0100\n"
+"PO-Revision-Date: 2016-12-10 01:08+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -17,51 +17,59 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /advicer/locale/en/LC_MESSAGES/django.po\n"
 
-#: filters.py:11 filters.py:22 models.py:88
+#: apps.py:7
+msgid "Advicer system"
+msgstr "Rejestr porad"
+
+#: filters.py:13 filters.py:25 models.py:88
 #: templates/advicer/advice_detail.html:94
 #: templates/advicer/advice_filter.html:28
 msgid "Advicer"
 msgstr "Radzący"
 
-#: filters.py:12 models.py:94 templates/advicer/advice_filter.html:27
+#: filters.py:14 models.py:94 templates/advicer/advice_filter.html:27
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: filters.py:13
+#: filters.py:15
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: filters.py:19 models.py:97 templates/advicer/advice_filter.html:26
+#: filters.py:22 models.py:97 templates/advicer/advice_filter.html:26
 msgid "Creation date"
 msgstr "Data utworzenia"
 
-#: filters.py:20 models.py:107
+#: filters.py:23 models.py:107
 msgid "Modification date"
 msgstr "Data modyfikacji"
 
-#: filters.py:21
+#: filters.py:24
 msgid "ID"
 msgstr "ID"
 
-#: filters.py:23
+#: filters.py:26
 msgid "Person kind"
 msgstr "Rodzaj osoby"
 
-#: filters.py:24 models.py:48
+#: filters.py:27 models.py:48
 msgid "Institution kind"
 msgstr "Rodzaj podmiotu zobowiązanego"
+
+#: filters.py:38 forms.py:29 templates/advicer/advice_detail.html:26
+msgid "Statistic data"
+msgstr "Dane statystyczne"
+
+#: filters.py:48 forms.py:38 templates/advicer/advice_detail.html:72
+msgid "Details"
+msgstr "Szczegóły"
+
+#: filters.py:52
+msgid "Filter"
+msgstr "Filtruj"
 
 #: forms.py:26
 msgid "Select from cases which do you have a permission"
 msgstr "Wybór spośród spraw do których masz uprawnienia"
-
-#: forms.py:29 templates/advicer/advice_detail.html:26
-msgid "Statistic data"
-msgstr "Dane statystyczne"
-
-#: forms.py:38 templates/advicer/advice_detail.html:72
-msgid "Details"
-msgstr "Szczegóły"
 
 #: models.py:15
 msgid "Name"
@@ -96,7 +104,7 @@ msgid "Institution kinds"
 msgstr "Rodzaje podmiotów zobowiązanych"
 
 #: models.py:67 templates/advicer/advice_detail.html:30
-#: templates/advicer/advice_filter.html:30
+#: templates/advicer/advice_filter.html:31
 msgid "Case"
 msgstr "Sprawa"
 
@@ -238,7 +246,7 @@ msgstr "Rejestr porad"
 msgid "Add"
 msgstr "Dodaj"
 
-#: templates/advicer/advice_filter.html:31
+#: templates/advicer/advice_filter.html:30
 msgid "Client of case"
 msgstr "Klient sprawy"
 

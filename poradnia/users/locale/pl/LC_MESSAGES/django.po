@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-11-24 21:25+0100\n"
+"POT-Creation-Date: 2016-12-10 01:08+0100\n"
 "PO-Revision-Date: 2016-11-24 21:33+0100\n"
 "Last-Translator: Karol <karol@ppkt.eu>\n"
 "Language-Team: Polish\n"
@@ -17,6 +17,11 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /users/locale/en/LC_MESSAGES/django.po\n"
 
+#: apps.py:7 models.py:173 templates/users/base.html:5
+#: templates/users/user_filter.html:18
+msgid "Users"
+msgstr "Wykaz użytkowników"
+
 #: forms/account.py:25
 msgid "Signup"
 msgstr "Rejestracja"
@@ -29,63 +34,58 @@ msgstr "Nazwa użytkownika / użytkowniczki"
 msgid "Username or e-mail"
 msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
 
-#: models.py:105
+#: models.py:108
 msgid "Avatar"
 msgstr "Avatar"
 
-#: models.py:106
+#: models.py:109
 msgid "Codename"
 msgstr "Kryptonim"
 
-#: models.py:107
+#: models.py:113
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:166 templates/users/_sidebar.html:3
+#: models.py:172 templates/users/_sidebar.html:3
 #: templates/users/user_detail.html:3 templates/users/user_filter.html:36
 #: templates/users/user_form.html:4 templates/users/user_form.html:15
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: models.py:167 templates/users/base.html:5
-#: templates/users/user_filter.html:18
-msgid "Users"
-msgstr "Wykaz użytkowników"
-
-#: models.py:172
+#: models.py:178
 msgid "No reminder"
 msgstr "Nie przypominaj"
 
-#: models.py:173
+#: models.py:179
 msgid "1 day"
 msgstr "1 dzień"
 
-#: models.py:174
+#: models.py:180
 msgid "3 days"
 msgstr "3 dni"
 
-#: models.py:175
+#: models.py:181
 msgid "7 days"
 msgstr "7 dni"
 
-#: models.py:178 templates/users/user_detail.html:16
+#: models.py:184 templates/users/user_detail.html:16
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:179
+#: models.py:185
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: models.py:182
+#: models.py:188
 msgid "Event Reminder Time"
 msgstr "Przypominaj o wydarzeniach"
 
-#: models.py:186 templates/users/profile_form.html:7
+#: models.py:192 templates/users/profile_form.html:7
 #: templates/users/profile_form.html:10 templates/users/user_detail.html:26
 msgid "Profile"
 msgstr "Profil"
 
-#: models.py:187
+#: models.py:193
 msgid "Profiles"
 msgstr "Profile"
 
@@ -166,14 +166,14 @@ msgstr "Zamknięte"
 msgid "Account"
 msgstr "Konto"
 
-#: views.py:82
+#: views.py:73
 msgid "All users"
 msgstr "Wszyscy użytkownicy"
 
-#: views.py:83
+#: views.py:74
 msgid "Staff"
 msgstr "Zespoł"
 
-#: views.py:84
+#: views.py:75
 msgid "Clients"
 msgstr "Klienci"

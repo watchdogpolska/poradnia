@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-08-19 13:38+0200\n"
-"PO-Revision-Date: 2016-08-19 13:38+0200\n"
+"POT-Creation-Date: 2016-12-10 01:07+0100\n"
+"PO-Revision-Date: 2016-12-10 01:07+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -16,6 +16,10 @@ msgstr ""
 "X-Crowdin-Project: poradnia\n"
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /records/locale/en/LC_MESSAGES/django.po\n"
+
+#: apps.py:7
+msgid "Statistics"
+msgstr "Statystyki"
 
 #: templates/stats/cases/created.html:3 templates/stats/cases/created.html:8
 #: templates/stats/index.html:15
