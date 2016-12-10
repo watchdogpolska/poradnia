@@ -5,9 +5,9 @@ poradnia
    :target: https://codeclimate.com/github/watchdogpolska/poradnia
    :alt: Code Climate
 
-.. image:: https://requires.io/github/watchdogpolska/poradnia/requirements.svg?branch=master
-     :target: https://requires.io/github/watchdogpolska/poradnia/requirements/?branch=master
-     :alt: Requirements Status
+.. image:: https://pyup.io/repos/github/watchdogpolska/poradnia/shield.svg
+     :target: https://pyup.io/repos/github/watchdogpolska/poradnia/
+     :alt: Updates
 
 .. image:: https://img.shields.io/github/issues/watchdogpolska/poradnia.svg
      :target: https://github.com/watchdogpolska/poradnia/issues
@@ -15,10 +15,6 @@ poradnia
      
 .. image:: https://img.shields.io/github/license/watchdogpolska/poradnia.svg
      :alt: License
-
-.. image:: https://badge.waffle.io/watchdogpolska/poradnia.svg?label=high&title=High 
-     :target: https://waffle.io/watchdogpolska/poradnia 
-     :alt: 'Stories in High'
 
 .. image:: https://coveralls.io/repos/watchdogpolska/poradnia/badge.svg?branch=master&service=github
   :target: https://coveralls.io/github/watchdogpolska/poradnia?branch=master 
