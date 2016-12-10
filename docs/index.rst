@@ -14,9 +14,8 @@ Treść
    :maxdepth: 3
    :glob:
 
+   readme
    modules/*
-
-
 
 Indices and tables
 ==================

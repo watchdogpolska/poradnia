@@ -1,17 +1,20 @@
 Letters
 =======
 
-Models
-------
+Kod aplikacji
+-------------
+
+Model
+#####
 .. automodule:: letters.models
     :members:
 
-Views
------
+Widoki
+######
 .. automodule:: letters.views
     :members:
 
-Forms
------
+Formularze
+##########
 .. automodule:: letters.forms
     :members:

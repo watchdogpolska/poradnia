@@ -1,17 +1,24 @@
-Events
-======
+Events - wydarzenia
+===================
 
-Models
-------
+
+Kod aplikacji
+-------------
+
+Model
+######
+
 .. automodule:: events.models
     :members:
 
-Views
------
+Widoki
+######
+
 .. automodule:: events.views
     :members:
 
-Forms
------
+Formularze
+##########
+
 .. automodule:: events.forms
     :members:

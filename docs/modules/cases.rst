@@ -1,49 +1,95 @@
-Cases
-======
+Cases - rejestr spraw
+=====================
 
-W celu zrozumienia używanych określeń użytkowników zapoznaj się z `modules/users.rst`_
+W celu zrozumienia używanych określeń użytkowników zapoznaj się z :doc:`/modules/users`
 
-Podstawowy schemat pracy
-------------------------
+Podstawowy przepływ pracy
+-------------------------
 
-#. **Klient** pisze e-mail na wydzielony adres e-mail / wypełnia formularz na stronie internetowej dołączając załączniki.
-#. **System** rejestruje sprawę.
-#. Jeżeli klient z nami wcześniej się nie kontaktował (identyfikacja na podstawie adresu e-mail)  – **system** tworzy konto i przesyła hasło do klienta.
-#. **System** przypisuje sprawę do konta użytkownika-klienta.
-#. **Klient** jest powiadamiany o sygnaturze sprawy i przesyłany link do akt sprawy.
-#. **Prawnicy** dokonują wstępnego przeglądu sprawy wypełniając jeden formularz wykonując co najmniej jedno z poniższych:
+1. Wniesienie sprawy za pomocą poczty elektronicznej
+####################################################
 
-   * udzielają odpowiedzi przesyłanej do każdego w sprawie na e-mail,
-   * przypisują sprawę do praktykanta / obserwatora za powiadomieniem wszystkich wewnętrznych w sprawie,
-   * sporządza notatki dostępnej dla wewnętrznych użytkowników,
-   * ustala termin.
+**Klient** wypełnia formularz na stronie internetowej. Ma możliwość dołączyć załączniki. Jeżeli użytkownik nie jest zalogowany - ma możliwość podać adres e-mail.
 
-#. **Praktykant** sporządza projekt odpowiedzi / notatkę za powiadomieniem zespołu w sprawie.
-#. **System** powiadamia o upływie dead-line.
-#. **Prawnik** zatwierdzają z komentarzem pismo praktykanta za powiadomieniem zespołu w sprawie.
-#. **System** przesyła pismo do klienta.
-#. **Prawnik** zamyka sprawę (na potrzeby organizacyjne).
-#. **Klient** odpowiada na dowolne pismo z systemu.
-#. **System** otwiera sprawę.
-#. **System** przypisuje pismo do sprawy i powiadamia **Zespół** w sprawie.
+.. _rejestracja-sprawy:
 
+2. Rejestracja sprawy
+#####################
 
-Views
------
+Sprawa jest rejestrowana w systemie. O jej utworzeniu zostają powiadomieni administratorzy. Nadany zostaje unikalny numer.
+
+3. Przypisanie sprawy
+#####################
+
+**Sekretariat** dokonuje wstępnego przeglądu sprawy przypisując sprawę do praktykanta / obserwatora za powiadomieniem wszystkich wewnętrznych w sprawie, a także ustala oznacza ewentualny termin.
+
+.. _projekt-pisma:
+
+4. Przygotowanie projektu pisma
+###############################
+
+**Wsparcie** sporządza projekt odpowiedzi w sprawie. O jej nadesłaniu powiadomiony zostaje każdy członek zaangażowany w sprawę.
+
+5. Zatwierdzenie pisma
+######################
+
+**Prawnik** zatwierdzają pismo. Ma możliwość przedstawić uwagi do pisma. O akceptacji i uwagach powiadamiany jest każdy z zespołu zaangażowany w sprawę. Zatwierdzone pismo jest przesyłane do każdego zaangażowanego.
+
+6. Zamykanie sprawy
+####################
+
+**Prawnik** zamyka sprawę, co ma charakter jedyny organizacyjny.
+
+7. Odpowiedź na dowolną wiadomość
+#################################
+
+**Klient** ma możliwość w każdej chwili, aby odpowiadzieć na dowolne pismo z systemu. Skutkuje to otwarciem ponownie sprawy, a także powiadomieniem o nowym piśmie osoby, które dotychczas były zaangażowane w sprawe.
+
+Alternatywny przepływ pracy
+---------------------------
+
+Wniesienie sprawy za pomocą poczty elektronicznej
+#################################################
+
+Klient ma możliwość wniesienia sprawy z wykorzystaniem dedykowanego adresu e-mail. Aplikacja na podstawie adresu e-mail przypisuje sprawę do konta użytkownika-klienta. **Klient** jest powiadamiany o numer sprawy i przesyłany jest mu link do akt sprawy. Następnie sprawa kontynuowana jest zgodnie z krokiem :ref:`rejestracja-sprawy`.
+
+Wniesienie sprawy anonimowo
+###########################
+
+**Klient** wypełnia formularz na stronie internetowej. Ma możliwość dołączyć załączniki, a także obowiązek podać adres e-mail. Podany adres e-mail to jest on wykorzystywany do utworzenia konta użytkownika. Nazwa użytkownika jest generowana automatycznie na podstawie adresu e-mail. Hasło jest losowe. Dane te są przesyłane do użytkownika. Następnie sprawa kontynuowana jest zgodnie z krokiem :ref:`rejestracja-sprawy`.
+
+Odrzucenie projektu pisma
+#########################
+
+Jeżeli prawnik nie akceptuje projektu pisma przedstawionego przez wolontariusza ma możliwość napisania uwag, które będą dostępne tylko dla członków zespołu. Następnie sprawa powraca do kroku :ref:`projekt-pisma`.
+
+Odpowiedź e-mailowa
+#######################
+
+Na każde nadesłane pismo w sprawie każdy ma możliwość odpowiedzi, a odpowiedź jest rejestrowana w systemie. Odpowiedź - na podstawie adresu e-mail - jest identyfikowana i przypisywana do wolontariusza. Zamknięta sprawa jest otwierana. Następnie sprawa powraca do kroku :ref:`projekt-pisma`.
+
+Kod aplikacji
+-------------
+
+Widoki
+######
+
 .. automodule:: cases.views.cases
     :members:
     
 .. automodule:: cases.views.permissions
     :members:
 
-Models
-------
+
+Model
+######
+
 .. automodule:: cases.models
     :members:
     
 
-Forms
------
+Formularze
+##########
 .. automodule:: cases.forms
     :members:
     

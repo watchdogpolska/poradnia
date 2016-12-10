@@ -1,12 +1,15 @@
 Navsearch
 =========
 
-Models
-------
+Kod aplikacji
+-------------
+
+Model
+#############
 .. automodule:: navsearch.models
     :members:
 
-Views
------
+Widoki
+#############
 .. automodule:: navsearch.views
     :members:

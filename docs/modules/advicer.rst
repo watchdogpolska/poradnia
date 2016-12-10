@@ -1,25 +1,19 @@
-Advicer
-=======
+advicer - rejestr porad
+=======================
 
-Aplikacja służy do rejestracji porad udzielonych poza bezpośrednim obiegiem w systemie. Przeznaczeniem aplikacji jest gromadzenie danych statystycznych o udzielonych poradach na potrzeby przedstawianie danych grantodawcom itd.
+Aplikacja służy do rejestracji porad udzielonych zarówno w ramach systemu spraw (:doc:/modules/cases.rst), jak również poza jego obiegiem. Przeznaczeniem aplikacji jest gromadzenie danych statystycznych o udzielonych poradach na potrzeby działań crownfundingowcyh, przedstawianie danych grantodawcom, promocji działań itp. Narzędzie dostarcza dane o charakterze ilościowym na temat zakresu udzielanego wsparcia, uwzględniając drogę mailowa, telefoniczną, ustną i szkoleniową.
 
-Prawnicy mogą rejestrować porad udzielane w różnej formie. Powstałe narzędzie ma również dostarczać dane o charakterze ilościowym na temat zakresu udzielanego wsparcia, uwzględniając drogę mailowa, telefoniczną, ustną i szkoleniową.
-
-Rejestr porad jest zasadniczo niezależny od zbioru spraw prowadzonych w systemie (Cases).
-
-
-Models
-------
+Model
+------------
 .. automodule:: advicer.models
     :members:
 
-Views
------
+Widoki
+----------
 .. automodule:: advicer.views
     :members:
 
-Forms
------
+Formularze
+----------
 .. automodule:: advicer.forms
     :members:
-    

@@ -1,5 +1,8 @@
 Template_mail
 =============
 
-.. deprecated:: x
-   Use `djmail` instead.
+Widoki
+######
+
+.. automodule:: template_mail.utils
+    :members:

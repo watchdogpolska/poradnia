@@ -21,17 +21,20 @@ Aby uzyskać treści należy przekazać dane autoryzacyjne przy każdym żądani
 * dane HTTPAuth Basic - ```//{{username}}}:{{key}}}@example.com/event/ical```
 * dane GET - ```//example.com/event/ical?username={{username}}&key={{key}}```
 
-Models
-------
+Kod aplikacji
+-------------
+
+Model
+######
 .. automodule:: keys.models
     :members:
 
-Views
------
+Widoki
+######
 .. automodule:: keys.views
     :members:
 
-Forms
------
+Formularze
+##########
 .. automodule:: keys.forms
     :members:

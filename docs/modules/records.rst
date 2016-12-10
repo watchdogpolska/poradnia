@@ -1,7 +1,10 @@
 Records
 =======
 
-Models
-------
+Kod aplikacji
+-------------
+
+Model
+#####
 .. automodule:: records.models
     :members:

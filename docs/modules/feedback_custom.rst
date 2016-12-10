@@ -1,7 +1,11 @@
 Feedback_Custom
 ===============
 
-Forms
------
+
+Kod aplikacji
+-------------
+
+Formularze
+##########
 .. automodule:: feedback_custom.forms
     :members:
