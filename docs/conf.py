@@ -47,9 +47,11 @@ extensions = [
 ]
 
 intersphinx_mapping = {
-    'python': ('http://python.readthedocs.org/en/v2.7.2/', None),
-    'django': ('http://docs.djangoproject.com/en/1.8/', 'https://docs.djangoproject.com/en/1.8/_objects/'),
-    'sphinx': ('http://sphinx.readthedocs.org/en/latest/', None),
+    'python': ('https://python.readthedocs.io/en/v2.7.2/', None),
+    'django': ('https://docs.djangoproject.com/en/dev/',
+               'https://docs.djangoproject.com/en/dev/_objects/'),
+    'sphinx': ('https://sphinx.readthedocs.io/en/latest/', None),
+    'mailbox': ('https://django-mailbox.readthedocs.io/en/latest/', None)
 }
 
 # Add any paths that contain templates here, relative to this directory.
