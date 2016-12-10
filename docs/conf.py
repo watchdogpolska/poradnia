@@ -44,6 +44,8 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.intersphinx',
     'sphinx.ext.coverage',
+    'sphinx.ext.napoleon',
+
 ]
 
 intersphinx_mapping = {
@@ -131,7 +133,14 @@ todo_include_todos = False
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for
 # a list of builtin themes.
-html_theme = 'alabaster'
+try:
+    import sphinx_rtd_theme
+
+    html_theme = "sphinx_rtd_theme"
+
+    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+except ImportError:
+    html_theme = 'alabaster'
 
 # Theme options are theme-specific and customize the look and feel of a theme
 # further.  For a list of options available for each theme, see the
@@ -307,7 +316,7 @@ texinfo_documents = [
 #texinfo_no_detailmenu = False
 
 
-def process_docstring(app, what, name, obj, options, lines):
+def process_django_model(app, what, name, obj, options, lines):
     # This causes import errors if left outside the function
     from django.db import models
 
@@ -334,22 +343,43 @@ def process_docstring(app, what, name, obj, options, lines):
                 lines.append(u':param %s: %s' % (field.attname, verbose_name))
 
             # Add the field's type to the docstring
-            lines.append(u':type %s: %s' % (field.attname, type(field).__name__))
-
+            if isinstance(field, (models.ForeignKey, models.OneToOneField, models.ManyToManyField)):
+                lines.append(u':type %s: %s to :class:`%s.%s`' % (field.attname,
+                                                                  type(field).__name__,
+                                                                  field.rel.to.__module__,
+                                                                  field.rel.to.__name__))
+            else:
+                lines.append(u':type %s: %s' % (field.attname, type(field).__name__))
     # Return the extended docstring
     return lines
 
 
 def process_django_view(app, what, name, obj, options, lines):
-    from django.db import models
-
     res = get_resolver()
-    for key, url_struct in res.reverse_dict.items():
-        if (hasattr(key, 'view_class') and key.view_class == obj) or key == obj:
-            lines.append(":param url: %s\n" % url_struct[0][0][0])
+    flat_patterns = []
+
+    def walker(flat_patterns, urlpatterns, namespace=None):
+        for pattern in urlpatterns:
+            if hasattr(pattern, 'url_patterns'):
+                walker(flat_patterns, pattern.url_patterns, pattern.namespace)
+            else:
+                urlname = '%s:%s' % (namespace, pattern.name) if namespace else pattern.name
+                flat_patterns.append([urlname, pattern.callback])
+    walker(flat_patterns, res.url_patterns)
+    for urlname, callback in flat_patterns:
+        if (hasattr(callback, 'view_class') and callback.view_class == obj) or callback == obj:
+            lines.append(":param url_name: ``%s``\n" % urlname)
     return lines
 
 
+def process_django_form(app, what, name, obj, options, lines):
+    from django import forms
+    if inspect.isclass(obj) and issubclass(obj, (forms.Form, forms.ModelForm)):
+        for fieldname, field in obj.base_fields.items():
+            lines.append(u':param %s: %s' % (fieldname, field.label))
+
+
 def setup(app):
-    app.connect('autodoc-process-docstring', process_docstring)
+    app.connect('autodoc-process-docstring', process_django_model)
     app.connect('autodoc-process-docstring', process_django_view)
+    app.connect('autodoc-process-docstring', process_django_form)
