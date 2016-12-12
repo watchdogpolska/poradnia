@@ -76,15 +76,11 @@ class Event(AbstractRecord):
             return
 
         # for each staff user involved in case create or update Reminder about Event
-        for user in self.case.get_users_with_perms():
-            if user.is_staff:
-                try:
-                    if user.profile.event_reminder_time > 0:
-                        Reminder.objects.update_or_create(event=self,
-                                                          user=user,
-                                                          defaults={'triggered': False})
-                except Profile.DoesNotExist:
-                    pass
+        for user in self.case.get_users_with_perms().filter(is_staff=True).exclude(profile=None):
+            if user.profile.event_reminder_time > 0:
+                Reminder.objects.update_or_create(event=self,
+                                                  user=user,
+                                                  defaults={'triggered': False})
 
     @property
     def triggered(self):
