@@ -1,7 +1,7 @@
-from braces.views import (FormValidMessageMixin, LoginRequiredMixin,
-                          PermissionRequiredMixin, SelectRelatedMixin,
+from braces.views import (FormValidMessageMixin, SelectRelatedMixin,
                           UserFormKwargsMixin)
 from django.contrib import messages
+from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.urlresolvers import reverse_lazy
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
@@ -12,7 +12,7 @@ from .models import Feedback
 from .utils import get_filter, get_form
 
 
-class FeedbackListView(LoginRequiredMixin, PermissionRequiredMixin, SelectRelatedMixin, FilterView):
+class FeedbackListView(PermissionRequiredMixin, SelectRelatedMixin, FilterView):
     permission_required = "tasty_feedback.view_feedback"
     filterset_class = get_filter()
     select_related = ["user", ]
@@ -29,12 +29,12 @@ class FeedbackCreateView(UserFormKwargsMixin, FormValidMessageMixin, CreateView)
         return _("Feedback saved.")
 
 
-class FeedbackDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
+class FeedbackDetailView(PermissionRequiredMixin, DetailView):
     permission_required = "tasty_feedback.view_feedback"
     model = Feedback
 
 
-class FeedbackStatusView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
+class FeedbackStatusView(PermissionRequiredMixin, DeleteView):
     permission_required = "tasty_feedback.change_feedback"
     model = Feedback
     template_name_suffix = '_switch_status'

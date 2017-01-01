@@ -69,7 +69,7 @@ class RemindersTestCase(TestCase):
 
         # force trigger
         reminder.triggered = True
-        reminder.save()
+        reminder.save(update_fields=('triggered', ))
         self.assertTrue(reminder.triggered)
 
         # edit event

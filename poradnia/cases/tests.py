@@ -17,7 +17,7 @@ from cases.forms import CaseCloseForm
 from cases.models import Case
 from letters.factories import LetterFactory
 from letters.models import Letter
-from users.factories import UserFactory
+from users.factories import UserFactory, StaffFactory
 
 
 class CaseQuerySetTestCase(TestCase):
@@ -158,8 +158,27 @@ class CaseDetailViewTestCase(TestCase):
         self.object = CaseFactory()
         self.client.login(username=self.object.created_by.username, password='pass')
 
-    def test_can_view(self):
-        self.client.get(self.object.get_absolute_url())
+    def test_owner_can_view(self):
+        response = self.client.get(self.object.get_absolute_url())
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, self.object.name)
+
+    def test_other_user_cant_view(self):
+        other_user = UserFactory()
+        self.client.login(username=other_user.username, password='pass')
+        response = self.client.get(self.object.get_absolute_url())
+        self.assertEqual(response.status_code, 403)
+
+    def test_anonymous_user_cant_view(self):
+        self.client.logout()
+        response = self.client.get(self.object.get_absolute_url())
+        self.assertEqual(response.status_code, 302)
+
+    def test_staff_user_cant_view(self):
+        staff_user = StaffFactory()
+        self.client.login(username=staff_user.username, password='pass')
+        response = self.client.get(self.object.get_absolute_url())
+        self.assertEqual(response.status_code, 403)
 
     def test_display_letter(self):
         obj = LetterFactory(case=self.object)

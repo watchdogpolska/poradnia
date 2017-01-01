@@ -1,6 +1,7 @@
 from __future__ import print_function
 
 from datetime import timedelta
+from unittest import TestCase
 
 from django.core import mail, management
 from django.test import TestCase

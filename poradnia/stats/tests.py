@@ -1,7 +1,7 @@
 from datetime import datetime
 from unittest import skipUnless
 
-from dateutil.rrule import MONTHLY, WEEKLY, DAILY
+from dateutil.rrule import MONTHLY, WEEKLY
 from django.core.urlresolvers import reverse
 from django.db import connection
 from django.http.response import HttpResponse
@@ -11,8 +11,8 @@ from cases.factories import CaseFactory
 from cases.models import Case
 from letters.factories import LetterFactory
 from letters.models import Letter
-from users.factories import UserFactory
 from stats.utils import GapFiller, DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY
+from users.factories import UserFactory, StaffFactory
 
 
 def polyfill_http_response_json():
@@ -37,10 +37,16 @@ class StatsCaseCreatedPermissionTestCase(TestCase):
             self.assertEqual(resp.status_code, 403)
 
     def test_permission_not_logged_in(self):
-        user = UserFactory(is_superuser=False)
         for url in[self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)
+
+    def test_permission_staff(self):
+        user = StaffFactory()
+        self.client.login(username=user.username, password='pass')
+        for url in [self.api_url, self.render_url, self.main_url]:
+            resp = self.client.get(url)
+            self.assertEqual(resp.status_code, 403)
 
     @skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
     def test_permission_superuser(self):
@@ -57,24 +63,30 @@ class StatsCaseUnansweredPermissionTestCase(TestCase):
         self.render_url = reverse('stats:case_unanswered_render')
         self.main_url = reverse('stats:case_unanswered')
 
-    def test_permission_not_logged_in(self):
+    def test_permission_logged_in(self):
         user = UserFactory(is_superuser=False)
         self.client.login(username=user.username, password='pass')
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 403)
 
     def test_permission_not_logged_in(self):
-        user = UserFactory(is_superuser=False)
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)
+
+    def test_permission_staff(self):
+        user = StaffFactory()
+        self.client.login(username=user.username, password='pass')
+        for url in [self.api_url, self.render_url, self.main_url]:
+            resp = self.client.get(url)
+            self.assertEqual(resp.status_code, 403)
 
     @skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
     def test_permission_superuser(self):
         user = UserFactory(is_superuser=True)
         self.client.login(username=user.username, password='pass')
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 200)
 
@@ -85,7 +97,7 @@ class StatsCaseReactionPermissionTestCase(TestCase):
         self.render_url = reverse('stats:case_reaction_render')
         self.main_url = reverse('stats:case_reaction')
 
-    def test_permission_not_logged_in(self):
+    def test_permission_logged_in(self):
         user = UserFactory(is_superuser=False)
         self.client.login(username=user.username, password='pass')
         for url in[self.api_url, self.render_url, self.main_url]:
@@ -93,10 +105,16 @@ class StatsCaseReactionPermissionTestCase(TestCase):
             self.assertEqual(resp.status_code, 403)
 
     def test_permission_not_logged_in(self):
-        user = UserFactory(is_superuser=False)
         for url in[self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)
+
+    def test_permission_staff(self):
+        user = StaffFactory()
+        self.client.login(username=user.username, password='pass')
+        for url in [self.api_url, self.render_url, self.main_url]:
+            resp = self.client.get(url)
+            self.assertEqual(resp.status_code, 403)
 
     def test_permission_superuser(self):
         user = UserFactory(is_superuser=True)

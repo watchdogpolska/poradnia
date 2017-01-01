@@ -1,19 +1,43 @@
 from datetime import datetime
 
 from dateutil.rrule import rrule, MONTHLY, WEEKLY
-
-from django.shortcuts import redirect
+from django.contrib.auth.mixins import AccessMixin
+from django.contrib.auth.views import redirect_to_login
+from django.core.exceptions import PermissionDenied
 
 
 SECONDS_IN_A_DAY = 60 * 60 * 24
 DATE_FORMAT_MONTHLY = "%Y-%m"
 DATE_FORMAT_WEEKLY = "%Y-%W"
 
-def raise_unless_unauthenticated(view, request):
-    # Hack from SO due to https://github.com/brack3t/django-braces/issues/181 bug
-    if not request.user.is_authenticated():
-        return redirect('/konta/login/?next=%s' % request.path)
-    return None
+
+class NoPermissionHandlerMixin(AccessMixin):
+    """
+    Mixin borrowed from Braces. If user is authenticated and does not have
+    permissions, it's redirected to 403 page. Anonymous user is redirected to
+    log in page
+    """
+    def handle_no_permission(self):
+        if self.raise_exception:
+            if (self.redirect_unauthenticated_users
+                    and not self.request.user.is_authenticated()):
+                return self.no_permissions_fail()
+            else:
+                raise PermissionDenied
+
+        return self.no_permissions_fail()
+
+    def no_permissions_fail(self):
+        """
+        Called when the user has no permissions and no exception was raised.
+        This should only return a valid HTTP response.
+
+        By default we redirect to login.
+        """
+        return redirect_to_login(self.request.get_full_path(),
+                                 self.get_login_url(),
+                                 self.get_redirect_field_name())
+
 
 class GapFiller(object):
     def __init__(self, qs, freq, date_key, date_format):
@@ -58,6 +82,7 @@ class GapFiller(object):
                                 freq=self.freq,
                                 dtstart=datetime.strptime(start, date_format),
                                 until=datetime.strptime(end, date_format)))
+
     def _get_params(self):
         if hasattr(self, 'params'):
             return self.params

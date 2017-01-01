@@ -1,4 +1,4 @@
-from braces.views import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.core.exceptions import PermissionDenied
 from guardian.shortcuts import get_perms
 
@@ -14,6 +14,18 @@ def has_perms(user, perms, obj=None, required_all=True):
     if not required_all and any(tests):
         return True
     raise PermissionDenied
+
+
+class SuperuserRequiredMixin(UserPassesTestMixin):
+
+    def test_func(self):
+        return self.request.user.is_superuser
+
+
+class StaffuserRequiredMixin(UserPassesTestMixin):
+
+    def test_func(self):
+        return self.request.user.is_staff
 
 
 class PermissionMixin(LoginRequiredMixin, object):

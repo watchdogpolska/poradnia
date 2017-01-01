@@ -1,7 +1,8 @@
 from __future__ import absolute_import
 
-from braces.views import LoginRequiredMixin, UserFormKwargsMixin
+from braces.views import UserFormKwargsMixin
 from django.contrib import messages
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView, UpdateView
@@ -17,7 +18,7 @@ from records.models import Record
 from users.views import PermissionMixin
 
 
-class CaseDetailView(LoginRequiredMixin, TemplateView):  # TODO: Use django.views.generic.DetailView
+class CaseDetailView(LoginRequiredMixin, TemplateView):
     template_name = 'cases/case_detail.html'
 
     def get_context_data(self, **kwargs):

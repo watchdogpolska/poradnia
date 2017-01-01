@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
-from braces.views import (LoginRequiredMixin, StaffuserRequiredMixin,
-                          UserFormKwargsMixin)
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from braces.views import UserFormKwargsMixin
+from django.contrib.auth.mixins import (LoginRequiredMixin,
+                                        PermissionRequiredMixin)
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
@@ -10,7 +10,7 @@ from django_filters.views import FilterView
 from .filters import UserFilter
 from .forms import ProfileForm, UserForm
 from .models import Profile, User
-from .utils import PermissionMixin
+from .utils import PermissionMixin, StaffuserRequiredMixin
 
 
 class UserDetailView(PermissionRequiredMixin, DetailView):
@@ -51,7 +51,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
         return User.objects.get(username=self.request.user.username)
 
 
-class ProfileUpdateView(UserFormKwargsMixin, LoginRequiredMixin, UpdateView):
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     form_class = ProfileForm
     model = Profile
 
@@ -62,6 +62,11 @@ class ProfileUpdateView(UserFormKwargsMixin, LoginRequiredMixin, UpdateView):
     def get_object(self):
         # Only get the User record for the user making the request
         return Profile.objects.get_or_create(user=self.request.user)[0]
+
+    def get_form_kwargs(self):
+        kwargs = super(ProfileUpdateView, self).get_form_kwargs()
+        kwargs.update({'user': self.request.user})
+        return kwargs
 
 
 class UserListView(StaffuserRequiredMixin, PermissionMixin, FilterView):

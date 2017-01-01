@@ -1,7 +1,7 @@
 import locale
 
-from braces.views import (FormValidMessageMixin, LoginRequiredMixin,
-                          SelectRelatedMixin, UserFormKwargsMixin)
+from braces.views import (FormValidMessageMixin, SelectRelatedMixin,
+                          UserFormKwargsMixin)
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.http import HttpResponse
@@ -16,7 +16,6 @@ from django.views.generic.list import BaseListView
 from cases.models import Case
 from keys.mixins import KeyAuthMixin
 from users.utils import PermissionMixin
-
 from .forms import EventForm
 from .models import Event
 from .utils import EventCalendar
@@ -64,14 +63,14 @@ def dismiss(request, pk):  # TODO
     pass
 
 
-class CalendarListView(PermissionMixin, LoginRequiredMixin, ArchiveIndexView):
+class CalendarListView(PermissionMixin, ArchiveIndexView):
     model = Event
     date_field = 'time'
     allow_future = True
     date_list_period = 'month'
 
 
-class CalendarEventView(PermissionMixin, SelectRelatedMixin, LoginRequiredMixin, MonthArchiveView):
+class CalendarEventView(PermissionMixin, SelectRelatedMixin, MonthArchiveView):
     model = Event
     date_field = "time"
     allow_future = True
