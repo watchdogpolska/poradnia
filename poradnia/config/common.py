@@ -48,7 +48,8 @@ THIRD_PARTY_APPS = (
     'tinycontent',
     'sorl.thumbnail',
     'atom',
-    'import_export'
+    'import_export',
+    'django_filters',
 )
 
 # Apps specific for this project go here.

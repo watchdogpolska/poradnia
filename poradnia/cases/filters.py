@@ -27,61 +27,61 @@ class CaseFilterMixin(object):
 class PermissionChoiceFilter(django_filters.ModelChoiceFilter):
     def __init__(self, *args, **kwargs):
         kwargs.update(dict(label=_("Has access by"),
-                           action=lambda qs, x: qs.for_assign(x),
+                           method=lambda qs, _, v: qs.for_assign(v),
                            queryset=get_user_model().objects.filter(is_staff=True).all()))
         super(PermissionChoiceFilter, self).__init__(*args, **kwargs)
 
 
 class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSet):
-    name = django_filters.CharFilter(label=_("Subject"), lookup_type='icontains')
+    name = django_filters.CharFilter(label=_("Subject"), lookup_expr='icontains')
     client = UserChoiceFilter(label=_("Client"))
     permission = PermissionChoiceFilter()
     handled = django_filters.BooleanFilter(label=_("Replied"))
-    status = django_filters.MultipleChoiceFilter(label=_("Status"), choices=Case.STATUS)
+    status = django_filters.MultipleChoiceFilter(label=_("Status"),
+                                                 # null_label=_("Any"),
+                                                 choices=Case.STATUS)
+    o = django_filters.OrderingFilter(
+        fields=['last_action', 'deadline', 'pk', 'client', 'created_on',
+                'last_send', 'last_action', 'last_received'],
+        initial='last_action',
+        help_text=None,
+        field_labels={'deadline': _('Dead-line'),
+                      'pk': _('ID'),
+                      'client': _('Client'),
+                      'created_on': _('Created on'),
+                      'last_send': _('Last send'),
+                      'last_action': _('Default'),
+                      'last_received': _('Last received')})
 
     def __init__(self, *args, **kwargs):
+        kwargs['queryset'] = kwargs.pop('queryset').order_by(Case.STAFF_ORDER_DEFAULT_FIELD)
         super(StaffCaseFilter, self).__init__(*args, **kwargs)
         if not self.user.has_perm('cases.can_assign'):
             del self.filters['permission']
         self.filters['status'].field.choices.insert(0, ('', u'---------'))
-        self.filters['handled'].field.widget.choices[0] = (1, _("Any state"))
-
-    def get_order_by(self, order_choice):
-        if order_choice == 'default':
-            return ['-%s' % (self._meta.model.STAFF_ORDER_DEFAULT_FIELD)]
-        return super(StaffCaseFilter, self).get_order_by(order_choice)
 
     class Meta:
         model = Case
         fields = ['id', 'status', 'client', 'name', 'has_project']
-        order_by = (
-            ('default', _('Default')),
-            ('deadline', _('Dead-line')),
-            ('pk', _('ID')),
-            ('client', _('Client')),
-            ('created_on', _('Created on')),
-            ('last_send', _('Last send')),
-            ('last_action', _('Last action')),
-            ('last_received', _('Last received')),
-        )
 
 
 class UserCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSet):
-    name = django_filters.CharFilter(label=_("Subject"), lookup_type='icontains')
+    def __init__(self, *args, **kwargs):
+        kwargs['queryset'] = kwargs.pop('queryset').order_by(Case.USER_ORDER_DEFAULT_FIELD)
+        super(UserCaseFilter, self).__init__(*args, **kwargs)
+
+    name = django_filters.CharFilter(label=_("Subject"), lookup_expr='icontains')
     created_on = django_filters.DateRangeFilter(label=_("Created on"))
     last_send = django_filters.DateRangeFilter(label=_("Last send"))
+    o = django_filters.OrderingFilter(fields=['last_send', 'pk', 'created_on'],
+                                      help_text=None,
+                                      initial='last_send',
+                                      fields_labels={'last_send': _('Last send'),
+                                                     'pk': _('ID'),
+                                                     'created_on': _('Created on'),
+                                                     })
 
     class Meta:
         model = Case
         fields = ['name', 'created_on', 'last_send']
-        order_by = (
-            ('default', _('Default')),
-            ('pk', _('ID')),
-            ('created_on', _('Created on')),
-            ('last_send', _('Last send')),
-        )
-
-    def get_order_by(self, order_choice):
-        if order_choice == 'default':
-            return ['-%s' % (self._meta.model.USER_ORDER_DEFAULT_FIELD)]
-        return [order_choice]
+        order_by_field = 'last_send'

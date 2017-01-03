@@ -1,6 +1,12 @@
 from datetime import timedelta
 
 import django
+from cases.admin import CaseAdmin
+from cases.factories import CaseFactory
+from cases.filters import StaffCaseFilter
+from cases.forms import CaseCloseForm
+from cases.models import Case
+from cases.views import CaseListView
 from django.contrib.admin.sites import AdminSite
 from django.core import mail
 from django.core.exceptions import PermissionDenied
@@ -9,12 +15,6 @@ from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
 from django.utils.timezone import now
 from guardian.shortcuts import assign_perm
-
-from cases.admin import CaseAdmin
-from cases.factories import CaseFactory
-from cases.filters import StaffCaseFilter
-from cases.forms import CaseCloseForm
-from cases.models import Case
 from letters.factories import LetterFactory
 from letters.models import Letter
 from users.factories import UserFactory
@@ -177,18 +177,22 @@ class CaseDetailViewTestCase(TestCase):
 
 
 class StaffCaseFilterTestCase(TestCase):
+    def get_filter(self, *args, **kwargs):
+        return StaffCaseFilter(queryset=Case.objects.all(),
+                               *args, **kwargs)
+
+    def get_permission_filter_qs(self, user, **kwargs):
+        admin = UserFactory(is_staff=True, is_superuser=True)
+        return self.get_filter(user=admin, data={'permission': user.pk}).qs.filter(**kwargs)
+
     def test_hide_permission(self):
         def get_fields(user):
-            return StaffCaseFilter(user=user).form.fields
+            return self.get_filter(user=user).form.fields
         self.assertNotIn('permission', get_fields(UserFactory(is_staff=True)))
         self.assertNotIn('permission', get_fields(UserFactory(is_staff=False)))
         user = UserFactory(is_staff=True)
         assign_perm('cases.can_assign', user)
         self.assertIn('permission', get_fields(user))
-
-    def get_permission_filter_qs(self, user, **kwargs):
-        admin = UserFactory(is_staff=True, is_superuser=True)
-        return StaffCaseFilter(user=admin, data={'permission': user.pk}).qs.filter(**kwargs)
 
     def test_permission_filter(self):
         obj = CaseFactory()
@@ -197,29 +201,32 @@ class StaffCaseFilterTestCase(TestCase):
         assign_perm('cases.can_view', user, obj)
         self.assertTrue(self.get_permission_filter_qs(user=user, pk=obj.pk).exists())
 
-    def _get_filter(self, user=None, choice='default'):
-        return StaffCaseFilter(user=user or UserFactory()).get_order_by(choice)
-
-    def test_order_by(self):
-        self.assertEqual(self._get_filter(), ['-last_action', ])
-        self.assertEqual(self._get_filter(choice='status'), ['status'])
-
     def test_form_fields(self):
         su_user = UserFactory(is_staff=True, is_superuser=True)
-        self.assertEqual(StaffCaseFilter(user=su_user).form.fields.keys(),
-                         ['status', 'handled', 'id', 'client', 'name', 'has_project', 'permission',
-                          'o'])
-        self.assertEqual(StaffCaseFilter(user=UserFactory(is_staff=True)).form.fields.keys(),
-                         ['status', 'handled', 'id', 'client', 'name', 'has_project', 'o'])
+        self.assertItemsEqual(self.get_filter(user=su_user).form.fields.keys(),
+                              ['status',
+                               'handled',
+                               'id',
+                               'client',
+                               'name',
+                               'has_project',
+                               'permission',
+                               'o'])
+        self.assertItemsEqual(self.get_filter(user=UserFactory(is_staff=True)).form.fields.keys(),
+                              ['status', 'handled', 'id', 'client', 'name', 'has_project', 'o'])
 
 
 class CaseListViewTestCase(TestCase):
     url = reverse_lazy('cases:list')
 
     def _test_filtersetclass(self, expect, user):
-        self.client.login(username=user.username, password='pass')
-        resp = self.client.get(self.url)
-        self.assertEqual(resp.context['view'].get_filterset_class() == StaffCaseFilter, expect)
+        self.factory = RequestFactory()
+        req = self.factory.get('/')
+        req.user = user
+        view = CaseListView.as_view()
+        resp = view(req)
+        view_for_req = resp.context_data['view']
+        self.assertEqual(view_for_req.get_filterset_class() == StaffCaseFilter, expect)
 
     def test_filtersetclass_for_staff(self):
         self._test_filtersetclass(True, UserFactory(is_staff=True))

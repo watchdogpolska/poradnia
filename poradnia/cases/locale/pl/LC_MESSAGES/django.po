@@ -1,21 +1,15 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: poradnia\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-10 01:07+0100\n"
-"PO-Revision-Date: 2016-04-01 02:46+0200\n"
-"Last-Translator: Tomasz Zając <zajactomasz1@yahoo.com>\n"
-"Language-Team: Polish\n"
-"Language: pl_PL\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.4\n"
-"X-Crowdin-Project: poradnia\n"
-"X-Crowdin-Language: pl\n"
-"X-Crowdin-File: /cases/locale/en/LC_MESSAGES/django.po\n"
+"Language: pl\n"
+"X-Generator: Poedit 1.8.7.1\n"
 
 #: apps.py:7 templates/cases/_case_form_permission.html:8
 #: templates/cases/_sidebar.html:3 templates/cases/base.html:3
@@ -32,12 +26,13 @@ msgstr "Brak"
 msgid "Has access by"
 msgstr "Osoba przypisana"
 
-#: filters.py:36 filters.py:70 models.py:98 templates/cases/case_filter.html:33
+#: filters.py:36 filters.py:73 models.py:100
+#: templates/cases/case_filter.html:36
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: filters.py:37 filters.py:61 models.py:102
-#: templates/cases/case_filter.html:32
+#: filters.py:37 filters.py:50 models.py:104
+#: templates/cases/case_filter.html:35
 msgid "Client"
 msgstr "Klient"
 
@@ -49,36 +44,28 @@ msgstr "Odpowiedziana"
 msgid "Status"
 msgstr "Status"
 
-#: filters.py:47
-msgid "Any state"
-msgstr "Dowolny stan"
-
-#: filters.py:58 filters.py:78
-msgid "Default"
-msgstr "Domyślne"
-
-#: filters.py:59 models.py:110 templates/cases/case_detail.html:74
-#: templates/cases/case_filter.html:33
+#: filters.py:48 models.py:112 templates/cases/case_detail.html:74
+#: templates/cases/case_filter.html:36
 msgid "Dead-line"
 msgstr "Termin"
 
-#: filters.py:60 filters.py:79 templates/cases/case_filter.html:31
+#: filters.py:49 filters.py:80
 msgid "ID"
-msgstr "ID"
+msgstr "Numer"
 
-#: filters.py:62 filters.py:71 filters.py:80 models.py:114
+#: filters.py:51 filters.py:74 filters.py:81 models.py:116
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: filters.py:63 filters.py:72 filters.py:81 models.py:104
+#: filters.py:52 filters.py:75 filters.py:79 models.py:106
 msgid "Last send"
 msgstr "Ostatnia odpowiedź"
 
-#: filters.py:64 models.py:105
-msgid "Last action"
-msgstr "Ostatnia czynność"
+#: filters.py:53
+msgid "Default"
+msgstr "Domyślne"
 
-#: filters.py:65 models.py:106
+#: filters.py:54 models.py:108
 msgid "Last received"
 msgstr "Ostatnio otrzymano"
 
@@ -88,7 +75,7 @@ msgstr "Przyznaj"
 
 #: forms.py:46
 msgid "User"
-msgstr "Użytkownik"
+msgstr "Użytkownik / użytkowniczka"
 
 #: forms.py:48
 msgid "Permissions group"
@@ -115,75 +102,83 @@ msgstr "przypisana"
 msgid "closed"
 msgstr "zamknięta"
 
-#: models.py:103
+#: models.py:98
+msgid "Numer sprawy"
+msgstr "Numer sprawy"
+
+#: models.py:105
 msgid "Letter count"
 msgstr "Liczba listów"
 
-#: models.py:113
-msgid "Created by"
-msgstr "Utworzone przez"
+#: models.py:107
+msgid "Last action"
+msgstr "Ostatnia czynność"
 
-#: models.py:116
+#: models.py:115
+msgid "Created by"
+msgstr "Utworzona przez"
+
+#: models.py:118
 msgid "Modified by"
 msgstr "Zmodyfikowane przez"
 
-#: models.py:118
+#: models.py:120
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
-#: models.py:119
+#: models.py:121
 msgid "Handled"
 msgstr "Obsłużona"
 
-#: models.py:120
+#: models.py:122
 msgid "Has project"
 msgstr "Posiada projekt"
 
-#: models.py:175
+#: models.py:177
 msgid "Can view all cases"
 msgstr "Może widzieć wszystkie sprawy"
 
-#: models.py:176
+#: models.py:178
 msgid "Can view"
 msgstr "Może widzieć sprawę"
 
-#: models.py:177
+#: models.py:179
 msgid "Can select client"
 msgstr "Może wybierać klienta"
 
-#: models.py:178
+#: models.py:180
 msgid "Can assign new permissions"
 msgstr "Może nadawać nowe uprawnienia"
 
-#: models.py:179
+#: models.py:181
 msgid "Can send text to client"
 msgstr "Może komunikować z klientem"
 
-#: models.py:180
+#: models.py:182
 msgid "Can assign permission"
 msgstr "Może nadawać uprawnienia"
 
-#: models.py:181
+#: models.py:183
 msgid "Can add record"
 msgstr "Może dodawać wpisy"
 
-#: models.py:182
+#: models.py:184
 msgid "Can change own records"
 msgstr "Może zmieniać własne wpisy"
 
-#: models.py:183
+#: models.py:185
 msgid "Can change all records"
 msgstr "Może zmieniać wszystkie wpisy"
 
-#: models.py:184
+#: models.py:186
 msgid "Can close case"
 msgstr "Może zamknąć sprawę"
 
-#: models.py:317
+#: models.py:319
 msgid "Name"
 msgstr "Nazwa"
 
-#: models.py:319 templates/cases/_case_form_permission.html:10
+#: models.py:321 templates/cases/_case_form_permission.html:10
 msgid "Permissions"
 msgstr "Uprawnienia"
 
@@ -204,7 +199,7 @@ msgstr "Projekt"
 msgid "New case"
 msgstr "Nowa sprawa"
 
-#: templates/cases/_sidebar.html:8 templates/cases/case_filter.html:20
+#: templates/cases/_sidebar.html:8 templates/cases/case_filter.html:23
 msgid "Cases index"
 msgstr "Wykaz spraw"
 
@@ -241,9 +236,7 @@ msgstr "Edytuj"
 msgid ""
 "Created by <a href=\"%(created_url)s\">%(created_user)s</a> on\n"
 "        %(created_on)s for <a href=\"%(client_url)s\">%(client_user)s</a>"
-msgstr ""
-"Utworzona przez <a href=\"%(created_url)s\">%(created_user)s</a> "
-"%(created_on)s dla <a href=\"%(client_url)s\">%(client_user)s</a>"
+msgstr "Utworzona przez <a href=\"%(created_url)s\">%(created_user)s</a> %(created_on)s dla <a href=\"%(client_url)s\">%(client_user)s</a>"
 
 #: templates/cases/case_detail.html:58
 msgid "Workflow"
@@ -276,41 +269,41 @@ msgstr "Przyznaj uprawnienia"
 
 #: templates/cases/case_detail.html:103
 msgid "..."
-msgstr "…"
+msgstr "..."
 
 #: templates/cases/case_detail.html:120
 msgid "No records"
 msgstr "Brak wpisów"
 
-#: templates/cases/case_filter.html:37
+#: templates/cases/case_filter.html:34
+msgid "No."
+msgstr "Nr."
+
+#: templates/cases/case_filter.html:40
 msgid "Last response"
 msgstr "Ostatnia odpowiedź"
 
-#: templates/cases/case_filter.html:79
+#: templates/cases/case_filter.html:82
 msgid "No action"
 msgstr "Brak czynności"
 
-#: templates/cases/case_filter.html:87
+#: templates/cases/case_filter.html:90
 msgid "No answer"
 msgstr "Brak odpowiedzi"
 
-#: templates/cases/case_filter.html:96
+#: templates/cases/case_filter.html:99
 msgid "Legend of status"
 msgstr "Legenda statusów"
 
-#: templates/cases/case_filter.html:96
+#: templates/cases/case_filter.html:99
 msgid "Cases have status changed by staff."
-msgstr ""
-"Zgłoszona przez Ciebie sprawa otrzymuje najpierw status \"wolna\". To "
-"znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. "
-"Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na \"przypisana"
-"\". A gdy już Ci pomożemy \"zakończona\"."
+msgstr "Zgłoszona przez Ciebie sprawa otrzymuje najpierw status \"wolna\". To znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na \"przypisana\". A gdy już Ci pomożemy \"zakończona\"."
 
-#: templates/cases/case_filter.html:102
+#: templates/cases/case_filter.html:105
 msgid "There is no cases."
 msgstr "Tutaj nie ma spraw."
 
-#: templates/cases/case_filter.html:102
+#: templates/cases/case_filter.html:105
 msgid "Do more of these!"
 msgstr "Utwórz!"
 
@@ -355,6 +348,3 @@ msgstr "Zaktualizowano uprawniania %(user)s do sprawy %(case)s"
 #, python-format
 msgid "%(user)s granted permissions from %(group)s!"
 msgstr "%(user)s przyznano uprawnienia grupy %(group)s!"
-
-#~ msgid "Tags"
-#~ msgstr "Tagi"
