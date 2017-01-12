@@ -3,4 +3,4 @@
 -r base.txt
 Django==1.9.12 # rq.filter: >=1.9,<1.10
 gunicorn==19.6.0
-gevent==1.1.2
+gevent==1.2.1
