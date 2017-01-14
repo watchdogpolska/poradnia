@@ -185,15 +185,6 @@ class StaffCaseFilterTestCase(TestCase):
         admin = UserFactory(is_staff=True, is_superuser=True)
         return self.get_filter(user=admin, data={'permission': user.pk}).qs.filter(**kwargs)
 
-    def test_hide_permission(self):
-        def get_fields(user):
-            return self.get_filter(user=user).form.fields
-        self.assertNotIn('permission', get_fields(UserFactory(is_staff=True)))
-        self.assertNotIn('permission', get_fields(UserFactory(is_staff=False)))
-        user = UserFactory(is_staff=True)
-        assign_perm('cases.can_assign', user)
-        self.assertIn('permission', get_fields(user))
-
     def test_permission_filter(self):
         obj = CaseFactory()
         self.assertFalse(self.get_permission_filter_qs(user=UserFactory(), pk=obj.pk).exists())
@@ -213,7 +204,14 @@ class StaffCaseFilterTestCase(TestCase):
                                'permission',
                                'o'])
         self.assertItemsEqual(self.get_filter(user=UserFactory(is_staff=True)).form.fields.keys(),
-                              ['status', 'handled', 'id', 'client', 'name', 'has_project', 'o'])
+                              ['status',
+                               'handled',
+                               'id',
+                               'client',
+                               'name',
+                               'has_project',
+                               'permission',
+                               'o'])
 
 
 class CaseListViewTestCase(TestCase):
