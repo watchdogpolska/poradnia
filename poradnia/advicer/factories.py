@@ -2,7 +2,7 @@ import datetime
 
 import factory
 import factory.fuzzy
-import pytz
+from django.utils.timezone import utc
 
 
 class IssueFactory(factory.django.DjangoModelFactory):
@@ -35,7 +35,7 @@ class InstitutionKindFactory(factory.django.DjangoModelFactory):
 
 class AdviceFactory(factory.django.DjangoModelFactory):
     advicer = factory.SubFactory('users.factories.UserFactory')
-    grant_on = factory.fuzzy.FuzzyDateTime(datetime.datetime(2008, 1, 1, tzinfo=pytz.utc))
+    grant_on = factory.fuzzy.FuzzyDateTime(datetime.datetime(2008, 1, 1, tzinfo=utc))
     created_by = factory.SubFactory('users.factories.UserFactory')
     comment = factory.fuzzy.FuzzyText()
     subject = factory.fuzzy.FuzzyText()

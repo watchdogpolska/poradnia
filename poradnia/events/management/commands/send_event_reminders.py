@@ -1,5 +1,4 @@
-import datetime
-
+from datetime import timedelta
 from django.core.management import BaseCommand
 from django.utils import timezone
 
@@ -20,7 +19,7 @@ class Command(BaseCommand):
             except Profile.DoesNotExist:
                 continue
 
-            notification_deadline = datetime.timedelta(days=deadline_days)
+            notification_deadline = timedelta(days=deadline_days)
             if today + notification_deadline > reminder.event.time:
                 self.stdout.write("Sending notification about {} to user {}".format(reminder.event,
                                                                                     reminder.user))

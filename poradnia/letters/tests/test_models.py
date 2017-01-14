@@ -1,17 +1,15 @@
-import datetime
 from datetime import timedelta
 from os.path import dirname, join
 
 import django_mailbox
-from django.test import TestCase
-from django.utils.timezone import utc
-from django_mailbox.models import Mailbox
-from guardian.shortcuts import assign_perm
-
 from cases.factories import CaseFactory
 from cases.models import Case
 from distutils.version import StrictVersion
+from django.test import TestCase
+from django.utils.timezone import now
+from django_mailbox.models import Mailbox
 from email import message_from_file
+from guardian.shortcuts import assign_perm
 from letters.factories import LetterFactory
 from letters.models import Letter, mail_process
 from users.factories import UserFactory
@@ -62,7 +60,7 @@ class QuerySetTestCase(TestCase):
 
 class LastQuerySetTestCase(TestCase):
     def setUp(self):
-        self.now = datetime.datetime.utcnow().replace(tzinfo=utc)
+        self.now = now()
         self.case = CaseFactory()
 
     def test_lr_staff_letter_no_return(self):

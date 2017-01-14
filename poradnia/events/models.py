@@ -1,13 +1,10 @@
-from datetime import datetime
-
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
+from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from model_utils.tracker import FieldTracker
-
 from records.models import AbstractRecord, AbstractRecordQuerySet
-from users.models import Profile
 
 
 class Reminder(models.Model):
@@ -33,7 +30,7 @@ class EventQuerySet(AbstractRecordQuerySet):
         return self.filter(alarm__isnull=True)
 
     def old(self):
-        return self.filter(time__lte=datetime.now())
+        return self.filter(time__lte=now())
 
 
 class Event(AbstractRecord):

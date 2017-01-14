@@ -1,15 +1,13 @@
-from datetime import datetime
-from dateutil.rrule import MONTHLY
-
-from django.db.models import F, Func, IntegerField, Case, Sum, When, Min, Count
-from django.shortcuts import redirect
-from braces.views import JSONResponseMixin, LoginRequiredMixin, SuperuserRequiredMixin
-from django.views.generic import TemplateView
-from django.views.generic import View
-
+from braces.views import (JSONResponseMixin, LoginRequiredMixin,
+                          SuperuserRequiredMixin)
 from cases.models import Case as CaseModel
+from dateutil.rrule import MONTHLY
+from django.db.models import F, Case, Count, IntegerField, Min, Sum, When
+from django.views.generic import TemplateView, View
 from letters.models import Letter as LetterModel
-from .utils import raise_unless_unauthenticated, GapFiller, SECONDS_IN_A_DAY, DATE_FORMAT_MONTHLY
+
+from .utils import (DATE_FORMAT_MONTHLY, SECONDS_IN_A_DAY, GapFiller,
+                    raise_unless_unauthenticated)
 
 
 class ApiListViewMixin(JSONResponseMixin):

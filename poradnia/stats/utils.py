@@ -1,19 +1,19 @@
 from datetime import datetime
 
-from dateutil.rrule import rrule, MONTHLY, WEEKLY
-
+from dateutil.rrule import MONTHLY, WEEKLY, rrule
 from django.shortcuts import redirect
-
 
 SECONDS_IN_A_DAY = 60 * 60 * 24
 DATE_FORMAT_MONTHLY = "%Y-%m"
 DATE_FORMAT_WEEKLY = "%Y-%W"
+
 
 def raise_unless_unauthenticated(view, request):
     # Hack from SO due to https://github.com/brack3t/django-braces/issues/181 bug
     if not request.user.is_authenticated():
         return redirect('/konta/login/?next=%s' % request.path)
     return None
+
 
 class GapFiller(object):
     def __init__(self, qs, freq, date_key, date_format):
@@ -58,6 +58,7 @@ class GapFiller(object):
                                 freq=self.freq,
                                 dtstart=datetime.strptime(start, date_format),
                                 until=datetime.strptime(end, date_format)))
+
     def _get_params(self):
         if hasattr(self, 'params'):
             return self.params

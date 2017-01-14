@@ -1,18 +1,18 @@
 from datetime import datetime
 from unittest import skipUnless
 
-from dateutil.rrule import MONTHLY, WEEKLY, DAILY
+from cases.factories import CaseFactory
+from cases.models import Case
+from dateutil.rrule import DAILY, MONTHLY, WEEKLY
 from django.core.urlresolvers import reverse
 from django.db import connection
 from django.http.response import HttpResponse
 from django.test import TestCase
-
-from cases.factories import CaseFactory
-from cases.models import Case
+from django.utils.timezone import make_aware
 from letters.factories import LetterFactory
 from letters.models import Letter
+from stats.utils import DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY, GapFiller
 from users.factories import UserFactory
-from stats.utils import GapFiller, DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY
 
 
 def polyfill_http_response_json():
@@ -64,7 +64,7 @@ class StatsCaseUnansweredPermissionTestCase(TestCase):
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 403)
 
-    def test_permission_not_logged_in(self):
+    def test_permission_logged_in(self):
         user = UserFactory(is_superuser=False)
         for url in[self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
@@ -92,7 +92,7 @@ class StatsCaseReactionPermissionTestCase(TestCase):
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 403)
 
-    def test_permission_not_logged_in(self):
+    def test_permission_logged_in(self):
         user = UserFactory(is_superuser=False)
         for url in[self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
@@ -115,7 +115,7 @@ class StatsCaseCreatedApiTestCase(TestCase):
     def _prepare_cases(self, db_data):
         for size, status, created_on in db_data:
             for obj in CaseFactory.create_batch(size=size, status=status):
-                obj.created_on = created_on
+                obj.created_on = make_aware(created_on)
                 obj.save()
 
     def test_no_cases(self):
@@ -179,14 +179,16 @@ class StatsCaseReactionApiTestCase(TestCase):
         for created_on, letter_data in db_data:
             for obj in CaseFactory.create_batch(size=1):
                 obj.letter_set = self._prepare_letters(letter_data, obj)
-                obj.created_on = created_on
+                obj.created_on = make_aware(created_on)
                 obj.save()
 
     def _prepare_letters(self, letter_data, case):
         letters = []
         for accept, created_by, status in letter_data:
-            obj = LetterFactory.create_batch(size=1, created_by=created_by, case=case, status=status)[0]
-            obj.accept = accept
+            obj = LetterFactory(created_by=created_by,
+                                case=case,
+                                status=status)
+            obj.accept = make_aware(accept)
             obj.save()
             letters.append(obj)
         return letters
@@ -308,9 +310,9 @@ class StatsCaseUnansweredApiTestCase(TestCase):
 
     def _prepare_cases(self, db_data):
         for size, sent, created_on in db_data:
-            last_send = datetime(2015, 1, 2) if sent else None
+            last_send = make_aware(datetime(2015, 1, 2)) if sent else None
             for obj in CaseFactory.create_batch(size=size, last_send=last_send):
-                obj.created_on = created_on
+                obj.created_on = make_aware(created_on)
                 obj.save()
 
     def test_no_cases(self):
