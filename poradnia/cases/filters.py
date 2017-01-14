@@ -56,8 +56,6 @@ class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterS
     def __init__(self, *args, **kwargs):
         kwargs['queryset'] = kwargs.pop('queryset').order_by(Case.STAFF_ORDER_DEFAULT_FIELD)
         super(StaffCaseFilter, self).__init__(*args, **kwargs)
-        if not self.user.has_perm('cases.can_assign'):
-            del self.filters['permission']
         self.filters['status'].field.choices.insert(0, ('', u'---------'))
 
     class Meta:
