@@ -1,10 +1,12 @@
-from __future__ import print_function, unicode_literals
+from __future__ import unicode_literals
 
+import logging
 import os
 from os.path import basename
 
 import claw
 import html2text
+from cases.models import Case
 from claw import quotations
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -14,17 +16,17 @@ from django.db import models
 from django.db.models import F, Func, IntegerField
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
-from model_utils import Choices
-from model_utils.fields import MonitorField, StatusField
-
-from cases.models import Case
 from django_mailbox.models import Message
 from django_mailbox.signals import message_received
+from model_utils import Choices
+from model_utils.fields import MonitorField, StatusField
 from records.models import AbstractRecord, AbstractRecordQuerySet
 
 from .utils import date_random_path
 
 claw.init()
+
+logger = logging.getLogger(__name__)
 
 
 class LetterQuerySet(AbstractRecordQuerySet):
@@ -151,8 +153,6 @@ class Attachment(models.Model):
 
 @receiver(message_received)
 def mail_process(sender, message, **args):
-    # print ('I just recieved a messsage "{title}"" '.format(title=message.subject.encode('utf-8')) +
-    #        'in mailbox {mbox}'.format(mbox=message.mailbox.name))
     # new_user + poradnia@ => new_user @ new_user
     # new_user + case => FAIL
     # old_user + case => PASS
@@ -161,23 +161,24 @@ def mail_process(sender, message, **args):
     # Skip autoreply messages - see RFC3834
     if (lambda x: 'Auto-Submitted' in x and
             x['Auto-Submitted'] == 'auto-replied')(message.get_email_object()):
-        print("Delete .eml from {email} as auto-replied".format(email=message.from_address[0]))
+        logger.info("Delete .eml from {email} as auto-replied".format(
+                    email=message.from_address[0]))
         message.eml.delete(save=True)
         return
 
     # Identify user
     user = get_user_model().objects.get_by_email_or_create(message.from_address[0])
-    print("Identified user: ", user)
+    logger.debug("Identified user: %s", user)
 
     # Identify case
     try:  # TODO: Is it old case?
         case = Case.objects.by_msg(message).get()
     except Case.DoesNotExist:
-        print("Case creating")
+        logger.debug("Case creating")
         case = Case(name=message.subject, created_by=user, client=user)
         case.save()
         user.notify(actor=user, verb='registered', target=case, from_email=case.get_email())
-    print("Case: ", case)
+    logger.debug("Case: %s", case)
     # Prepare text
     if message.text:
         text = quotations.extract_from(message.text, 'text/plain')
@@ -220,7 +221,7 @@ def mail_process(sender, message, **args):
                  eml=message.eml)
     obj.save()
 
-    print("Letter: ", obj)
+    logger.debug("Letter: %s", obj)
     # Convert attachments
     attachments = []
     for attachment in message.attachments.all():

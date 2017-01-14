@@ -10,4 +10,4 @@ class Command(BaseCommand):
 
     def handle(self, **options):
         for alarm in Event.objects.untriggered().old().all():
-            print alarm.execute()
+            self.stdout.write(alarm.execute())

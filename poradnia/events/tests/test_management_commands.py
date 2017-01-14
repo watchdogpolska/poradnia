@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 from datetime import timedelta
 
 from django.core import mail, management

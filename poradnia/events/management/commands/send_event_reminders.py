@@ -1,5 +1,3 @@
-from __future__ import print_function
-
 import datetime
 
 from django.core.management import BaseCommand
@@ -24,7 +22,8 @@ class Command(BaseCommand):
 
             notification_deadline = datetime.timedelta(days=deadline_days)
             if today + notification_deadline > reminder.event.time:
-                print("Sending notification about {} to user {}".format(reminder.event, reminder.user))
+                self.stdout.write("Sending notification about {} to user {}".format(reminder.event,
+                                                                                    reminder.user))
                 reminder.user.notify(actor=reminder.user,
                                      verb='alert',
                                      target=reminder.event,
