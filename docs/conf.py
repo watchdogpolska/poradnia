@@ -45,7 +45,7 @@ extensions = [
     'sphinx.ext.intersphinx',
     'sphinx.ext.coverage',
     'sphinx.ext.napoleon',
-
+    'sphinx.ext.graphviz',
 ]
 
 intersphinx_mapping = {

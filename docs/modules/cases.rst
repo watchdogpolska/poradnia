@@ -68,6 +68,23 @@ Odpowiedź e-mailowa
 
 Na każde nadesłane pismo w sprawie każdy ma możliwość odpowiedzi, a odpowiedź jest rejestrowana w systemie. Odpowiedź - na podstawie adresu e-mail - jest identyfikowana i przypisywana do wolontariusza. Zamknięta sprawa jest otwierana. Następnie sprawa powraca do kroku :ref:`projekt-pisma`.
 
+Status sprawy
+-------------
+
+Każda ma swój status, który może uleca następującej zmianie zgodnie z stanem przedstawionym na 
+
+.. digraph:: case_status
+      
+      "free" [label="wolna"];
+      "assigned" [label="przypisana"];
+      "closed" [label="zamknięta"];
+      free -> assigned [label="przypisanie prawnika"];
+      assigned -> free [label="usunięcie ostatniego prawnika"];
+      assigned -> closed [label="zamknięcie sprawy"];
+      free -> closed [label="zamknięcie sprawy"];
+      closed -> free [label="nowe pismo do wcześniej wolnej sprawy"];
+      closed -> assigned [label="nowe pismo do wcześniej przypisanej sprawy"]
+
 Kod aplikacji
 -------------
 
