@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 # Uncomment the next two lines to enable the admin:
 from django.contrib import admin
 from django.http import HttpResponseServerError
-from django.template import Context, loader
+from django.template import loader
 from django.views.generic import TemplateView
 
 admin.autodiscover()

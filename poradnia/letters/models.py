@@ -11,7 +11,7 @@ from django.contrib.auth import get_user_model
 from django.core.files import File
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import F, Q, Func, IntegerField
+from django.db.models import F, Func, IntegerField
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from model_utils import Choices
@@ -21,7 +21,6 @@ from cases.models import Case
 from django_mailbox.models import Message
 from django_mailbox.signals import message_received
 from records.models import AbstractRecord, AbstractRecordQuerySet
-from template_mail.utils import send_tpl_email
 
 from .utils import date_random_path
 
