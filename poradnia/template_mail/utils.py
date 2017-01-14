@@ -3,7 +3,7 @@ import sys
 from django.conf import settings
 from django.core.mail import get_connection
 from django.core.mail.message import EmailMultiAlternatives
-from django.template import Context, loader
+from django.template import loader
 
 
 def send_mail_with_header(subject, message, from_email, recipient_list,
@@ -24,7 +24,7 @@ def send_mail_with_header(subject, message, from_email, recipient_list,
 
 def send_tpl_email(template_name, recipient_list, context=None, from_email=None, **kwds):
     t = loader.get_template(template_name)
-    c = Context(context or {})
+    c = context or {}
     subject, txt = t.render(c).split("\n", 1)
     from_email = from_email if from_email else settings.DEFAULT_FROM_EMAIL
     headers = {}

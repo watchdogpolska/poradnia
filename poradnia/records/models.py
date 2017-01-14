@@ -49,7 +49,7 @@ class Record(models.Model):
     @content_object.setter
     def content_object(self, obj):
         for field in self.STATIC_RELATION:
-            if self._meta.get_field_by_name(field)[0].rel.to == obj._meta.model:
+            if self._meta.get_field(field).rel.to == obj._meta.model:
                 setattr(self, field, obj)
         self.related_object = obj
 
