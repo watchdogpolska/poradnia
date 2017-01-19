@@ -89,8 +89,8 @@ class CaseQuerySet(QuerySet):
 
 
 class Case(models.Model):
-    STAFF_ORDER_DEFAULT_FIELD = 'last_action'
-    USER_ORDER_DEFAULT_FIELD = 'last_send'
+    STAFF_ORDER_DEFAULT_FIELD = '-last_action'
+    USER_ORDER_DEFAULT_FIELD = '-last_send'
     STATUS = Choices(('0', 'free', _('free')),
                      ('1', 'assigned', _('assigned')),
                      ('2', 'closed', _('closed'))

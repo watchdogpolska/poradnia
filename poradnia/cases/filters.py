@@ -74,10 +74,10 @@ class UserCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSe
     o = django_filters.OrderingFilter(fields=['last_send', 'pk', 'created_on'],
                                       help_text=None,
                                       initial='last_send',
-                                      fields_labels={'last_send': _('Last send'),
-                                                     'pk': _('ID'),
-                                                     'created_on': _('Created on'),
-                                                     })
+                                      field_labels={'last_send': _('Last send'),
+                                                    'pk': _('ID'),
+                                                    'created_on': _('Created on'),
+                                                    })
 
     class Meta:
         model = Case
