@@ -10,6 +10,7 @@ class AttachmentInline(admin.StackedInline):
     model = Attachment
 
 
+@admin.register(Letter)
 class LetterAdmin(admin.ModelAdmin):
     '''
         Admin View for Letter
@@ -17,5 +18,3 @@ class LetterAdmin(admin.ModelAdmin):
     inlines = [
         AttachmentInline,
     ]
-
-admin.site.register(Letter, LetterAdmin)
