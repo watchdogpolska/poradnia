@@ -47,9 +47,9 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
     group = forms.ModelChoiceField(queryset=PermissionGroup.objects.all(),
                                    label=_("Permissions group"))
 
-    def __init__(self, user, case=None, *args, **kwargs):
-        self.case = case
-        self.user = user
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user')
+        self.case = kwargs.pop('case')
         super(CaseGroupPermissionForm, self).__init__(*args, **kwargs)
         self.fields['user'].queryset = get_user_model().objects.for_user(self.user)
         self.helper.form_class = 'form-inline'
@@ -60,7 +60,6 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
 
     def assign(self):
         perms = [x.codename for x in self.cleaned_data['group'].permissions.all()]
-
         for perm in perms:
             assign_perm(perm, self.cleaned_data['user'], self.case)
 

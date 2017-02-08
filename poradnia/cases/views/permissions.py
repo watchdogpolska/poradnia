@@ -6,12 +6,11 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.views.generic import FormView
-from django.views.generic.detail import SingleObjectMixin
+from django.views.generic.detail import SingleObjectTemplateResponseMixin
+from django.views.generic.edit import FormMixin
 from guardian.shortcuts import assign_perm, get_perms
-
 from users.forms import (TranslatedManageObjectPermissionForm,
                          TranslatedUserObjectPermissionsForm)
-
 from ..forms import CaseGroupPermissionForm
 from ..models import Case
 
@@ -106,7 +105,7 @@ class UserPermissionUpdateView(FormValidMessageMixin, FormView):
         self.assertEqual(resp.status_code, 302)
 
 
-class CaseGroupPermissionView(FormValidMessageMixin, SingleObjectMixin, FormView):
+class CaseGroupPermissionView(FormValidMessageMixin, FormView):
     model = Case
     form_class = CaseGroupPermissionForm
     template_name = 'cases/case_form.html'
@@ -115,8 +114,8 @@ class CaseGroupPermissionView(FormValidMessageMixin, SingleObjectMixin, FormView
         return _("%(user)s granted permissions from %(group)s!") % (self.form.cleaned_data)
 
     def get_form_kwargs(self):
-        kwargs = super(CaseGroupPermissionView, self).get_form_kwargs()
         self.object = self.get_object()
+        kwargs = super(CaseGroupPermissionView, self).get_form_kwargs()
         kwargs.update({'case': self.object, 'user': self.request.user})
         return kwargs
 
@@ -128,7 +127,12 @@ class CaseGroupPermissionView(FormValidMessageMixin, SingleObjectMixin, FormView
     def get_success_url(self):
         return reverse('cases:detail', kwargs={'pk': str(self.object.pk)})
 
+    def get_context_data(self, *args, **kwargs):
+        context = super(CaseGroupPermissionView, self).get_context_data(*args, **kwargs)
+        context['object'] = self.object
+        return context
+
     def get_object(self):
-        obj = super(CaseGroupPermissionView, self).get_object()
+        obj = get_object_or_404(Case, pk=self.kwargs['pk'])
         assign_perm_check(self.request.user, obj)
         return obj
