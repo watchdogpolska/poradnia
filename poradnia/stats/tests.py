@@ -11,8 +11,9 @@ from django.test import TestCase
 from django.utils.timezone import make_aware
 from letters.factories import LetterFactory
 from letters.models import Letter
-from stats.utils import DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY, GapFiller
+from stats.utils import DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY, GapFiller, split_while
 from users.factories import UserFactory
+from users.models import User
 
 
 def polyfill_http_response_json():
@@ -21,6 +22,14 @@ def polyfill_http_response_json():
     except AttributeError:
         import json
         setattr(HttpResponse, 'json', lambda x: json.loads(x.content))
+
+
+def purge_users(func):
+    def func_wrapper(*args, **kwargs):
+        for user in User.objects.all():
+            user.delete()
+        func(*args, **kwargs)
+    return func_wrapper
 
 
 class StatsCaseCreatedPermissionTestCase(TestCase):
@@ -98,6 +107,34 @@ class StatsCaseReactionPermissionTestCase(TestCase):
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)
 
+    def test_permission_superuser(self):
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+        for url in[self.api_url, self.render_url, self.main_url]:
+            resp = self.client.get(url)
+            self.assertEqual(resp.status_code, 200)
+
+
+class StatsUserRegisteredPermissionTestCase(TestCase):
+    def setUp(self):
+        self.api_url = reverse('stats:user_registered_api')
+        self.render_url = reverse('stats:user_registered_render')
+        self.main_url = reverse('stats:user_registered')
+
+    def test_permission_forbidden(self):
+        user = UserFactory(is_superuser=False)
+        self.client.login(username=user.username, password='pass')
+        for url in[self.api_url, self.render_url, self.main_url]:
+            resp = self.client.get(url)
+            self.assertEqual(resp.status_code, 403)
+
+    def test_permission_not_logged_in(self):
+        user = UserFactory(is_superuser=False)
+        for url in[self.api_url, self.render_url, self.main_url]:
+            resp = self.client.get(url)
+            self.assertEqual(resp.status_code, 302)
+
+    @skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
     def test_permission_superuser(self):
         user = UserFactory(is_superuser=True)
         self.client.login(username=user.username, password='pass')
@@ -360,6 +397,94 @@ class StatsCaseUnansweredApiTestCase(TestCase):
         self.assertEqual(result, expected)
 
 
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsUserRegisteredApiTestCase(TestCase):
+    def setUp(self):
+        polyfill_http_response_json()
+        self.url = reverse('stats:user_registered_api')
+
+    def _prepare_users(self, db_data):
+        admin = None
+        for created_on in db_data:
+            if admin is None:
+                obj = UserFactory(is_superuser=True)
+                admin = obj
+            else:
+                obj = UserFactory()
+            obj.created_on = make_aware(created_on) if created_on is not None else None
+            obj.save()
+        return admin
+
+    @purge_users
+    def test_basic(self):
+        db_data = [
+            datetime(2016, 11, 2),
+            datetime(2016, 11, 2),
+            datetime(2016, 11, 3),
+            datetime(2016, 12, 2),
+        ]
+
+        user = self._prepare_users(db_data)
+        self.client.force_login(user)
+
+        result = self.client.get(self.url).json()
+        expected = [
+            {'date': "2016-11", 'count': 3},
+            {'date': "2016-12", 'count': 4}
+        ]
+        self.assertEqual(result, expected)
+
+    @purge_users
+    def test_gap_after_init_date(self):
+        db_data = [
+            datetime(2017, 1, 2),
+            datetime(2017, 3, 2)
+        ]
+
+        user = self._prepare_users(db_data)
+        self.client.force_login(user)
+
+        result = self.client.get(self.url).json()
+        expected = [
+            {'date': "2016-11", 'count': 0},
+            {'date': "2016-12", 'count': 0},
+            {'date': "2017-01", 'count': 1},
+            {'date': "2017-02", 'count': 1},
+            {'date': "2017-03", 'count': 2},
+        ]
+        self.assertEqual(result, expected)
+
+    @purge_users
+    def test_before_start_date(self):
+        db_data = [
+            datetime(2016, 1, 2),
+        ]
+
+        user = self._prepare_users(db_data)
+        self.client.force_login(user)
+
+        result = self.client.get(self.url).json()
+        expected = [
+            {'date': "2016-11", 'count': 1},
+        ]
+        self.assertEqual(result, expected)
+
+    @purge_users
+    def test_created_on_none(self):
+        db_data = [
+            None
+        ]
+
+        user = self._prepare_users(db_data)
+        self.client.force_login(user)
+
+        result = self.client.get(self.url).json()
+        expected = [
+            {'date': "2016-11", 'count': 1},
+        ]
+        self.assertEqual(result, expected)
+
+
 class GapFillerTestCase(TestCase):
     def setUp(self):
         self.date_key = 'date'
@@ -469,4 +594,18 @@ class GapFillerTestCase(TestCase):
         expected = [
             {'date': "2015-01", 'param': 1}
         ]
+        self.assertEqual(result, expected)
+
+
+class SplitWhileTestCase(TestCase):
+    def test_simple(self):
+        seq = [1,2,3,4]
+        result = split_while(seq, key=lambda x: x < 4)
+        expected = ([1,2,3], [4])
+        self.assertEqual(result, expected)
+
+    def test_all_satisfied(self):
+        seq = [1,2,3,4]
+        result = split_while(seq, key=lambda x: x < 5)
+        expected = ([1,2,3,4], [])
         self.assertEqual(result, expected)
