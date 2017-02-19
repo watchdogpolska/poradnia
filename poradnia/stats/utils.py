@@ -14,16 +14,6 @@ def raise_unless_unauthenticated(view, request):
         return redirect('/konta/login/?next=%s' % request.path)
     return None
 
-def split_while(seq, key):
-    """Split a sorted sequence into (satisfied, remainder) subsequences"""
-    i = 0
-    for el in seq:
-        if key(el):
-            i += 1
-        else:
-            break
-    return seq[:i], seq[i:]
-
 
 class GapFiller(object):
     def __init__(self, qs, freq, date_key, date_format):

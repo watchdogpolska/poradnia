@@ -1,3 +1,5 @@
+from itertools import takewhile, dropwhile
+
 from braces.views import (JSONResponseMixin, LoginRequiredMixin,
                           SuperuserRequiredMixin)
 from cases.models import Case as CaseModel
@@ -8,7 +10,7 @@ from letters.models import Letter as LetterModel
 from users.models import User as UserModel
 
 from .utils import (DATE_FORMAT_MONTHLY, SECONDS_IN_A_DAY, GapFiller,
-                    split_while, raise_unless_unauthenticated)
+                    raise_unless_unauthenticated)
 
 
 class ApiListViewMixin(JSONResponseMixin):
@@ -246,12 +248,14 @@ class StatsUserRegisteredApiView(LoginRequiredMixin, SuperuserRequiredMixin, Api
         #NOTE: hardcoded for now, some day url parameters will be allowed
         start_date = INIT_DATE
 
-        before, after = split_while(
-            qs,
-            key=lambda x: x['year'] < start_date[0] or \
-                          (x['year'] == start_date[0] and x['month'] <= start_date[1]) or \
-                          (x['year'] is None or x['month'] is None)
-        )
+        def not_after_start_date(x):
+            return x['year'] < start_date[0] or \
+                   (x['year'] == start_date[0] and x['month'] <= start_date[1]) or \
+                   (x['year'] is None or x['month'] is None)
+
+        before = list(takewhile(not_after_start_date, qs))
+        after = list(dropwhile(not_after_start_date, qs))
+
         total_before = sum([x['count'] for x in before])
         start_date_obj = {
             'year': start_date[0],

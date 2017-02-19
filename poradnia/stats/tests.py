@@ -11,7 +11,7 @@ from django.test import TestCase
 from django.utils.timezone import make_aware
 from letters.factories import LetterFactory
 from letters.models import Letter
-from stats.utils import DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY, GapFiller, split_while
+from stats.utils import DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY, GapFiller
 from users.factories import UserFactory
 from users.models import User
 
@@ -26,8 +26,7 @@ def polyfill_http_response_json():
 
 def purge_users(func):
     def func_wrapper(*args, **kwargs):
-        for user in User.objects.all():
-            user.delete()
+        User.objects.all().delete()
         func(*args, **kwargs)
     return func_wrapper
 
@@ -41,13 +40,13 @@ class StatsCaseCreatedPermissionTestCase(TestCase):
     def test_permission_forbidden(self):
         user = UserFactory(is_superuser=False)
         self.client.login(username=user.username, password='pass')
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 403)
 
     def test_permission_not_logged_in(self):
         user = UserFactory(is_superuser=False)
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)
 
@@ -55,7 +54,7 @@ class StatsCaseCreatedPermissionTestCase(TestCase):
     def test_permission_superuser(self):
         user = UserFactory(is_superuser=True)
         self.client.login(username=user.username, password='pass')
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 200)
 
@@ -69,13 +68,13 @@ class StatsCaseUnansweredPermissionTestCase(TestCase):
     def test_permission_not_logged_in(self):
         user = UserFactory(is_superuser=False)
         self.client.login(username=user.username, password='pass')
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 403)
 
     def test_permission_logged_in(self):
         user = UserFactory(is_superuser=False)
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)
 
@@ -83,7 +82,7 @@ class StatsCaseUnansweredPermissionTestCase(TestCase):
     def test_permission_superuser(self):
         user = UserFactory(is_superuser=True)
         self.client.login(username=user.username, password='pass')
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 200)
 
@@ -97,20 +96,20 @@ class StatsCaseReactionPermissionTestCase(TestCase):
     def test_permission_not_logged_in(self):
         user = UserFactory(is_superuser=False)
         self.client.login(username=user.username, password='pass')
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 403)
 
     def test_permission_logged_in(self):
         user = UserFactory(is_superuser=False)
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)
 
     def test_permission_superuser(self):
         user = UserFactory(is_superuser=True)
         self.client.login(username=user.username, password='pass')
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 200)
 
@@ -124,13 +123,13 @@ class StatsUserRegisteredPermissionTestCase(TestCase):
     def test_permission_forbidden(self):
         user = UserFactory(is_superuser=False)
         self.client.login(username=user.username, password='pass')
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 403)
 
     def test_permission_not_logged_in(self):
         user = UserFactory(is_superuser=False)
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 302)
 
@@ -138,7 +137,7 @@ class StatsUserRegisteredPermissionTestCase(TestCase):
     def test_permission_superuser(self):
         user = UserFactory(is_superuser=True)
         self.client.login(username=user.username, password='pass')
-        for url in[self.api_url, self.render_url, self.main_url]:
+        for url in [self.api_url, self.render_url, self.main_url]:
             resp = self.client.get(url)
             self.assertEqual(resp.status_code, 200)
 
@@ -594,18 +593,4 @@ class GapFillerTestCase(TestCase):
         expected = [
             {'date': "2015-01", 'param': 1}
         ]
-        self.assertEqual(result, expected)
-
-
-class SplitWhileTestCase(TestCase):
-    def test_simple(self):
-        seq = [1,2,3,4]
-        result = split_while(seq, key=lambda x: x < 4)
-        expected = ([1,2,3], [4])
-        self.assertEqual(result, expected)
-
-    def test_all_satisfied(self):
-        seq = [1,2,3,4]
-        result = split_while(seq, key=lambda x: x < 5)
-        expected = ([1,2,3,4], [])
         self.assertEqual(result, expected)
