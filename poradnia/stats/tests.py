@@ -11,6 +11,7 @@ from django.test import TestCase
 from django.utils.timezone import make_aware
 from letters.factories import LetterFactory
 from letters.models import Letter
+from stats.mixins import PermissionStatusMixin
 from stats.utils import DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY, GapFiller
 from users.factories import UserFactory
 from users.models import User
@@ -31,115 +32,94 @@ def purge_users(func):
     return func_wrapper
 
 
-class StatsCaseCreatedPermissionTestCase(TestCase):
-    def setUp(self):
-        self.api_url = reverse('stats:case_created_api')
-        self.render_url = reverse('stats:case_created_render')
-        self.main_url = reverse('stats:case_created')
-
-    def test_permission_forbidden(self):
-        user = UserFactory(is_superuser=False)
-        self.client.login(username=user.username, password='pass')
-        for url in [self.api_url, self.render_url, self.main_url]:
-            resp = self.client.get(url)
-            self.assertEqual(resp.status_code, 403)
-
-    def test_permission_not_logged_in(self):
-        user = UserFactory(is_superuser=False)
-        for url in [self.api_url, self.render_url, self.main_url]:
-            resp = self.client.get(url)
-            self.assertEqual(resp.status_code, 302)
-
-    @skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
-    def test_permission_superuser(self):
-        user = UserFactory(is_superuser=True)
-        self.client.login(username=user.username, password='pass')
-        for url in [self.api_url, self.render_url, self.main_url]:
-            resp = self.client.get(url)
-            self.assertEqual(resp.status_code, 200)
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsCaseCreatedPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:case_created')
+    permissions = ["superuser"]
 
 
-class StatsCaseUnansweredPermissionTestCase(TestCase):
-    def setUp(self):
-        self.api_url = reverse('stats:case_unanswered_api')
-        self.render_url = reverse('stats:case_unanswered_render')
-        self.main_url = reverse('stats:case_unanswered')
-
-    def test_permission_not_logged_in(self):
-        user = UserFactory(is_superuser=False)
-        self.client.login(username=user.username, password='pass')
-        for url in [self.api_url, self.render_url, self.main_url]:
-            resp = self.client.get(url)
-            self.assertEqual(resp.status_code, 403)
-
-    def test_permission_logged_in(self):
-        user = UserFactory(is_superuser=False)
-        for url in [self.api_url, self.render_url, self.main_url]:
-            resp = self.client.get(url)
-            self.assertEqual(resp.status_code, 302)
-
-    @skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
-    def test_permission_superuser(self):
-        user = UserFactory(is_superuser=True)
-        self.client.login(username=user.username, password='pass')
-        for url in [self.api_url, self.render_url, self.main_url]:
-            resp = self.client.get(url)
-            self.assertEqual(resp.status_code, 200)
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsCaseCreatedRenderPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:case_created_render')
+    permissions = ["superuser"]
 
 
-class StatsCaseReactionPermissionTestCase(TestCase):
-    def setUp(self):
-        self.api_url = reverse('stats:case_reaction_api')
-        self.render_url = reverse('stats:case_reaction_render')
-        self.main_url = reverse('stats:case_reaction')
-
-    def test_permission_not_logged_in(self):
-        user = UserFactory(is_superuser=False)
-        self.client.login(username=user.username, password='pass')
-        for url in [self.api_url, self.render_url, self.main_url]:
-            resp = self.client.get(url)
-            self.assertEqual(resp.status_code, 403)
-
-    def test_permission_logged_in(self):
-        user = UserFactory(is_superuser=False)
-        for url in [self.api_url, self.render_url, self.main_url]:
-            resp = self.client.get(url)
-            self.assertEqual(resp.status_code, 302)
-
-    def test_permission_superuser(self):
-        user = UserFactory(is_superuser=True)
-        self.client.login(username=user.username, password='pass')
-        for url in [self.api_url, self.render_url, self.main_url]:
-            resp = self.client.get(url)
-            self.assertEqual(resp.status_code, 200)
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsCaseCreatedApiPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:case_created_api')
+    permissions = ["superuser"]
 
 
-class StatsUserRegisteredPermissionTestCase(TestCase):
-    def setUp(self):
-        self.api_url = reverse('stats:user_registered_api')
-        self.render_url = reverse('stats:user_registered_render')
-        self.main_url = reverse('stats:user_registered')
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsCaseUnansweredPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:case_unanswered')
+    permissions = ["superuser"]
 
-    def test_permission_forbidden(self):
-        user = UserFactory(is_superuser=False)
-        self.client.login(username=user.username, password='pass')
-        for url in [self.api_url, self.render_url, self.main_url]:
-            resp = self.client.get(url)
-            self.assertEqual(resp.status_code, 403)
 
-    def test_permission_not_logged_in(self):
-        user = UserFactory(is_superuser=False)
-        for url in [self.api_url, self.render_url, self.main_url]:
-            resp = self.client.get(url)
-            self.assertEqual(resp.status_code, 302)
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsCaseUnansweredRenderPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:case_unanswered_render')
+    permissions = ["superuser"]
 
-    @skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
-    def test_permission_superuser(self):
-        user = UserFactory(is_superuser=True)
-        self.client.login(username=user.username, password='pass')
-        for url in [self.api_url, self.render_url, self.main_url]:
-            resp = self.client.get(url)
-            self.assertEqual(resp.status_code, 200)
+
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsCaseUnansweredApiPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:case_unanswered_api')
+    permissions = ["superuser"]
+
+
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsCaseReactionPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:case_reaction')
+    permissions = ["superuser"]
+
+
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsCaseReactionRenderPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:case_reaction_render')
+    permissions = ["superuser"]
+
+
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsCaseReactionApiPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:case_reaction_api')
+    permissions = ["superuser"]
+
+
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsLetterCreatedPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:letter_created')
+    permissions = ["superuser"]
+
+
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsLetterCreatedRenderPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:letter_created_render')
+    permissions = ["superuser"]
+
+
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsLetterCreatedApiPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:letter_created_api')
+    permissions = ["superuser"]
+
+
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsUserRegisteredPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:user_registered')
+    permissions = ["superuser"]
+
+
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsUserRegisteredRenderPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:user_registered_render')
+    permissions = ["superuser"]
+
+
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsUserRegisteredApiPermissionTestCase(PermissionStatusMixin, TestCase):
+    url = reverse('stats:user_registered_api')
+    permissions = ["superuser"]
 
 
 @skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
@@ -392,6 +372,59 @@ class StatsCaseUnansweredApiTestCase(TestCase):
             {'date': "2015-01", 'count': 1},
             {'date': "2015-02", 'count': 0},
             {'date': "2015-03", 'count': 2}
+        ]
+        self.assertEqual(result, expected)
+
+
+@skipUnless(connection.vendor == 'mysql', "MySQL specific tests")
+class StatsLetterCreatedApiTestCase(TestCase):
+    def setUp(self):
+        polyfill_http_response_json()
+        self.url = reverse('stats:letter_created_api')
+        self.staff_user = UserFactory(is_staff=True)
+        self.non_staff_user = UserFactory(is_staff=False)
+
+    def _prepare_letters(self, letter_data):
+        letters = []
+        for created_on, created_by in letter_data:
+            obj = LetterFactory(created_by=created_by)
+            obj.created_on=make_aware(created_on)
+            obj.save()
+            letters.append(obj)
+        return letters
+
+    def test_no_cases(self):
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+
+        result = self.client.get(self.url).json()
+        expected = []
+        self.assertEqual(result, expected)
+
+    def test_basic(self):
+        db_data = [
+            (
+                datetime(2015, 1, 2),
+                self.non_staff_user
+            ),
+            (
+                datetime(2015, 1, 2),
+                self.staff_user
+            ),
+            (
+                datetime(2015, 2, 3),
+                self.non_staff_user
+            ),
+        ]
+
+        user = UserFactory(is_superuser=True)
+        self.client.login(username=user.username, password='pass')
+        self._prepare_letters(db_data)
+
+        result = self.client.get(self.url).json()
+        expected = [
+            {'date': "2015-01", 'staff': 1, 'client': 1},
+            {'date': "2015-02", 'staff': 0, 'client': 1},
         ]
         self.assertEqual(result, expected)
 
