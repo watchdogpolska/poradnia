@@ -13,7 +13,7 @@ class PermissionStatusMixin(object):
         status_has_permission (int): Status code for user with permission
         status_no_permission (403): Status code for user without permission
         url (str): url to test
-    NOTE: based on https://github.com/watchdogpolska/feder/blob/master/feder/main/mixins.py#L113
+    NOTE: based on https://github.com/watchdogpolska/feder/blob/a80d6ea76e6ac33663f423a6cf27a576637b55f4/feder/main/mixins.py#L113
     """
     url = None
     permissions = None
