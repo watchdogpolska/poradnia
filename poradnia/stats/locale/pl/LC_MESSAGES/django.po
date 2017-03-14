@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-10 01:07+0100\n"
+"POT-Creation-Date: 2017-02-15 20:54+0100\n"
 "PO-Revision-Date: 2016-12-10 01:07+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
@@ -17,36 +17,49 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /records/locale/en/LC_MESSAGES/django.po\n"
 
-#: apps.py:7
+#: stats/apps.py:7
 msgid "Statistics"
 msgstr "Statystyki"
 
-#: templates/stats/cases/created.html:3 templates/stats/cases/created.html:8
-#: templates/stats/index.html:15
+#: stats/templates/stats/cases/created.html:3
+#: stats/templates/stats/cases/created.html:8
+#: stats/templates/stats/index.html:15
 msgid "Cases created"
 msgstr "Utworzone sprawy"
 
-#: templates/stats/cases/created.html:7 templates/stats/cases/reaction.html:7
-#: templates/stats/cases/unanswered.html:7 templates/stats/index.html:3
-#: templates/stats/index.html:7 templates/stats/index.html:12
-#: templates/stats/letters/created.html:7
+#: stats/templates/stats/cases/created.html:7
+#: stats/templates/stats/cases/reaction.html:7
+#: stats/templates/stats/cases/unanswered.html:7
+#: stats/templates/stats/index.html:3 stats/templates/stats/index.html:7
+#: stats/templates/stats/index.html:12
+#: stats/templates/stats/letters/created.html:7
+#: stats/templates/stats/users/registered.html:7
 msgid "Stats"
 msgstr "Statystyki"
 
-#: templates/stats/cases/reaction.html:3 templates/stats/cases/reaction.html:8
-#: templates/stats/index.html:16
+#: stats/templates/stats/cases/reaction.html:3
+#: stats/templates/stats/cases/reaction.html:8
+#: stats/templates/stats/index.html:16
 msgid "Cases reaction time"
 msgstr "Czas reakcji dla spraw"
 
-#: templates/stats/cases/unanswered.html:3
-#: templates/stats/cases/unanswered.html:8 templates/stats/index.html:17
+#: stats/templates/stats/cases/unanswered.html:3
+#: stats/templates/stats/cases/unanswered.html:8
+#: stats/templates/stats/index.html:17
 msgid "Cases unanswered"
 msgstr "Sprawy bez odpowiedzi"
 
-#: templates/stats/index.html:18 templates/stats/letters/created.html:3
-#: templates/stats/letters/created.html:8
+#: stats/templates/stats/index.html:18
+#: stats/templates/stats/letters/created.html:3
+#: stats/templates/stats/letters/created.html:8
 msgid "Letters created"
 msgstr "Utworzone listy"
+
+#: stats/templates/stats/index.html:19
+#: stats/templates/stats/users/registered.html:3
+#: stats/templates/stats/users/registered.html:8
+msgid "Users registered"
+msgstr "Zarejestrowani użytkownicy"
 
 #, fuzzy
 #~| msgid "Cases created"

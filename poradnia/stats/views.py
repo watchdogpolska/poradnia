@@ -1,3 +1,5 @@
+from itertools import takewhile, dropwhile
+
 from braces.views import (JSONResponseMixin, LoginRequiredMixin,
                           SuperuserRequiredMixin)
 from cases.models import Case as CaseModel
@@ -5,6 +7,7 @@ from dateutil.rrule import MONTHLY
 from django.db.models import F, Case, Count, IntegerField, Min, Sum, When
 from django.views.generic import TemplateView, View
 from letters.models import Letter as LetterModel
+from users.models import User as UserModel
 
 from .utils import (DATE_FORMAT_MONTHLY, SECONDS_IN_A_DAY, GapFiller,
                     raise_unless_unauthenticated)
@@ -216,3 +219,72 @@ class StatsLetterCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiL
             'date',
             DATE_FORMAT_MONTHLY
         ).fill_gaps()
+
+
+class StatsUserRegisteredView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+    template_name = 'stats/users/registered.html'
+    raise_exception = raise_unless_unauthenticated
+
+
+class StatsUserRegisteredRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
+    template_name = 'stats/render/users/registered.html'
+    raise_exception = raise_unless_unauthenticated
+
+
+class StatsUserRegisteredApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
+    raise_exception = raise_unless_unauthenticated
+
+    def get_object_list(self):
+        qs = UserModel.objects.with_month_year().values(
+                'month', 'year'
+            ).annotate(
+                count=Count('pk')
+            ).order_by(
+                F('year'), F('month')
+            )
+
+        INIT_DATE = (2016, 11)  # all users created before have null `created_on` values
+
+        #NOTE: hardcoded for now, some day url parameters will be allowed
+        start_date = INIT_DATE
+
+        def not_after_start_date(x):
+            return x['year'] < start_date[0] or \
+                   (x['year'] == start_date[0] and x['month'] <= start_date[1]) or \
+                   (x['year'] is None or x['month'] is None)
+
+        before = list(takewhile(not_after_start_date, qs))
+        after = list(dropwhile(not_after_start_date, qs))
+
+        total_before = sum([x['count'] for x in before])
+        start_date_obj = {
+            'year': start_date[0],
+            'month': start_date[1],
+            'count': total_before
+        }
+
+        selected_dates = [start_date_obj] + after
+
+        serialized = [{
+            'date': "{0:04d}-{1:02d}".format(obj['year'], obj['month']),
+            'count': obj['count']
+        } for obj in selected_dates]
+
+        filled = GapFiller(
+            serialized,
+            MONTHLY,
+            'date',
+            DATE_FORMAT_MONTHLY
+        ).fill_gaps()
+
+        total_count = 0
+        ans = []
+        for obj in filled:
+            total_count += obj['count']
+            ans.append({
+                'date': obj['date'],
+                'count': total_count
+            })
+
+        return ans
+

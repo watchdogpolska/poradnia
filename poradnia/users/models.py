@@ -7,7 +7,7 @@ from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import Case, Count, IntegerField, Q, When
+from django.db.models import Case, Count, F, Func, IntegerField, Q, When
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
 from guardian.mixins import GuardianUserMixin
@@ -65,6 +65,17 @@ class UserQuerySet(QuerySet):
     def registered(self):
         user = get_anonymous_user()
         return self.exclude(pk=user.pk)
+
+    def with_month_year(self):
+        return self.annotate(
+            month=Func(F('created_on'),
+                       function='month',
+                       output_field=IntegerField())
+        ).annotate(
+            year=Func(F('created_on'),
+                      function='year',
+                      output_field=IntegerField())
+        )
 
 
 class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
