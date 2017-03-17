@@ -175,7 +175,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # STATIC FILE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-ROOT_DIR
-STATIC_ROOT = str(APPS_DIR.path('staticfiles'))
+STATIC_ROOT = str(ROOT_DIR.path('staticfiles'))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = '/static/'
