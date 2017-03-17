@@ -9,7 +9,6 @@ env:
   fast_finish: true
   global:
     - DATABASE_URL="mysql://root:@localhost/test_poradnia"
-    - DJANGO_CONFIGURATION="Local"
   matrix:
     - TOX_ENV=flake8
     - TOX_ENV=py27-dj19-coveralls
