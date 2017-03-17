@@ -34,9 +34,9 @@ class InstitutionKindFactory(factory.django.DjangoModelFactory):
 
 
 class AdviceFactory(factory.django.DjangoModelFactory):
-    advicer = factory.SubFactory('users.factories.UserFactory')
+    advicer = factory.SubFactory('poradnia.users.factories.UserFactory')
     grant_on = factory.fuzzy.FuzzyDateTime(datetime.datetime(2008, 1, 1, tzinfo=utc))
-    created_by = factory.SubFactory('users.factories.UserFactory')
+    created_by = factory.SubFactory('poradnia.users.factories.UserFactory')
     comment = factory.fuzzy.FuzzyText()
     subject = factory.fuzzy.FuzzyText()
     visible = True

@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.test import TestCase
 from guardian.shortcuts import assign_perm
 
-from advicer.models import Advice
+from poradnia.advicer.models import Advice
 from poradnia.users.factories import StaffFactory, UserFactory
 
 from .factories import AdviceFactory
