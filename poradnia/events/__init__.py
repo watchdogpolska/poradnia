@@ -1,1 +1,1 @@
-default_app_config = 'events.apps.CustomAppConfig'
+default_app_config = 'poradnia.events.apps.CustomAppConfig'

@@ -6,13 +6,13 @@ from django.test import TestCase
 from django.utils import timezone
 from guardian.shortcuts import assign_perm, get_perms
 
-from cases.factories import CaseFactory
-from cases.models import Case
-from users.factories import StaffFactory, UserFactory
-from users.forms import TranslatedUserObjectPermissionsForm, UserForm
-from users.models import User
+from poradnia.cases.factories import CaseFactory
+from poradnia.cases.models import Case
+from poradnia.users.factories import StaffFactory, UserFactory
+from poradnia.users.forms import TranslatedUserObjectPermissionsForm, UserForm
+from poradnia.users.models import User
 
-from users.forms import TranslatedManageObjectPermissionForm
+from poradnia.users.forms import TranslatedManageObjectPermissionForm
 
 
 class UserTestCase(TestCase):

@@ -3,9 +3,9 @@ from django.contrib.contenttypes.models import ContentType
 from django.core import mail
 from django.test import TestCase
 
-from cases.models import Case, CaseUserObjectPermission
-from letters.forms import NewCaseForm
-from users.factories import UserFactory
+from poradnia.cases.models import Case, CaseUserObjectPermission
+from poradnia.letters.forms import NewCaseForm
+from poradnia.users.factories import UserFactory
 
 try:
     from django.contrib.auth import get_user_model

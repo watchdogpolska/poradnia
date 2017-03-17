@@ -1,10 +1,10 @@
 from django.test import TestCase
 from django.utils import timezone
 
-from cases.factories import CaseFactory
-from events.factories import EventFactory
-from events.models import Event, Reminder
-from users.factories import UserFactory, ProfileFactory
+from poradnia.cases.factories import CaseFactory
+from poradnia.events.factories import EventFactory
+from poradnia.events.models import Event, Reminder
+from poradnia.users.factories import UserFactory, ProfileFactory
 
 
 def create_event():

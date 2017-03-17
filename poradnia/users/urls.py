@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.conf.urls import url
 
-from users import views
+from poradnia.users import views
 
 urlpatterns = [
     # URL pattern for the UserListView  # noqa

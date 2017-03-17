@@ -9,7 +9,7 @@ from django.views.generic import FormView
 from django.views.generic.detail import SingleObjectTemplateResponseMixin
 from django.views.generic.edit import FormMixin
 from guardian.shortcuts import assign_perm, get_perms
-from users.forms import (TranslatedManageObjectPermissionForm,
+from poradnia.users.forms import (TranslatedManageObjectPermissionForm,
                          TranslatedUserObjectPermissionsForm)
 from ..forms import CaseGroupPermissionForm
 from ..models import Case

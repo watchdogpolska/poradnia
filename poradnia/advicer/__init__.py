@@ -1,1 +1,1 @@
-default_app_config = 'advicer.apps.CustomAppConfig'
+default_app_config = 'poradnia.advicer.apps.CustomAppConfig'

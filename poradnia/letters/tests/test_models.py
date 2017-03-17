@@ -2,17 +2,17 @@ from datetime import timedelta
 from os.path import dirname, join
 
 import django_mailbox
-from cases.factories import CaseFactory
-from cases.models import Case
+from poradnia.cases.factories import CaseFactory
+from poradnia.cases.models import Case
 from distutils.version import StrictVersion
 from django.test import TestCase
 from django.utils.timezone import now
 from django_mailbox.models import Mailbox
 from email import message_from_file
 from guardian.shortcuts import assign_perm
-from letters.factories import LetterFactory
-from letters.models import Letter, mail_process
-from users.factories import UserFactory
+from poradnia.letters.factories import LetterFactory
+from poradnia.letters.models import Letter, mail_process
+from poradnia.users.factories import UserFactory
 
 
 class QuerySetTestCase(TestCase):

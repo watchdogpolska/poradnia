@@ -3,11 +3,11 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.test import TestCase
 from guardian.shortcuts import assign_perm
 
-from cases.factories import CaseFactory
-from cases.models import Case
-from letters.factories import LetterFactory
-from letters.models import Letter
-from users.factories import UserFactory
+from poradnia.cases.factories import CaseFactory
+from poradnia.cases.models import Case
+from poradnia.letters.factories import LetterFactory
+from poradnia.letters.models import Letter
+from poradnia.users.factories import UserFactory
 
 from .compat import refresh_from_db
 

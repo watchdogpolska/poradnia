@@ -1,12 +1,12 @@
 from datetime import timedelta
 
 import django
-from cases.admin import CaseAdmin
-from cases.factories import CaseFactory, PermissionGroupFactory
-from cases.filters import StaffCaseFilter
-from cases.forms import CaseCloseForm
-from cases.models import Case
-from cases.views import CaseListView
+from poradnia.cases.admin import CaseAdmin
+from poradnia.cases.factories import CaseFactory, PermissionGroupFactory
+from poradnia.cases.filters import StaffCaseFilter
+from poradnia.cases.forms import CaseCloseForm
+from poradnia.cases.models import Case
+from poradnia.cases.views import CaseListView
 from django.contrib.admin.sites import AdminSite
 from django.core import mail
 from django.core.exceptions import PermissionDenied
@@ -15,9 +15,9 @@ from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
 from django.utils.timezone import now
 from guardian.shortcuts import assign_perm
-from letters.factories import LetterFactory
-from letters.models import Letter
-from users.factories import UserFactory
+from poradnia.letters.factories import LetterFactory
+from poradnia.letters.models import Letter
+from poradnia.users.factories import UserFactory
 
 
 class CaseQuerySetTestCase(TestCase):

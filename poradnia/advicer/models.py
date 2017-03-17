@@ -7,7 +7,7 @@ from django.db.models.query import QuerySet
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
-from cases.models import Case
+from poradnia.cases.models import Case
 
 
 class AbstractCategory(models.Model):

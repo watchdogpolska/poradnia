@@ -17,25 +17,25 @@ urlpatterns = [
         TemplateView.as_view(template_name='pages/home.html'),
         name="home"),
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^navsearch/', include('navsearch.urls', namespace="navsearch")),
+    url(r'^navsearch/', include('poradnia.navsearch.urls', namespace="navsearch")),
 
     # User management
-    url(r'^uzytkownik/klucze', include('keys.urls', namespace="keys")),
-    url(r'^uzytkownik/', include("users.urls", namespace="users")),
+    url(r'^uzytkownik/klucze', include('poradnia.keys.urls', namespace="keys")),
+    url(r'^uzytkownik/', include("poradnia.users.urls", namespace="users")),
     url(r'^konta/', include('allauth.urls')),
 
     # Flatpages
     url(r'^strony/', include('django.contrib.flatpages.urls')),
     url(r'^tinymce/', include('tinymce.urls')),
     # Poradnia
-    url(r'^sprawy/', include('cases.urls', namespace='cases')),
-    url(r'^listy/', include('letters.urls', namespace='letters')),
-    url(r'^wydarzenia/', include('events.urls', namespace='events')),
-    url(r'^porady/', include('advicer.urls', namespace='advicer')),
-    url(r'^statystyki/', include('stats.urls', namespace='stats')),
+    url(r'^sprawy/', include('poradnia.cases.urls', namespace='cases')),
+    url(r'^listy/', include('poradnia.letters.urls', namespace='letters')),
+    url(r'^wydarzenia/', include('poradnia.events.urls', namespace='events')),
+    url(r'^porady/', include('poradnia.advicer.urls', namespace='advicer')),
+    url(r'^statystyki/', include('poradnia.stats.urls', namespace='stats')),
+    url(r'^uwagi/', include('poradnia.tasty_feedback.urls', namespace='tasty_feedback')),
     # Utils
     url(r'^autocomplete/', include('autocomplete_light.urls')),
-    url(r'^uwagi/', include('tasty_feedback.urls', namespace='tasty_feedback')),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

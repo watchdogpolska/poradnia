@@ -2,8 +2,8 @@ from datetime import timedelta
 from django.core.management import BaseCommand
 from django.utils import timezone
 
-from events.models import Reminder
-from users.models import Profile
+from poradnia.events.models import Reminder
+from poradnia.users.models import Profile
 
 
 class Command(BaseCommand):

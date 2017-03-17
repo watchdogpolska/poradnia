@@ -3,5 +3,5 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class CustomAppConfig(AppConfig):
-    name = 'keys'
+    name = 'poradnia.keys'
     verbose_name = _("Keys")

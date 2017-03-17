@@ -3,8 +3,8 @@ import factory.fuzzy
 from datetime import timedelta
 from django.utils import timezone
 
-from cases.factories import CaseFactory
-from users.factories import UserFactory
+from poradnia.cases.factories import CaseFactory
+from poradnia.users.factories import UserFactory
 
 
 class EventFactory(factory.django.DjangoModelFactory):

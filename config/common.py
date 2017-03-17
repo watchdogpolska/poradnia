@@ -50,22 +50,22 @@ THIRD_PARTY_APPS = (
     'atom',
     'import_export',
     'django_filters',
+    'bootstrap_pagination'
 )
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
-    'users',  # custom users app
-    'keys',
-    'cases',
-    'letters',
-    'records',
-    'events',
-    'stats',
-    'advicer',
-    'feedback_custom',
-    'tasty_feedback',
-    'bootstrap_pagination',
-    'navsearch'
+    'poradnia.users',  # custom users app
+    'poradnia.keys',
+    'poradnia.cases',
+    'poradnia.letters',
+    'poradnia.records',
+    'poradnia.events',
+    'poradnia.stats',
+    'poradnia.advicer',
+    'poradnia.feedback_custom',
+    'poradnia.tasty_feedback',
+    'poradnia.navsearch'
     # Your stuff: custom apps go here
 )
 
@@ -87,7 +87,7 @@ MIDDLEWARE_CLASSES = (
 
 # MIGRATIONS CONFIGURATION
 MIGRATION_MODULES = {
-    'sites': 'contrib.sites.migrations'
+    'sites': 'poradnia.contrib.sites.migrations'
 }
 # END MIGRATIONS CONFIGURATION
 
@@ -201,10 +201,10 @@ MEDIA_URL = '/media/'
 # END MEDIA CONFIGURATION
 
 # URL Configuration
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'config.urls'
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
-WSGI_APPLICATION = 'wsgi.application'
+WSGI_APPLICATION = 'config.wsgi.application'
 # End URL Configuration
 
 # AUTHENTICATION CONFIGURATION
@@ -223,8 +223,8 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 # Custom user app defaults
 # Select the correct user model
 AUTH_USER_MODEL = "users.User"
-ACCOUNT_SIGNUP_FORM_CLASS = 'users.forms.SignupForm'
-ACCOUNT_FORMS = {'login': 'users.login_form.CustomLoginForm'}
+ACCOUNT_SIGNUP_FORM_CLASS = 'poradnia.users.forms.SignupForm'
+ACCOUNT_FORMS = {'login': 'poradnia.users.login_form.CustomLoginForm'}
 LOGIN_REDIRECT_URL = "home"
 LOGIN_URL = "account_login"
 # END Custom user app defaults
@@ -287,8 +287,8 @@ TINYMCE_DEFAULT_CONFIG = {
 }
 
 AVATAR_GRAVATAR_DEFAULT = 'retro'
-FEEDBACK_FILTER = 'feedback_custom.filters.AtomFeedbackFilter'
-FEEDBACK_FORM_SUBMIT = 'feedback_custom.forms.FeedbackForm'
+FEEDBACK_FILTER = 'poradnia.feedback_custom.filters.AtomFeedbackFilter'
+FEEDBACK_FORM_SUBMIT = 'poradnia.feedback_custom.forms.FeedbackForm'
 FEEDBACK_GITHUB_REPO = 'https://github.com/watchdogpolska/poradnia'
 
 DJANGO_MAILBOX_STORE_ORIGINAL_MESSAGE = True

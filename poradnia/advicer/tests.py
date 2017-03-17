@@ -5,7 +5,7 @@ from django.test import TestCase
 from guardian.shortcuts import assign_perm
 
 from advicer.models import Advice
-from users.factories import StaffFactory, UserFactory
+from poradnia.users.factories import StaffFactory, UserFactory
 
 from .factories import AdviceFactory
 

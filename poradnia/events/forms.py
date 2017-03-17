@@ -4,7 +4,7 @@ from atom.forms import AuthorMixin
 from django import forms
 from django.core.urlresolvers import reverse
 
-from letters.forms import PartialMixin
+from poradnia.letters.forms import PartialMixin
 
 from .models import Event
 

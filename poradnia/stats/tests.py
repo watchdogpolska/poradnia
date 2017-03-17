@@ -1,20 +1,20 @@
 from datetime import datetime
 from unittest import skipUnless
 
-from cases.factories import CaseFactory
-from cases.models import Case
+from poradnia.cases.factories import CaseFactory
+from poradnia.cases.models import Case
 from dateutil.rrule import DAILY, MONTHLY, WEEKLY
 from django.core.urlresolvers import reverse
 from django.db import connection
 from django.http.response import HttpResponse
 from django.test import TestCase
 from django.utils.timezone import make_aware
-from letters.factories import LetterFactory
-from letters.models import Letter
+from poradnia.letters.factories import LetterFactory
+from poradnia.letters.models import Letter
 from stats.mixins import PermissionStatusMixin
 from stats.utils import DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY, GapFiller
-from users.factories import UserFactory
-from users.models import User
+from poradnia.users.factories import UserFactory
+from poradnia.users.models import User
 
 
 def polyfill_http_response_json():

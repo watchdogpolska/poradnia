@@ -1,8 +1,8 @@
 from django.db.models import Q
 from django.views.generic import TemplateView
 
-from cases.models import Case
-from users.models import User
+from poradnia.cases.models import Case
+from poradnia.users.models import User
 
 
 class AutocompleteView(TemplateView):

@@ -4,7 +4,7 @@ from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from model_utils.tracker import FieldTracker
-from records.models import AbstractRecord, AbstractRecordQuerySet
+from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 
 
 class Reminder(models.Model):

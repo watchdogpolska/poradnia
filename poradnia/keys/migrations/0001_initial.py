@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 from django.conf import settings
 from django.db import migrations, models
 
-import keys.utils
+import poradnia.keys.utils
 
 
 class Migration(migrations.Migration):
@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             name='Key',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('password', models.CharField(default=keys.utils.make_random_password, max_length=75, verbose_name='Key')),
+                ('password', models.CharField(default=poradnia.keys.utils.make_random_password, max_length=75, verbose_name='Key')),
                 ('description', models.CharField(max_length=75, verbose_name='Description')),
                 ('created_on', models.DateField(auto_now_add=True, verbose_name='Created on')),
                 ('used_on', models.DateField(null=True, verbose_name='Used on')),

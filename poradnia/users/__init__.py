@@ -1,1 +1,1 @@
-default_app_config = 'users.apps.CustomAppConfig'
+default_app_config = 'poradnia.users.apps.CustomAppConfig'

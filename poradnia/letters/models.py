@@ -6,7 +6,7 @@ from os.path import basename
 
 import claw
 import html2text
-from cases.models import Case
+from poradnia.cases.models import Case
 from claw import quotations
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -20,7 +20,7 @@ from django_mailbox.models import Message
 from django_mailbox.signals import message_received
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
-from records.models import AbstractRecord, AbstractRecordQuerySet
+from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 
 from .utils import date_random_path
 

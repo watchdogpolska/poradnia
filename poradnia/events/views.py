@@ -13,9 +13,9 @@ from django.views.generic import (ArchiveIndexView, CreateView,
                                   MonthArchiveView, UpdateView)
 from django.views.generic.list import BaseListView
 
-from cases.models import Case
-from keys.mixins import KeyAuthMixin
-from users.utils import PermissionMixin
+from poradnia.cases.models import Case
+from poradnia.keys.mixins import KeyAuthMixin
+from poradnia.users.utils import PermissionMixin
 
 from .forms import EventForm
 from .models import Event

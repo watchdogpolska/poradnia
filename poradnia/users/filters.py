@@ -9,7 +9,7 @@ from atom.filters import CrispyFilterMixin
 from django.contrib.auth import get_user_model
 from django_filters import ModelChoiceFilter
 
-from users.models import User
+from poradnia.users.models import User
 
 
 class UserChoiceFilter(ModelChoiceFilter):

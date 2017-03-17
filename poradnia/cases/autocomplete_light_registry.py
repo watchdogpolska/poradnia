@@ -1,6 +1,6 @@
 import autocomplete_light.shortcuts as autocomplete_light
 
-from users.utils import AutocompletePermissionMixin
+from poradnia.users.utils import AutocompletePermissionMixin
 
 from .models import Case
 

@@ -1,9 +1,9 @@
 from django.test import TestCase
 
-from letters.factories import LetterFactory
-from letters.models import Letter
-from records.models import Record
-from users.factories import UserFactory
+from poradnia.letters.factories import LetterFactory
+from poradnia.letters.models import Letter
+from poradnia.records.models import Record
+from poradnia.users.factories import UserFactory
 
 
 class QuerySetTestCase(TestCase):

@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 from django.db import migrations, models
 
-import letters.utils
+import poradnia.letters.utils
 
 
 class Migration(migrations.Migration):
@@ -17,6 +17,6 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='attachment',
             name='attachment',
-            field=models.FileField(upload_to=letters.utils.date_random_path, verbose_name='File'),
+            field=models.FileField(upload_to=poradnia.letters.utils.date_random_path, verbose_name='File'),
         ),
     ]

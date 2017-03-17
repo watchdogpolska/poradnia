@@ -5,7 +5,7 @@ import django
 import django.core.validators
 from django.db import migrations, models
 
-import users.models
+import poradnia.users.models
 
 
 class Migration(migrations.Migration):
@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
             migrations.AlterModelManagers(
                 name='user',
                 managers=[
-                    ('objects', users.models.CustomUserManager()),
+                    ('objects', poradnia.users.models.CustomUserManager()),
                 ],
             ),
         ]

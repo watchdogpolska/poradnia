@@ -4,7 +4,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import ugettext as _
 
-from cases.models import Case
+from poradnia.cases.models import Case
 
 # from crispy_forms.helper import FormHelper
 from ..forms import AddLetterForm, SendLetterForm

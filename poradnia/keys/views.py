@@ -6,7 +6,7 @@ from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
 
-from users.utils import PermissionMixin
+from poradnia.users.utils import PermissionMixin
 
 from .forms import KeyForm
 from .models import Key

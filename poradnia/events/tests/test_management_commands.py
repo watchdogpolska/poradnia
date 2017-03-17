@@ -4,10 +4,10 @@ from django.core import mail, management
 from django.test import TestCase
 from django.utils import timezone
 
-from cases.factories import CaseFactory
-from events.factories import EventFactory
-from events.models import Reminder
-from users.factories import ProfileFactory, StaffFactory
+from poradnia.cases.factories import CaseFactory
+from poradnia.events.factories import EventFactory
+from poradnia.events.models import Reminder
+from poradnia.users.factories import ProfileFactory, StaffFactory
 
 try:
     from StringIO import StringIO

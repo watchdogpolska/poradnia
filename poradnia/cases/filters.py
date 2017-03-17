@@ -3,7 +3,7 @@ from atom.filters import CrispyFilterMixin
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
 
-from users.filters import UserChoiceFilter
+from poradnia.users.filters import UserChoiceFilter
 
 from .models import Case
 

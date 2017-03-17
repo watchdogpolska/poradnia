@@ -2,12 +2,12 @@ from itertools import takewhile, dropwhile
 
 from braces.views import (JSONResponseMixin, LoginRequiredMixin,
                           SuperuserRequiredMixin)
-from cases.models import Case as CaseModel
+from poradnia.cases.models import Case as CaseModel
 from dateutil.rrule import MONTHLY
 from django.db.models import F, Case, Count, IntegerField, Min, Sum, When
 from django.views.generic import TemplateView, View
-from letters.models import Letter as LetterModel
-from users.models import User as UserModel
+from poradnia.letters.models import Letter as LetterModel
+from poradnia.users.models import User as UserModel
 
 from .utils import (DATE_FORMAT_MONTHLY, SECONDS_IN_A_DAY, GapFiller,
                     raise_unless_unauthenticated)

@@ -1,7 +1,7 @@
 from django.core.exceptions import ImproperlyConfigured
 from guardian.shortcuts import assign_perm
 
-from users.factories import UserFactory
+from poradnia.users.factories import UserFactory
 
 
 class PermissionStatusMixin(object):

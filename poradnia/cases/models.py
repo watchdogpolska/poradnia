@@ -16,8 +16,8 @@ from guardian.shortcuts import assign_perm, get_users_with_perms
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
-from cases.utils import get_user_model
-from template_mail.utils import send_tpl_email
+from poradnia.cases.utils import get_user_model
+from poradnia.template_mail.utils import send_tpl_email
 
 
 class CaseQuerySet(QuerySet):
@@ -187,7 +187,7 @@ class Case(models.Model):
                        )
 
     def update_handled(self):
-        from letters.models import Letter
+        from poradnia.letters.models import Letter
         try:
             obj = Letter.objects.case(self).filter(status='done').last()
             if obj.created_by.is_staff:
@@ -199,7 +199,7 @@ class Case(models.Model):
         self.save()
 
     def update_counters(self, save=True):
-        from letters.models import Letter
+        from poradnia.letters.models import Letter
         letters_list = Letter.objects.case(self)
         self.letter_count = letters_list.count()
         try:

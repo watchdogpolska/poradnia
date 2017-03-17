@@ -15,8 +15,8 @@ from guardian.utils import get_anonymous_user
 from model_utils.choices import Choices
 from sorl.thumbnail import ImageField
 
-from cases.models import Case as CaseModel
-from template_mail.utils import send_tpl_email
+from poradnia.cases.models import Case as CaseModel
+from poradnia.template_mail.utils import send_tpl_email
 
 _('Username or e-mail')  # Hack to overwrite django translation
 _('Login')

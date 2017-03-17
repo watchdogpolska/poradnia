@@ -1,7 +1,7 @@
 from django.utils.translation import ugettext as _
 
-from tasty_feedback.filters import FeedbackFilter
-from users.filters import UserChoiceFilter
+from poradnia.tasty_feedback.filters import FeedbackFilter
+from poradnia.users.filters import UserChoiceFilter
 
 
 class AtomFeedbackFilter(FeedbackFilter):
