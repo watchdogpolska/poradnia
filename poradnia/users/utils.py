@@ -1,7 +1,7 @@
 from autocomplete_light.autocomplete.model import AutocompleteModel
 from braces.views import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
-from django.views import View
+from django.views.generic import View
 from guardian.shortcuts import get_perms
 
 
