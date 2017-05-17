@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 from django.core import mail
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.test import TestCase
+from django.test import TestCase, RequestFactory
 from django.utils import timezone
 from guardian.shortcuts import assign_perm, get_perms
 
@@ -13,10 +13,10 @@ from poradnia.users.forms import TranslatedUserObjectPermissionsForm, UserForm
 from poradnia.users.models import User
 
 from poradnia.users.forms import TranslatedManageObjectPermissionForm
+from poradnia.users.autocomplete_light_registry import UserAutocomplete
 
 
 class UserTestCase(TestCase):
-
     def test_get_user_by_get_by_email_or_create(self):
         self.assertEqual(User.objects.count(), 1)
         new_user = User.objects.get_by_email_or_create('sarah@example.com')
@@ -66,7 +66,6 @@ class UserTestCase(TestCase):
 
 
 class UserQuerySetTestCase(TestCase):
-
     def test_for_user_manager(self):
         UserFactory()
         u1 = UserFactory()
@@ -124,7 +123,6 @@ class UserQuerySetTestCase(TestCase):
 
 
 class UserFormTestCase(TestCase):
-
     def test_has_avatar(self):
         self.assertIn('picture', UserForm().fields)
 
@@ -138,7 +136,6 @@ class UserFormTestCase(TestCase):
 
 
 class UserDetailViewTestCase(TestCase):
-
     def setUp(self):
         self.object = UserFactory(is_staff=False)
         self.url = self.object.get_absolute_url()
@@ -341,3 +338,25 @@ class UserProfileViewTestCase(TestCase):
 
         self.assertEqual(self.regular_user.profile.www, www)
         self.assertEqual(self.regular_user.profile.description, description)
+
+
+class UserAutocompleteTestCase(TestCase):
+    def setUp(self):
+        self.regular_user = UserFactory()
+        self.staff_user = StaffFactory()
+        self.factory = RequestFactory()
+
+    def test_staff_user_with_permission_can_view_regular_user(self):
+        request = self.factory.get("?q={}".format(self.regular_user.username))
+        request.user = self.staff_user
+        assign_perm('users.can_view_other', self.staff_user)
+        cls = UserAutocomplete(request=request)
+        cls.choices = User.objects
+        self.assertQuerysetEqual(cls.choices_for_request(), [repr(self.regular_user)])
+
+    def test_staff_user_with_permission_can_not_view_reqular_user(self):
+        request = self.factory.get("?q={}".format(self.regular_user.username))
+        request.user = self.staff_user
+        cls = UserAutocomplete(request=request)
+        cls.choices = User.objects
+        self.assertQuerysetEqual(cls.choices_for_request(), [])
