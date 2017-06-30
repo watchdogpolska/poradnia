@@ -272,8 +272,8 @@ ANONYMOUS_USER_NAME = 'AnonymousUser'
 GUARDIAN_MONKEY_PATCH = False
 
 LANGUAGES = (
-  ('pl', _('Polish')),
-  ('en', _('English')),
+    ('pl', _('Polish')),
+    ('en', _('English')),
 )
 
 LOCALE_PATHS = (str(APPS_DIR.path('templates/locale')),)
@@ -319,6 +319,10 @@ TEMPLATES = [
                 'django.template.loaders.app_directories.Loader'
             ],
             'debug': DEBUG
+        },
+        'libraries': {  # Adding this section should work around the issue.
+            'staticfiles': 'django.templatetags.static',
+            'i18n': 'django.templatetags.i18n',
         },
     },
 ]
