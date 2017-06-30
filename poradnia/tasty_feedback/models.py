@@ -1,5 +1,7 @@
-from urllib2 import quote
-
+try:
+    from urllib import quote  # Python 2.X
+except ImportError:
+    from urllib.parse import quote  # Python 3+
 from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -13,9 +15,9 @@ from .utils import githubify, mail_managers_replyable
 class Feedback(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, help_text=_("Author"), null=True)
     text = models.TextField(verbose_name=_("Comment"),
-        help_text=_("Text reported by user"))
+                            help_text=_("Text reported by user"))
     status = models.BooleanField(default=False, verbose_name=_("Status"),
-        help_text=_("Feedback has been served"))
+                                 help_text=_("Feedback has been served"))
     status_changed = MonitorField(monitor='status', verbose_name=_("Status change date"))
     created = models.DateTimeField(auto_now_add=True, verbose_name=_("Creation date"))
 
