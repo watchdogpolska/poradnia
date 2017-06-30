@@ -37,7 +37,7 @@ django-autocomplete-light==2.3.3 # rq.filter: <3.0.0
 https://github.com/ad-m/django-flatpages-tinymce/archive/patch-1.zip
 https://github.com/ad-m/django-atom/archive/v0.11.0.zip
 django-tinymce==2.4.0
-django-tinycontent==0.6.1
+django-tinycontent==0.7.0
 icalendar==3.11.2
 html2text==2016.9.19
 pyGravatar==0.0.6
