@@ -4,10 +4,10 @@ import logging
 import os
 from os.path import basename
 
-import claw
+import talon
 import html2text
 from poradnia.cases.models import Case
-from claw import quotations
+from talon import quotations
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.files import File
@@ -24,7 +24,7 @@ from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 
 from .utils import date_random_path
 
-claw.init()
+talon.init()
 
 logger = logging.getLogger(__name__)
 
