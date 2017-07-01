@@ -8,6 +8,7 @@ from django.conf.urls.static import static
 from django.contrib import admin
 from django.http import HttpResponseServerError
 from django.template import loader
+from django.template.loader import render_to_string
 from django.views.generic import TemplateView
 
 admin.autodiscover()
@@ -52,8 +53,4 @@ def handler500(request):
     Templates: `500.html`
     Context: None
     """
-
-    t = loader.get_template('500.html')  # You need to create a 500.html template.
-    return HttpResponseServerError(t.render({
-        'request': request,
-    }))
+    return HttpResponseServerError(render_to_string(request, '500.html'))
