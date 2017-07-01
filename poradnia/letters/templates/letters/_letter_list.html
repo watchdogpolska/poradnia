@@ -40,8 +40,7 @@
             by {{modified_by}})
             {% endblocktrans %}
             {% endif %}
-            {% if "can_change_all_record" in case_perms or requests.user == object.user and "can_change_own_record" in
-            case_perms %} &bull;
+            {% if "can_change_all_record" in case_perms or requests.user == object.user and "can_change_own_record" in case_perms %} &bull;
             <i class="fa fa-pencil"></i>
             <a href="{{object.get_edit_url}}">
                 {% trans 'Edit'%}
