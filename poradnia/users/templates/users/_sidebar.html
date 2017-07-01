@@ -1,16 +1,17 @@
-{% load i18n%}
+{% load i18n %}
 <div class="block-list">
-    <div class="block-list-header">{% trans 'User'%}</div>
+    <div class="block-list-header">{% trans 'User' %}</div>
     <ul class="block-list-list">
 
         {% if request.user.is_authenticated %}
             <li class="block-list-item">
-                <a href="{% url 'users:detail' username=request.user.username%}"><i class="fa fa-user"></i> {% blocktrans with request.user as user%}{{user}}{% endblocktrans %}</a>
+                <a href="{% url 'users:detail' username=request.user.username %}"><i class="fa fa-user"></i>
+                    {% blocktrans with request.user as user %}{{ user }}{% endblocktrans %}</a>
             </li>
             {% if request.user.is_staff %}
-            <li class="block-list-item">
-                <a href="{% url 'users:list' %}"><i class="fa fa-users"></i> {% trans "Users list" %}</a>
-            </li>
+                <li class="block-list-item">
+                    <a href="{% url 'users:list' %}"><i class="fa fa-users"></i> {% trans "Users list" %}</a>
+                </li>
             {% endif %}
             <li class="block-list-item">
                 <a href="{% url 'account_logout' %}"><i class="fa fa-sign-out"></i> {% trans "Logout" %}</a>

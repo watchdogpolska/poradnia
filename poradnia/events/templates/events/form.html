@@ -2,17 +2,17 @@
 {% load crispy_forms_tags staticfiles i18n %}
 {% block title %}{{ object }} - {{ block.super }}{% endblock %}
 {% block breadcrumbs %}
-<ol class="breadcrumb">
-  <li><a href="{% url 'cases:list'%}">{% trans 'Cases'%}</a></li>
-  <li><a href="{{ object.case.get_absolute_url }}">{{ case }}</a></li>
-  <li class="active">{% trans 'Edit'%}</li>
-</ol>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'cases:list' %}">{% trans 'Cases' %}</a></li>
+        <li><a href="{{ object.case.get_absolute_url }}">{{ case }}</a></li>
+        <li class="active">{% trans 'Edit' %}</li>
+    </ol>
 {% endblock %}
 
-{%block content%}
-{% block object %}<h1>{{object}}</h1>{% endblock %}
-{% crispy form %}
-{%endblock%}
+{% block content %}
+    {% block object %}<h1>{{ object }}</h1>{% endblock %}
+    {% crispy form %}
+{% endblock %}
 {% block javascript %}
-{{block.super}}
+    {{ block.super }}
 {% endblock %}

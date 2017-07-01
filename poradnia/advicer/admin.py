@@ -1,7 +1,7 @@
 from django.contrib import admin
+from import_export.admin import ImportExportMixin
 
 from .models import Advice, Area, InstitutionKind, Issue, PersonKind
-from import_export.admin import ImportExportMixin
 
 
 @admin.register(Advice)

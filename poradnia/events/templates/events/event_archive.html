@@ -1,21 +1,23 @@
 {% extends 'events/base.html' %}
 {% load i18n %}
 {% block breadcrumbs_rows %}
-<li class="active">{% trans 'Months index' %}</li>
+    <li class="active">{% trans 'Months index' %}</li>
 {% endblock %}
 
 {% block content %}
-{% regroup date_list by year as year_list %}
+    {% regroup date_list by year as year_list %}
 
-<ul>
-{% for year in year_list %}
-    <li>{{ year.grouper }}
     <ul>
-        {% for month in year.list %}
-        	<li><a href="{% url 'events:calendar' year=month.year month=month.month %}">{{ month|date:"F Y" }}</a></li>
+        {% for year in year_list %}
+            <li>{{ year.grouper }}
+                <ul>
+                    {% for month in year.list %}
+                        <li>
+                            <a href="{% url 'events:calendar' year=month.year month=month.month %}">{{ month|date:"F Y" }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </li>
         {% endfor %}
     </ul>
-    </li>
-{% endfor %}
-</ul>
 {% endblock %}

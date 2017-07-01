@@ -22,35 +22,30 @@ class AbstractCategory(models.Model):
 
 
 class Issue(AbstractCategory):
-
     class Meta:
         verbose_name = _("The thematic scope of the request")
         verbose_name_plural = _("Thematic scopes of requests")
 
 
 class Area(AbstractCategory):
-
     class Meta:
         verbose_name = _("Problem regarding the right to information")
         verbose_name_plural = _("Problems regarding the right to information")
 
 
 class PersonKind(AbstractCategory):
-
     class Meta:
         verbose_name = _("Type of person who reporting the advice")
         verbose_name_plural = _("Types of people who report to for advice")
 
 
 class InstitutionKind(AbstractCategory):
-
     class Meta:
         verbose_name = _("Institution kind")
         verbose_name_plural = _("Institution kinds")
 
 
 class AdviceQuerySet(QuerySet):
-
     def for_user(self, user):
         if user.has_perm('advicer.can_view_all_advices'):
             return self

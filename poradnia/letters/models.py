@@ -6,7 +6,6 @@ from os.path import basename
 
 import claw
 import html2text
-from poradnia.cases.models import Case
 from claw import quotations
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -20,8 +19,9 @@ from django_mailbox.models import Message
 from django_mailbox.signals import message_received
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
-from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 
+from poradnia.cases.models import Case
+from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from .utils import date_random_path
 
 claw.init()
@@ -38,7 +38,7 @@ class LetterQuerySet(AbstractRecordQuerySet):
 
     def last_staff_send(self):
         return self.filter(status='done', created_by__is_staff=True).order_by(
-                '-created_on', '-id').all()[0]
+            '-created_on', '-id').all()[0]
 
     def last_received(self):
         return self.filter(created_by__is_staff=False).order_by('-created_on', '-id').all()[0]
@@ -51,14 +51,14 @@ class LetterQuerySet(AbstractRecordQuerySet):
 
     def with_month_year(self):
         return self.annotate(
-                month=Func(F('created_on'),
-                           function='month',
-                           output_field=IntegerField())
-            ).annotate(
-                year=Func(F('created_on'),
-                          function='year',
-                          output_field=IntegerField())
-            )
+            month=Func(F('created_on'),
+                       function='month',
+                       output_field=IntegerField())
+        ).annotate(
+            year=Func(F('created_on'),
+                      function='year',
+                      output_field=IntegerField())
+        )
 
 
 class Letter(AbstractRecord):
@@ -162,7 +162,7 @@ def mail_process(sender, message, **args):
     if (lambda x: 'Auto-Submitted' in x and
             x['Auto-Submitted'] == 'auto-replied')(message.get_email_object()):
         logger.info("Delete .eml from {email} as auto-replied".format(
-                    email=message.from_address[0]))
+            email=message.from_address[0]))
         message.eml.delete(save=True)
         return
 

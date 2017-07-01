@@ -1,10 +1,10 @@
 <script type="text/javascript">
-$(document).ready(function() {
-    $('#navigation_autocomplete').yourlabsAutocomplete({
-        url: '{% url "navsearch:navigation_autocomplete" %}',
-        choiceSelector: 'a',
-    }).input.bind('selectChoice', function(e, choice, autocomplete) {
-        document.location.href = choice.attr('href');
+    $(document).ready(function () {
+        $('#navigation_autocomplete').yourlabsAutocomplete({
+            url: '{% url "navsearch:navigation_autocomplete" %}',
+            choiceSelector: 'a',
+        }).input.bind('selectChoice', function (e, choice, autocomplete) {
+            document.location.href = choice.attr('href');
+        });
     });
-});
 </script>

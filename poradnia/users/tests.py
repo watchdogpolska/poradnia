@@ -8,12 +8,11 @@ from guardian.shortcuts import assign_perm, get_perms
 
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
+from poradnia.users.autocomplete_light_registry import UserAutocomplete
 from poradnia.users.factories import StaffFactory, UserFactory
+from poradnia.users.forms import TranslatedManageObjectPermissionForm
 from poradnia.users.forms import TranslatedUserObjectPermissionsForm, UserForm
 from poradnia.users.models import User
-
-from poradnia.users.forms import TranslatedManageObjectPermissionForm
-from poradnia.users.autocomplete_light_registry import UserAutocomplete
 
 
 class UserTestCase(TestCase):

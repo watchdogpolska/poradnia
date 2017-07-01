@@ -10,7 +10,7 @@ class UserForm(FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
         if (not self.instance or
-                self.instance and not self.instance.is_staff):
+                    self.instance and not self.instance.is_staff):
             del self.fields['codename']
 
     class Meta:

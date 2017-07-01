@@ -2,13 +2,13 @@ from itertools import takewhile, dropwhile
 
 from braces.views import (JSONResponseMixin, LoginRequiredMixin,
                           SuperuserRequiredMixin)
-from poradnia.cases.models import Case as CaseModel
 from dateutil.rrule import MONTHLY
 from django.db.models import F, Case, Count, IntegerField, Min, Sum, When
 from django.views.generic import TemplateView, View
+
+from poradnia.cases.models import Case as CaseModel
 from poradnia.letters.models import Letter as LetterModel
 from poradnia.users.models import User as UserModel
-
 from .utils import (DATE_FORMAT_MONTHLY, SECONDS_IN_A_DAY, GapFiller,
                     raise_unless_unauthenticated)
 
@@ -38,33 +38,33 @@ class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLis
     def get_object_list(self):
         qs = CaseModel.objects.with_month_year().values(
             'month', 'year'
-            ).annotate(
-                open=Sum(
-                    Case(
-                        When(status=CaseModel.STATUS.free, then=1),
-                        default=0,
-                        output_field=IntegerField()
-                    )
-                ),
-                assigned=Sum(
-                    Case(
-                        When(status=CaseModel.STATUS.assigned, then=1),
-                        default=0,
-                        output_field=IntegerField()
-                    )
-                ),
-                closed=Sum(
-                    Case(
-                        When(status=CaseModel.STATUS.closed, then=1),
-                        default=0,
-                        output_field=IntegerField()
-                    )
+        ).annotate(
+            open=Sum(
+                Case(
+                    When(status=CaseModel.STATUS.free, then=1),
+                    default=0,
+                    output_field=IntegerField()
                 )
-            ).values(
-            'month', 'year', 'open', 'assigned', 'closed'
-            ).order_by(
-            F('year'), F('month')
+            ),
+            assigned=Sum(
+                Case(
+                    When(status=CaseModel.STATUS.assigned, then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            closed=Sum(
+                Case(
+                    When(status=CaseModel.STATUS.closed, then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
             )
+        ).values(
+            'month', 'year', 'open', 'assigned', 'closed'
+        ).order_by(
+            F('year'), F('month')
+        )
 
         result = [{
             'date': "{0:04d}-{1:02d}".format(obj['year'], obj['month']),
@@ -189,21 +189,21 @@ class StatsLetterCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiL
         qs = LetterModel.objects.with_month_year().values(
             'month', 'year'
         ).annotate(
-                staff=Sum(
-                    Case(
-                        When(created_by__is_staff=True, then=1),
-                        default=0,
-                        output_field=IntegerField()
-                    )
-                ),
-                client=Sum(
-                    Case(
-                        When(created_by__is_staff=False, then=1),
-                        default=0,
-                        output_field=IntegerField()
-                    )
-                ),
-            ).values(
+            staff=Sum(
+                Case(
+                    When(created_by__is_staff=True, then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+            client=Sum(
+                Case(
+                    When(created_by__is_staff=False, then=1),
+                    default=0,
+                    output_field=IntegerField()
+                )
+            ),
+        ).values(
             'month', 'year', 'client', 'staff'
         ).order_by(F('year'), F('month'))
 
@@ -236,16 +236,16 @@ class StatsUserRegisteredApiView(LoginRequiredMixin, SuperuserRequiredMixin, Api
 
     def get_object_list(self):
         qs = UserModel.objects.with_month_year().values(
-                'month', 'year'
-            ).annotate(
-                count=Count('pk')
-            ).order_by(
-                F('year'), F('month')
-            )
+            'month', 'year'
+        ).annotate(
+            count=Count('pk')
+        ).order_by(
+            F('year'), F('month')
+        )
 
         INIT_DATE = (2016, 11)  # all users created before have null `created_on` values
 
-        #NOTE: hardcoded for now, some day url parameters will be allowed
+        # NOTE: hardcoded for now, some day url parameters will be allowed
         start_date = INIT_DATE
 
         def not_after_start_date(x):
@@ -287,4 +287,3 @@ class StatsUserRegisteredApiView(LoginRequiredMixin, SuperuserRequiredMixin, Api
             })
 
         return ans
-

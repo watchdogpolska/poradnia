@@ -1,12 +1,14 @@
 {% extends 'letters/_form.html' %}
 {% load i18n tinycontent_tags %}
 {% block breadcrumb_row %}
-<li class="active">{% trans 'New case' %}</li>
+    <li class="active">{% trans 'New case' %}</li>
 {% endblock %}
 
-{% block description%}
-{% tinycontent 'letters:new_case_up' %}
-<p>Witamy w elektronicznym systemie poradnictwa Sieci Obywatelskiej Watchdog Polska. Tu możesz opisać swój problem.</p>
-<p>Prosimy, podaj nam w poniższym formularzu informację jak przebiegała sytuacja i z jakim pytaniem się zwracasz. Załącz nam kopie pism (e-maile, skany, czytelne zdjęcia).</p>
-{% endtinycontent %}
+{% block description %}
+    {% tinycontent 'letters:new_case_up' %}
+        <p>Witamy w elektronicznym systemie poradnictwa Sieci Obywatelskiej Watchdog Polska. Tu możesz opisać swój
+            problem.</p>
+        <p>Prosimy, podaj nam w poniższym formularzu informację jak przebiegała sytuacja i z jakim pytaniem się
+            zwracasz. Załącz nam kopie pism (e-maile, skany, czytelne zdjęcia).</p>
+    {% endtinycontent %}
 {% endblock %}

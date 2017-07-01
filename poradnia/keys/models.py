@@ -4,7 +4,6 @@ from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
 
 from poradnia.users.models import User
-
 from .utils import make_random_password
 
 

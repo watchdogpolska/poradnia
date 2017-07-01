@@ -5,7 +5,6 @@ from crispy_forms.layout import Fieldset, Layout, Submit, Div
 from django.utils.translation import ugettext_lazy as _
 
 from poradnia.users.filters import UserChoiceFilter
-
 from .models import Advice
 
 

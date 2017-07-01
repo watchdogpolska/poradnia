@@ -31,7 +31,7 @@ class GapFiller(object):
         params = None
 
         for i, temp in enumerate(self.qs[:-1]):
-            a, b = self.qs[i], self.qs[i+1]
+            a, b = self.qs[i], self.qs[i + 1]
             date_range = self._date_range(a, b)
             params = self._get_params()
 
@@ -47,17 +47,17 @@ class GapFiller(object):
             start = start[self.date_key]
             end = end[self.date_key]
             return list(rrule(
-                                freq=self.freq,
-                                dtstart=datetime.strptime(start, date_format),
-                                until=datetime.strptime(end, date_format)))
+                freq=self.freq,
+                dtstart=datetime.strptime(start, date_format),
+                until=datetime.strptime(end, date_format)))
         if self.freq == WEEKLY:
             date_format = DATE_FORMAT_WEEKLY + "-%w"  # append weekday to parse date by week number
             start = start[self.date_key] + "-1"
             end = end[self.date_key] + "-1"
             return list(rrule(
-                                freq=self.freq,
-                                dtstart=datetime.strptime(start, date_format),
-                                until=datetime.strptime(end, date_format)))
+                freq=self.freq,
+                dtstart=datetime.strptime(start, date_format),
+                until=datetime.strptime(end, date_format)))
 
     def _get_params(self):
         if hasattr(self, 'params'):

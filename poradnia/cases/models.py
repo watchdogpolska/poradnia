@@ -21,7 +21,6 @@ from poradnia.template_mail.utils import send_tpl_email
 
 
 class CaseQuerySet(QuerySet):
-
     def for_assign(self, user):
         content_type = ContentType.objects.get_for_model(Case)
         return self.filter(caseuserobjectpermission__permission__codename='can_view',
@@ -336,11 +335,13 @@ def notify_new_case(sender, instance, created, **kwargs):
                        recipient_list=email,
                        context={'case': instance})
 
+
 post_save.connect(notify_new_case, sender=Case, dispatch_uid="new_case_notify")
 
 
 def assign_perm_new_case(sender, instance, created, **kwargs):
     if created:
         instance.assign_perm()
+
 
 post_save.connect(assign_perm_new_case, sender=Case, dispatch_uid="assign_perm_new_case")

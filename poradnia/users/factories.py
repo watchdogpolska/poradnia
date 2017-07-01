@@ -11,7 +11,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = 'users.User'  # Equivalent to ``model = myapp.models.User``
-        django_get_or_create = ('username', )
+        django_get_or_create = ('username',)
 
 
 class StaffFactory(UserFactory):

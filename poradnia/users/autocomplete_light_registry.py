@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 import autocomplete_light.shortcuts as autocomplete_light
 
 from poradnia.users.utils import AutocompletePermissionMixin
-
 from .models import User
 
 
@@ -13,4 +12,6 @@ class UserAutocomplete(AutocompletePermissionMixin, autocomplete_light.Autocompl
 
     def choice_label(self, choice):
         return "{name} ({email})".format(name=choice.get_nicename(), email=choice.email)
+
+
 autocomplete_light.register(User, UserAutocomplete)

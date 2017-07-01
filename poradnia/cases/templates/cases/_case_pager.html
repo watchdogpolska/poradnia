@@ -1,11 +1,13 @@
 {% if next or previous %}
-<ul class="pager">
-  {% if next %}
-    <li class="previous"><a href="{{next.get_absolute_url}}"> <span aria-hidden="true">&larr;</span> {{next}}</a></li>
-  {% endif %}
+    <ul class="pager">
+        {% if next %}
+            <li class="previous"><a href="{{ next.get_absolute_url }}"> <span
+                    aria-hidden="true">&larr;</span> {{ next }}</a></li>
+        {% endif %}
 
-  {% if previous %}
-    <li class="next"><a href="{{previous.get_absolute_url}}"> {{previous}} <span aria-hidden="true">&rarr;</span></a></li>
-  {% endif %}
-</ul>
+        {% if previous %}
+            <li class="next"><a href="{{ previous.get_absolute_url }}"> {{ previous }} <span
+                    aria-hidden="true">&rarr;</span></a></li>
+        {% endif %}
+    </ul>
 {% endif %}

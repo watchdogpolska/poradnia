@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 
 
 class NotificationListView(SelectRelatedMixin, PrefetchRelatedMixin, LoginRequiredMixin,
-        TemplateView):
+                           TemplateView):
     template_name = 'notifications/list.html'
     select_related = ['action_content_type', 'target_content_type', 'actor_content_type']
     prefetch_related = ['action_object', 'target', 'actor']

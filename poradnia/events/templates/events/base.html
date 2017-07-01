@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% load i18n %}
 {% block breadcrumbs %}
-<ol class="breadcrumb">
-  <li><a href="{% url 'events:calendar'%}">{% trans 'Events' %}</a></li>
-  {% block breadcrumbs_rows%}{% endblock %}
-</ol>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'events:calendar' %}">{% trans 'Events' %}</a></li>
+        {% block breadcrumbs_rows %}{% endblock %}
+    </ol>
 {% endblock %}
 
-{% block title %}{% trans 'Events' %} - {{block.super}}{% endblock %}
+{% block title %}{% trans 'Events' %} - {{ block.super }}{% endblock %}

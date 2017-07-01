@@ -10,10 +10,9 @@ from django.views.generic import CreateView, UpdateView
 from django_filters.views import FilterView
 
 from poradnia.users.utils import PermissionMixin
-
+from .fbv import REGISTRATION_TEXT
 from ..forms import AttachmentForm, LetterForm, NewCaseForm
 from ..models import Attachment, Letter
-from .fbv import REGISTRATION_TEXT
 
 
 class NewCaseCreateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, CreateView):

@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 import re
 
-from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -23,7 +22,6 @@ _('Login')
 
 
 class UserQuerySet(QuerySet):
-
     def for_user(self, user):
         if not user.has_perm('users.can_view_other'):
             return self.filter(Q(pk=user.pk) | Q(is_staff=True))
@@ -79,7 +77,6 @@ class UserQuerySet(QuerySet):
 
 
 class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
-
     def get_by_email_or_create(self, email, notify=True):
         try:
             user = self.model.objects.get(email=email)  # Support allauth EmailAddress

@@ -1,14 +1,15 @@
 from datetime import datetime
 from unittest import skipUnless
 
-from poradnia.cases.factories import CaseFactory
-from poradnia.cases.models import Case
-from dateutil.rrule import DAILY, MONTHLY, WEEKLY
+from dateutil.rrule import MONTHLY, WEEKLY
 from django.core.urlresolvers import reverse
 from django.db import connection
 from django.http.response import HttpResponse
 from django.test import TestCase
 from django.utils.timezone import make_aware
+
+from poradnia.cases.factories import CaseFactory
+from poradnia.cases.models import Case
 from poradnia.letters.factories import LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.stats.mixins import PermissionStatusMixin
@@ -29,6 +30,7 @@ def purge_users(func):
     def func_wrapper(*args, **kwargs):
         User.objects.all().delete()
         func(*args, **kwargs)
+
     return func_wrapper
 
 
@@ -388,7 +390,7 @@ class StatsLetterCreatedApiTestCase(TestCase):
         letters = []
         for created_on, created_by in letter_data:
             obj = LetterFactory(created_by=created_by)
-            obj.created_on=make_aware(created_on)
+            obj.created_on = make_aware(created_on)
             obj.save()
             letters.append(obj)
         return letters

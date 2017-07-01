@@ -6,11 +6,10 @@ from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.views.generic import FormView
-from django.views.generic.detail import SingleObjectTemplateResponseMixin
-from django.views.generic.edit import FormMixin
 from guardian.shortcuts import assign_perm, get_perms
+
 from poradnia.users.forms import (TranslatedManageObjectPermissionForm,
-                         TranslatedUserObjectPermissionsForm)
+                                  TranslatedUserObjectPermissionsForm)
 from ..forms import CaseGroupPermissionForm
 from ..models import Case
 
@@ -82,8 +81,8 @@ class UserPermissionUpdateView(FormValidMessageMixin, FormView):
         return super(UserPermissionUpdateView, self).form_valid(form)
 
     def get_form_valid_message(self):
-        return _("Updated permission %(user)s to %(case)s!") %\
-            ({'user': self.action_user, 'case': self.case})
+        return _("Updated permission %(user)s to %(case)s!") % \
+               ({'user': self.action_user, 'case': self.case})
 
     def get_success_url(self):
         return reverse('cases:detail', kwargs={'pk': str(self.case.pk)})

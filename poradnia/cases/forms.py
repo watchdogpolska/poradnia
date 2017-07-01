@@ -14,7 +14,6 @@ from .models import Case, PermissionGroup
 
 
 class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         super(CaseForm, self).__init__(*args, **kwargs)
         if 'instance' in kwargs:
@@ -71,7 +70,6 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
 
 
 class CaseCloseForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
-
     notify = forms.BooleanField(required=False, label=_("Notify user"))
 
     def __init__(self, *args, **kwargs):

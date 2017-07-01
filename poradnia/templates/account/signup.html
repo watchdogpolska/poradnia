@@ -6,13 +6,14 @@
 {% block title %}{% trans "Signup" %}{% endblock title %}
 
 {% block content %}
-<h1>{% trans "Sign Up" %}</h1>
+    <h1>{% trans "Sign Up" %}</h1>
 
-<div class="registration-form">
-	<p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
-	<p>{% trans 'Field with asterisk are required.' %}</p>
-	{% crispy form %}
-</div>
+    <div class="registration-form">
+        <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>
+            .{% endblocktrans %}</p>
+        <p>{% trans 'Field with asterisk are required.' %}</p>
+        {% crispy form %}
+    </div>
 
 {% endblock content %}
 

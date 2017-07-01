@@ -16,7 +16,6 @@ from django.views.generic.list import BaseListView
 from poradnia.cases.models import Case
 from poradnia.keys.mixins import KeyAuthMixin
 from poradnia.users.utils import PermissionMixin
-
 from .forms import EventForm
 from .models import Event
 from .utils import EventCalendar

@@ -7,7 +7,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
 
 from poradnia.users.utils import PermissionMixin
-
 from .forms import KeyForm
 from .models import Key
 
@@ -25,7 +24,7 @@ class KeyDetailView(PermissionMixin, DetailView):
         obj.download_on = now()
         obj.save()
         messages.add_message(self.request, messages.SUCCESS,
-            "{object} downloaded!".format(object=obj))
+                             "{object} downloaded!".format(object=obj))
         return obj
 
 

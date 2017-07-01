@@ -12,7 +12,6 @@ def create_event():
 
 
 class RemindersTestCase(TestCase):
-
     def setUp(self):
         self.staff_user = UserFactory(is_staff=True)
         ProfileFactory(user=self.staff_user)

@@ -3,17 +3,16 @@ from django.contrib.contenttypes.models import ContentType
 from django.core import mail
 from django.test import TestCase
 
-from poradnia.cases.models import Case, CaseUserObjectPermission
+from poradnia.cases.models import Case
 from poradnia.letters.forms import NewCaseForm
 from poradnia.users.factories import UserFactory
 
 try:
     from django.contrib.auth import get_user_model
+
     User = get_user_model()
 except ImportError:
     from django_filters.auth.models import User
-
-
 
 REGISTRATION_SUBJECT = 'Rejestracja w Poradni Sieci Obywatelskiej - Watchdog Polska'
 

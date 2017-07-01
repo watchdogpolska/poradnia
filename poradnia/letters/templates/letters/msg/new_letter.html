@@ -1,10 +1,11 @@
-<p>Hello {{user}}!</p>
+<p>Hello {{ user }}!</p>
 
-<p>{{ letter.user|default:"Poradnia" }} send new letter in case "<a href="{{letter.case.get_absolute_url}}">{{case}}</a>". </p>
+<p>{{ letter.user|default:"Poradnia" }} send new letter in case "<a
+        href="{{ letter.case.get_absolute_url }}">{{ case }}</a>". </p>
 
 <p>Here is the content:</p>
-{{letter.text}}
+{{ letter.text }}
 
 <p>Greetings,<br>
-Adam Dobrawy</p>
+    Adam Dobrawy</p>
 

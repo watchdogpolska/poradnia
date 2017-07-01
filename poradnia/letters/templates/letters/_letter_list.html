@@ -2,15 +2,17 @@
 <div class="timeline-messange">
     <a href="#"><img src="{% get_avatar_url object.created_by %}" class="timeline-avatar"></a> 
     <div class="panel {{ object.created_by.is_staff|yesno:'panel-primary,panel-default' }}  timeline-comment">
-        <div class="panel-heading"><i class="fa fa-envelope"></i> <i class="fa fa-reply{% if object.status == 'done'%}-all{% endif %}"></i> {{object}}</div>
+        <div class="panel-heading"><i class="fa fa-envelope"></i> <i
+                class="fa fa-reply{% if object.status == 'done'%}-all{% endif %}"></i> {{object}}
+        </div>
         <div class="panel-body">
             {% if request.user.is_staff %}
             <div class="panel-status">
-            {% if object.status == 'done'%}
+                {% if object.status == 'done'%}
                 {% trans 'Everybody' %}
-            {% else %}
+                {% else %}
                 {% trans 'Staff' %}
-            {% endif %}
+                {% endif %}
             </div>
             {% endif %}
             <p>{{object.text|linebreaks}}</p>
@@ -21,20 +23,26 @@
         {% if object.attachment_set.all %}
         <ul class="list-group">
             {% for att in object.attachment_set.all %}
-            <li class="list-group-item"><i class="{{ att.attachment.name | file2css }}"></i> <a href="{{att.attachment.url}}">{{att.filename}}</a></li>
+            <li class="list-group-item"><i class="{{ att.attachment.name | file2css }}"></i> <a
+                    href="{{att.attachment.url}}">{{att.filename}}</a></li>
             {% endfor%}
         </ul>
         {% endif %}
         <div class="panel-footer">
             <i class="fa fa-user"></i> {{object.created_by}} &bull;
             <i class="fa fa-clock-o"></i>
-            <time datetime="{{object.created_on}}" title="{{object.created_on}}">{{object.created_on | naturaltime}}</time>
+            <time datetime="{{object.created_on}}" title="{{object.created_on}}">{{object.created_on | naturaltime}}
+            </time>
             {% if object.modified_by %}
-            {% blocktrans with modified_on=object.modified_on modified_on_natural=object.modified_on|naturaltime modified_by=object.modified_by %}
-            (updated on <time datetime="{{modified_on}}" title="{{modified_on}}">{{modified_on_natural}}</time> by {{modified_by}})
+            {% blocktrans with modified_on=object.modified_on modified_on_natural=object.modified_on|naturaltime
+            modified_by=object.modified_by %}
+            (updated on
+            <time datetime="{{modified_on}}" title="{{modified_on}}">{{modified_on_natural}}</time>
+            by {{modified_by}})
             {% endblocktrans %}
             {% endif %}
-            {% if "can_change_all_record" in case_perms or requests.user == object.user and "can_change_own_record" in case_perms %} &bull;
+            {% if "can_change_all_record" in case_perms or requests.user == object.user and "can_change_own_record" in
+            case_perms %} &bull;
             <i class="fa fa-pencil"></i>
             <a href="{{object.get_edit_url}}">
                 {% trans 'Edit'%}
@@ -49,7 +57,7 @@
             {% if object.eml %} &bull;
             <a href="{{object.eml.url}}"><i class="fa fa-life-ring"></i></a>
             {% endif %}
-            
+
         </div>
     </div>
 </div>
