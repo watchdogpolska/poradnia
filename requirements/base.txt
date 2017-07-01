@@ -1,46 +1,144 @@
 # Configuration
-django-environ==0.4.3
+django-environ==0.4.3 \
+    --hash=sha256:f0169dbcc81ba7068d53dfa58b93a0722aa86b215297f1f99312ff7ea5bcecf3 \
+    --hash=sha256:690628e73f999ac9387416505beb50ecd99a70ddb407d69682c62f59b7b011df
 
 # Forms
-django-braces==1.11.0
-django-crispy-forms==1.6.1
-django-floppyforms==1.7.0
+django-braces==1.11.0 \
+    --hash=sha256:5898ab2ce4ca7c85b21aedf789b96e90c59dc75d26db6d9a4dc0cff3fc7a7aca \
+    --hash=sha256:6be8277a535565e2140f7b1eb83ec26aa8d181acc8bb046875142a2792e4babe
+django-crispy-forms==1.6.1 \
+    --hash=sha256:c894f3a44e111ae6c6226c67741d96d120adb942de41dc8b2a991b87de7ff9c0 \
+    --hash=sha256:18e904c7bd55c45201739cb343272767ff820263a1fca40a7b388006ce94910c
+django-floppyforms==1.7.0 \
+    --hash=sha256:155f94a2b6341b02de16a1d8efea0ab77f1869d3185c2f07381cca0cafffe2dd
 
 # Models
-django-model-utils==3.0.0
+django-model-utils==3.0.0 \
+    --hash=sha256:60ead1ba50e1353f38bde12ab8b4a80b6a0f825a8e53c348fe259548cbd1a312
 
 # images
-Pillow==4.1.1
-sorl-thumbnail==12.3
+Pillow==4.2.0 \
+    --hash=sha256:24230305fdb4e29b1ddcbcc4b1ecff327b2848035fcedcb905cc260ab4260e83 \
+    --hash=sha256:5b9069b2200aac214b23621e9a3cb4b8340910056de7a2b4791ccdd6c08bf54d \
+    --hash=sha256:64d64c0b6ab2799a8927e51dc8cac99f0f98e152d7a7bf25e71300b4a8c9d3c7 \
+    --hash=sha256:aa3c48b7d5212e5dbfcf49b4544d8e94885bd5702ac21f76e565d6699a90a393 \
+    --hash=sha256:2176021b17b44f2580acc950314fe7cd9881b78d64d1c9d10a649d1d22de7026 \
+    --hash=sha256:b1203a1c1c5a126c20e821bdaa532ddb58ffc5619b70469321f9062a9561a0fc \
+    --hash=sha256:72fa120fff7b667c6f35667c2e6579232470473d8ca4852b217d3a98dfdf389e \
+    --hash=sha256:1a237544678014714a05bbd95ed5689516493c5924949962d39f471ed37a215b \
+    --hash=sha256:af9ce6e460ac4dc90a31f49f05b27a4bd8dd3ec94136bad8c56d24bcaac18685 \
+    --hash=sha256:6aeae0a10d37408ba4bce9a6d516b9f25c0d039e7ea6ea1847dcff32cdaf3943 \
+    --hash=sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855 \
+    --hash=sha256:d519d8fbe5c1980b2b1bfbc21dc0bc3570be1bd14831c59b846e85d07ab6e875 \
+    --hash=sha256:8281343dc7977ac521533061c018f2db7508299ba4d44fab0bd539a5204d67c8 \
+    --hash=sha256:c824c803bd5a7f463be2bf7e12228cc068cc50d3a6efa9182d18a33600d04941 \
+    --hash=sha256:ed34f410cc4c3a0f7d033463aef901629c5a0b44db52a33895d4295979ecac38 \
+    --hash=sha256:b25307a66d78225db90e243efb0a55fecbe0f9b48b92f2f5e4aa4bc0987b07ba \
+    --hash=sha256:b57d19b49b8a4fe6d46c35e44a8c7492c9eaf25ba7c32453feef9ec6c80185b3 \
+    --hash=sha256:2f2a9fee98d22d7029e5d15a16c1ef261e7c2efe5dddc70e5f470cd31a808a05 \
+    --hash=sha256:ac7cbb9dac19f8a3e7a882b7dc620db4ac7890de721d4400976f2e50838dd78e \
+    --hash=sha256:1c95f27c38cb86074d9436a2244145815719d4123fa85840de9df9b97a3e5dd8 \
+    --hash=sha256:ee5c4b01ccf66e0385a102f0211870d24ce2c6c3db1ebab0ca4b7745f9760cf2 \
+    --hash=sha256:b001829248796502a9e4619551ff2da3237fb4086c9dc2890284acbdfdfb2881 \
+    --hash=sha256:d4ec2fee42a869bfd8f406725430e6a63747ba616a207c8eed36fd78b80fd9cf \
+    --hash=sha256:ff77a1ebe44696001bc3a9b4dd84b9b61ee94df34d69d87ea2772cf1b49ebbba \
+    --hash=sha256:a9bc36adea6672f19bb6ebc8c44b4a25f7ce4c6c9ea88c0b2510e323e1d132ab \
+    --hash=sha256:435218a72cd40fdd4db0d433a434a5f7cebb5fed532936f26075605aaae929a8 \
+    --hash=sha256:b564ac228e4cf04a93eff818f45f3beda6c803e7a8ad1593b0b6f99dc5e222da \
+    --hash=sha256:9dc2e0ca14f4f4f02ff965feec8e9187907967ba823a9a1c5575a2380de0c5d5 \
+    --hash=sha256:79dadb0c6142d385c803665c2d9eece6c44a67a34dd271512a568f6a5582e7d9 \
+    --hash=sha256:948eafeae7de69b3ef8ef607f90b6874cb39bb9bef8d73a963f2a0691393f09f \
+    --hash=sha256:af8d8fce1c514d3920c901d28cba66a208c603adc2332d2ca9e457cd35d6e226 \
+    --hash=sha256:f0eaff3d37b037402c084f2c8e758616215e9b5568d7b45ccadf9c7e3bab405b \
+    --hash=sha256:914f16ba89bec5a3ef08420157726aa01247d42a1639f31dde2cc261d033df55 \
+    --hash=sha256:0d48ae75f07cccecce74b641a715b1ab2ac89e5fc43323012295b4a96bf9363c \
+    --hash=sha256:eb97ba81aec1c9d6125fffc61af42f45620493a91794180e8d9345280743c918 \
+    --hash=sha256:15da23d69748111021ba98bf7f35ef17d0c223a2eff12883c75b2bb68cd2d0b0 \
+    --hash=sha256:613914981ee9376ab50078e715af5f490d5cbc7cb5efc3bb9b6b2a045f004933 \
+    --hash=sha256:97ee30cf727e5b01b1b0fadd041ee19035cef4dd3a0c6bfce812b267d40a33d2 \
+    --hash=sha256:1fe83d0efee2e364a6ff3ded05eb9a97ae6b0f543d6399c54fb157ad544218c5 \
+    --hash=sha256:369af9894a38759a86e91b140d948dd7f76ba1e8d20e4274a01ee31c5767689f \
+    --hash=sha256:73df28cbe4f531dd4b094db6b8588582dee787f5805f69f4ac5c292ccf884fd0 \
+    --hash=sha256:33d070c7d081c2fdd93a09a74153b0b6c8e94d415ac341d462d13de32b688616 \
+    --hash=sha256:c81dcf7e6c38e85e70e3ff2d615a4fb7e3dd21727fff5803bd529c8e23d46b68 \
+    --hash=sha256:970f0c28866e76d4615f7fcfeeaaf417cd47e785809a8bfd84553cb45f026fb7 \
+    --hash=sha256:8cc3476bf6c9c39b344b1d474b6bf855a987f183242d78af0f70c94459d3b44d \
+    --hash=sha256:c039958f30b928550483514e75e7f67629642835969526b7dfd6067fbd696717
+sorl-thumbnail==12.3 \
+    --hash=sha256:ce91c5b112a2ef930a09625adbd99682bd62f34be1963c28f3ffc0d0138a07fd \
+    --hash=sha256:bb277dc98daa07e892d429b73eed749411f7eff1ee6feef142a19e029582e8cd
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==0.32.0
+django-allauth==0.32.0 \
+    --hash=sha256:e593338d87a57100a6fb64760e2ab8dd67fa6af8d016b4620166c832ecdec23a
 
 # For the persistance stores
-mysqlclient==1.3.10
+mysqlclient==1.3.10 \
+    --hash=sha256:34003bb52c82e415ba10da1ce2925745ad2220335e1e14921bb56f68dd5e37f6 \
+    --hash=sha256:b435116061913b75a27519bee3f71d82a11b409f878f8797061ecf24117854c6 \
+    --hash=sha256:9cafa74a58b7f280cd2392f1b656aa3660ca6ddfd641f0779cd0a76831bb81b0 \
+    --hash=sha256:26e19db4929313104e287916afa4cdd03974c51838414d508023bb324468daf0 \
+    --hash=sha256:452aaf9d2ba1a4fb85c134c88f9b1857852deed63b3b13255d7a65d2c1297262
 
 # Unicode slugification
-unicode-slugify==0.1.3
-django-autoslug==1.9.3
+unicode-slugify==0.1.3 \
+    --hash=sha256:34cf3afefa6480efe705a4fc0eaeeaf7f49754aec322ba3e8b2f27dc1cbcf650
+django-autoslug==1.9.3 \
+    --hash=sha256:790efc84246ad8b7106d94e79bff8eb14b94616e8765235784483832899bb40a \
+    --hash=sha256:d466a68e87d076f0d0d6ffe51ff70fa22ae4ca2f7717d769feb6265ef68c50f8
 
 # Useful things
 # Time zones support
-pytz==2017.2
+pytz==2017.2 \
+    --hash=sha256:c883c2d6670042c7bc1688645cac73dd2b03193d1f7a6847b6154e96890be06d \
+    --hash=sha256:03c9962afe00e503e2d96abab4e8998a0f84d4230fa57afe1e0528473698cdd9 \
+    --hash=sha256:487e7d50710661116325747a9cd1744d3323f8e49748e287bc9e659060ec6bf9 \
+    --hash=sha256:43f52d4c6a0be301d53ebd867de05e2926c35728b3260157d274635a0a947f1c \
+    --hash=sha256:d1d6729c85acea5423671382868627129432fba9a89ecbb248d8d1c7a9f01c67 \
+    --hash=sha256:54a935085f7bf101f86b2aff75bd9672b435f51c3339db2ff616e66845f2b8f9 \
+    --hash=sha256:39504670abb5dae77f56f8eb63823937ce727d7cdd0088e6909e6dcac0f89043 \
+    --hash=sha256:ddc93b6d41cfb81266a27d23a79e13805d4a5521032b512643af8729041a81b4 \
+    --hash=sha256:f5c056e8f62d45ba8215e5cb8f50dfccb198b4b9fbea8500674f3443e4689589
 
 # Your custom requirements go here
-django-guardian==1.4.9
-django-mailbox==4.5.4
-talon==1.4.1
-django-filter==1.0.4
-django-autocomplete-light==2.3.3 # rq.filter: <3.0.0
+django-guardian==1.4.9 \
+    --hash=sha256:c3c0ab257c9d94ce154b9ee32994e3cff8b350c384040705514e14a9fb7c8191 \
+    --hash=sha256:8836ac9263c9bd8c162efa5fbd0729f7f8ef83008c8da298e8e2aa81ea624c47
+django-mailbox==4.5.4 \
+    --hash=sha256:c221d19af157acfec701f7415520fe0eb4f52d701e4516a0521aed3c86d34072
+talon==1.4.1 \
+    --hash=sha256:a0387df9c76b8eef2dee5cd81eb956c2e218eebee20beca5e3dd37650710c3c0
+django-filter==1.0.4 \
+    --hash=sha256:e44620d4e707beaff7396ac8df765dc015a07467df813b9c1663fe4017934b58 \
+    --hash=sha256:6ef1611aeacfda8f13a075a992ff65687afbd5cc8fcb0f3f1563a9ad4fe2d1b0
+django-autocomplete-light==3.2.9 \
+    --hash=sha256:fe2e5361bae5664c5fcc79aa79ab77c8a21d89a1b771f0987e313b25b3b629e6
 https://github.com/ad-m/django-flatpages-tinymce/archive/patch-1.zip
 django_atom==0.14.3
-django-tinymce==2.6.0
-django-tinycontent==0.7.0
-icalendar==3.11.4
-html2text==2016.9.19
-pyGravatar==0.0.6
-django-bootstrap-pagination==1.6.2
-raven==6.1.0
-django-import-export==0.5.1
+django-tinymce==2.6.0 \
+    --hash=sha256:cb087f742a2d8f413f1ba01af9568ef2077fead11fcafdf1907f0fa5cff4695a \
+    --hash=sha256:a3ad14e246ba0d021fdb26e43f2d191a5440b7da4f0194b7f92679780bf354f4
+django-tinycontent==0.7.0 \
+    --hash=sha256:aa52e340209dad027006cc874e1189a61aeb57443dfd33cf5c3d8694b7fba013 \
+    --hash=sha256:2a2d64c62e082349cca6e661c6c7a8cb783f552184ab7ba49edbc8a2f03f6216
+icalendar==3.11.4 \
+    --hash=sha256:b686c639501aee4a192b01f1afd8fdda2245cddda89f3b3143d127d3bc5ee727 \
+    --hash=sha256:5696b18f791bbbb5972b87ea3d3c42a855ae641b0608477a451aa23f7defa347
+html2text==2016.9.19 \
+    --hash=sha256:554ef5fd6c6cf6e3e4f725a62a3e9ec86a0e4d33cd0928136d1c79dbeb7b2d55
+pyGravatar==0.0.6 \
+    --hash=sha256:3f01054573cc2345ff7b9dd512240200be399c757781c0ce7709cc76d3571fda \
+    --hash=sha256:d0f6652a065c896d02688fd9cb43d9104747c2dcfcdf45f212dd5b791da3387c \
+    --hash=sha256:5fe7923e9b5c88390fce0a67324a434c4bdc303afc681d0614ca5b2c97cd6985
+django-bootstrap-pagination==1.6.2 \
+    --hash=sha256:5dc2280cc8254bd87ec9534e5f2af0867bfa481b270b3e29ed86ddb22a74cfa7
+raven==6.1.0 \
+    --hash=sha256:56dc9062dd42bca97350e5048ff417c914376366caa3b1b5f788b27ddc0a34b7 \
+    --hash=sha256:02cabffb173b99d860a95d4908e8b1864aad1b8452146e13fd7e212aa576a884
+django-import-export==0.5.1 \
+    --hash=sha256:5a932117a082971250703dec1ffcb6a92f913c393ef87b53331ee812b2b2fd4e
+django-atom==0.14.3 \
+    --hash=sha256:b4adea09848f329363250845e5d2d0b7dc93de0bad5608d4309003561de1768b \
+    --hash=sha256:6bc80b27edb4783813a82dacd9f8f1d9fadc016c783040d761924ed3851ddeba
