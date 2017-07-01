@@ -63,7 +63,7 @@ class GapFiller(object):
         if hasattr(self, 'params'):
             return self.params
         else:
-            keys = self.qs[0].keys()
+            keys = list(self.qs[0].keys())
             keys.remove(self.date_key)
             self.params = keys
             return self.params
