@@ -318,12 +318,12 @@ TEMPLATES = [
                 'django.template.loaders.filesystem.Loader',
                 'django.template.loaders.app_directories.Loader'
             ],
-            'debug': DEBUG
-        },
-        'libraries': {  # Adding this section should work around the issue.
-            'staticfiles': 'django.templatetags.static',
-            'i18n': 'django.templatetags.i18n',
-        },
+            'debug': DEBUG,
+            'libraries': {  # Adding this section should work around the issue.
+                'staticfiles': 'django.templatetags.static',
+                'i18n': 'django.templatetags.i18n',
+            },
+        }
     },
 ]
 FILTERS_HELP_TEXT_FILTER = False
