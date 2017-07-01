@@ -1,6 +1,8 @@
 from datetime import timedelta
 
 import django
+import six
+
 from poradnia.cases.admin import CaseAdmin
 from poradnia.cases.factories import CaseFactory, PermissionGroupFactory
 from poradnia.cases.filters import StaffCaseFilter
@@ -177,6 +179,11 @@ class CaseDetailViewTestCase(TestCase):
 
 
 class StaffCaseFilterTestCase(TestCase):
+    def __init__(self, methodName='runTest'):
+        super(StaffCaseFilterTestCase, self).__init__(methodName)
+        if six.PY3:  # In Python 3, assertItemsEqual is named assertCountEqual.
+            self.assertItemsEqual = self.assertCountEqual
+
     def get_filter(self, *args, **kwargs):
         return StaffCaseFilter(queryset=Case.objects.all(),
                                *args, **kwargs)
@@ -212,6 +219,7 @@ class StaffCaseFilterTestCase(TestCase):
                                'has_project',
                                'permission',
                                'o'])
+
 
 
 class CaseListViewTestCase(TestCase):
