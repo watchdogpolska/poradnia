@@ -1,5 +1,6 @@
 from __future__ import absolute_import
 
+from atom.mixins import AdminTestCaseMixin
 from django.core import mail
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.test import RequestFactory
@@ -7,7 +8,6 @@ from django.utils import timezone
 from guardian.shortcuts import assign_perm, get_perms
 from test_plus.test import TestCase
 
-from atom.mixins import AdminTestCaseMixin
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
 from poradnia.users.autocomplete_light_registry import UserAutocomplete

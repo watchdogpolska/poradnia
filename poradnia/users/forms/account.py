@@ -1,11 +1,12 @@
 # -*- coding: utf-8 -*-
-from atom.ext.crispy_forms.forms import FormHorizontalMixin
-from atom.ext.tinycontent.forms import GIODOMixin
 from crispy_forms.bootstrap import PrependedText
 from crispy_forms.layout import Layout, Submit
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
+
+from atom.ext.crispy_forms.forms import FormHorizontalMixin
+from atom.ext.tinycontent.forms import GIODOMixin
 
 
 class SignupForm(FormHorizontalMixin, GIODOMixin, forms.ModelForm):

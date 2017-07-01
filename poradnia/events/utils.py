@@ -30,7 +30,7 @@ class AbstractCalendar(HTMLCalendar):
         Return a month name as a table row.
         """
         if withyear:
-            s = '%s %s' % (month_name[themonth-1], theyear)
+            s = '%s %s' % (month_name[themonth - 1], theyear)
         else:
             s = '%s' % month_name[themonth]
         return '<tr><th colspan="7" class="month">%s</th></tr>' % s
@@ -82,8 +82,8 @@ class EventCalendar(AbstractCalendar):
 
     def get_row_content(self, event):
         text = ('<li{class_attr}><a href="{link}" title="{title}">{content}</a></li>'.format(
-                    class_attr=' class="deadline"' if event.deadline else '',
-                    link=event.get_absolute_url(),
-                    title=event.text,
-                    content=esc(event.case)))
+            class_attr=' class="deadline"' if event.deadline else '',
+            link=event.get_absolute_url(),
+            title=event.text,
+            content=esc(event.case)))
         return text

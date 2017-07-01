@@ -5,10 +5,10 @@ except:
 
 import autocomplete_light.shortcuts as autocomplete_light
 import django_filters
-from atom.filters import CrispyFilterMixin
 from django.contrib.auth import get_user_model
 from django_filters import ModelChoiceFilter
 
+from atom.filters import CrispyFilterMixin
 from poradnia.users.models import User
 
 

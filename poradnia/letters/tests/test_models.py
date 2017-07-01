@@ -1,17 +1,17 @@
+import email
 from datetime import timedelta
+from distutils.version import StrictVersion
 from os.path import dirname, join
 
 import django_mailbox
 import six
-
-from poradnia.cases.factories import CaseFactory
-from poradnia.cases.models import Case
-from distutils.version import StrictVersion
 from django.test import TestCase
 from django.utils.timezone import now
 from django_mailbox.models import Mailbox
-import email
 from guardian.shortcuts import assign_perm
+
+from poradnia.cases.factories import CaseFactory
+from poradnia.cases.models import Case
 from poradnia.letters.factories import LetterFactory
 from poradnia.letters.models import Letter, mail_process
 from poradnia.users.factories import UserFactory

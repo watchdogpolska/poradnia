@@ -35,7 +35,6 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):
-
     form_class = UserForm
 
     # we already imported User in the view code above, remember?

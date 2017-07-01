@@ -4,13 +4,17 @@
 {% block title %}{% trans 'Forbidden' %}{% endblock %}
 
 {% block content %}
-<h1>{% trans 'Forbidden' %}</h1>
+    <h1>{% trans 'Forbidden' %}</h1>
 
-<p>{% blocktrans with url=request.path %}You do not have permission to retrieve the URL or link you requested, <b>{{url}}</b>.{% endblocktrans %}</p>
-{% if request.user.is_authenticated %}
-<p>{% blocktrans %}Please inform the administrator of the referring page using form below of page if you think this was a mistake.{% endblocktrans %}</p>
-{% else %}
-{% url 'account_login' as login_url %}
-<p>{% blocktrans with url=request.path %}Please sign in to your account at <a href="{{login_url}}?next={{url}}">login form</a>. If you need any help please use form below of page.{% endblocktrans %}</p>
-{% endif %}
+    <p>{% blocktrans with url=request.path %}You do not have permission to retrieve the URL or link you requested,
+        <b>{{ url }}</b>.{% endblocktrans %}</p>
+    {% if request.user.is_authenticated %}
+        <p>{% blocktrans %}Please inform the administrator of the referring page using form below of page if you think
+            this was a mistake.{% endblocktrans %}</p>
+    {% else %}
+        {% url 'account_login' as login_url %}
+        <p>{% blocktrans with url=request.path %}Please sign in to your account at
+            <a href="{{ login_url }}?next={{ url }}">login form</a>. If you need any help please use form below of
+            page.{% endblocktrans %}</p>
+    {% endif %}
 {% endblock content %}

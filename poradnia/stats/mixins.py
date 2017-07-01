@@ -74,7 +74,7 @@ class PermissionStatusMixin(object):
         """A test status code of response for anonymous user"""
         response = self.client.get(self.get_url())
         self.assertEqual(response.status_code, self.status_anonymous)
-    
+
     def test_status_code_for_signed_user(self):
         """A test for status code of response for signed (logged-in) user"""
         user = self.make_regular_user()

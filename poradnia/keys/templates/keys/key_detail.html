@@ -1,16 +1,16 @@
 {% extends 'keys/base.html' %}
 {% load crispy_forms_tags i18n %}
 
-{% block breadcrumbs_rows%}
-<li class="active">{{object}}</li>
+{% block breadcrumbs_rows %}
+    <li class="active">{{ object }}</li>
 {% endblock %}
 
 {% block content %}
 
-<div class="row">
-    <div class="col-lg-12">
-    <h1>{% block header %}{% trans 'Key' %} - {{object}}{% endblock %}</h1>
-        <pre>{{object.password}}</pre>
+    <div class="row">
+        <div class="col-lg-12">
+            <h1>{% block header %}{% trans 'Key' %} - {{ object }}{% endblock %}</h1>
+            <pre>{{ object.password }}</pre>
+        </div>
     </div>
-</div>
 {% endblock %}

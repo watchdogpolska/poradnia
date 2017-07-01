@@ -1,11 +1,11 @@
 {% if order_by != column or ordering != 'asc' %}
-<a href="?order_by={{column}}&amp;ordering=asc"><i class="fa fa-sort-alpha-asc"></i></a>
+    <a href="?order_by={{ column }}&amp;ordering=asc"><i class="fa fa-sort-alpha-asc"></i></a>
 {% else %}
-<i class="fa fa-sort-alpha-asc"></i>
+    <i class="fa fa-sort-alpha-asc"></i>
 {% endif %}
 
 {% if order_by != column or ordering != 'desc' %}
-<a href="?order_by={{column}}&amp;ordering=desc"><i class="fa fa-sort-alpha-desc"></i></a>
+    <a href="?order_by={{ column }}&amp;ordering=desc"><i class="fa fa-sort-alpha-desc"></i></a>
 {% else %}
-<i class="fa fa-sort-alpha-desc"></i>
+    <i class="fa fa-sort-alpha-desc"></i>
 {% endif %}

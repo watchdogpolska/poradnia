@@ -1,12 +1,11 @@
 # -*- coding: utf-8 -*-
 
-from django.conf.urls import url
-
 import notifications
+from django.conf.urls import url
 
 from . import views
 
-urlpatterns = [url(r'^$', views.NotificationListView.as_view(), name='all'),]
+urlpatterns = [url(r'^$', views.NotificationListView.as_view(), name='all'), ]
 
 urlpatterns += [
     url(r'^unread$', notifications.views.unread, name='unread'),

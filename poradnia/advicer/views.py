@@ -1,6 +1,3 @@
-
-from atom.ext.crispy_forms.views import FormSetMixin
-from atom.views import ActionMessageMixin, ActionView, FormInitialMixin
 from braces.views import (FormValidMessageMixin, LoginRequiredMixin,
                           SelectRelatedMixin, StaffuserRequiredMixin,
                           UserFormKwargsMixin)
@@ -9,8 +6,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DetailView, UpdateView
 from django_filters.views import FilterView
 
+from atom.ext.crispy_forms.views import FormSetMixin
+from atom.views import ActionMessageMixin, ActionView, FormInitialMixin
 from poradnia.users.utils import PermissionMixin
-
 from .filters import AdviceFilter
 from .forms import AdviceForm, AttachmentForm
 from .models import Advice, Attachment

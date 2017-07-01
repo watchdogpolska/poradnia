@@ -5,14 +5,13 @@ from django.shortcuts import get_object_or_404, render
 from django.utils.translation import ugettext as _
 
 from poradnia.cases.models import Case
-
 # from crispy_forms.helper import FormHelper
 from ..forms import AddLetterForm, SendLetterForm
 from ..helpers import AttachmentFormSet
 from ..models import Letter
 
 REGISTRATION_TEXT = _("User  %(user)s registered! You will receive a password by mail. " +
-    "Log in to get access to archive")
+                      "Log in to get access to archive")
 
 
 @login_required
@@ -66,7 +65,7 @@ def send(request, pk):
         if form.is_valid():
             obj = form.save()
             messages.success(request,
-                _("Letter %(object)s send!") % {'object': obj, })
+                             _("Letter %(object)s send!") % {'object': obj, })
             obj.send_notification(actor=request.user, verb='accepted')
             return HttpResponseRedirect(case.get_absolute_url())
     else:

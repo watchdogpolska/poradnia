@@ -1,8 +1,8 @@
-from atom.ext.crispy_forms.forms import FormHorizontalMixin, SingleButtonMixin
 from braces.forms import UserKwargModelFormMixin
 from django import forms
 from django.contrib.auth import get_user_model
 
+from atom.ext.crispy_forms.forms import FormHorizontalMixin, SingleButtonMixin
 from ..models import Profile
 
 
@@ -10,7 +10,7 @@ class UserForm(FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(UserForm, self).__init__(*args, **kwargs)
         if (not self.instance or
-                self.instance and not self.instance.is_staff):
+                    self.instance and not self.instance.is_staff):
             del self.fields['codename']
 
     class Meta:

@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.conf import settings
-from django.db import migrations, models
+from django.db import migrations
 
 
 def update_site_forward(apps, schema_editor):
@@ -30,7 +30,6 @@ def update_site_backward(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ('sites', '0001_initial'),
     ]

@@ -1,22 +1,22 @@
 {% extends 'base.html' %}
 {% load staticfiles i18n %}
-{% block title %}{% trans 'Stats' %} - {{block.super}}{% endblock %}
+{% block title %}{% trans 'Stats' %} - {{ block.super }}{% endblock %}
 
 {% block breadcrumbs %}
-<ol class="breadcrumb">
-  <li class="active">{% trans 'Stats'%}</li>
-</ol>
+    <ol class="breadcrumb">
+        <li class="active">{% trans 'Stats' %}</li>
+    </ol>
 {% endblock %}
 
 {% block content %}
-{% trans 'Stats'%}:
-<ul>
-    {% if user.is_superuser %}
-    <li><a href="{% url 'stats:case_created' %}">{% trans 'Cases created' %}</a></li>
-    <li><a href="{% url 'stats:case_reaction' %}">{% trans 'Cases reaction time' %}</a></li>
-    <li><a href="{% url 'stats:case_unanswered' %}">{% trans 'Cases unanswered' %}</a></li>
-    <li><a href="{% url 'stats:letter_created' %}">{% trans 'Letters created' %}</a></li>
-    <li><a href="{% url 'stats:user_registered' %}">{% trans 'Users registered' %}</a></li>
-    {% endif %}
-</ul>
-{%endblock%}
+    {% trans 'Stats' %}:
+    <ul>
+        {% if user.is_superuser %}
+            <li><a href="{% url 'stats:case_created' %}">{% trans 'Cases created' %}</a></li>
+            <li><a href="{% url 'stats:case_reaction' %}">{% trans 'Cases reaction time' %}</a></li>
+            <li><a href="{% url 'stats:case_unanswered' %}">{% trans 'Cases unanswered' %}</a></li>
+            <li><a href="{% url 'stats:letter_created' %}">{% trans 'Letters created' %}</a></li>
+            <li><a href="{% url 'stats:user_registered' %}">{% trans 'Users registered' %}</a></li>
+        {% endif %}
+    </ul>
+{% endblock %}

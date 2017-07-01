@@ -1,6 +1,7 @@
+from datetime import timedelta
+
 import factory
 import factory.fuzzy
-from datetime import timedelta
 from django.utils import timezone
 
 from poradnia.cases.factories import CaseFactory

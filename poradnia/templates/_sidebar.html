@@ -1,4 +1,4 @@
-{%load i18n %}
+{% load i18n %}
 <div class="sidebar-header">
     <a href="{% url 'home' %}">
         <div class="logo"></div>
@@ -9,14 +9,14 @@
 <div class="block-list">
     <ul class="block-list-list">
         {% if request.user.is_authenticated %}
-        <li class="block-list-item">
-            <a href="#" data-toggle="modal" data-target="#navsearch_modal"><i class="fa fa-search"></i> Search</a>
-        </li>
+            <li class="block-list-item">
+                <a href="#" data-toggle="modal" data-target="#navsearch_modal"><i class="fa fa-search"></i> Search</a>
+            </li>
         {% endif %}
         {% if perms.tasty_feedback.view_feedback %}
-        <li class="block-list-item">
-            <a href="{% url 'tasty_feedback:list' %}"><i class="fa fa-comment"></i> {% trans 'Feedbacks' %}</a>
-        </li>
+            <li class="block-list-item">
+                <a href="{% url 'tasty_feedback:list' %}"><i class="fa fa-comment"></i> {% trans 'Feedbacks' %}</a>
+            </li>
         {% endif %}
     </ul>
 </div>

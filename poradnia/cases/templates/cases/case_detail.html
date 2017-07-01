@@ -1,147 +1,165 @@
 {% extends 'cases/base.html' %}
 {% load guardian_tags crispy_forms_tags staticfiles humanize i18n cases_tags %}
-{%block title%}{{object}} - {{block.super}}{%endblock%}
+{% block title %}{{ object }} - {{ block.super }}{% endblock %}
 {% block javascript %}
-{{block.super}}
-<script type="text/javascript">
-  $(function() {
-    $('form tbody tr').formset({addText:"{% trans 'add another'%}", deleteText: "{% trans 'remove'%}", prefix: 'attachment_set'});
-  });
-  $('#form-tab a').click(function (e) {
-    e.preventDefault()
-    $(this).tab('show')
-  });
-  $('#form-tab a:last').tab('show')
-</script>
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function () {
+            $('form tbody tr').formset({
+                addText: "{% trans 'add another'%}",
+                deleteText: "{% trans 'remove'%}",
+                prefix: 'attachment_set'
+            });
+        });
+        $('#form-tab a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        });
+        $('#form-tab a:last').tab('show')
+    </script>
 {% endblock %}
-{% block breadcrumbs%}
-<ol class="breadcrumb">
-  <li><a href="{% url 'cases:list'%}">{% trans 'Cases'%}</a></li>
-  <li class="active">{{object}}</li>
-</ol>
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'cases:list' %}">{% trans 'Cases' %}</a></li>
+        <li class="active">{{ object }}</li>
+    </ol>
 {% endblock %}
 
-{%block content%}
-{% include 'cases/_case_pager.html' %}
-{% get_obj_perms request.user for object as "case_perms" %}
-<div class="row">
-  <div class="col-xs-12">
-    <div class="case-header">
-      <div class="case-header-actions">
-        {% if 'change_case' in case_perms %}
-        <a class="btn btn-primary" href="{{ object.get_edit_url }}"><i class="fa fa-pencil-square-o"></i> {% trans 'Edit'%}</a>
-        {% endif %}
-        {% if 'can_close_case' in case_perms and object.status != object.STATUS.closed %}
-        <a class="btn btn-primary" href="{{ object.get_close_url }}"><i class="fa fa-close"></i> {% trans 'Close'%}</a>
-        {% endif %}
-      </div>
-      <h1 class="case-header-title{% if user.is_staff and object.handled %} success{% endif %}">{{object.name}} <span class="case-header-number">#{{object.pk}}</span></h1>
-      <div class="case-header-meta">
-        {% if object.status_changed %}
-          <span class="label label-success" title="Ostatnia zmiana stanu: {{ object.status_changed }} dni temu"> <i class="{{object.status|status2css}}"></i> {{object.status_display}}</span>
-        {% else %}
-          <span class="label label-success" title="Ostatnia zmiana 7 dni temu"> <i class="fa fa-folder-open-o"></i> {{ object.status }}</span>
-        {%endif%}
-        {% if request.user.is_staff and object.has_project %}
-          {% include 'cases/_project_badge.html' %}
-        {% endif %}
-        {%blocktrans with object.created_by.get_absolute_url as created_url and object.created_by as created_user and object.created_on|naturaltime as created_on and object.client.get_absolute_url as client_url and object.client as client_user%}Created by <a href="{{created_url}}">{{created_user}}</a> on
-        {{created_on}} for <a href="{{client_url}}">{{client_user}}</a>{% endblocktrans %}
-      </div>
+{% block content %}
+    {% include 'cases/_case_pager.html' %}
+    {% get_obj_perms request.user for object as "case_perms" %}
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="case-header">
+                <div class="case-header-actions">
+                    {% if 'change_case' in case_perms %}
+                        <a class="btn btn-primary" href="{{ object.get_edit_url }}"><i
+                                class="fa fa-pencil-square-o"></i> {% trans 'Edit' %}</a>
+                    {% endif %}
+                    {% if 'can_close_case' in case_perms and object.status != object.STATUS.closed %}
+                        <a class="btn btn-primary" href="{{ object.get_close_url }}"><i
+                                class="fa fa-close"></i> {% trans 'Close' %}</a>
+                    {% endif %}
+                </div>
+                <h1 class="case-header-title{% if user.is_staff and object.handled %} success{% endif %}">{{ object.name }}
+                    <span class="case-header-number">#{{ object.pk }}</span></h1>
+                <div class="case-header-meta">
+                    {% if object.status_changed %}
+                        <span class="label label-success"
+                              title="Ostatnia zmiana stanu: {{ object.status_changed }} dni temu"> <i
+                                class="{{ object.status|status2css }}"></i> {{ object.status_display }}</span>
+                    {% else %}
+                        <span class="label label-success" title="Ostatnia zmiana 7 dni temu"> <i
+                                class="fa fa-folder-open-o"></i> {{ object.status }}</span>
+                    {% endif %}
+                    {% if request.user.is_staff and object.has_project %}
+                        {% include 'cases/_project_badge.html' %}
+                    {% endif %}
+                    {% blocktrans with object.created_by.get_absolute_url as created_url and object.created_by as created_user and object.created_on|naturaltime as created_on and object.client.get_absolute_url as client_url and object.client as client_user %}
+                        Created by <a href="{{ created_url }}">{{ created_user }}</a> on
+                        {{ created_on }} for <a href="{{ client_url }}">{{ client_user }}</a>{% endblocktrans %}
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
 
-<div class="row">
-  <div class="col-lg-6">
-    <div class="panel panel-default">
-      <div class="panel-heading"><i class="fa fa-newspaper-o"></i> {% trans 'Workflow'%}</div>
-      <table class="table">
-        <tr>
-          <td><i class="fa fa-user"></i> {% trans 'Involved in' %}</td>
-          <td>{% include 'cases/_involved_in.html' %}</td>
-        </tr>
-        {% if object.modified_by %}
-        <tr>
-          <td>{% trans 'Last update'%}</td>
-          <td>
-            <a href="{{object.modified_by.get_absolute_url}}">{{object.modified_by}}</a> on {{object.modified_on}}
-          </td>
-        </tr>
-        {% endif %}
-        {% if object.deadline and request.user.is_staff %}
-        <tr>
-          <td><i class="fa fa-fire"></i> {% trans 'Dead-line'%}</td>
-          <td>{% blocktrans with object.deadline as deadline and object.deadline.time|naturaltime as naturaltime %}{{deadline}} at {{naturaltime}}{% endblocktrans %}</td>
-        </tr>
-        {%endif%}
-      </table>
-    </div>
-  </div>
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="panel panel-default">
+                <div class="panel-heading"><i class="fa fa-newspaper-o"></i> {% trans 'Workflow' %}</div>
+                <table class="table">
+                    <tr>
+                        <td><i class="fa fa-user"></i> {% trans 'Involved in' %}</td>
+                        <td>{% include 'cases/_involved_in.html' %}</td>
+                    </tr>
+                    {% if object.modified_by %}
+                        <tr>
+                            <td>{% trans 'Last update' %}</td>
+                            <td>
+                                <a href="{{ object.modified_by.get_absolute_url }}">{{ object.modified_by }}</a>
+                                on {{ object.modified_on }}
+                            </td>
+                        </tr>
+                    {% endif %}
+                    {% if object.deadline and request.user.is_staff %}
+                        <tr>
+                            <td><i class="fa fa-fire"></i> {% trans 'Dead-line' %}</td>
+                            <td>
+                                {% blocktrans with object.deadline as deadline and object.deadline.time|naturaltime as naturaltime %}
+                                    {{ deadline }} at {{ naturaltime }}{% endblocktrans %}</td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+        </div>
 
-  {% if request.user.is_staff %}
-  <div class=" col-lg-6">
-    <div class="panel panel-default">
-      <div class="panel-heading"><i class="fa fa-phone"></i> {% trans 'Metrical data'%}</div>
-      <table class="table">
-        <tr>
-          <td><i class="fa fa-area-chart"></i> {% trans 'Advice' %}</a></td>
-          <td>
-            {% if object.advice %}
-            <a href="{{object.advice.get_absolute_url}}">{{object.advice}}</a>
-            {% else %}
-            <a href="{% url 'advicer:create'%}?case={{object.pk}}"><i class="fa fa-pencil"></i> {% trans 'Create new advice'%}</a>
-            {% endif %}
-          </td>
-        </tr>
-      </table>
+        {% if request.user.is_staff %}
+            <div class=" col-lg-6">
+                <div class="panel panel-default">
+                    <div class="panel-heading"><i class="fa fa-phone"></i> {% trans 'Metrical data' %}</div>
+                    <table class="table">
+                        <tr>
+                            <td><i class="fa fa-area-chart"></i> {% trans 'Advice' %}</a></td>
+                            <td>
+                                {% if object.advice %}
+                                    <a href="{{ object.advice.get_absolute_url }}">{{ object.advice }}</a>
+                                {% else %}
+                                    <a href="{% url 'advicer:create' %}?case={{ object.pk }}"><i
+                                            class="fa fa-pencil"></i> {% trans 'Create new advice' %}</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                {% if 'can_assign' in case_perms %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <i class="fa fa-users"></i> {% trans 'Assign permissions' %}
+                            <a class="btn btn-default btn-xs pull-right"
+                               href="{% url 'cases:permission_add' pk=object.pk %}">{% trans "..." %}</a>
+                        </div>
+                        <div class="panel-body">
+                            {% crispy casegroup_form %}
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
     </div>
-    {% if 'can_assign' in case_perms %}
-    <div class="panel panel-default">
-      <div class="panel-heading">
-            <i class="fa fa-users"></i> {% trans 'Assign permissions' %}
-            <a class="btn btn-default btn-xs pull-right" href="{% url 'cases:permission_add' pk=object.pk %}">{% trans "..." %}</a>
-      </div>
-      <div class="panel-body">
-      {% crispy casegroup_form %}
-      </div>
-    </div>
+    {% if record_list %}
+        <div class="timeline">
+            {% for record in record_list %}
+                {% include record.content_object.get_template_list with object=record.content_object %}
+            {% endfor %}
+        </div>
+    {% else %}
+        <span class="label label-warning">{% trans 'No records' %}</span>
     {% endif %}
-  </div>
-  {% endif %}
-</div>
-  {% if record_list %}
-<div class="timeline">
-  {% for record in record_list %}
-  {% include record.content_object.get_template_list with object=record.content_object %}
-  {% endfor %}
-</div>
-  {% else %}
-  <span class="label label-warning">{% trans 'No records'%}</span>
-  {% endif %}
-{% if 'can_add_record' in case_perms %}
-<div role="tabpanel" class="row">
+    {% if 'can_add_record' in case_perms %}
+        <div role="tabpanel" class="row">
 
-  <ul class="nav nav-tabs" role="tablist" id="form-tab">
-    {% for label, row in forms.items %}
-    <li role="presentation"><a href="#{{label}}" aria-controls="{{label}}" role="tab" data-toggle="tab">{{row.title}}</a></li>
-    {% endfor %}
-  </ul>
+            <ul class="nav nav-tabs" role="tablist" id="form-tab">
+                {% for label, row in forms.items %}
+                    <li role="presentation"><a href="#{{ label }}" aria-controls="{{ label }}" role="tab"
+                                               data-toggle="tab">{{ row.title }}</a></li>
+                {% endfor %}
+            </ul>
 
-  <div class="tab-content">
-    {% for key, row in forms.items %}
-    <div role="tabpanel" class="tab-pane" id="{{key}}">
-      <h2>{{row.title}}</h2>
-      <form method="post" class="{{row.form.helper.form_class }}" enctype="multipart/form-data" action="{{row.form.helper.form_action}}">
-        {% crispy row.form %}
-        {% if row.formset %}
-        {% crispy row.formset %}
-        {% endif %}
-      </form>
-    </div>
-    {% endfor %}
-  </div>
-</div>
-{% endif %}
-{% include 'cases/_case_pager.html' %}
-{%endblock%}
+            <div class="tab-content">
+                {% for key, row in forms.items %}
+                    <div role="tabpanel" class="tab-pane" id="{{ key }}">
+                        <h2>{{ row.title }}</h2>
+                        <form method="post" class="{{ row.form.helper.form_class }}" enctype="multipart/form-data"
+                              action="{{ row.form.helper.form_action }}">
+                            {% crispy row.form %}
+                            {% if row.formset %}
+                                {% crispy row.formset %}
+                            {% endif %}
+                        </form>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+    {% include 'cases/_case_pager.html' %}
+{% endblock %}

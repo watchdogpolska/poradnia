@@ -22,4 +22,4 @@ class FeedbackForm(UserKwargModelFormMixin, ModelForm):
 
     class Meta:
         model = Feedback
-        fields = ('text', )
+        fields = ('text',)

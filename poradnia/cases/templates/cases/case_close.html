@@ -3,14 +3,14 @@
 
 {% block title %}{{ object }} - {{ block.super }}{% endblock %}
 {% block breadcrumbs %}
-<ol class="breadcrumb">
-  <li><a href="{% url 'cases:list'%}">{% trans 'Cases'%}</a></li>
-  <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
-  <li class="active">{% trans 'Close'%}</li>
-</ol>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'cases:list' %}">{% trans 'Cases' %}</a></li>
+        <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+        <li class="active">{% trans 'Close' %}</li>
+    </ol>
 {% endblock %}
 {% block content %}
-<h1>{% block header %}{{ object }}{% endblock %}</h1>
-{% csrf_token %}
-{% crispy form %}
+    <h1>{% block header %}{{ object }}{% endblock %}</h1>
+    {% csrf_token %}
+    {% crispy form %}
 {% endblock %}

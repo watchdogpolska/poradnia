@@ -1,24 +1,27 @@
 {% load guardian_tags crispy_forms_tags humanize users_tags i18n %}
 <div class="row obj_container base_sent">
     {% if not object.event.created_by.is_staff %}
-    <div class="col-md-2 col-xs-2 avatar">
-        <img src="{% get_avatar_url object.event.created_by %}">
-    </div>
+        <div class="col-md-2 col-xs-2 avatar">
+            <img src="{% get_avatar_url object.event.created_by %}">
+        </div>
     {% endif %}
     <div class="col-md-10 col-xs-10">
         <div class="messages">
             <div class="panel panel-default">
-                <div class="panel-heading"><i class="fa fa-bell"></i> {{object}}</div>
-                  <table class="table">
-                    <tr><td>{% trans 'A related event '%}</td><td>{{object.event}}</td></tr>
+                <div class="panel-heading"><i class="fa fa-bell"></i> {{ object }}</div>
+                <table class="table">
+                    <tr>
+                        <td>{% trans 'A related event ' %}</td>
+                        <td>{{ object.event }}</td>
+                    </tr>
                 </table>
             </div>
         </div>
     </div>
     {% if object.event.created_by.is_staff %}
-    <div class="col-md-2 col-xs-2 avatar">
-        <img src="{% get_avatar_url object.event.created_by %}">
-    </div>
+        <div class="col-md-2 col-xs-2 avatar">
+            <img src="{% get_avatar_url object.event.created_by %}">
+        </div>
     {% endif %}
 
 </div>

@@ -11,7 +11,7 @@ class KeyAuthMixin(object):
         if 'HTTP_AUTHORIZATION' in request.META:
             auth = request.META['HTTP_AUTHORIZATION'].split()
             if len(auth) == 2 and auth[0].lower() == "basic":
-                    return base64.b64decode(auth[1]).split(':')
+                return base64.b64decode(auth[1]).split(':')
         if 'user' in request.GET and 'password' in request.GET:
             return (request.GET['user'], request.GET['password'])
         return None
@@ -28,6 +28,6 @@ class KeyAuthMixin(object):
             except (Key.MultipleObjectsReturned, Key.DoesNotExist):
                 user = None
             if user is not None and user.is_active:
-                    request.user = user
-                    return super(KeyAuthMixin, self).dispatch(request, *args, **kwargs)
+                request.user = user
+                return super(KeyAuthMixin, self).dispatch(request, *args, **kwargs)
         return HttpResponse('Unauthorized', status=401)

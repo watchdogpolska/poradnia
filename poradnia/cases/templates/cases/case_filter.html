@@ -2,107 +2,117 @@
 {% load crispy_forms_tags humanize i18n cases_tags bootstrap_pagination %}
 
 {% block extra_css %}
-<style>
-  span.free, tr.free > td, td.free {
-    background-color: #38FF98;
-  }
-  span.open, tr.open > td, td.open {
-    background-color: #A3FFD0;
-  }
-  span.closed, tr.closed > td, td.closed {
-    background-color: #DEFFEE;
-  }
-  input#id_id {
-    width: 100px;
-  }
-</style>
+    <style>
+        span.free, tr.free > td, td.free {
+            background-color: #38FF98;
+        }
+
+        span.open, tr.open > td, td.open {
+            background-color: #A3FFD0;
+        }
+
+        span.closed, tr.closed > td, td.closed {
+            background-color: #DEFFEE;
+        }
+
+        input#id_id {
+            width: 100px;
+        }
+    </style>
 {% endblock %}
 
 {% block breadcrumbs %}
-<ol class="breadcrumb">
-  <li class="active">{% trans 'Cases index' %}</li>
-</ol>
+    <ol class="breadcrumb">
+        <li class="active">{% trans 'Cases index' %}</li>
+    </ol>
 {% endblock %}
 
 {% block content %}
 
-{% crispy filter.form %}
+    {% crispy filter.form %}
 
-{% if object_list %}
-<table class="table  table-striped table-cases table-condensed">
-  <thead><tr>
-    <th class="id">{% trans 'No.' %}</th>
-    <th class="client">{% trans 'Client' %}</th>
-    <th class="subject">{% trans 'Subject' %} {% if user.is_staff %}[{% trans 'Dead-line'%}] {% endif %}</th>
-    {% if user.is_staff %}
-    <th class="last_action">&nbsp;</th>
-    {% else %}
-    <th class="last_response">{% trans 'Last response' %}</th>
-    {% endif %}
-  </tr></thead>
-  <tbody>
-    {% for object in object_list %}
-    <tr>
-      <td class="id">{{ object.pk }}</td>
-      <td class="client"><a href="{{ object.client.get_absolute_url }}">{{ object.client }}</a></td>
-      <td class="subject">
-        <span class="{{object.status|status2css}}">
+    {% if object_list %}
+        <table class="table  table-striped table-cases table-condensed">
+            <thead>
+            <tr>
+                <th class="id">{% trans 'No.' %}</th>
+                <th class="client">{% trans 'Client' %}</th>
+                <th class="subject">{% trans 'Subject' %} {% if user.is_staff %}[{% trans 'Dead-line' %}
+                    ] {% endif %}</th>
+                {% if user.is_staff %}
+                    <th class="last_action">&nbsp;</th>
+                {% else %}
+                    <th class="last_response">{% trans 'Last response' %}</th>
+                {% endif %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
+                <tr>
+                    <td class="id">{{ object.pk }}</td>
+                    <td class="client"><a href="{{ object.client.get_absolute_url }}">{{ object.client }}</a></td>
+                    <td class="subject">
+        <span class="{{ object.status|status2css }}">
           {% if request.user.is_staff and not object.handled %}<b>{% endif %}
-          <a href="{{ object.get_absolute_url }}">{{ object.name }}</a>
-          {% if request.user.is_staff and not object.handled %}</b>{% endif %}
+            <a href="{{ object.get_absolute_url }}">{{ object.name }}</a>
+            {% if request.user.is_staff and not object.handled %}</b>{% endif %}
 
-          ({{ object.letter_count }})
+            ({{ object.letter_count }})
 
-          {% if request.user.is_staff and object.deadline.time %}
-          <span class="label label-warning">
+            {% if request.user.is_staff and object.deadline.time %}
+                <span class="label label-warning">
             <i class="fa fa-fire"></i> {{ object.deadline.time }}
           </span>
-          {% endif%}
+            {% endif %}
 
-          {% if request.user.is_staff and object.has_project %}
-          {% include 'cases/_project_badge.html' %}
-          {% endif %}
-          
-          {% if request.user.is_staff and object.caseuserobjectpermission_set.all %}
-          {% regroup object.caseuserobjectpermission_set.all by user as user_list %}
-          {% for user in user_list %}
-              <span class="label label-info" title="{% for item in user.list %}{% trans item.permission.name %},{% endfor %}">
+            {% if request.user.is_staff and object.has_project %}
+                {% include 'cases/_project_badge.html' %}
+            {% endif %}
+
+            {% if request.user.is_staff and object.caseuserobjectpermission_set.all %}
+                {% regroup object.caseuserobjectpermission_set.all by user as user_list %}
+                {% for user in user_list %}
+                    <span class="label label-info"
+                          title="{% for item in user.list %}{% trans item.permission.name %},{% endfor %}">
               {{ user.grouper.get_codename }}
               </span>
-          {% endfor %}
-          {% endif %}
-        </td>
-        {% if user.is_staff %}
-        <td class="last_action">
-          {% if object.last_action %}
-            <span title="{{object.last_action|naturaltime}}">
-              {{object.last_action}}
+                {% endfor %}
+            {% endif %}
+                    </td>
+                    {% if user.is_staff %}
+                        <td class="last_action">
+                            {% if object.last_action %}
+                                <span title="{{ object.last_action|naturaltime }}">
+              {{ object.last_action }}
             </span>
-          {% else %}
-            {% trans 'No action' %}
-          {% endif %}
-        </td>
-        {% else %}
-        <td class="last_response">
-          {% if object.last_send %}
-            {{ object.last_send|naturaltime }}
-          {% else %}
-            {% trans 'No answer' %}
-          {% endif %}
-        </tr>
-        {% endif %}
+                            {% else %}
+                                {% trans 'No action' %}
+                            {% endif %}
+                        </td>
+                    {% else %}
+                        <td class="last_response">
+                            {% if object.last_send %}
+                                {{ object.last_send|naturaltime }}
+                            {% else %}
+                                {% trans 'No answer' %}
+                            {% endif %}
+                        </tr>
+                    {% endif %}
 
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <p>{% trans 'Legend of status' %} <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom" title='{% trans 'Cases have status changed by staff.'%}'></i>: {% for status in statuses %}<i class="{{status.0|status2css}}"></i> {{status.0|status2display}} {% endfor %}</p>
-  <div class="text-center">
-    {% bootstrap_paginate page_obj  show_first_last="true" %}
-  </div>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <p>{% trans 'Legend of status' %} <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom"
+                                             title='{% trans 'Cases have status changed by staff.' %}'></i>:
+            {% for status in statuses %}<i class="{{ status.0|status2css }}"></i>
+                {{ status.0|status2display }} {% endfor %}</p>
+        <div class="text-center">
+            {% bootstrap_paginate page_obj show_first_last="true" %}
+        </div>
 
-  {% else %}
-  <p>{% trans 'There is no cases.' %}<a href="{% url 'letters:add' %}">{% trans 'Do more of these!' %}</a></p>
-  {% endif %}
+    {% else %}
+        <p>{% trans 'There is no cases.' %}<a href="{% url 'letters:add' %}">{% trans 'Do more of these!' %}</a></p>
+    {% endif %}
 
-  {% endblock %}
+{% endblock %}

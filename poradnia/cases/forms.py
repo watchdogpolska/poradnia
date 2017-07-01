@@ -1,7 +1,5 @@
 # -*- coding: utf-8 -*-
 import autocomplete_light.shortcuts as autocomplete_light
-from atom.ext.crispy_forms.forms import (FormHorizontalMixin, HelperMixin,
-                                         SingleButtonMixin)
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.layout import Submit
 from django import forms
@@ -10,11 +8,12 @@ from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from guardian.shortcuts import assign_perm
 
+from atom.ext.crispy_forms.forms import (FormHorizontalMixin, HelperMixin,
+                                         SingleButtonMixin)
 from .models import Case, PermissionGroup
 
 
 class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
-
     def __init__(self, *args, **kwargs):
         super(CaseForm, self).__init__(*args, **kwargs)
         if 'instance' in kwargs:
@@ -71,7 +70,6 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
 
 
 class CaseCloseForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
-
     notify = forms.BooleanField(required=False, label=_("Notify user"))
 
     def __init__(self, *args, **kwargs):

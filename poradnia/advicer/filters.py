@@ -1,11 +1,10 @@
 import django_filters
-from atom.filters import CrispyFilterMixin
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Fieldset, Layout, Submit, Div
 from django.utils.translation import ugettext_lazy as _
 
+from atom.filters import CrispyFilterMixin
 from poradnia.users.filters import UserChoiceFilter
-
 from .models import Advice
 
 

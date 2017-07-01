@@ -1,6 +1,4 @@
 import django_filters
-from atom.ext.crispy_forms.views import FormSetMixin
-from atom.filters import CrispyFilterMixin
 from braces.views import (PrefetchRelatedMixin, SelectRelatedMixin,
                           SetHeadlineMixin, UserFormKwargsMixin)
 from django.contrib import messages
@@ -9,11 +7,12 @@ from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, UpdateView
 from django_filters.views import FilterView
 
+from atom.ext.crispy_forms.views import FormSetMixin
+from atom.filters import CrispyFilterMixin
 from poradnia.users.utils import PermissionMixin
-
+from .fbv import REGISTRATION_TEXT
 from ..forms import AttachmentForm, LetterForm, NewCaseForm
 from ..models import Attachment, Letter
-from .fbv import REGISTRATION_TEXT
 
 
 class NewCaseCreateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, CreateView):

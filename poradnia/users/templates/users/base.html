@@ -1,13 +1,13 @@
-{%extends 'base.html' %}
+{% extends 'base.html' %}
 {% load i18n %}
 {% block breadcrumbs %}
-<ol class="breadcrumb">
-  <li><a href="{% url 'users:list'%}">{% trans 'Users' %}</a></li>
-  {% block breadcrumbs_rows%}{% endblock %}
-</ol>
+    <ol class="breadcrumb">
+        <li><a href="{% url 'users:list' %}">{% trans 'Users' %}</a></li>
+        {% block breadcrumbs_rows %}{% endblock %}
+    </ol>
 {% endblock %}
 
 {% block content %}
-{% block users_content %}
-{% endblock %}
+    {% block users_content %}
+    {% endblock %}
 {% endblock %}

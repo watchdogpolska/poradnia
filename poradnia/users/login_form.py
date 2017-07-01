@@ -1,9 +1,10 @@
 from allauth.account.forms import LoginForm
-from atom.ext.crispy_forms.forms import SingleButtonMixin
 from crispy_forms.bootstrap import PrependedText
 from crispy_forms.layout import Layout
 from django.utils.translation import ugettext as _
 from django.utils.translation import ugettext_lazy as _l
+
+from atom.ext.crispy_forms.forms import SingleButtonMixin
 
 
 class CustomLoginForm(SingleButtonMixin, LoginForm):
@@ -14,6 +15,6 @@ class CustomLoginForm(SingleButtonMixin, LoginForm):
         self.fields['login'].label = _('Login')
         self.helper.form_class = 'login-form'
         self.helper.layout = Layout(
-                    PrependedText('login', '<i class="fa fa-user"></i>'),
-                    PrependedText('password', '<i class="fa fa-key"></i>', type='password'),
-            )
+            PrependedText('login', '<i class="fa fa-user"></i>'),
+            PrependedText('password', '<i class="fa fa-key"></i>', type='password'),
+        )

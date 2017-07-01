@@ -2,33 +2,37 @@
 {% load crispy_forms_tags i18n %}
 
 {% block javascript %}
-{{block.super}}
-<script type="text/javascript">
-    $(function() {
-        $('form tbody tr').formset({'deleteText': '{% trans "remove"%}', 'addText':'{% trans "add another"%}', prefix: 'attachment_set'});
-    })
-</script>
+    {{ block.super }}
+    <script type="text/javascript">
+        $(function () {
+            $('form tbody tr').formset({
+                'deleteText': '{% trans "remove"%}',
+                'addText': '{% trans "add another"%}',
+                prefix: 'attachment_set'
+            });
+        })
+    </script>
 {% endblock %}
 
 {% block breadcrumbs_rows %}
-  {% if object %}
-    <li><a href="{{object.get_absolute_url }}">{{object}}</a></li>
-    <li class="active">{% trans 'Update' %}</li>
-  {% else %}
-    <li class="active">{% trans 'Add' %}</li>
-  {% endif %}
+    {% if object %}
+        <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+        <li class="active">{% trans 'Update' %}</li>
+    {% else %}
+        <li class="active">{% trans 'Add' %}</li>
+    {% endif %}
 {% endblock %}
 {% block content %}
 
-<div class="row">
-  {% if object %}<h1>{{object}}</h1>{% endif %}
-    <div class="col-md-12">
-    {% block form %}
-    <form class="{{form.helper.form_class}}" enctype="multipart/form-data" method="POST">
-      {% crispy form %}
-      {% crispy formset %}
-    </form>
-    {% endblock %}
-  </div>
-</div>
+    <div class="row">
+        {% if object %}<h1>{{ object }}</h1>{% endif %}
+        <div class="col-md-12">
+            {% block form %}
+                <form class="{{ form.helper.form_class }}" enctype="multipart/form-data" method="POST">
+                    {% crispy form %}
+                    {% crispy formset %}
+                </form>
+            {% endblock %}
+        </div>
+    </div>
 {% endblock %}

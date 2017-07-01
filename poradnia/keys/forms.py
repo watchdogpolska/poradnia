@@ -1,7 +1,7 @@
-from atom.ext.crispy_forms.forms import SingleButtonMixin
 from braces.forms import UserKwargModelFormMixin
 from django.forms import ModelForm
 
+from atom.ext.crispy_forms.forms import SingleButtonMixin
 from .models import Key
 
 

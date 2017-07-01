@@ -2,25 +2,27 @@
 <div class="block-list">
     <div class="block-list-header">{% trans 'Cases' %}</div>
     <ul class="block-list-list">
-        <li class="block-list-item"><a href="{% url 'letters:add' %}"><i class="fa fa-pencil"></i> {% trans 'New case'%}</a></li>
+        <li class="block-list-item"><a href="{% url 'letters:add' %}"><i
+                class="fa fa-pencil"></i> {% trans 'New case' %}</a></li>
         {% if request.user.is_authenticated %}
-        <li class="block-list-item">
-            <a href="{% url 'cases:list' %}?status=0&amp;status=1"><i class="fa fa-book"></i> {% trans 'Cases index'%}</a>
-        </li>
-        {% endif%}
+            <li class="block-list-item">
+                <a href="{% url 'cases:list' %}?status=0&amp;status=1"><i
+                        class="fa fa-book"></i> {% trans 'Cases index' %}</a>
+            </li>
+        {% endif %}
         {% if request.user.is_staff %}
 
-        <li class="block-list-item">
-            <a href="{% url 'events:calendar' %}"><i class="fa fa-calendar"></i> {% trans 'Event calendar' %}</a>
-        </li>
+            <li class="block-list-item">
+                <a href="{% url 'events:calendar' %}"><i class="fa fa-calendar"></i> {% trans 'Event calendar' %}</a>
+            </li>
         {% endif %}
         <li class="block-list-item">
             <a href="/strony/regulamin-poradnictwa/"><i class="fa fa-gavel"></i> Regulamin poradnictwa</a>
         </li>
         {% if request.user.is_authenticated %}
-        <li class="block-list-item">
-            <a href="{% url 'letters:list' %}"><i class="fa fa-envelope"></i> {% trans 'Letters' %}</a>
-        </li>
-        {% endif%}
+            <li class="block-list-item">
+                <a href="{% url 'letters:list' %}"><i class="fa fa-envelope"></i> {% trans 'Letters' %}</a>
+            </li>
+        {% endif %}
     </ul>
 </div>

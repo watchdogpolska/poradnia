@@ -1,21 +1,19 @@
-
 import autocomplete_light.shortcuts as autocomplete_light
-from atom.ext.crispy_forms.forms import (FormHorizontalMixin, HelperMixin,
-                                         SingleButtonMixin)
-from atom.forms import AuthorMixin
 from braces.forms import UserKwargModelFormMixin
-from poradnia.cases.models import Case
 from crispy_forms.layout import Fieldset, Layout
 from django import forms
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
 
+from atom.ext.crispy_forms.forms import (FormHorizontalMixin, HelperMixin,
+                                         SingleButtonMixin)
+from atom.forms import AuthorMixin
+from poradnia.cases.models import Case
 from .models import Advice, Attachment
 
 
 class AdviceForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, AuthorMixin,
                  autocomplete_light.ModelForm):
-
     def __init__(self, *args, **kwargs):
         super(AdviceForm, self).__init__(*args, **kwargs)
         self.helper.form_method = 'post'

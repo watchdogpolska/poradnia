@@ -1,7 +1,4 @@
 import autocomplete_light.shortcuts as autocomplete_light
-from atom.ext.crispy_forms.forms import HelperMixin, SingleButtonMixin
-from atom.ext.tinycontent.forms import GIODOMixin
-from atom.forms import PartialMixin
 from crispy_forms.layout import BaseInput, Submit
 from django import forms
 from django.contrib.auth import get_user_model
@@ -10,8 +7,10 @@ from django.core.urlresolvers import reverse
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 
+from atom.ext.crispy_forms.forms import HelperMixin, SingleButtonMixin
+from atom.ext.tinycontent.forms import GIODOMixin
+from atom.forms import PartialMixin
 from poradnia.cases.models import Case
-
 from .models import Attachment, Letter
 
 CLIEN_FIELD_TEXT = _("Leave empty to use email field and create a new one user.")
@@ -85,7 +84,7 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, autocomplete_ligh
 
     def clean(self):
         if self.user.has_perm('cases.can_select_client') and \
-                not (self.cleaned_data.get('email') or self.cleaned_data.get('client')):
+            not (self.cleaned_data.get('email') or self.cleaned_data.get('client')):
             raise ValidationError(_("Have to enter user email or select a client"))
         return super(NewCaseForm, self).clean()
 
@@ -129,7 +128,6 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, autocomplete_ligh
 
 
 class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
-
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user')
         self.case = kwargs.pop('case')
@@ -171,7 +169,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         if not self.user_can_send:
             return Letter.STATUS.staff
         if 'send_staff' in self.data or 'project' in self.data:
-                return Letter.STATUS.staff
+            return Letter.STATUS.staff
         return Letter.STATUS.done
 
     def save(self, commit=True, *args, **kwargs):
