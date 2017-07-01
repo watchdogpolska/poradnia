@@ -2,5 +2,5 @@
 #	production that isn't in development.
 -r base.txt
 Django==1.9.13 # rq.filter: >=1.9,<1.10
-gunicorn==19.6.0
+gunicorn==19.7.1
 gevent==1.2.2
