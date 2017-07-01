@@ -249,9 +249,9 @@ class StatsUserRegisteredApiView(LoginRequiredMixin, SuperuserRequiredMixin, Api
         start_date = INIT_DATE
 
         def not_after_start_date(x):
-            return x['year'] < start_date[0] or \
-                   (x['year'] == start_date[0] and x['month'] <= start_date[1]) or \
-                   (x['year'] is None or x['month'] is None)
+            return (x['year'] is None or x['month'] is None) or \
+                   (x['year'] < start_date[0]) or \
+                   (x['year'] == start_date[0] and x['month'] <= start_date[1])
 
         before = list(takewhile(not_after_start_date, qs))
         after = list(dropwhile(not_after_start_date, qs))
