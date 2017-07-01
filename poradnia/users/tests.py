@@ -2,18 +2,19 @@ from __future__ import absolute_import
 
 from django.core import mail
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.test import TestCase, RequestFactory
+from django.test import RequestFactory
 from django.utils import timezone
 from guardian.shortcuts import assign_perm, get_perms
+from test_plus.test import TestCase
 
+from atom.mixins import AdminTestCaseMixin
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
+from poradnia.users.autocomplete_light_registry import UserAutocomplete
 from poradnia.users.factories import StaffFactory, UserFactory
+from poradnia.users.forms import TranslatedManageObjectPermissionForm
 from poradnia.users.forms import TranslatedUserObjectPermissionsForm, UserForm
 from poradnia.users.models import User
-
-from poradnia.users.forms import TranslatedManageObjectPermissionForm
-from poradnia.users.autocomplete_light_registry import UserAutocomplete
 
 
 class UserTestCase(TestCase):
@@ -360,3 +361,9 @@ class UserAutocompleteTestCase(TestCase):
         cls = UserAutocomplete(request=request)
         cls.choices = User.objects
         self.assertQuerysetEqual(cls.choices_for_request(), [])
+
+
+class UserAdminTestCase(AdminTestCaseMixin, TestCase):
+    user_factory_cls = UserFactory
+    factory_cls = UserFactory
+    model = User

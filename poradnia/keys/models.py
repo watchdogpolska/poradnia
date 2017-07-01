@@ -1,6 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.query import QuerySet
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from poradnia.users.models import User
@@ -13,6 +14,7 @@ class KeyQuerySet(QuerySet):
         return self.filter(user=user)
 
 
+@python_2_unicode_compatible
 class Key(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"))
     password = models.CharField(max_length=75, default=make_random_password, verbose_name=_("Key"))
@@ -25,7 +27,7 @@ class Key(models.Model):
     def get_absolute_url(self):
         return reverse('keys:details', kwargs={'pk': self.pk})
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % (self.created_on)
 
     class Meta:

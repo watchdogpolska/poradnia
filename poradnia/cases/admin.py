@@ -37,3 +37,7 @@ class PermissionGroupAdmin(admin.ModelAdmin):
 
     def get_permissions(self, obj):
         return ", ".join([_(x.name) for x in obj.permissions.all()])
+
+    def get_queryset(self, request):
+        qs = super(PermissionGroupAdmin, self).get_queryset(request)
+        return qs.prefetch_related('permissions')

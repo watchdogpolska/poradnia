@@ -6,12 +6,14 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.signals import post_save
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from model_utils.fields import MonitorField
 
 from .utils import githubify, mail_managers_replyable
 
 
+@python_2_unicode_compatible
 class Feedback(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, help_text=_("Author"), null=True)
     text = models.TextField(verbose_name=_("Comment"),
@@ -24,7 +26,7 @@ class Feedback(models.Model):
     def get_status_display(self):
         return _('open') if self.status else _('closed')
 
-    def __unicode__(self):
+    def __str__(self):
         return str(self.created)
 
     def get_absolute_url(self):
@@ -46,6 +48,7 @@ def notify_manager(sender, instance, **kwargs):
     message = instance.text
     reply_email = instance.user.email if instance.user else None
     mail_managers_replyable(subject, message, reply_email=reply_email)
+
 
 if getattr(settings, "FEEDBACK_NOTIFY_MANAGERS", True):
     post_save.connect(notify_manager, sender=Feedback, dispatch_uid="notify_manager")

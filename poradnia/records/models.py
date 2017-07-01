@@ -5,6 +5,7 @@ from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import python_2_unicode_compatible
 
 from poradnia.cases.models import Case
 
@@ -75,6 +76,7 @@ class AbstractRecordQuerySet(QuerySet):
                            case__caseuserobjectpermission__user=user)
 
 
+@python_2_unicode_compatible
 class AbstractRecord(models.Model):
     record_general = GenericRelation('records.Record', related_query_name='record')
     case = models.ForeignKey(Case)
@@ -100,9 +102,9 @@ class AbstractRecord(models.Model):
             record.save()
         self.case.update_counters()
 
-    def __unicode__(self):
-        return _("%(object)s (#%(pk)d) in case #%(case_id)d") %\
-            {'object': self._meta.model_name, 'pk': self.pk, 'case_id': self.case_id}
+    def __str__(self):
+        return _("%(object)s (#%(pk)d) in case #%(case_id)d") % \
+               {'object': self._meta.model_name, 'pk': self.pk, 'case_id': self.case_id}
 
     class Meta:
         abstract = True

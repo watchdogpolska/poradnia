@@ -75,10 +75,10 @@ class AnonymousNewCaseFormMyTests(TestCase):
 
         self.assertEqual(len(mail.outbox), 2)
         self.assertIn(self.data['name'], mail.outbox[1].subject)
-        self.assertIn(unicode(obj.created_by), mail.outbox[1].subject)
+        self.assertIn(str(obj.created_by), mail.outbox[1].subject)
 
     def test_fields_compare(self):
-        self.assertEqual(self.get_bound().fields.keys(), self.fields)
+        self.assertEqual(list(self.get_bound().fields.keys()), self.fields)
 
     def test_login_required(self):
         UserFactory(email=self.data['email_registration'])

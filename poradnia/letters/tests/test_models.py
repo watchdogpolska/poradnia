@@ -2,13 +2,15 @@ from datetime import timedelta
 from os.path import dirname, join
 
 import django_mailbox
+import six
+
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
 from distutils.version import StrictVersion
 from django.test import TestCase
 from django.utils.timezone import now
 from django_mailbox.models import Mailbox
-from email import message_from_file
+import email
 from guardian.shortcuts import assign_perm
 from poradnia.letters.factories import LetterFactory
 from poradnia.letters.models import Letter, mail_process
@@ -118,8 +120,11 @@ class ReceiveEmailTestCase(TestCase):
     @staticmethod
     def _get_email_object(filename):  # See coddingtonbear/django-mailbox#89
         path = join(dirname(__file__), 'messages', filename)
-        fp = open(path, 'rb')
-        return message_from_file(fp)
+        msg_content = open(path, 'rb').read()
+        if six.PY3:
+            return email.message_from_bytes(msg_content)
+        else:
+            return email.message_from_string(msg_content)
 
     def get_message(self, filename):
         message = self._get_email_object(filename)

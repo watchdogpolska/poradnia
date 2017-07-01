@@ -4,10 +4,8 @@ import logging
 import os
 from os.path import basename
 
-import talon
 import html2text
-from poradnia.cases.models import Case
-from talon import quotations
+import talon
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.files import File
@@ -15,13 +13,16 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import F, Func, IntegerField
 from django.dispatch import receiver
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django_mailbox.models import Message
 from django_mailbox.signals import message_received
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
-from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
+from talon import quotations
 
+from poradnia.cases.models import Case
+from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from .utils import date_random_path
 
 talon.init()
@@ -38,7 +39,7 @@ class LetterQuerySet(AbstractRecordQuerySet):
 
     def last_staff_send(self):
         return self.filter(status='done', created_by__is_staff=True).order_by(
-                '-created_on', '-id').all()[0]
+            '-created_on', '-id').all()[0]
 
     def last_received(self):
         return self.filter(created_by__is_staff=False).order_by('-created_on', '-id').all()[0]
@@ -51,16 +52,17 @@ class LetterQuerySet(AbstractRecordQuerySet):
 
     def with_month_year(self):
         return self.annotate(
-                month=Func(F('created_on'),
-                           function='month',
-                           output_field=IntegerField())
-            ).annotate(
-                year=Func(F('created_on'),
-                          function='year',
-                          output_field=IntegerField())
-            )
+            month=Func(F('created_on'),
+                       function='month',
+                       output_field=IntegerField())
+        ).annotate(
+            year=Func(F('created_on'),
+                      function='year',
+                      output_field=IntegerField())
+        )
 
 
+@python_2_unicode_compatible
 class Letter(AbstractRecord):
     STATUS = Choices(('staff', _('Staff')), ('done', _('Done')))
     GENRE = Choices('mail', 'comment')
@@ -90,7 +92,7 @@ class Letter(AbstractRecord):
 
     objects = LetterQuerySet.as_manager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_users(self, force_all=False):
@@ -132,6 +134,7 @@ class Letter(AbstractRecord):
         ordering = ['-created_on']
 
 
+@python_2_unicode_compatible
 class Attachment(models.Model):
     letter = models.ForeignKey(Letter)
     attachment = models.FileField(upload_to=date_random_path, verbose_name=_("File"))
@@ -140,7 +143,7 @@ class Attachment(models.Model):
     def filename(self):
         return basename(self.attachment.name)
 
-    def __unicode__(self):
+    def __str__(self):
         return "%s" % (self.filename)
 
     def get_absolute_url(self):
@@ -162,7 +165,7 @@ def mail_process(sender, message, **args):
     if (lambda x: 'Auto-Submitted' in x and
             x['Auto-Submitted'] == 'auto-replied')(message.get_email_object()):
         logger.info("Delete .eml from {email} as auto-replied".format(
-                    email=message.from_address[0]))
+            email=message.from_address[0]))
         message.eml.delete(save=True)
         return
 

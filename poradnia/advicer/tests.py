@@ -1,7 +1,8 @@
 from __future__ import absolute_import
 
+from test_plus.test import TestCase
+from atom.mixins import AdminTestCaseMixin
 from django.core.urlresolvers import reverse, reverse_lazy
-from django.test import TestCase
 from guardian.shortcuts import assign_perm
 
 from poradnia.advicer.models import Advice
@@ -143,3 +144,9 @@ class AdviceQuerySetTestCase(TestCase):
     def test_visible(self):
         self.assertTrue(Advice.objects.visible().filter(pk=AdviceFactory(visible=True).pk).exists())
         self.assertFalse(Advice.objects.visible().filter(pk=AdviceFactory(visible=False).pk).exists())
+
+
+class AdviceAdminTestCase(AdminTestCaseMixin, TestCase):
+    user_factory_cls = UserFactory
+    factory_cls = AdviceFactory
+    model = Advice

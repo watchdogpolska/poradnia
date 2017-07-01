@@ -6,10 +6,10 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse
 from django.db import models
-from django.db.models import (F, Q, Count, Func, IntegerField,
-                              Prefetch)
+from django.db.models import F, Q, Count, Func, IntegerField, Prefetch
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import assign_perm, get_users_with_perms
@@ -21,7 +21,6 @@ from poradnia.template_mail.utils import send_tpl_email
 
 
 class CaseQuerySet(QuerySet):
-
     def for_assign(self, user):
         content_type = ContentType.objects.get_for_model(Case)
         return self.filter(caseuserobjectpermission__permission__codename='can_view',
@@ -88,6 +87,7 @@ class CaseQuerySet(QuerySet):
         )
 
 
+@python_2_unicode_compatible
 class Case(models.Model):
     STAFF_ORDER_DEFAULT_FIELD = 'last_action'
     USER_ORDER_DEFAULT_FIELD = 'last_send'
@@ -147,7 +147,7 @@ class Case(models.Model):
     def get_users_with_perms(self, *args, **kwargs):
         return get_users_with_perms(self, with_group_users=False, *args, **kwargs)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_email(self):
@@ -314,6 +314,7 @@ class CaseGroupObjectPermission(GroupObjectPermissionBase):
 limit = {'content_type__app_label': 'cases', 'content_type__model': 'case'}
 
 
+@python_2_unicode_compatible
 class PermissionGroup(models.Model):
     name = models.CharField(max_length=25,
                             verbose_name=_("Name"))
@@ -321,7 +322,7 @@ class PermissionGroup(models.Model):
                                          verbose_name=_("Permissions"),
                                          limit_choices_to=limit)
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
 
@@ -336,11 +337,13 @@ def notify_new_case(sender, instance, created, **kwargs):
                        recipient_list=email,
                        context={'case': instance})
 
+
 post_save.connect(notify_new_case, sender=Case, dispatch_uid="new_case_notify")
 
 
 def assign_perm_new_case(sender, instance, created, **kwargs):
     if created:
         instance.assign_perm()
+
 
 post_save.connect(assign_perm_new_case, sender=Case, dispatch_uid="assign_perm_new_case")

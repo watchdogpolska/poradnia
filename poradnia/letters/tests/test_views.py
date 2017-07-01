@@ -48,7 +48,7 @@ class NewCaseMixin(CaseMixin):
 
     def test_field_map(self):
         resp = self.client.get(self.url)
-        self.assertEqual(resp.context_data['form'].fields.keys(), self.fields)
+        self.assertEqual(list(resp.context_data['form'].fields.keys()), self.fields)
 
 
 class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):

@@ -3,12 +3,12 @@ from __future__ import unicode_literals
 
 import re
 
-from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Case, Count, F, Func, IntegerField, Q, When
 from django.db.models.query import QuerySet
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from guardian.mixins import GuardianUserMixin
 from guardian.utils import get_anonymous_user
@@ -23,7 +23,6 @@ _('Login')
 
 
 class UserQuerySet(QuerySet):
-
     def for_user(self, user):
         if not user.has_perm('users.can_view_other'):
             return self.filter(Q(pk=user.pk) | Q(is_staff=True))
@@ -79,7 +78,6 @@ class UserQuerySet(QuerySet):
 
 
 class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
-
     def get_by_email_or_create(self, email, notify=True):
         try:
             user = self.model.objects.get(email=email)  # Support allauth EmailAddress
@@ -115,6 +113,7 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
         return user
 
 
+@python_2_unicode_compatible
 class User(GuardianUserMixin, AbstractUser):
     picture = ImageField(upload_to='avatars', verbose_name=_("Avatar"), null=True, blank=True)
     codename = models.CharField(max_length=15, null=True, blank=True, verbose_name=_("Codename"))
@@ -132,7 +131,7 @@ class User(GuardianUserMixin, AbstractUser):
             return self.get_full_name()
         return self.username
 
-    def __unicode__(self):
+    def __str__(self):
         text = self.get_nicename()
         if self.is_staff:
             text += ' (team)'

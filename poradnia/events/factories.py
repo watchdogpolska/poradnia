@@ -26,3 +26,11 @@ class ReminderFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = 'events.Reminder'
+
+
+class AlarmFactory(factory.django.DjangoModelFactory):
+    case = factory.SubFactory(CaseFactory)
+    event = factory.SubFactory(EventFactory)
+
+    class Meta:
+        model = 'events.Alarm'

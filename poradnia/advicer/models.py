@@ -4,17 +4,19 @@ from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
 from poradnia.cases.models import Case
 
 
+@python_2_unicode_compatible
 class AbstractCategory(models.Model):
     name = models.CharField(max_length=100,
                             verbose_name=_("Name"))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     class Meta:
@@ -22,35 +24,30 @@ class AbstractCategory(models.Model):
 
 
 class Issue(AbstractCategory):
-
     class Meta:
         verbose_name = _("The thematic scope of the request")
         verbose_name_plural = _("Thematic scopes of requests")
 
 
 class Area(AbstractCategory):
-
     class Meta:
         verbose_name = _("Problem regarding the right to information")
         verbose_name_plural = _("Problems regarding the right to information")
 
 
 class PersonKind(AbstractCategory):
-
     class Meta:
         verbose_name = _("Type of person who reporting the advice")
         verbose_name_plural = _("Types of people who report to for advice")
 
 
 class InstitutionKind(AbstractCategory):
-
     class Meta:
         verbose_name = _("Institution kind")
         verbose_name_plural = _("Institution kinds")
 
 
 class AdviceQuerySet(QuerySet):
-
     def for_user(self, user):
         if user.has_perm('advicer.can_view_all_advices'):
             return self
@@ -60,6 +57,7 @@ class AdviceQuerySet(QuerySet):
         return self.filter(visible=True)
 
 
+@python_2_unicode_compatible
 class Advice(models.Model):
     case = models.OneToOneField(Case,
                                 null=True,
@@ -112,7 +110,7 @@ class Advice(models.Model):
                                blank=True)
     objects = AdviceQuerySet.as_manager()
 
-    def __unicode__(self):
+    def __str__(self):
         return self.subject or _("Advice #%d") % (self.pk)
 
     def get_absolute_url(self):

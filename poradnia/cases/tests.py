@@ -2,21 +2,23 @@ from datetime import timedelta
 
 import django
 import six
-
-from poradnia.cases.admin import CaseAdmin
-from poradnia.cases.factories import CaseFactory, PermissionGroupFactory
-from poradnia.cases.filters import StaffCaseFilter
-from poradnia.cases.forms import CaseCloseForm
-from poradnia.cases.models import Case
-from poradnia.cases.views import CaseListView
 from django.contrib.admin.sites import AdminSite
 from django.core import mail
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
-from django.test import RequestFactory, TestCase
+from django.test import RequestFactory
 from django.test.utils import override_settings
 from django.utils.timezone import now
 from guardian.shortcuts import assign_perm
+from test_plus.test import TestCase
+
+from atom.mixins import AdminTestCaseMixin
+from poradnia.cases.admin import CaseAdmin
+from poradnia.cases.factories import CaseFactory, PermissionGroupFactory
+from poradnia.cases.filters import StaffCaseFilter
+from poradnia.cases.forms import CaseCloseForm
+from poradnia.cases.models import Case, PermissionGroup
+from poradnia.cases.views import CaseListView
 from poradnia.letters.factories import LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
@@ -221,7 +223,6 @@ class StaffCaseFilterTestCase(TestCase):
                                'o'])
 
 
-
 class CaseListViewTestCase(TestCase):
     url = reverse_lazy('cases:list')
 
@@ -300,7 +301,6 @@ class CaseCloseFormTestCase(TestCase):
 
 
 class UserPermissionViewTestCase(TestCase):
-
     def setUp(self):
         self.actor = UserFactory()
         self.user_with_permission = UserFactory()
@@ -348,10 +348,22 @@ class CaseGroupPermissionViewTestCase(TestCase):
         self.assertFalse(self.user_with_permission.has_perm('can_send_to_client',
                                                             self.object))
 
-        pg = PermissionGroupFactory(permissions=('can_send_to_client', ))
+        pg = PermissionGroupFactory(permissions=('can_send_to_client',))
         resp = self.client.post(self.url, data={'user': self.user_with_permission.pk,
                                                 'group': pg.pk})
         self.assertEqual(resp.status_code, 302)
 
         self.assertTrue(self.user_with_permission.has_perm('cases.can_send_to_client',
                                                            self.object))
+
+
+class CaseAdminTestCase(AdminTestCaseMixin, TestCase):
+    user_factory_cls = UserFactory
+    factory_cls = CaseFactory
+    model = Case
+
+
+class PermissionGroupAdminTestCase(AdminTestCaseMixin, TestCase):
+    user_factory_cls = UserFactory
+    factory_cls = PermissionGroupFactory
+    model = PermissionGroup
