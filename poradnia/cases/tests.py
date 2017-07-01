@@ -2,6 +2,7 @@ from datetime import timedelta
 
 import django
 import six
+from atom.mixins import AdminTestCaseMixin
 from django.contrib.admin.sites import AdminSite
 from django.core import mail
 from django.core.exceptions import PermissionDenied
@@ -12,7 +13,6 @@ from django.utils.timezone import now
 from guardian.shortcuts import assign_perm
 from test_plus.test import TestCase
 
-from atom.mixins import AdminTestCaseMixin
 from poradnia.cases.admin import CaseAdmin
 from poradnia.cases.factories import CaseFactory, PermissionGroupFactory
 from poradnia.cases.filters import StaffCaseFilter
