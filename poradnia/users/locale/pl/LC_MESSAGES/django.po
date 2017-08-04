@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-10 01:08+0100\n"
-"PO-Revision-Date: 2016-11-24 21:33+0100\n"
-"Last-Translator: Karol <karol@ppkt.eu>\n"
+"POT-Creation-Date: 2017-08-04 21:24+0200\n"
+"PO-Revision-Date: 2017-08-04 21:26+0200\n"
+"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
@@ -12,12 +12,12 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.11\n"
+"X-Generator: Poedit 1.8.7.1\n"
 "X-Crowdin-Project: poradnia\n"
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /users/locale/en/LC_MESSAGES/django.po\n"
 
-#: apps.py:7 models.py:173 templates/users/base.html:5
+#: apps.py:7 models.py:189 templates/users/base.html:5
 #: templates/users/user_filter.html:18
 msgid "Users"
 msgstr "Wykaz użytkowników"
@@ -26,87 +26,123 @@ msgstr "Wykaz użytkowników"
 msgid "Signup"
 msgstr "Rejestracja"
 
-#: login_form.py:14 models.py:22
+#: login_form.py:14 models.py:23
 msgid "Login"
 msgstr "Nazwa użytkownika / użytkowniczki"
 
-#: models.py:21
+#: metric.py:8
+msgid "Users total"
+msgstr "Liczba użytkowników"
+
+#: metric.py:9
+msgid "Number of users registered total"
+msgstr "Łączna liczba użytkowników zarejestrowanych"
+
+#: metric.py:16
+msgid "Users monthly"
+msgstr "Użytkowników miesięcznie"
+
+#: metric.py:17
+msgid "Number of users registered in month"
+msgstr "Liczba użytkowników dokonujących rejestracji w miesiącu"
+
+#: metric.py:22
+msgid "Active users"
+msgstr "Aktywnych użytkowników"
+
+#: metric.py:23
+msgid "Number of active users in month"
+msgstr "Liczba aktywnych użytkowników w miesiącu"
+
+#: metric.py:29
+msgid "Active staff member"
+msgstr "Liczba aktywnych członków zespołu"
+
+#: metric.py:30
+msgid ""
+"Number of team members who have made at least one message in the current "
+"month."
+msgstr ""
+"Liczba członków zespołu którzy nadesłali co najmniej jedną wiadomość w "
+"miesiącu"
+
+#: models.py:22
 msgid "Username or e-mail"
 msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
 
-#: models.py:108
+#: models.py:124
 msgid "Avatar"
 msgstr "Avatar"
 
-#: models.py:109
+#: models.py:125
 msgid "Codename"
 msgstr "Kryptonim"
 
-#: models.py:113
+#: models.py:129
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:172 templates/users/_sidebar.html:3
-#: templates/users/user_detail.html:3 templates/users/user_filter.html:36
+#: models.py:188 templates/users/_sidebar.html:3
+#: templates/users/user_detail.html:3 templates/users/user_filter.html:38
 #: templates/users/user_form.html:4 templates/users/user_form.html:15
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: models.py:178
+#: models.py:194
 msgid "No reminder"
 msgstr "Nie przypominaj"
 
-#: models.py:179
+#: models.py:195
 msgid "1 day"
 msgstr "1 dzień"
 
-#: models.py:180
+#: models.py:196
 msgid "3 days"
 msgstr "3 dni"
 
-#: models.py:181
+#: models.py:197
 msgid "7 days"
 msgstr "7 dni"
 
-#: models.py:184 templates/users/user_detail.html:16
+#: models.py:200 templates/users/user_detail.html:16
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:185
+#: models.py:201
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: models.py:188
+#: models.py:204
 msgid "Event Reminder Time"
 msgstr "Przypominaj o wydarzeniach"
 
-#: models.py:192 templates/users/profile_form.html:7
+#: models.py:208 templates/users/profile_form.html:7
 #: templates/users/profile_form.html:10 templates/users/user_detail.html:26
 msgid "Profile"
 msgstr "Profil"
 
-#: models.py:193
+#: models.py:209
 msgid "Profiles"
 msgstr "Profile"
 
-#: templates/users/_sidebar.html:8
+#: templates/users/_sidebar.html:9
 #, python-format
 msgid "%(user)s"
 msgstr "%(user)s"
 
-#: templates/users/_sidebar.html:12
+#: templates/users/_sidebar.html:13
 msgid "Users list"
 msgstr "Wykaz użytkowników"
 
-#: templates/users/_sidebar.html:16
+#: templates/users/_sidebar.html:17
 msgid "Logout"
 msgstr "Wyloguj"
 
-#: templates/users/_sidebar.html:20
+#: templates/users/_sidebar.html:21
 msgid "Sign Up"
 msgstr "Rejestracja"
 
-#: templates/users/_sidebar.html:23
+#: templates/users/_sidebar.html:24
 msgid "Log In"
 msgstr "Zaloguj"
 
@@ -126,7 +162,7 @@ msgstr "Zmiana hasła"
 msgid "Keys"
 msgstr "Klucze"
 
-#: templates/users/user_detail.html:41 templates/users/user_filter.html:37
+#: templates/users/user_detail.html:41 templates/users/user_filter.html:39
 msgid "Client cases"
 msgstr "Sprawy klienta"
 
@@ -146,19 +182,19 @@ msgstr ""
 "Nie masz dostepu do danych wszystkich użytkowników. W większości tylko do "
 "profilu członków zespołu i swojego."
 
-#: templates/users/user_filter.html:39
+#: templates/users/user_filter.html:41
 msgid "Assigned cases sum"
 msgstr "Przypisane sprawy"
 
-#: templates/users/user_filter.html:40
+#: templates/users/user_filter.html:42
 msgid "Free"
 msgstr "Wolne"
 
-#: templates/users/user_filter.html:41
+#: templates/users/user_filter.html:43
 msgid "Active"
 msgstr "Aktywne"
 
-#: templates/users/user_filter.html:42
+#: templates/users/user_filter.html:44
 msgid "Closed"
 msgstr "Zamknięte"
 
@@ -166,14 +202,14 @@ msgstr "Zamknięte"
 msgid "Account"
 msgstr "Konto"
 
-#: views.py:73
+#: views.py:72
 msgid "All users"
 msgstr "Wszyscy użytkownicy"
 
-#: views.py:74
+#: views.py:73
 msgid "Staff"
 msgstr "Zespoł"
 
-#: views.py:75
+#: views.py:74
 msgid "Clients"
 msgstr "Klienci"

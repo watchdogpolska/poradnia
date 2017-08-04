@@ -3,12 +3,14 @@ from __future__ import unicode_literals
 
 import re
 
+from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Case, Count, F, Func, IntegerField, Q, When
 from django.db.models.query import QuerySet
 from django.utils.encoding import python_2_unicode_compatible
+from django.utils.datetime_safe import datetime
 from django.utils.translation import ugettext_lazy as _
 from guardian.mixins import GuardianUserMixin
 from guardian.utils import get_anonymous_user
@@ -75,6 +77,12 @@ class UserQuerySet(QuerySet):
                       function='year',
                       output_field=IntegerField())
         )
+
+    def active(self):
+        start = datetime.today().replace(day=1)
+        return self.filter(
+            letter_created_by__created_on__date__gte=start
+        ).annotate(active=Count('letter_created_by'))
 
 
 class CustomUserManager(UserManager.from_queryset(UserQuerySet)):

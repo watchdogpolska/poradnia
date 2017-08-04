@@ -65,7 +65,7 @@ LOCAL_APPS = (
     'poradnia.advicer',
     'poradnia.feedback_custom',
     'poradnia.tasty_feedback',
-    'poradnia.navsearch'
+    'poradnia.navsearch',
     # Your stuff: custom apps go here
 )
 
@@ -327,3 +327,15 @@ TEMPLATES = [
     },
 ]
 FILTERS_HELP_TEXT_FILTER = False
+
+STAT_METRICS = {
+    'cases.count': 'poradnia.cases.metric.cases_count',
+    'cases.free': 'poradnia.cases.metric.cases_free',
+    'cases.assigned': 'poradnia.cases.metric.cases_assigned',
+    'cases.closed': 'poradnia.cases.metric.cases_closed',
+    'cases.monthly': 'poradnia.cases.metric.cases_monthly',
+    'users.total': 'poradnia.users.metric.users_total',
+    'users.monthly': 'poradnia.users.metric.users_monthly',
+    'users.active': 'poradnia.users.metric.users_active',
+    'users.active.staff': 'poradnia.users.metric.users_active_staff'
+}

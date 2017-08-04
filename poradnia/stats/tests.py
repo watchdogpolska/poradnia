@@ -12,6 +12,7 @@ from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
 from poradnia.letters.factories import LetterFactory
 from poradnia.letters.models import Letter
+from poradnia.stats.factories import ItemFactory, ValueFactory
 from poradnia.stats.mixins import PermissionStatusMixin
 from poradnia.stats.utils import DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY, GapFiller
 from poradnia.users.factories import UserFactory
@@ -629,3 +630,51 @@ class GapFillerTestCase(TestCase):
             {'date': "2015-01", 'param': 1}
         ]
         self.assertEqual(result, expected)
+
+
+class ValueBrowseListViewTestCase(TestCase):
+    def setUp(self):
+        self.obj = ItemFactory()
+        self.values = ValueFactory.create_batch(size=10, item=self.obj)
+        self.url = reverse('stats:item_detail', kwargs={'key': self.obj.key,
+                                                        'month': str(self.values[0].time.month),
+                                                        'year': str(self.values[0].time.year),
+                                                        })
+        self.user = UserFactory(is_staff=True)
+        self.client.login(username=self.user.username, password="pass")
+
+    def test_valid_status_code_for_detail_page(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200, "Invalid status code on '{}'".format(self.url))
+
+    def test_output_contains_values(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, self.values[0].value)
+
+    def test_output_contains_description(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, self.obj.description)
+
+
+class CSVValueListViewTestCase(TestCase):
+    def setUp(self):
+        self.obj = ItemFactory()
+        self.values = ValueFactory.create_batch(size=10, item=self.obj)
+        self.url = reverse('stats:item_detail_csv', kwargs={'key': self.obj.key,
+                                                            'month': self.values[0].time.month,
+                                                            'year': self.values[0].time.year,
+                                                            })
+        self.user = UserFactory(is_staff=True)
+        self.client.login(username=self.user.username, password="pass")
+
+    def test_valid_status_code_for_detail_page(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200, "Invalid status code on '{}'".format(self.url))
+
+    def test_output_contains_values(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, str(self.values[0].value))
+
+    def test_output_contains_item_name(self):
+        response = self.client.get(self.url)
+        self.assertContains(response, self.obj.name)

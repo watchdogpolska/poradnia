@@ -8,8 +8,9 @@
     <form method="post">
         <div class="form-actions">
             {% csrf_token %}
-            <button type="submit" class="btn btn-danger"><i class="fa fa-trash"></i> {% blocktrans %}Delete
-                {{ object }}{% endblocktrans %}</button>
+            <button type="submit" class="btn btn-danger">
+                <i class="fa fa-trash"></i>{% blocktrans %}Delete{{ object }}{% endblocktrans %}
+            </button>
             <button class="btn" href="{{ object.get_absolute_url }}">{% trans 'Cancel' %}</button>
         </div>
     </form>

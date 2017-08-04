@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.utils.translation import ugettext_lazy as _
 
 from . import views
 
@@ -35,4 +36,11 @@ urlpatterns = [
         name="letter_created"),
     url(r'^uzytkownicy/zarejestrowani$', views.StatsUserRegisteredView.as_view(),
         name="user_registered"),
+    url(_(r'^item-(?P<key>\w.+)/$'), views.ValueBrowseListView.as_view(),
+        name="item_detail"),
+    url(_(r'^item-(?P<key>\w.+)/(?P<month>\d+)/(?P<year>\d+)/~csv$'), views.CSVValueListView.as_view(),
+        name="item_detail_csv"),
+    url(_(r'^item-(?P<key>\w.+)/(?P<month>\d+)/(?P<year>\d+)$'), views.ValueBrowseListView.as_view(),
+        name="item_detail"),
+
 ]

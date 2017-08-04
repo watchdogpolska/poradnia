@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-10 01:09+0100\n"
-"PO-Revision-Date: 2016-12-10 01:09+0100\n"
+"POT-Creation-Date: 2017-08-04 21:23+0200\n"
+"PO-Revision-Date: 2017-08-04 21:23+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -21,7 +21,7 @@ msgstr ""
 msgid "Feedbacks"
 msgstr "Uwagi"
 
-#: filters.py:10 models.py:20 templates/tasty_feedback/feedback_detail.html:25
+#: filters.py:10 models.py:20 templates/tasty_feedback/feedback_detail.html:30
 msgid "Creation date"
 msgstr "Data utworzenia"
 
@@ -50,7 +50,7 @@ msgstr "Komentarz"
 msgid "Text reported by user"
 msgstr "Treść zgłoszona przez użytkownika"
 
-#: models.py:17 templates/tasty_feedback/feedback_detail.html:21
+#: models.py:17 templates/tasty_feedback/feedback_detail.html:24
 #: templates/tasty_feedback/feedback_filter.html:19
 msgid "Status"
 msgstr "Stan"
@@ -81,20 +81,24 @@ msgstr "Nowa uwaga - %(created)s"
 msgid "Feedback index"
 msgstr "Wykaz uwag"
 
-#: templates/tasty_feedback/feedback_detail.html:11
+#: templates/tasty_feedback/feedback_detail.html:12
 #: templates/tasty_feedback/feedback_switch_status.html:5
 #: templates/tasty_feedback/feedback_switch_status.html:11
 msgid "Switch status"
 msgstr "Zmień status"
 
-#: templates/tasty_feedback/feedback_detail.html:17
+#: templates/tasty_feedback/feedback_detail.html:20
 msgid "user"
 msgstr "Użytkownik / użytkowniczka"
 
-#: templates/tasty_feedback/feedback_detail.html:22
+#: templates/tasty_feedback/feedback_detail.html:26
 #, python-format
-msgid "since %(date)s"
-msgstr "od %(date)s"
+msgid ""
+"since %(date)s\n"
+"                    "
+msgstr ""
+"od %(date)s\n"
+"                    "
 
 #: templates/tasty_feedback/feedback_filter.html:7
 msgid "Record feedbacks"
@@ -124,3 +128,6 @@ msgstr "Uwaga została zapisana."
 #, python-format
 msgid "%s updated"
 msgstr "%s zaktualizowany"
+
+#~ msgid "since %(date)s"
+#~ msgstr "od %(date)s"
