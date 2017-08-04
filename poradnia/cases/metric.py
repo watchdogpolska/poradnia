@@ -3,6 +3,8 @@ from django.utils.datetime_safe import datetime
 from poradnia.cases.models import Case
 from django.utils.translation import ugettext_lazy as _
 
+from poradnia.stats.utils import filter_month
+
 
 def cases_count(*args, **kwargs):
     return Case.objects.count()
@@ -30,10 +32,6 @@ cases_closed.description = _("Count of cases status closed")
 
 
 def cases_monthly(*args, **kwargs):
-    today = datetime.today()
-    return Case.objects.filter(
-        created_on__year__gte=today.year,
-        created_on__month__gte=today.month
-    ).count()
+    return filter_month(Case.objects, 'created_on').count()
 cases_monthly.name = _("Cases monthly")
 cases_monthly.description = _("Number of cases registered in month")

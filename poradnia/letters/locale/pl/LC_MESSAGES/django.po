@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-04 21:32+0200\n"
+"POT-Creation-Date: 2017-08-05 01:13+0200\n"
 "PO-Revision-Date: 2016-04-16 00:55+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /letters/locale/en/LC_MESSAGES/django.po\n"
 
-#: apps.py:7 models.py:131
+#: apps.py:7 models.py:133
 msgid "Letters"
 msgstr "Listy"
 
@@ -88,67 +88,123 @@ msgstr "Odpowiedz"
 msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
-#: models.py:65 templates/letters/_letter_list.html:14
+#: metric.py:13
+#, fuzzy
+#| msgid "Letter list"
+msgid "Letter count"
+msgstr "Rejestr korespondencji"
+
+#: metric.py:14
+msgid "Total letter registered"
+msgstr ""
+
+#: metric.py:21
+#, fuzzy
+#| msgid "Letter list"
+msgid "Letter monthly"
+msgstr "Rejestr korespondencji"
+
+#: metric.py:22
+msgid "Total number of letter processed in month"
+msgstr ""
+
+#: metric.py:33 metric.py:41
+msgid "Letter of staff by email"
+msgstr ""
+
+#: metric.py:34
+msgid "Monthly number of staff letter send by e-mail"
+msgstr ""
+
+#: metric.py:37
+msgid "Letter of staff by WWW"
+msgstr ""
+
+#: metric.py:38
+msgid "Monthly number of staff letter send by www"
+msgstr ""
+
+#: metric.py:42
+msgid "Monthly number of user letter send by e-mail"
+msgstr ""
+
+#: metric.py:45
+msgid "Letter of user by WWW"
+msgstr ""
+
+#: metric.py:46
+msgid "Monthly number of user letter send by WWW"
+msgstr ""
+
+#: metric.py:54
+msgid "Documents written for clients"
+msgstr ""
+
+#: metric.py:55
+msgid "Number of attachments in staff messages send to clients."
+msgstr ""
+
+#: models.py:67 templates/letters/_letter_list.html:14
 msgid "Staff"
 msgstr "Zespół"
 
-#: models.py:65
+#: models.py:67
 msgid "Done"
 msgstr "Wykonane"
 
-#: models.py:70
+#: models.py:72
 msgid "Accepted on"
 msgstr "Zaakceptowane o"
 
-#: models.py:71
+#: models.py:73
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: models.py:72
+#: models.py:74
 msgid "Text"
 msgstr "Treść"
 
-#: models.py:73
+#: models.py:75
 msgid "Signature"
 msgstr "Podpis"
 
-#: models.py:75
+#: models.py:77
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:76
+#: models.py:78
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:78
+#: models.py:80
 msgid "Modified by"
 msgstr "Zmienione o"
 
-#: models.py:82
+#: models.py:84
 msgid "Modified on"
 msgstr "Zmienione przez"
 
-#: models.py:85
+#: models.py:87
 msgid "Raw message contents"
 msgstr "Treść surowej wiadomości"
 
-#: models.py:88
+#: models.py:90
 msgid "Original full content of message"
 msgstr "Oryginalna, pełna treść wiadomości"
 
-#: models.py:130
+#: models.py:132
 msgid "Letter"
 msgstr "List"
 
-#: models.py:137
+#: models.py:140
 msgid "File"
 msgstr "Plik"
 
-#: models.py:150
+#: models.py:153
 msgid "Attachment"
 msgstr "Załącznik"
 
-#: models.py:151
+#: models.py:154
 msgid "Attachments"
 msgstr "Załączniki"
 
@@ -168,12 +224,32 @@ msgstr "Sprawy"
 msgid "Everybody"
 msgstr "Wszyscy"
 
-#: templates/letters/_letter_list.html:48 templates/letters/form_edit.html:6
+#: templates/letters/_letter_list.html:37
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "            (updated on <time datetime=\"%(modified_on)s\" title="
+#| "\"%(modified_on)s\">%(modified_on_natural)s</time> by %(modified_by)s)\n"
+#| "            "
+msgid ""
+"\n"
+"            (updated on\n"
+"            <time datetime=\"%(modified_on)s\" title=\"%(modified_on)s\">"
+"%(modified_on_natural)s</time>\n"
+"            by %(modified_by)s)\n"
+"            "
+msgstr ""
+"\n"
+"            (zaktualizowane <time datetime=\"%(modified_on)s\" title="
+"\"%(modified_on)s\">%(modified_on_natural)s</time> przez %(modified_by)s)\n"
+"            "
+
+#: templates/letters/_letter_list.html:46 templates/letters/form_edit.html:6
 #: views/cbv.py:42
 msgid "Edit"
 msgstr "Edytuj"
 
-#: templates/letters/_letter_list.html:54 templates/letters/form_send.html:7
+#: templates/letters/_letter_list.html:52 templates/letters/form_send.html:7
 msgid "Send"
 msgstr "Wyślij"
 
@@ -228,15 +304,3 @@ msgstr "List %(object)s wysłany!"
 #: views/fbv.py:74
 msgid "Send to client"
 msgstr "Wyślij do klienta"
-
-#~ msgid ""
-#~ "\n"
-#~ "            (updated on <time datetime=\"%(modified_on)s\" title="
-#~ "\"%(modified_on)s\">%(modified_on_natural)s</time> by %(modified_by)s)\n"
-#~ "            "
-#~ msgstr ""
-#~ "\n"
-#~ "            (zaktualizowane <time datetime=\"%(modified_on)s\" title="
-#~ "\"%(modified_on)s\">%(modified_on_natural)s</time> przez "
-#~ "%(modified_by)s)\n"
-#~ "            "

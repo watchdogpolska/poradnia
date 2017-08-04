@@ -337,5 +337,12 @@ STAT_METRICS = {
     'users.total': 'poradnia.users.metric.users_total',
     'users.monthly': 'poradnia.users.metric.users_monthly',
     'users.active': 'poradnia.users.metric.users_active',
-    'users.active.staff': 'poradnia.users.metric.users_active_staff'
+    'users.active.staff': 'poradnia.users.metric.users_active_staff',
+    'letters.documents_written_for_clients': 'poradnia.letters.metric.documents_written_for_clients',
+    'letters.letter.month': 'poradnia.letters.metric.letter_month',
+    'letters.letter.staff.email': 'poradnia.letters.metric.letter_staff_email',
+    'letters.letter.staff.www': 'poradnia.letters.metric.letter_staff_www',
+    'letters.letter.total': 'poradnia.letters.metric.letter_total',
+    'letters.letter.user.email': 'poradnia.letters.metric.letter_user_email',
+    'letters.letter.user.www': 'poradnia.letters.metric.letter_user_www',
 }

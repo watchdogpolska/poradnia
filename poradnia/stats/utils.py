@@ -72,3 +72,13 @@ class GapFiller(object):
         obj = {p: 0 for p in self.params}
         obj[self.date_key] = date.strftime(self.date_format)
         return obj
+
+
+def filter_today(qs, field):
+    today = datetime.today()
+    return qs.filter(**{'{}__date__gte'.format(field): today})
+
+
+def filter_month(qs, field):
+    start = datetime.today().replace(day=1)
+    return qs.filter(**{'{}__date__gte'.format(field): start})
