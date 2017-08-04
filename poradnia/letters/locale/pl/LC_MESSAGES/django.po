@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-05 01:13+0200\n"
-"PO-Revision-Date: 2016-04-16 00:55+0200\n"
+"POT-Creation-Date: 2017-08-05 01:37+0200\n"
+"PO-Revision-Date: 2017-08-05 01:41+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.4\n"
+"X-Generator: Poedit 1.8.7.1\n"
 "X-Crowdin-Project: poradnia\n"
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /letters/locale/en/LC_MESSAGES/django.po\n"
@@ -89,60 +89,56 @@ msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
 #: metric.py:13
-#, fuzzy
-#| msgid "Letter list"
 msgid "Letter count"
-msgstr "Rejestr korespondencji"
+msgstr "Liczba listów"
 
 #: metric.py:14
 msgid "Total letter registered"
-msgstr ""
+msgstr "Łączna liczba listów zarejestrowanych"
 
 #: metric.py:21
-#, fuzzy
-#| msgid "Letter list"
 msgid "Letter monthly"
-msgstr "Rejestr korespondencji"
+msgstr "Listów miesięcznie"
 
 #: metric.py:22
 msgid "Total number of letter processed in month"
-msgstr ""
+msgstr "Liczba listów nadesłanych w miesiącu"
 
 #: metric.py:33 metric.py:41
 msgid "Letter of staff by email"
-msgstr ""
+msgstr "Listy zespołu poprzez e-mail"
 
 #: metric.py:34
 msgid "Monthly number of staff letter send by e-mail"
-msgstr ""
+msgstr "Miesięczna liczba listów nadesłanych przez zespół poprzez e-mail"
 
 #: metric.py:37
 msgid "Letter of staff by WWW"
-msgstr ""
+msgstr "Listy zespołu poprzez WWW"
 
 #: metric.py:38
 msgid "Monthly number of staff letter send by www"
-msgstr ""
+msgstr "Miesięczna liczba listów przesłanych poprzez WWW"
 
 #: metric.py:42
 msgid "Monthly number of user letter send by e-mail"
-msgstr ""
+msgstr "Miesięczna liczba listów przesłanych poprzez e-mail"
 
 #: metric.py:45
 msgid "Letter of user by WWW"
-msgstr ""
+msgstr "Liczba listów użytkowników poprzez WWW"
 
 #: metric.py:46
 msgid "Monthly number of user letter send by WWW"
-msgstr ""
+msgstr "Miesięczna liczba listów nadesłanych przez użytkowników poprzez WWW"
 
 #: metric.py:54
 msgid "Documents written for clients"
-msgstr ""
+msgstr "Dokumenty napisane dla klientów"
 
 #: metric.py:55
 msgid "Number of attachments in staff messages send to clients."
-msgstr ""
+msgstr "Liczba załączników w pismach członków zespołu wysłanych do klientów"
 
 #: models.py:67 templates/letters/_letter_list.html:14
 msgid "Staff"
@@ -225,12 +221,7 @@ msgid "Everybody"
 msgstr "Wszyscy"
 
 #: templates/letters/_letter_list.html:37
-#, fuzzy, python-format
-#| msgid ""
-#| "\n"
-#| "            (updated on <time datetime=\"%(modified_on)s\" title="
-#| "\"%(modified_on)s\">%(modified_on_natural)s</time> by %(modified_by)s)\n"
-#| "            "
+#, python-format
 msgid ""
 "\n"
 "            (updated on\n"
@@ -240,8 +231,10 @@ msgid ""
 "            "
 msgstr ""
 "\n"
-"            (zaktualizowane <time datetime=\"%(modified_on)s\" title="
-"\"%(modified_on)s\">%(modified_on_natural)s</time> przez %(modified_by)s)\n"
+"            (zaktualizowane \n"
+"            <time datetime=\"%(modified_on)s\" title=\"%(modified_on)s\">"
+"%(modified_on_natural)s</time>\n"
+"            przez %(modified_by)s)\n"
 "            "
 
 #: templates/letters/_letter_list.html:46 templates/letters/form_edit.html:6

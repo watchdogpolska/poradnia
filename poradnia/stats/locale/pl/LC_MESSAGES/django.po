@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-04 21:32+0200\n"
-"PO-Revision-Date: 2017-08-04 21:32+0200\n"
+"POT-Creation-Date: 2017-08-05 01:50+0200\n"
+"PO-Revision-Date: 2017-08-05 01:51+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -20,6 +20,15 @@ msgstr ""
 #: apps.py:7
 msgid "Statistics"
 msgstr "Statystyki"
+
+#: management/commands/update_stats.py:43
+msgid "Time (seconds) in which metric statistical information was collected."
+msgstr ""
+"Czas (sekundy) w jakim zostały zebrane metrykowe informacje statystyczne."
+
+#: management/commands/update_stats.py:45
+msgid "Time to calculate statistics"
+msgstr "Czas obliczenia statystyk"
 
 #: models.py:27
 msgid "Metric key"
@@ -42,14 +51,12 @@ msgid "Public?"
 msgstr "Publicznie dostępne?"
 
 #: models.py:37
-#, fuzzy
-#| msgid "Items"
 msgid "Item"
-msgstr "Metryka"
+msgstr "Parametr"
 
 #: models.py:38 templates/stats/index.html:23
 msgid "Items"
-msgstr "Metryka"
+msgstr "Parametry"
 
 #: models.py:64 templates/stats/item_details.html:52 views.py:343
 msgid "Value"
@@ -106,15 +113,15 @@ msgstr "Czas"
 
 #: urls.py:39
 msgid "^item-(?P<key>\\w.+)/$"
-msgstr "^metryka-(?P<key>\\w.+)/$"
+msgstr "^parametr-(?P<key>\\w.+)/$"
 
 #: urls.py:41
 msgid "^item-(?P<key>\\w.+)/(?P<month>\\d+)/(?P<year>\\d+)/~csv$"
-msgstr "^metryka-(?P<key>\\w.+)/(?P<month>\\d+)/(?P<year>\\d+)/~csv$"
+msgstr "^parametr-(?P<key>\\w.+)/(?P<month>\\d+)/(?P<year>\\d+)/~csv$"
 
 #: urls.py:43
 msgid "^item-(?P<key>\\w.+)/(?P<month>\\d+)/(?P<year>\\d+)$"
-msgstr "^metryka-(?P<key>\\w.+)/(?P<month>\\d+)/(?P<year>\\d+)$"
+msgstr "^parametr-(?P<key>\\w.+)/(?P<month>\\d+)/(?P<year>\\d+)$"
 
 #: views.py:343
 msgid "Key"

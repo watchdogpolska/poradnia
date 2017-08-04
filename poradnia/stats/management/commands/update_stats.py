@@ -3,6 +3,8 @@ from django.db import transaction
 from django.utils import translation
 from django.utils.module_loading import import_string
 from django.utils.timezone import now
+from django.utils.translation import ugettext as _
+from monotonic import monotonic
 
 from poradnia.stats.models import Item, Value
 from poradnia.stats.settings import STAT_METRICS
@@ -21,6 +23,7 @@ class Command(BaseCommand):
         created_count = 0
         from django.conf import settings
         translation.activate(settings.LANGUAGE_CODE)
+        metrics = STAT_METRICS.copy()
         for key, import_path in STAT_METRICS.items():
             f = import_string(import_path)
             name = getattr(f, 'name', key)
@@ -32,9 +35,16 @@ class Command(BaseCommand):
         self.stdout.write("Registered {} new items.".format(created_count))
 
         values = []
+        start = monotonic()
         for key, import_path in STAT_METRICS.items():
             f = import_string(import_path)
             values.append(Value(item=items[key], value=f()))
+        end = int(monotonic() - start())
+        desc = _("Time (seconds) in which metric statistical information was collected.")
+        system_item = Item.objects.get_or_create('stats.collect_time',
+                                                 defaults={'name': _("Time to calculate statistics"),
+                                                           'description': desc})
+        values.append(Value(item=system_item, value=end))
 
         with transaction.atomic():
             Value.objects.bulk_create(values)

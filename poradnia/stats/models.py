@@ -40,8 +40,8 @@ class Item(TimeStampedModel):
 
     def __str__(self):
         if self.name == self.key:
-            return self.name
-        return "{} [{}]".format(self.name, self.key)
+            return _(self.name)
+        return "{} [{}]".format(_(self.name), self.key)
 
     def get_absolute_url(self):
         return reverse('stats:item_detail', kwargs={'key': self.key})
