@@ -23,8 +23,8 @@ matrix:
     - env: TOX_ENV=flake8
     - env: TOX_ENV=py27-dj110-coveralls
     - env: TOX_ENV=py27-djmaster-coveralls
-    - env: TOX_ENV=py34-dj19-coveralls
     - env: TOX_ENV=py34-dj110-coveralls
+    - env: TOX_ENV=py34-dj111-coveralls
     - env: TOX_ENV=py34-djmaster-coveralls
 
 install:
