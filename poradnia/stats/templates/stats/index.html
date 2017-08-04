@@ -9,14 +9,22 @@
 {% endblock %}
 
 {% block content %}
-    {% trans 'Stats' %}:
-    <ul>
-        {% if user.is_superuser %}
+    {% if user.is_superuser %}
+        {% trans 'Real-time' %}:
+        <ul>
             <li><a href="{% url 'stats:case_created' %}">{% trans 'Cases created' %}</a></li>
             <li><a href="{% url 'stats:case_reaction' %}">{% trans 'Cases reaction time' %}</a></li>
             <li><a href="{% url 'stats:case_unanswered' %}">{% trans 'Cases unanswered' %}</a></li>
             <li><a href="{% url 'stats:letter_created' %}">{% trans 'Letters created' %}</a></li>
             <li><a href="{% url 'stats:user_registered' %}">{% trans 'Users registered' %}</a></li>
-        {% endif %}
-    </ul>
+        </ul>
+    {% endif %}
+    {% if item_list %}
+        {% trans 'Items' %}:
+        <ul>
+            {% for object in item_list %}
+                <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

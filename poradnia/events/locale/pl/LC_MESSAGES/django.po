@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-10 01:08+0100\n"
+"POT-Creation-Date: 2017-08-04 21:24+0200\n"
 "PO-Revision-Date: 2016-11-24 21:33+0100\n"
 "Last-Translator: Karol <karol@ppkt.eu>\n"
 "Language-Team: Polish\n"
@@ -17,68 +17,68 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /events/locale/en/LC_MESSAGES/django.po\n"
 
-#: apps.py:7 models.py:98 templates/events/base.html:5
+#: apps.py:7 models.py:92 templates/events/base.html:5
 #: templates/events/base.html:10
 msgid "Events"
 msgstr "Wydarzenia"
 
-#: models.py:19
+#: models.py:17
 msgid "Reminder"
 msgstr "Przypomnienie"
 
-#: models.py:20
+#: models.py:18
 msgid "Reminders"
 msgstr "Przypomnienia"
 
-#: models.py:27
+#: models.py:25
 msgid "Alarm"
 msgstr "Alarm"
 
-#: models.py:28
+#: models.py:26
 msgid "Alarms"
 msgstr "Alarmy"
 
-#: models.py:40 templates/events/_event_list.html:9
+#: models.py:38 templates/events/_event_list.html:10
 msgid "Dead-line"
 msgstr "Termin"
 
-#: models.py:41 templates/events/_event_list.html:10
+#: models.py:39 templates/events/_event_list.html:14
 msgid "Time"
 msgstr "Czas"
 
-#: models.py:42
+#: models.py:40
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: models.py:44
+#: models.py:42
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:45
+#: models.py:43
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:47
+#: models.py:45
 msgid "Modified by"
 msgstr "Zmodyfikowane przez"
 
-#: models.py:51
+#: models.py:49
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
-#: models.py:97
+#: models.py:91
 msgid "Event"
 msgstr "Wydarzenie"
 
-#: templates/events/_alarm_list.html:13
+#: templates/events/_alarm_list.html:14
 msgid "A related event "
 msgstr "Powiązane wydarzenie"
 
-#: templates/events/_event_list.html:11
+#: templates/events/_event_list.html:18
 msgid "Triggered"
 msgstr "Zaistniałe"
 
-#: templates/events/_event_list.html:20 templates/events/form.html:8
+#: templates/events/_event_list.html:36 templates/events/form.html:8
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -238,12 +238,12 @@ msgstr "Paź"
 msgid "Dec"
 msgstr "Gru"
 
-#: views.py:41
+#: views.py:40
 #, python-format
 msgid "Success added new event %(event)s"
 msgstr "Dodano wydarzenie %(event)s"
 
-#: views.py:60
+#: views.py:59
 #, python-format
 msgid "Success updated event %(event)s"
 msgstr "Zaktualizowano wydarzenie %(event)s"

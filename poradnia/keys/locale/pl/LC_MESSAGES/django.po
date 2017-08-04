@@ -2,9 +2,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2016-12-10 01:08+0100\n"
-"PO-Revision-Date: 2015-11-24 09:52-0500\n"
-"Last-Translator: ad-m <naczelnik@jawnosc.tk>\n"
+"POT-Creation-Date: 2017-08-04 21:26+0200\n"
+"PO-Revision-Date: 2017-08-04 21:26+0200\n"
+"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
@@ -12,7 +12,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: crowdin.com\n"
+"X-Generator: Poedit 1.8.7.1\n"
 "X-Crowdin-Project: poradnia\n"
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /keys/locale/en/LC_MESSAGES/django.po\n"
@@ -21,35 +21,35 @@ msgstr ""
 msgid "Keys"
 msgstr "Klucze"
 
-#: models.py:17
+#: models.py:16
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: models.py:18 templates/keys/key_detail.html:12
+#: models.py:17 templates/keys/key_detail.html:12
 msgid "Key"
 msgstr "Klucz"
 
-#: models.py:19 templates/keys/key_list.html:15
+#: models.py:18 templates/keys/key_list.html:17
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:20 templates/keys/key_list.html:16
+#: models.py:19 templates/keys/key_list.html:18
 msgid "Created on"
 msgstr "Utworzony o"
 
-#: models.py:21 templates/keys/key_list.html:18
+#: models.py:20 templates/keys/key_list.html:20
 msgid "Used on"
 msgstr "Użyty o"
 
-#: models.py:22
+#: models.py:21
 msgid "Download on"
 msgstr "Pobrany o"
 
-#: models.py:33
+#: models.py:32
 msgid "Access key"
 msgstr "Klucz dostępu"
 
-#: models.py:34
+#: models.py:33
 msgid "Access keys"
 msgstr "Klucze dostępu"
 
@@ -62,11 +62,14 @@ msgid "Confirm delete"
 msgstr "Potwierdzenie usunięcia"
 
 #: templates/keys/key_confirm_delete.html:11
-#, python-format
-msgid "Delete %(object)s"
+#, fuzzy, python-format
+#| msgid "Delete %(object)s"
+msgid ""
+"Delete\n"
+"                %(object)s"
 msgstr "Usuń %(object)s"
 
-#: templates/keys/key_confirm_delete.html:12
+#: templates/keys/key_confirm_delete.html:13
 msgid "Cancel"
 msgstr "Anuluj"
 
@@ -78,31 +81,31 @@ msgstr "Nowy klucz"
 msgid "Keys index"
 msgstr "Wykaz kluczy"
 
-#: templates/keys/key_list.html:10
+#: templates/keys/key_list.html:11
 msgid "Help"
 msgstr "Pomoc"
 
-#: templates/keys/key_list.html:11
+#: templates/keys/key_list.html:13
 msgid "Generate new key"
 msgstr "Wygeneruj nowy klucz"
 
-#: templates/keys/key_list.html:17
+#: templates/keys/key_list.html:19
 msgid "Downloaded on"
 msgstr "Pobrany o"
 
-#: templates/keys/key_list.html:19
+#: templates/keys/key_list.html:21
 msgid "Actions"
 msgstr "Akcje"
 
-#: templates/keys/key_list.html:28
+#: templates/keys/key_list.html:31
 msgid "Download"
 msgstr "Pobierz"
 
-#: templates/keys/key_list.html:29
+#: templates/keys/key_list.html:33
 msgid "Delete"
 msgstr "Usuń"
 
-#: views.py:37
+#: views.py:36
 #, python-brace-format
 msgid "{object} deleted!"
 msgstr "{object} usunięty!"

@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-02-15 20:54+0100\n"
-"PO-Revision-Date: 2016-12-10 01:07+0100\n"
+"POT-Creation-Date: 2017-08-04 21:32+0200\n"
+"PO-Revision-Date: 2017-08-04 21:32+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -17,49 +17,112 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /records/locale/en/LC_MESSAGES/django.po\n"
 
-#: stats/apps.py:7
+#: apps.py:7
 msgid "Statistics"
 msgstr "Statystyki"
 
-#: stats/templates/stats/cases/created.html:3
-#: stats/templates/stats/cases/created.html:8
-#: stats/templates/stats/index.html:15
+#: models.py:27
+msgid "Metric key"
+msgstr "Klucz metryczny"
+
+#: models.py:28 views.py:343
+msgid "Name"
+msgstr "Nazwa"
+
+#: models.py:29
+msgid "Description"
+msgstr "Opis"
+
+#: models.py:31
+msgid "Time to get the last value"
+msgstr "Czas ostatniej wartości"
+
+#: models.py:32
+msgid "Public?"
+msgstr "Publicznie dostępne?"
+
+#: models.py:37
+#, fuzzy
+#| msgid "Items"
+msgid "Item"
+msgstr "Metryka"
+
+#: models.py:38 templates/stats/index.html:23
+msgid "Items"
+msgstr "Metryka"
+
+#: models.py:64 templates/stats/item_details.html:52 views.py:343
+msgid "Value"
+msgstr "Wartość"
+
+#: models.py:65
+msgid "Values"
+msgstr "Wartości"
+
+#: templates/stats/cases/created.html:3 templates/stats/cases/created.html:8
+#: templates/stats/index.html:15
 msgid "Cases created"
 msgstr "Utworzone sprawy"
 
-#: stats/templates/stats/cases/created.html:7
-#: stats/templates/stats/cases/reaction.html:7
-#: stats/templates/stats/cases/unanswered.html:7
-#: stats/templates/stats/index.html:3 stats/templates/stats/index.html:7
-#: stats/templates/stats/index.html:12
-#: stats/templates/stats/letters/created.html:7
-#: stats/templates/stats/users/registered.html:7
+#: templates/stats/cases/created.html:7 templates/stats/cases/reaction.html:7
+#: templates/stats/cases/unanswered.html:7 templates/stats/index.html:3
+#: templates/stats/index.html:7 templates/stats/item_details.html:31
+#: templates/stats/letters/created.html:7
+#: templates/stats/users/registered.html:7
 msgid "Stats"
 msgstr "Statystyki"
 
-#: stats/templates/stats/cases/reaction.html:3
-#: stats/templates/stats/cases/reaction.html:8
-#: stats/templates/stats/index.html:16
+#: templates/stats/cases/reaction.html:3 templates/stats/cases/reaction.html:8
+#: templates/stats/index.html:16
 msgid "Cases reaction time"
 msgstr "Czas reakcji dla spraw"
 
-#: stats/templates/stats/cases/unanswered.html:3
-#: stats/templates/stats/cases/unanswered.html:8
-#: stats/templates/stats/index.html:17
+#: templates/stats/cases/unanswered.html:3
+#: templates/stats/cases/unanswered.html:8 templates/stats/index.html:17
 msgid "Cases unanswered"
 msgstr "Sprawy bez odpowiedzi"
 
-#: stats/templates/stats/index.html:18
-#: stats/templates/stats/letters/created.html:3
-#: stats/templates/stats/letters/created.html:8
+#: templates/stats/index.html:13
+msgid "Real-time"
+msgstr "W czasie rzeczywistym"
+
+#: templates/stats/index.html:18 templates/stats/letters/created.html:3
+#: templates/stats/letters/created.html:8
 msgid "Letters created"
 msgstr "Utworzone listy"
 
-#: stats/templates/stats/index.html:19
-#: stats/templates/stats/users/registered.html:3
-#: stats/templates/stats/users/registered.html:8
+#: templates/stats/index.html:19 templates/stats/users/registered.html:3
+#: templates/stats/users/registered.html:8
 msgid "Users registered"
 msgstr "Zarejestrowani użytkownicy"
+
+#: templates/stats/item_details.html:43
+msgid "CSV"
+msgstr "CSV"
+
+#: templates/stats/item_details.html:51 views.py:343
+msgid "Time"
+msgstr "Czas"
+
+#: urls.py:39
+msgid "^item-(?P<key>\\w.+)/$"
+msgstr "^metryka-(?P<key>\\w.+)/$"
+
+#: urls.py:41
+msgid "^item-(?P<key>\\w.+)/(?P<month>\\d+)/(?P<year>\\d+)/~csv$"
+msgstr "^metryka-(?P<key>\\w.+)/(?P<month>\\d+)/(?P<year>\\d+)/~csv$"
+
+#: urls.py:43
+msgid "^item-(?P<key>\\w.+)/(?P<month>\\d+)/(?P<year>\\d+)$"
+msgstr "^metryka-(?P<key>\\w.+)/(?P<month>\\d+)/(?P<year>\\d+)$"
+
+#: views.py:343
+msgid "Key"
+msgstr "Klucz"
+
+#: views.py:343
+msgid "Time (unix)"
+msgstr "Czas (unix)"
 
 #, fuzzy
 #~| msgid "Cases created"

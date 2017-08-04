@@ -1,16 +1,23 @@
+import csv
 from itertools import takewhile, dropwhile
 
 from braces.views import (JSONResponseMixin, LoginRequiredMixin,
                           SuperuserRequiredMixin)
+from dateutil.relativedelta import relativedelta
 from dateutil.rrule import MONTHLY
 from django.db.models import F, Case, Count, IntegerField, Min, Sum, When
+from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
+from django.utils.datetime_safe import date
 from django.views.generic import TemplateView, View
 
 from poradnia.cases.models import Case as CaseModel
 from poradnia.letters.models import Letter as LetterModel
+from poradnia.stats.models import Item, Value
 from poradnia.users.models import User as UserModel
 from .utils import (DATE_FORMAT_MONTHLY, SECONDS_IN_A_DAY, GapFiller,
                     raise_unless_unauthenticated)
+from django.utils.translation import ugettext_lazy as _
 
 
 class ApiListViewMixin(JSONResponseMixin):
@@ -20,6 +27,10 @@ class ApiListViewMixin(JSONResponseMixin):
 
 class StatsIndexView(TemplateView):
     template_name = 'stats/index.html'
+
+    def get_context_data(self, **kwargs):
+        kwargs['item_list'] = Item.objects.for_user(self.request.user).all()
+        return super(StatsIndexView, self).get_context_data(**kwargs)
 
 
 class StatsCaseCreatedView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
@@ -119,7 +130,7 @@ class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLi
             if date in deltas:
                 deltas[date].append(time_delta)
             else:
-                deltas[date] = [time_delta]
+                deltas[date] = [time_delta, ]
 
         result = [{
             'date': date,
@@ -287,3 +298,53 @@ class StatsUserRegisteredApiView(LoginRequiredMixin, SuperuserRequiredMixin, Api
             })
 
         return ans
+
+
+class ValueListView(object):
+    @property
+    def item(self):
+        return get_object_or_404(Item.objects.for_user(self.request.user),
+                                 key=self.kwargs['key'])
+
+    @property
+    def today(self):
+        today = date.today()
+        return today.replace(month=int(self.kwargs.get('month', str(today.month))),
+                             year=int(self.kwargs.get('year', str(today.year))))
+
+    @property
+    def start(self):
+        return self.today.replace(day=1)
+
+    @property
+    def end(self):
+        return self.today.replace(day=1) + relativedelta(months=1)
+
+    def get_queryset(self):
+        return Value.objects.filter(time__lte=self.end, time__gte=self.start).filter(item=self.item).all()
+
+
+class ValueBrowseListView(ValueListView, TemplateView):
+    template_name = "stats/item_details.html"
+
+    def get_context_data(self, **kwargs):
+        item = self.item
+        kwargs['item'] = item
+        kwargs['value_list'] = self.get_queryset()
+        kwargs['today'], kwargs['start'], kwargs['end'] = self.today, self.start, self.end
+        return super(ValueBrowseListView, self).get_context_data(**kwargs)
+
+
+class CSVValueListView(ValueListView, View):
+    def get(self, *args, **kwargs):
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = 'attachment; filename="{}.csv"'.format(self.item.key)
+        writer = csv.writer(response)
+        writer.writerow([_("Key"), _("Name"), _("Time"), _("Time (unix)"), _("Value")])
+        for item in self.get_queryset():
+            writer.writerow([self.item.key.encode('utf-8'),
+                             self.item.name.encode('utf-8'),
+                             item.time.strftime("%c"),
+                             item.time.strftime("%s"),
+                             item.value])
+        return response
