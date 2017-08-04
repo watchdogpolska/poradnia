@@ -1,18 +1,9 @@
 # Local development dependencies go here
 -r base.txt
-Sphinx==1.6.2 \
-    --hash=sha256:011c1851b5f2d9f4b1d9898162867f2bf91db5c26ad8178d3122909203bc2f6c \
-    --hash=sha256:67527d767dff9a2e2159c501265cff47b6d96d39e036e8b971d6c143ff303197
+Sphinx==1.6.2
 
 # django-debug-toolbar that works with Django 1.5+
-django-debug-toolbar==1.8 \
-    --hash=sha256:e9f08b94f9423ac76cfc287151182bbaddbe7521ae32bef9f9863e2ac58018d3 \
-    --hash=sha256:0b4d2b1ac49a8bc5604518e8e20f56c1c08c0c4873336107e7c773c42537876b
-django-extensions==1.8.0 \
-    --hash=sha256:e58aba78c7c538463395c35f09d48d199c655d9c6c82830bc4b3dd6415e1b9ff \
-    --hash=sha256:27d1345c8b0b4ed8b7d713e4a49e9ea723afa9db1f226efd7cd89176b120edcf
-django-autofixture==0.12.1 \
-    --hash=sha256:32588b80814cdff3a8aab7cf3859fc9330d38abe37a9cc16e53d24dd1b1fcd86
-graphviz==0.8 \
-    --hash=sha256:900ee61c68425332a2c16e3930b15a4644d3fe1b88dae26c672cf343f7b64ef3 \
-    --hash=sha256:889c720d9955b804d56a8e842621558cbb5cbbdd93cbdf55862371311646e344
+django-debug-toolbar==1.8
+django-extensions==1.8.0
+django-autofixture==0.12.1
+graphviz==0.8
