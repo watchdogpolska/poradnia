@@ -39,11 +39,11 @@ class Command(BaseCommand):
         for key, import_path in STAT_METRICS.items():
             f = import_string(import_path)
             values.append(Value(item=items[key], value=f()))
-        end = int(monotonic() - start())
+        end = int(monotonic() - start)
         desc = _("Time (seconds) in which metric statistical information was collected.")
-        system_item = Item.objects.get_or_create('stats.collect_time',
-                                                 defaults={'name': _("Time to calculate statistics"),
-                                                           'description': desc})
+        system_item, created = Item.objects.get_or_create(key='stats.collect_time',
+                                                          defaults={'name': _("Time to calculate statistics"),
+                                                                    'description': desc})
         values.append(Value(item=system_item, value=end))
 
         with transaction.atomic():
