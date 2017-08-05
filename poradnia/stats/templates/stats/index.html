@@ -27,4 +27,12 @@
             {% endfor %}
         </ul>
     {% endif %}
+    {% if graph_list %}
+        {% trans 'Graphs' %}:
+        <ul>
+            {% for object in graph_list %}
+                <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endif %}
 {% endblock %}

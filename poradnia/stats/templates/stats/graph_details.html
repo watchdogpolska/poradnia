@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+{% load staticfiles i18n stats_tags %}
+{% block title %}{{ object }} - {{ block.super }}{% endblock %}
+
+{% block javascript %}
+    <script>
+        color = [
+            '#1f77b450',
+            '#ff7f0e50',
+            '#2ca02c50',
+            '#d6272850',
+            '#9467bd50',
+            '#8c564b50',
+            '#e377c250',
+            '#7f7f7f50',
+        ];
+        patterns = pattern.generate(color);
+
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var chart = new Chart(ctx, {
+            // The type of chart we want to create
+            type: 'line',
+
+            // The data for our dataset
+            data: {
+                labels: {{ graph.labels | json }},
+                datasets: [
+                        {% for dataset in graph.datasets %}{
+                            label: "{{ dataset.label }}",
+                            backgroundColor: patterns[{{ forloop.counter0 }}],
+                            {#                        borderColor: pattern.draw('#getRandomShape', '#1f77b4'),#}
+                            data: {{ dataset.data | json }}
+                            },
+                        {% endfor %}
+                ]
+            },
+        });
+    </script>
+{% endblock %}
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'stats:index' %}">{% trans 'Stats' %}</a></li>
+        <li class="active">{{ object }}</li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="pull-left">
+            <h1>{{ object }}</h1>
+        </div>
+        <div class="pull-right">
+            <div class="btn-group" role="group">
+                <a href="{% url 'stats:graph_detail_json' pk=object.pk month=today.month year=today.year %}"
+                   class="btn btn-success">
+                    <i class="fa fa-download"></i> {% trans 'JSON' %}
+                </a>
+            </div>
+        </div>
+    </div>
+    {{ item.description }}
+    <canvas id="myChart"></canvas>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <td>&nbsp;</td>
+            {% for col in table.header %}
+                <th>{{ col.name }}</th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% for col in  table.body %}
+            <tr>
+
+                <td>{{ col.label }}</td>
+                {% for cell in col.row.values %}
+                    <td>{{ cell }}</td>
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

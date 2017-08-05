@@ -19,6 +19,7 @@ var config = (function () {
 
     var path = {
         bower: './bower_components/',
+        npm: './node_modules/',
         assets: './' + appName + '/assets',
         static: './' + appName + '/static'
     };
@@ -50,9 +51,11 @@ var config = (function () {
                 path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
                 path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
                 path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/modal.js',
+                path.bower + '/chart.js/dist/Chart.js',
                 path.bower + '/moment/moment.js',
                 path.bower + '/moment/locale/pl.js',
                 path.bower + '/pikaday-time/pikaday.js',
+                path.npm + '/patternomaly/dist/patternomaly.js',
                 path.assets + '/js/*.js'
             ],
             output: {

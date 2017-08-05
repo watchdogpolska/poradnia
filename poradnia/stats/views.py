@@ -1,24 +1,26 @@
 import csv
 import json
+from collections import OrderedDict
+from datetime import datetime
 from itertools import takewhile, dropwhile
 
 from braces.views import (JSONResponseMixin, LoginRequiredMixin,
                           SuperuserRequiredMixin)
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import MONTHLY
-from django.db.models import F, Case, Count, IntegerField, Min, Sum, When
+from django.db.models import F, Case, Count, IntegerField, Min, Sum, When, Prefetch
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.datetime_safe import date
+from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView, View
 
 from poradnia.cases.models import Case as CaseModel
 from poradnia.letters.models import Letter as LetterModel
-from poradnia.stats.models import Item, Value
+from poradnia.stats.models import Item, Value, Graph
 from poradnia.users.models import User as UserModel
 from .utils import (DATE_FORMAT_MONTHLY, SECONDS_IN_A_DAY, GapFiller,
                     raise_unless_unauthenticated)
-from django.utils.translation import ugettext_lazy as _
 
 
 class ApiListViewMixin(JSONResponseMixin):
@@ -31,6 +33,7 @@ class StatsIndexView(TemplateView):
 
     def get_context_data(self, **kwargs):
         kwargs['item_list'] = Item.objects.for_user(self.request.user).all()
+        kwargs['graph_list'] = Graph.objects.all()
         return super(StatsIndexView, self).get_context_data(**kwargs)
 
 
@@ -301,12 +304,7 @@ class StatsUserRegisteredApiView(LoginRequiredMixin, SuperuserRequiredMixin, Api
         return ans
 
 
-class ValueListView(object):
-    @property
-    def item(self):
-        return get_object_or_404(Item.objects.for_user(self.request.user),
-                                 key=self.kwargs['key'])
-
+class TimeMixin(object):
     @property
     def today(self):
         today = date.today()
@@ -320,6 +318,13 @@ class ValueListView(object):
     @property
     def end(self):
         return self.today.replace(day=1) + relativedelta(months=1)
+
+
+class ValueListView(TimeMixin):
+    @property
+    def item(self):
+        return get_object_or_404(Item.objects.for_user(self.request.user),
+                                 key=self.kwargs['key'])
 
     def get_queryset(self):
         return Value.objects.filter(time__lte=self.end, time__gte=self.start).filter(item=self.item).all()
@@ -356,5 +361,69 @@ class JSONValueListView(ValueListView, View):
         response = HttpResponse(content_type='application/json')
         data = {'item': self.item.as_dict(),
                 'values': [o.as_dict() for o in self.get_queryset()]}
-        json.dump(data,response, indent=4)
+        json.dump(data, response, indent=4)
+        return response
+
+
+class GraphTimeMixin(TimeMixin):
+    @property
+    def object(self):
+        if not getattr(self, '_object', None):
+            values_qs = Value.objects.filter(time__lte=self.end, time__gte=self.start).all()
+            prefetch_obj = Prefetch('items__value_set', values_qs)
+            graph_qs = Graph.objects.prefetch_related('items').prefetch_related(prefetch_obj).all()
+            self._object = get_object_or_404(graph_qs, pk=self.kwargs['pk'])
+        return self._object
+
+    def get_dataset(self, item, times):
+        values = {value.time.strftime("%s"): value.value for value in item.value_set.all()}
+        data = [values.get(time, None) for time in times]
+        label = item.name
+        return {'data': data, 'label': label}
+
+    @property
+    def times(self):
+        if not getattr(self, '_times', None):
+            self._times = list({value.time.strftime("%s")
+                                for item in self.object.items.all()
+                                for value in item.value_set.all()})
+            self._times = sorted(self._times)
+        return self._times
+
+    def get_graph(self):
+        dataset = [self.get_dataset(item, self.times) for item in self.object.items.all()]
+        labels = [str(datetime.fromtimestamp(int(time))) for time in self.times]
+        return {'datasets': dataset, 'labels': labels}
+
+    def get_table(self):
+        header = [item.as_dict() for item in self.object.items.all()]
+        data = {}
+        for item in self.object.items.all():
+            for value in item.value_set.all():
+                if item.key not in data:
+                    data[item.key] = {}
+                data[item.key][value.time.strftime("%s")] = value.value
+        body = []
+        for time in self.times:
+            data_row = OrderedDict((item['key'], data[item['key']].get(time, None)) for item in header)
+            body.append({'date': time,
+                         'label': str(datetime.fromtimestamp(int(time))),
+                         'row': data_row})
+        return {'header': header, 'body': body}
+
+
+class GraphDetailView(GraphTimeMixin, TemplateView):
+    template_name = "stats/graph_details.html"
+
+    def get_context_data(self, **kwargs):
+        kwargs['object'] = self.object
+        kwargs['today'], kwargs['start'], kwargs['end'] = self.today, self.start, self.end
+        kwargs['graph'] = self.get_graph()
+        kwargs['table'] = self.get_table()
+        return super(GraphDetailView, self).get_context_data(**kwargs)
+
+class JSONGraphDetailView(GraphTimeMixin, View):
+    def get(self, *args, **kwargs):
+        response = HttpResponse(content_type='application/json')
+        json.dump(self.get_table(), response, indent=4)
         return response

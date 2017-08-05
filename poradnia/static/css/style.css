@@ -288,7 +288,6 @@ img {
   background-color: #fff;
   border: 1px solid #ddd;
   border-radius: 4px;
-  -webkit-transition: all 0.2s ease-in-out;
   transition: all 0.2s ease-in-out;
   display: inline-block;
   max-width: 100%;
@@ -1501,7 +1500,6 @@ output {
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-  -webkit-transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
   transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s; }
   .form-control:focus {
     border-color: #66afe9;
@@ -1514,9 +1512,6 @@ output {
     color: #999; }
   .form-control::-webkit-input-placeholder {
     color: #999; }
-  .form-control::-ms-expand {
-    border: 0;
-    background-color: transparent; }
   .form-control[disabled], .form-control[readonly],
   fieldset[disabled] .form-control {
     background-color: #eeeeee;
@@ -1954,7 +1949,7 @@ select[multiple].input-lg,
 
 @media (min-width: 768px) {
   .form-horizontal .form-group-lg .control-label {
-    padding-top: 11px;
+    padding-top: 14.33333px;
     font-size: 18px; } }
 
 @media (min-width: 768px) {
@@ -2031,10 +2026,13 @@ fieldset[disabled] a.btn {
   .btn-default:active, .btn-default.active,
   .open > .btn-default.dropdown-toggle {
     background-image: none; }
-  .btn-default.disabled:hover, .btn-default.disabled:focus, .btn-default.disabled.focus, .btn-default[disabled]:hover, .btn-default[disabled]:focus, .btn-default[disabled].focus,
+  .btn-default.disabled, .btn-default.disabled:hover, .btn-default.disabled:focus, .btn-default.disabled.focus, .btn-default.disabled:active, .btn-default.disabled.active, .btn-default[disabled], .btn-default[disabled]:hover, .btn-default[disabled]:focus, .btn-default[disabled].focus, .btn-default[disabled]:active, .btn-default[disabled].active,
+  fieldset[disabled] .btn-default,
   fieldset[disabled] .btn-default:hover,
   fieldset[disabled] .btn-default:focus,
-  fieldset[disabled] .btn-default.focus {
+  fieldset[disabled] .btn-default.focus,
+  fieldset[disabled] .btn-default:active,
+  fieldset[disabled] .btn-default.active {
     background-color: #fff;
     border-color: #ccc; }
   .btn-default .badge {
@@ -2068,10 +2066,13 @@ fieldset[disabled] a.btn {
   .btn-primary:active, .btn-primary.active,
   .open > .btn-primary.dropdown-toggle {
     background-image: none; }
-  .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled.focus, .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled].focus,
+  .btn-primary.disabled, .btn-primary.disabled:hover, .btn-primary.disabled:focus, .btn-primary.disabled.focus, .btn-primary.disabled:active, .btn-primary.disabled.active, .btn-primary[disabled], .btn-primary[disabled]:hover, .btn-primary[disabled]:focus, .btn-primary[disabled].focus, .btn-primary[disabled]:active, .btn-primary[disabled].active,
+  fieldset[disabled] .btn-primary,
   fieldset[disabled] .btn-primary:hover,
   fieldset[disabled] .btn-primary:focus,
-  fieldset[disabled] .btn-primary.focus {
+  fieldset[disabled] .btn-primary.focus,
+  fieldset[disabled] .btn-primary:active,
+  fieldset[disabled] .btn-primary.active {
     background-color: #D82727;
     border-color: #c22323; }
   .btn-primary .badge {
@@ -2105,10 +2106,13 @@ fieldset[disabled] a.btn {
   .btn-success:active, .btn-success.active,
   .open > .btn-success.dropdown-toggle {
     background-image: none; }
-  .btn-success.disabled:hover, .btn-success.disabled:focus, .btn-success.disabled.focus, .btn-success[disabled]:hover, .btn-success[disabled]:focus, .btn-success[disabled].focus,
+  .btn-success.disabled, .btn-success.disabled:hover, .btn-success.disabled:focus, .btn-success.disabled.focus, .btn-success.disabled:active, .btn-success.disabled.active, .btn-success[disabled], .btn-success[disabled]:hover, .btn-success[disabled]:focus, .btn-success[disabled].focus, .btn-success[disabled]:active, .btn-success[disabled].active,
+  fieldset[disabled] .btn-success,
   fieldset[disabled] .btn-success:hover,
   fieldset[disabled] .btn-success:focus,
-  fieldset[disabled] .btn-success.focus {
+  fieldset[disabled] .btn-success.focus,
+  fieldset[disabled] .btn-success:active,
+  fieldset[disabled] .btn-success.active {
     background-color: #555555;
     border-color: #494949; }
   .btn-success .badge {
@@ -2142,10 +2146,13 @@ fieldset[disabled] a.btn {
   .btn-info:active, .btn-info.active,
   .open > .btn-info.dropdown-toggle {
     background-image: none; }
-  .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled.focus, .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled].focus,
+  .btn-info.disabled, .btn-info.disabled:hover, .btn-info.disabled:focus, .btn-info.disabled.focus, .btn-info.disabled:active, .btn-info.disabled.active, .btn-info[disabled], .btn-info[disabled]:hover, .btn-info[disabled]:focus, .btn-info[disabled].focus, .btn-info[disabled]:active, .btn-info[disabled].active,
+  fieldset[disabled] .btn-info,
   fieldset[disabled] .btn-info:hover,
   fieldset[disabled] .btn-info:focus,
-  fieldset[disabled] .btn-info.focus {
+  fieldset[disabled] .btn-info.focus,
+  fieldset[disabled] .btn-info:active,
+  fieldset[disabled] .btn-info.active {
     background-color: #5bc0de;
     border-color: #46b8da; }
   .btn-info .badge {
@@ -2179,10 +2186,13 @@ fieldset[disabled] a.btn {
   .btn-warning:active, .btn-warning.active,
   .open > .btn-warning.dropdown-toggle {
     background-image: none; }
-  .btn-warning.disabled:hover, .btn-warning.disabled:focus, .btn-warning.disabled.focus, .btn-warning[disabled]:hover, .btn-warning[disabled]:focus, .btn-warning[disabled].focus,
+  .btn-warning.disabled, .btn-warning.disabled:hover, .btn-warning.disabled:focus, .btn-warning.disabled.focus, .btn-warning.disabled:active, .btn-warning.disabled.active, .btn-warning[disabled], .btn-warning[disabled]:hover, .btn-warning[disabled]:focus, .btn-warning[disabled].focus, .btn-warning[disabled]:active, .btn-warning[disabled].active,
+  fieldset[disabled] .btn-warning,
   fieldset[disabled] .btn-warning:hover,
   fieldset[disabled] .btn-warning:focus,
-  fieldset[disabled] .btn-warning.focus {
+  fieldset[disabled] .btn-warning.focus,
+  fieldset[disabled] .btn-warning:active,
+  fieldset[disabled] .btn-warning.active {
     background-color: #f0ad4e;
     border-color: #eea236; }
   .btn-warning .badge {
@@ -2216,10 +2226,13 @@ fieldset[disabled] a.btn {
   .btn-danger:active, .btn-danger.active,
   .open > .btn-danger.dropdown-toggle {
     background-image: none; }
-  .btn-danger.disabled:hover, .btn-danger.disabled:focus, .btn-danger.disabled.focus, .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled].focus,
+  .btn-danger.disabled, .btn-danger.disabled:hover, .btn-danger.disabled:focus, .btn-danger.disabled.focus, .btn-danger.disabled:active, .btn-danger.disabled.active, .btn-danger[disabled], .btn-danger[disabled]:hover, .btn-danger[disabled]:focus, .btn-danger[disabled].focus, .btn-danger[disabled]:active, .btn-danger[disabled].active,
+  fieldset[disabled] .btn-danger,
   fieldset[disabled] .btn-danger:hover,
   fieldset[disabled] .btn-danger:focus,
-  fieldset[disabled] .btn-danger.focus {
+  fieldset[disabled] .btn-danger.focus,
+  fieldset[disabled] .btn-danger:active,
+  fieldset[disabled] .btn-danger.active {
     background-color: #d9534f;
     border-color: #d43f3a; }
   .btn-danger .badge {
@@ -2545,15 +2558,13 @@ input[type="button"].btn-block {
 
 .btn-group-vertical > .btn:first-child:not(:last-child) {
   border-top-right-radius: 4px;
-  border-top-left-radius: 4px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0; }
 
 .btn-group-vertical > .btn:last-child:not(:first-child) {
+  border-bottom-left-radius: 4px;
   border-top-right-radius: 0;
-  border-top-left-radius: 0;
-  border-bottom-right-radius: 4px;
-  border-bottom-left-radius: 4px; }
+  border-top-left-radius: 0; }
 
 .btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn, .btn-group-vertical > .case-header-actions:not(:first-child):not(:last-child) > .btn {
   border-radius: 0; }
@@ -2608,8 +2619,6 @@ input[type="button"].btn-block {
     float: left;
     width: 100%;
     margin-bottom: 0; }
-    .input-group .form-control:focus {
-      z-index: 3; }
 
 .input-group-addon,
 .input-group-btn,
@@ -3264,7 +3273,7 @@ input[type="button"].btn-block {
   .pagination > li > a:hover, .pagination > li > a:focus,
   .pagination > li > span:hover,
   .pagination > li > span:focus {
-    z-index: 2;
+    z-index: 3;
     color: #971b1b;
     background-color: #eeeeee;
     border-color: #ddd; }
@@ -3272,7 +3281,7 @@ input[type="button"].btn-block {
   .pagination > .active > span,
   .pagination > .active > span:hover,
   .pagination > .active > span:focus {
-    z-index: 3;
+    z-index: 2;
     color: #fff;
     background-color: #D82727;
     border-color: #D82727;
@@ -3464,9 +3473,7 @@ a.badge:hover, a.badge:focus {
     border-top-color: #d5d5d5; }
   .container .jumbotron,
   .container-fluid .jumbotron {
-    border-radius: 6px;
-    padding-left: 15px;
-    padding-right: 15px; }
+    border-radius: 6px; }
   .jumbotron .container {
     max-width: 100%; }
   @media screen and (min-width: 768px) {
@@ -4111,7 +4118,6 @@ button.close {
   .modal.fade .modal-dialog {
     -webkit-transform: translate(0, -25%);
     transform: translate(0, -25%);
-    -webkit-transition: -webkit-transform 0.3s ease-out;
     transition: -webkit-transform 0.3s ease-out;
     transition: transform 0.3s ease-out;
     transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out; }
@@ -4155,12 +4161,8 @@ button.close {
 
 .modal-header {
   padding: 15px;
-  border-bottom: 1px solid #e5e5e5; }
-  .modal-header:before, .modal-header:after {
-    content: " ";
-    display: table; }
-  .modal-header:after {
-    clear: both; }
+  border-bottom: 1px solid #e5e5e5;
+  min-height: 16.42857px; }
 
 .modal-header .close {
   margin-top: -2px; }
@@ -7001,7 +7003,6 @@ button.close {
 
 .block-list-item {
   display: block;
-  -webkit-transition: .4s background-color;
   transition: .4s background-color;
   padding: 0em 1em;
   word-wrap: break-all; }
@@ -7040,7 +7041,6 @@ button.close {
   text-align: center;
   display: block;
   padding: 0.5em 0.5em;
-  -webkit-transition: .4s background-color;
   transition: .4s background-color; }
   .stats a, .stats a:hover, .stats a:focus {
     color: white;
@@ -7059,7 +7059,6 @@ button.close {
   background: #4C4C4C;
   -webkit-transform: translateX(-100%);
           transform: translateX(-100%);
-  -webkit-transition: -webkit-transform 0.5s;
   transition: -webkit-transform 0.5s;
   transition: transform 0.5s;
   transition: transform 0.5s, -webkit-transform 0.5s; }
@@ -7089,7 +7088,6 @@ button.close {
   height: 1px;
   background-color: white; }
   .navbar-burger, .navbar-burger:before, .navbar-burger:after {
-    -webkit-transition: .2s;
     transition: .2s; }
   .navbar-burger:after, .navbar-burger:before {
     content: '';
@@ -7147,7 +7145,6 @@ button.close {
     height: 100%;
     width: 2px;
     z-index: -1;
-    background: -webkit-repeating-linear-gradient(#ddd 0px, #ddd 10px, transparent 10px, transparent 15px);
     background: repeating-linear-gradient(#ddd 0px, #ddd 10px, transparent 10px, transparent 15px);
     left: 4px; }
     @media (min-width: 992px) {
@@ -7339,7 +7336,6 @@ table.month {
   color: white;
   font-size: 2.3em;
   padding: .5em;
-  -webkit-transition: .2s;
   transition: .2s;
   font-size: 1.8em; }
   @media (min-width: 992px) {

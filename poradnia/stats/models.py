@@ -77,3 +77,20 @@ class Value(models.Model):
         verbose_name = _("Value")
         verbose_name_plural = _("Values")
         ordering = ['item_id', 'time']
+
+
+@python_2_unicode_compatible
+class Graph(models.Model):
+    name = models.CharField(verbose_name=_("Name"), max_length=100)
+    description = models.TextField(verbose_name=_("Description"))
+    items = models.ManyToManyField(Item, verbose_name=_("Items"))
+
+    def get_absolute_url(self):
+        return reverse('stats:graph_detail', kwargs={'pk': self.pk})
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = _("Graph")
+        verbose_name_plural = _("Graphs")
