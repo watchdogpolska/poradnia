@@ -1,7 +1,10 @@
+import re
 from datetime import datetime
 from unittest import skipUnless
 
+
 from dateutil.rrule import MONTHLY, WEEKLY
+from django.core.management import call_command
 from django.core.urlresolvers import reverse
 from django.db import connection
 from django.http.response import HttpResponse
@@ -18,6 +21,10 @@ from poradnia.stats.utils import DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY, GapFil
 from poradnia.users.factories import UserFactory
 from poradnia.users.models import User
 
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 def polyfill_http_response_json():
     try:
@@ -678,3 +685,40 @@ class CSVValueListViewTestCase(TestCase):
     def test_output_contains_item_name(self):
         response = self.client.get(self.url)
         self.assertContains(response, self.obj.name)
+
+
+class JSONValueListViewTestCase(TestCase):
+    def setUp(self):
+        self.obj = ItemFactory()
+        self.values = ValueFactory.create_batch(size=10, item=self.obj)
+        self.url = reverse('stats:item_detail_json', kwargs={'key': self.obj.key,
+                                                             'month': self.values[0].time.month,
+                                                             'year': self.values[0].time.year,
+                                                             })
+        self.user = UserFactory(is_staff=True)
+        self.client.login(username=self.user.username, password="pass")
+
+    def test_valid_status_code_for_detail_page(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 200, "Invalid status code on '{}'".format(self.url))
+
+    def test_output_contains_values(self):
+        response = self.client.get(self.url).json()
+        sorted(self.values, key=lambda x: x.time)
+        self.assertEqual(response['values'][0]['value'], self.values[0].value)
+
+    def test_output_contains_item_name(self):
+        response = self.client.get(self.url).json()
+        self.assertEqual(response['item']['name'], self.obj.name)
+
+
+class TestManagementCommand(TestCase):
+    def test_command_no_raises_exception(self):
+        call_command('update_stats')
+
+    def test_command_outputs(self):
+        out = StringIO()
+        call_command('update_stats', stdout=out)
+        output = out.getvalue()
+        self.assertTrue(re.search("Registered .* new items", output))
+        self.assertTrue(re.search("Registered .* values.", output))

@@ -39,8 +39,16 @@
             <h1>{{ item }}</h1>
         </div>
         <div class="pull-right">
-            <a href="{% url 'stats:item_detail_csv' key=item.key month=today.month year=today.year %}"
-               class="btn btn-success"><i class="fa fa-download"></i> {% trans 'CSV' %}</a>
+            <div class="btn-group" role="group">
+                <a href="{% url 'stats:item_detail_csv' key=item.key month=today.month year=today.year %}"
+                   class="btn btn-success">
+                    <i class="fa fa-download"></i> {% trans 'CSV' %}
+                </a>
+                <a href="{% url 'stats:item_detail_json' key=item.key month=today.month year=today.year %}"
+                   class="btn btn-success">
+                    <i class="fa fa-download"></i> {% trans 'JSON' %}
+                </a>
+            </div>
         </div>
     </div>
     {{ item.description }}

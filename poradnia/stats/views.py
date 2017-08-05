@@ -1,4 +1,5 @@
 import csv
+import json
 from itertools import takewhile, dropwhile
 
 from braces.views import (JSONResponseMixin, LoginRequiredMixin,
@@ -347,4 +348,13 @@ class CSVValueListView(ValueListView, View):
                              item.time.strftime("%c"),
                              item.time.strftime("%s"),
                              item.value])
+        return response
+
+
+class JSONValueListView(ValueListView, View):
+    def get(self, *args, **kwargs):
+        response = HttpResponse(content_type='application/json')
+        data = {'item': self.item.as_dict(),
+                'values': [o.as_dict() for o in self.get_queryset()]}
+        json.dump(data,response, indent=4)
         return response

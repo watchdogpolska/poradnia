@@ -40,6 +40,9 @@ urlpatterns = [
         name="item_detail"),
     url(_(r'^item-(?P<key>\w.+)/(?P<month>\d+)/(?P<year>\d+)/~csv$'), views.CSVValueListView.as_view(),
         name="item_detail_csv"),
+    url(_(r'^item-(?P<key>\w.+)/(?P<month>\d+)/(?P<year>\d+)/~json$'), views.JSONValueListView.as_view(),
+        name="item_detail_json"),
+
     url(_(r'^item-(?P<key>\w.+)/(?P<month>\d+)/(?P<year>\d+)$'), views.ValueBrowseListView.as_view(),
         name="item_detail"),
 

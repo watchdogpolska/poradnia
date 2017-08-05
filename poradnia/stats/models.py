@@ -22,6 +22,7 @@ class ItemQueryset(QuerySet):
         yield item
         # return result
 
+
 @python_2_unicode_compatible
 class Item(TimeStampedModel):
     key = models.CharField(db_index=True, max_length=50, verbose_name=_("Metric key"))
@@ -43,6 +44,13 @@ class Item(TimeStampedModel):
             return _(self.name)
         return "{} [{}]".format(_(self.name), self.key)
 
+    def as_dict(self):
+        return {'key': self.key,
+                'name': self.name,
+                'description': self.description,
+                'last_updated': self.last_updated.strftime("%s"),
+                'public': self.public}
+
     def get_absolute_url(self):
         return reverse('stats:item_detail', kwargs={'key': self.key})
 
@@ -59,6 +67,11 @@ class Value(models.Model):
     value = models.IntegerField()
     comment = models.CharField(max_length=150)
     objects = ValueQueryset.as_manager()
+
+    def as_dict(self):
+        return {'time': self.time.strftime("%s"),
+                'value': self.value,
+                'comment': self.comment}
 
     class Meta:
         verbose_name = _("Value")
