@@ -33,7 +33,7 @@
     {% else %}
         <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
     {% endif %}
-    {% block extra_css %}{% endblock %} {# TODO: Remove it #}
+    {% block extra_css %}{% endblock %}
     <script>
         (function (i, s, o, g, r, a, m) {
             i['GoogleAnalyticsObject'] = r;
@@ -127,7 +127,6 @@
     <script src="{% static 'js/script.min.js' %}"></script>
 {% endif %}
 {% block javascript %}
-    {% include 'autocomplete_light/static.html' %}
     {% if user.is_authenticated %}
         {% include 'navsearch/script.html' %}
     {% endif %}

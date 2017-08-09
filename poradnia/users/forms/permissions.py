@@ -1,4 +1,4 @@
-from autocomplete_light.shortcuts import MultipleChoiceWidget
+from dal import autocomplete
 from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext as _
@@ -22,8 +22,9 @@ class TranslatedUserObjectPermissionsForm(SingleButtonMixin, PermissionsTranslat
 
 class TranslatedManageObjectPermissionForm(SingleButtonMixin, PermissionsTranslationMixin,
                                            BaseObjectPermissionsForm):
-    users = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(), required=True,
-                                           widget=MultipleChoiceWidget('UserAutocomplete'))
+    users = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(),
+                                           required=True,
+                                           widget=autocomplete.ModelSelect2Multiple(url='users:autocomplete'))
 
     def __init__(self, *args, **kwargs):
         self.actor = kwargs.pop('actor')

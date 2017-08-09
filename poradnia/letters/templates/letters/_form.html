@@ -1,7 +1,13 @@
 {% extends 'letters/base.html' %}
 {% load crispy_forms_tags staticfiles i18n %}
+
+{% block extra_css %}
+    {{ form.media.css }}
+{% endblock %}
+
 {% block javascript %}
     {{ block.super }}
+    {{ form.media.js }}
     <script type="text/javascript">
         $(function () {
             $('form tbody tr').formset({

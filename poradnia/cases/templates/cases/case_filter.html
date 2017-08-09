@@ -1,7 +1,13 @@
 {% extends "cases/base.html" %}
 {% load crispy_forms_tags humanize i18n cases_tags bootstrap_pagination %}
 
+{% block javascript %}
+    {{ block.super }}
+    {{ filter.form.media.js }}
+{% endblock %}
+
 {% block extra_css %}
+    {{ filter.form.media.css }}
     <style>
         span.free, tr.free > td, td.free {
             background-color: #38FF98;
@@ -54,7 +60,13 @@
                     <td class="subject">
         <span class="{{ object.status|status2css }}">
           {% if request.user.is_staff and not object.handled %}<b>{% endif %}
-            <a href="{{ object.get_absolute_url }}">{{ object.name }}</a>
+            <a href="{{ object.get_absolute_url }}">
+                {% if object.name %}
+                    {{ object.name }}
+                {% else %}
+                    {% trans 'No title' %}
+                {% endif %}
+            </a>
             {% if request.user.is_staff and not object.handled %}</b>{% endif %}
 
             ({{ object.letter_count }})

@@ -34,4 +34,9 @@ urlpatterns = [
         view=views.ProfileUpdateView.as_view(),
         name='profile'
     ),
+    url(
+        regex=r'^~autocomplete/$',
+        view=views.UserAutocomplete.as_view(),
+        name='autocomplete'
+    ),
 ]

@@ -2,6 +2,7 @@
 {% load crispy_forms_tags i18n %}
 
 {% block title %}{{ object }} - {{ block.super }}{% endblock %}
+
 {% block breadcrumbs %}
     <ol class="breadcrumb">
         <li><a href="{% url 'cases:list' %}">{% trans 'Cases' %}</a></li>
@@ -9,6 +10,7 @@
         <li class="active">{% trans 'Edit' %}</li>
     </ol>
 {% endblock %}
+
 {% block content %}
     <h1>{% block header %}{{ object }}{% endblock %}</h1>
     {% csrf_token %}

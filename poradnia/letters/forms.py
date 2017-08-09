@@ -1,5 +1,8 @@
-import autocomplete_light.shortcuts as autocomplete_light
+from atom.ext.crispy_forms.forms import HelperMixin, SingleButtonMixin
+from atom.ext.tinycontent.forms import GIODOMixin
+from atom.forms import PartialMixin
 from crispy_forms.layout import BaseInput, Submit
+from dal import autocomplete
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
@@ -7,13 +10,10 @@ from django.core.urlresolvers import reverse
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 
-from atom.ext.crispy_forms.forms import HelperMixin, SingleButtonMixin
-from atom.ext.tinycontent.forms import GIODOMixin
-from atom.forms import PartialMixin
 from poradnia.cases.models import Case
 from .models import Attachment, Letter
 
-CLIEN_FIELD_TEXT = _("Leave empty to use email field and create a new one user.")
+CLIENT_FIELD_TEXT = _("Leave empty to use email field and create a new one user.")
 
 EMAIL_TEXT = _("""The user account will be created automatically, so you have
 access to the archive and data about persons responsible for the case.""")
@@ -39,7 +39,7 @@ class UserEmailField(forms.EmailField):
             )
 
 
-class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, autocomplete_light.ModelForm):
+class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
     attachment_cls = Attachment
     attachment_rel_field = 'letter'
     attachment_file_field = 'attachment'
@@ -48,8 +48,8 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, autocomplete_ligh
     client = forms.ModelChoiceField(queryset=get_user_model().objects.none(),
                                     label=_("Client"),
                                     required=False,
-                                    help_text=CLIEN_FIELD_TEXT,
-                                    widget=autocomplete_light.ChoiceWidget('UserAutocomplete'))
+                                    help_text=CLIENT_FIELD_TEXT,
+                                    widget=autocomplete.ModelSelect2('users:autocomplete'))
     email = forms.EmailField(required=False,
                              label=_("User e-mail"))
     email_registration = UserEmailField(required=True,
@@ -83,8 +83,8 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, autocomplete_ligh
         return self.user.has_perm('cases.can_select_client')
 
     def clean(self):
-        if self.user.has_perm('cases.can_select_client') and \
-            not (self.cleaned_data.get('email') or self.cleaned_data.get('client')):
+        if (self.user.has_perm('cases.can_select_client') and \
+            not (self.cleaned_data.get('email') or self.cleaned_data.get('client'))):
             raise ValidationError(_("Have to enter user email or select a client"))
         return super(NewCaseForm, self).clean()
 

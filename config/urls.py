@@ -36,7 +36,6 @@ urlpatterns = [
     url(r'^statystyki/', include('poradnia.stats.urls', namespace='stats')),
     url(r'^uwagi/', include('poradnia.tasty_feedback.urls', namespace='tasty_feedback')),
     # Utils
-    url(r'^autocomplete/', include('autocomplete_light.urls')),
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 

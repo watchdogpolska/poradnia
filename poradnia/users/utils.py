@@ -1,4 +1,3 @@
-from autocomplete_light.autocomplete.model import AutocompleteModel
 from braces.views import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.views.generic import View
@@ -22,9 +21,3 @@ class PermissionMixin(LoginRequiredMixin, View):
     def get_queryset(self, *args, **kwargs):
         qs = super(PermissionMixin, self).get_queryset(*args, **kwargs)
         return qs.for_user(self.request.user)
-
-
-class AutocompletePermissionMixin(AutocompleteModel):
-    def choices_for_request(self):
-        self.choices = self.choices.for_user(self.request.user)
-        return super(AutocompletePermissionMixin, self).choices_for_request()

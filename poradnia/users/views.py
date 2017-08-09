@@ -1,12 +1,14 @@
 # -*- coding: utf-8 -*-
 from braces.views import (LoginRequiredMixin, StaffuserRequiredMixin,
                           UserFormKwargsMixin)
+from dal import autocomplete
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
 from django_filters.views import FilterView
 
+from poradnia.utils.mixins import ExprAutocompleteMixin
 from .filters import UserFilter
 from .forms import ProfileForm, UserForm
 from .models import Profile, User
@@ -97,3 +99,8 @@ class UserListView(StaffuserRequiredMixin, PermissionMixin, FilterView):
         context['is_staff'] = dict(choices=enumerate(self.IS_STAFF_FILTER),
                                    selected=self.get_is_staff_choice())
         return context
+
+
+class UserAutocomplete(PermissionMixin, ExprAutocompleteMixin, autocomplete.Select2QuerySetView):
+    model = User
+    search_expr = ['first_name__icontains', 'last_name__icontains', 'username__icontains']

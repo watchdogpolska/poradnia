@@ -1,4 +1,5 @@
 import django_filters
+from atom.ext.django_filters.filters import CrispyFilterMixin
 from braces.views import (PrefetchRelatedMixin, SelectRelatedMixin,
                           SetHeadlineMixin, UserFormKwargsMixin)
 from django.contrib import messages
@@ -8,7 +9,6 @@ from django.views.generic import CreateView, UpdateView
 from django_filters.views import FilterView
 
 from atom.ext.crispy_forms.views import FormSetMixin
-from atom.filters import CrispyFilterMixin
 from poradnia.users.utils import PermissionMixin
 from .fbv import REGISTRATION_TEXT
 from ..forms import AttachmentForm, LetterForm, NewCaseForm

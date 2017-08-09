@@ -42,7 +42,8 @@ THIRD_PARTY_APPS = (
     'allauth.socialaccount',  # registration
     'guardian',
     'django_mailbox',
-    'autocomplete_light',
+    'dal',
+    'dal_select2',
     'tinymce',
     'flatpages_tinymce',
     'tinycontent',

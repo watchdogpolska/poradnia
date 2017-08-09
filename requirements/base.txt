@@ -33,7 +33,7 @@ django-guardian==1.4.9
 django-mailbox==4.5.4
 talon==1.4.1
 django-filter==1.0.4
-django-autocomplete-light==2.3.3 # rq.filter: <3.0.0
+django-autocomplete-light==3.2.9
 https://github.com/ad-m/django-flatpages-tinymce/archive/patch-1.zip
 django_atom==0.14.3
 django-tinymce==2.6.0

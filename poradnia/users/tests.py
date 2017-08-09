@@ -10,11 +10,11 @@ from test_plus.test import TestCase
 
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
-from poradnia.users.autocomplete_light_registry import UserAutocomplete
 from poradnia.users.factories import StaffFactory, UserFactory
 from poradnia.users.forms import TranslatedManageObjectPermissionForm
 from poradnia.users.forms import TranslatedUserObjectPermissionsForm, UserForm
 from poradnia.users.models import User
+from poradnia.users.views import UserAutocomplete
 
 
 class UserTestCase(TestCase):
@@ -341,7 +341,7 @@ class UserProfileViewTestCase(TestCase):
         self.assertEqual(self.regular_user.profile.description, description)
 
 
-class UserAutocompleteTestCase(TestCase):
+class UserAutocompleteViewTestCase(TestCase):
     def setUp(self):
         self.regular_user = UserFactory()
         self.staff_user = StaffFactory()
@@ -351,16 +351,14 @@ class UserAutocompleteTestCase(TestCase):
         request = self.factory.get("?q={}".format(self.regular_user.username))
         request.user = self.staff_user
         assign_perm('users.can_view_other', self.staff_user)
-        cls = UserAutocomplete(request=request)
-        cls.choices = User.objects
-        self.assertQuerysetEqual(cls.choices_for_request(), [repr(self.regular_user)])
+        response = UserAutocomplete.as_view()(request=request)
+        self.assertContains(response, self.regular_user)
 
     def test_staff_user_with_permission_can_not_view_reqular_user(self):
         request = self.factory.get("?q={}".format(self.regular_user.username))
         request.user = self.staff_user
-        cls = UserAutocomplete(request=request)
-        cls.choices = User.objects
-        self.assertQuerysetEqual(cls.choices_for_request(), [])
+        response = UserAutocomplete.as_view()(request=request)
+        self.assertNotContains(response, self.regular_user)
 
 
 class UserAdminTestCase(AdminTestCaseMixin, TestCase):

@@ -3,6 +3,7 @@
 {% block title %}{{ object }} - {{ block.super }}{% endblock %}
 {% block javascript %}
     {{ block.super }}
+    {{ casegroup_form.media.js }}
     <script type="text/javascript">
         $(function () {
             $('form tbody tr').formset({
@@ -17,6 +18,10 @@
         });
         $('#form-tab a:last').tab('show')
     </script>
+{% endblock %}
+
+{% block extra_css %}
+    {{ casegroup_form.media.css }}
 {% endblock %}
 {% block breadcrumbs %}
     <ol class="breadcrumb">
@@ -99,7 +104,7 @@
                     <div class="panel-heading"><i class="fa fa-phone"></i> {% trans 'Metrical data' %}</div>
                     <table class="table">
                         <tr>
-                            <td><i class="fa fa-area-chart"></i> {% trans 'Advice' %}</a></td>
+                            <td><i class="fa fa-area-chart"></i> {% trans 'Advice' %}</td>
                             <td>
                                 {% if object.advice %}
                                     <a href="{{ object.advice.get_absolute_url }}">{{ object.advice }}</a>

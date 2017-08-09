@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import autocomplete_light.shortcuts as autocomplete_light
+from dal import autocomplete
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.layout import Submit
 from django import forms
@@ -10,6 +10,8 @@ from guardian.shortcuts import assign_perm
 
 from atom.ext.crispy_forms.forms import (FormHorizontalMixin, HelperMixin,
                                          SingleButtonMixin)
+
+from poradnia.users.models import User
 from .models import Case, PermissionGroup
 
 
@@ -41,7 +43,7 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
     action_text = _('Grant')
     user = forms.ModelChoiceField(queryset=None,
                                   required=True,
-                                  widget=autocomplete_light.ChoiceWidget('UserAutocomplete'),
+                                  widget=autocomplete.ModelSelect2('users:autocomplete'),
                                   label=_("User"))
     group = forms.ModelChoiceField(queryset=PermissionGroup.objects.all(),
                                    label=_("Permissions group"))
