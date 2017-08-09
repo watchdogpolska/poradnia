@@ -29,19 +29,19 @@ def letter_way(filter):
     return internal
 
 
-letter_staff_email = letter_way(~Q(eml=None, ) & Q(created_by__is_staff=True))
+letter_staff_email = letter_way(~Q(eml='', ) & Q(created_by__is_staff=True))
 letter_staff_email.name = _("Letter of staff by email")
 letter_staff_email.description = _("Monthly number of staff letter send by e-mail")
 
-letter_staff_www = letter_way(Q(eml=None, ) & Q(created_by__is_staff=True))
+letter_staff_www = letter_way(Q(eml='', ) & Q(created_by__is_staff=True))
 letter_staff_www.name = _("Letter of staff by WWW")
 letter_staff_www.description = _("Monthly number of staff letter send by www")
 
-letter_user_email = letter_way(~Q(eml=None, ) & Q(created_by__is_staff=False))
+letter_user_email = letter_way(~Q(eml='', ) & Q(created_by__is_staff=False))
 letter_user_email.name = _("Letter of staff by email")
 letter_user_email.description = _("Monthly number of user letter send by e-mail")
 
-letter_user_www = letter_way(Q(eml=None, ) & Q(created_by__is_staff=False))
+letter_user_www = letter_way(Q(eml='', ) & Q(created_by__is_staff=False))
 letter_user_www.name = _("Letter of user by WWW")
 letter_user_www.description = _("Monthly number of user letter send by WWW")
 
