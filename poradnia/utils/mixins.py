@@ -1,5 +1,6 @@
 from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Q
+from functools import reduce
 
 
 class ExprAutocompleteMixin(object):
