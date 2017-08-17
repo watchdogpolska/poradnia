@@ -2,7 +2,6 @@
 var fs = require('fs'),
     gulp = require('gulp'),
     sass = require('gulp-sass'),
-    notify = require("gulp-notify"),
     bower = require('gulp-bower'),
     watch = require('gulp-watch'),
     uglify = require('gulp-uglify'),
@@ -10,8 +9,7 @@ var fs = require('fs'),
     rename = require('gulp-rename'),
     minifycss = require('gulp-minify-css'),
     prefix = require('gulp-autoprefixer'),
-    livereload = require('gulp-livereload'),
-    csslint = require('gulp-csslint'),
+    livereload = require('gulp-livereload'), 
     json = JSON.parse(fs.readFileSync('./package.json'));
 
 var config = (function () {
@@ -21,7 +19,7 @@ var config = (function () {
         bower: './bower_components/',
         npm: './node_modules/',
         assets: './' + appName + '/assets',
-        static: './' + appName + '/static'
+        static: './' + appName + '/staticfiles'
     };
 
     return {
@@ -51,6 +49,11 @@ var config = (function () {
                 path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
                 path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
                 path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/modal.js',
+                path.static + '/autocomplete_light/jquery.init.js',
+                path.static + '/autocomplete_light/autocomplete.init.js',
+                path.static + '/autocomplete_light/vendor/select2/dist/js/select2.full.js',
+                path.static + '/autocomplete_light/select2.js',
+                path.static + '/tasty_feedback/style.js',
                 path.bower + '/chart.js/dist/Chart.js',
                 path.bower + '/moment/moment.js',
                 path.bower + '/moment/locale/pl.js',

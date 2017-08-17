@@ -56,6 +56,12 @@ class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterS
         super(StaffCaseFilter, self).__init__(*args, **kwargs)
         self.filters['status'].field.choices.insert(0, ('', u'---------'))
 
+    @property
+    def form(self):
+        form = super(StaffCaseFilter, self).form
+        form.helper.include_media = False
+        return form
+
     class Meta:
         model = Case
         fields = ['id', 'status', 'client', 'name', 'has_project']
