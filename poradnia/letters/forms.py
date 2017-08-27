@@ -165,8 +165,8 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
                                              css_class="btn-primary"))
 
     def _fill_footer(self):
-        if self.user.is_staff:
-            footer = self.user.profile.email_footer # Profile.objects.get(pk=self.user.id).email_footer
+        if self.user.is_staff and hasattr(self.user, 'profile'):
+            footer = self.user.profile.email_footer
             if footer:
                 self.fields['text'].initial = "\n--\n%s" % footer
 
