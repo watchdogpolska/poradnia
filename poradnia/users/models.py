@@ -201,6 +201,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     description = models.TextField(blank=True, verbose_name=_("Description"))
     www = models.URLField(null=True, blank=True, verbose_name=_("Homepage"))
+    email_footer = models.TextField(null=True, blank=True, verbose_name=_("Email footer"))
     event_reminder_time = models.IntegerField(
         choices=EVENT_REMINDER_CHOICE, default=EVENT_REMINDER_CHOICE.one_day,
         verbose_name=_("Event Reminder Time")
