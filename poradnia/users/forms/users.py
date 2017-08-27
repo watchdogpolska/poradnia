@@ -29,7 +29,7 @@ class ProfileForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixi
         # dynamically exclude event_reminder_time if user is not a staff member
         if not self.user.is_staff:
             del self.fields['event_reminder_time']
-            # del self.fields['email_footer']
+            del self.fields['email_footer']
 
     class Meta:
         model = Profile
