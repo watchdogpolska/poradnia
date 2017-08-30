@@ -46,10 +46,4 @@ if settings.DEBUG:
     ]
 
 
-def handler500(request):
-    """500 error handler which includes ``request`` in the context.
-
-    Templates: `500.html`
-    Context: None
-    """
-    return HttpResponseServerError(render_to_string(request, '500.html'))
+handler500 = TemplateView.as_view(template_name='500.html')
