@@ -3,6 +3,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 
 from atom.ext.crispy_forms.forms import FormHorizontalMixin, SingleButtonMixin
+from django.forms import Textarea
+
 from ..models import Profile
 
 
@@ -27,7 +29,11 @@ class ProfileForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixi
         # dynamically exclude event_reminder_time if user is not a staff member
         if not self.user.is_staff:
             del self.fields['event_reminder_time']
+            del self.fields['email_footer']
 
     class Meta:
         model = Profile
-        fields = ("description", "www", "event_reminder_time")
+        fields = ("description", "www", "event_reminder_time", "email_footer")
+        widgets = {
+            'email_footer': Textarea(attrs={'cols': 30, 'rows': 4}),
+        }

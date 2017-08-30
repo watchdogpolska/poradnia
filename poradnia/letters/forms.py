@@ -135,6 +135,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         super(AddLetterForm, self).__init__(*args, **kwargs)
         self.helper.form_action = reverse('letters:add', kwargs={'case_pk': self.case.pk})
         self.helper.form_tag = False
+        self._fill_footer()
         self._add_buttons()
         self.fields['name'].initial = "Odp: %s" % (self.case)
 
@@ -162,6 +163,12 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
                 self.helper.add_input(Submit(name='send',
                                              value=_("Reply"),
                                              css_class="btn-primary"))
+
+    def _fill_footer(self):
+        if self.user.is_staff and hasattr(self.user, 'profile'):
+            footer = self.user.profile.email_footer
+            if footer:
+                self.fields['text'].initial = "\n--\n%s" % footer
 
     def get_status(self):
         if not self.user.is_staff:
