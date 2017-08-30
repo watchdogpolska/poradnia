@@ -308,7 +308,8 @@ class TimeMixin(object):
     @property
     def today(self):
         today = date.today()
-        return today.replace(month=int(self.kwargs.get('month', str(today.month))),
+        return today.replace(day=1,
+                             month=int(self.kwargs.get('month', str(today.month))),
                              year=int(self.kwargs.get('year', str(today.year))))
 
     @property
