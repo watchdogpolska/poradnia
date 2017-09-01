@@ -10,7 +10,7 @@ django-floppyforms==1.7.0
 django-model-utils==3.0.0
 
 # images
-Pillow==4.1.1
+Pillow==4.2.1
 sorl-thumbnail==12.3
 
 # For user registration, either via email or social
