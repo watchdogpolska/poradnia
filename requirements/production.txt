@@ -1,6 +1,6 @@
 # Pro-tip: Try not to put anything here. There should be no dependency in
 #	production that isn't in development.
 -r base.txt
-Django==1.10.7
+Django==1.11.4
 gunicorn==19.6.0
 gevent==1.2.2
