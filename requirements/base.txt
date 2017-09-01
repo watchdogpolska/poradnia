@@ -38,7 +38,7 @@ https://github.com/ad-m/django-flatpages-tinymce/archive/patch-1.zip
 django_atom==0.15.3
 django-tinymce==2.6.0
 django-tinycontent==0.7.1
-icalendar==3.11.4
+icalendar==3.11.7
 html2text==2016.9.19
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.6.2
