@@ -1,5 +1,5 @@
 # Configuration
-django-environ==0.4.3
+django-environ==0.4.4
 
 # Forms
 django-braces==1.11.0
