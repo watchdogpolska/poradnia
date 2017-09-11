@@ -100,8 +100,8 @@ class Case(models.Model):
     name = models.CharField(max_length=150, verbose_name=_("Subject"))
     status = StatusField()
     status_changed = MonitorField(monitor='status')
-    client = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='case_client', verbose_name=_("Client"))
+    client = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                               related_name='case_client', verbose_name=_("Client"))
     letter_count = models.IntegerField(default=0, verbose_name=_("Letter count"))
     last_send = models.DateTimeField(null=True, blank=True, verbose_name=_("Last send"))
     last_action = models.DateTimeField(null=True, blank=True, verbose_name=_("Last action"))
