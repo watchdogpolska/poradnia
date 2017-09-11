@@ -1,13 +1,7 @@
 {% extends "cases/base.html" %}
 {% load crispy_forms_tags humanize i18n cases_tags bootstrap_pagination %}
 
-{% block javascript %}
-    {{ block.super }}
-    {{ filter.form.media.js }}
-{% endblock %}
-
 {% block extra_css %}
-    {{ filter.form.media.css }}
     <style>
         span.free, tr.free > td, td.free {
             background-color: #38FF98;
