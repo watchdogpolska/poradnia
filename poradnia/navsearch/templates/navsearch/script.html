@@ -1,18 +1,22 @@
 <script>
     $(document).ready(function () {
-        $("#search").select2({
-            ajax: {
-                url: "{% url 'navsearch:navigation_autocomplete' %}",
-                dataType: 'json',
-                data: function (params) {
-                    return {
-                        search: params.term,
-                        page: params.page
-                    };
+        $("#search")
+            // See
+            // https://stackoverflow.com/questions/14313001/select2-not-calculating-resolved-width-correctly-if-select-is-hidden
+            .css('width', '100%')
+            .select2({
+                ajax: {
+                    url: "{% url 'navsearch:navigation_autocomplete' %}",
+                    dataType: 'json',
+                    data: function (params) {
+                        return {
+                            search: params.term,
+                            page: params.page
+                        };
+                    }
                 }
-            }
-        }).on('select2:select', function (e) {
-            window.location.href = e.target.value;
-        });
+            }).on('select2:select', function (e) {
+                window.location.href = e.target.value;
+            });
     });
 </script>
