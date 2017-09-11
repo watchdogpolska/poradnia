@@ -19,7 +19,8 @@ var config = (function () {
         bower: './bower_components/',
         npm: './node_modules/',
         assets: './' + appName + '/assets',
-        static: './' + appName + '/staticfiles'
+        static: './' + appName + '/static',
+        staticfiles: './staticfiles'
     };
 
     return {
@@ -30,7 +31,9 @@ var config = (function () {
                 path.bower + '/bootstrap-sass/assets/stylesheets',
                 path.bower + '/font-awesome/scss',
                 path.bower + '/pikaday-time/scss/',
-                path.assets + '/scss/'
+                path.staticfiles,
+                path.assets + '/scss/',
+
             ],
             output: path.static + "/css",
             watch: [
@@ -49,11 +52,11 @@ var config = (function () {
                 path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
                 path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
                 path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/modal.js',
-                path.static + '/autocomplete_light/jquery.init.js',
-                path.static + '/autocomplete_light/autocomplete.init.js',
-                path.static + '/autocomplete_light/vendor/select2/dist/js/select2.full.js',
-                path.static + '/autocomplete_light/select2.js',
-                path.static + '/tasty_feedback/style.js',
+                path.staticfiles + '/autocomplete_light/vendor/select2/dist/js/select2.full.js',
+                path.staticfiles + '/autocomplete_light/jquery.init.js',
+                path.staticfiles + '/autocomplete_light/autocomplete.init.js',
+                path.staticfiles + '/autocomplete_light/select2.js',
+                path.staticfiles + '/tasty_feedback/style.js',
                 path.bower + '/chart.js/dist/Chart.js',
                 path.bower + '/moment/moment.js',
                 path.bower + '/moment/locale/pl.js',
