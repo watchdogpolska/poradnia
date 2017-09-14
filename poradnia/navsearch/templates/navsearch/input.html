@@ -1,6 +1,9 @@
-<form class="form">
-	<div class="form-group">
-		<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
-		<select id="search" class="form-control"></select>
-	</div>
-</form>
+<div class="navsearch" data-autocomplete-url="{% url 'navsearch:navigation_autocomplete' %}">
+	<form class="form">
+		<div class="form-group">
+			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
+			<input type="search" id="search" class="form-control navsearch__input">
+		</div>
+	</form>
+	<div class="navsearch__results"></div>
+</div>
