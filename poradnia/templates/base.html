@@ -126,11 +126,6 @@
 {% else %}
     <script src="{% static 'js/script.min.js' %}"></script>
 {% endif %}
-{% block javascript %}
-    {% if user.is_authenticated %}
-        {% include 'navsearch/script.html' %}
-    {% endif %}
-{% endblock javascript %}
 </body>
 </html>
 

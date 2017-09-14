@@ -1,15 +1,15 @@
 "use strict";
 var fs = require('fs'),
     gulp = require('gulp'),
-    sass = require('gulp-sass'),
     bower = require('gulp-bower'),
-    watch = require('gulp-watch'),
-    uglify = require('gulp-uglify'),
     concat = require('gulp-concat'),
-    rename = require('gulp-rename'),
+    livereload = require('gulp-livereload'),
     minifycss = require('gulp-minify-css'),
     prefix = require('gulp-autoprefixer'),
-    livereload = require('gulp-livereload'), 
+    rename = require('gulp-rename'),
+    sass = require('gulp-sass'),
+    uglify = require('gulp-uglify'),
+    watch = require('gulp-watch'),
     json = JSON.parse(fs.readFileSync('./package.json'));
 
 var config = (function () {
@@ -18,6 +18,7 @@ var config = (function () {
     var path = {
         bower: './bower_components/',
         npm: './node_modules/',
+        app: './' + appName,
         assets: './' + appName + '/assets',
         static: './' + appName + '/static',
         staticfiles: './staticfiles'
@@ -62,7 +63,8 @@ var config = (function () {
                 path.bower + '/moment/locale/pl.js',
                 path.bower + '/pikaday-time/pikaday.js',
                 path.npm + '/patternomaly/dist/patternomaly.js',
-                path.assets + '/js/*.js'
+                path.assets + '/js/*.js',
+                path.app + '/navsearch/static/navsearch/*.js',
             ],
             output: {
                 dir: path.static + "/js",

@@ -19,7 +19,7 @@ class AutocompleteView(View):
         ).distinct()[:3]
 
     def get_item(self, row):
-        return {'id': row.get_absolute_url(), 'text': force_text(row)}
+        return {'url': row.get_absolute_url(), 'text': force_text(row)}
 
     def get_case_id_queryset(self, q):
         if q.replace('#', '').isdigit():
@@ -30,7 +30,7 @@ class AutocompleteView(View):
         return Case.objects.for_user(self.request.user).filter(name__icontains=q)[:3]
 
     def get(self, *args, **kwargs):
-        q = self.request.GET.get('q') or 'x'
+        q = self.request.GET.get('q')
         data = [] if not q else self.get_results(q)
         return JsonResponse({'results': data}, safe=False)
 
