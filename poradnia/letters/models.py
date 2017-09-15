@@ -4,8 +4,8 @@ import logging
 import os
 from os.path import basename
 
-import html2text
 import talon
+from cached_property import cached_property
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.files import File
@@ -154,88 +154,111 @@ class Attachment(models.Model):
         verbose_name_plural = _('Attachments')
 
 
-@receiver(message_received)
-def mail_process(sender, message, **args):
-    # new_user + poradnia@ => new_user @ new_user
-    # new_user + case => FAIL
-    # old_user + case => PASS
-    # many_case => FAIL
+class MessageParser(object):
+    def __init__(self, message):
+        self.message = message
+        self.email_object = message.get_email_object()
 
-    # Skip autoreply messages - see RFC3834
-    if (lambda x: 'Auto-Submitted' in x and
-            x['Auto-Submitted'] == 'auto-replied')(message.get_email_object()):
-        logger.info("Delete .eml from {email} as auto-replied".format(
-            email=message.from_address[0]))
-        message.eml.delete(save=True)
-        return
+    @staticmethod
+    @receiver(message_received)
+    def receive_signal(sender, message, **kwargs):
+        MessageParser(message).insert()
 
-    # Identify user
-    user = get_user_model().objects.get_by_email_or_create(message.from_address[0])
-    logger.debug("Identified user: %s", user)
+    @cached_property
+    def from_address(self):
+        return self.message.from_address[0]
 
-    # Identify case
-    try:  # TODO: Is it old case?
-        case = Case.objects.by_msg(message).get()
-    except Case.DoesNotExist:
-        logger.debug("Case creating")
-        case = Case(name=message.subject, created_by=user, client=user)
-        case.save()
-        user.notify(actor=user, verb='registered', target=case, from_email=case.get_email())
-    logger.debug("Case: %s", case)
-    # Prepare text
-    if message.text:
-        text = quotations.extract_from(message.text, 'text/plain')
-        signature = message.text.replace(text, '')
-    else:
-        text = html2text.html2text(quotations.extract_from(message.html, 'text/html'))
-        signature = message.text.replace(text, '')
+    def is_autoreply(self):
+        return self.email_object.get('Auto-Submitted', None) == 'auto-replied'
 
-    # Calculate letter status
-    if user.is_staff:
-        if user.has_perm('cases.can_send_to_client', case):
-            status = Letter.STATUS.done
+    @cached_property
+    def actor(self):
+        return get_user_model().objects.get_by_email_or_create(self.from_address)
+
+    @cached_property
+    def case(self):
+        try:  # TODO: Is it old case?
+            case = Case.objects.by_msg(self.message).get()
+            self.case_update(case)
+        except Case.DoesNotExist:
+            case = Case.objects.create(name=self.message.subject,
+                                       created_by=self.actor,
+                                       client=self.actor)
+            self.actor.notify(actor=self.actor, verb='registered', target=case, from_email=case.get_email())
+        return case
+
+    @cached_property
+    def quote(self):
+        if self.message.text:
+            return self.message.text.replace(self.text, '')
+        return self.message.text.replace(self.text, '')
+
+    @cached_property
+    def text(self):
+        if self.message.text:
+            return quotations.extract_from(self.message.text)
+        return quotations.extract_from(self.message.html, 'text/html')
+
+    @cached_property
+    def letter_status(self):
+        if self.actor.is_staff and not self.actor.has_perm('cases.can_send_to_client', self.case):
+            return Letter.STATUS.staff
         else:
-            status = Letter.STATUS.staff
-    else:
-        status = Letter.STATUS.done
+            return Letter.STATUS.done
 
-    # Update case status (re-open)
-    case_updated = False
-    if not user.is_staff and case.status == Case.STATUS.closed:
-        case.status_update(reopen=True, save=False)
-        case_updated = True
-    if user.is_staff:
-        case.handled = True
-        case_updated = True
-    if user.is_staff and status == Letter.STATUS.done:
-        case.has_project = False
-        case_updated = True
+    def save_letter(self):
+        return Letter.objects.create(name=self.message.subject,
+                                     created_by=self.actor,
+                                     case=self.case,
+                                     status=self.letter_status,
+                                     text=self.text,
+                                     message=self.message,
+                                     signature=self.quote,
+                                     eml=self.message.eml)
 
-    if case_updated:
-        case.save()
+    def save_attachments(self, letter):
+        attachments = []
+        for attachment in self.message.attachments.all():
+            name = attachment.get_filename() or 'Unknown.bin'
+            if len(name) > 70:
+                name, ext = os.path.splitext(name)
+                ext = ext[:70]
+                name = name[:70 - len(ext)] + ext
+            att_file = File(attachment.document, name)
+            att = Attachment(letter=letter, attachment=att_file)
+            attachments.append(att)
+        Attachment.objects.bulk_create(attachments)
+        return attachments
 
-    obj = Letter(name=message.subject,
-                 created_by=user,
-                 case=case,
-                 status=status,
-                 text=text,
-                 message=message,
-                 signature=signature,
-                 eml=message.eml)
-    obj.save()
+    def insert(self):
+        # Skip autoreply messages - see RFC3834
+        if self.is_autoreply():
+            logger.info("Delete .eml from {email} as auto-replied".format(email=self.from_address))
+            self.message.eml.delete(save=True)
+            return
 
-    logger.debug("Letter: %s", obj)
-    # Convert attachments
-    attachments = []
-    for attachment in message.attachments.all():
-        name = attachment.get_filename() or 'Unknown.bin'
-        if len(name) > 70:
-            name, ext = os.path.splitext(name)
-            ext = ext[:70]
-            name = name[:70 - len(ext)] + ext
-        att_file = File(attachment.document, name)
-        att = Attachment(letter=obj, attachment=att_file)
-        attachments.append(att)
-    Attachment.objects.bulk_create(attachments)
-    case.update_counters()
-    obj.send_notification(actor=user, verb='created')
+        letter = self.save_letter()
+        logger.info("Message #{message} registered in case #{case} as letter #{letter}".
+                    format(message=self.message.pk,
+                           case=self.case.pk,
+                           letter=letter.pk))
+        attachments = self.save_attachments(letter)
+        logger.debug("Saved {attachment_count} attachments for letter #{letter}".
+                     format(attachment_count=len(attachments),
+                            letter=letter.pk))
+        self.case.update_counters()
+        letter.send_notification(actor=self.actor, verb='created')
+
+    def case_update(self, case):
+        changed = False
+        if case.status == Case.STATUS.closed and self.letter_status == Letter.STATUS.done:
+            case.status_update(reopen=True, save=False)
+            changed = True
+        if case.handled is False and self.actor.is_staff is True and self.letter_status == Letter.STATUS.done:
+            case.handled = False
+            changed = True
+        elif case.handled is False and self.actor.is_staff is False:
+            case.handled = False
+            changed = True
+        if changed:
+            case.save()
