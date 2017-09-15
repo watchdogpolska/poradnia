@@ -13,8 +13,9 @@ from guardian.shortcuts import assign_perm
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
 from poradnia.letters.factories import LetterFactory
-from poradnia.letters.models import Letter, mail_process
+from poradnia.letters.models import Letter, MessageParser
 from poradnia.users.factories import UserFactory
+
 
 
 class QuerySetTestCase(TestCase):
@@ -135,30 +136,29 @@ class ReceiveEmailTestCase(TestCase):
     def test_user_identification(self):
         user = UserFactory(email='user@example.com')
         message = self.get_message('cc_message.eml')
-        mail_process(sender=self.mailbox, message=message)
+        MessageParser.receive_signal(sender=self.mailbox, message=message)
         self.assertEqual(user, message.letter_set.all()[0].created_by)
 
     def test_cc_message(self):
         case = CaseFactory(pk=639)
         message = self.get_message('cc_message.eml')
-        mail_process(sender=self.mailbox, message=message)
+        MessageParser.receive_signal(sender=self.mailbox, message=message)
         self.assertEqual(case, message.letter_set.all()[0].case)
 
     def test_closed_to_free(self):
         case = CaseFactory(pk=639, status=Case.STATUS.closed)
         message = self.get_message('cc_message.eml')
-        mail_process(sender=self.mailbox, message=message)
+        MessageParser.receive_signal(sender=self.mailbox, message=message)
 
         case.refresh_from_db()
         self.assertEqual(case.status, Case.STATUS.free)
 
     def test_closed_to_assigned(self):
-        staff = UserFactory(is_staff=True)
         case = CaseFactory(pk=639, status=Case.STATUS.closed)
-        assign_perm('cases.can_send_to_client', staff, case)
+        assign_perm('cases.can_send_to_client', UserFactory(is_staff=True), case)
         msg = self.get_message('cc_message.eml')
 
-        mail_process(sender=self.mailbox, message=msg)
+        MessageParser.receive_signal(sender=self.mailbox, message=msg)
 
         case.refresh_from_db()
         self.assertEqual(case.status, Case.STATUS.assigned)
@@ -169,7 +169,7 @@ class ReceiveEmailTestCase(TestCase):
                           "to UTF-8 filename attachment")
         case = CaseFactory(pk=639)
         message = self.get_message('utf8_message.eml')
-        mail_process(sender=self.mailbox, message=message)
+        MessageParser.receive_signal(sender=self.mailbox, message=message)
 
         case.refresh_from_db()
         self.assertEqual(case.status, Case.STATUS.free)

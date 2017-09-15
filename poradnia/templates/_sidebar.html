@@ -10,7 +10,9 @@
     <ul class="block-list-list">
         {% if request.user.is_authenticated %}
             <li class="block-list-item">
-                <a href="#" data-toggle="modal" data-target="#navsearch_modal"><i class="fa fa-search"></i> Search</a>
+                <a href="#" data-toggle="modal" data-target="#navsearch_modal">
+                    <i class="fa fa-search"></i> {% trans 'Search' %}
+                </a>
             </li>
         {% endif %}
         {% if perms.tasty_feedback.view_feedback %}
