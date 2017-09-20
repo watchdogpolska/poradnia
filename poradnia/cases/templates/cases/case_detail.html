@@ -145,14 +145,14 @@
 
             <ul class="nav nav-tabs" role="tablist" id="form-tab">
                 {% for label, row in forms.items %}
-                    <li role="presentation"><a href="#{{ label }}" aria-controls="{{ label }}" role="tab"
+                    <li role="presentation" {% if forloop.last %} class="active"{% endif %}><a href="#{{ label }}" aria-controls="{{ label }}" role="tab"
                                                data-toggle="tab">{{ row.title }}</a></li>
                 {% endfor %}
             </ul>
 
             <div class="tab-content">
                 {% for key, row in forms.items %}
-                    <div role="tabpanel" class="tab-pane" id="{{ key }}">
+                    <div role="tabpanel" class="tab-pane {% if forloop.last %} active{% endif %}" id="{{ key }}">
                         <h2>{{ row.title }}</h2>
                         <form method="post" class="{{ row.form.helper.form_class }}" enctype="multipart/form-data"
                               action="{{ row.form.helper.form_action }}">
