@@ -7,5 +7,5 @@ Notiication_custom
 
 Widoki
 ######
-.. automodule:: notifications_custom.views
+.. automodule:: poradnia.notifications_custom.views
     :members:

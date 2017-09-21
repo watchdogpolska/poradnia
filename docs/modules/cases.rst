@@ -71,10 +71,10 @@ Na każde nadesłane pismo w sprawie każdy ma możliwość odpowiedzi, a odpowi
 Status sprawy
 -------------
 
-Każda ma swój status, który może uleca następującej zmianie zgodnie z stanem przedstawionym na 
+Każda ma swój status, który może uleca następującej zmianie zgodnie z stanem przedstawionym na
 
 .. digraph:: case_status
-      
+
       "free" [label="wolna"];
       "assigned" [label="przypisana"];
       "closed" [label="zamknięta"];
@@ -91,22 +91,22 @@ Kod aplikacji
 Widoki
 ######
 
-.. automodule:: cases.views.cases
+.. automodule:: poradnia.cases.views.cases
     :members:
-    
-.. automodule:: cases.views.permissions
+
+.. automodule:: poradnia.cases.views.permissions
     :members:
 
 
 Model
 ######
 
-.. automodule:: cases.models
+.. automodule:: poradnia.cases.models
     :members:
-    
+
 
 Formularze
 ##########
-.. automodule:: cases.forms
+.. automodule:: poradnia.cases.forms
     :members:
-    
+

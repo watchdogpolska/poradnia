@@ -6,15 +6,15 @@ Kod aplikacji
 
 Model
 #####
-.. automodule:: letters.models
+.. automodule:: poradnia.letters.models
     :members:
 
 Widoki
 ######
-.. automodule:: letters.views
+.. automodule:: poradnia.letters.views
     :members:
 
 Formularze
 ##########
-.. automodule:: letters.forms
+.. automodule:: poradnia.letters.forms
     :members:

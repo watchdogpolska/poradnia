@@ -26,15 +26,15 @@ Kod aplikacji
 
 Model
 ######
-.. automodule:: keys.models
+.. automodule:: poradnia.keys.models
     :members:
 
 Widoki
 ######
-.. automodule:: keys.views
+.. automodule:: poradnia.keys.views
     :members:
 
 Formularze
 ##########
-.. automodule:: keys.forms
+.. automodule:: poradnia.keys.forms
     :members:

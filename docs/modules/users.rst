@@ -30,15 +30,15 @@ Kod aplikacji
 
 Model
 #####
-.. automodule:: users.models
+.. automodule:: poradnia.users.models
     :members:
 
 Widoki
 ######
-.. automodule:: users.views
+.. automodule:: poradnia.users.views
     :members:
 
 Formularze
 ##########
-.. automodule:: users.forms
+.. automodule:: poradnia.users.forms
     :members:
