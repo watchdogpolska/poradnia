@@ -260,6 +260,23 @@ class AddLetterTestCase(CaseMixin, TestCase):
     def test_email_make_staff(self):
         self._test_email(self.test_status_field_staff_can_send_staff, Letter.STATUS.staff, False)
 
+    def test_notify_management_to_internal_letter(self):
+        management_user = UserFactory()
+        assign_perm('cases.can_view_all', management_user)
+
+        self.user = UserFactory(is_staff=True)
+        assign_perm('can_add_record', self.user, self.case)
+        self.client.login(username=self.user.username, password='pass')
+
+        data = self.post_data.copy()
+        data["project"] = "True"
+
+        self.client.post(self.url, data=data)
+
+        emails = [x.to[0] for x in mail.outbox]
+
+        self.assertIn(management_user.email, emails)
+
 
 class ProjectAddLetterTestCase(CaseMixin, TestCase):
     post_data = {'attachment_set-0-DELETE': '',
@@ -361,6 +378,7 @@ class SendLetterTestCase(CaseMixin, TestCase):
         user3 = self._add_random_user(staff=True, case=self.object.case)
 
         assign_perm('cases.can_view_all', user1)
+
         self._test_send()
 
         emails = [x.to[0] for x in mail.outbox
