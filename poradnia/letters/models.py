@@ -8,6 +8,7 @@ import talon
 from cached_property import cached_property
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.contenttypes.models import ContentType
 from django.core.files import File
 from django.core.urlresolvers import reverse
 from django.db import models
@@ -22,7 +23,9 @@ from model_utils.fields import MonitorField, StatusField
 from talon import quotations
 
 from poradnia.cases.models import Case
+from poradnia.cases.utils import get_users_with_perm
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
+from poradnia.users.models import User
 from .utils import date_random_path
 
 talon.init()
@@ -125,7 +128,13 @@ class Letter(AbstractRecord):
         if self.status is Letter.STATUS.done:
             kwargs['staff'] = None
         else:
-            kwargs['staff'] = True
+            if get_users_with_perm(self.case, 'can_send_to_client').exists():
+                kwargs['staff'] = True
+            else:
+                content_type = ContentType.objects.get_for_model(Case)
+                kwargs['user_qs'] = User.objects.filter(user_permissions__codename='can_view_all',
+                                                        user_permissions__content_type=content_type).all()
+                get_users_with_perm(self.case, 'can_send_to_client')
         return super(Letter, self).send_notification(*args, **kwargs)
 
     class Meta:

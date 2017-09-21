@@ -1,6 +1,7 @@
 from re import match
 
 from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
@@ -16,7 +17,6 @@ from guardian.shortcuts import assign_perm, get_users_with_perms
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
-from poradnia.cases.utils import get_user_model
 from poradnia.template_mail.utils import send_tpl_email
 
 
@@ -251,13 +251,15 @@ class Case(models.Model):
             assign_perm('can_add_record', self.client, self)  # assign client
 
     # TODO: Remove
-    def send_notification(self, actor, target=None, staff=None, **context):
-        qs = self.get_users_with_perms().exclude(pk=actor.pk)
-        if staff is not None:
-            qs = qs.filter(is_staff=staff)
+    def send_notification(self, actor, target=None, staff=None, user_qs=None, **context):
         if target is None:
             target = self
-        for user in qs:
+
+        if user_qs is None:
+            user_qs = self.get_users_with_perms().exclude(pk=actor.pk)
+            if staff is not None:
+                user_qs = user_qs.filter(is_staff=staff)
+        for user in user_qs:
             user.notify(actor=actor,
                         target=target,
                         from_email=self.get_email(),
