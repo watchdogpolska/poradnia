@@ -329,7 +329,7 @@ class SendLetterTestCase(CaseMixin, TestCase):
     def test_notify_staff_about_note(self):
         user1 = self._add_random_user(staff=True, case=self.object.case)
         user2 = self._add_random_user(staff=False, case=self.object.case)
-
+        assign_perm('can_send_to_client', user1, self.object.case)
         self._test_send()
 
         emails = [x.to[0] for x in mail.outbox
@@ -354,3 +354,17 @@ class SendLetterTestCase(CaseMixin, TestCase):
         self._test_send()
         self.object.case = refresh_from_db(self.object.case)
         self.assertEqual(self.object.case.has_project, False)
+
+    def test_notify_management_to_internal_letter(self):
+        user1 = self._add_random_user(staff=True, case=self.object.case)
+        user2 = self._add_random_user(staff=True, case=self.object.case)
+        user3 = self._add_random_user(staff=True, case=self.object.case)
+
+        assign_perm('cases.can_view_all', user1)
+        self._test_send()
+
+        emails = [x.to[0] for x in mail.outbox
+                  if x.extra_headers['Template'] == 'letters/email/letter_drop_a_note.txt']
+        self.assertEqual(user1.email in emails, True)
+        self.assertEqual(user2.email in emails, False)
+        self.assertEqual(user3.email in emails, False)
