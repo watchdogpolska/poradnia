@@ -27,7 +27,7 @@ from django.utils.encoding import force_unicode
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('..'))
 sys.path.append(os.path.abspath('../poradnia/'))
-os.environ['DJANGO_SETTINGS_MODULE'] = 'poradnia.config.local'
+os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings.local'
 
 django.setup()
 
