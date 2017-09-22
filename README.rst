@@ -12,7 +12,7 @@ poradnia
 .. image:: https://img.shields.io/github/issues/watchdogpolska/poradnia.svg
      :target: https://github.com/watchdogpolska/poradnia/issues
      :alt: GitHub issues counter
-     
+
 .. image:: https://img.shields.io/github/license/watchdogpolska/poradnia.svg
      :alt: License
 
@@ -31,64 +31,38 @@ poradnia relies extensively on environment settings which **will not work with A
 Getting up and running
 ----------------------
 
-The steps below will get you up and running with a local development environment. We assume you have the following installed
-First make sure to install all requires OS-level libraries and application (dependencies)::
+Został opracowany playbook Ansible, który zapewnia wdrożenie aplikacji. Przedstawia on także podstawowe kroki, które są konieczne do uruchomienia aplikacji. Dostępny jest on w pliku ``vagrant_provision_ansible.yaml``. Zalecane jest wykorzystanie przedstawionego playbooka wraz z środowiskiem wirtualizacyjnym Vagrant. Wówczas konfiguracja całego środowiska to::
 
-    $ make install_os
+    $ vagrant up --provision
+    $ vagrant ssh
+    vagrant@vagrant:/vagrant$ python manage.py runserver 0.0.0.0:8000
 
-Next to create and activate a virtualenv_::
+Następnie można przejśc w przeglądarce pod adres ``http://localhost:8000``.
 
-    $ virtualenv env
-    $ source env/bin/activate
+Po zakończeniu pracy można wykonać w celu skasowania wirtualnej maszyny::
 
-    .. _virtualenv: http://docs.python-guide.org/en/latest/dev/virtualenvs/
+    $ vagrant destroy
 
-Next to open a terminal at the project root and install the requirements for local development::
+Alternatywnie w celu zaoszczędzenia pamięci RAM można ją wyłącznie uśpić::
 
-    $ make install_devs
+    $ vagrant suspend
 
-Next to create MySQL database::
+Warto także zwrócić uwagę na polecenie zapewniające utworzenie użytkownika administracyjnego::
 
-    # if you are using Ubuntu 14.04, you may need to find a workaround for the following two commands
-    $ sudo systemctl start mariadb
-    $ sudo systemctl enable mariadb
-    
-    $ mysql_tzinfo_to_sql /usr/share/zoneinfo | mysql -u root mysql
-    
-    $ echo "CREATE DATABASE poradnia CHARACTER SET utf8 COLLATE utf8_polish_ci;" | mysql -u root
-    $ echo "CREATE USER 'user'@'localhost' IDENTIFIED BY 'pass';" | mysql -u root
-    $ echo "GRANT ALL PRIVILEGES ON poradnia . * TO 'user'@'localhost'; FLUSH PRIVILEGES;" | mysql -u root
+    vagrant@vagrant:/vagrant$ python manage.py createsuperuser
 
-Next to set up enviroment variables::
+Jeżeli zepsujesz sobie bazę danych wykonaj::
 
-    $ export DATABASE_URL="mysql://user:pass@localhost/poradnia"
+    vagrant@vagrant:/vagrant$ sudo -H mysql 'drop database poradnia';
+    $ vagrant provision
 
-Next to push migrations into database::
+Jeżeli chcesz skonfigurować maszynę od nowa wykonaj::
 
-    $ make migrate
+    $ vagrant destroy -f && vagrant up --provision
 
-You can now run the usual Django ``runserver`` command::
+Jeżeli chcesz upewnić się co do aktualności konfiguracji możesz wykonać::
 
-    $ make server
-
-To run tests use::
-
-    $ make test
-
-If you like you can use run tests in parallel by use::
-
-    $ make test_parallel
-
-
-**Live reloading and Sass CSS compilation**
-
-If you'd like to take advantage of live reloading and Sass / Compass CSS compilation you can do so with the included Gulpfile task.
-
-Make sure that nodejs_ is installed. Then in the project root run::
-
-.. note:: TODO (see issue #207)
-
-It's time to write the code!!!
+    $ vagrant provision
 
 Deployment
 ------------
