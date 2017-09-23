@@ -7,6 +7,7 @@ from django.utils.translation import ugettext as _
 from django.views.generic import TemplateView, UpdateView
 from django_filters.views import FilterView
 
+from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from poradnia.cases.filters import StaffCaseFilter, UserCaseFilter
 from poradnia.cases.forms import CaseCloseForm, CaseForm, CaseGroupPermissionForm
 from poradnia.cases.models import Case
@@ -108,15 +109,11 @@ class CaseUpdateView(UserFormKwargsMixin, UpdateView):
         return redirect(obj)
 
 
-class CaseCloseView(UserFormKwargsMixin, UpdateView):
+class CaseCloseView(RaisePermissionRequiredMixin, UserFormKwargsMixin, UpdateView):
     form_class = CaseCloseForm
+    permission_required = ['cases.can_close_case', ]
     template_name = 'cases/case_close.html'
     model = Case
-
-    def get_object(self):
-        obj = super(CaseCloseView, self).get_object()
-        obj.perm_check(self.request.user, 'can_close_case')
-        return obj
 
     def form_valid(self, form):
         obj = form.save()
