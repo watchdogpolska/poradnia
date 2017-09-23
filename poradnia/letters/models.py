@@ -132,7 +132,7 @@ class Letter(AbstractRecord):
                 kwargs['staff'] = True
             else:
                 content_type = ContentType.objects.get_for_model(Case)
-                kwargs['user_qs'] = User.objects.filter(user_permissions__codename='can_view_all',
+                kwargs['user_qs'] = User.objects.filter(user_permissions__codename='can_default_notified',
                                                         user_permissions__content_type=content_type).all()
                 get_users_with_perm(self.case, 'can_send_to_client')
         return super(Letter, self).send_notification(*args, **kwargs)
