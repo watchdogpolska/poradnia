@@ -262,7 +262,7 @@ class AddLetterTestCase(CaseMixin, TestCase):
 
     def test_notify_management_to_internal_letter(self):
         management_user = UserFactory()
-        assign_perm('cases.can_view_all', management_user)
+        assign_perm('cases.can_default_notified', management_user)
 
         self.user = UserFactory(is_staff=True)
         assign_perm('can_add_record', self.user, self.case)
@@ -377,7 +377,7 @@ class SendLetterTestCase(CaseMixin, TestCase):
         user2 = self._add_random_user(staff=True, case=self.object.case)
         user3 = self._add_random_user(staff=True, case=self.object.case)
 
-        assign_perm('cases.can_view_all', user1)
+        assign_perm('cases.can_default_notified', user1)
 
         self._test_send()
 
