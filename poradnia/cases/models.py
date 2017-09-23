@@ -183,6 +183,7 @@ class Case(models.Model):
                        ('can_add_record', _('Can add record')),
                        ('can_change_own_record', _("Can change own records")),
                        ('can_change_all_record', _("Can change all records")),
+                       ('can_close_case', _("Can close case")),
                        ('can_default_notified', _("Can be notified by default")),  # Global permission
                        )
 
