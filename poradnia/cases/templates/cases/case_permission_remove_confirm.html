@@ -1,0 +1,20 @@
+{% extends 'cases/_case_form_permission.html' %}
+{% load i18n crispy_forms_tags %}
+
+{% block breadcrumbs %}
+    <ol class="breadcrumb">
+        <li><a href="{% url 'cases:list' %}">{% trans 'Cases' %}</a></li>
+        <li><a href="{{ case.get_absolute_url }}">{{ case }}</a></li>
+        <li><a href="{% url 'cases:permission_update' pk=object.pk username=user.username %}">{% trans 'Edit' %}</a></li>
+        <li class="active">{% trans 'Remove permission' %}</li>
+    </ol>
+{% endblock %}
+
+{% block form %}
+    <h2>{% blocktrans %}Confirmation of remove permission{% endblocktrans %}</h2>
+    {% blocktrans %}Are you sure you want to remove the permissions on the case "{{ case }}" for user {{ user }}?{% endblocktrans %}
+    <form method="POST">
+    {% csrf_token %}
+    <input type="submit" class="btn btn-primary">
+    </form>
+{% endblock %}

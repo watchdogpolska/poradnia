@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-09 22:07+0200\n"
+"POT-Creation-Date: 2017-09-23 14:17+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: \n"
@@ -15,7 +15,8 @@ msgstr ""
 #: apps.py:7 templates/cases/_case_form_permission.html:8
 #: templates/cases/_sidebar.html:3 templates/cases/base.html:3
 #: templates/cases/case_close.html:7 templates/cases/case_detail.html:28
-#: templates/cases/case_form.html:7
+#: templates/cases/case_form.html:8
+#: templates/cases/case_permission_remove_confirm.html:6
 msgid "Cases"
 msgstr "Sprawy"
 
@@ -27,7 +28,7 @@ msgstr "Brak"
 msgid "Has access by"
 msgstr "Osoba przypisana"
 
-#: filters.py:33 filters.py:70 models.py:100
+#: filters.py:33 filters.py:76 models.py:100
 #: templates/cases/case_filter.html:40
 msgid "Subject"
 msgstr "Przedmiot"
@@ -50,15 +51,15 @@ msgstr "Status"
 msgid "Dead-line"
 msgstr "Termin"
 
-#: filters.py:46 filters.py:77
+#: filters.py:46 filters.py:83
 msgid "ID"
 msgstr "Numer"
 
-#: filters.py:48 filters.py:71 filters.py:78 models.py:116
+#: filters.py:48 filters.py:77 filters.py:84 models.py:116
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: filters.py:49 filters.py:72 filters.py:76 models.py:106
+#: filters.py:49 filters.py:78 filters.py:82 models.py:106
 msgid "Last send"
 msgstr "Ostatnia odpowiedź"
 
@@ -216,15 +217,15 @@ msgstr "Może zmieniać wszystkie wpisy"
 msgid "Can close case"
 msgstr "Może zamknąć sprawę"
 
-#: models.py:320
+#: models.py:322
 msgid "Name"
 msgstr "Nazwa"
 
-#: models.py:322 templates/cases/_case_form_permission.html:10
+#: models.py:324 templates/cases/_case_form_permission.html:10
 msgid "Permissions"
 msgstr "Uprawnienia"
 
-#: templates/cases/_case_form_permission.html:27
+#: templates/cases/_case_form_permission.html:29
 #: templates/cases/case_detail.html:77
 msgid "Involved in"
 msgstr "Zaangażowani"
@@ -269,7 +270,8 @@ msgstr "dodaj kolejne"
 msgid "remove"
 msgstr "usuń"
 
-#: templates/cases/case_detail.html:42 templates/cases/case_form.html:9
+#: templates/cases/case_detail.html:42 templates/cases/case_form.html:10
+#: templates/cases/case_permission_remove_confirm.html:8
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -337,19 +339,23 @@ msgstr "Nr."
 msgid "Last response"
 msgstr "Ostatnia odpowiedź"
 
-#: templates/cases/case_filter.html:89
+#: templates/cases/case_filter.html:61
+msgid "No title"
+msgstr "Brak tytułu"
+
+#: templates/cases/case_filter.html:95
 msgid "No action"
 msgstr "Brak czynności"
 
-#: templates/cases/case_filter.html:97
+#: templates/cases/case_filter.html:103
 msgid "No answer"
 msgstr "Brak odpowiedzi"
 
-#: templates/cases/case_filter.html:106
+#: templates/cases/case_filter.html:112
 msgid "Legend of status"
 msgstr "Legenda statusów"
 
-#: templates/cases/case_filter.html:107
+#: templates/cases/case_filter.html:113
 msgid "Cases have status changed by staff."
 msgstr ""
 "Zgłoszona przez Ciebie sprawa otrzymuje najpierw status \"wolna\". To "
@@ -357,11 +363,11 @@ msgstr ""
 "Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na \"przypisana"
 "\". A gdy już Ci pomożemy \"zakończona\"."
 
-#: templates/cases/case_filter.html:115
+#: templates/cases/case_filter.html:121
 msgid "There is no cases."
 msgstr "Tutaj nie ma spraw."
 
-#: templates/cases/case_filter.html:115
+#: templates/cases/case_filter.html:121
 msgid "Do more of these!"
 msgstr "Utwórz!"
 
@@ -373,6 +379,27 @@ msgstr "Dodaj nowego użytkownika"
 #, python-format
 msgid "Update permission of %(action_user)s"
 msgstr "Aktualizacja uprawnień użytkownika %(action_user)s"
+
+#: templates/cases/case_form_permission_update.html:8
+msgid "Remove all permission"
+msgstr "Usuń wszystkie uprawnienia"
+
+#: templates/cases/case_permission_remove_confirm.html:9
+msgid "Remove permission"
+msgstr "Usuń uprawnienia"
+
+#: templates/cases/case_permission_remove_confirm.html:14
+msgid "Confirmation of remove permission"
+msgstr "Potwierdzenie usunięcia uprawnień"
+
+#: templates/cases/case_permission_remove_confirm.html:15
+#, python-format
+msgid ""
+"Are you sure you want to remove the permissions on the case \"%(case)s\" for "
+"user %(user)s?"
+msgstr ""
+"Czy jesteś pewien, że chcesz usunąć uprawnienia do sprawy \"%(case)s\" dlla "
+"użytkownika %(user)s?"
 
 #: views/cases.py:38
 msgid "Letter"
@@ -392,17 +419,22 @@ msgstr "Pomyślnie zaktualizowano \"%(object)s\""
 msgid "Successfully closed \"%(object)s\"."
 msgstr "Pomyślnie zamknięto \"%(object)s\""
 
-#: views/permissions.py:42
+#: views/permissions.py:47
 #, python-format
 msgid "Success granted permission of %(user)s to %(case)s"
 msgstr "Nadano uprawnienia %(user)s do sprawy %(case)s"
 
-#: views/permissions.py:84
+#: views/permissions.py:89
 #, python-format
 msgid "Updated permission %(user)s to %(case)s!"
 msgstr "Zaktualizowano uprawniania %(user)s do sprawy %(case)s"
 
-#: views/permissions.py:113
+#: views/permissions.py:118
 #, python-format
 msgid "%(user)s granted permissions from %(group)s!"
 msgstr "%(user)s przyznano uprawnienia grupy %(group)s!"
+
+#: views/permissions.py:161
+#, python-brace-format
+msgid "Removed all permission of \"{user}\" in case \"{case}\""
+msgstr "Usunięto wszystkie uprawnienia \"{user}\" w sprawie \"{case}\""

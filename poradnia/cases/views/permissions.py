@@ -1,3 +1,7 @@
+from cached_property import cached_property
+
+from atom.ext.guardian.views import AttrPermissionRequiredMixin
+from atom.views import ActionView, ActionMessageMixin
 from braces.views import FormValidMessageMixin
 from django.contrib import messages
 from django.contrib.auth import get_user_model
@@ -10,8 +14,9 @@ from guardian.shortcuts import assign_perm, get_perms
 
 from poradnia.users.forms import (TranslatedManageObjectPermissionForm,
                                   TranslatedUserObjectPermissionsForm)
+from poradnia.users.models import User
 from ..forms import CaseGroupPermissionForm
-from ..models import Case
+from ..models import Case, CaseUserObjectPermission
 
 
 def assign_perm_check(user, case):
@@ -85,7 +90,7 @@ class UserPermissionUpdateView(FormValidMessageMixin, FormView):
                ({'user': self.action_user, 'case': self.case})
 
     def get_success_url(self):
-        return reverse('cases:detail', kwargs={'pk': str(self.case.pk)})
+        return self.case.get_absolute_url()
 
     def test_view_loads_correctly(self):
         resp = self.client.get(self.url)
@@ -135,3 +140,28 @@ class CaseGroupPermissionView(FormValidMessageMixin, FormView):
         obj = get_object_or_404(Case, pk=self.kwargs['pk'])
         assign_perm_check(self.request.user, obj)
         return obj
+
+
+class UserPermissionRemoveView(AttrPermissionRequiredMixin, ActionMessageMixin, ActionView):
+    model = Case
+    permission_required = 'cases.can_manage_permission'
+    template_name_suffix = '_permission_remove_confirm'
+
+    def get_permission_object(self):
+        return None
+
+    @cached_property
+    def user(self):
+        return get_object_or_404(User, username=self.kwargs['username'])
+
+    def action(self):
+        CaseUserObjectPermission.objects.filter(user=self.user, content_object=self.object).delete()
+
+    def get_success_message(self):
+        return _('Removed all permission of "{user}" in case "{case}"').format(user=self.user, case=self.object)
+
+    def get_context_data(self, **kwargs):
+        return super(UserPermissionRemoveView, self).get_context_data(**kwargs)
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()

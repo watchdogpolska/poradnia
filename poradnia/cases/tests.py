@@ -2,7 +2,10 @@ from datetime import timedelta
 
 import django
 import six
+from django.urls import reverse
+
 from atom.mixins import AdminTestCaseMixin
+from atom.ext.guardian.tests import PermissionStatusMixin
 from django.contrib.admin.sites import AdminSite
 from django.core import mail
 from django.core.exceptions import PermissionDenied
@@ -240,9 +243,14 @@ class CaseListViewTestCase(TestCase):
         self._test_filtersetclass(False, UserFactory(is_staff=False))
 
 
-class CaseAdminTestCase(TestCase):
+class CaseAdminTestCase(AdminTestCaseMixin, TestCase):
+    user_factory_cls = UserFactory
+    factory_cls = CaseFactory
+    model = Case
+
     def setUp(self):
         self.site = AdminSite()
+        super(CaseAdminTestCase, self).setUp()
 
     def assertIsValid(self, model_admin, model):  # See django/tests/modeladmin/tests.py#L602
         admin_obj = model_admin(model, self.site)
@@ -335,7 +343,7 @@ class CaseGroupPermissionViewTestCase(TestCase):
         self.object = CaseFactory()
         assign_perm('cases.can_assign', self.actor)
         self.client.login(username=self.actor, password='pass')
-        self.url = reverse_lazy('cases:permission_grant', kwargs={
+        self.url = reverse('cases:permission_grant', kwargs={
             'pk': self.object.pk
         })
 
@@ -357,13 +365,20 @@ class CaseGroupPermissionViewTestCase(TestCase):
                                                            self.object))
 
 
-class CaseAdminTestCase(AdminTestCaseMixin, TestCase):
-    user_factory_cls = UserFactory
-    factory_cls = CaseFactory
-    model = Case
-
-
 class PermissionGroupAdminTestCase(AdminTestCaseMixin, TestCase):
     user_factory_cls = UserFactory
     factory_cls = PermissionGroupFactory
     model = PermissionGroup
+
+
+class UserPermissionRemoveViewTestCase(PermissionStatusMixin, TestCase):
+    permission = ['cases.can_manage_permission']
+    status_anonymous = 403
+
+    def setUp(self):
+        self.subject_user = UserFactory()
+        self.user = UserFactory(username='john')
+        self.object = CaseFactory()
+
+    def get_url(self):
+        return reverse('cases:permission_remove', kwargs={'pk': self.object.pk, 'username': self.subject_user.username})
