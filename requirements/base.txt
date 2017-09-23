@@ -35,7 +35,7 @@ talon==1.4.4
 django-filter==1.0.4
 django-autocomplete-light==3.2.10
 https://github.com/ad-m/django-flatpages-tinymce/archive/patch-1.zip
-django_atom==0.16.0
+django-atom==0.16.1
 django-tinymce==2.6.0
 django-tinycontent==0.7.1
 icalendar==3.11.7
