@@ -1,6 +1,6 @@
 from cached_property import cached_property
 
-from atom.ext.guardian.views import AttrPermissionRequiredMixin, RaisePermissionRequiredMixin
+from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from atom.views import ActionView, ActionMessageMixin
 from braces.views import FormValidMessageMixin
 from django.contrib import messages
@@ -127,7 +127,7 @@ class CaseGroupPermissionView(CasePermissionTestMixin, FormValidMessageMixin, Fo
         return self.case
 
 
-class UserPermissionRemoveView(AttrPermissionRequiredMixin, ActionMessageMixin, ActionView):
+class UserPermissionRemoveView(RaisePermissionRequiredMixin, ActionMessageMixin, ActionView):
     model = Case
     permission_required = 'cases.can_manage_permission'
     template_name_suffix = '_permission_remove_confirm'
