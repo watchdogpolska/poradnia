@@ -3,5 +3,9 @@
 
 {% block form %}
     <h2>{% blocktrans %}Update permission of {{ action_user }}{% endblocktrans %}</h2>
+    <form method="POST" action="{% url 'cases:permission_remove' pk=object.pk username=action_user.username %}">
+    {% csrf_token %}
+    <input type="submit" class="btn btn-primary" value="{% trans 'Remove all permission'%}">
+    </form>
     {% crispy form %}
 {% endblock %}
