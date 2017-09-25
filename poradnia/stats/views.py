@@ -137,9 +137,9 @@ class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLi
                 deltas[date] = [time_delta, ]
 
         result = [{
-            'date': date,
+            'date': reaction_date,
             'reaction_time': int(sum(deltas[date]) / len(deltas[date]) / SECONDS_IN_A_DAY)
-        } for date in sorted(deltas.keys())]
+        } for reaction_date in sorted(deltas.keys())]
 
         return GapFiller(
             result,
@@ -422,6 +422,7 @@ class GraphDetailView(GraphTimeMixin, TemplateView):
         kwargs['graph'] = self.get_graph()
         kwargs['table'] = self.get_table()
         return super(GraphDetailView, self).get_context_data(**kwargs)
+
 
 class JSONGraphDetailView(GraphTimeMixin, View):
     def get(self, *args, **kwargs):

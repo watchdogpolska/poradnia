@@ -7,4 +7,4 @@ class CustomAppConfig(AppConfig):
     verbose_name = _("Statistics")
 
     def ready(self):
-        from . import checks
+        from . import checks  # noqa

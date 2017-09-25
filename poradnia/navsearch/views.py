@@ -1,4 +1,3 @@
-from dal import autocomplete
 from django.db.models import Q
 from django.http import JsonResponse
 from django.utils.encoding import force_text

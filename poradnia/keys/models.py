@@ -11,6 +11,7 @@ try:
 except ImportError:
     from django.urls import reverse
 
+
 class KeyQuerySet(QuerySet):
     def for_user(self, user):
         return self.filter(user=user)

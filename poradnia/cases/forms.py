@@ -10,7 +10,6 @@ from guardian.shortcuts import assign_perm
 from atom.ext.crispy_forms.forms import (FormHorizontalMixin, HelperMixin,
                                          SingleButtonMixin)
 
-from poradnia.users.models import User
 from .models import Case, PermissionGroup
 
 try:

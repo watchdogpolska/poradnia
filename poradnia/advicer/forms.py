@@ -12,14 +12,16 @@ from poradnia.cases.models import Case
 from .models import Advice, Attachment
 
 
-class AdviceForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, AuthorMixin, ModelForm):
+class AdviceForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin,
+                 AuthorMixin, ModelForm):
     def __init__(self, *args, **kwargs):
         super(AdviceForm, self).__init__(*args, **kwargs)
         self.helper.form_method = 'post'
         self.fields['advicer'].initial = self.user
         self.fields['grant_on'].initial = now()
         self.fields['case'].queryset = Case.objects.for_user(self.user).all()
-        self.fields['case'].help_text = _('Select from poradnia.cases which do you have a permission')
+        self.fields['case'].help_text = _('Select from poradnia.cases which do '
+                                          'you have a permission')
         self.helper.layout = Layout(
             Fieldset(
                 _('Statistic data'),

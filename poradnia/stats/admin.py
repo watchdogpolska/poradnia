@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.db.models import Prefetch, Count
+from django.db.models import Count
 
 from poradnia.stats.models import Item, Value, Graph
 
