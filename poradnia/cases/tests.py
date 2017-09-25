@@ -279,22 +279,19 @@ class CaseAdminTestCase(AdminTestCaseMixin, TestCase):
         self.assertEqual(admin_obj.record_count(obj), 25)
 
 
-class CaseCloseViewTestCase(TestCase):
+class CaseCloseViewTestCase(PermissionStatusMixin, TestCase):
+    permission = ['cases.can_close_case']
+
     def setUp(self):
-        self.user = UserFactory()
-        self.object = CaseFactory()
-        self.client.login(username=self.user.username, password='pass')
+        self.user = UserFactory(username="john", password="pass")
+        self.object = self.permission_object = CaseFactory()
+        self.url = self.object.get_close_url()
 
     def test_close_case(self):
-        assign_perm('cases.can_close_case', self.user, self.object)
-        resp = self.client.post(self.object.get_close_url(), {'notify': True})
-        self.assertEqual(
-            resp.context['target'].status,
-            Case.STATUS.closed)
-
-    def test_close_case_not_permitted(self):
-        resp = self.client.get(self.object.get_close_url())
-        self.assertEqual(resp.status_code, 403)
+        self.login_permitted_user()
+        resp = self.client.post(self.url, {'notify': True}, follow=True)
+        self.object.refresh_from_db()
+        self.assertEqual(self.object.status, Case.STATUS.closed)
 
 
 class CaseCloseFormTestCase(TestCase):
@@ -311,51 +308,55 @@ class CaseCloseFormTestCase(TestCase):
         self.assertEqual(len(mail.outbox), 1)
 
 
-class UserPermissionViewTestCase(TestCase):
+class UserPermissionCreateViewTestCase(PermissionStatusMixin, TestCase):
+    permission = ['cases.can_manage_permission', 'cases.can_assign']
+
     def setUp(self):
-        self.actor = UserFactory()
+        self.user = UserFactory(username="john", password="pass")
         self.user_with_permission = UserFactory()
+        self.permission_object = None  # use global perms
         self.object = CaseFactory()
-        assign_perm('cases.can_assign', self.actor)
-        self.client.login(username=self.actor, password='pass')
-        self.url = reverse_lazy('cases:permission_add', kwargs={
-            'pk': self.object.pk
-        })
+        self.url = reverse('cases:permission_add', kwargs={'pk': self.object.pk})
 
     def test_view_loads_correctly(self):
+        self.login_permitted_user()
         resp = self.client.get(self.url)
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, self.object.name)
 
     def test_invalid_user_used(self):
+        self.login_permitted_user()
         resp = self.client.post(self.url, data={'users': [self.user_with_permission.pk],
                                                 'permissions': ['can_view', ]})
         self.assertEqual(resp.status_code, 200)
 
     def test_valid_user_used(self):
-        assign_perm('users.can_view_other', self.actor)
+        self.login_permitted_user()
+        assign_perm('users.can_view_other', self.user)
         resp = self.client.post(self.url, data={'users': [self.user_with_permission.pk],
                                                 'permissions': ['can_view', ]})
         self.assertEqual(resp.status_code, 302)
 
 
-class CaseGroupPermissionViewTestCase(TestCase):
+class CaseGroupPermissionViewTestCase(PermissionStatusMixin, TestCase):
+    permission = ['cases.can_manage_permission', 'cases.can_assign']
+
     def setUp(self):
-        self.actor = UserFactory()
+        self.user = UserFactory(username="john")
         self.user_with_permission = UserFactory(is_staff=True)
         self.object = CaseFactory()
-        assign_perm('cases.can_assign', self.actor)
-        self.client.login(username=self.actor, password='pass')
         self.url = reverse('cases:permission_grant', kwargs={
             'pk': self.object.pk
         })
 
     def test_view_loads_correctly(self):
+        self.login_permitted_user()
         resp = self.client.get(self.url)
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, self.object.name)
 
     def test_assign_permission(self):
+        self.login_permitted_user()
         self.assertFalse(self.user_with_permission.has_perm('can_send_to_client',
                                                             self.object))
 
@@ -375,8 +376,7 @@ class PermissionGroupAdminTestCase(AdminTestCaseMixin, TestCase):
 
 
 class UserPermissionRemoveViewTestCase(PermissionStatusMixin, TestCase):
-    permission = ['cases.can_manage_permission']
-    status_anonymous = 403
+    permission = ['cases.can_manage_permission', 'cases.can_assign']
 
     def setUp(self):
         self.subject_user = UserFactory()

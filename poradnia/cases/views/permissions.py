@@ -1,15 +1,14 @@
 from cached_property import cached_property
 
-from atom.ext.guardian.views import AttrPermissionRequiredMixin
+from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from atom.views import ActionView, ActionMessageMixin
 from braces.views import FormValidMessageMixin
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.core.exceptions import PermissionDenied
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.views.generic import FormView
-from guardian.shortcuts import assign_perm, get_perms
+from guardian.shortcuts import get_perms
 
 from poradnia.users.forms import (TranslatedManageObjectPermissionForm,
                                   TranslatedUserObjectPermissionsForm)
@@ -23,23 +22,29 @@ except ImportError:
     from django.urls import reverse
 
 
-def assign_perm_check(user, case):
-    if case.status == case.STATUS.free:
-        if not user.has_perm('cases.can_assign'):
-            raise PermissionDenied
-    else:
-        case.perm_check(user, 'can_manage_permission')
-    return True
+class CasePermissionTestMixin(RaisePermissionRequiredMixin):
+    accept_global_perms = True
+
+    @cached_property
+    def case(self):
+        return get_object_or_404(Case, pk=self.kwargs['pk'])
+
+    def get_permission_object(self):
+        return self.case
+
+    def get_required_permissions(self, request=None):
+        if self.case.status == self.case.STATUS.free:
+            return ['cases.can_assign', ]
+        else:
+            return ['cases.can_manage_permission', ]
 
 
-class UserPermissionCreateView(FormView):
+class UserPermissionCreateView(CasePermissionTestMixin, FormView):
     form_class = TranslatedManageObjectPermissionForm
     template_name = 'cases/case_form_permission_add.html'
 
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super(UserPermissionCreateView, self).get_form_kwargs(*args, **kwargs)
-        self.case = get_object_or_404(Case, pk=self.kwargs['pk'])
-        assign_perm_check(self.request.user, self.case)
         kwargs.update({'obj': self.case, 'actor': self.request.user})
         return kwargs
 
@@ -62,14 +67,12 @@ class UserPermissionCreateView(FormView):
         return context
 
 
-class UserPermissionUpdateView(FormValidMessageMixin, FormView):
+class UserPermissionUpdateView(CasePermissionTestMixin, FormValidMessageMixin, FormView):
     form_class = TranslatedUserObjectPermissionsForm
     template_name = 'cases/case_form_permission_update.html'
 
     def get_form_kwargs(self):
         kwargs = super(UserPermissionUpdateView, self).get_form_kwargs()
-        self.case = get_object_or_404(Case, pk=self.kwargs['pk'])
-        assign_perm_check(self.request.user, self.case)
         self.action_user = get_object_or_404(get_user_model(), username=self.kwargs['username'])
         kwargs.update({'user': self.action_user,
                        'obj': self.case})
@@ -96,24 +99,8 @@ class UserPermissionUpdateView(FormValidMessageMixin, FormView):
     def get_success_url(self):
         return self.case.get_absolute_url()
 
-    def test_view_loads_correctly(self):
-        resp = self.client.get(self.url)
-        self.assertEqual(resp.status_code, 200)
-        self.assertContains(resp, self.object.name)
 
-    def test_invalid_user_used(self):
-        resp = self.client.post(self.url, data={'permissions': ['can_view', ],
-                                                'user': self.user_with_permission.pk})
-        self.assertEqual(resp.status_code, 200)
-
-    def test_valid_user_used(self):
-        assign_perm('users.can_view_other', self.user)
-        resp = self.client.post(self.url, data={'permissions': ['can_view', ],
-                                                'user': self.user_with_permission.pk})
-        self.assertEqual(resp.status_code, 302)
-
-
-class CaseGroupPermissionView(FormValidMessageMixin, FormView):
+class CaseGroupPermissionView(CasePermissionTestMixin, FormValidMessageMixin, FormView):
     model = Case
     form_class = CaseGroupPermissionForm
     template_name = 'cases/case_form.html'
@@ -141,12 +128,10 @@ class CaseGroupPermissionView(FormValidMessageMixin, FormView):
         return context
 
     def get_object(self):
-        obj = get_object_or_404(Case, pk=self.kwargs['pk'])
-        assign_perm_check(self.request.user, obj)
-        return obj
+        return self.case
 
 
-class UserPermissionRemoveView(AttrPermissionRequiredMixin, ActionMessageMixin, ActionView):
+class UserPermissionRemoveView(RaisePermissionRequiredMixin, ActionMessageMixin, ActionView):
     model = Case
     permission_required = 'cases.can_manage_permission'
     template_name_suffix = '_permission_remove_confirm'
