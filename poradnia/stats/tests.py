@@ -2,7 +2,6 @@ import re
 from datetime import datetime
 from unittest import skipUnless
 
-from atom.ext.guardian.tests import PermissionStatusMixin
 from dateutil.rrule import MONTHLY, WEEKLY
 from django.core.management import call_command
 from django.db import connection
@@ -15,6 +14,7 @@ from poradnia.cases.models import Case
 from poradnia.letters.factories import LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.stats.factories import ItemFactory, ValueFactory
+from poradnia.stats.mixins import PermissionStatusMixin
 from poradnia.stats.utils import DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY, GapFiller
 from poradnia.users.factories import UserFactory
 from poradnia.users.models import User

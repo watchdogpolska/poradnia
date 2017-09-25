@@ -19,8 +19,7 @@ from poradnia.cases.models import Case as CaseModel
 from poradnia.letters.models import Letter as LetterModel
 from poradnia.stats.models import Item, Value, Graph
 from poradnia.users.models import User as UserModel
-from .utils import (DATE_FORMAT_MONTHLY, SECONDS_IN_A_DAY, GapFiller,
-                    raise_unless_unauthenticated)
+from .utils import DATE_FORMAT_MONTHLY, SECONDS_IN_A_DAY, GapFiller
 
 
 class ApiListViewMixin(JSONResponseMixin):
@@ -39,16 +38,16 @@ class StatsIndexView(TemplateView):
 
 class StatsCaseCreatedView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/cases/created.html'
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
 
 class StatsCaseCreatedRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/cases/created.html'
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
 
 class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
     def get_object_list(self):
         qs = CaseModel.objects.with_month_year().values(
@@ -98,16 +97,16 @@ class StatsCaseCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLis
 
 class StatsCaseReactionView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/cases/reaction.html'
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
 
 class StatsCaseReactionRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/cases/reaction.html'
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
 
 class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
     def get_object_list(self):
         qs = (
@@ -151,17 +150,17 @@ class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLi
 
 class StatsCaseUnansweredView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/cases/unanswered.html'
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
 
 class StatsCaseUnansweredRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/cases/unanswered.html'
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
 
 class StatsCaseUnansweredApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin,
                                  View):
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
     def get_object_list(self):
         qs = CaseModel.objects.filter(
@@ -189,16 +188,16 @@ class StatsCaseUnansweredApiView(LoginRequiredMixin, SuperuserRequiredMixin, Api
 
 class StatsLetterCreatedView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/letters/created.html'
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
 
 class StatsLetterCreatedRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/letters/created.html'
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
 
 class StatsLetterCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
     def get_object_list(self):
         qs = LetterModel.objects.with_month_year().values(
@@ -238,16 +237,16 @@ class StatsLetterCreatedApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiL
 
 class StatsUserRegisteredView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/users/registered.html'
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
 
 class StatsUserRegisteredRenderView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
     template_name = 'stats/render/users/registered.html'
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
 
 class StatsUserRegisteredApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiListViewMixin, View):
-    raise_exception = raise_unless_unauthenticated
+    redirect_unauthenticated_users = True
 
     def get_object_list(self):
         qs = UserModel.objects.with_month_year().values(
