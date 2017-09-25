@@ -5,7 +5,6 @@ from unittest import skipUnless
 
 from dateutil.rrule import MONTHLY, WEEKLY
 from django.core.management import call_command
-from django.core.urlresolvers import reverse
 from django.db import connection
 from django.http.response import HttpResponse
 from django.test import TestCase
@@ -20,6 +19,11 @@ from poradnia.stats.mixins import PermissionStatusMixin
 from poradnia.stats.utils import DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY, GapFiller
 from poradnia.users.factories import UserFactory
 from poradnia.users.models import User
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 try:
     from StringIO import StringIO

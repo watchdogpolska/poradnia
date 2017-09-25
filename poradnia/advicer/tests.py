@@ -9,6 +9,11 @@ from poradnia.advicer.models import Advice
 from poradnia.users.factories import StaffFactory, UserFactory
 from .factories import AdviceFactory
 
+try:
+    from django.core.urlresolvers import reverse, reverse_lazy
+except ImportError:
+    from django.urls import reverse, reverse_lazy
+
 
 class PermissionMixin(object):
     def setUp(self):

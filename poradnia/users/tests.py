@@ -2,7 +2,6 @@ from __future__ import absolute_import
 
 from atom.mixins import AdminTestCaseMixin
 from django.core import mail
-from django.core.urlresolvers import reverse, reverse_lazy
 from django.test import RequestFactory
 from django.utils import timezone
 from guardian.shortcuts import assign_perm, get_perms
@@ -16,6 +15,10 @@ from poradnia.users.forms import TranslatedUserObjectPermissionsForm, UserForm
 from poradnia.users.models import User
 from poradnia.users.views import UserAutocomplete
 
+try:
+    from django.core.urlresolvers import reverse, reverse_lazy
+except ImportError:
+    from django.urls import reverse, reverse_lazy
 
 class UserTestCase(TestCase):
     def test_get_user_by_get_by_email_or_create(self):

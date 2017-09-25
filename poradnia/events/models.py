@@ -1,11 +1,15 @@
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from model_utils.tracker import FieldTracker
 
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 
 class Reminder(models.Model):

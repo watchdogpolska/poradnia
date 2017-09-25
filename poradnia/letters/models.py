@@ -10,7 +10,6 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.contenttypes.models import ContentType
 from django.core.files import File
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import F, Func, IntegerField
 from django.dispatch import receiver
@@ -27,6 +26,11 @@ from poradnia.cases.utils import get_users_with_perm
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from poradnia.users.models import User
 from .utils import date_random_path
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 talon.init()
 

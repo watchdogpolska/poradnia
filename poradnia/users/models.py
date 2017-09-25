@@ -5,7 +5,6 @@ import re
 
 from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import AbstractUser, UserManager
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Case, Count, F, Func, IntegerField, Q, When
 from django.db.models.query import QuerySet
@@ -19,6 +18,11 @@ from sorl.thumbnail import ImageField
 
 from poradnia.cases.models import Case as CaseModel
 from poradnia.template_mail.utils import send_tpl_email
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 _('Username or e-mail')  # Hack to overwrite django translation
 _('Login')

@@ -1,4 +1,3 @@
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models.query import QuerySet
 from django.utils.encoding import python_2_unicode_compatible
@@ -7,6 +6,10 @@ from django.utils.translation import ugettext_lazy as _
 from poradnia.users.models import User
 from .utils import make_random_password
 
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 class KeyQuerySet(QuerySet):
     def for_user(self, user):

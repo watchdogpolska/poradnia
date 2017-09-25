@@ -6,7 +6,6 @@ from braces.views import FormValidMessageMixin
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.views.generic import FormView
@@ -17,6 +16,11 @@ from poradnia.users.forms import (TranslatedManageObjectPermissionForm,
 from poradnia.users.models import User
 from ..forms import CaseGroupPermissionForm
 from ..models import Case, CaseUserObjectPermission
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 
 def assign_perm_check(user, case):
