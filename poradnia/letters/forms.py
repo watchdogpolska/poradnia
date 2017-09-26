@@ -87,8 +87,9 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
         return self.user.has_perm('cases.can_select_client')
 
     def clean(self):
-        if (self.user.has_perm('cases.can_select_client') and \
-            not (self.cleaned_data.get('email') or self.cleaned_data.get('client'))):
+        client_or_email = self.cleaned_data.get('email') or self.cleaned_data.get('client')
+
+        if (self.user.has_perm('cases.can_select_client') and not client_or_email):
             raise ValidationError(_("Have to enter user email or select a client"))
         return super(NewCaseForm, self).clean()
 

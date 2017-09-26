@@ -14,6 +14,7 @@ try:
 except ImportError:
     from django.urls import reverse_lazy
 
+
 class KeyCreateView(PermissionMixin, UserFormKwargsMixin, CreateView):
     form_class = KeyForm
     model = Key

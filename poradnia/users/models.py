@@ -3,7 +3,6 @@ from __future__ import unicode_literals
 
 import re
 
-from dateutil.relativedelta import relativedelta
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.db.models import Case, Count, F, Func, IntegerField, Q, When
@@ -165,13 +164,6 @@ class User(GuardianUserMixin, AbstractUser):
         return None
 
     def notify(self, actor, verb, **kwargs):
-        notify_kw = {'sender': actor,
-                     'verb': verb,
-                     # 'object': kwargs.get('object', None),
-                     # 'target': kwargs.get('target', None),
-                     }
-        # send(recipient=self, **notify_kw)
-
         if 'target' not in kwargs:
             return
 

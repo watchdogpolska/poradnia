@@ -2,7 +2,6 @@ import re
 from datetime import datetime
 from unittest import skipUnless
 
-
 from dateutil.rrule import MONTHLY, WEEKLY
 from django.core.management import call_command
 from django.db import connection
@@ -25,10 +24,8 @@ try:
 except ImportError:
     from django.urls import reverse
 
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
+from django.utils.six import StringIO
+
 
 def polyfill_http_response_json():
     try:
@@ -709,7 +706,7 @@ class JSONValueListViewTestCase(TestCase):
     def test_output_contains_values(self):
         response = self.client.get(self.url).json()
         sorted(self.values, key=lambda x: x.time)
-        self.assertEqual(response['values'][0]['value'], self.values[0].value)
+        self.assertTrue(any(entry['value'] == self.values[0].value for entry in response['values']))
 
     def test_output_contains_item_name(self):
         response = self.client.get(self.url).json()

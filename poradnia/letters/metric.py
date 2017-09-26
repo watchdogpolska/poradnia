@@ -51,5 +51,8 @@ def documents_written_for_clients(*args, **kwargs):
     qs = qs.annotate(attachment_count=Count('attachment'))
     qs = qs.aggregate(value=Sum('attachment_count'))
     return qs['value']
+
+
 documents_written_for_clients.name = _("Documents written for clients")
-documents_written_for_clients.description = _("Number of attachments in staff messages send to clients.")
+documents_written_for_clients.description = _("Number of attachments in staff "
+                                              "messages send to clients.")
