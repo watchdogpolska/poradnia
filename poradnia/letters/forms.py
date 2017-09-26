@@ -6,12 +6,16 @@ from dal import autocomplete
 from django import forms
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
-from django.core.urlresolvers import reverse
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 
 from poradnia.cases.models import Case
 from .models import Attachment, Letter
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 CLIENT_FIELD_TEXT = _("Leave empty to use email field and create a new one user.")
 
@@ -83,8 +87,9 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
         return self.user.has_perm('cases.can_select_client')
 
     def clean(self):
-        if (self.user.has_perm('cases.can_select_client') and \
-            not (self.cleaned_data.get('email') or self.cleaned_data.get('client'))):
+        client_or_email = self.cleaned_data.get('email') or self.cleaned_data.get('client')
+
+        if (self.user.has_perm('cases.can_select_client') and not client_or_email):
             raise ValidationError(_("Have to enter user email or select a client"))
         return super(NewCaseForm, self).clean()
 

@@ -2,7 +2,6 @@ from datetime import timedelta
 
 import django
 import six
-from django.urls import reverse
 
 from atom.mixins import AdminTestCaseMixin
 from atom.ext.guardian.tests import PermissionStatusMixin
@@ -26,6 +25,10 @@ from poradnia.letters.factories import LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
 
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 class CaseQuerySetTestCase(TestCase):
     def setUp(self):

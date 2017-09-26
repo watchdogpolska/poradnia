@@ -1,11 +1,15 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.core.urlresolvers import reverse
 
 from atom.ext.crispy_forms.forms import FormHorizontalMixin, SingleButtonMixin
 from atom.forms import AuthorMixin
 from poradnia.letters.forms import PartialMixin
 from .models import Event
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 
 class EventForm(PartialMixin, AuthorMixin, FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):

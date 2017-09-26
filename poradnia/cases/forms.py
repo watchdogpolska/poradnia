@@ -4,15 +4,18 @@ from braces.forms import UserKwargModelFormMixin
 from crispy_forms.layout import Submit
 from django import forms
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from guardian.shortcuts import assign_perm
 
 from atom.ext.crispy_forms.forms import (FormHorizontalMixin, HelperMixin,
                                          SingleButtonMixin)
 
-from poradnia.users.models import User
 from .models import Case, PermissionGroup
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 
 class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):

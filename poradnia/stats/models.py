@@ -2,11 +2,15 @@ from __future__ import unicode_literals
 
 from django.db import models
 from django.db.models import QuerySet, Max
-from django.core.urlresolvers import reverse
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from model_utils.models import TimeStampedModel
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 
 class ItemQueryset(QuerySet):
@@ -41,8 +45,8 @@ class Item(TimeStampedModel):
 
     def __str__(self):
         if self.name == self.key:
-            return _(self.name)
-        return "{} [{}]".format(_(self.name), self.key)
+            return self.name
+        return "%s [%s]" % (self.name, self.key)
 
     def as_dict(self):
         return {'key': self.key,

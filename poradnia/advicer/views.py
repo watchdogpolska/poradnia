@@ -3,7 +3,6 @@ from atom.views import ActionMessageMixin, ActionView, FormInitialMixin
 from braces.views import (FormValidMessageMixin, LoginRequiredMixin,
                           SelectRelatedMixin, StaffuserRequiredMixin,
                           UserFormKwargsMixin)
-from django.core.urlresolvers import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DetailView, UpdateView
 from django_filters.views import FilterView
@@ -12,6 +11,12 @@ from poradnia.users.utils import PermissionMixin
 from .filters import AdviceFilter
 from .forms import AdviceForm, AttachmentForm
 from .models import Advice, Attachment
+
+try:
+    from django.core.urlresolvers import reverse_lazy
+except ImportError:
+    from django.urls import reverse_lazy
+
 
 ORDERING_TEXT = _("Ordering")
 

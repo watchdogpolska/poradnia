@@ -5,7 +5,6 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import F, Q, Count, Func, IntegerField, Prefetch
 from django.db.models.query import QuerySet
@@ -18,6 +17,11 @@ from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
 from poradnia.template_mail.utils import send_tpl_email
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 
 class CaseQuerySet(QuerySet):
@@ -174,9 +178,7 @@ class Case(models.Model):
 
     class Meta:
         ordering = ['last_send', ]
-        permissions = (('can_view_all', _("Can view all cases")),  # Global permission
-                       ('can_view', _("Can view")),
-                       ('can_select_client', _("Can select client")),  # Global permission
+        permissions = (('can_view', _("Can view")),
                        ('can_assign', _("Can assign new permissions")),
                        ('can_send_to_client', _("Can send text to client")),
                        ('can_manage_permission', _("Can assign permission")),
@@ -184,7 +186,10 @@ class Case(models.Model):
                        ('can_change_own_record', _("Can change own records")),
                        ('can_change_all_record', _("Can change all records")),
                        ('can_close_case', _("Can close case")),
-                       ('can_default_notified', _("Can be notified by default")),  # Global permission
+                       # Global permission
+                       ('can_select_client', _("Can select client")),
+                       ('can_view_all', _("Can view all cases")),
+                       ('can_default_notified', _("Can be notified by default")),
                        )
 
     def update_handled(self):

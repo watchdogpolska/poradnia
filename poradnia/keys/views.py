@@ -1,6 +1,5 @@
 from braces.views import UserFormKwargsMixin
 from django.contrib import messages
-from django.core.urlresolvers import reverse_lazy as reverse
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
@@ -9,6 +8,11 @@ from atom.views import DeleteMessageMixin
 from poradnia.users.utils import PermissionMixin
 from .forms import KeyForm
 from .models import Key
+
+try:
+    from django.core.urlresolvers import reverse_lazy
+except ImportError:
+    from django.urls import reverse_lazy
 
 
 class KeyCreateView(PermissionMixin, UserFormKwargsMixin, CreateView):
@@ -30,7 +34,7 @@ class KeyDetailView(PermissionMixin, DetailView):
 
 class KeyDeleteView(PermissionMixin, DeleteMessageMixin, DeleteView):
     model = Key
-    success_url = reverse('list')
+    success_url = reverse_lazy('list')
 
     def get_success_message(self):
         return _(u"{object} deleted!").format(object=self.object)

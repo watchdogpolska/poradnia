@@ -5,7 +5,6 @@ from atom.views import ActionView, ActionMessageMixin
 from braces.views import FormValidMessageMixin
 from django.contrib import messages
 from django.contrib.auth import get_user_model
-from django.core.urlresolvers import reverse
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext as _
 from django.views.generic import FormView
@@ -16,6 +15,11 @@ from poradnia.users.forms import (TranslatedManageObjectPermissionForm,
 from poradnia.users.models import User
 from ..forms import CaseGroupPermissionForm
 from ..models import Case, CaseUserObjectPermission
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 
 class CasePermissionTestMixin(RaisePermissionRequiredMixin):
@@ -89,8 +93,8 @@ class UserPermissionUpdateView(CasePermissionTestMixin, FormValidMessageMixin, F
         return super(UserPermissionUpdateView, self).form_valid(form)
 
     def get_form_valid_message(self):
-        return _("Updated permission %(user)s to %(case)s!") % \
-               ({'user': self.action_user, 'case': self.case})
+        return _("Updated permission %(user)s to %(case)s!").format(user=self.action_user,
+                                                                    case=self.case)
 
     def get_success_url(self):
         return self.case.get_absolute_url()
@@ -143,7 +147,8 @@ class UserPermissionRemoveView(RaisePermissionRequiredMixin, ActionMessageMixin,
         CaseUserObjectPermission.objects.filter(user=self.user, content_object=self.object).delete()
 
     def get_success_message(self):
-        return _('Removed all permission of "{user}" in case "{case}"').format(user=self.user, case=self.object)
+        return _('Removed all permission of "{user}" in case "{case}"').format(user=self.user,
+                                                                               case=self.object)
 
     def get_context_data(self, **kwargs):
         return super(UserPermissionRemoveView, self).get_context_data(**kwargs)

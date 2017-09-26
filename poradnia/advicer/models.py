@@ -1,5 +1,4 @@
 from django.conf import settings
-from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
@@ -9,6 +8,11 @@ from django.utils.translation import ugettext_lazy as _
 
 from atom.models import AttachmentBase
 from poradnia.cases.models import Case
+
+try:
+    from django.core.urlresolvers import reverse
+except ImportError:
+    from django.urls import reverse
 
 
 @python_2_unicode_compatible

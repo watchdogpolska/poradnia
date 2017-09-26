@@ -1,5 +1,4 @@
 from django.core import mail
-from django.core.urlresolvers import reverse, reverse_lazy
 from django.test import TestCase
 from guardian.shortcuts import assign_perm
 
@@ -9,6 +8,11 @@ from poradnia.letters.factories import LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
 from .compat import refresh_from_db
+
+try:
+    from django.core.urlresolvers import reverse, reverse_lazy
+except ImportError:
+    from django.urls import reverse, reverse_lazy
 
 
 class CaseMixin(object):
