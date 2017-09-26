@@ -102,8 +102,8 @@ class AbstractRecord(models.Model):
         self.case.update_counters()
 
     def __str__(self):
-        return _("%(object)s (#%(pk)d) in case #%(case_id)d".format(object=self._meta.model_name,
-                                                                    pk=self.pk))
+        return _("%(object)s (#%(pk)d) in case #%(case_id)d").format(object=self._meta.model_name,
+                                                                    pk=self.pk)
 
     class Meta:
         abstract = True

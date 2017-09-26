@@ -4,8 +4,7 @@ from django.db import models
 from django.db.models import QuerySet, Max
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _l
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from model_utils.models import TimeStampedModel
 
 try:
@@ -30,24 +29,24 @@ class ItemQueryset(QuerySet):
 
 @python_2_unicode_compatible
 class Item(TimeStampedModel):
-    key = models.CharField(db_index=True, max_length=50, verbose_name=_l("Metric key"))
-    name = models.CharField(max_length=100, verbose_name=_l("Name"))
-    description = models.TextField(verbose_name=_l("Description"), blank=True)
+    key = models.CharField(db_index=True, max_length=50, verbose_name=_("Metric key"))
+    name = models.CharField(max_length=100, verbose_name=_("Name"))
+    description = models.TextField(verbose_name=_("Description"), blank=True)
     last_updated = models.DateTimeField(null=True, blank=True,
-                                        verbose_name=_l("Time to get the last value"))
-    public = models.BooleanField(default=True, verbose_name=_l("Public?"),
+                                        verbose_name=_("Time to get the last value"))
+    public = models.BooleanField(default=True, verbose_name=_("Public?"),
                                  help_text="Select to publish metric for everyone on-line.")
     objects = ItemQueryset.as_manager()
 
     class Meta:
-        verbose_name = _l("Item")
-        verbose_name_plural = _l("Items")
+        verbose_name = _("Item")
+        verbose_name_plural = _("Items")
         ordering = ['key', ]
 
     def __str__(self):
         if self.name == self.key:
-            return _(self.name)
-        return "{} [{}]".format(_(self.name), self.key)
+            return self.name
+        return "%s [%s]" % (self.name, self.key)
 
     def as_dict(self):
         return {'key': self.key,
@@ -86,9 +85,9 @@ class Value(models.Model):
 
 @python_2_unicode_compatible
 class Graph(models.Model):
-    name = models.CharField(verbose_name=_l("Name"), max_length=100)
-    description = models.TextField(verbose_name=_l("Description"))
-    items = models.ManyToManyField(Item, verbose_name=_l("Items"))
+    name = models.CharField(verbose_name=_("Name"), max_length=100)
+    description = models.TextField(verbose_name=_("Description"))
+    items = models.ManyToManyField(Item, verbose_name=_("Items"))
 
     def get_absolute_url(self):
         return reverse('stats:graph_detail', kwargs={'pk': self.pk})
@@ -97,5 +96,5 @@ class Graph(models.Model):
         return self.name
 
     class Meta:
-        verbose_name = _l("Graph")
-        verbose_name_plural = _l("Graphs")
+        verbose_name = _("Graph")
+        verbose_name_plural = _("Graphs")

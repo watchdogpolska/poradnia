@@ -14,7 +14,7 @@ except ImportError:
 
 class Reminder(models.Model):
     event = models.OneToOneField('Event', related_name='user_alarms')
-    user = models.ForeignKey(settings.AUTH_USER_MODEL)
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL)
     triggered = models.BooleanField(default=False)
 
     class Meta:
@@ -42,15 +42,18 @@ class Event(AbstractRecord):
     deadline = models.BooleanField(default=False, verbose_name=_("Dead-line"))
     time = models.DateTimeField(verbose_name=_("Time"))
     text = models.CharField(max_length=150, verbose_name=_("Subject"))
-    created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='event_created_by', verbose_name=_("Created by"))
+    created_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                                   related_name='event_created_by',
+                                   verbose_name=_("Created by"))
     created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))
-    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL,
+    modified_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
                                     verbose_name=_("Modified by"),
                                     null=True,
                                     related_name='event_modified_by')
-    modified_on = models.DateTimeField(
-        auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
+    modified_on = models.DateTimeField(auto_now=True,
+                                       null=True,
+                                       blank=True,
+                                       verbose_name=_("Modified on"))
     objects = EventQuerySet.as_manager()
     tracker = FieldTracker(fields=('time',))
 
@@ -65,9 +68,7 @@ class Event(AbstractRecord):
         return reverse('events:calendar', kwargs={'month': self.time.month, 'year': self.time.year})
 
     def execute(self):
-        obj = Alarm(event=self, case=self.case)
-        obj.save()
-        return obj
+        return Alarm.objects.create(event=self, case=self.case)
 
     def save(self, *args, **kwargs):
         time_changed = self.tracker.has_changed('time')
