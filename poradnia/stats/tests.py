@@ -8,6 +8,7 @@ from django.db import connection
 from django.http.response import HttpResponse
 from django.test import TestCase
 from django.utils.timezone import make_aware
+from django.utils.six import StringIO
 
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
@@ -25,7 +26,6 @@ except ImportError:
     from django.urls import reverse
 
 from django.utils.six import StringIO
-
 
 def polyfill_http_response_json():
     try:
