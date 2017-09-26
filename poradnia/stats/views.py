@@ -138,7 +138,7 @@ class StatsCaseReactionApiView(LoginRequiredMixin, SuperuserRequiredMixin, ApiLi
 
         result = [{
             'date': reaction_date,
-            'reaction_time': int(sum(deltas[date]) / len(deltas[date]) / SECONDS_IN_A_DAY)
+            'reaction_time': int(sum(deltas[reaction_date]) / len(deltas[reaction_date]) / SECONDS_IN_A_DAY)
         } for reaction_date in sorted(deltas.keys())]
 
         return GapFiller(

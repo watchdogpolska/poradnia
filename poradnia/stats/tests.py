@@ -25,6 +25,7 @@ try:
 except ImportError:
     from django.urls import reverse
 
+from django.utils.six import StringIO
 
 def polyfill_http_response_json():
     try:
@@ -705,7 +706,7 @@ class JSONValueListViewTestCase(TestCase):
     def test_output_contains_values(self):
         response = self.client.get(self.url).json()
         sorted(self.values, key=lambda x: x.time)
-        self.assertTrue(any(entry['value'] == self.values[0] for entry in response['values']))
+        self.assertTrue(any(entry['value'] == self.values[0].value for entry in response['values']))
 
     def test_output_contains_item_name(self):
         response = self.client.get(self.url).json()

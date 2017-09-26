@@ -45,8 +45,8 @@ class Item(TimeStampedModel):
 
     def __str__(self):
         if self.name == self.key:
-            return _(self.name)
-        return "{} [{}]".format(_(self.name), self.key)
+            return self.name
+        return "%s [%s]" % (self.name, self.key)
 
     def as_dict(self):
         return {'key': self.key,
