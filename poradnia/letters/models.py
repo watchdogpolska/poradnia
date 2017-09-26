@@ -190,9 +190,8 @@ class MessageParser(object):
 
     @cached_property
     def case(self):
-        try:  # TODO: Is it old case?
+        try:
             case = Case.objects.by_msg(self.message).get()
-            self.case_update(case)
         except Case.DoesNotExist:
             case = Case.objects.create(name=self.message.subject,
                                        created_by=self.actor,
@@ -259,19 +258,16 @@ class MessageParser(object):
         logger.debug("Saved {attachment_count} attachments for letter #{letter}".
                      format(attachment_count=len(attachments),
                             letter=letter.pk))
-        self.case.update_counters()
+        self.case_update(self.case)
         letter.send_notification(actor=self.actor, verb='created')
 
     def case_update(self, case):
-        changed = False
-        if case.status == Case.STATUS.closed and self.letter_status == Letter.STATUS.done:
+        if case.status == Case.STATUS.closed and self.letter_status == Letter.STATUS.done:  # re-open
             case.status_update(reopen=True, save=False)
-            changed = True
+
         if case.handled is False and self.actor.is_staff is True and self.letter_status == Letter.STATUS.done:
-            case.handled = False
-            changed = True
+            case.handled = True
         elif case.handled is False and self.actor.is_staff is False:
             case.handled = False
-            changed = True
-        if changed:
-            case.save()
+        self.case.update_counters()
+        case.save()
