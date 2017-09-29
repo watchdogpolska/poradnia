@@ -106,7 +106,7 @@ class CaseGroupPermissionView(CasePermissionTestMixin, FormValidMessageMixin, Fo
     template_name = 'cases/case_form.html'
 
     def get_form_valid_message(self):
-        return _("%(user)s granted permissions from %(group)s!") % (self.form.cleaned_data)
+        return _("{user} granted permissions from {group}!").format(**self.form.cleaned_data)
 
     def get_form_kwargs(self):
         self.object = self.get_object()
