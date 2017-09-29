@@ -128,6 +128,13 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
 class User(GuardianUserMixin, AbstractUser):
     picture = ImageField(upload_to='avatars', verbose_name=_("Avatar"), null=True, blank=True)
     codename = models.CharField(max_length=15, null=True, blank=True, verbose_name=_("Codename"))
+    notify_new_case = models.BooleanField(default=False,
+                                          verbose_name=_("Notify about new case"),
+                                          help_text=_("Whether or not to notify user about all new cases"))
+    notify_unassigned_letter = models.BooleanField(default=False,
+                                                   verbose_name=_("Notify about letter in free cases"),
+                                                   help_text=_("Whether or not to notify user about any letter "
+                                                               "in free cases"))
     created_on = models.DateTimeField(auto_now_add=True,
                                       null=True,
                                       blank=True,
