@@ -6,10 +6,11 @@ Kod aplikacji
 
 Model
 #############
-.. automodule:: navsearch.models
+
+.. automodule:: poradnia.navsearch.models
     :members:
 
 Widoki
 #############
-.. automodule:: navsearch.views
+.. automodule:: poradnia.navsearch.views
     :members:

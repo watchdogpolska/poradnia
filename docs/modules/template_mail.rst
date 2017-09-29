@@ -4,5 +4,5 @@ Template_mail
 Widoki
 ######
 
-.. automodule:: template_mail.utils
+.. automodule:: poradnia.template_mail.utils
     :members:

@@ -7,5 +7,5 @@ Kod aplikacji
 
 Formularze
 ##########
-.. automodule:: feedback_custom.forms
+.. automodule:: poradnia.feedback_custom.forms
     :members:

@@ -85,6 +85,8 @@ Każda sprawa ma swój status, który może uleca następującej zmianie zgodnie
       closed -> free [label="nowe pismo do wcześniej wolnej sprawy"];
       closed -> assigned [label="nowe pismo do wcześniej przypisanej sprawy"]
 
+.. _cases_permissions:
+
 Uprawnienia
 -----------
 
@@ -130,22 +132,23 @@ Kod aplikacji
 Widoki
 ######
 
-.. automodule:: cases.views.cases
+.. automodule:: poradnia.cases.views.cases
     :members:
 
-.. automodule:: cases.views.permissions
+.. automodule:: poradnia.cases.views.permissions
     :members:
 
 
 Model
 ######
 
-.. automodule:: cases.models
+.. automodule:: poradnia.cases.models
     :members:
 
 
 Formularze
 ##########
-.. automodule:: cases.forms
+
+.. automodule:: poradnia.cases.forms
     :members:
 

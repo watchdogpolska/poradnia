@@ -26,7 +26,6 @@ from django.utils.encoding import force_unicode
 # documentation root, use os.path.abspath to make it absolute, like shown here.
 sys.path.append(os.path.abspath('.'))
 sys.path.append(os.path.abspath('..'))
-sys.path.append(os.path.abspath('../poradnia/'))
 os.environ['DJANGO_SETTINGS_MODULE'] = 'config.settings.local'
 
 django.setup()

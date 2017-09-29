@@ -6,5 +6,5 @@ Kod aplikacji
 
 Model
 #####
-.. automodule:: records.models
+.. automodule:: poradnia.records.models
     :members:

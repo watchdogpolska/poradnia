@@ -1,11 +1,11 @@
 Notiication_custom
 ==================
 
-.. deprecated:: x
+.. deprecated::
    Use module `template_mail` instead.
 
 
 Widoki
 ######
-.. automodule:: notifications_custom.views
+.. automodule:: poradnia.notifications_custom.views
     :members:
