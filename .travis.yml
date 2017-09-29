@@ -11,6 +11,7 @@ env:
     - DATABASE_URL="mysql://root:@localhost/test_poradnia"
   matrix:
     - TOX_ENV=flake8
+    - TOX_ENV=docs
     - TOX_ENV=py27-dj110-coveralls
 #    - TOX_ENV=py27-dj111-coveralls
 #    - TOX_ENV=py27-djmaster-coveralls
