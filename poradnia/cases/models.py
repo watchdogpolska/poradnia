@@ -128,17 +128,6 @@ class Case(models.Model):
     def status_display(self):
         return self.STATUS[self.status]
 
-    def get_readed(self):
-        try:
-            obj = self.readed_set.all()[0]
-        except IndexError:
-            return False
-        if obj.user.is_staff and self.last_action and self.last_action > obj.time:
-            return False
-        if not obj.user.is_staff and self.last_send and self.last_send > obj.time:
-            return False
-        return True
-
     def get_absolute_url(self):
         return reverse('cases:detail', kwargs={'pk': str(self.pk)})
 
@@ -167,12 +156,6 @@ class Case(models.Model):
     # TODO: Remove
     def perm_check(self, user, perm):
         if not (user.has_perm('cases.' + perm) or user.has_perm('cases.' + perm, self)):
-            raise PermissionDenied
-        return True
-
-    # TODO: Remove
-    def view_perm_check(self, user):
-        if not (user.has_perm('cases.can_view_all') or user.has_perm('cases.can_view', self)):
             raise PermissionDenied
         return True
 
