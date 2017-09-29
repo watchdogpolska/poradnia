@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-27 10:06+0000\n"
-"PO-Revision-Date: 2017-08-04 21:26+0200\n"
+"POT-Creation-Date: 2017-09-29 06:59+0200\n"
+"PO-Revision-Date: 2017-09-29 07:00+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -17,7 +17,11 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /users/locale/en/LC_MESSAGES/django.po\n"
 
-#: apps.py:7 models.py:191 templates/users/base.html:5
+#: admin.py:38
+msgid "Notifications"
+msgstr "Powiadomienia"
+
+#: apps.py:7 models.py:194 templates/users/base.html:5
 #: templates/users/user_filter.html:18
 msgid "Users"
 msgstr "Wykaz użytkowników"
@@ -26,39 +30,39 @@ msgstr "Wykaz użytkowników"
 msgid "Signup"
 msgstr "Rejestracja"
 
-#: login_form.py:15 models.py:24
+#: login_form.py:15 models.py:27
 msgid "Login"
 msgstr "Nazwa użytkownika / użytkowniczki"
 
-#: metric.py:8
+#: metric.py:10
 msgid "Users total"
 msgstr "Liczba użytkowników"
 
-#: metric.py:9
+#: metric.py:11
 msgid "Number of users registered total"
 msgstr "Łączna liczba użytkowników zarejestrowanych"
 
-#: metric.py:16
+#: metric.py:19
 msgid "Users monthly"
 msgstr "Użytkowników miesięcznie"
 
-#: metric.py:17
+#: metric.py:20
 msgid "Number of users registered in month"
 msgstr "Liczba użytkowników dokonujących rejestracji w miesiącu"
 
-#: metric.py:22
+#: metric.py:27
 msgid "Active users"
 msgstr "Aktywnych użytkowników"
 
-#: metric.py:23
+#: metric.py:28
 msgid "Number of active users in month"
 msgstr "Liczba aktywnych użytkowników w miesiącu"
 
-#: metric.py:29
+#: metric.py:35
 msgid "Active staff member"
 msgstr "Liczba aktywnych członków zespołu"
 
-#: metric.py:30
+#: metric.py:36
 msgid ""
 "Number of team members who have made at least one message in the current "
 "month."
@@ -66,66 +70,82 @@ msgstr ""
 "Liczba członków zespołu którzy nadesłali co najmniej jedną wiadomość w "
 "miesiącu"
 
-#: models.py:23
+#: models.py:26
 msgid "Username or e-mail"
 msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
 
-#: models.py:126
+#: models.py:129
 msgid "Avatar"
 msgstr "Avatar"
 
-#: models.py:127
+#: models.py:130
 msgid "Codename"
 msgstr "Kryptonim"
 
-#: models.py:131
+#: models.py:132
+msgid "Notify about new case"
+msgstr "Powiadamiaj o nowych sprawach"
+
+#: models.py:133
+msgid "Whether or not to notify user about all new cases"
+msgstr "Czy powiadomić o wszystkich nowych sprawach?"
+
+#: models.py:135
+msgid "Notify about letter in free cases"
+msgstr "Powiadamiaj o pismach w wolnych sprawach"
+
+#: models.py:136
+msgid "Whether or not to notify user about any letter in free cases"
+msgstr "Czy powiadamiać o dowolnych listach w wolnych sprawach?"
+
+#: models.py:141
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:190 templates/users/_sidebar.html:3
+#: models.py:193 templates/users/_sidebar.html:3
 #: templates/users/user_detail.html:3 templates/users/user_filter.html:38
 #: templates/users/user_form.html:4 templates/users/user_form.html:15
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: models.py:196
+#: models.py:199
 msgid "No reminder"
 msgstr "Nie przypominaj"
 
-#: models.py:197
+#: models.py:200
 msgid "1 day"
 msgstr "1 dzień"
 
-#: models.py:198
+#: models.py:201
 msgid "3 days"
 msgstr "3 dni"
 
-#: models.py:199
+#: models.py:202
 msgid "7 days"
 msgstr "7 dni"
 
-#: models.py:202 templates/users/user_detail.html:16
+#: models.py:205 templates/users/user_detail.html:16
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:203
+#: models.py:206
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: models.py:204
+#: models.py:207
 msgid "Email footer"
 msgstr "Podpis dla wiadomości e-mail"
 
-#: models.py:207
+#: models.py:210
 msgid "Event Reminder Time"
 msgstr "Przypominaj o wydarzeniach"
 
-#: models.py:211 templates/users/profile_form.html:7
+#: models.py:214 templates/users/profile_form.html:7
 #: templates/users/profile_form.html:10 templates/users/user_detail.html:26
 msgid "Profile"
 msgstr "Profil"
 
-#: models.py:212
+#: models.py:215
 msgid "Profiles"
 msgstr "Profile"
 
@@ -206,14 +226,14 @@ msgstr "Zamknięte"
 msgid "Account"
 msgstr "Konto"
 
-#: views.py:74
+#: views.py:78
 msgid "All users"
 msgstr "Wszyscy użytkownicy"
 
-#: views.py:75
+#: views.py:79
 msgid "Staff"
 msgstr "Zespoł"
 
-#: views.py:76
+#: views.py:80
 msgid "Clients"
 msgstr "Klienci"
