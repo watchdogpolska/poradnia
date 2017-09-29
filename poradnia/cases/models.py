@@ -12,7 +12,7 @@ from django.db.models.signals import post_save
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
-from guardian.shortcuts import assign_perm, get_users_with_perms
+from guardian.shortcuts import assign_perm, get_users_with_perms, get_objects_for_user
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
@@ -26,15 +26,10 @@ except ImportError:
 
 class CaseQuerySet(QuerySet):
     def for_assign(self, user):
-        content_type = ContentType.objects.get_for_model(Case)
-        return self.filter(caseuserobjectpermission__permission__codename='can_view',
-                           caseuserobjectpermission__permission__content_type=content_type,
-                           caseuserobjectpermission__user=user)
+        return self.filter(caseuserobjectpermission__user=user)
 
     def for_user(self, user):
-        if user.has_perm('cases.can_view_all'):
-            return self
-        return self.for_assign(user)
+        return get_objects_for_user(user, 'can_view', self)
 
     def with_perm(self):
         return self.prefetch_related('caseuserobjectpermission_set')
