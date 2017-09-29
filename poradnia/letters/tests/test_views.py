@@ -380,8 +380,6 @@ class SendLetterTestCase(CaseMixin, TestCase):
         user2 = self._add_random_user(is_staff=True, case=self.object.case)
         user3 = self._add_random_user(is_staff=True, case=self.object.case)
 
-        assign_perm('cases.can_default_notified', user1)
-
         self._test_send()
 
         emails = [x.to[0] for x in mail.outbox
