@@ -8,17 +8,17 @@ Kod aplikacji
 Model
 ######
 
-.. automodule:: events.models
+.. automodule:: poradnia.events.models
     :members:
 
 Widoki
 ######
 
-.. automodule:: events.views
+.. automodule:: poradnia.events.views
     :members:
 
 Formularze
 ##########
 
-.. automodule:: events.forms
+.. automodule:: poradnia.events.forms
     :members:

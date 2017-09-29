@@ -5,15 +5,15 @@ Aplikacja służy do rejestracji porad udzielonych zarówno w ramach systemu spr
 
 Model
 ------------
-.. automodule:: advicer.models
+.. automodule:: poradnia.advicer.models
     :members:
 
 Widoki
 ----------
-.. automodule:: advicer.views
+.. automodule:: poradnia.advicer.views
     :members:
 
 Formularze
 ----------
-.. automodule:: advicer.forms
+.. automodule:: poradnia.advicer.forms
     :members:

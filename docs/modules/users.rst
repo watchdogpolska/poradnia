@@ -23,22 +23,22 @@ Klient – osoba o dostępie do własnych spraw na potrzeby archiwalne oraz spor
 
 Przez każdego w sprawie należy rozumieć osobę, która jest albo prawnikiem, albo w kontekście danej sprawy obserwatorem, praktykantem, klientem.
 
-Patrz `Uprawnienia`_.
+Patrz :ref:`cases_permissions`.
 
 Kod aplikacji
 -------------
 
 Model
 #####
-.. automodule:: users.models
+.. automodule:: poradnia.users.models
     :members:
 
 Widoki
 ######
-.. automodule:: users.views
+.. automodule:: poradnia.users.views
     :members:
 
 Formularze
 ##########
-.. automodule:: users.forms
+.. automodule:: poradnia.users.forms
     :members:
