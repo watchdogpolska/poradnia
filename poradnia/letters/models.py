@@ -80,8 +80,9 @@ class Letter(AbstractRecord):
     name = models.CharField(max_length=250, verbose_name=_("Subject"))
     text = models.TextField(verbose_name=_("Text"))
     signature = models.TextField(verbose_name=_("Signature"), blank=True, null=True)
-    created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name='letter_created_by', verbose_name=_("Created by"))
+    created_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                                   related_name='letter_created_by',
+                                   verbose_name=_("Created by"))
     created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))
     modified_by = models.ForeignKey(settings.AUTH_USER_MODEL,
                                     verbose_name=_("Modified by"),
