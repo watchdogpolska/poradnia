@@ -5,12 +5,14 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.utils.translation import ugettext_lazy as _
 from sorl.thumbnail.admin import AdminImageMixin
 
 from .models import User
 
 
 class MyUserChangeForm(UserChangeForm):
+
     class Meta(UserChangeForm.Meta):
         model = User
 
@@ -32,3 +34,6 @@ class MyUserCreationForm(UserCreationForm):
 class UserAdmin(AdminImageMixin, AuthUserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
+    fieldsets = list(AuthUserAdmin.fieldsets) + [
+        (_('Notifications'), {'fields': ('notify_new_case', 'notify_unassigned_letter')}),
+    ]
