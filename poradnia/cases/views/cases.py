@@ -83,7 +83,6 @@ class CaseDetailView(SingleObjectPermissionMixin, SelectRelatedMixin, DetailView
         context['casegroup_form'] = CaseGroupPermissionForm(case=self.object,
                                                             user=self.request.user)
         context['next'], context['previous'] = self.get_next_and_prev()
-
         return context
 
 

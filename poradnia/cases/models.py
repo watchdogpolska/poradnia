@@ -171,8 +171,6 @@ class Case(models.Model):
                        ('can_close_case', _("Can close case")),
                        # Global permission
                        ('can_select_client', _("Can select client")),
-                       ('can_view_all', _("Can view all cases")),
-                       ('can_default_notified', _("Can be notified by default")),
                        )
 
     def update_handled(self):
@@ -321,8 +319,7 @@ def notify_new_case(sender, instance, created, **kwargs):
     if created:
         User = get_user_model()
         content_type = ContentType.objects.get_for_model(Case)
-        users = User.objects.filter(user_permissions__codename='can_view_all',
-                                    user_permissions__content_type=content_type).all()
+        users = User.objects.filter(notify_new_case=True).all()
         email = [x.email for x in users]
         send_tpl_email('cases/email/case_new.html',
                        recipient_list=email,

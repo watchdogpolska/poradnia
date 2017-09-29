@@ -16,8 +16,8 @@ except ImportError:
 
 
 class CaseMixin(object):
-    def _add_random_user(self, case, staff=False):
-        user = UserFactory(is_staff=staff)
+    def _add_random_user(self, case, **kwargs):
+        user = UserFactory(**kwargs)
         assign_perm('can_view', user, case)
         return user
 
@@ -249,8 +249,8 @@ class AddLetterTestCase(CaseMixin, TestCase):
                                 project="X")
 
     def _test_email(self, func, status, user_notify, staff_notify=True):
-        user_user = self._add_random_user(self.case, staff=False)
-        user_staff = self._add_random_user(self.case, staff=True)
+        user_user = self._add_random_user(self.case, is_staff=False)
+        user_staff = self._add_random_user(self.case, is_staff=True)
         func()
         self.assertEqual(Letter.objects.get().status, status)
         emails = [x.to[0] for x in mail.outbox
@@ -264,9 +264,8 @@ class AddLetterTestCase(CaseMixin, TestCase):
     def test_email_make_staff(self):
         self._test_email(self.test_status_field_staff_can_send_staff, Letter.STATUS.staff, False)
 
-    def test_notify_management_to_internal_letter(self):
-        management_user = UserFactory()
-        assign_perm('cases.can_default_notified', management_user)
+    def test_notify_user_with_notify_unassigned_letter(self):
+        management_user = UserFactory(notify_unassigned_letter=True)
 
         self.user = UserFactory(is_staff=True)
         assign_perm('can_add_record', self.user, self.case)
@@ -348,8 +347,8 @@ class SendLetterTestCase(CaseMixin, TestCase):
         self.assertEqual(new.text, self.note_text)
 
     def test_notify_staff_about_note(self):
-        user1 = self._add_random_user(staff=True, case=self.object.case)
-        user2 = self._add_random_user(staff=False, case=self.object.case)
+        user1 = self._add_random_user(is_staff=True, case=self.object.case)
+        user2 = self._add_random_user(is_staff=False, case=self.object.case)
         assign_perm('can_send_to_client', user1, self.object.case)
         self._test_send()
 
@@ -359,8 +358,8 @@ class SendLetterTestCase(CaseMixin, TestCase):
         self.assertEqual(user2.email in emails, False)
 
     def test_notify_user_about_acceptation(self):
-        user1 = self._add_random_user(staff=True, case=self.object.case)
-        user2 = self._add_random_user(staff=False, case=self.object.case)
+        user1 = self._add_random_user(is_staff=True, case=self.object.case)
+        user2 = self._add_random_user(is_staff=False, case=self.object.case)
 
         self._test_send()
 
@@ -377,9 +376,9 @@ class SendLetterTestCase(CaseMixin, TestCase):
         self.assertEqual(self.object.case.has_project, False)
 
     def test_notify_management_to_internal_letter(self):
-        user1 = self._add_random_user(staff=True, case=self.object.case)
-        user2 = self._add_random_user(staff=True, case=self.object.case)
-        user3 = self._add_random_user(staff=True, case=self.object.case)
+        user1 = self._add_random_user(notify_unassigned_letter=True, case=self.object.case)
+        user2 = self._add_random_user(is_staff=True, case=self.object.case)
+        user3 = self._add_random_user(is_staff=True, case=self.object.case)
 
         assign_perm('cases.can_default_notified', user1)
 

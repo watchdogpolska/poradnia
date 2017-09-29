@@ -56,7 +56,7 @@ class AnonymousNewCaseFormMyTests(TestCase):
         form.save()
         self.assertEqual(User.objects.count() - u_count, 1)
 
-    def test_send_email_new_case_to_staff(self):
+    def test_send_email_new_case_to_user_with_notify_new_case(self):
         form = self.get_bound()
         form.is_valid()
 
@@ -64,11 +64,9 @@ class AnonymousNewCaseFormMyTests(TestCase):
                                     email='jack@example.com',
                                     password='top_secret',
                                     is_staff=True)
-        content_type = ContentType.objects.get_for_model(Case)
-        perm = Permission.objects.get(codename='can_view_all', content_type=content_type)
-        staff.user_permissions.add(perm)
+
+        staff.notify_new_case = True
         staff.save()
-        # CaseUserObjectPermission.objects.create(user=staff, permission=perm)
 
         obj = form.save()
 
