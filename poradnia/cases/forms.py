@@ -63,8 +63,7 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
                                           kwargs={'pk': str(self.case.pk)})
 
     def assign(self):
-        perms = [x.codename for x in self.cleaned_data['group'].permissions.all()]
-        for perm in perms:
+        for perm in self.cleaned_data['group'].permissions.all():
             assign_perm(perm, self.cleaned_data['user'], self.case)
 
         self.case.send_notification(actor=self.user,

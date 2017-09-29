@@ -30,6 +30,7 @@ try:
 except ImportError:
     from django.urls import reverse
 
+
 class CaseQuerySetTestCase(TestCase):
     def setUp(self):
         self.user = UserFactory()
@@ -40,9 +41,14 @@ class CaseQuerySetTestCase(TestCase):
     def test_for_user_cant(self):
         self.assertFalse(Case.objects.for_user(self.user).filter(pk=CaseFactory().pk).exists())
 
-    def test_for_user_can_view_all(self):
-        assign_perm('cases.can_view_all', self.user)
+    def test_for_user_can_local_view(self):
+        assign_perm('cases.can_view', self.user)
         self.assertTrue(Case.objects.for_user(self.user).filter(pk=CaseFactory().pk).exists())
+
+    def test_for_user_can_global_view(self):
+        case = CaseFactory()
+        assign_perm('cases.can_view', self.user, case)
+        self.assertTrue(Case.objects.for_user(self.user).filter(pk=case.pk).exists())
 
     def test_for_assign_can_view_client(self):  # perm set by signal
         self.assertTrue(Case.objects.for_assign(self.user).filter(
@@ -232,6 +238,10 @@ class StaffCaseFilterTestCase(TestCase):
 class CaseListViewTestCase(TestCase):
     url = reverse_lazy('cases:list')
 
+    def setUp(self):
+        self.user = UserFactory(username="john")
+        self.case = CaseFactory()
+
     def _test_filtersetclass(self, expect, user):
         self.factory = RequestFactory()
         req = self.factory.get('/')
@@ -244,6 +254,31 @@ class CaseListViewTestCase(TestCase):
     def test_filtersetclass_for_staff(self):
         self._test_filtersetclass(True, UserFactory(is_staff=True))
         self._test_filtersetclass(False, UserFactory(is_staff=False))
+
+    def test_hide_cases_without_permission(self):
+        self.assertTrue(self.client.login(username="john", password='pass'))
+
+        resp = self.client.get(self.url)
+
+        self.assertNotContains(resp, self.case)
+
+    def test_show_cases_with_global_permission(self):
+        assign_perm('cases.can_view', self.user)
+
+        self.assertTrue(self.client.login(username='john', password='pass'))
+
+        resp = self.client.get(self.url)
+
+        self.assertContains(resp, self.case)
+
+    def test_respect_local_can_view_permission(self):
+        assign_perm('can_view', self.user, self.case)
+
+        self.assertTrue(self.client.login(username='john', password='pass'))
+
+        resp = self.client.get(self.url)
+
+        self.assertContains(resp, self.case)
 
 
 class CaseAdminTestCase(AdminTestCaseMixin, TestCase):
