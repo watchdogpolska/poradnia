@@ -1,3 +1,5 @@
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwatchdogpolska%2Fporadnia.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwatchdogpolska%2Fporadnia?ref=badge_shield)
+
 poradnia
 ==============================
 
@@ -68,3 +70,6 @@ Deployment
 ------------
 
 It is possible to deploy to Heroku or to your own server by using Dokku, an open source Heroku clone. The recomend way is using Virtual Private Server with Ubuntu Server and Nginx.
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Fwatchdogpolska%2Fporadnia.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Fwatchdogpolska%2Fporadnia?ref=badge_large)
