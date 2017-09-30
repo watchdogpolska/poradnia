@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-09-29 06:59+0200\n"
-"PO-Revision-Date: 2017-09-29 07:00+0200\n"
+"POT-Creation-Date: 2017-09-30 03:06+0200\n"
+"PO-Revision-Date: 2017-09-30 03:06+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -21,10 +21,9 @@ msgstr ""
 msgid "Notifications"
 msgstr "Powiadomienia"
 
-#: apps.py:7 models.py:194 templates/users/base.html:5
-#: templates/users/user_filter.html:18
+#: apps.py:7 models.py:194 templates/users/user_filter.html:18
 msgid "Users"
-msgstr "Wykaz użytkowników"
+msgstr "Użytkownicy / użytkowniczki"
 
 #: forms/account.py:26
 msgid "Signup"
@@ -170,6 +169,11 @@ msgstr "Rejestracja"
 msgid "Log In"
 msgstr "Zaloguj"
 
+#: templates/users/base.html:5 templates/users/user_filter.html:4
+#: templates/users/user_filter.html:7
+msgid "Users index"
+msgstr "Wykaz użytkowników / użytkowniczek"
+
 #: templates/users/user_detail.html:13
 msgid "Users are member of staff."
 msgstr "Użytkownik jest członkiem zespołu"
@@ -193,10 +197,6 @@ msgstr "Sprawy klienta"
 #: templates/users/user_detail.html:48
 msgid "Assigned cases"
 msgstr "Przypisane sprawy"
-
-#: templates/users/user_filter.html:4 templates/users/user_filter.html:7
-msgid "Users index"
-msgstr "Wykaz użytkowników"
 
 #: templates/users/user_filter.html:21
 msgid ""
