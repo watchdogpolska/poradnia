@@ -1,17 +1,18 @@
 from __future__ import absolute_import
 
 from atom.ext.guardian.views import RaisePermissionRequiredMixin
-from braces.views import LoginRequiredMixin, UserFormKwargsMixin, SelectRelatedMixin
+from braces.views import SelectRelatedMixin, UserFormKwargsMixin
 from cached_property import cached_property
 from django.contrib import messages
 from django.shortcuts import redirect
 from django.utils.translation import ugettext as _
 from django.views.generic import UpdateView
-from django.views.generic.detail import DetailView, SingleObjectMixin
+from django.views.generic.detail import DetailView
 from django_filters.views import FilterView
 
 from poradnia.cases.filters import StaffCaseFilter, UserCaseFilter
-from poradnia.cases.forms import CaseCloseForm, CaseForm, CaseGroupPermissionForm
+from poradnia.cases.forms import (CaseCloseForm, CaseForm,
+                                  CaseGroupPermissionForm)
 from poradnia.cases.models import Case
 from poradnia.events.forms import EventForm
 from poradnia.letters.forms import AddLetterForm

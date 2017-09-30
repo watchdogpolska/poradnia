@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.db.models import Count
 
-from poradnia.stats.models import Item, Value, Graph
+from poradnia.stats.models import Graph, Item, Value
 
 
 @admin.register(Item)

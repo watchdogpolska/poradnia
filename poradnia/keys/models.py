@@ -4,6 +4,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from poradnia.users.models import User
+
 from .utils import make_random_password
 
 try:

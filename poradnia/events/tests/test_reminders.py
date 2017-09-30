@@ -4,7 +4,7 @@ from django.utils import timezone
 from poradnia.cases.factories import CaseFactory
 from poradnia.events.factories import EventFactory
 from poradnia.events.models import Event, Reminder
-from poradnia.users.factories import UserFactory, ProfileFactory
+from poradnia.users.factories import ProfileFactory, UserFactory
 
 
 def create_event():

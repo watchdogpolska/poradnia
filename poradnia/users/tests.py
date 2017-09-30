@@ -10,8 +10,9 @@ from test_plus.test import TestCase
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
 from poradnia.users.factories import StaffFactory, UserFactory
-from poradnia.users.forms import TranslatedManageObjectPermissionForm
-from poradnia.users.forms import TranslatedUserObjectPermissionsForm, UserForm
+from poradnia.users.forms import (TranslatedManageObjectPermissionForm,
+                                  TranslatedUserObjectPermissionsForm,
+                                  UserForm)
 from poradnia.users.models import User
 from poradnia.users.views import UserAutocomplete
 

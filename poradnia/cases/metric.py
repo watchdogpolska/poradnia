@@ -1,6 +1,6 @@
-from poradnia.cases.models import Case
 from django.utils.translation import ugettext_lazy as _
 
+from poradnia.cases.models import Case
 from poradnia.stats.utils import filter_month
 
 

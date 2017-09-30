@@ -1,12 +1,13 @@
 from __future__ import absolute_import
 
+from atom.mixins import AdminTestCaseMixin
 from django.core.urlresolvers import reverse, reverse_lazy
 from guardian.shortcuts import assign_perm
 from test_plus.test import TestCase
 
-from atom.mixins import AdminTestCaseMixin
 from poradnia.advicer.models import Advice
 from poradnia.users.factories import StaffFactory, UserFactory
+
 from .factories import AdviceFactory
 
 try:

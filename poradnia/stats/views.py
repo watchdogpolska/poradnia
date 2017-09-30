@@ -2,13 +2,14 @@ import csv
 import json
 from collections import OrderedDict
 from datetime import datetime
-from itertools import takewhile, dropwhile
+from itertools import dropwhile, takewhile
 
 from braces.views import (JSONResponseMixin, LoginRequiredMixin,
                           SuperuserRequiredMixin)
 from dateutil.relativedelta import relativedelta
 from dateutil.rrule import MONTHLY
-from django.db.models import F, Case, Count, IntegerField, Min, Sum, When, Prefetch
+from django.db.models import (Case, Count, F, IntegerField, Min, Prefetch, Sum,
+                              When)
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.datetime_safe import date
@@ -17,10 +18,10 @@ from django.views.generic import TemplateView, View
 
 from poradnia.cases.models import Case as CaseModel
 from poradnia.letters.models import Letter as LetterModel
-from poradnia.stats.models import Item, Value, Graph
+from poradnia.stats.models import Graph, Item, Value
 from poradnia.users.models import User as UserModel
-from .utils import (DATE_FORMAT_MONTHLY, SECONDS_IN_A_DAY, GapFiller,
-                    raise_unless_unauthenticated)
+
+from .utils import DATE_FORMAT_MONTHLY, GapFiller, SECONDS_IN_A_DAY, raise_unless_unauthenticated
 
 
 class ApiListViewMixin(JSONResponseMixin):
