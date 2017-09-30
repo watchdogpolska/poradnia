@@ -10,8 +10,8 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 from __future__ import absolute_import, unicode_literals
 
-import environ
 from django.utils.translation import ugettext_lazy as _
+import environ
 
 ROOT_DIR = environ.Path(__file__) - 3
 

@@ -1,8 +1,8 @@
+from atom.mixins import AdminTestCaseMixin
 from test_plus import TestCase
 
-from atom.mixins import AdminTestCaseMixin
-from poradnia.events.factories import EventFactory, AlarmFactory
-from poradnia.events.models import Event, Alarm
+from poradnia.events.factories import AlarmFactory, EventFactory
+from poradnia.events.models import Alarm, Event
 from poradnia.users.factories import UserFactory
 
 

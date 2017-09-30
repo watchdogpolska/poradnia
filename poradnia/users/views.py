@@ -8,6 +8,7 @@ from django.views.generic import DetailView, RedirectView, UpdateView
 from django_filters.views import FilterView
 
 from poradnia.utils.mixins import ExprAutocompleteMixin
+
 from .filters import UserFilter
 from .forms import ProfileForm, UserForm
 from .models import Profile, User

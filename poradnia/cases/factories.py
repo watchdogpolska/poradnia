@@ -1,8 +1,8 @@
 # coding=utf-8
-import factory
-import factory.fuzzy
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
+import factory
+import factory.fuzzy
 
 from poradnia.cases.models import Case, PermissionGroup
 from poradnia.users.factories import UserFactory

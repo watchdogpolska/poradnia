@@ -1,18 +1,17 @@
 from atom.ext.django_filters.filters import CrispyFilterMixin
 from dal import autocomplete
+from django.contrib.auth import get_user_model
+import django_filters
+
+from poradnia.users.models import User
 
 try:
     from urllib.parse import urlencode
 except:
     from urllib import urlencode  # noqa
 
-import django_filters
-from django.contrib.auth import get_user_model
-from django_filters import ModelChoiceFilter
-from poradnia.users.models import User
 
-
-class UserChoiceFilter(ModelChoiceFilter):
+class UserChoiceFilter(django_filters.ModelChoiceFilter):
     def __init__(self, queryset=None, widget=None, *args, **kwargs):
         widget = widget or autocomplete.ModelSelect2(url='users:autocomplete')
         queryset = queryset or get_user_model().objects.all()

@@ -7,6 +7,7 @@ from poradnia.cases.models import Case
 from poradnia.letters.factories import LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
+
 from .compat import refresh_from_db
 
 try:

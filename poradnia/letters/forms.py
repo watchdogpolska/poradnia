@@ -10,6 +10,7 @@ from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 
 from poradnia.cases.models import Case
+
 from .models import Attachment, Letter
 
 try:

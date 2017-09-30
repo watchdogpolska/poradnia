@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
 
-import notifications
 from django.conf.urls import url
+
+import notifications
 
 from . import views
 

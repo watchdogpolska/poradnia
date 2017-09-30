@@ -17,7 +17,6 @@ from poradnia.letters.models import Letter, MessageParser
 from poradnia.users.factories import UserFactory
 
 
-
 class QuerySetTestCase(TestCase):
     def _for_user(self, status, exists, is_superuser=False, is_staff=False):
         user = UserFactory(is_superuser=is_superuser, is_staff=is_staff)

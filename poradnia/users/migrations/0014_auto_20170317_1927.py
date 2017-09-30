@@ -3,6 +3,7 @@
 from __future__ import unicode_literals
 
 from django.db import migrations, models
+
 try:
     import django.contrib.auth.validators
     extra_kwargs = {'validators': [django.contrib.auth.validators.ASCIIUsernameValidator()]}

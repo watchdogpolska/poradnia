@@ -7,8 +7,8 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.db.models import Case, Count, F, Func, IntegerField, Q, When
 from django.db.models.query import QuerySet
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.datetime_safe import datetime
+from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from guardian.mixins import GuardianUserMixin
 from guardian.utils import get_anonymous_user

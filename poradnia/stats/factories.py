@@ -1,8 +1,8 @@
 # coding=utf-8
-import factory.fuzzy
-import factory
-import pytz
 from django.utils.datetime_safe import datetime
+import factory
+import factory.fuzzy
+import pytz
 
 
 class ItemFactory(factory.django.DjangoModelFactory):

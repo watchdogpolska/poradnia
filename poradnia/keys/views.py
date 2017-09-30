@@ -1,11 +1,12 @@
+from atom.views import DeleteMessageMixin
 from braces.views import UserFormKwargsMixin
 from django.contrib import messages
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
 
-from atom.views import DeleteMessageMixin
 from poradnia.users.utils import PermissionMixin
+
 from .forms import KeyForm
 from .models import Key
 

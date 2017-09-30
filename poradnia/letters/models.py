@@ -3,8 +3,6 @@ from __future__ import unicode_literals
 import logging
 import os
 from os.path import basename
-
-import talon
 from cached_property import cached_property
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -18,12 +16,13 @@ from django_mailbox.models import Message
 from django_mailbox.signals import message_received
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
-from talon import quotations
+import talon
 
 from poradnia.cases.models import Case
 from poradnia.cases.utils import get_users_with_perm
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from poradnia.users.models import User
+
 from .utils import date_random_path
 
 try:
@@ -205,8 +204,8 @@ class MessageParser(object):
     @cached_property
     def text(self):
         if self.message.text:
-            return quotations.extract_from(self.message.text)
-        return quotations.extract_from(self.message.html, 'text/html')
+            return talon.quotations.extract_from(self.message.text)
+        return talon.quotations.extract_from(self.message.html, 'text/html')
 
     @cached_property
     def letter_status(self):

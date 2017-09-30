@@ -1,6 +1,6 @@
+from atom.ext.crispy_forms.forms import BaseTableFormSet
 from django.forms.models import inlineformset_factory
 
-from atom.ext.crispy_forms.forms import BaseTableFormSet
 from .forms import AttachmentForm
 from .models import Attachment, Letter
 
