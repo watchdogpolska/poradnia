@@ -156,6 +156,8 @@ class Case(models.Model):
 
     class Meta:
         ordering = ['last_send', ]
+        verbose_name = _("Case")
+        verbose_name_plural = _("Cases")
         permissions = (('can_view', _("Can view")),
                        ('can_assign', _("Can assign new permissions")),
                        ('can_send_to_client', _("Can send text to client")),
