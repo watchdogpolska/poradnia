@@ -2,9 +2,8 @@ from datetime import timedelta
 
 import django
 import six
-
-from atom.mixins import AdminTestCaseMixin
 from atom.ext.guardian.tests import PermissionStatusMixin
+from atom.mixins import AdminTestCaseMixin
 from django.contrib.admin.sites import AdminSite
 from django.core import mail
 from django.core.exceptions import PermissionDenied

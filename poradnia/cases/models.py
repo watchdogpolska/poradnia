@@ -6,13 +6,14 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from django.db import models
-from django.db.models import F, Q, Count, Func, IntegerField, Prefetch
+from django.db.models import Count, F, Func, IntegerField, Prefetch, Q
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
-from guardian.shortcuts import assign_perm, get_users_with_perms, get_objects_for_user
+from guardian.shortcuts import (assign_perm, get_objects_for_user,
+                                get_users_with_perms)
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
@@ -315,7 +316,6 @@ class PermissionGroup(models.Model):
 def notify_new_case(sender, instance, created, **kwargs):
     if created:
         User = get_user_model()
-        content_type = ContentType.objects.get_for_model(Case)
         users = User.objects.filter(notify_new_case=True).all()
         email = [x.email for x in users]
         send_tpl_email('cases/email/case_new.html',

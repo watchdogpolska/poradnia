@@ -4,6 +4,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 
 from poradnia.users.filters import UserChoiceFilter
+
 from .models import Case
 
 

@@ -8,7 +8,6 @@ import talon
 from cached_property import cached_property
 from django.conf import settings
 from django.contrib.auth import get_user_model
-from django.contrib.contenttypes.models import ContentType
 from django.core.files import File
 from django.db import models
 from django.db.models import F, Func, IntegerField

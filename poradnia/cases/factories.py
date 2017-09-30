@@ -1,3 +1,4 @@
+# coding=utf-8
 import factory
 import factory.fuzzy
 from django.contrib.auth.models import Permission

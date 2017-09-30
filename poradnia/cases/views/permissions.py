@@ -1,8 +1,7 @@
-from cached_property import cached_property
-
 from atom.ext.guardian.views import RaisePermissionRequiredMixin
-from atom.views import ActionView, ActionMessageMixin
+from atom.views import ActionMessageMixin, ActionView
 from braces.views import FormValidMessageMixin
+from cached_property import cached_property
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
@@ -13,6 +12,7 @@ from guardian.shortcuts import get_perms
 from poradnia.users.forms import (TranslatedManageObjectPermissionForm,
                                   TranslatedUserObjectPermissionsForm)
 from poradnia.users.models import User
+
 from ..forms import CaseGroupPermissionForm
 from ..models import Case, CaseUserObjectPermission
 

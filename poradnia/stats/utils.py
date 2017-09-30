@@ -28,12 +28,11 @@ class GapFiller(object):
             return self.qs
 
         ans = []
-        params = None
 
         for i, temp in enumerate(self.qs[:-1]):
             a, b = self.qs[i], self.qs[i + 1]
             date_range = self._date_range(a, b)
-            params = self._get_params()
+            self._get_params()
 
             ans.append(a)
             ans.extend([self._construct(d) for d in date_range[1:-1]])
