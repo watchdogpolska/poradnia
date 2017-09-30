@@ -1,6 +1,7 @@
-from poradnia.users.models import User
 from django.utils.translation import ugettext_lazy as _
 from django.utils.datetime_safe import datetime
+
+from poradnia.users.models import User
 
 
 def users_total(*args, **kwargs):
