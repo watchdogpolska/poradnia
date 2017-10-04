@@ -348,5 +348,5 @@ STAT_METRICS = {
     'letters.letter.user.www': 'poradnia.letters.metric.letter_user_www',
 }
 
-FILE_UPLOAD_PERMISSIONS = 0644
+FILE_UPLOAD_PERMISSIONS = 0o644
 
