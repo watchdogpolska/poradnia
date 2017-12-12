@@ -13,7 +13,9 @@ env:
     - TOX_ENV=flake8
     - TOX_ENV=docs
     - TOX_ENV=py27-dj110-coveralls
+    - TOX_ENV=py27-dj111-coveralls
     - TOX_ENV=py34-dj110-coveralls
+    - TOX_ENV=py34-dj111-coveralls
 
 matrix:
   allow_failures:
