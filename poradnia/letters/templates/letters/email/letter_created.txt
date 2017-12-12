@@ -13,6 +13,6 @@ Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl/{{tar
 {% if email %}Używaj adresu {{email}} do korespondencji w tej sprawie, dzięki temu wymiana korespondencji będzie sprawniejsza. Dziękujemy za współpracę.{% endif %}
 ----
 WESPRZYJ działanie naszej poradni
-WEJDŹ na ➡ http://pomagam.pl/jawnosc
-WPŁAĆ dowolną kwotę na zbiórkę "Prawnicy dla jawności"
+WEJDŹ na ➡ https://siecobywatelska.pl/wspieraj
+WPŁAĆ dowolną darowiznę.
 POMÓŻ NAM POMAGAĆ INNYM!
