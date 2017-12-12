@@ -347,3 +347,6 @@ STAT_METRICS = {
     'letters.letter.user.email': 'poradnia.letters.metric.letter_user_email',
     'letters.letter.user.www': 'poradnia.letters.metric.letter_user_www',
 }
+
+FILE_UPLOAD_PERMISSIONS = 0o644
+
