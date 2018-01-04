@@ -50,7 +50,7 @@ def documents_written_for_clients(*args, **kwargs):
     qs = Letter.objects.filter(created_by__is_staff=True).filter(status=Letter.STATUS.done)
     qs = qs.annotate(attachment_count=Count('attachment'))
     qs = qs.aggregate(value=Sum('attachment_count'))
-    return qs['value']
+    return qs['value'] or 0
 
 
 documents_written_for_clients.name = _("Documents written for clients")
