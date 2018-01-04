@@ -7,6 +7,7 @@ from django.core.management import call_command
 from django.db import connection
 from django.http.response import HttpResponse
 from django.test import TestCase
+from django.utils.module_loading import import_string
 from django.utils.six import StringIO
 from django.utils.timezone import make_aware
 
@@ -20,12 +21,12 @@ from poradnia.stats.utils import (DATE_FORMAT_MONTHLY, DATE_FORMAT_WEEKLY,
                                   GapFiller)
 from poradnia.users.factories import UserFactory
 from poradnia.users.models import User
+from poradnia.stats.settings import STAT_METRICS
 
 try:
     from django.core.urlresolvers import reverse
 except ImportError:
     from django.urls import reverse
-
 
 
 def polyfill_http_response_json():
@@ -724,3 +725,8 @@ class TestManagementCommand(TestCase):
         output = out.getvalue()
         self.assertTrue(re.search("Registered .* new items", output))
         self.assertTrue(re.search("Registered .* values.", output))
+
+    def test_metric_result_is_not_null(self):
+        for key, import_path in STAT_METRICS.items():
+            f = import_string(import_path)
+            self.assertNotEqual(f(), None, "Metric '{}' result of '{}' cannot be null.".format(key, import_path))
