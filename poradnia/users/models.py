@@ -201,7 +201,7 @@ class Profile(models.Model):
         (3, "three_days", _("3 days")),
         (7, "seven_days", _("7 days")),
     )
-    user = models.OneToOneField(User, primary_key=True)
+    user = models.OneToOneField(User, primary_key=True, on_delete=models.CASCADE)
     description = models.TextField(blank=True, verbose_name=_("Description"))
     www = models.URLField(null=True, blank=True, verbose_name=_("Homepage"))
     email_footer = models.TextField(null=True, blank=True, verbose_name=_("Email footer"))

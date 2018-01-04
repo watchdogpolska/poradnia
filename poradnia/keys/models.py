@@ -20,7 +20,7 @@ class KeyQuerySet(QuerySet):
 
 @python_2_unicode_compatible
 class Key(models.Model):
-    user = models.ForeignKey(User, verbose_name=_("User"))
+    user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
     password = models.CharField(max_length=75, default=make_random_password, verbose_name=_("Key"))
     description = models.CharField(max_length=75, verbose_name=_("Description"))
     created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))
