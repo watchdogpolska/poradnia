@@ -101,7 +101,9 @@ class Case(models.Model):
     status = StatusField()
     status_changed = MonitorField(monitor='status')
     client = models.ForeignKey(to=settings.AUTH_USER_MODEL,
-                               related_name='case_client', verbose_name=_("Client"))
+                               related_name='case_client',
+                               on_delete=models.CASCADE,
+                               verbose_name=_("Client"))
     letter_count = models.IntegerField(default=0, verbose_name=_("Letter count"))
     last_send = models.DateTimeField(null=True, blank=True, verbose_name=_("Last send"))
     last_action = models.DateTimeField(null=True, blank=True, verbose_name=_("Last action"))
@@ -109,15 +111,24 @@ class Case(models.Model):
     deadline = models.ForeignKey('events.Event',
                                  null=True,
                                  blank=True,
-                                 related_name='event_deadline', verbose_name=_("Dead-line"))
+                                 related_name='event_deadline',
+                                 on_delete=models.CASCADE,
+                                 verbose_name=_("Dead-line"))
     objects = CaseQuerySet.as_manager()
-    created_by = models.ForeignKey(
-        settings.AUTH_USER_MODEL, related_name="case_created", verbose_name=_("Created by"))
+    created_by = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                   related_name="case_created",
+                                   verbose_name=_("Created by"),
+                                   on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))
-    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL, null=True,
-                                    related_name="case_modified", verbose_name=_("Modified by"))
-    modified_on = models.DateTimeField(
-        auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
+    modified_by = models.ForeignKey(settings.AUTH_USER_MODEL,
+                                    null=True,
+                                    on_delete=models.CASCADE,
+                                    related_name="case_modified",
+                                    verbose_name=_("Modified by"))
+    modified_on = models.DateTimeField(auto_now=True,
+                                       null=True,
+                                       blank=True,
+                                       verbose_name=_("Modified on"))
     handled = models.BooleanField(default=False, verbose_name=_("Handled"))
     has_project = models.BooleanField(default=False, verbose_name=_("Has project"))
 
@@ -281,7 +292,7 @@ class Case(models.Model):
 
 
 class CaseUserObjectPermission(UserObjectPermissionBase):
-    content_object = models.ForeignKey(Case)
+    content_object = models.ForeignKey(Case, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
         super(CaseUserObjectPermission, self).save(*args, **kwargs)
@@ -295,7 +306,7 @@ class CaseUserObjectPermission(UserObjectPermissionBase):
 
 
 class CaseGroupObjectPermission(GroupObjectPermissionBase):
-    content_object = models.ForeignKey(Case)
+    content_object = models.ForeignKey(Case, on_delete=models.CASCADE)
 
 
 limit = {'content_type__app_label': 'cases', 'content_type__model': 'case'}
