@@ -1,5 +1,9 @@
-poradnia
-==============================
+Poradnia
+========
+
+.. image:: https://travis-ci.org/watchdogpolska/poradnia.svg?branch=master
+   :target: https://travis-ci.org/watchdogpolska/poradnia
+   :alt: TravisCI
 
 .. image:: https://codeclimate.com/github/watchdogpolska/poradnia/badges/gpa.svg
    :target: https://codeclimate.com/github/watchdogpolska/poradnia
@@ -17,54 +21,17 @@ poradnia
      :alt: License
 
 .. image:: https://coveralls.io/repos/watchdogpolska/poradnia/badge.svg?branch=master&service=github
-  :target: https://coveralls.io/github/watchdogpolska/poradnia?branch=master 
+  :target: https://coveralls.io/github/watchdogpolska/poradnia?branch=master
 
 .. image:: https://badges.gitter.im/watchdogpolska/poradnia.svg
-  :target: https://gitter.im/watchdogpolska/poradnia?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge 
+  :target: https://gitter.im/watchdogpolska/poradnia?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
   :alt: Gitter
 
-Settings
-------------
+Oprogramowanie ma na celu usprawnienie obsługi klientów Pozarządowego Centrum Dostępu do Informacji Publicznej oraz
+zwiększenie efektywności wsparcia ze strony praktykantów i ekspertów zewnętrznych. Powstałe narzędzie ma również
+dostarczać dane o charakterze ilościowym na temat zakresu udzielanego wsparcia, uwzględniając drogę mailowa,
+telefoniczną, ustną i szkoleniową.
 
-poradnia relies extensively on environment settings which **will not work with Apache/mod_wsgi setups**. It has been deployed successfully with both Gunicorn/Nginx and even uWSGI/Nginx.
+Aplikacja została wykorzystana z wykorzystaniem frameworka Django w języku Python.
 
-Getting up and running
-----------------------
-
-Został opracowany playbook Ansible, który zapewnia wdrożenie aplikacji. Przedstawia on także podstawowe kroki, które są konieczne do uruchomienia aplikacji. Dostępny jest on w pliku ``vagrant_provision_ansible.yaml``. Zalecane jest wykorzystanie przedstawionego playbooka wraz z środowiskiem wirtualizacyjnym Vagrant. Wówczas konfiguracja całego środowiska to::
-
-    $ vagrant up --provision
-    $ vagrant ssh
-    vagrant@vagrant:/vagrant$ python manage.py runserver 0.0.0.0:8000
-
-Następnie można przejśc w przeglądarce pod adres ``http://localhost:8000``.
-
-Po zakończeniu pracy można wykonać w celu skasowania wirtualnej maszyny::
-
-    $ vagrant destroy
-
-Alternatywnie w celu zaoszczędzenia pamięci RAM można ją wyłącznie uśpić::
-
-    $ vagrant suspend
-
-Warto także zwrócić uwagę na polecenie zapewniające utworzenie użytkownika administracyjnego::
-
-    vagrant@vagrant:/vagrant$ python manage.py createsuperuser
-
-Jeżeli zepsujesz sobie bazę danych wykonaj::
-
-    vagrant@vagrant:/vagrant$ sudo -H mysql 'drop database poradnia';
-    $ vagrant provision
-
-Jeżeli chcesz skonfigurować maszynę od nowa wykonaj::
-
-    $ vagrant destroy -f && vagrant up --provision
-
-Jeżeli chcesz upewnić się co do aktualności konfiguracji możesz wykonać::
-
-    $ vagrant provision
-
-Deployment
-------------
-
-It is possible to deploy to Heroku or to your own server by using Dokku, an open source Heroku clone. The recomend way is using Virtual Private Server with Ubuntu Server and Nginx.
+Opis uruchomienia i wdrożenia aplikacji zostało przeniesione do pliku ```docs/getting_up.rst```.

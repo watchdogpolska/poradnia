@@ -1,23 +1,21 @@
-Dokumentacja Poradnia
-====================================
 
-Cel oprogramowania
-==================
+========
+Poradnia
+========
 
-Oprogramowanie ma na celu usprawnienie obsługi klientów Pozarządowego Centrum Dostępu do Informacji Publicznej oraz zwiększenie efektywności wsparcia ze strony praktykantów i ekspertów zewnętrznych. Powstałe narzędzie ma również dostarczać dane o charakterze ilościowym na temat zakresu udzielanego wsparcia, uwzględniając drogę mailowa, telefoniczną, ustną i szkoleniową.
+:Date: |today|
 
-Treść
-==================
-
+Spis treści
+===========
 
 .. toctree::
-   :maxdepth: 3
-   :glob:
+   :maxdepth: 2
 
    readme
-   modules/*
+   getting_up
+   modules/index
 
-Indices and tables
+Wskaźniki i tabele
 ==================
 
 * :ref:`genindex`
