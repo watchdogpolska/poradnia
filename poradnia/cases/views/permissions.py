@@ -51,7 +51,9 @@ class UserPermissionCreateView(CasePermissionTestMixin, FormView):
     def form_valid(self, form):
         form.save_obj_perms()
         for user in form.cleaned_data['users']:
-            self.case.send_notification(actor=self.request.user, staff=True, verb='granted')
+            self.case.send_notification(actor=self.request.user,
+                                        user_qs=self.case.get_users_with_perms().filter(is_staff=True),
+                                        verb='granted')
             messages.success(self.request,
                              _("Success granted permission of %(user)s to %(case)s").
                              format(user=user, case=self.case))

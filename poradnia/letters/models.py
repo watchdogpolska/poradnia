@@ -8,7 +8,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.files import File
 from django.db import models
-from django.db.models import F, Func, IntegerField
+from django.db.models import F, Func, IntegerField, Q
 from django.dispatch import receiver
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
@@ -127,14 +127,18 @@ class Letter(AbstractRecord):
                                         created_by=self.created_by,
                                         client=self.client)
 
-    def send_notification(self, staff=None, *args, **kwargs):
+    def send_notification(self, *args, **kwargs):
         if self.status is Letter.STATUS.done:
-            kwargs['staff'] = None
+            kwargs['user_qs'] = self.get_users_with_perms()
         else:
-            if get_users_with_perm(self.case, 'can_send_to_client').exists():
-                kwargs['staff'] = True
+            staff_users = get_users_with_perm(self.case, 'can_send_to_client')
+            if len(list(staff_users)) > 0:
+                kwargs['user_qs'] = self.get_users_with_perms().filter(is_staff=True)
+
             else:
-                kwargs['user_qs'] = User.objects.filter(notify_unassigned_letter=True).all()
+                kwargs['user_qs'] = User.objects.filter(Q(pk__in=self.get_users_with_perms().filter(is_staff=True)) |
+                                                        Q(pk__in=User.objects.filter(
+                                                            notify_unassigned_letter=True).all()))
         return super(Letter, self).send_notification(*args, **kwargs)
 
     class Meta:
