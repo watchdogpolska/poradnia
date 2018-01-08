@@ -325,6 +325,18 @@ class ProjectAddLetterTestCase(CaseMixin, TestCase):
 class SendLetterTestCase(CaseMixin, TestCase):
     note_text = 'Lorem ipsum XYZ123'
 
+    def assertEmailTemplateUsed(self, template):
+        emails = [x.to[0] for x in mail.outbox if x.extra_headers['Template'] == template]
+        return emails
+
+    def assertEmailReceived(self, email, template=None):
+        emails = [x.to[0] for x in mail.outbox if not template or x.extra_headers['Template'] == template]
+        self.assertIn(email, emails)
+
+    def assertEmailNotReceived(self, email, template=None):
+        emails = [x.to[0] for x in mail.outbox if not template or x.extra_headers['Template'] == template]
+        self.assertNotIn(email, emails)
+
     def setUp(self):
         self.object = LetterFactory(status=Letter.STATUS.staff)
         self.url = reverse('letters:send', kwargs={'pk': self.object.pk})
@@ -353,8 +365,7 @@ class SendLetterTestCase(CaseMixin, TestCase):
         assign_perm('can_send_to_client', user1, self.object.case)
         self._test_send()
 
-        emails = [x.to[0] for x in mail.outbox
-                  if x.extra_headers['Template'] == 'letters/email/letter_drop_a_note.txt']
+        emails = self.assertEmailTemplateUsed('letters/email/letter_drop_a_note.txt')
         self.assertEqual(user1.email in emails, True)
         self.assertEqual(user2.email in emails, False)
 
@@ -364,10 +375,9 @@ class SendLetterTestCase(CaseMixin, TestCase):
 
         self._test_send()
 
-        emails = [x.to[0] for x in mail.outbox
-                  if x.extra_headers['Template'] == 'letters/email/letter_send_to_client.txt']
-        self.assertEqual(user1.email in emails, True)
-        self.assertEqual(user2.email in emails, True)
+        self.assertEmailTemplateUsed('letters/email/letter_send_to_client.txt')
+        self.assertEmailReceived(user1.email, 'letters/email/letter_send_to_client.txt')
+        self.assertEmailReceived(user2.email, 'letters/email/letter_send_to_client.txt')
 
     def test_update_project(self):
         self.object.case.has_project = True
@@ -376,15 +386,27 @@ class SendLetterTestCase(CaseMixin, TestCase):
         self.object.case = refresh_from_db(self.object.case)
         self.assertEqual(self.object.case.has_project, False)
 
-    def test_notify_management_to_internal_letter(self):
-        user1 = self._add_random_user(notify_unassigned_letter=True, case=self.object.case)
+    def test_notify_management_to_internal_if_not_lawyer(self):
+        user1 = UserFactory(notify_unassigned_letter=True, is_staff=True)
         user2 = self._add_random_user(is_staff=True, case=self.object.case)
         user3 = self._add_random_user(is_staff=True, case=self.object.case)
 
         self._test_send()
 
-        emails = [x.to[0] for x in mail.outbox
-                  if x.extra_headers['Template'] == 'letters/email/letter_drop_a_note.txt']
-        self.assertEqual(user1.email in emails, True)
-        self.assertEqual(user2.email in emails, False)
-        self.assertEqual(user3.email in emails, False)
+        self.assertEmailTemplateUsed('letters/email/letter_drop_a_note.txt')
+        self.assertEmailReceived(user1.email, 'letters/email/letter_drop_a_note.txt')
+        self.assertEmailReceived(user2.email, 'letters/email/letter_drop_a_note.txt')
+        self.assertEmailReceived(user3.email, 'letters/email/letter_drop_a_note.txt')
+
+    def test_not_notify_management_to_internal_if_lawyer_assigned(self):
+        user1 = UserFactory(notify_unassigned_letter=True, is_staff=True)
+        user2 = self._add_random_user(is_staff=True, case=self.object.case)
+        user3 = self._add_random_user(is_staff=True, case=self.object.case)
+        assign_perm('can_send_to_client', user2, self.object.case)
+
+        self._test_send()
+
+        self.assertEmailTemplateUsed('letters/email/letter_drop_a_note.txt')
+        self.assertEmailNotReceived(user1.email, 'letters/email/letter_drop_a_note.txt')
+        self.assertEmailReceived(user2.email, 'letters/email/letter_drop_a_note.txt')
+        self.assertEmailReceived(user3.email, 'letters/email/letter_drop_a_note.txt')

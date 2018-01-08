@@ -28,9 +28,13 @@ class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, 
         if obj.pk:  # old
             obj.modified_by = self.user
             if obj.status == Case.STATUS.assigned:
-                obj.send_notification(self.user, staff=True, verb='updated')
+                obj.send_notification(actor=self.user,
+                                      user_qs=obj.get_users_with_perms().filter(is_staff=True),
+                                      verb='updated')
         else:  # new
-            obj.send_notification(self.user, staff=True, verb='created')
+            obj.send_notification(actor=self.user,
+                                  user_qs=obj.get_users_with_perms().filter(is_staff=True),
+                                  verb='created')
             obj.created_by = self.user
         if commit:
             obj.save()
@@ -67,9 +71,10 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
 
         self.case.send_notification(actor=self.user,
                                     verb='grant_group',
+
                                     action_object=self.cleaned_data['user'],
                                     action_target=self.cleaned_data['group'],
-                                    staff=True)
+                                    user_qs=self.case.get_users_with_perms().filter(is_staff=True))
 
 
 class CaseCloseForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
@@ -87,7 +92,9 @@ class CaseCloseForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
         obj.modified_by = self.user
         obj.status = Case.STATUS.closed
         if self.cleaned_data['notify']:
-            obj.send_notification(self.user, staff=False, verb='closed')
+            obj.send_notification(actor=self.user,
+                                  user_qs=obj.get_users_with_perms(),
+                                  verb='closed')
         if commit:
             obj.save()
         return obj
