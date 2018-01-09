@@ -251,7 +251,7 @@ class Case(models.Model):
         if target is None:
             target = self
 
-        for user in user_qs:
+        for user in user_qs.exclude(pk=actor.pk):
             user.notify(actor=actor,
                         target=target,
                         from_email=self.get_email(),
