@@ -114,7 +114,7 @@ class Letter(AbstractRecord):
         return "%s#letter-%s" % (case_url, self.pk)
 
     def is_done(self):
-        return (True if self.status == self.STATUS.done else False)
+        return True if self.status == self.STATUS.done else False
 
     def get_edit_url(self):
         return reverse('letters:edit', kwargs={'pk': self.pk})
@@ -128,17 +128,20 @@ class Letter(AbstractRecord):
                                         client=self.client)
 
     def send_notification(self, *args, **kwargs):
+        staff_users = get_users_with_perm(self.case, 'can_send_to_client')
+        management = User.objects.filter(notify_unassigned_letter=True).all()
         if self.status is Letter.STATUS.done:
-            kwargs['user_qs'] = self.get_users_with_perms()
+            if len(list(staff_users)) > 0:
+                kwargs['user_qs'] = self.get_users_with_perms()
+            else:
+                kwargs['user_qs'] = User.objects.filter(Q(pk__in=self.get_users_with_perms()) |
+                                                        Q(pk__in=management))
         else:
-            staff_users = get_users_with_perm(self.case, 'can_send_to_client')
             if len(list(staff_users)) > 0:
                 kwargs['user_qs'] = self.get_users_with_perms().filter(is_staff=True)
-
             else:
                 kwargs['user_qs'] = User.objects.filter(Q(pk__in=self.get_users_with_perms().filter(is_staff=True)) |
-                                                        Q(pk__in=User.objects.filter(
-                                                            notify_unassigned_letter=True).all()))
+                                                        Q(pk__in=management))
         return super(Letter, self).send_notification(*args, **kwargs)
 
     class Meta:

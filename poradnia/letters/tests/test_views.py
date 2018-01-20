@@ -281,6 +281,41 @@ class AddLetterTestCase(CaseMixin, TestCase):
 
         self.assertIn(management_user.email, emails)
 
+    def test_notify_management_if_not_lawyer(self):
+        management_user = UserFactory(notify_unassigned_letter=True)
+
+        self.user = UserFactory(is_staff=False)
+        assign_perm('can_add_record', self.user, self.case)
+        self.client.login(username=self.user.username, password='pass')
+
+        data = self.post_data.copy()
+
+        self.client.post(self.url, data=data)
+
+        emails = [x.to[0] for x in mail.outbox]
+
+        self.assertIn(management_user.email, emails)
+
+        self.user = UserFactory(is_staff=True)
+        assign_perm('can_send_to_client', self.user, self.case)
+
+        self.client.post(self.url, data=data)
+
+    def test_not_notify_management_if_has_lawyer(self):
+        management_user = UserFactory(notify_unassigned_letter=True)
+
+        self.user = UserFactory(is_staff=False)
+        assign_perm('can_add_record', self.user, self.case)
+        assign_perm('can_send_to_client', UserFactory(is_staff=True), self.case)
+        self.client.login(username=self.user.username, password='pass')
+
+        data = self.post_data.copy()
+
+        self.client.post(self.url, data=data)
+
+        emails = [x.to[0] for x in mail.outbox]
+
+        self.assertNotIn(management_user.email, emails)
 
 class ProjectAddLetterTestCase(CaseMixin, TestCase):
     post_data = {'attachment_set-0-DELETE': '',
