@@ -56,7 +56,7 @@ def send(request, pk):
     context['case'] = case
 
     if letter.status == Letter.STATUS.done:
-        messages.warning(request, _("It doesn't make sense."))
+        messages.warning(request, _("You can not send one letter twice."))
         return HttpResponseRedirect(case.get_absolute_url())
 
     LetterForm = SendLetterForm.partial(user=request.user, instance=letter)

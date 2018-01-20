@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-05 01:37+0200\n"
-"PO-Revision-Date: 2017-08-05 01:41+0200\n"
+"POT-Creation-Date: 2018-01-20 23:16+0100\n"
+"PO-Revision-Date: 2018-01-20 23:16+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -17,17 +17,17 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /letters/locale/en/LC_MESSAGES/django.po\n"
 
-#: apps.py:7 models.py:133
+#: apps.py:7 models.py:149
 msgid "Letters"
 msgstr "Listy"
 
-#: forms.py:16
+#: forms.py:21
 msgid "Leave empty to use email field and create a new one user."
 msgstr ""
 "Pozostaw puste, aby wykorzystać pole adresu e-mail i utworzyć nowego "
 "użytkownika."
 
-#: forms.py:18
+#: forms.py:23
 msgid ""
 "The user account will be created automatically, so you have\n"
 "access to the archive and data about persons responsible for the case."
@@ -35,7 +35,7 @@ msgstr ""
 "Konto użytkownika zostanie utworzone automatycznie, dzięki czemu będziesz "
 "mieć dostęp do archiwum zawierającego wszystkie Twoje sprawy."
 
-#: forms.py:21
+#: forms.py:26
 msgid ""
 "\"Short description of the case for organizational purposes.\n"
 "The institution name and two words will suffice."
@@ -43,48 +43,48 @@ msgstr ""
 "Podaj nazwę instytucji i typ problemu np. „brak odpowiedzi”, „ochrona danych "
 "osobowych” itp."
 
-#: forms.py:36
+#: forms.py:41
 #, python-format
 msgid "E-mail %(email)s are already used. Please log in."
 msgstr "Adres e-mail %(email)s jest aktualnie w użyciu. Proszę, zaloguj się."
 
-#: forms.py:46
+#: forms.py:51
 msgid "Report case"
 msgstr "Zgłoś sprawę"
 
-#: forms.py:49
+#: forms.py:54
 msgid "Client"
 msgstr "Klient"
 
-#: forms.py:54
+#: forms.py:59
 msgid "User e-mail"
 msgstr "E-mail użytkownika"
 
-#: forms.py:57
+#: forms.py:62
 msgid "E-mail"
 msgstr "E-mail"
 
-#: forms.py:88
+#: forms.py:94
 msgid "Have to enter user email or select a client"
 msgstr "Musisz podać adres e-mail klienta lub go wybrać z bazy."
 
-#: forms.py:144
+#: forms.py:151
 msgid "Reply to all"
 msgstr "Odpowiedz wszystkim"
 
-#: forms.py:147 forms.py:159
+#: forms.py:154 forms.py:166
 msgid "Save to review"
 msgstr "Zapisz do przejrzenia"
 
-#: forms.py:151 forms.py:156
+#: forms.py:158 forms.py:163
 msgid "Reply to staff"
 msgstr "Odpowiedz dla zespołu"
 
-#: forms.py:163
+#: forms.py:170
 msgid "Reply"
 msgstr "Odpowiedz"
 
-#: forms.py:202
+#: forms.py:215
 msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
@@ -132,87 +132,87 @@ msgstr "Liczba listów użytkowników poprzez WWW"
 msgid "Monthly number of user letter send by WWW"
 msgstr "Miesięczna liczba listów nadesłanych przez użytkowników poprzez WWW"
 
-#: metric.py:54
+#: metric.py:56
 msgid "Documents written for clients"
 msgstr "Dokumenty napisane dla klientów"
 
-#: metric.py:55
+#: metric.py:57
 msgid "Number of attachments in staff messages send to clients."
 msgstr "Liczba załączników w pismach członków zespołu wysłanych do klientów"
 
-#: models.py:67 templates/letters/_letter_list.html:14
+#: models.py:72 templates/letters/_letter_list.html:14
 msgid "Staff"
 msgstr "Zespół"
 
-#: models.py:67
+#: models.py:72
 msgid "Done"
 msgstr "Wykonane"
 
-#: models.py:72
+#: models.py:77
 msgid "Accepted on"
 msgstr "Zaakceptowane o"
 
-#: models.py:73
+#: models.py:78
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: models.py:74
+#: models.py:79
 msgid "Text"
 msgstr "Treść"
 
-#: models.py:75
+#: models.py:80
 msgid "Signature"
 msgstr "Podpis"
 
-#: models.py:77
+#: models.py:83
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:78
+#: models.py:84
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:80
+#: models.py:86
 msgid "Modified by"
 msgstr "Zmienione o"
 
-#: models.py:84
+#: models.py:90
 msgid "Modified on"
 msgstr "Zmienione przez"
 
-#: models.py:87
+#: models.py:93
 msgid "Raw message contents"
 msgstr "Treść surowej wiadomości"
 
-#: models.py:90
+#: models.py:96
 msgid "Original full content of message"
 msgstr "Oryginalna, pełna treść wiadomości"
 
-#: models.py:132
+#: models.py:148
 msgid "Letter"
 msgstr "List"
 
-#: models.py:140
+#: models.py:156
 msgid "File"
 msgstr "Plik"
 
-#: models.py:153
+#: models.py:169
 msgid "Attachment"
 msgstr "Załącznik"
 
-#: models.py:154
+#: models.py:170
 msgid "Attachments"
 msgstr "Załączniki"
 
-#: templates/letters/_form.html:8
+#: templates/letters/_form.html:14
 msgid "remove"
 msgstr "usuń"
 
-#: templates/letters/_form.html:9
+#: templates/letters/_form.html:15
 msgid "add another"
 msgstr "dodaj kolejne"
 
-#: templates/letters/_form.html:18
+#: templates/letters/_form.html:24
 msgid "Cases"
 msgstr "Sprawy"
 
@@ -238,7 +238,7 @@ msgstr ""
 "            "
 
 #: templates/letters/_letter_list.html:46 templates/letters/form_edit.html:6
-#: views/cbv.py:42
+#: views/cbv.py:43
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -258,16 +258,16 @@ msgstr "Nowa sprawa"
 msgid "Letter list"
 msgstr "Rejestr korespondencji"
 
-#: views/cbv.py:21
+#: views/cbv.py:22
 msgid "Create a new case"
 msgstr "Tworzenie nowej sprawy"
 
-#: views/cbv.py:29
+#: views/cbv.py:30
 #, python-brace-format
 msgid "Case about {object} created!"
 msgstr "Sprawa o tytule {object} została zarejestrowana!"
 
-#: views/fbv.py:13
+#: views/fbv.py:14
 #, python-format
 msgid ""
 "User  %(user)s registered! You will receive a password by mail. Log in to "
@@ -276,24 +276,27 @@ msgstr ""
 "Konto %(user)s utworzone! Hasło otrzymasz na adres e-mail. Zaloguj się, aby "
 "uzyskać dostęp do archiwum."
 
-#: views/fbv.py:34
+#: views/fbv.py:35
 #, python-format
 msgid "Letter %(object)s created!"
 msgstr "List %(object)s utworzone"
 
-#: views/fbv.py:42
+#: views/fbv.py:43
 msgid "Add letter"
 msgstr "Dodaj list"
 
-#: views/fbv.py:58
-msgid "It doesn't make sense."
-msgstr "To nie ma sensu."
+#: views/fbv.py:59
+msgid "You can not send one letter twice."
+msgstr "Nie możesz wysłać jednego listu dwukrotnie. "
 
-#: views/fbv.py:68
+#: views/fbv.py:69
 #, python-format
 msgid "Letter %(object)s send!"
 msgstr "List %(object)s wysłany!"
 
-#: views/fbv.py:74
+#: views/fbv.py:75
 msgid "Send to client"
 msgstr "Wyślij do klienta"
+
+#~ msgid "It doesn't make sense."
+#~ msgstr "To nie ma sensu."
