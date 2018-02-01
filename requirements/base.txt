@@ -30,7 +30,7 @@ pytz==2017.3
 
 # Your custom requirements go here
 django-guardian==1.4.9
-django-mailbox==4.6.0
+django-mailbox==4.7.0
 talon==1.4.4
 django-filter==1.0.4
 django-autocomplete-light==3.2.10
