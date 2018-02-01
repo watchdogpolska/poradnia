@@ -32,7 +32,7 @@ pytz==2017.3
 django-guardian==1.4.9
 django-mailbox==4.7.0
 talon==1.4.4
-django-filter==1.0.4
+django-filter==1.1.0
 django-autocomplete-light==3.2.10
 https://github.com/ad-m/django-flatpages-tinymce/archive/patch-1.zip
 django-atom==0.16.2
