@@ -52,10 +52,8 @@ class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterS
                       'last_received': _('Last received')})
 
     def __init__(self, *args, **kwargs):
-        kwargs['queryset'] = kwargs.pop('queryset').order_by("-%s" %
-                                                             (Case.STAFF_ORDER_DEFAULT_FIELD))
+        kwargs['queryset'] = kwargs.pop('queryset').order_by("-%s" % (Case.STAFF_ORDER_DEFAULT_FIELD, ))
         super(StaffCaseFilter, self).__init__(*args, **kwargs)
-        self.filters['status'].field.choices.insert(0, ('', u'---------'))
 
     @property
     def form(self):
