@@ -1,11 +1,14 @@
 import locale
+from atom.ext.guardian.views import RaisePermissionRequiredMixin
 
 from braces.views import (FormValidMessageMixin, LoginRequiredMixin,
                           SelectRelatedMixin, UserFormKwargsMixin)
+from cached_property import cached_property
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.utils.encoding import force_text
 from django.utils.html import mark_safe
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
@@ -22,18 +25,21 @@ from .models import Event
 from .utils import EventCalendar
 
 
-class EventCreateView(UserFormKwargsMixin, FormValidMessageMixin, CreateView):
+class EventCreateView(RaisePermissionRequiredMixin, UserFormKwargsMixin, FormValidMessageMixin, CreateView):
     model = Event
     form_class = EventForm
     template_name = 'events/form.html'
+    permission_required = ['cases.can_add_record', ]
 
-    def dispatch(self, request, *args, **kwargs):
-        self.case = get_object_or_404(Case, pk=self.kwargs['case_pk'])
-        self.case.perm_check(request.user, 'can_add_record')
-        return super(EventCreateView, self).dispatch(request, *args, **kwargs)
+    @cached_property
+    def case(self):
+        return get_object_or_404(Case, pk=self.kwargs['case_pk'])
+
+    def get_permission_object(self):
+        return self.case
 
     def get_form_kwargs(self, *args, **kwargs):
-        kwargs = super(EventCreateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs = super(EventCreateView, self).get_form_kwargs()
         kwargs['case'] = self.case
         return kwargs
 
@@ -41,18 +47,24 @@ class EventCreateView(UserFormKwargsMixin, FormValidMessageMixin, CreateView):
         return _("Success added new event %(event)s") % ({'event': self.object})
 
 
-class EventUpdateView(UserFormKwargsMixin, FormValidMessageMixin, UpdateView):
+class EventUpdateView(RaisePermissionRequiredMixin, UserFormKwargsMixin, FormValidMessageMixin, UpdateView):
     model = Event
     form_class = EventForm
     template_name = 'events/form.html'
+    permission_required = ['cases.can_add_record']
 
-    def get_object(self):
-        obj = super(EventUpdateView, self).get_object()
-        obj.case.perm_check(self.request.user, 'can_add_record')
-        return obj
+    def get_permission_object(self):
+        return self._object.case
 
-    def get_form_kwargs(self, *args, **kwargs):
-        kwargs = super(EventUpdateView, self).get_form_kwargs(*args, **kwargs)
+    @cached_property
+    def _object(self):
+        return super(EventUpdateView, self).get_object()
+
+    def get_object(self, *args, **kwargs):
+        return self._object
+
+    def get_form_kwargs(self):
+        kwargs = super(EventUpdateView, self).get_form_kwargs()
         kwargs['case'] = self.object.case
         return kwargs
 
@@ -108,7 +120,7 @@ class ICalendarView(KeyAuthMixin, PermissionMixin, BaseListView):
         event = Event()
         event['uid'] = obj.pk
         event['dtstart'] = obj.time
-        event['summary'] = unicode(obj)
+        event['summary'] = force_text(obj)
         event['description'] = obj.text
         return event
 
