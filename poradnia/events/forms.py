@@ -27,7 +27,10 @@ class EventForm(PartialMixin, AuthorMixin, FormHorizontalMixin, SingleButtonMixi
         created = obj.pk is None
         obj.case = self.case
         obj.save()
-        obj.send_notification(actor=self.user, staff=True, verb='created' if created else 'updated')
+        verb = 'created' if created else 'updated'
+        obj.send_notification(actor=self.user,
+                              user_qs=self.case.get_users_with_perms().filter(is_staff=True),
+                              verb=verb)
         return obj
 
     class Meta:
