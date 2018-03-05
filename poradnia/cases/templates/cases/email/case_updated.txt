@@ -6,3 +6,4 @@ Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl/{{tar
 
 {% if email %}Prosimy, używaj adresu {{email}} do korespondencji w tej sprawie, dzięki temu wymiana korespondencji będzie sprawniejsza. Dziękujemy za współpracę.{% endif %}
 
+{% include '_email_signature.txt' %}

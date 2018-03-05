@@ -13,8 +13,5 @@ Z poważaniem,
 
 Zespół Poradniczy
 Sieci Obywatelskiej Watchdog Polska
-----
-WESPRZYJ działanie naszej poradni
-WEJDŹ na ➡ https://siecobywatelska.pl/wspieraj
-WPŁAĆ dowolną darowiznę.
-POMÓŻ NAM POMAGAĆ INNYM!
+
+{% include '_email_signature.txt' %}
