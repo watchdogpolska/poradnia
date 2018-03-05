@@ -51,7 +51,8 @@ THIRD_PARTY_APPS = (
     'atom',
     'import_export',
     'django_filters',
-    'bootstrap_pagination'
+    'bootstrap_pagination',
+    'github_revision'
 )
 
 # Apps specific for this project go here.
@@ -350,3 +351,5 @@ STAT_METRICS = {
 
 FILE_UPLOAD_PERMISSIONS = 0o644
 
+# Django-GitHub-Revision
+GITHUB_REVISION_REPO_URL = 'https://github.com/watchdogpolska/poradnia'
