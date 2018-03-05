@@ -45,7 +45,7 @@ TEMPLATES[0]['OPTIONS']['loaders'] = (
 RELEASE_ID = auto.revision
 RAVEN_CONFIG = {
     'dsn': env.str('RAVEN_DSN', 'http://example.com'),
-    'release': RELEASE_ID,
+    'release': RELEASE_ID
 }
 
 INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
