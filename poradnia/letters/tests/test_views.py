@@ -4,7 +4,7 @@ from guardian.shortcuts import assign_perm
 
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
-from poradnia.letters.factories import LetterFactory
+from poradnia.letters.factories import LetterFactory, AttachmentFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
 
@@ -413,6 +413,13 @@ class SendLetterTestCase(CaseMixin, TestCase):
         self.assertEmailTemplateUsed('letters/email/letter_send_to_client.txt')
         self.assertEmailReceived(user1.email, 'letters/email/letter_send_to_client.txt')
         self.assertEmailReceived(user2.email, 'letters/email/letter_send_to_client.txt')
+
+    def test_accepted_letter_contains_attachment(self):
+        letter = AttachmentFactory(letter=self.object)
+
+        self._test_send()
+
+        self.assertIn(letter.get_full_url(), mail.outbox[0].body)
 
     def test_update_project(self):
         self.object.case.has_project = True

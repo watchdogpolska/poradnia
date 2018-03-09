@@ -2,6 +2,8 @@
 {{actor}} zaakceptował pismo:
 {{target.text}}
 
+{% include 'letters/email/_attachment_set.txt' %}
+
 Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl/{{target.get_absolute_url}}.
 
 {% if email %}Używaj adresu {{email}} do korespondencji w tej sprawie, dzięki temu wymiana korespondencji będzie sprawniejsza. Dziękujemy za współpracę.{% endif %}

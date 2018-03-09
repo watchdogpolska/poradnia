@@ -2,6 +2,7 @@ from __future__ import unicode_literals
 
 import logging
 import os
+from django.contrib.sites.shortcuts import get_current_site
 from os.path import basename
 from cached_property import cached_property
 from django.conf import settings
@@ -164,6 +165,9 @@ class Attachment(models.Model):
 
     def get_absolute_url(self):
         return self.attachment.url
+
+    def get_full_url(self):
+        return ''.join(['https://', get_current_site(None).domain, self.get_absolute_url()])
 
     class Meta:
         verbose_name = _('Attachment')
