@@ -12,7 +12,7 @@ from guardian.shortcuts import assign_perm
 
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
-from poradnia.letters.factories import LetterFactory
+from poradnia.letters.factories import LetterFactory, AttachmentFactory
 from poradnia.letters.models import Letter, MessageParser
 from poradnia.users.factories import UserFactory
 
@@ -59,6 +59,15 @@ class QuerySetTestCase(TestCase):
                        is_superuser=False,
                        is_staff=False)
 
+
+class AttachmentTestCase(TestCase):
+
+    def setUp(self):
+        self.attachment = AttachmentFactory()
+
+    def test_get_full_url(self):
+        self.assertTrue(self.attachment.get_full_url().startswith("https://"))
+        self.assertTrue(self.attachment.get_full_url().endswith("example.jpg"))
 
 class LastQuerySetTestCase(TestCase):
     def setUp(self):

@@ -1,5 +1,7 @@
 from __future__ import absolute_import
 
+from collections import OrderedDict
+
 from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from braces.views import SelectRelatedMixin, UserFormKwargsMixin
 from cached_property import cached_property
@@ -51,7 +53,7 @@ class CaseDetailView(SingleObjectPermissionMixin, SelectRelatedMixin, DetailView
                 all())
 
     def get_forms(self):
-        forms = {}
+        forms = OrderedDict()
         forms['letter'] = {'title': _('Letter'),
                            'form': AddLetterForm(user=self.request.user,
                                                  case=self.object),

@@ -2,11 +2,7 @@
 {{actor}} napisał:
 {{target.text}}
 
-{% if target.attachment_set.all %}
-Załączniki pisma:{% for att in target.attachment_set.all %}
-- http://porady.siecobywatelska.pl/{{att.get_absolute_url}}
-{% endfor %}
-{% endif %}
+{% include 'letters/email/_attachment_set.txt' %}
 
 Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl/{{target.get_absolute_url}}.
 
