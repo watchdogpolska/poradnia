@@ -1,0 +1,5 @@
+{% if target.attachment_set.all %}
+Załączniki pisma:{% for att in target.attachment_set.all %}
+- {{att.get_full_url}}
+{% endfor %}
+{% endif %}

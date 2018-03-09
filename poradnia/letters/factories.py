@@ -1,5 +1,6 @@
 import factory
 import factory.fuzzy
+from factory.django import ImageField
 
 from poradnia.cases.factories import CaseFactory
 from poradnia.users.factories import UserFactory
@@ -16,3 +17,11 @@ class LetterFactory(factory.django.DjangoModelFactory):
 
     class Meta:
         model = 'letters.Letter'
+
+
+class AttachmentFactory(factory.django.DjangoModelFactory):
+    letter = factory.SubFactory(LetterFactory)
+    attachment = ImageField()
+
+    class Meta:
+        model = 'letters.Attachment'
