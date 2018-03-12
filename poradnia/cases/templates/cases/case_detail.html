@@ -16,7 +16,7 @@
             e.preventDefault()
             $(this).tab('show')
         });
-        $('#form-tab a:last').tab('show')
+        $('#form-tab a:first').tab('show')
     </script>
 {% endblock %}
 
@@ -152,7 +152,7 @@
 
             <div class="tab-content">
                 {% for key, row in forms.items %}
-                    <div role="tabpanel" class="tab-pane {% if forloop.last %} active{% endif %}" id="{{ key }}">
+                    <div role="tabpanel" class="tab-pane {% if forloop.first %} active{% endif %}" id="{{ key }}">
                         <h2>{{ row.title }}</h2>
                         <form method="post" class="{{ row.form.helper.form_class }}" enctype="multipart/form-data"
                               action="{{ row.form.helper.form_action }}">
