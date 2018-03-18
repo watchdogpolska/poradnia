@@ -57,6 +57,14 @@ class CaseQuerySetTestCase(TestCase):
         self.assertTrue(Case.objects.for_assign(self.user).filter(
             pk=CaseFactory(client=self.user).pk).exists())
 
+    def test_for_assign_no_duplicates_with_multiple_permissions(self):
+        assign_perm('cases.can_view', self.user)
+        assign_perm('cases.can_assign', self.user)
+        case = CaseFactory(created_by=self.user)
+        self.assertEqual(
+            1,
+            len(Case.objects.for_assign(self.user)))
+
     def test_with_perm(self):
         CaseFactory.create_batch(size=25)
         with self.assertNumQueries(2):
