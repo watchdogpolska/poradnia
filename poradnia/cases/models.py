@@ -27,7 +27,9 @@ except ImportError:
 
 class CaseQuerySet(QuerySet):
     def for_assign(self, user):
-        return self.filter(caseuserobjectpermission__user=user)
+        return self.filter(
+            caseuserobjectpermission__user=user,
+            caseuserobjectpermission__permission__codename='can_view')
 
     def for_user(self, user):
         return get_objects_for_user(user, 'can_view', self)
