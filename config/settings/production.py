@@ -49,9 +49,7 @@ RAVEN_CONFIG = {
 }
 
 INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
-MIDDLEWARE_CLASSES = (
-    "raven.contrib.django.raven_compat.middleware.Sentry404CatchMiddleware",
-) + MIDDLEWARE_CLASSES
+
 CACHES = {
     'default': env.cache(),
 }
