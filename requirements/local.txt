@@ -4,6 +4,6 @@ Sphinx==1.7.2
 
 # django-debug-toolbar that works with Django 1.5+
 django-debug-toolbar==1.9.1
-django-extensions==1.9.8
+django-extensions==2.0.6
 django-autofixture==0.12.1
 graphviz==0.8.2
