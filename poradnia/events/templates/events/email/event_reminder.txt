@@ -1,4 +1,4 @@
-{{actor}}: Przypomnienie o upływającym terminie wydarzenia w sprawie #{{target.case.id}}
+{{actor}}: Przypomnienie o upływającym terminie wydarzenia w sprawie "#{{target.case.id}}
 
 Wydarzenie "{{target.text}}" w sprawie "{{target.case}}" upływa o {{ target.time }}.
 

@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-04 21:24+0200\n"
+"POT-Creation-Date: 2018-04-15 19:07+0200\n"
 "PO-Revision-Date: 2016-11-24 21:33+0100\n"
 "Last-Translator: Karol <karol@ppkt.eu>\n"
 "Language-Team: Polish\n"
@@ -17,36 +17,28 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /events/locale/en/LC_MESSAGES/django.po\n"
 
-#: apps.py:7 models.py:92 templates/events/base.html:5
+#: apps.py:7 models.py:66 templates/events/base.html:5
 #: templates/events/base.html:10
 msgid "Events"
 msgstr "Wydarzenia"
 
-#: models.py:17
+#: models.py:23
 msgid "Reminder"
 msgstr "Przypomnienie"
 
-#: models.py:18
+#: models.py:24
 msgid "Reminders"
 msgstr "Przypomnienia"
 
-#: models.py:25
-msgid "Alarm"
-msgstr "Alarm"
-
-#: models.py:26
-msgid "Alarms"
-msgstr "Alarmy"
-
-#: models.py:38 templates/events/_event_list.html:10
+#: models.py:37 templates/events/_event_list.html:10
 msgid "Dead-line"
 msgstr "Termin"
 
-#: models.py:39 templates/events/_event_list.html:14
+#: models.py:38 templates/events/_event_list.html:14
 msgid "Time"
 msgstr "Czas"
 
-#: models.py:40
+#: models.py:39
 msgid "Subject"
 msgstr "Przedmiot"
 
@@ -62,11 +54,11 @@ msgstr "Utworzone o"
 msgid "Modified by"
 msgstr "Zmodyfikowane przez"
 
-#: models.py:49
+#: models.py:51
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
-#: models.py:91
+#: models.py:65
 msgid "Event"
 msgstr "Wydarzenie"
 
@@ -74,11 +66,7 @@ msgstr "Wydarzenie"
 msgid "A related event "
 msgstr "Powiązane wydarzenie"
 
-#: templates/events/_event_list.html:18
-msgid "Triggered"
-msgstr "Zaistniałe"
-
-#: templates/events/_event_list.html:36 templates/events/form.html:8
+#: templates/events/_event_list.html:32 templates/events/form.html:8
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -238,12 +226,21 @@ msgstr "Paź"
 msgid "Dec"
 msgstr "Gru"
 
-#: views.py:40
+#: views.py:47
 #, python-format
 msgid "Success added new event %(event)s"
 msgstr "Dodano wydarzenie %(event)s"
 
-#: views.py:59
+#: views.py:76
 #, python-format
 msgid "Success updated event %(event)s"
 msgstr "Zaktualizowano wydarzenie %(event)s"
+
+#~ msgid "Alarm"
+#~ msgstr "Alarm"
+
+#~ msgid "Alarms"
+#~ msgstr "Alarmy"
+
+#~ msgid "Triggered"
+#~ msgstr "Zaistniałe"

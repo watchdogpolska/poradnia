@@ -4,7 +4,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
-from django.utils.encoding import python_2_unicode_compatible
+from django.utils.encoding import python_2_unicode_compatible, force_text
+from django.utils.text import format_lazy
 from django.utils.translation import ugettext_lazy as _
 
 from poradnia.cases.models import Case
@@ -23,16 +24,15 @@ class RecordQuerySet(QuerySet):
         qs = self._for_user_by_view(user)
         if user.is_staff:
             return qs
-        return qs.filter(Q(event=None) & Q(alarm=None) & Q(letter__status='done'))
+        return qs.filter(Q(event=None) & Q(letter__status='done'))
 
 
 class Record(models.Model):
-    STATIC_RELATION = ['letter', 'event', 'alarm']
+    STATIC_RELATION = ['letter', 'event']
     case = models.ForeignKey(Case)
     created_on = models.DateTimeField(auto_now_add=True)
     letter = models.OneToOneField('letters.Letter', null=True, blank=True)
     event = models.OneToOneField('events.Event', null=True, blank=True)
-    alarm = models.OneToOneField('events.Alarm', null=True, blank=True)
 
     content_type = models.ForeignKey(ContentType, null=True, blank=True)
     object_id = models.PositiveIntegerField(null=True)
@@ -103,7 +103,8 @@ class AbstractRecord(models.Model):
         self.case.update_counters()
 
     def __str__(self):
-        return _("%(object)s (#%(pk)d) in case #%(case_id)d").format(object=self._meta.model_name,
+        return _("{object_name} (#{pk}) in case #{case_id}").format(object_name=self._meta.verbose_name,
+                                                                    case_id=self.case_id,
                                                                     pk=self.pk)
 
     class Meta:
