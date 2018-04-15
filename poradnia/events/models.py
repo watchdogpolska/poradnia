@@ -5,7 +5,6 @@ from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from model_utils.models import TimeStampedModel
-from model_utils.tracker import FieldTracker
 
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from poradnia.users.models import Profile

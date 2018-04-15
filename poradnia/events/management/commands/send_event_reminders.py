@@ -4,7 +4,6 @@ from django.core.management import BaseCommand
 from django.utils import timezone
 
 from poradnia.events.models import Reminder, Event
-from poradnia.users.models import Profile
 
 
 class Command(BaseCommand):
