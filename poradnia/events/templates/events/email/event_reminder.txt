@@ -1,8 +1,8 @@
-{{actor}}: Przypomnienie o upływającym terminie wydarzenia w sprawie #{{target.case.id}}
+{{actor}}: Przypomnienie o upływającym terminie wydarzenia w sprawie "#{{target.case.id}}
 
 Wydarzenie "{{target.text}}" w sprawie "{{target.case}}" upływa o {{ target.time }}.
 
-Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl{{target.case.get_absolute_url}}.
+Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl{{target.get_absolute_url}}.
 
 {% if email %}Prosimy, używaj adresu {{email}} do korespondencji w tej sprawie, dzięki temu wymiana korespondencji będzie sprawniejsza. Dziękujemy za współpracę.{% endif %}
 {% include '_email_signature.txt' %}

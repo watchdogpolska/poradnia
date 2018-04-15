@@ -7,7 +7,7 @@ from poradnia.users.models import User
 
 try:
     from urllib.parse import urlencode
-except:
+except ImportError:
     from urllib import urlencode  # noqa
 
 
