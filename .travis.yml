@@ -29,6 +29,8 @@ script:
 
 notifications:
   slack: watchdogpolska:mQq180xGu9UcuJgK73hVWECD
+  webhooks: https://www.travisbuddy.com/
 
 after_script:
 - rm $HOME/.cache/pip/log/*
+
