@@ -15,7 +15,11 @@
                 {% endif %}
             </div>
             {% endif %}
+            {% if object.html %}
+            <iframe srcdoc="{{object.html|escape}}" sandbox="allow-top-navigation"></iframe>
+            {% else %}
             <p>{{object.text|linebreaks}}</p>
+            {% endif %}
             {% if object.signature %}
             <blockquote>{{object.signature | linebreaks}}</blockquote>
             {% endif %}
