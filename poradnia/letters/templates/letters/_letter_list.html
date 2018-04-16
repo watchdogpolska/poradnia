@@ -15,7 +15,13 @@
                 {% endif %}
             </div>
             {% endif %}
+            {% if object.html %}
+            {% autoescape off %}
+            <div>{{object.html}}</div>
+            {% endautoescape %}
+            {% else %}
             <p>{{object.text|linebreaks}}</p>
+            {% endif %}
             {% if object.signature %}
             <blockquote>{{object.signature | linebreaks}}</blockquote>
             {% endif %}

@@ -181,3 +181,11 @@ class ReceiveEmailTestCase(TestCase):
 
         case.refresh_from_db()
         self.assertEqual(case.status, Case.STATUS.free)
+
+    def test_html_message(self):
+        message = self.get_message('html_message.eml')
+        MessageParser.receive_signal(sender=self.mailbox, message=message)
+
+        letter = message.letter_set.all()[0]
+        letter.refresh_from_db()
+        self.assertIsNotNone(letter.html)

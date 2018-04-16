@@ -78,6 +78,7 @@ class Letter(AbstractRecord):
     accept = MonitorField(monitor='status', when=['done'], verbose_name=_("Accepted on"))
     name = models.CharField(max_length=250, verbose_name=_("Subject"))
     text = models.TextField(verbose_name=_("Text"))
+    html = models.TextField(verbose_name=_("HTML"), blank=True, null=True)
     signature = models.TextField(verbose_name=_("Signature"), blank=True, null=True)
     created_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
                                    related_name='letter_created_by',
@@ -219,6 +220,13 @@ class MessageParser(object):
         return talon.quotations.extract_from(self.message.html, 'text/html')
 
     @cached_property
+    def html(self):
+        if self.message.html:
+            return talon.quotations.extract_from_html(self.message.html)
+        else:
+            return None
+
+    @cached_property
     def letter_status(self):
         if self.actor.is_staff and not self.actor.has_perm('cases.can_send_to_client', self.case):
             return Letter.STATUS.staff
@@ -231,6 +239,7 @@ class MessageParser(object):
                                      case=self.case,
                                      status=self.letter_status,
                                      text=self.text,
+                                     html=self.html,
                                      message=self.message,
                                      signature=self.quote,
                                      eml=self.message.eml)
