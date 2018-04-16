@@ -68,12 +68,12 @@ class EventUpdateView(RaisePermissionRequiredMixin, UserFormKwargsMixin, FormVal
         kwargs['case'] = self.object.case
         return kwargs
 
+    def form_valid(self, form):
+        self.object.reminder_set.all().update(active=False)
+        return super(EventUpdateView, self).form_valid(form)
+
     def get_form_valid_message(self):
         return _("Success updated event %(event)s") % {'event': self.object}
-
-
-def dismiss(request, pk):  # TODO
-    pass
 
 
 class CalendarListView(PermissionMixin, LoginRequiredMixin, ArchiveIndexView):

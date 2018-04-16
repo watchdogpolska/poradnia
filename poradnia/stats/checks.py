@@ -10,7 +10,7 @@ def stat_metrics_check(app_configs, **kwargs):
     for key, value in STAT_METRICS.items():
         try:
             import_string(value)
-        except:
+        except ImportError:
             errors.append(
                 Error(
                     'I can not load {} as a statistical metric.'.format(value),

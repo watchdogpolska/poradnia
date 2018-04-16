@@ -40,7 +40,7 @@ class CaseDetailView(SingleObjectPermissionMixin, SelectRelatedMixin, DetailView
     model = Case
     select_related = ['created_by', 'modified_by', 'advice', 'deadline']
     select_record_related = ['letter__created_by', 'letter', 'letter__modified_by', 'event__created_by', 'event',
-                             'event__modified_by', 'event__alarm']
+                             'event__modified_by', 'event']
     prefetch_record_related = ['letter__attachment_set']
     permission_required = ['cases.can_view']
     accept_global_perms = True

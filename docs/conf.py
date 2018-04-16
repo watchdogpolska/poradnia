@@ -20,7 +20,7 @@ import django
 from django.core.urlresolvers import get_resolver
 from django.utils.html import strip_tags
 
-#Py3 compatible, TODO: rebuild config
+# Py3 compatible, TODO: rebuild config
 from builtins import str as unicode
 
 # If extensions (or modules to document with autodoc) are in another directory,

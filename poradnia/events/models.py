@@ -1,10 +1,13 @@
+from datetime import timedelta
+
 from django.conf import settings
 from django.db import models
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
-from model_utils.tracker import FieldTracker
+from model_utils.models import TimeStampedModel
 
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
+from poradnia.users.models import Profile
 
 try:
     from django.core.urlresolvers import reverse
@@ -12,30 +15,23 @@ except ImportError:
     from django.urls import reverse
 
 
-class Reminder(models.Model):
-    event = models.OneToOneField('Event', related_name='user_alarms')
-    user = models.ForeignKey(to=settings.AUTH_USER_MODEL)
-    triggered = models.BooleanField(default=False)
+class Reminder(TimeStampedModel):
+    event = models.ForeignKey('Event')
+    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, help_text=_("Recipient"))
+    active = models.BooleanField(default=True, help_text=_("Active status"))
 
     class Meta:
         verbose_name = _('Reminder')
         verbose_name_plural = _('Reminders')
 
 
-class Alarm(AbstractRecord):
-    event = models.OneToOneField('Event')
-
-    class Meta:
-        verbose_name = _('Alarm')
-        verbose_name_plural = _('Alarms')
-
-
 class EventQuerySet(AbstractRecordQuerySet):
-    def untriggered(self):
-        return self.filter(alarm__isnull=True)
-
     def old(self):
         return self.filter(time__lte=now())
+
+    def fresh(self):
+        max_days = max(day for day, _ in Profile.EVENT_REMINDER_CHOICE)
+        return self.filter(time__gte=now() - timedelta(days=max_days))
 
 
 class Event(AbstractRecord):
@@ -55,7 +51,6 @@ class Event(AbstractRecord):
                                        blank=True,
                                        verbose_name=_("Modified on"))
     objects = EventQuerySet.as_manager()
-    tracker = FieldTracker(fields=('time',))
 
     def get_absolute_url(self):
         case_url = self.record.case_get_absolute_url()
@@ -66,31 +61,6 @@ class Event(AbstractRecord):
 
     def get_calendar_url(self):
         return reverse('events:calendar', kwargs={'month': self.time.month, 'year': self.time.year})
-
-    def execute(self):
-        return Alarm.objects.create(event=self, case=self.case)
-
-    def save(self, *args, **kwargs):
-        time_changed = self.tracker.has_changed('time')
-        super(Event, self).save(*args, **kwargs)
-
-        # if deadline is not set or Event already exists but time was not changed, do nothing
-        if not self.deadline or not time_changed:
-            return
-
-        # for each staff user involved in case create or update Reminder about Event
-        for user in self.case.get_users_with_perms().filter(is_staff=True).exclude(profile=None):
-            if user.profile.event_reminder_time > 0:
-                Reminder.objects.update_or_create(event=self,
-                                                  user=user,
-                                                  defaults={'triggered': False})
-
-    @property
-    def triggered(self):
-        try:
-            return bool(self.alarm)
-        except Alarm.DoesNotExist:
-            return False
 
     class Meta:
         verbose_name = _('Event')
