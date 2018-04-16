@@ -2,16 +2,8 @@ from django.contrib import admin
 from django.utils.translation import ugettext as _
 from guardian.admin import GuardedModelAdmin
 
-from poradnia.records.models import Record
-
+from poradnia.records.admin import RecordInline
 from .models import Case, PermissionGroup
-
-
-class RecordInline(admin.StackedInline):
-    '''
-        Stacked Inline View for Record
-    '''
-    model = Record
 
 
 @admin.register(Case)

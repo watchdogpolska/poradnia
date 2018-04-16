@@ -3,37 +3,18 @@
     <a href="#"><img src="{% get_avatar_url object.created_by %}" class="timeline-avatar"></a>
     <div class="panel {{ object.created_by.is_staff|yesno:'panel-default,panel-primary' }}  timeline-comment">
         <div class="panel-heading">
-            <i class="fa fa-{{ object.deadline|yesno:'fire,calendar' }}"></i> {{ object }}
+            <i class="fa fa-gavel"></i> {{ object }}
         </div>
         <table class="table">
             <tr>
-                <td>{% trans 'Dead-line' %}</td>
-                <td>{{ object.deadline }}</td>
+                <td>{% trans 'Court' %}</td>
+                <td>{{ object.court }}</td>
             </tr>
             <tr>
-                <td>{% trans 'Time' %}</td>
-                <td><a href="{{ object.get_calendar_url }}">{{ object.time }}</a></td>
-            </tr>
-            <tr>
-                <td>{% trans 'Notified' %}</td>
-                <td>
-                    {% if object.reminder_set.all %}
-                        <ul>
-                            {% for reminder in object.reminder_set.all %}
-                                <li><a href="{{ object.user.get_absolute_url }}">{{ object }}</a>
-                                    - {{ object.created_on }}</li>
-                            {% endfor %}
-                        </ul>
-                    {% else %}
-                        {% trans 'Nobody yet.' %}
-                    {% endif %}
-                </td>
-
+                <td>{% trans 'Court signature' %}</td>
+                <td>{{ object.signature }}</td>
             </tr>
         </table>
-        <div class="panel-body">
-            <p>{{ object.text | linebreaks }}</p>
-        </div>
         <div class="panel-footer">
             <i class="fa fa-user"></i> {{ object.created_by }} &bull;
             <i class="fa fa-clock"></i>
@@ -45,7 +26,8 @@
                 {{ object.modified_by }}){% endif %}
             {% if "can_change_all_record" in case_perms or requests.user == object.user and "can_change_own_record" in case_perms %}
                 &bull; <i class="fa fa-pencil"></i>
-                <a href="{{ object.get_edit_url }}">{% trans 'Edit' %}</a>{% endif %}
+                <a href="{% url 'judgements:update' pk=object.pk %}">{% trans 'Edit' %}</a>
+            {% endif %}
         </div>
     </div>
 </div>

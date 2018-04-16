@@ -28,11 +28,11 @@ class RecordQuerySet(QuerySet):
 
 class Record(models.Model):
     STATIC_RELATION = ['letter', 'event']
-    case = models.ForeignKey(Case)
+    case = models.ForeignKey(to='cases.Case')
     created_on = models.DateTimeField(auto_now_add=True)
     letter = models.OneToOneField('letters.Letter', null=True, blank=True)
     event = models.OneToOneField('events.Event', null=True, blank=True)
-
+    courtcase = models.OneToOneField('judgements.CourtCase', null=True, blank=True)
     content_type = models.ForeignKey(ContentType, null=True, blank=True)
     object_id = models.PositiveIntegerField(null=True)
     related_object = GenericForeignKey('content_type', 'object_id')
