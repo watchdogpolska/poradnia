@@ -12,7 +12,12 @@
             </tr>
             <tr>
                 <td>{% trans 'Court signature' %}</td>
-                <td>{{ object.signature }}</td>
+                <td>{{ object.signature }}
+                    [
+                    <a href="https://www.saos.org.pl/search?all={{ object.signature | urlencode }}">SAOS</a> |
+                    <a href="http://orzeczenia.nsa.gov.pl/cbo/find?q=SYGNATURA+[{{ object.signature | urlencode }}]">CBOSA</a>
+                    ]
+                </td>
             </tr>
         </table>
         <div class="panel-footer">
