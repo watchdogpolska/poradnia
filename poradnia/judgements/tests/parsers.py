@@ -1,7 +1,10 @@
+# -*- coding: utf-8 -*-
+# import inspect
 import inspect
 import os
 
 from django.test import TestCase
+from django.utils import six
 from vcr import VCR
 
 from poradnia.judgements.factories import CourtFactory
@@ -11,11 +14,6 @@ try:
     from StringIO import StringIO
 except ImportError:
     from io import StringIO
-
-my_vcr = VCR(func_path_generator=generator,
-             decode_compressed_response=True,
-             serializer='yaml',
-             path_transformer=VCR.ensure_suffix('.yaml'))
 
 
 def generator(f, suffix=None):
@@ -27,6 +25,13 @@ def generator(f, suffix=None):
         filename = "{}.{}".format(suffix, filename)
     return os.path.join(os.path.dirname(inspect.getfile(f)),
                         'cassettes', filename)
+
+my_vcr = VCR(func_path_generator=generator,
+             decode_compressed_response=True,
+             serializer='yaml',
+             path_transformer=VCR.ensure_suffix('.yaml'))
+
+
 
 
 class ParserTestCaseMixin(TestCase):
