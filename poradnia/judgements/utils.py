@@ -48,6 +48,9 @@ class Manager(object):
         event.time = session_row.datetime
         event.modified_by = self.bot
         event.save(update_fields=['text', 'time', 'modified_by'])
+        event.send_notification(actor=self.bot,
+                                user_qs=event.case.get_users_with_perms().filter(is_staff=True),
+                                verb='created')
 
     def handle_new_courtsession(self, court, courtcase, session_row):
         event = Event.objects.create(deadline=False,
@@ -55,6 +58,9 @@ class Manager(object):
                                      time=session_row.datetime,
                                      created_by=self.bot,
                                      text=session_row.description)
+        event.send_notification(actor=self.bot,
+                                user_qs=event.case.get_users_with_perms().filter(is_staff=True),
+                                verb='created')
         CourtSession.objects.create(courtcase=courtcase,
                                     parser_key=court.parser_key,
                                     event=event)

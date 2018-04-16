@@ -72,6 +72,9 @@ class CourtCaseUpdateView(RaisePermissionRequiredMixin, UserFormKwargsMixin, For
     form_class = CourtCaseForm
     permission_required = ['cases.can_add_record']
 
+    def get_permission_object(self):
+        return self.get_object().case
+
     def get_form_valid_message(self):
         return _("{0} updated!").format(self.object)
 
@@ -80,6 +83,9 @@ class CourtCaseDeleteView(RaisePermissionRequiredMixin, DeleteMessageMixin, Dele
     model = CourtCase
     success_url = reverse_lazy('judgements:list')
     permission_required = ['cases.can_add_record']
+
+    def get_permission_object(self):
+        return self.get_object().case
 
     def get_success_message(self):
         return _("{0} deleted!").format(self.object)
