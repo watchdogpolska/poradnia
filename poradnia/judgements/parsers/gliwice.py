@@ -3,6 +3,8 @@ from datetime import datetime
 from time import strptime
 
 import requests
+import six
+from django.utils.six import text_type
 from lxml import html
 from pytz import timezone
 
@@ -40,20 +42,21 @@ class GliwiceETRParser(BaseParser):
         for i in range(0, int(len(trs) / 2)):
             top_tr = trs[i * 2 + 1]
             top_content = [x for x in top_tr.itertext()]
-
             content = {'Wydział orzeczniczy': top_content[0],
                        'Sygnatura akt': top_content[1],
                        'Data': top_content[2],
                        'Godzina': top_content[3],
                        'Sala': top_content[4],
                        'Organ administracji': top_content[5],
-                       'Symbol, Przedmiot': "{}, {}".format(top_content[6], top_content[7]),
+                       'Symbol, Przedmiot': text_type("{}: {}").format(top_content[6], top_content[7]),
                        'Przewodniczący': top_content[8],
-                       'Sędziowie': ";".join(top_content[9:])}
-
+                       'Sędziowie': ";".join(top_content[9:])
+                       }
             bottom_tr = trs[i * 2 + 2]
             status = bottom_tr.text_content()
             content['Status'] = status
+            if six.PY2:
+                content = {k.decode('utf-8'): v for k, v in content.items()}
             yield SessionRow(signature=content['Sygnatura akt'],
                              datetime=self.get_datetime(content),
                              description=self.get_description(content))

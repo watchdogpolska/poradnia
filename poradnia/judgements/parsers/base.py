@@ -1,5 +1,7 @@
 import re
 
+from django.utils.six import text_type
+
 
 def clean_text(text):
     return re.sub(r'\s+', ' ', text)
@@ -15,4 +17,5 @@ class BaseParser(object):
         return []
 
     def get_description(self, row):
-        return "\n".join("{}:{}".format(key, clean_text(value)) for key, value in sorted(row.items()))
+        lines = [text_type("{}: {}").format(key, clean_text(value)) for key, value in sorted(row.items())]
+        return text_type("\n").join(lines)

@@ -41,11 +41,13 @@ class ParserTestCaseMixin(TestCase):
             with my_vcr.use_cassette(generator(f=self.test_return_valid_signaturerow,
                                                suffix=parser_key)):
                 for i, session_row in enumerate(court.get_parser().get_session_rows()):
-                    msg = "Failed for {} in {}".format(i, parser_key)
-                    self.assertTrue(session_row.signature, msg=msg)
-                    self.assertTrue(session_row.datetime, msg=msg)
-                    self.assertTrue(session_row.description, msg=msg)
-                    self.assertIn(session_row.signature, session_row.description, msg=msg)
+                    msg = "Failed for {} in {}.".format(i, parser_key)
+                    self.assertTrue(session_row.signature, msg=msg + "Missing signature")
+                    self.assertTrue(session_row.datetime, msg=msg + "Missing datetime")
+                    self.assertTrue(session_row.description, msg=msg + "Missing description")
+                    self.assertIn(member=session_row.signature,
+                                  container=session_row.description,
+                                  msg=msg + "Missing signature in description")
 
     def test_required_parser(self):
         required_parsers = ['NSA',
