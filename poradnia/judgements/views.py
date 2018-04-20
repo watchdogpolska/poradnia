@@ -57,7 +57,7 @@ class CourtCaseCreateView(RaisePermissionRequiredMixin, UserFormKwargsMixin, Cre
 
     def get_context_data(self, **kwargs):
         kwargs['case'] = self.case
-        return super().get_context_data(**kwargs)
+        return super(CourtCaseCreateView, self).get_context_data(**kwargs)
 
     def get_form_valid_message(self):
         return _("{0} created!").format(self.object)

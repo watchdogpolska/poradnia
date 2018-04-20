@@ -1,5 +1,5 @@
 from io import StringIO
-from unittest.mock import Mock
+
 
 from django.core import mail
 from django.test import TestCase
@@ -11,6 +11,10 @@ from poradnia.judgements.factories import CourtCaseFactory, SessionRowFactory, C
 from poradnia.judgements.utils import Manager
 from poradnia.users.factories import UserFactory
 
+try:
+    from unittest import mock
+except ImportError:
+    import mock
 
 class ManagerTestCase(TestCase):
     def setUp(self):
@@ -22,8 +26,8 @@ class ManagerTestCase(TestCase):
     def test_create_new_event(self):
         courtcase = CourtCaseFactory()
         session_row = SessionRowFactory(signature=courtcase.signature)
-        mock = Mock(get_session_rows=lambda: [session_row])
-        self.manager.handle_court(courtcase.court, mock)
+        my_mock = mock.Mock(get_session_rows=lambda: [session_row])
+        self.manager.handle_court(courtcase.court, my_mock)
         event = Event.objects.get()
         self.assertEqual(event.time, session_row.datetime)
         self.assertEqual(event.text, session_row.description)
@@ -34,8 +38,8 @@ class ManagerTestCase(TestCase):
 
         courtcase = CourtCaseFactory(case=cuop.content_object)
         session_row = SessionRowFactory(signature=courtcase.signature)
-        mock = Mock(get_session_rows=lambda: [session_row])
-        self.manager.handle_court(courtcase.court, mock)
+        my_mock = mock.Mock(get_session_rows=lambda: [session_row])
+        self.manager.handle_court(courtcase.court, my_mock)
 
         self.assertEqual(len(mail.outbox), 1)
         new_mail = mail.outbox.pop()
@@ -48,8 +52,8 @@ class ManagerTestCase(TestCase):
         old_event = courtsession.event
         session_row = SessionRowFactory(signature=courtcase.signature,
                                         datetime=old_event.time)
-        mock = Mock(get_session_rows=lambda: [session_row])
-        self.manager.handle_court(courtsession.courtcase.court, mock)
+        my_mock = mock.Mock(get_session_rows=lambda: [session_row])
+        self.manager.handle_court(courtsession.courtcase.court, my_mock)
         self.assertEqual(Event.objects.count(), 1)
         old_event.refresh_from_db()
         self.assertEqual(old_event.time, session_row.datetime)
@@ -62,8 +66,8 @@ class ManagerTestCase(TestCase):
 
         courtcase = CourtCaseFactory(case=cuop.content_object)
         session_row = SessionRowFactory(signature=courtcase.signature)
-        mock = Mock(get_session_rows=lambda: [session_row])
-        self.manager.handle_court(courtcase.court, mock)
+        my_mock = mock.Mock(get_session_rows=lambda: [session_row])
+        self.manager.handle_court(courtcase.court, my_mock)
 
         self.assertEqual(len(mail.outbox), 1)
         new_mail = mail.outbox.pop()
@@ -77,8 +81,8 @@ class ManagerTestCase(TestCase):
         session_row = SessionRowFactory(signature=courtcase.signature,
                                         datetime=old_event.time,
                                         description=old_event.text)
-        mock = Mock(get_session_rows=lambda: [session_row])
-        self.manager.handle_court(courtsession.courtcase.court, mock)
+        my_mock = mock.Mock(get_session_rows=lambda: [session_row])
+        self.manager.handle_court(courtsession.courtcase.court, my_mock)
         self.assertEqual(Event.objects.count(), 1)
         old_event.refresh_from_db()
         self.assertEqual(old_event.time, session_row.datetime)
@@ -87,6 +91,6 @@ class ManagerTestCase(TestCase):
 
     def test_skip_unknown_signature_row(self):
         session_row = SessionRowFactory()
-        mock = Mock(get_session_rows=lambda: [session_row])
-        self.manager.handle_court(CourtFactory(), mock)
+        my_mock = mock.Mock(get_session_rows=lambda: [session_row])
+        self.manager.handle_court(CourtFactory(), my_mock)
         self.assertEqual(Event.objects.count(), 0)

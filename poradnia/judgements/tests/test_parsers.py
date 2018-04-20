@@ -26,12 +26,11 @@ def generator(f, suffix=None):
     return os.path.join(os.path.dirname(inspect.getfile(f)),
                         'cassettes', filename)
 
+
 my_vcr = VCR(func_path_generator=generator,
              decode_compressed_response=True,
              serializer='yaml',
              path_transformer=VCR.ensure_suffix('.yaml'))
-
-
 
 
 class ParserTestCaseMixin(TestCase):
