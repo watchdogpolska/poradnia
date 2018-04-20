@@ -13,6 +13,7 @@ from django.db.models import (Case, Count, F, IntegerField, Min, Prefetch, Sum,
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.datetime_safe import date
+from django.utils.timezone import make_aware
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import TemplateView, View
 
@@ -329,7 +330,7 @@ class ValueListView(TimeMixin):
                                  key=self.kwargs['key'])
 
     def get_queryset(self):
-        return Value.objects.filter(time__lte=self.end, time__gte=self.start).filter(item=self.item).all()
+        return Value.objects.filter(time__date__lte=self.end, time__date__gte=self.start).filter(item=self.item).all()
 
 
 class ValueBrowseListView(ValueListView, TemplateView):
