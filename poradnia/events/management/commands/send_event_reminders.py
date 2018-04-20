@@ -22,10 +22,13 @@ class Command(BaseCommand):
                 self.event_for_user(event, user)
 
     def event_for_user(self, event, user):
-        if not hasattr(user, 'profile') or user.profile.event_reminder_time == 0:
+        if not hasattr(user, 'profile'):
+            deadline_days = 1
+        elif user.profile.event_reminder_time == 0:
             return None
+        else:
+            deadline_days = user.profile.event_reminder_time
 
-        deadline_days = user.profile.event_reminder_time
         notification_deadline = timedelta(days=deadline_days)
 
         if self.today + notification_deadline > event.time:
