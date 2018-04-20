@@ -1,9 +1,12 @@
 from __future__ import absolute_import
 
+import json
+
 from atom.mixins import AdminTestCaseMixin
 from django.core import mail
 from django.test import RequestFactory
 from django.utils import timezone
+from django.utils.six import text_type
 from guardian.shortcuts import assign_perm, get_perms
 from test_plus.test import TestCase
 
@@ -20,6 +23,7 @@ try:
     from django.core.urlresolvers import reverse, reverse_lazy
 except ImportError:
     from django.urls import reverse, reverse_lazy
+
 
 class UserTestCase(TestCase):
     def test_get_user_by_get_by_email_or_create(self):
@@ -145,8 +149,7 @@ class UserDetailViewTestCase(TestCase):
         self.object = UserFactory(is_staff=False)
         self.url = self.object.get_absolute_url()
         self.client_filter_url = reverse('cases:list') + '?client=' + str(self.object.pk)
-        self.permission_filter_url = (reverse('cases:list') + '?permission=' +
-                                      str(self.object.pk))
+        self.permission_filter_url = reverse('cases:list') + '?permission=' + str(self.object.pk)
 
     def test_no_redirect_loop_if_no_auth(self):
         resp = self.client.get(self.url, follow=True)
@@ -154,25 +157,25 @@ class UserDetailViewTestCase(TestCase):
         self.assertEqual(resp.status_code, 403)
 
     def test_can_view_self(self):
-        self.client.login(username=self.object, password='pass')
+        self.client.login(username=self.object.username, password='pass')
         resp = self.client.get(self.url)
         self.assertEqual(resp.status_code, 200)
 
     def test_need_permission(self):
         user = UserFactory()
-        self.client.login(username=user, password='pass')
+        self.client.login(username=user.username, password='pass')
         resp = self.client.get(self.url)
         self.assertEqual(resp.status_code, 403)
 
     def test_has_permission_to_view(self):
         user = UserFactory()
         assign_perm("users.can_view_other", user)
-        self.client.login(username=user, password='pass')
+        self.client.login(username=user.username, password='pass')
         resp = self.client.get(self.url)
         self.assertEqual(resp.status_code, 200)
 
     def test_has_link_to_self_assigned_cases(self):
-        self.client.login(username=self.object, password='pass')
+        self.client.login(username=self.object.username, password='pass')
         resp = self.client.get(self.url)
         self.assertContains(resp, self.client_filter_url)
         self.assertNotContains(resp, self.permission_filter_url)
@@ -181,7 +184,7 @@ class UserDetailViewTestCase(TestCase):
         user = UserFactory()
         assign_perm('users.can_view_other', user)
         assign_perm('cases.can_assign', user)
-        self.client.login(username=user, password='pass')
+        self.client.login(username=user.username, password='pass')
         resp = self.client.get(self.url)
         self.assertEqual(resp.status_code, 200)
         self.assertContains(resp, self.client_filter_url)
@@ -355,8 +358,9 @@ class UserAutocompleteViewTestCase(TestCase):
         request = self.factory.get("?q={}".format(self.regular_user.username))
         request.user = self.staff_user
         assign_perm('users.can_view_other', self.staff_user)
-        response = UserAutocomplete.as_view()(request=request)
-        self.assertContains(response, self.regular_user)
+        response = json.loads(UserAutocomplete.as_view()(request=request).getvalue())
+        self.assertEqual(len(response['results']), 1)
+        self.assertEqual(response['results'][0]['text'], text_type(self.regular_user))
 
     def test_staff_user_with_permission_can_not_view_reqular_user(self):
         request = self.factory.get("?q={}".format(self.regular_user.username))
