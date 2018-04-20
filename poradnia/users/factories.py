@@ -1,13 +1,14 @@
 import string
 
 import factory.fuzzy
+from django.utils.six import binary_type
 
-polish_letters = string.ascii_letters + "ążźćńó"
+polish_letters = string.ascii_letters + binary_type('\xc4\x85\xc5\xbc\xc5\xba\xc4\x87\xc5\x84\xc3\xb3').decode('utf-8')
 
 
 class FuzzyPolishText(factory.fuzzy.FuzzyText):
     def __init__(self, prefix='', length=12, suffix='', chars=polish_letters, **kwargs):
-        super().__init__(prefix, length, suffix, chars, **kwargs)
+        super(FuzzyPolishText, self).__init__(prefix, length, suffix, chars, **kwargs)
 
 
 class UserFactory(factory.django.DjangoModelFactory):
