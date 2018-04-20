@@ -1,5 +1,7 @@
-from io import StringIO
-
+try:
+    from StringIO import StringIO
+except ImportError:
+    from io import StringIO
 
 from django.core import mail
 from django.test import TestCase
@@ -15,6 +17,7 @@ try:
     from unittest import mock
 except ImportError:
     import mock
+
 
 class ManagerTestCase(TestCase):
     def setUp(self):

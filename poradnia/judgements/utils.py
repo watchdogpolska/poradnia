@@ -12,7 +12,7 @@ class Manager(object):
         self.stdout = stdout
         self.stderr = stderr
 
-    def handle_court(self, court, parser):
+    def handle_court(self, court, parser=None):
         self.stdout.write("=" * 6 + force_text(court))
         signatures = {x.signature: x for x in CourtCase.objects.filter(court=court).with_events().all()}
         parser = parser or court.get_parser()
