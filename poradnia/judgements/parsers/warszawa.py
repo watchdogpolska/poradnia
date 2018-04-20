@@ -17,11 +17,6 @@ except ImportError:
     from io import BytesIO
 
 
-class ETRDialect(csv.excel):
-    delimiter = ' '
-    quotechar = "'"
-    quoting = csv.QUOTE_ALL
-
 @register_parser('WSA_Warszawa')
 class WarsawETRParser(BaseParser):
     URL = 'http://www.warszawa.wsa.gov.pl/183/elektroniczny-terminarz-rozpraw.html'
@@ -60,13 +55,4 @@ class WarsawETRParser(BaseParser):
             yield SessionRow(signature=csv_row['Sygnatura akt'],
                              datetime=self.get_datetime(csv_row),
                              description=self.get_description(csv_row))
-
-    def get_datetime(self, row):
-        try:
-            struct = strptime(row['Data'] + " " + row['Godzina'], "%Y-%m-%d %H:%M")
-        except ValueError:
-            struct = strptime(row['Data'], "%Y-%m-%d")
-        return datetime(*struct[:6]).replace(tzinfo=timezone('Europe/Warsaw'))
-
-
 

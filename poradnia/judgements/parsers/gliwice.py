@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+import logging
 from datetime import datetime
 from time import strptime
 
@@ -6,11 +7,11 @@ import requests
 import six
 from django.utils.six import text_type
 from lxml import html
-from pytz import timezone
 
 from poradnia.judgements.models import SessionRow
 from poradnia.judgements.parsers.base import BaseParser
 from poradnia.judgements.registry import register_parser
+
 
 
 @register_parser('WSA_Gliwice')
@@ -60,10 +61,3 @@ class GliwiceETRParser(BaseParser):
             yield SessionRow(signature=content['Sygnatura akt'],
                              datetime=self.get_datetime(content),
                              description=self.get_description(content))
-
-    def get_datetime(self, row):
-        try:
-            struct = strptime(row['Data'] + " " + row['Godzina'], "%Y-%m-%d %H:%M")
-        except ValueError:
-            struct = strptime(row['Data'], "%Y-%m-%d")
-        return datetime(*struct[:6]).replace(tzinfo=timezone('Europe/Warsaw'))

@@ -81,411 +81,211 @@ interactions:
         />\n\t\t</TD>\n\t\t<TD></TD>\n\t\t<TD></TD>\n\t\t<TD align=\"center\"><input
         type='submit' tabindex=\"10\" value='Szukaj' style=\"font-weight: bold; font-size:
         12pt\"></TD>\n\t</TR>\t\n\t\n\t</TBODY> \n\t</TABLE>\n\t\t\n</div>\n\t</fieldset></form>\n\n\n<br>\nWyszukane
-        rozprawy: 199\n<table id='tabela'><tr>\n\t<th style='width: 120px'><strong>Sygnatura</strong></th>\n\t<th
+        rozprawy: 180\n<table id='tabela'><tr>\n\t<th style='width: 120px'><strong>Sygnatura</strong></th>\n\t<th
         style='width: 80px'><strong>Data</strong></th>\t\n\t<th style='width: 40px'><strong>Godz.</strong></th>\n\t<th
         style='width: 50px'><strong>Sala</strong></th>\n\t<th style='width: 55px'><strong>Wydzia\u0142</strong></th>\t\n\t<th
         style='width: 65px'><strong>Symbol</strong></th>\n\t<th style='width: 200px'><strong>Sk\u0142ad
         s\u0119dziowski</strong></th>\t\n\t<th><strong>Przedmiot</strong></th>\n</tr>\n<tr><td>II
-        SA/Bk 16/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>09:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='6182 - Zwrot wyw\u0142aszczonej nieruchomo\u015Bci i rozliczenia z
-        tym zwi\u0105zane'>6182</td>\n\t\n\t<td>G. Gryglaszewska<BR> M. Leszczy\u0144ski
-        (spr.)<BR> M. Roleder</td>\t\n\t<td>zwrotu nieruchomo\u015Bci</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Bk 105/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>09:00</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>A.
-        Melezini (spr.)</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci dla obszar\xF3w
-        z ograniczeniami naturalnymi lub innymi szczeg\xF3lnymi ograniczeniami na
-        rok 2016\r\nPublikacja orzeczenia odroczona z dnia 4 kwietnia 2018 r.</td>\n</tr>\n<tr><td>I
-        SA/Bk 106/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>09:00</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>A. Melezini
-        (spr.)</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci rolno-\u015Brodowiskowo-klimatycznej
-        na rok 2016\r\nPublikacja orzeczenia odroczona z dnia 4 kwietnia 2018 r.</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Bk 86/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>09:00</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>P.
-        Lewkowicz (spr.)</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci dla obszar\xF3w
-        z ograniczeniami naturalnymi lub innymi szczeg\xF3lnymi ograniczeniami na
-        rok 2016\r\nPublikacja orzeczenia odroczona z dnia 4 kwietnia 2018 r.</td>\n</tr>\n<tr><td>I
-        SA/Bk 88/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>09:00</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>P. Lewkowicz
-        (spr.)</td>\t\n\t<td>odmowa przyznania p\u0142atno\u015Bci w ramach system\xF3w
-        wsparcia bezpo\u015Bredniego na rok 2016\r\nPublikacja orzeczenia odroczona
-        z dnia 4 kwietnia 2018 r.</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 87/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>09:00</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>P.
-        Lewkowicz (spr.)</td>\t\n\t<td>odmowa przyznania p\u0142atno\u015Bci rolno\u015Brodowiskowej
-        (PROW 2007-2013) na rok 2016\r\nPublikacja orzeczenia odroczona z dnia 4 kwietnia
-        2018 r.</td>\n</tr>\n<tr><td>I SA/Bk 104/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>09:00</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>A.
-        Melezini (spr.)</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci w ramach system\xF3w
-        wsparcia bezpo\u015Bredniego na rok 2016\r\nPublikacja orzeczenia odroczona
-        z dnia 4 kwietnia 2018 r.</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 86/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>09:20</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6136 - Ochrona przyrody'>6136</td>\n\t\n\t<td>G.
-        Gryglaszewska<BR> M. Leszczy\u0144ski<BR> M. Roleder (spr.)</td>\t\n\t<td>wymierzenie
-        administracyjnej kary pieni\u0119\u017Cnej za usuni\u0119cie bez wymaganego
-        zezwolenia 1 sztuki drzewa</td>\n</tr>\n<tr><td>II SA/Bk 26/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>09:40</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6014 - Rozbi\xF3rka budowli lub innego
-        obiektu budowlanego, dokonanie oceny stanu technicznego obiektu, doprowadzenie
-        obiektu do s'>6014</td>\n\t\n\t<td>G. Gryglaszewska (spr.)<BR> M. Leszczy\u0144ski<BR>
-        M. Roleder</td>\t\n\t<td>nakazanie wykonania okre\u015Blonych rob\xF3t budowlanych</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Bk 31/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>10:00</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6019 - Inne, o symbolu podstawowym 601'>6019</td>\n\t\n\t<td>G.
-        Gryglaszewska (spr.)<BR> M. Leszczy\u0144ski<BR> M. Roleder</td>\t\n\t<td>ustalenie
-        op\u0142aty legalizacyjnej</td>\n</tr>\n<tr><td>II SO/Bk 4/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>10:20</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6480 -  '>6480</td>\n\t\n\t<td>G. Gryglaszewska<BR>
-        M. Leszczy\u0144ski<BR> M. Roleder (spr.)</td>\t\n\t<td>wymierzenie grzywny
-        Prezydentowi Miasta Suwa\u0142k w zwi\u0105zku z nieprzekazaniem sadowi skargi
-        z odpowiedzi\u0105 na skarg\u0119 i aktami administracyjnymi w sprawie  na
-        bezczynno\u015B\u0107 w przedmiocie udost\u0119pnienia  informacji publicznej</td>\n</tr>\n<tr
-        class='alt'><td>II SAB/Bk 14/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>10:20</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='658 - skarga na niewykonanie w okre\u015Blonym
-        terminie czynno\u015Bci wynikaj\u0105cych z przepis\xF3w odr\u0119bnych /
-        6480 -  '>658/6480</td>\n\t\n\t<td>G. Gryglaszewska<BR> M. Leszczy\u0144ski<BR>
-        M. Roleder (spr.)</td>\t\n\t<td>bezczynno\u015B\u0107 w sprawie informacji
-        publicznej</td>\n</tr>\n<tr><td>II SA/Bk 123/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>10:50</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6480 -  '>6480</td>\n\t\n\t<td>G. Gryglaszewska
-        (spr.)<BR> M. Leszczy\u0144ski<BR> M. Roleder</td>\t\n\t<td>informacja publiczna</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Bk 61/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>11:45</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6391 - Skargi na uchwa\u0142y rady gminy
-        w przedmiocie ... (art. 100 i 101a ustawy o samorz\u0105dzie gminnym) / 6150
-        - Miejscowy plan zagospodarowania przestrzennego'>6391/6150</td>\n\t\n\t<td>M.
-        Roleder (spr.)</td>\t\n\t<td>miejscowy plan zagospodarowania przestrzennego\r\nPublikacja
-        orzeczenia odroczona z dnia 27 marca 2018 r.</td>\n</tr>\n<tr><td>II SA/Bk
-        85/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>12:10</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='6182 - Zwrot wyw\u0142aszczonej nieruchomo\u015Bci i rozliczenia z
-        tym zwi\u0105zane'>6182</td>\n\t\n\t<td>G. Gryglaszewska<BR> E. Lema\u0144ska
-        (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>zwrot wyw\u0142aszczonej nieruchomo\u015Bci</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Bk 41/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>12:30</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>G.
-        Gryglaszewska<BR> E. Lema\u0144ska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>zasi\u0142ek
-        piel\u0119gnacyjny</td>\n</tr>\n<tr><td>II SA/Bk 96/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>12:45</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>G.
-        Gryglaszewska (spr.)<BR> E. Lema\u0144ska<BR> M. Leszczy\u0144ski</td>\t\n\t<td>odmowa
-        umorzenia nale\u017Cno\u015Bci z tytu\u0142u wyp\u0142aconych \u015Bwiadcze\u0144
-        z funduszu alimentacyjnego</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 48/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>13:00</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>G.
-        Gryglaszewska<BR> E. Lema\u0144ska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>zasi\u0142ek
-        rodzinny</td>\n</tr>\n<tr><td>II SA/Bk 53/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>13:15</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6197 - S\u0142u\u017Cba Celno-Skarbowa'>6197</td>\n\t\n\t<td>G.
-        Gryglaszewska<BR> E. Lema\u0144ska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>propozycja
-        okre\u015Blaj\u0105ca warunki zatrudnienia w ramach korpusu s\u0142u\u017Cby
-        cywilnej</td>\n</tr>\n<tr class='alt'><td>II SAB/Bk 12/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>13:15</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='658 - skarga na niewykonanie w okre\u015Blonym
-        terminie czynno\u015Bci wynikaj\u0105cych z przepis\xF3w odr\u0119bnych /
-        6197 - S\u0142u\u017Cba Celno-Skarbowa'>658/6197</td>\n\t\n\t<td>G. Gryglaszewska<BR>
-        E. Lema\u0144ska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>bezczynno\u015B\u0107
-        w sprawie odwo\u0142ania od decyzji o zwolnieniu ze s\u0142u\u017Cby zawartej
-        w propozycji pracy</td>\n</tr>\n<tr><td>II SAB/Bk 11/18</td>\n\t<td>2018-04-17</td>\t\n\t<td>13:15</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='658 - skarga na niewykonanie w okre\u015Blonym
-        terminie czynno\u015Bci wynikaj\u0105cych z przepis\xF3w odr\u0119bnych /
-        6197 - S\u0142u\u017Cba Celno-Skarbowa'>658/6197</td>\n\t\n\t<td>G. Gryglaszewska<BR>
-        E. Lema\u0144ska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>bezczynno\u015B\u0107
-        \ w sprawie braku z\u0142o\u017Cenia propozycji s\u0142u\u017Cby</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Bk 56/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>08:30</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6300 - Weryfikacja zg\u0142osze\u0144
-        celnych co do warto\u015Bci celnej towaru, pochodzenia, klasyfikacji taryfowej.
-        wymiar nale\u017Cno\u015Bci celnyc'>6300</td>\n\t\n\t<td>M. Dziemianowicz<BR>
-        A. Melezini<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>odmowa sprostowania
-        zg\u0142oszenia celnego i odmowa zwrotu c\u0142a</td>\n</tr>\n<tr><td>I SA/Bk
-        55/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>08:30</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6300 - Weryfikacja zg\u0142osze\u0144 celnych co do warto\u015Bci celnej
-        towaru, pochodzenia, klasyfikacji taryfowej. wymiar nale\u017Cno\u015Bci celnyc'>6300</td>\n\t\n\t<td>M.
-        Dziemianowicz<BR> A. Melezini (spr.)<BR> J. Pruszy\u0144ski</td>\t\n\t<td>odmowa
-        sprostowania zg\u0142oszenia celnego i odmowa zwrotu c\u0142a</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Bk 67/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>09:00</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6110 - Podatek\_ od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>M.
-        Dziemianowicz (spr.)<BR> J. Pruszy\u0144ski<BR> D. Zalewski</td>\t\n\t<td>podatek
-        od towar\xF3w i us\u0142ug za miesi\u0105c luty 2014 roku</td>\n</tr>\n<tr><td>I
-        SA/Bk 70/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>09:20</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6110 - Podatek\_ od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>M.
-        Dziemianowicz<BR> J. Pruszy\u0144ski<BR> D. Zalewski (spr.)</td>\t\n\t<td>podatek
-        od towar\xF3w i us\u0142ug za miesi\u0105c grudzie\u0144 2014 roku</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Bk 41/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>09:40</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6116 - Podatek od czynno\u015Bci cywilnoprawnych,
-        op\u0142ata skarbowa oraz inne podatki i op\u0142aty'>6116</td>\n\t\n\t<td>M.
-        Dziemianowicz (spr.)<BR> J. Pruszy\u0144ski<BR> D. Zalewski</td>\t\n\t<td>\u0142\u0105czne
-        zobowi\u0105zanie pieni\u0119\u017Cne za 2014 r.</td>\n</tr>\n<tr><td>I SA/Bk
-        77/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>10:00</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6560 - Interpretacje indywidualne wydawane przez ministra w\u0142a\u015Bciwego
-        do spraw finans\xF3w publicznych / 6110 - Podatek\_ od towar\xF3w i us\u0142ug'>6560/6110</td>\n\t\n\t<td>M.
-        Dziemianowicz<BR> J. Pruszy\u0144ski<BR> D. Zalewski (spr.)</td>\t\n\t<td>podatek
-        od towar\xF3w i us\u0142ug</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 124/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>10:20</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>M.
-        Dziemianowicz<BR> J. Pruszy\u0144ski (spr.)<BR> D. Zalewski</td>\t\n\t<td>przyznanie
-        p\u0142atno\u015Bci rolno\u015Brodowiskowej na rok 2016</td>\n</tr>\n<tr><td>I
-        SA/Bk 123/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>10:20</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>M. Dziemianowicz<BR>
-        J. Pruszy\u0144ski (spr.)<BR> D. Zalewski</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
-        dla obszar\xF3w z ograniczeniami naturalnymi lub innymi szczeg\xF3lnymi ograniczeniami
-        na rok 2016</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 122/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>10:20</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>M.
-        Dziemianowicz<BR> J. Pruszy\u0144ski (spr.)<BR> D. Zalewski</td>\t\n\t<td>przyznanie
-        p\u0142atno\u015Bci w ramach system\xF3w wsparcia bezpo\u015Bredniego na rok
-        2016</td>\n</tr>\n<tr><td>I SA/Bk 119/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>10:50</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>M.
-        Dziemianowicz<BR> P. Lewkowicz<BR> A. Melezini (spr.)</td>\t\n\t<td>przyznanie
-        p\u0142atno\u015Bci dla obszar\xF3w z ograniczeniami naturalnymi lub innymi
-        szczeg\xF3lnymi ograniczeniami (ONW) na rok 2016</td>\n</tr>\n<tr class='alt'><td>I
-        SA/Bk 121/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>10:50</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>M. Dziemianowicz<BR>
-        P. Lewkowicz<BR> A. Melezini (spr.)</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
-        w ramach system\xF3w wsparcia bezpo\u015Bredniego na rok 2016</td>\n</tr>\n<tr><td>I
-        SA/Bk 120/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>10:50</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>M. Dziemianowicz<BR>
-        P. Lewkowicz<BR> A. Melezini (spr.)</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
-        rolno\u015Brodowiskowej (PROW 2007-2013) na rok 2016</td>\n</tr>\n<tr class='alt'><td>I
-        SA/Bk 37/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>11:00</td>\n\t<td>Sala 1</td>\n\t<td>I</td>\t\n\t<td
-        title='6300 - Weryfikacja zg\u0142osze\u0144 celnych co do warto\u015Bci celnej
-        towaru, pochodzenia, klasyfikacji taryfowej. wymiar nale\u017Cno\u015Bci celnyc'>6300</td>\n\t\n\t<td>D.
-        Zalewski (spr.)</td>\t\n\t<td>odmowa sprostowania zg\u0142oszenia celnego\r\nPublikacja
-        orzeczenia odroczona z dnia 4 kwietnia 2018 r.</td>\n</tr>\n<tr><td>I SA/Bk
-        133/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>11:20</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>M. Dziemianowicz<BR>
-        P. Lewkowicz (spr.)<BR> A. Melezini</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
-        dla obszar\xF3w z ograniczeniami naturalnymi lub innymi szczeg\xF3lnymi ograniczeniami
-        na rok 2016</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 132/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>11:20</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>M.
-        Dziemianowicz<BR> P. Lewkowicz (spr.)<BR> A. Melezini</td>\t\n\t<td>przyznanie
-        p\u0142atno\u015Bci w ramach system\xF3w wsparcia bezpo\u015Bredniego na rok
-        2016</td>\n</tr>\n<tr><td>I SA/Bk 168/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>11:40</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>M.
-        Dziemianowicz<BR> P. Lewkowicz<BR> A. Melezini (spr.)</td>\t\n\t<td>przyznanie
-        p\u0142atno\u015Bci rolno\u015Brodowiskowej na rok 2015</td>\n</tr>\n<tr class='alt'><td>I
-        SA/Bk 72/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>12:00</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>M. Dziemianowicz<BR>
-        P. Lewkowicz (spr.)<BR> A. Melezini</td>\t\n\t<td>odmowa stwierdzenia nadp\u0142aty
-        w podatku od nieruchomo\u015Bci za 2016 rok</td>\n</tr>\n<tr><td>I SA/Bk 1755/17</td>\n\t<td>2018-04-18</td>\t\n\t<td>12:20</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6042 - Gry losowe i zak\u0142ady wzajemne'>6042</td>\n\t\n\t<td>M.
-        Dziemianowicz<BR> P. Lewkowicz (spr.)<BR> A. Melezini</td>\t\n\t<td>wymierzenie
-        kary pieni\u0119\u017Cnej z tytu\u0142u urz\u0105dzania gier na automacie
-        poza kasynem gry</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 202/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>12:30</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6559 - Inne o symbolu podstawowym 655'>6559</td>\n\t\n\t<td>M.
-        Dziemianowicz<BR> P. Lewkowicz (spr.)<BR> A. Melezini</td>\t\n\t<td>dofinansowanie
-        projektu pod nazw\u0105 \"Poprawa infrastruktury spo\u0142ecznej s\u0142u\u017C\u0105cej
-        wsparciu os\xF3b niepe\u0142nosprawnych - modernizacja sali konferencyjnej
-        w budynku Starostwa Powiatowego w Sok\xF3\u0142ce\"</td>\n</tr>\n<tr><td>II
-        SA/Bk 58/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>09:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='6391 - Skargi na uchwa\u0142y rady gminy w przedmiocie ... (art. 100
-        i 101a ustawy o samorz\u0105dzie gminnym) / 6150 - Miejscowy plan zagospodarowania
-        przestrzennego'>6391/6150</td>\n\t\n\t<td>M. Leszczy\u0144ski<BR> E. Trykoszko<BR>
-        D. Tryniszewska-Bytys (spr.)</td>\t\n\t<td>miejscowy plan zagospodarowania
-        przestrzennego</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 72/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>09:40</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6182 - Zwrot wyw\u0142aszczonej nieruchomo\u015Bci
-        i rozliczenia z tym zwi\u0105zane'>6182</td>\n\t\n\t<td>M. Leszczy\u0144ski<BR>
-        E. Trykoszko (spr.)<BR> D. Tryniszewska-Bytys</td>\t\n\t<td>zwrot wyw\u0142aszczonej
-        nieruchomo\u015Bci</td>\n</tr>\n<tr><td>II SA/Bk 946/17</td>\n\t<td>2018-04-19</td>\t\n\t<td>10:00</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6391 - Skargi na uchwa\u0142y rady gminy
-        w przedmiocie ... (art. 100 i 101a ustawy o samorz\u0105dzie gminnym) / 6269
-        - Inne o symbolu podstawowym 626'>6391/6269</td>\n\t\n\t<td>M. Leszczy\u0144ski<BR>
-        E. Trykoszko<BR> D. Tryniszewska-Bytys (spr.)</td>\t\n\t<td>zmiana uchwa\u0142y
-        w sprawie ustalenia wynagrodzenia burmistrza</td>\n</tr>\n<tr class='alt'><td>II
-        SA/Bk 91/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>10:30</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>M. Leszczy\u0144ski
-        (spr.)<BR> E. Trykoszko<BR> D. Tryniszewska-Bytys</td>\t\n\t<td>odmowa ustalenia
-        warunk\xF3w zabudowy</td>\n</tr>\n<tr><td>II SA/Bk 50/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>10:50</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>M.
-        Leszczy\u0144ski<BR> E. Trykoszko (spr.)<BR> D. Tryniszewska-Bytys</td>\t\n\t<td>ustalenie
-        warunk\xF3w zabudowy</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 135/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>12:10</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6480 -  '>6480</td>\n\t\n\t<td>M. Leszczy\u0144ski<BR>
-        E. Trykoszko (spr.)<BR> D. Tryniszewska-Bytys</td>\t\n\t<td>odmowa udost\u0119pnienia
-        informacji publicznej</td>\n</tr>\n<tr><td>II SA/Bk 709/17</td>\n\t<td>2018-04-19</td>\t\n\t<td>12:50</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='638 - Sprawy egzekucji administracyjnej.\_
-        egzekucja obowi\u0105zk\xF3w o charakterze niepieni\u0119\u017Cnym / 6014
-        - Rozbi\xF3rka budowli lub innego obiektu budowlanego, dokonanie oceny stanu
-        technicznego obiektu, doprowadzenie obiektu do s'>638/6014</td>\n\t\n\t<td>M.
-        Leszczy\u0144ski<BR> E. Trykoszko (spr.)<BR> D. Tryniszewska-Bytys</td>\t\n\t<td>na\u0142o\u017Cenie
-        grzywny w celu przymuszenia z powodu uchylania si\u0119 od wykonania obowi\u0105zku
-        okre\u015Blonego w tytule wykonawczym tj. wykonania rozbi\xF3rki samowolnie
-        wykonanej nadbudowy pi\u0119tra</td>\n</tr>\n<tr class='alt'><td>II SA/Bk
-        63/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>13:10</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>M. Leszczy\u0144ski
-        (spr.)<BR> E. Trykoszko<BR> D. Tryniszewska-Bytys</td>\t\n\t<td>zasi\u0142ek
-        rodzinny</td>\n</tr>\n<tr><td>II SA/Bk 64/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>13:10</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>M.
-        Leszczy\u0144ski (spr.)<BR> E. Trykoszko<BR> D. Tryniszewska-Bytys</td>\t\n\t<td>\u015Bwiadczenie
-        wychowawcze</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 110/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>13:30</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>M.
-        Leszczy\u0144ski (spr.)<BR> E. Trykoszko<BR> D. Tryniszewska-Bytys</td>\t\n\t<td>odmowa
-        przyznania \u015Bwiadczenia wychowawczego</td>\n</tr>\n<tr><td>II SA/Bk 95/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>13:50</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6122 - Rozgraniczenia nieruchomo\u015Bci'>6122</td>\n\t\n\t<td>M.
-        Leszczy\u0144ski<BR> E. Trykoszko<BR> D. Tryniszewska-Bytys (spr.)</td>\t\n\t<td>ustalenie
-        koszt\xF3w post\u0119powania rozgraniczeniowego</td>\n</tr>\n<tr class='alt'><td>II
-        SAB/Bk 20/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        SAB/Bk 19/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='658 - skarga na niewykonanie w okre\u015Blonym terminie czynno\u015Bci
+        wynikaj\u0105cych z przepis\xF3w odr\u0119bnych / 6197 - S\u0142u\u017Cba
+        Celno-Skarbowa'>658/6197</td>\n\t\n\t<td>M. Roleder<BR> G. Gryglaszewska (spr.)<BR>
+        M. Leszczy\u0144ski</td>\t\n\t<td>nienadanie biegu odwo\u0142aniu od decyzji
+        o zwolnieniu ze s\u0142u\u017Cby</td>\n</tr>\n<tr class='alt'><td>II SAB/Bk
+        20/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
         title='658 - skarga na niewykonanie w okre\u015Blonym terminie czynno\u015Bci
         wynikaj\u0105cych z przepis\xF3w odr\u0119bnych / 6197 - S\u0142u\u017Cba
         Celno-Skarbowa'>658/6197</td>\n\t\n\t<td>M. Roleder<BR> G. Gryglaszewska (spr.)<BR>
         M. Leszczy\u0144ski</td>\t\n\t<td>brak z\u0142o\u017Cenia propozycji s\u0142u\u017Cby
-        w s\u0142u\u017Cbie celno-skarbowej</td>\n</tr>\n<tr><td>II SAB/Bk 19/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:00</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='658 - skarga na niewykonanie w okre\u015Blonym
-        terminie czynno\u015Bci wynikaj\u0105cych z przepis\xF3w odr\u0119bnych /
-        6197 - S\u0142u\u017Cba Celno-Skarbowa'>658/6197</td>\n\t\n\t<td>M. Roleder<BR>
-        G. Gryglaszewska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>nienadanie biegu
-        odwo\u0142aniu od decyzji o zwolnieniu ze s\u0142u\u017Cby</td>\n</tr>\n<tr
-        class='alt'><td>II SAB/Bk 18/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:20</td>\n\t<td>Sala
+        w s\u0142u\u017Cbie celno-skarbowej</td>\n</tr>\n<tr><td>II SAB/Bk 18/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:20</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='658 - skarga na niewykonanie w okre\u015Blonym
         terminie czynno\u015Bci wynikaj\u0105cych z przepis\xF3w odr\u0119bnych /
         6197 - S\u0142u\u017Cba Celno-Skarbowa'>658/6197</td>\n\t\n\t<td>M. Roleder
         (spr.)<BR> G. Gryglaszewska<BR> M. Leszczy\u0144ski</td>\t\n\t<td>brak z\u0142o\u017Cenia
-        propozycji s\u0142u\u017Cby w s\u0142u\u017Cbie celno-skarbowej</td>\n</tr>\n<tr><td>II
-        SA/Bk 857/17</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:30</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='6401 - Skargi organ\xF3w nadzorczych na uchwa\u0142y rady gminy w przedmiocie
-        ... (art. 93 ust. 1 ustawy o samorz\u0105dzie gminnym) / 6150 - Miejscowy
-        plan zagospodarowania przestrzennego'>6401/6150</td>\n\t\n\t<td>M. Roleder<BR>
-        G. Gryglaszewska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>miejscowy plan
-        zagospodarowania przestrzennego</td>\n</tr>\n<tr class='alt'><td>II SA/Bk
-        860/17</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:30</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='6401 - Skargi organ\xF3w nadzorczych na uchwa\u0142y rady gminy w przedmiocie
-        ... (art. 93 ust. 1 ustawy o samorz\u0105dzie gminnym) / 6150 - Miejscowy
-        plan zagospodarowania przestrzennego'>6401/6150</td>\n\t\n\t<td>M. Roleder<BR>
-        G. Gryglaszewska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>miejscowy plan
-        zagospodarowania przestrzennego</td>\n</tr>\n<tr><td>II SA/Bk 858/17</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:30</td>\n\t<td>Sala
+        propozycji s\u0142u\u017Cby w s\u0142u\u017Cbie celno-skarbowej</td>\n</tr>\n<tr
+        class='alt'><td>II SA/Bk 861/17</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:30</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6401 - Skargi organ\xF3w nadzorczych
+        na uchwa\u0142y rady gminy w przedmiocie ... (art. 93 ust. 1 ustawy o samorz\u0105dzie
+        gminnym) / 6150 - Miejscowy plan zagospodarowania przestrzennego'>6401/6150</td>\n\t\n\t<td>M.
+        Roleder<BR> G. Gryglaszewska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>miejscowy
+        plan zagospodarowania przestrzennego</td>\n</tr>\n<tr><td>II SA/Bk 857/17</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:30</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6401 - Skargi organ\xF3w nadzorczych
         na uchwa\u0142y rady gminy w przedmiocie ... (art. 93 ust. 1 ustawy o samorz\u0105dzie
         gminnym) / 6150 - Miejscowy plan zagospodarowania przestrzennego'>6401/6150</td>\n\t\n\t<td>M.
         Roleder<BR> G. Gryglaszewska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>miejscowy
         plan zagospodarowania przestrzennego</td>\n</tr>\n<tr class='alt'><td>II SA/Bk
-        861/17</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:30</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        858/17</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:30</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
         title='6401 - Skargi organ\xF3w nadzorczych na uchwa\u0142y rady gminy w przedmiocie
         ... (art. 93 ust. 1 ustawy o samorz\u0105dzie gminnym) / 6150 - Miejscowy
         plan zagospodarowania przestrzennego'>6401/6150</td>\n\t\n\t<td>M. Roleder<BR>
         G. Gryglaszewska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>miejscowy plan
-        zagospodarowania przestrzennego</td>\n</tr>\n<tr><td>II SA/Bk 859/17</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:30</td>\n\t<td>Sala
+        zagospodarowania przestrzennego</td>\n</tr>\n<tr><td>II SA/Bk 860/17</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:30</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6401 - Skargi organ\xF3w nadzorczych
         na uchwa\u0142y rady gminy w przedmiocie ... (art. 93 ust. 1 ustawy o samorz\u0105dzie
         gminnym) / 6150 - Miejscowy plan zagospodarowania przestrzennego'>6401/6150</td>\n\t\n\t<td>M.
         Roleder<BR> G. Gryglaszewska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>miejscowy
-        plan zagospodarowania przestrzennego</td>\n</tr>\n<tr class='alt'><td>II SAB/Bk
-        16/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>10:30</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='658 - skarga na niewykonanie w okre\u015Blonym terminie czynno\u015Bci
-        wynikaj\u0105cych z przepis\xF3w odr\u0119bnych / 6480 -  '>658/6480</td>\n\t\n\t<td>M.
-        Roleder<BR> G. Gryglaszewska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>informacja
-        publiczna</td>\n</tr>\n<tr><td>II SA/Bk 47/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>10:50</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6480 -  '>6480</td>\n\t\n\t<td>M. Roleder<BR>
-        G. Gryglaszewska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>informacja publiczna</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Bk 22/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>11:00</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>G.
-        Gryglaszewska (spr.)</td>\t\n\t<td>odmowa ustalenia warunk\xF3w zabudowy\r\nPublikacja
-        orzeczenia odroczona z dnia 12 kwietnia 2018 r.</td>\n</tr>\n<tr><td>II SA/Bk
+        plan zagospodarowania przestrzennego</td>\n</tr>\n<tr class='alt'><td>II SA/Bk
+        859/17</td>\n\t<td>2018-04-24</td>\t\n\t<td>09:30</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6401 - Skargi organ\xF3w nadzorczych na uchwa\u0142y rady gminy w przedmiocie
+        ... (art. 93 ust. 1 ustawy o samorz\u0105dzie gminnym) / 6150 - Miejscowy
+        plan zagospodarowania przestrzennego'>6401/6150</td>\n\t\n\t<td>M. Roleder<BR>
+        G. Gryglaszewska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>miejscowy plan
+        zagospodarowania przestrzennego</td>\n</tr>\n<tr><td>II SAB/Bk 16/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>10:30</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='658 - skarga na niewykonanie w okre\u015Blonym
+        terminie czynno\u015Bci wynikaj\u0105cych z przepis\xF3w odr\u0119bnych /
+        6480 -  '>658/6480</td>\n\t\n\t<td>M. Roleder<BR> G. Gryglaszewska (spr.)<BR>
+        M. Leszczy\u0144ski</td>\t\n\t<td>informacja publiczna</td>\n</tr>\n<tr class='alt'><td>II
+        SA/Bk 47/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>10:50</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6480 -  '>6480</td>\n\t\n\t<td>M. Roleder<BR> G. Gryglaszewska (spr.)<BR>
+        M. Leszczy\u0144ski</td>\t\n\t<td>informacja publiczna</td>\n</tr>\n<tr><td>II
+        SA/Bk 22/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>11:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>G. Gryglaszewska
+        (spr.)</td>\t\n\t<td>odmowa ustalenia warunk\xF3w zabudowy\r\nPublikacja orzeczenia
+        odroczona z dnia 12 kwietnia 2018 r.</td>\n</tr>\n<tr class='alt'><td>II SA/Bk
         879/17</td>\n\t<td>2018-04-24</td>\t\n\t<td>12:20</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
         title='6391 - Skargi na uchwa\u0142y rady gminy w przedmiocie ... (art. 100
         i 101a ustawy o samorz\u0105dzie gminnym) / 6099 - Inne o symbolu podstawowym
         609'>6391/6099</td>\n\t\n\t<td>M. Roleder<BR> E. Lema\u0144ska (spr.)<BR>
         M. Leszczy\u0144ski</td>\t\n\t<td>regulamin dostarczania wody i odprowadzania
-        \u015Bciek\xF3w</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 127/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>12:50</td>\n\t<td>Sala
+        \u015Bciek\xF3w</td>\n</tr>\n<tr><td>II SA/Bk 127/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>12:50</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie
         obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych
         ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>M. Roleder (spr.)<BR> E.
         Lema\u0144ska<BR> M. Leszczy\u0144ski</td>\t\n\t<td>zatwierdzenie projektu
-        budowlanego i udzielenie pozwolenia na budow\u0119</td>\n</tr>\n<tr><td>II
+        budowlanego i udzielenie pozwolenia na budow\u0119</td>\n</tr>\n<tr class='alt'><td>II
         SA/Bk 79/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>13:15</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
         title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>M. Roleder<BR>
         E. Lema\u0144ska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>\u015Bwiadczenie
-        wychowawcze</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 162/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>13:30</td>\n\t<td>Sala
+        wychowawcze</td>\n</tr>\n<tr><td>II SA/Bk 162/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>13:30</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>M.
         Roleder<BR> E. Lema\u0144ska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>odmowa
-        przywr\xF3cenia terminu do wniesienia odwo\u0142ania od orzeczenia o niepe\u0142nosprawno\u015Bci</td>\n</tr>\n<tr><td>II
-        SAB/Bk 1/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>13:45</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='658 - skarga na niewykonanie w okre\u015Blonym terminie czynno\u015Bci
-        wynikaj\u0105cych z przepis\xF3w odr\u0119bnych / 6189 - Inne o symbolu podstawowym
-        618'>658/6189</td>\n\t\n\t<td>M. Roleder (spr.)<BR> E. Lema\u0144ska<BR> M.
-        Leszczy\u0144ski</td>\t\n\t<td>bezczynno\u015B\u0107 i przewlek\u0142e prowadzenie
-        post\u0119powania w sprawie ustalenia odszkodowania za nieruchomo\u015B\u0107
-        przej\u0119t\u0105 pod drog\u0119</td>\n</tr>\n<tr class='alt'><td>II SAB/Bk
-        8/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>14:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        przywr\xF3cenia terminu do wniesienia odwo\u0142ania od orzeczenia o niepe\u0142nosprawno\u015Bci</td>\n</tr>\n<tr
+        class='alt'><td>II SAB/Bk 1/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>13:45</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='658 - skarga na niewykonanie w okre\u015Blonym
+        terminie czynno\u015Bci wynikaj\u0105cych z przepis\xF3w odr\u0119bnych /
+        6189 - Inne o symbolu podstawowym 618'>658/6189</td>\n\t\n\t<td>M. Roleder
+        (spr.)<BR> E. Lema\u0144ska<BR> M. Leszczy\u0144ski</td>\t\n\t<td>bezczynno\u015B\u0107
+        i przewlek\u0142e prowadzenie post\u0119powania w sprawie ustalenia odszkodowania
+        za nieruchomo\u015B\u0107 przej\u0119t\u0105 pod drog\u0119</td>\n</tr>\n<tr><td>II
+        SAB/Bk 8/18</td>\n\t<td>2018-04-24</td>\t\n\t<td>14:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
         title='658 - skarga na niewykonanie w okre\u015Blonym terminie czynno\u015Bci
         wynikaj\u0105cych z przepis\xF3w odr\u0119bnych / 6480 -  '>658/6480</td>\n\t\n\t<td>M.
         Roleder<BR> E. Lema\u0144ska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>bezczynno\u015B\u0107
-        w przedmiocie informacji publicznej</td>\n</tr>\n<tr><td>I SA/Bk 10/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>08:30</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6559 - Inne o symbolu podstawowym 655'>6559</td>\n\t\n\t<td>A.
-        Melezini (spr.)</td>\t\n\t<td>odmowa udzielenia wsparcia\r\nPublikacja orzeczenia
-        odroczona z dnia 11 kwietnia 2018 r.</td>\n</tr>\n<tr class='alt'><td>I SA/Bk
-        1839/17</td>\n\t<td>2018-04-25</td>\t\n\t<td>08:50</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6118 - Egzekucja \u015Bwiadcze\u0144 pieni\u0119\u017Cnych'>6118</td>\n\t\n\t<td>M.
-        Dziemianowicz (spr.)</td>\t\n\t<td>uznanie za nieuzasadnione zarzuty na prowadzone
-        post\u0119powanie egzekucyjne\r\nPublikacja orzeczenia odroczona z dnia 11
-        kwietnia 2018 r.</td>\n</tr>\n<tr><td>I SA/Bk 1261/17</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:00</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6117 - Ulgi p\u0142atnicze (umorzenie,
-        odroczenie, roz\u0142o\u017Cenie na raty itp.)'>6117</td>\n\t\n\t<td>D. Zalewski<BR>
-        P. Lewkowicz (spr.)<BR> J. Pruszy\u0144ski</td>\t\n\t<td>odmowa umorzenia
-        podatku dochodowego</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 1801/17</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:20</td>\n\t<td>Sala
+        w przedmiocie informacji publicznej</td>\n</tr>\n<tr class='alt'><td>I SA/Bk
+        10/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>08:30</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6559 - Inne o symbolu podstawowym 655'>6559</td>\n\t\n\t<td>A. Melezini
+        (spr.)</td>\t\n\t<td>odmowa udzielenia wsparcia\r\nPublikacja orzeczenia odroczona
+        z dnia 11 kwietnia 2018 r.</td>\n</tr>\n<tr><td>I SA/Bk 1839/17</td>\n\t<td>2018-04-25</td>\t\n\t<td>08:50</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6118 - Egzekucja \u015Bwiadcze\u0144
+        pieni\u0119\u017Cnych'>6118</td>\n\t\n\t<td>M. Dziemianowicz (spr.)</td>\t\n\t<td>uznanie
+        za nieuzasadnione zarzuty na prowadzone post\u0119powanie egzekucyjne\r\nPublikacja
+        orzeczenia odroczona z dnia 11 kwietnia 2018 r.</td>\n</tr>\n<tr class='alt'><td>I
+        SA/Bk 37/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>08:55</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6300 - Weryfikacja zg\u0142osze\u0144 celnych co do warto\u015Bci celnej
+        towaru, pochodzenia, klasyfikacji taryfowej. wymiar nale\u017Cno\u015Bci celnyc'>6300</td>\n\t\n\t<td>D.
+        Zalewski (spr.)</td>\t\n\t<td>odmowa sprostowania zg\u0142oszenia celnego\r\nPublikacja
+        orzeczenia odroczona z dnia 4 kwietnia 2018 r.</td>\n</tr>\n<tr><td>I SA/Bk
+        1261/17</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:00</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6117 - Ulgi p\u0142atnicze (umorzenie, odroczenie, roz\u0142o\u017Cenie
+        na raty itp.)'>6117</td>\n\t\n\t<td>D. Zalewski<BR> P. Lewkowicz (spr.)<BR>
+        J. Pruszy\u0144ski</td>\t\n\t<td>odmowa umorzenia podatku dochodowego</td>\n</tr>\n<tr
+        class='alt'><td>I SA/Bk 1801/17</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:20</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6110 - Podatek\_ od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>D.
         Zalewski<BR> P. Lewkowicz<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>podatek
-        od towar\xF3w i us\u0142ug</td>\n</tr>\n<tr><td>I SA/Bk 116/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:40</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D.
-        Zalewski<BR> P. Lewkowicz (spr.)<BR> J. Pruszy\u0144ski</td>\t\n\t<td>przyznanie
-        p\u0142atno\u015Bci w ramach system\xF3w wsparcia bezpo\u015Bredniego na rok
-        2016</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 117/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:40</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D.
-        Zalewski<BR> P. Lewkowicz (spr.)<BR> J. Pruszy\u0144ski</td>\t\n\t<td>przyznanie
-        p\u0142atno\u015Bci dla obszar\xF3w z ograniczeniami naturalnymi lub innymi
-        szczeg\xF3lnymi ograniczeniami na rok 2016</td>\n</tr>\n<tr><td>I SA/Bk 118/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:40</td>\n\t<td>Sala
+        od towar\xF3w i us\u0142ug</td>\n</tr>\n<tr><td>I SA/Bk 118/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:40</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D.
         Zalewski<BR> P. Lewkowicz (spr.)<BR> J. Pruszy\u0144ski</td>\t\n\t<td>przyznanie
         p\u0142atno\u015Bci rolno\u015Brodowiskowej na rok 2016</td>\n</tr>\n<tr class='alt'><td>I
+        SA/Bk 116/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:40</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D. Zalewski<BR>
+        P. Lewkowicz (spr.)<BR> J. Pruszy\u0144ski</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
+        w ramach system\xF3w wsparcia bezpo\u015Bredniego na rok 2016</td>\n</tr>\n<tr><td>I
+        SA/Bk 117/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:40</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D. Zalewski<BR>
+        P. Lewkowicz (spr.)<BR> J. Pruszy\u0144ski</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
+        dla obszar\xF3w z ograniczeniami naturalnymi lub innymi szczeg\xF3lnymi ograniczeniami
+        na rok 2016</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 139/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:10</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D.
+        Zalewski<BR> P. Lewkowicz<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>przyznanie
+        p\u0142atno\u015Bci rolno\u015Brodowiskowej na rok 2016</td>\n</tr>\n<tr><td>I
         SA/Bk 137/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:10</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
         title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D. Zalewski<BR>
         P. Lewkowicz<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
-        w ramach system\xF3w wsparcia bezpo\u015Bredniego na ok 2016</td>\n</tr>\n<tr><td>I
-        SA/Bk 139/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:10</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D. Zalewski<BR>
-        P. Lewkowicz<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
-        rolno\u015Brodowiskowej na rok 2016</td>\n</tr>\n<tr class='alt'><td>I SA/Bk
-        138/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:10</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D. Zalewski<BR>
-        P. Lewkowicz<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
-        dla obszar\xF3w z ograniczeniami naturalnymi lub innymi szczeg\xF3lnymi ograniczeniami
-        na rok 2016</td>\n</tr>\n<tr><td>I SA/Bk 97/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:40</td>\n\t<td>Sala
+        w ramach system\xF3w wsparcia bezpo\u015Bredniego na ok 2016</td>\n</tr>\n<tr
+        class='alt'><td>I SA/Bk 138/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:10</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D.
-        Zalewski (spr.)<BR> M. Dziemianowicz<BR> A. Melezini</td>\t\n\t<td>odmowa
-        przyznania p\u0142atno\u015Bci dla obszar\xF3w z ograniczeniami naturalnymi
-        lub innymi szczeg\xF3lnymi ograniczeniami (ONW) na rok 2016</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Bk 96/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:40</td>\n\t<td>Sala
+        Zalewski<BR> P. Lewkowicz<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>przyznanie
+        p\u0142atno\u015Bci dla obszar\xF3w z ograniczeniami naturalnymi lub innymi
+        szczeg\xF3lnymi ograniczeniami na rok 2016</td>\n</tr>\n<tr><td>I SA/Bk 96/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:40</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D.
         Zalewski (spr.)<BR> M. Dziemianowicz<BR> A. Melezini</td>\t\n\t<td>odmowa
         przyznania p\u0142atno\u015Bci w ramach system\xF3w wsparcia bezpo\u015Bredniego
-        na rok 2016</td>\n</tr>\n<tr><td>I SA/Bk 95/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:40</td>\n\t<td>Sala
+        na rok 2016</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 95/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:40</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D.
         Zalewski (spr.)<BR> M. Dziemianowicz<BR> A. Melezini</td>\t\n\t<td>odmowa
-        przyznania p\u0142atno\u015Bci rolno\u015Brodowiskowej na rok 2016</td>\n</tr>\n<tr
+        przyznania p\u0142atno\u015Bci rolno\u015Brodowiskowej na rok 2016</td>\n</tr>\n<tr><td>I
+        SA/Bk 97/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:40</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D. Zalewski
+        (spr.)<BR> M. Dziemianowicz<BR> A. Melezini</td>\t\n\t<td>odmowa przyznania
+        p\u0142atno\u015Bci dla obszar\xF3w z ograniczeniami naturalnymi lub innymi
+        szczeg\xF3lnymi ograniczeniami (ONW) na rok 2016</td>\n</tr>\n<tr class='alt'><td>I
+        SA/Bk 115/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>11:10</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D. Zalewski<BR>
+        M. Dziemianowicz (spr.)<BR> A. Melezini</td>\t\n\t<td>odmowa przyznania p\u0142atno\u015Bci
+        rolno\u015Brodowiskowej (PROW 2007-2013) na rok 2016</td>\n</tr>\n<tr><td>I
+        SA/Bk 114/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>11:10</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D. Zalewski<BR>
+        M. Dziemianowicz (spr.)<BR> A. Melezini</td>\t\n\t<td>odmowa przyznania p\u0142atno\u015Bci
+        w ramach system\xF3w wsparcia bezpo\u015Bredniego na rok 2016</td>\n</tr>\n<tr
         class='alt'><td>I SA/Bk 113/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>11:10</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D.
         Zalewski<BR> M. Dziemianowicz (spr.)<BR> A. Melezini</td>\t\n\t<td>odmowa
         przyznania p\u0142atno\u015Bci dla obszar\xF3w z ograniczeniami naturalnymi
         lub innymi szczeg\xF3lnymi ograniczeniami (ONW) na rok 2016</td>\n</tr>\n<tr><td>I
-        SA/Bk 115/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>11:10</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D. Zalewski<BR>
-        M. Dziemianowicz (spr.)<BR> A. Melezini</td>\t\n\t<td>odmowa przyznania p\u0142atno\u015Bci
-        rolno\u015Brodowiskowej (PROW 2007-2013) na rok 2016</td>\n</tr>\n<tr class='alt'><td>I
-        SA/Bk 114/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>11:10</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D. Zalewski<BR>
-        M. Dziemianowicz (spr.)<BR> A. Melezini</td>\t\n\t<td>odmowa przyznania p\u0142atno\u015Bci
-        w ramach system\xF3w wsparcia bezpo\u015Bredniego na rok 2016</td>\n</tr>\n<tr><td>I
-        SA/Bk 136/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>11:40</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        SA/Bk 135/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>11:40</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
         title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D. Zalewski<BR>
         M. Dziemianowicz<BR> A. Melezini (spr.)</td>\t\n\t<td>odmowa przyznania p\u0142atno\u015Bci
-        rolno\u015Brodowiskowej (PROW 2007-2013) na 2016 rok</td>\n</tr>\n<tr class='alt'><td>I
-        SA/Bk 134/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>11:40</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D. Zalewski<BR>
-        M. Dziemianowicz<BR> A. Melezini (spr.)</td>\t\n\t<td>odmowa przyznania p\u0142atno\u015Bci
-        dla obszar\xF3w z ograniczeniami naturalnymi lub innymi szczeg\xF3lnymi ograniczeniami
-        na 2016 rok</td>\n</tr>\n<tr><td>I SA/Bk 135/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>11:40</td>\n\t<td>Sala
+        w ramach system\xF3w wsparcia bezpo\u015Bredniego na 2016 rok</td>\n</tr>\n<tr
+        class='alt'><td>I SA/Bk 136/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>11:40</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D.
         Zalewski<BR> M. Dziemianowicz<BR> A. Melezini (spr.)</td>\t\n\t<td>odmowa
-        przyznania p\u0142atno\u015Bci w ramach system\xF3w wsparcia bezpo\u015Bredniego
-        na 2016 rok</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 63/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>12:10</td>\n\t<td>Sala
+        przyznania p\u0142atno\u015Bci rolno\u015Brodowiskowej (PROW 2007-2013) na
+        2016 rok</td>\n</tr>\n<tr><td>I SA/Bk 134/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>11:40</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D.
-        Zalewski<BR> M. Dziemianowicz<BR> A. Melezini (spr.)</td>\t\n\t<td>ustalenie
-        kwoty nienale\u017Cnie pobranych p\u0142atno\u015Bci z tytu\u0142u realizacji
-        Programu Rolno\u015Brodowiskowego na 2015 rok</td>\n</tr>\n<tr><td>II SA/Bk
-        102/18</td>\n\t<td>2018-04-26</td>\t\n\t<td>12:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        Zalewski<BR> M. Dziemianowicz<BR> A. Melezini (spr.)</td>\t\n\t<td>odmowa
+        przyznania p\u0142atno\u015Bci dla obszar\xF3w z ograniczeniami naturalnymi
+        lub innymi szczeg\xF3lnymi ograniczeniami na 2016 rok</td>\n</tr>\n<tr class='alt'><td>I
+        SA/Bk 63/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>12:10</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>D. Zalewski<BR>
+        M. Dziemianowicz<BR> A. Melezini (spr.)</td>\t\n\t<td>ustalenie kwoty nienale\u017Cnie
+        pobranych p\u0142atno\u015Bci z tytu\u0142u realizacji Programu Rolno\u015Brodowiskowego
+        na 2015 rok</td>\n</tr>\n<tr><td>II SA/Bk 110/18</td>\n\t<td>2018-04-26</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>M.
+        Leszczy\u0144ski (spr.)</td>\t\n\t<td>odmowa przyznania \u015Bwiadczenia wychowawczego\r\nPublikacja
+        orzeczenia odroczona z dnia 19 kwietnia 2018 r.</td>\n</tr>\n<tr class='alt'><td>I
+        SA/Bk 168/18</td>\n\t<td>2018-04-26</td>\t\n\t<td>09:00</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>A. Melezini
+        (spr.)</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci rolno\u015Brodowiskowej
+        na rok 2015\r\nPublikacja orzeczenia odroczona z dnia 18 kwietnia 2018 r.</td>\n</tr>\n<tr><td>II
+        SA/Bk 102/18</td>\n\t<td>2018-04-26</td>\t\n\t<td>12:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
         title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>M. Roleder
         (spr.)</td>\t\n\t<td>\u015Bwiadczenie piel\u0119gnacyjne\r\nPublikacja orzeczenia
-        odroczona z dnia 12 kwietnia 2018 r.</td>\n</tr>\n<tr class='alt'><td>I SA/Bk
-        170/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>09:00</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6559 - Inne o symbolu podstawowym 655'>6559</td>\n\t\n\t<td>P. Lewkowicz<BR>
-        A. Melezini<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>orzeczenie o solidarnej
-        odpowiedzialno\u015Bci jako nabywcy przedsi\u0119biorstwa za zaleg\u0142o\u015Bci
-        Bora-Resting Karpowicz i Wsp\xF3lnicy sp. j. w Bia\u0142ymstoku z tytu\u0142u
-        dofinansowania podlegaj\u0105cego zwrotowi, wyp\u0142aconego w zwi\u0105zku
-        z realizacj\u0105 projektu pn. \"Budowa pens</td>\n</tr>\n<tr><td>I SA/Bk
-        166/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>09:20</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        odroczona z dnia 12 kwietnia 2018 r.</td>\n</tr>\n<tr class='alt'><td>II SA/Bk
+        31/18</td>\n\t<td>2018-04-26</td>\t\n\t<td>12:10</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6019 - Inne, o symbolu podstawowym 601'>6019</td>\n\t\n\t<td>G. Gryglaszewska
+        (spr.)</td>\t\n\t<td>ustalenie op\u0142aty legalizacyjnej\r\nPublikacja orzeczenia
+        odroczona z dnia 17 kwietnia 2018 r.</td>\n</tr>\n<tr><td>I SA/Bk 67/18</td>\n\t<td>2018-04-27</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6110 - Podatek\_ od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>M.
+        Dziemianowicz (spr.)</td>\t\n\t<td>podatek od towar\xF3w i us\u0142ug za miesi\u0105c
+        luty 2014 roku\r\nPublikacja orzeczenia odroczona z dnia 18 kwietnia 2018
+        r.</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 170/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6559 - Inne o symbolu podstawowym 655'>6559</td>\n\t\n\t<td>P.
+        Lewkowicz<BR> A. Melezini<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>orzeczenie
+        o solidarnej odpowiedzialno\u015Bci jako nabywcy przedsi\u0119biorstwa za
+        zaleg\u0142o\u015Bci Bora-Resting Karpowicz i Wsp\xF3lnicy sp. j. w Bia\u0142ymstoku
+        z tytu\u0142u dofinansowania podlegaj\u0105cego zwrotowi, wyp\u0142aconego
+        w zwi\u0105zku z realizacj\u0105 projektu pn. \"Budowa pens</td>\n</tr>\n<tr><td>I
+        SA/Bk 166/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>09:20</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
         title='6539 - Inne o symbolu podstawowym 653'>6539</td>\n\t\n\t<td>P. Lewkowicz<BR>
         A. Melezini<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>nakazanie zwrotu nienale\u017Cnie
         pobranych \u015Brodk\xF3w Pa\u0144stwowego Funduszu Rehabilitaji Os\xF3b Niepe\u0142noprawnych
@@ -539,27 +339,28 @@ interactions:
         Lewkowicz<BR> M. Dziemianowicz (spr.)<BR> D. Zalewski</td>\t\n\t<td>uchylenie
         decyzji cofaj\u0105cej z urz\u0119du zezwolenie na nabywanie wyrob\xF3w akcyzowych
         jako zarejestrowany odbiorca i przekazanie sprawy do ponownego rozpatrzenia</td>\n</tr>\n<tr><td>I
+        SA/Bk 49/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>12:40</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6113 - Podatek dochodowy od os\xF3b prawnych'>6113</td>\n\t\n\t<td>P.
+        Lewkowicz<BR> M. Dziemianowicz (spr.)<BR> D. Zalewski</td>\t\n\t<td>podatek
+        dochodowy od os\xF3b prawnych za 2015 rok</td>\n</tr>\n<tr class='alt'><td>I
         SA/Bk 48/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>12:40</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
         title='6110 - Podatek\_ od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>P.
         Lewkowicz<BR> M. Dziemianowicz (spr.)<BR> D. Zalewski</td>\t\n\t<td>podatek
         od towar\xF3w i us\u0142ug za miesi\u0105ce od pa\u017Adziernika do grudnia
-        2015 r.</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 49/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>12:40</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6113 - Podatek dochodowy od os\xF3b prawnych'>6113</td>\n\t\n\t<td>P.
-        Lewkowicz<BR> M. Dziemianowicz (spr.)<BR> D. Zalewski</td>\t\n\t<td>podatek
-        dochodowy od os\xF3b prawnych za 2015 rok</td>\n</tr>\n<tr><td>I SA/Bk 187/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>13:10</td>\n\t<td>Sala
+        2015 r.</td>\n</tr>\n<tr><td>I SA/Bk 187/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>13:10</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>P.
         Lewkowicz (spr.)<BR> M. Dziemianowicz<BR> D. Zalewski</td>\t\n\t<td>ustalenie
         kwoty nienale\u017Cnie pobranych p\u0142atno\u015Bci z tytu\u0142u realizacji
         Programu Rolno\u015Brodowiskowego</td>\n</tr>\n<tr class='alt'><td>I SA/Bk
+        112/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>13:30</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>P. Lewkowicz<BR>
+        M. Dziemianowicz<BR> D. Zalewski (spr.)</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
+        rolno-\u015Brodowiskowo-klimatycznej na rok 2016</td>\n</tr>\n<tr><td>I SA/Bk
         111/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>13:30</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
         title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>P. Lewkowicz<BR>
         M. Dziemianowicz<BR> D. Zalewski (spr.)</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
         dla obszar\xF3w z ograniczeniami naturalnymi lub innymi szczeg\xF3lnymi ograniczeniami
-        na rok 2016</td>\n</tr>\n<tr><td>I SA/Bk 112/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>13:30</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>P.
-        Lewkowicz<BR> M. Dziemianowicz<BR> D. Zalewski (spr.)</td>\t\n\t<td>przyznanie
-        p\u0142atno\u015Bci rolno-\u015Brodowiskowo-klimatycznej na rok 2016</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Bk 110/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>13:30</td>\n\t<td>Sala
+        na rok 2016</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 110/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>13:30</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>P.
         Lewkowicz<BR> M. Dziemianowicz<BR> D. Zalewski (spr.)</td>\t\n\t<td>przyznanie
         p\u0142atno\u015Bci w ramach system\xF3w wsparcia bezpo\u015Bredniego na rok
@@ -662,91 +463,92 @@ interactions:
         wszcz\u0119cia z urz\u0119du post\u0119powania w sprawie stwierdzenia niewa\u017Cno\u015Bci
         decyzji, kt\xF3r\u0105 stwierdzono niewa\u017Cno\u015B\u0107 decyzji w przedmiocie
         skierowania ca\u0142kowicie ubezw\u0142asnowolnionego do domu pomocy spo\u0142ecznej</td>\n</tr>\n<tr><td>II
-        SA/Bk 21/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>10:05</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='6072 - Scalenie oraz podzia\u0142 nieruchomo\u015Bci'>6072</td>\n\t\n\t<td>G.
-        Gryglaszewska<BR> E. Lema\u0144ska<BR> M. Roleder (spr.)</td>\t\n\t<td>umorzenie
-        post\u0119powania w sprawie podzia\u0142u nieruchomo\u015Bci</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Bk 941/17</td>\n\t<td>2018-05-15</td>\t\n\t<td>10:20</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6393 - Skargi na uchwa\u0142y sejmiku
-        wojew\xF3dztwa, zawieraj\u0105cej przepisy prawa miejscowego w przedmiocie
-        ... (art. 90 i 91 ustawy o / 6166 - \_\u0141owiectwo'>6393/6166</td>\n\t\n\t<td>G.
-        Gryglaszewska (spr.)<BR> E. Lema\u0144ska<BR> M. Roleder</td>\t\n\t<td>dokonanie
-        podzia\u0142u Wojew\xF3dztwa Podlaskiego na obwody \u0142owieckie</td>\n</tr>\n<tr><td>II
-        SA/Bk 89/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>12:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        SA/Bk 941/17</td>\n\t<td>2018-05-15</td>\t\n\t<td>10:20</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6393 - Skargi na uchwa\u0142y sejmiku wojew\xF3dztwa, zawieraj\u0105cej
+        przepisy prawa miejscowego w przedmiocie ... (art. 90 i 91 ustawy o / 6166
+        - \_\u0141owiectwo'>6393/6166</td>\n\t\n\t<td>G. Gryglaszewska (spr.)<BR>
+        E. Lema\u0144ska<BR> M. Roleder</td>\t\n\t<td>dokonanie podzia\u0142u Wojew\xF3dztwa
+        Podlaskiego na obwody \u0142owieckie</td>\n</tr>\n<tr class='alt'><td>II SA/Bk
+        89/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>12:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
         title='6320 - Zasi\u0142ki celowe i okresowe'>6320</td>\n\t\n\t<td>G. Gryglaszewska<BR>
         E. Lema\u0144ska (spr.)<BR> M. Roleder</td>\t\n\t<td>odmowa przyznania zasi\u0142ku
-        celowego na dofinansowanie zakupu w\u0119gla lub wydanie opa\u0142u w naturze</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Bk 105/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>12:20</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6200 - Choroby zawodowe'>6200</td>\n\t\n\t<td>G.
-        Gryglaszewska (spr.)<BR> E. Lema\u0144ska<BR> M. Roleder</td>\t\n\t<td>stwierdzenie
-        choroby zawodowej</td>\n</tr>\n<tr><td>II SA/Bk 126/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>12:40</td>\n\t<td>Sala
+        celowego na dofinansowanie zakupu w\u0119gla lub wydanie opa\u0142u w naturze</td>\n</tr>\n<tr><td>II
+        SA/Bk 105/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>12:20</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6200 - Choroby zawodowe'>6200</td>\n\t\n\t<td>G. Gryglaszewska (spr.)<BR>
+        E. Lema\u0144ska<BR> M. Roleder</td>\t\n\t<td>stwierdzenie choroby zawodowej</td>\n</tr>\n<tr
+        class='alt'><td>II SA/Bk 126/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>12:40</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6050 - Obowi\u0105zek meldunkowy'>6050</td>\n\t\n\t<td>G.
         Gryglaszewska<BR> E. Lema\u0144ska (spr.)<BR> M. Roleder</td>\t\n\t<td>wymeldowanie
-        z pobytu sta\u0142ego</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 118/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>13:00</td>\n\t<td>Sala
+        z pobytu sta\u0142ego</td>\n</tr>\n<tr><td>II SA/Bk 118/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>13:00</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6031 - Uprawnienia do kierowania pojazdami'>6031</td>\n\t\n\t<td>G.
         Gryglaszewska<BR> E. Lema\u0144ska<BR> M. Roleder (spr.)</td>\t\n\t<td>odmowa
-        zwrotu prawa jazdy</td>\n</tr>\n<tr><td>II SA/Bk 120/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>13:20</td>\n\t<td>Sala
+        zwrotu prawa jazdy</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 120/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>13:20</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6129 - Inne o symbolu podstawowym 612'>6129</td>\n\t\n\t<td>G.
         Gryglaszewska (spr.)<BR> E. Lema\u0144ska<BR> M. Roleder</td>\t\n\t<td>odmowa
-        wydania za\u015Bwiadczenia</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 24/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>13:40</td>\n\t<td>Sala
+        wydania za\u015Bwiadczenia</td>\n</tr>\n<tr><td>II SA/Bk 24/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>13:40</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6192 - Funkcjonariusze Policji'>6192</td>\n\t\n\t<td>G.
         Gryglaszewska<BR> E. Lema\u0144ska<BR> M. Roleder (spr.)</td>\t\n\t<td>uznania
-        winnym przewinienia i wymierzenie kary dyscyplinarnej nagany</td>\n</tr>\n<tr><td>II
-        SAB/Bk 23/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>14:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='658 - skarga na niewykonanie w okre\u015Blonym terminie czynno\u015Bci
-        wynikaj\u0105cych z przepis\xF3w odr\u0119bnych / 6120 - Ewidencja grunt\xF3w
-        i budynk\xF3w'>658/6120</td>\n\t\n\t<td>G. Gryglaszewska<BR> E. Lema\u0144ska
-        (spr.)<BR> M. Roleder</td>\t\n\t<td>bezczynno\u015B\u0107 i przewlek\u0142e
-        prowadzenie post\u0119powania w sprawie wprowadzenia zmian w ewidencji grunt\xF3w</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Bk 188/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        winnym przewinienia i wymierzenie kary dyscyplinarnej nagany</td>\n</tr>\n<tr
+        class='alt'><td>II SAB/Bk 23/18</td>\n\t<td>2018-05-15</td>\t\n\t<td>14:00</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='658 - skarga na niewykonanie w okre\u015Blonym
+        terminie czynno\u015Bci wynikaj\u0105cych z przepis\xF3w odr\u0119bnych /
+        6120 - Ewidencja grunt\xF3w i budynk\xF3w'>658/6120</td>\n\t\n\t<td>G. Gryglaszewska<BR>
+        E. Lema\u0144ska (spr.)<BR> M. Roleder</td>\t\n\t<td>bezczynno\u015B\u0107
+        i przewlek\u0142e prowadzenie post\u0119powania w sprawie wprowadzenia zmian
+        w ewidencji grunt\xF3w</td>\n</tr>\n<tr><td>I SA/Bk 188/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:00</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6116 - Podatek od czynno\u015Bci cywilnoprawnych,
         op\u0142ata skarbowa oraz inne podatki i op\u0142aty'>6116</td>\n\t\n\t<td>W.
         Stachurski<BR> A. Melezini<BR> D. Zalewski (spr.)</td>\t\n\t<td>ustalenie,
         po wznowieniu post\u0119powania administracyjnego, \u0142\u0105cznego zobowi\u0105zania
-        pieni\u0119\u017Cnego za 2007 r.</td>\n</tr>\n<tr><td>I SA/Bk 183/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        pieni\u0119\u017Cnego za 2007 r.</td>\n</tr>\n<tr class='alt'><td>I SA/Bk
+        194/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:00</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6116 - Podatek od czynno\u015Bci cywilnoprawnych, op\u0142ata skarbowa
+        oraz inne podatki i op\u0142aty'>6116</td>\n\t\n\t<td>W. Stachurski<BR> A.
+        Melezini<BR> D. Zalewski (spr.)</td>\t\n\t<td>ustalenie, po wznowieniu post\u0119powania
+        administracyjnego, \u0142\u0105cznego zobowi\u0105zania pieni\u0119\u017Cnego
+        na rok 2010</td>\n</tr>\n<tr><td>I SA/Bk 181/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6116 - Podatek od czynno\u015Bci cywilnoprawnych,
+        op\u0142ata skarbowa oraz inne podatki i op\u0142aty'>6116</td>\n\t\n\t<td>W.
+        Stachurski<BR> A. Melezini (spr.)<BR> D. Zalewski</td>\t\n\t<td>ustalenie,
+        po wznowieniu post\u0119powania administracyjnego, wysoko\u015Bci \u0142\u0105cznego
+        zobowi\u0105zania pieni\u0119\u017Cnego za 2009 r.</td>\n</tr>\n<tr class='alt'><td>I
+        SA/Bk 182/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:00</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6116 - Podatek od czynno\u015Bci cywilnoprawnych, op\u0142ata skarbowa
+        oraz inne podatki i op\u0142aty'>6116</td>\n\t\n\t<td>W. Stachurski<BR> A.
+        Melezini<BR> D. Zalewski (spr.)</td>\t\n\t<td>ustalenie, po wznowieniu post\u0119powania
+        administracyjnego, wysoko\u015Bci \u0142\u0105cznego zobowi\u0105zania pieni\u0119\u017Cnego
+        za 2011 r.</td>\n</tr>\n<tr><td>I SA/Bk 183/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:00</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6116 - Podatek od czynno\u015Bci cywilnoprawnych,
         op\u0142ata skarbowa oraz inne podatki i op\u0142aty'>6116</td>\n\t\n\t<td>W.
         Stachurski<BR> A. Melezini (spr.)<BR> D. Zalewski</td>\t\n\t<td>ustalenie,
         po wznowieniu post\u0119powania administracyjnego, wysoko\u015Bci \u0142\u0105cznego
         zobowi\u0105zania pieni\u0119\u017Cnego za 2008 r.</td>\n</tr>\n<tr class='alt'><td>I
-        SA/Bk 181/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:00</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        SA/Bk 195/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>10:00</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
         title='6116 - Podatek od czynno\u015Bci cywilnoprawnych, op\u0142ata skarbowa
-        oraz inne podatki i op\u0142aty'>6116</td>\n\t\n\t<td>W. Stachurski<BR> A.
-        Melezini (spr.)<BR> D. Zalewski</td>\t\n\t<td>ustalenie, po wznowieniu post\u0119powania
-        administracyjnego, wysoko\u015Bci \u0142\u0105cznego zobowi\u0105zania pieni\u0119\u017Cnego
-        za 2009 r.</td>\n</tr>\n<tr><td>I SA/Bk 182/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:00</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6116 - Podatek od czynno\u015Bci cywilnoprawnych,
-        op\u0142ata skarbowa oraz inne podatki i op\u0142aty'>6116</td>\n\t\n\t<td>W.
-        Stachurski<BR> A. Melezini<BR> D. Zalewski (spr.)</td>\t\n\t<td>ustalenie,
-        po wznowieniu post\u0119powania administracyjnego, wysoko\u015Bci \u0142\u0105cznego
-        zobowi\u0105zania pieni\u0119\u017Cnego za 2011 r.</td>\n</tr>\n<tr class='alt'><td>I
-        SA/Bk 194/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:00</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6116 - Podatek od czynno\u015Bci cywilnoprawnych, op\u0142ata skarbowa
-        oraz inne podatki i op\u0142aty'>6116</td>\n\t\n\t<td>W. Stachurski<BR> A.
-        Melezini<BR> D. Zalewski (spr.)</td>\t\n\t<td>ustalenie, po wznowieniu post\u0119powania
-        administracyjnego, \u0142\u0105cznego zobowi\u0105zania pieni\u0119\u017Cnego
-        na rok 2010</td>\n</tr>\n<tr><td>I SA/Bk 195/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>10:00</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6116 - Podatek od czynno\u015Bci cywilnoprawnych,
-        op\u0142ata skarbowa oraz inne podatki i op\u0142aty'>6116</td>\n\t\n\t<td>W.
-        Stachurski<BR> J. Pruszy\u0144ski (spr.)<BR> D. Zalewski</td>\t\n\t<td>\u0142\u0105czne
-        zobowi\u0105zanie pieni\u0119\u017Cne na rok 2014</td>\n</tr>\n<tr class='alt'><td>I
-        SA/Bk 212/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>10:15</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6560 - Interpretacje indywidualne wydawane przez ministra w\u0142a\u015Bciwego
-        do spraw finans\xF3w publicznych / 6113 - Podatek dochodowy od os\xF3b prawnych'>6560/6113</td>\n\t\n\t<td>W.
-        Stachurski<BR> J. Pruszy\u0144ski (spr.)<BR> D. Zalewski</td>\t\n\t<td>podatek
-        dochodowy od os\xF3b prawnych</td>\n</tr>\n<tr><td>I SA/Bk 193/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>10:30</td>\n\t<td>Sala
+        oraz inne podatki i op\u0142aty'>6116</td>\n\t\n\t<td>W. Stachurski<BR> J.
+        Pruszy\u0144ski (spr.)<BR> D. Zalewski</td>\t\n\t<td>\u0142\u0105czne zobowi\u0105zanie
+        pieni\u0119\u017Cne na rok 2014</td>\n</tr>\n<tr><td>I SA/Bk 212/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>10:15</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6560 - Interpretacje indywidualne wydawane
+        przez ministra w\u0142a\u015Bciwego do spraw finans\xF3w publicznych / 6113
+        - Podatek dochodowy od os\xF3b prawnych'>6560/6113</td>\n\t\n\t<td>W. Stachurski<BR>
+        J. Pruszy\u0144ski (spr.)<BR> D. Zalewski</td>\t\n\t<td>podatek dochodowy
+        od os\xF3b prawnych</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 193/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>10:30</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6110 - Podatek\_ od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>J.
         Pruszy\u0144ski<BR> A. Melezini (spr.)<BR> D. Zalewski</td>\t\n\t<td>podatek
-        od towar\xF3w i us\u0142ug za miesi\u0105c czerwiec 2016 r.</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Bk 47/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>10:50</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6042 - Gry losowe i zak\u0142ady wzajemne'>6042</td>\n\t\n\t<td>J.
+        od towar\xF3w i us\u0142ug za miesi\u0105c czerwiec 2016 r.</td>\n</tr>\n<tr><td>I
+        SA/Bk 47/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>10:50</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6042 - Gry losowe i zak\u0142ady wzajemne'>6042</td>\n\t\n\t<td>J.
         Pruszy\u0144ski<BR> A. Melezini<BR> D. Zalewski (spr.)</td>\t\n\t<td>wymierzenie
         kary pieni\u0119\u017Cnej z tytu\u0142u urz\u0105dzania gier na automacie
-        poza kasynem gry</td>\n</tr>\n<tr><td>I SA/Bk 5/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:00</td>\n\t<td>Sala
+        poza kasynem gry</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 5/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:00</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6042 - Gry losowe i zak\u0142ady wzajemne'>6042</td>\n\t\n\t<td>J.
         Pruszy\u0144ski<BR> A. Melezini (spr.)<BR> D. Zalewski</td>\t\n\t<td>wymierzenie
         kary pieni\u0119\u017Cnej z tytu\u0142u urz\u0105dzania gier na automacie
-        poza kasynem gry</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 39/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:10</td>\n\t<td>Sala
+        poza kasynem gry</td>\n</tr>\n<tr><td>I SA/Bk 39/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:10</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6042 - Gry losowe i zak\u0142ady wzajemne'>6042</td>\n\t\n\t<td>J.
+        Pruszy\u0144ski (spr.)<BR> A. Melezini<BR> D. Zalewski</td>\t\n\t<td>wymierzenie
+        kary pieni\u0119\u017Cnej z tytu\u0142u urz\u0105dzania gier na automacie
+        poza kasynem gry</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 150/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:10</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6042 - Gry losowe i zak\u0142ady wzajemne'>6042</td>\n\t\n\t<td>J.
         Pruszy\u0144ski (spr.)<BR> A. Melezini<BR> D. Zalewski</td>\t\n\t<td>wymierzenie
         kary pieni\u0119\u017Cnej z tytu\u0142u urz\u0105dzania gier na automacie
@@ -754,157 +556,215 @@ interactions:
         2</td>\n\t<td>I</td>\t\n\t<td title='6042 - Gry losowe i zak\u0142ady wzajemne'>6042</td>\n\t\n\t<td>J.
         Pruszy\u0144ski (spr.)<BR> A. Melezini<BR> D. Zalewski</td>\t\n\t<td>wymierzenie
         kary pieni\u0119\u017Cnej z tytu\u0142u urz\u0105dzania gier na automacie
-        poza kasynem gry</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 144/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:30</td>\n\t<td>Sala
+        poza kasynem gry</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 219/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:20</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6042 - Gry losowe i zak\u0142ady wzajemne'>6042</td>\n\t\n\t<td>J.
+        Pruszy\u0144ski (spr.)<BR> A. Melezini<BR> D. Zalewski</td>\t\n\t<td>wymierzenie
+        kary pieni\u0119\u017Cnej z tytu\u0142u urz\u0105dzania gier na automacie
+        poza kasynem gry</td>\n</tr>\n<tr><td>I SA/Bk 144/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:30</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6117 - Ulgi p\u0142atnicze (umorzenie,
         odroczenie, roz\u0142o\u017Cenie na raty itp.)'>6117</td>\n\t\n\t<td>J. Pruszy\u0144ski<BR>
         M. Dziemianowicz (spr.)<BR> P. Lewkowicz</td>\t\n\t<td>odmowa umorzenia  zaleg\u0142o\u015Bci
-        podatkowej za lata 2013 - 2016 i odmowa roz\u0142o\u017Cenia na raty tej zaleg\u0142o\u015Bci</td>\n</tr>\n<tr><td>I
-        SA/Bk 164/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:50</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        podatkowej za lata 2013 - 2016 i odmowa roz\u0142o\u017Cenia na raty tej zaleg\u0142o\u015Bci</td>\n</tr>\n<tr
+        class='alt'><td>I SA/Bk 165/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:50</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>J.
+        Pruszy\u0144ski<BR> M. Dziemianowicz<BR> P. Lewkowicz (spr.)</td>\t\n\t<td>odmowa
+        stwierdzenia nadp\u0142aty w podatku od nieruchomo\u015Bci za 2011 r. oraz
+        okre\u015Blenie zobowi\u0105zania w tym podatku</td>\n</tr>\n<tr><td>I SA/Bk
+        160/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:50</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
         title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>J. Pruszy\u0144ski<BR>
-        M. Dziemianowicz<BR> P. Lewkowicz (spr.)</td>\t\n\t<td>stwierdzenie nadp\u0142aty
-        w podatku od nieruchomo\u015Bci za 2012 r. oraz okre\u015Blenie zobowi\u0105zania
-        w tym podatku</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 163/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:50</td>\n\t<td>Sala
+        M. Dziemianowicz<BR> P. Lewkowicz (spr.)</td>\t\n\t<td>odmowa stwierdzenia
+        nadp\u0142aty w podatku od nieruchomo\u015Bci za 2016 r. oraz okre\u015Blenie
+        zobowi\u0105zania w tym podatku</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 164/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:50</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>J.
+        Pruszy\u0144ski<BR> M. Dziemianowicz<BR> P. Lewkowicz (spr.)</td>\t\n\t<td>stwierdzenie
+        nadp\u0142aty w podatku od nieruchomo\u015Bci za 2012 r. oraz okre\u015Blenie
+        zobowi\u0105zania w tym podatku</td>\n</tr>\n<tr><td>I SA/Bk 161/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:50</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>J.
+        Pruszy\u0144ski<BR> M. Dziemianowicz<BR> P. Lewkowicz (spr.)</td>\t\n\t<td>odmowa
+        stwierdzenia nadp\u0142aty w podatku od nieruchomo\u015Bci za 2015 r. oraz
+        okre\u015Blenie zobowi\u0105zania w tym podatku</td>\n</tr>\n<tr class='alt'><td>I
+        SA/Bk 162/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:50</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>J. Pruszy\u0144ski<BR>
+        M. Dziemianowicz<BR> P. Lewkowicz (spr.)</td>\t\n\t<td>odmowa stwierdzenia
+        nadp\u0142aty w podatku od nieruchomo\u015Bci za 2014 r. oraz okre\u015Blenie
+        zobowi\u0105zania w tym podatku</td>\n</tr>\n<tr><td>I SA/Bk 163/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:50</td>\n\t<td>Sala
         2</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>J.
         Pruszy\u0144ski<BR> M. Dziemianowicz<BR> P. Lewkowicz (spr.)</td>\t\n\t<td>odmowa
         stwierdzenia nadp\u0142aty w podatku od nieruchomo\u015Bci za 2013 r. oraz
-        okre\u015Blenie zobowi\u0105zania w tym podatku</td>\n</tr>\n<tr><td>I SA/Bk
-        165/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:50</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>J. Pruszy\u0144ski<BR>
-        M. Dziemianowicz<BR> P. Lewkowicz (spr.)</td>\t\n\t<td>odmowa stwierdzenia
-        nadp\u0142aty w podatku od nieruchomo\u015Bci za 2011 r. oraz okre\u015Blenie
-        zobowi\u0105zania w tym podatku</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 162/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:50</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>J.
-        Pruszy\u0144ski<BR> M. Dziemianowicz<BR> P. Lewkowicz (spr.)</td>\t\n\t<td>odmowa
-        stwierdzenia nadp\u0142aty w podatku od nieruchomo\u015Bci za 2014 r. oraz
-        okre\u015Blenie zobowi\u0105zania w tym podatku</td>\n</tr>\n<tr><td>I SA/Bk
-        161/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:50</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>J. Pruszy\u0144ski<BR>
-        M. Dziemianowicz<BR> P. Lewkowicz (spr.)</td>\t\n\t<td>odmowa stwierdzenia
-        nadp\u0142aty w podatku od nieruchomo\u015Bci za 2015 r. oraz okre\u015Blenie
-        zobowi\u0105zania w tym podatku</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 160/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:50</td>\n\t<td>Sala
-        2</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>J.
-        Pruszy\u0144ski<BR> M. Dziemianowicz<BR> P. Lewkowicz (spr.)</td>\t\n\t<td>odmowa
-        stwierdzenia nadp\u0142aty w podatku od nieruchomo\u015Bci za 2016 r. oraz
-        okre\u015Blenie zobowi\u0105zania w tym podatku</td>\n</tr>\n<tr><td>I SA/Bk
-        177/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>12:50</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        okre\u015Blenie zobowi\u0105zania w tym podatku</td>\n</tr>\n<tr class='alt'><td>I
+        SA/Bk 177/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>12:50</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
         title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>J. Pruszy\u0144ski<BR>
         M. Dziemianowicz (spr.)<BR> P. Lewkowicz</td>\t\n\t<td>nadp\u0142ata w podatku
-        od nieruchomo\u015Bci za 2009 i 2010 rok</td>\n</tr>\n<tr class='alt'><td>I
-        SA/Bk 130/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>13:10</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>J. Pruszy\u0144ski<BR>
-        M. Dziemianowicz (spr.)<BR> P. Lewkowicz</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
-        w ramach system\xF3w wsparcia bezpo\u015Bredniego na rok 2016</td>\n</tr>\n<tr><td>I
-        SA/Bk 131/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>13:10</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>J. Pruszy\u0144ski<BR>
-        M. Dziemianowicz (spr.)<BR> P. Lewkowicz</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
-        rolno-\u015Brodowiskowo-klimatycznej na rok 2016</td>\n</tr>\n<tr class='alt'><td>II
+        od nieruchomo\u015Bci za 2009 i 2010 rok</td>\n</tr>\n<tr><td>I SA/Bk 130/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>13:10</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>J.
+        Pruszy\u0144ski<BR> M. Dziemianowicz (spr.)<BR> P. Lewkowicz</td>\t\n\t<td>przyznanie
+        p\u0142atno\u015Bci w ramach system\xF3w wsparcia bezpo\u015Bredniego na rok
+        2016</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 131/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>13:10</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>J.
+        Pruszy\u0144ski<BR> M. Dziemianowicz (spr.)<BR> P. Lewkowicz</td>\t\n\t<td>przyznanie
+        p\u0142atno\u015Bci rolno-\u015Brodowiskowo-klimatycznej na rok 2016</td>\n</tr>\n<tr><td>II
         SA/Bk 69/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>09:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
         title='6131 - Op\u0142aty za korzystanie ze \u015Brodowiska'>6131</td>\n\t\n\t<td>E.
         Trykoszko (spr.)<BR> E. Lema\u0144ska<BR> M. Leszczy\u0144ski</td>\t\n\t<td>orzeczenie
         o odpowiedzialno\u015Bci, jako by\u0142ego cz\u0142onka zarz\u0105du Sp\xF3\u0142ki,
         za zaleg\u0142o\u015Bci okre\u015Blone decyzj\u0105 dotycz\u0105c\u0105 wymierzenia
         Sp\xF3\u0142ce op\u0142aty podwy\u017Cszonej z tytu\u0142u sk\u0142adowania
-        odpad\xF3w</td>\n</tr>\n<tr><td>II SA/Bk 70/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        odpad\xF3w</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 70/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>09:00</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6131 - Op\u0142aty za korzystanie ze
         \u015Brodowiska'>6131</td>\n\t\n\t<td>E. Trykoszko (spr.)<BR> E. Lema\u0144ska<BR>
         M. Leszczy\u0144ski</td>\t\n\t<td>orzeczenie o odpowiedzialno\u015Bci, jako
         by\u0142ego cz\u0142onka zarz\u0105du Sp\xF3\u0142ki, za zaleg\u0142o\u015Bci
         okre\u015Blone decyzj\u0105 dotycz\u0105c\u0105 wymierzenia Sp\xF3\u0142ce
-        op\u0142aty podwy\u017Cszonej z tytu\u0142u sk\u0142adowania odpad\xF3w</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Bk 170/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>09:40</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6136 - Ochrona przyrody'>6136</td>\n\t\n\t<td>E.
-        Trykoszko<BR> E. Lema\u0144ska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>odmowa
-        wydania zezwolenia na wyci\u0119cie drzewa</td>\n</tr>\n<tr><td>II SA/Bk 167/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>10:00</td>\n\t<td>Sala
+        op\u0142aty podwy\u017Cszonej z tytu\u0142u sk\u0142adowania odpad\xF3w</td>\n</tr>\n<tr><td>II
+        SA/Bk 170/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>09:40</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6136 - Ochrona przyrody'>6136</td>\n\t\n\t<td>E. Trykoszko<BR> E. Lema\u0144ska
+        (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>odmowa wydania zezwolenia na
+        wyci\u0119cie drzewa</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 167/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>10:00</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6401 - Skargi organ\xF3w nadzorczych
         na uchwa\u0142y rady gminy w przedmiocie ... (art. 93 ust. 1 ustawy o samorz\u0105dzie
         gminnym) / 6144 - Szko\u0142y i plac\xF3wki o\u015Bwiatowo-wychowawcze'>6401/6144</td>\n\t\n\t<td>E.
         Trykoszko<BR> E. Lema\u0144ska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>stwierdzenie
-        przekszta\u0142cenia szko\u0142y</td>\n</tr>\n<tr class='alt'><td>II SA/Bk
-        166/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>10:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='6401 - Skargi organ\xF3w nadzorczych na uchwa\u0142y rady gminy w przedmiocie
-        ... (art. 93 ust. 1 ustawy o samorz\u0105dzie gminnym) / 6144 - Szko\u0142y
-        i plac\xF3wki o\u015Bwiatowo-wychowawcze'>6401/6144</td>\n\t\n\t<td>E. Trykoszko<BR>
-        E. Lema\u0144ska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>stwierdzenie
         przekszta\u0142cenia szko\u0142y</td>\n</tr>\n<tr><td>II SA/Bk 203/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>10:00</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6401 - Skargi organ\xF3w nadzorczych
         na uchwa\u0142y rady gminy w przedmiocie ... (art. 93 ust. 1 ustawy o samorz\u0105dzie
         gminnym) / 6144 - Szko\u0142y i plac\xF3wki o\u015Bwiatowo-wychowawcze'>6401/6144</td>\n\t\n\t<td>E.
         Trykoszko<BR> E. Lema\u0144ska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>stwierdzenie
         przekszta\u0142cenie szko\u0142y</td>\n</tr>\n<tr class='alt'><td>II SA/Bk
-        148/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>12:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>E. Trykoszko<BR>
-        E. Lema\u0144ska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>odmowa ustalenia
-        warunk\xF3w zabudowy</td>\n</tr>\n<tr><td>II SA/Bk 111/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>12:30</td>\n\t<td>Sala
+        166/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>10:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6401 - Skargi organ\xF3w nadzorczych na uchwa\u0142y rady gminy w przedmiocie
+        ... (art. 93 ust. 1 ustawy o samorz\u0105dzie gminnym) / 6144 - Szko\u0142y
+        i plac\xF3wki o\u015Bwiatowo-wychowawcze'>6401/6144</td>\n\t\n\t<td>E. Trykoszko<BR>
+        E. Lema\u0144ska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>stwierdzenie
+        przekszta\u0142cenia szko\u0142y</td>\n</tr>\n<tr><td>II SA/Bk 148/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>12:00</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>E.
+        Trykoszko<BR> E. Lema\u0144ska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>odmowa
+        ustalenia warunk\xF3w zabudowy</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 111/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>12:30</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6014 - Rozbi\xF3rka budowli lub innego
         obiektu budowlanego, dokonanie oceny stanu technicznego obiektu, doprowadzenie
         obiektu do s'>6014</td>\n\t\n\t<td>E. Trykoszko (spr.)<BR> E. Lema\u0144ska<BR>
         M. Leszczy\u0144ski</td>\t\n\t<td>stwierdzenie wykonania na\u0142o\u017Conego
-        obowi\u0105zku  wykonania okre\u015Blonych czynno\u015Bci i rob\xF3t budowlanych</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Bk 130/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>12:50</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>E.
-        Trykoszko<BR> E. Lema\u0144ska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>\u015Bwiadczenie
-        wychowawcze</td>\n</tr>\n<tr><td>II SA/Bk 149/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>13:05</td>\n\t<td>Sala
+        obowi\u0105zku  wykonania okre\u015Blonych czynno\u015Bci i rob\xF3t budowlanych</td>\n</tr>\n<tr><td>II
+        SA/Bk 130/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>12:50</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>E. Trykoszko<BR>
+        E. Lema\u0144ska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>\u015Bwiadczenie
+        wychowawcze</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 149/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>13:05</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6210 - Dodatek mieszkaniowy'>6210</td>\n\t\n\t<td>E.
         Trykoszko<BR> E. Lema\u0144ska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>przyznanie
-        dodatku mieszkaniowego</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 121/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>13:20</td>\n\t<td>Sala
+        dodatku mieszkaniowego</td>\n</tr>\n<tr><td>II SA/Bk 121/18</td>\n\t<td>2018-05-17</td>\t\n\t<td>13:20</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>E.
         Trykoszko<BR> E. Lema\u0144ska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>umorzenie
-        post\u0119powania w sprawie ustalenia warunk\xF3w zabudowy</td>\n</tr>\n<tr><td>II
-        SA/Bk 196/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>09:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='6322 - Us\u0142ugi opieku\u0144cze, w tym skierowanie do domu pomocy
-        spo\u0142ecznej'>6322</td>\n\t\n\t<td>M. Roleder (spr.)<BR> G. Gryglaszewska<BR>
-        E. Trykoszko</td>\t\n\t<td>zmiana op\u0142aty za pobyt w domu pomocy spo\u0142ecznej</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Bk 151/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>09:20</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6131 - Op\u0142aty za korzystanie ze
-        \u015Brodowiska'>6131</td>\n\t\n\t<td>M. Roleder<BR> G. Gryglaszewska<BR>
-        M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>okre\u015Blenie wysoko\u015Bci op\u0142aty
-        podwy\u017Cszonej za korzystanie ze \u015Brodowiska w II p\xF3\u0142roczu
-        2012 r. bez wymaganego pozwolenia wodnoprawnego</td>\n</tr>\n<tr><td>II SA/Bk
-        163/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>09:50</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>M. Roleder<BR>
-        G. Gryglaszewska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>odmowa przyznania
-        zasi\u0142ku dla opieku\u0144czego</td>\n</tr>\n<tr class='alt'><td>II SA/Bk
+        post\u0119powania w sprawie ustalenia warunk\xF3w zabudowy</td>\n</tr>\n<tr
+        class='alt'><td>II SA/Bk 196/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6322 - Us\u0142ugi opieku\u0144cze,
+        w tym skierowanie do domu pomocy spo\u0142ecznej'>6322</td>\n\t\n\t<td>M.
+        Roleder (spr.)<BR> G. Gryglaszewska<BR> E. Trykoszko</td>\t\n\t<td>zmiana
+        op\u0142aty za pobyt w domu pomocy spo\u0142ecznej</td>\n</tr>\n<tr><td>II
+        SA/Bk 151/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>09:20</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6131 - Op\u0142aty za korzystanie ze \u015Brodowiska'>6131</td>\n\t\n\t<td>M.
+        Roleder<BR> G. Gryglaszewska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>okre\u015Blenie
+        wysoko\u015Bci op\u0142aty podwy\u017Cszonej za korzystanie ze \u015Brodowiska
+        w II p\xF3\u0142roczu 2012 r. bez wymaganego pozwolenia wodnoprawnego</td>\n</tr>\n<tr
+        class='alt'><td>II SA/Bk 163/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>09:50</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>M.
+        Roleder<BR> G. Gryglaszewska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>odmowa
+        przyznania zasi\u0142ku dla opieku\u0144czego</td>\n</tr>\n<tr><td>II SA/Bk
         175/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>10:05</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
         title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>M. Roleder<BR>
         G. Gryglaszewska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>odmowa przyznania
-        \u015Bwiadczenia wychowawczego</td>\n</tr>\n<tr><td>II SA/Bk 150/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>10:15</td>\n\t<td>Sala
+        \u015Bwiadczenia wychowawczego</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 150/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>10:15</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6391 - Skargi na uchwa\u0142y rady gminy
         w przedmiocie ... (art. 100 i 101a ustawy o samorz\u0105dzie gminnym) / 6150
         - Miejscowy plan zagospodarowania przestrzennego'>6391/6150</td>\n\t\n\t<td>M.
         Roleder<BR> G. Gryglaszewska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>zmiana
-        studium uwarunkowa\u0144 i kierunk\xF3w zagospodarowania przestrzennego</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Bk 144/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>11:50</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='6120 - Ewidencja grunt\xF3w i budynk\xF3w'>6120</td>\n\t\n\t<td>M.
+        studium uwarunkowa\u0144 i kierunk\xF3w zagospodarowania przestrzennego</td>\n</tr>\n<tr><td>II
+        SA/Bk 144/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>11:50</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6120 - Ewidencja grunt\xF3w i budynk\xF3w'>6120</td>\n\t\n\t<td>M.
         Roleder<BR> G. Gryglaszewska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>uchylenie
         decyzji po wznowieniu post\u0119powania i odmowa wprowadzenia z urz\u0119du
-        aktualizacji operatu ewidencji grunt\xF3w i budynk\xF3w</td>\n</tr>\n<tr><td>II
-        SA/Bk 756/17</td>\n\t<td>2018-05-22</td>\t\n\t<td>12:10</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
-        title='6013 - Przywr\xF3cenie poprzedniego sposobu u\u017Cytkowania obiektu
-        budowlanego lub jego cz\u0119\u015Bci,'>6013</td>\n\t\n\t<td>M. Roleder (spr.)<BR>
-        G. Gryglaszewska<BR> M. Leszczy\u0144ski</td>\t\n\t<td>nakaz przywr\xF3cenia
-        poprzedniego - gospodarczego - sposobu u\u017Cytkowania cz\u0119\u015Bci budynku
-        u\u017Cytkowanego obecnie jako mieszkalny</td>\n</tr>\n<tr class='alt'><td>II
+        aktualizacji operatu ewidencji grunt\xF3w i budynk\xF3w</td>\n</tr>\n<tr class='alt'><td>II
         SA/Bk 757/17</td>\n\t<td>2018-05-22</td>\t\n\t<td>12:10</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
         title='6013 - Przywr\xF3cenie poprzedniego sposobu u\u017Cytkowania obiektu
         budowlanego lub jego cz\u0119\u015Bci,'>6013</td>\n\t\n\t<td>M. Roleder (spr.)<BR>
         G. Gryglaszewska<BR> M. Leszczy\u0144ski</td>\t\n\t<td>zakaz u\u017Cytkowania
         na cele mieszkalne cz\u0119\u015Bci budynku</td>\n</tr>\n<tr><td>II SA/Bk
-        154/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>12:40</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        756/17</td>\n\t<td>2018-05-22</td>\t\n\t<td>12:10</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6013 - Przywr\xF3cenie poprzedniego sposobu u\u017Cytkowania obiektu
+        budowlanego lub jego cz\u0119\u015Bci,'>6013</td>\n\t\n\t<td>M. Roleder (spr.)<BR>
+        G. Gryglaszewska<BR> M. Leszczy\u0144ski</td>\t\n\t<td>nakaz przywr\xF3cenia
+        poprzedniego - gospodarczego - sposobu u\u017Cytkowania cz\u0119\u015Bci budynku
+        u\u017Cytkowanego obecnie jako mieszkalny</td>\n</tr>\n<tr class='alt'><td>II
+        SA/Bk 154/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>12:40</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
         title='6012 - Wstrzymanie rob\xF3t budowlanych, wznowienie tych rob\xF3t,
         zaniechanie dalszych rob\xF3t budowlanych'>6012</td>\n\t\n\t<td>M. Roleder<BR>
         G. Gryglaszewska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>wstrzymanie
         rob\xF3t budowlanych oraz zobowi\u0105zanie do przed\u0142o\u017Cenia okre\u015Blonych
-        dokument\xF3w</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 155/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>13:00</td>\n\t<td>Sala
+        dokument\xF3w</td>\n</tr>\n<tr><td>II SA/Bk 155/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>13:00</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6014 - Rozbi\xF3rka budowli lub innego
         obiektu budowlanego, dokonanie oceny stanu technicznego obiektu, doprowadzenie
         obiektu do s'>6014</td>\n\t\n\t<td>M. Roleder<BR> G. Gryglaszewska<BR> M.
         Leszczy\u0144ski (spr.)</td>\t\n\t<td>nakazanie wykonania okre\u015Blonych
-        czynno\u015Bci i rob\xF3t budowlanych</td>\n</tr>\n<tr><td>II SAB/Bk 28/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>13:20</td>\n\t<td>Sala
-        1</td>\n\t<td>II</td>\t\n\t<td title='658 - skarga na niewykonanie w okre\u015Blonym
-        terminie czynno\u015Bci wynikaj\u0105cych z przepis\xF3w odr\u0119bnych /
-        6480 -  '>658/6480</td>\n\t\n\t<td>M. Roleder<BR> G. Gryglaszewska (spr.)<BR>
-        M. Leszczy\u0144ski</td>\t\n\t<td>bezczynno\u015B\u0107 w przedmiocie \r\ninformacji
-        publicznej</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 83/18</td>\n\t<td>2018-05-24</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        czynno\u015Bci i rob\xF3t budowlanych</td>\n</tr>\n<tr class='alt'><td>II
+        SAB/Bk 28/18</td>\n\t<td>2018-05-22</td>\t\n\t<td>13:20</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='658 - skarga na niewykonanie w okre\u015Blonym terminie czynno\u015Bci
+        wynikaj\u0105cych z przepis\xF3w odr\u0119bnych / 6480 -  '>658/6480</td>\n\t\n\t<td>M.
+        Roleder<BR> G. Gryglaszewska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>bezczynno\u015B\u0107
+        w przedmiocie \r\ninformacji publicznej</td>\n</tr>\n<tr><td>I SA/Bk 126/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>A.
+        Melezini<BR> P. Lewkowicz<BR> D. Zalewski (spr.)</td>\t\n\t<td>przyznanie
+        p\u0142atno\u015Bci dla obszar\xF3w z ograniczeniami naturalnymi lub innymi
+        szczeg\xF3lnymi ograniczeniami na rok 2016</td>\n</tr>\n<tr class='alt'><td>I
+        SA/Bk 127/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>09:00</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>A. Melezini<BR>
+        P. Lewkowicz<BR> D. Zalewski (spr.)</td>\t\n\t<td>przyznanie p\u0142atno\u015Bci
+        rolno\u015Brodowiskowej na rok 2016</td>\n</tr>\n<tr><td>I SA/Bk 125/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>A.
+        Melezini<BR> P. Lewkowicz<BR> D. Zalewski (spr.)</td>\t\n\t<td>przyznanie
+        p\u0142atno\u015Bci w ramach system\xF3w wsparcia bezpo\u015Bredniego na rok
+        2016</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 178/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>09:30</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6550 - P\u0142atno\u015Bci obszarowe'>6550</td>\n\t\n\t<td>A.
+        Melezini (spr.)<BR> P. Lewkowicz<BR> D. Zalewski</td>\t\n\t<td>ustalenie kwoty
+        nienale\u017Cnie pobranych p\u0142atno\u015Bci z tytu\u0142u realizacji Programu
+        Rolno\u015Brodowiskowego</td>\n</tr>\n<tr><td>I SA/Bk 208/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>09:50</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6110 - Podatek\_ od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>A.
+        Melezini (spr.)<BR> P. Lewkowicz<BR> D. Zalewski</td>\t\n\t<td>podatek od
+        towar\xF3w i us\u0142ug za lipiec, sierpie\u0144, wrzesie\u0144, listopad
+        i grudzie\u0144 2016 roku</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 151/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>10:10</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6042 - Gry losowe i zak\u0142ady wzajemne'>6042</td>\n\t\n\t<td>A.
+        Melezini<BR> P. Lewkowicz (spr.)<BR> D. Zalewski</td>\t\n\t<td>wymierzenie
+        kary pieni\u0119\u017Cnej z tytu\u0142u urz\u0105dzania gier na automacie
+        poza kasynem gry</td>\n</tr>\n<tr><td>I SA/Bk 46/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>10:30</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6042 - Gry losowe i zak\u0142ady wzajemne'>6042</td>\n\t\n\t<td>A.
+        Melezini<BR> P. Lewkowicz<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>wymierzenie
+        kary pieni\u0119\u017Cnej z tytu\u0142u urz\u0105dzania gier na automacie
+        poza kasynem gry</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 39/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>10:30</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6042 - Gry losowe i zak\u0142ady wzajemne'>6042</td>\n\t\n\t<td>A.
+        Melezini<BR> P. Lewkowicz<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>wymierzenie
+        kary pieni\u0119\u017Cnej z tytu\u0142u urz\u0105dzania gier na automacie
+        poza kasynem gry</td>\n</tr>\n<tr><td>I SA/Bk 226/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>11:00</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6560 - Interpretacje indywidualne wydawane
+        przez ministra w\u0142a\u015Bciwego do spraw finans\xF3w publicznych / 6112
+        - Podatek dochodowy od os\xF3b fizycznych, w tym zrycza\u0142towane formy
+        opodatkowania'>6560/6112</td>\n\t\n\t<td>A. Melezini (spr.)<BR> P. Lewkowicz<BR>
+        J. Pruszy\u0144ski</td>\t\n\t<td>podatek dochodowy od os\xF3b fizycznych</td>\n</tr>\n<tr
+        class='alt'><td>I SA/Bk 225/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>11:00</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6560 - Interpretacje indywidualne wydawane
+        przez ministra w\u0142a\u015Bciwego do spraw finans\xF3w publicznych / 6112
+        - Podatek dochodowy od os\xF3b fizycznych, w tym zrycza\u0142towane formy
+        opodatkowania'>6560/6112</td>\n\t\n\t<td>A. Melezini (spr.)<BR> P. Lewkowicz<BR>
+        J. Pruszy\u0144ski</td>\t\n\t<td>podatek dochodowy od os\xF3b fizycznych</td>\n</tr>\n<tr><td>I
+        SA/Bk 204/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>11:30</td>\n\t<td>Sala 2</td>\n\t<td>I</td>\t\n\t<td
+        title='6560 - Interpretacje indywidualne wydawane przez ministra w\u0142a\u015Bciwego
+        do spraw finans\xF3w publicznych / 6110 - Podatek\_ od towar\xF3w i us\u0142ug'>6560/6110</td>\n\t\n\t<td>A.
+        Melezini<BR> P. Lewkowicz<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>podatek
+        od towar\xF3w i us\u0142ug</td>\n</tr>\n<tr class='alt'><td>I SA/Bk 189/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>11:50</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>A.
+        Melezini<BR> P. Lewkowicz (spr.)<BR> J. Pruszy\u0144ski</td>\t\n\t<td>odmowa
+        stwierdzenia nadp\u0142aty w podatku od nieruchomo\u015Bci za 10 miesi\u0119cy
+        2017 r.</td>\n</tr>\n<tr><td>I SA/Bk 190/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>12:10</td>\n\t<td>Sala
+        2</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>A.
+        Melezini<BR> P. Lewkowicz<BR> J. Pruszy\u0144ski (spr.)</td>\t\n\t<td>odmowa
+        stwierdzenia nadp\u0142aty w podatku od nieruchomo\u015Bci za dziesi\u0119\u0107
+        miesi\u0119cy 2017 r.</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 83/18</td>\n\t<td>2018-05-24</td>\t\n\t<td>09:00</td>\n\t<td>Sala
         1</td>\n\t<td>II</td>\t\n\t<td title='6391 - Skargi na uchwa\u0142y rady gminy
         w przedmiocie ... (art. 100 i 101a ustawy o samorz\u0105dzie gminnym) / 6150
         - Miejscowy plan zagospodarowania przestrzennego'>6391/6150</td>\n\t\n\t<td>E.
@@ -989,19 +849,79 @@ interactions:
         Leszczy\u0144ski (spr.)<BR> G. Gryglaszewska<BR> M. Roleder</td>\t\n\t<td>stwierdzenie
         niedopuszczalno\u015Bci odwo\u0142ania w sprawie zaliczenia okres\xF3w przebywania
         na zwolnieniu lekarskim do choroby pozostaj\u0105cej w zwi\u0105zku z wypadkiem
-        w s\u0142u\u017Cbie</td>\n</tr>\n</TABLE>\n<BR><BR><BR><BR><BR>\n<hr style=\"margin-bottom:1\"/>\n<div
-        style=\"font-size:12px\">Opracowanie strony: Wydzia\u0142&nbsp;Informatyki
-        -&nbsp;Naczelny&nbsp;S\u0105d&nbsp;Administracyjny -&nbsp;2014</div>\n<hr
-        style=\"margin-bottom:1\"/>\n\n</body></html>"}
+        w s\u0142u\u017Cbie</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 610/17</td>\n\t<td>2018-06-07</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6120 - Ewidencja grunt\xF3w i budynk\xF3w'>6120</td>\n\t\n\t<td>M.
+        Roleder<BR> M. Leszczy\u0144ski<BR> E. Trykoszko (spr.)</td>\t\n\t<td>wprowadzenie
+        zmian w operacie ewidencji grunt\xF3w i budynk\xF3w</td>\n</tr>\n<tr><td>II
+        SA/Bk 191/18</td>\n\t<td>2018-06-07</td>\t\n\t<td>09:20</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6120 - Ewidencja grunt\xF3w i budynk\xF3w'>6120</td>\n\t\n\t<td>M.
+        Roleder (spr.)<BR> M. Leszczy\u0144ski<BR> E. Trykoszko</td>\t\n\t<td>stwierdzenie
+        niedopuszczalno\u015Bci odwo\u0142ania od decyzji wprowadzaj\u0105cej zmiany
+        w ewidencji grunt\xF3w</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 795/17</td>\n\t<td>2018-06-07</td>\t\n\t<td>09:40</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>M.
+        Roleder<BR> M. Leszczy\u0144ski<BR> E. Trykoszko (spr.)</td>\t\n\t<td>ustalenie
+        warunk\xF3w zabudowy</td>\n</tr>\n<tr><td>II SA/Bk 125/18</td>\n\t<td>2018-06-07</td>\t\n\t<td>10:00</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6079 - Inne o symbolu podstawowym 607'>6079</td>\n\t\n\t<td>M.
+        Roleder<BR> M. Leszczy\u0144ski (spr.)<BR> E. Trykoszko</td>\t\n\t<td>odmowa
+        wszcz\u0119cia post\u0119powania w sprawie stwierdzenia niewa\u017Cno\u015Bci
+        decyzji w cz\u0119\u015Bci dotycz\u0105cej uznania za mienie gminne dzia\u0142ki</td>\n</tr>\n<tr
+        class='alt'><td>II SA/Bk 234/18</td>\n\t<td>2018-06-07</td>\t\n\t<td>10:20</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie
+        obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych
+        ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>M. Roleder<BR> M. Leszczy\u0144ski<BR>
+        E. Trykoszko (spr.)</td>\t\n\t<td>odmowa zatwierdzenia projektu budowlanego
+        i udzielenia pozwolenia na budow\u0119</td>\n</tr>\n<tr><td>II SA/Bk 201/18</td>\n\t<td>2018-06-07</td>\t\n\t<td>10:50</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6293 - Przej\u0119cie gospodarstw rolnych'>6293</td>\n\t\n\t<td>M.
+        Roleder (spr.)<BR> M. Leszczy\u0144ski<BR> E. Trykoszko</td>\t\n\t<td>odmowa
+        ustalenia odszkodowania z tytu\u0142u przej\u0119cia gospodarstwa rolnego</td>\n</tr>\n<tr
+        class='alt'><td>II SA/Bk 128/18</td>\n\t<td>2018-06-07</td>\t\n\t<td>12:10</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6391 - Skargi na uchwa\u0142y rady gminy
+        w przedmiocie ... (art. 100 i 101a ustawy o samorz\u0105dzie gminnym) / 6150
+        - Miejscowy plan zagospodarowania przestrzennego'>6391/6150</td>\n\t\n\t<td>M.
+        Roleder<BR> G. Gryglaszewska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>skarga
+        na uchwa\u0142\u0119 w sprawie\r\nmiejscowego planu zagospodarowania przestrzennego</td>\n</tr>\n<tr><td>II
+        SA/Bk 200/18</td>\n\t<td>2018-06-07</td>\t\n\t<td>13:00</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>M. Roleder<BR>
+        G. Gryglaszewska<BR> M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>ustalenie warunk\xF3w
+        zabudowy</td>\n</tr>\n<tr class='alt'><td>II SA/Bk 189/18</td>\n\t<td>2018-06-07</td>\t\n\t<td>13:20</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>M.
+        Roleder<BR> G. Gryglaszewska (spr.)<BR> M. Leszczy\u0144ski</td>\t\n\t<td>odmowa
+        ustalenia warunk\xF3w zabudowy</td>\n</tr>\n<tr><td>II SA/Bk 194/18</td>\n\t<td>2018-06-07</td>\t\n\t<td>13:40</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6138 - Utrzymanie czysto\u015Bci i porz\u0105dku
+        na terenie gminy'>6138</td>\n\t\n\t<td>M. Roleder (spr.)<BR> G. Gryglaszewska<BR>
+        M. Leszczy\u0144ski</td>\t\n\t<td>odmowa wszcz\u0119cia post\u0119powania
+        w sprawie wydania decyzji o zakazie wykonywania dzia\u0142alno\u015Bci gospodarczej
+        w zakresie odbierania odpad\xF3w komunalnych od w\u0142a\u015Bcicieli nieruchomo\u015Bci</td>\n</tr>\n<tr
+        class='alt'><td>II SA/Bk 131/18</td>\n\t<td>2018-06-07</td>\t\n\t<td>14:00</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='6014 - Rozbi\xF3rka budowli lub innego
+        obiektu budowlanego, dokonanie oceny stanu technicznego obiektu, doprowadzenie
+        obiektu do s'>6014</td>\n\t\n\t<td>M. Roleder<BR> G. Gryglaszewska (spr.)<BR>
+        M. Leszczy\u0144ski</td>\t\n\t<td>nakaz rozbi\xF3rki obiektu budowlanego</td>\n</tr>\n<tr><td>II
+        SA/Bk 160/18</td>\n\t<td>2018-06-07</td>\t\n\t<td>14:20</td>\n\t<td>Sala 1</td>\n\t<td>II</td>\t\n\t<td
+        title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie obiektu lub jego
+        cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych ni\u017C budowa
+        obiektu, prz'>6010</td>\n\t\n\t<td>M. Roleder<BR> G. Gryglaszewska (spr.)<BR>
+        M. Leszczy\u0144ski</td>\t\n\t<td>zatwierdzenie projektu budowlanego zamiennego
+        oraz zobowi\u0105zanie do uzyskania pozwolenia na jego u\u017Cytkowanie</td>\n</tr>\n<tr
+        class='alt'><td>II SAB/Bk 29/18</td>\n\t<td>2018-06-07</td>\t\n\t<td>14:40</td>\n\t<td>Sala
+        1</td>\n\t<td>II</td>\t\n\t<td title='658 - skarga na niewykonanie w okre\u015Blonym
+        terminie czynno\u015Bci wynikaj\u0105cych z przepis\xF3w odr\u0119bnych /
+        6091 - Przywr\xF3cenie stosunk\xF3w wodnych na gruncie lub wykonanie urz\u0105dze\u0144
+        zapobiegaj\u0105cych szkodom'>658/6091</td>\n\t\n\t<td>M. Roleder<BR> G. Gryglaszewska<BR>
+        M. Leszczy\u0144ski (spr.)</td>\t\n\t<td>bezczynno\u015B\u0107 w sprawie przekazania
+        ponaglenia w sprawie przywr\xF3cenie stosunk\xF3w wodnych na gruncie</td>\n</tr>\n</TABLE>\n<BR><BR><BR><BR><BR>\n<hr
+        style=\"margin-bottom:1\"/>\n<div style=\"font-size:12px\">Opracowanie strony:
+        Wydzia\u0142&nbsp;Informatyki -&nbsp;Naczelny&nbsp;S\u0105d&nbsp;Administracyjny
+        -&nbsp;2014</div>\n<hr style=\"margin-bottom:1\"/>\n\n</body></html>"}
     headers:
       Cache-Control: ['no-store, no-cache, must-revalidate, post-check=0, pre-check=0']
       Connection: [close]
       Content-Type: [text/html; charset=UTF-8]
-      Date: ['Mon, 16 Apr 2018 02:51:58 GMT']
+      Date: ['Fri, 20 Apr 2018 21:01:14 GMT']
       Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
       Pragma: [no-cache]
       Server: [Apache]
-      Set-Cookie: [PHPSESSID=6jkkmbj3u0ejipqnbqm0kcd2h1; path=/]
+      Set-Cookie: [PHPSESSID=m4tjaj7r02ma96r0a139ra2hv2; path=/]
       Transfer-Encoding: [chunked]
     status: {code: 200, message: OK}
 version: 1
