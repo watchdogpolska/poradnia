@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^porady/', include('poradnia.advicer.urls', namespace='advicer')),
     url(r'^statystyki/', include('poradnia.stats.urls', namespace='stats')),
     url(r'^uwagi/', include('poradnia.tasty_feedback.urls', namespace='tasty_feedback')),
+    url(r'^sprawy_sadowe/', include('poradnia.judgements.urls', namespace='judgements')),
     # Utils
     url(r'^robots\.txt$', TemplateView.as_view(template_name='robots.txt')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

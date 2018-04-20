@@ -37,7 +37,7 @@ class EventQuerySet(AbstractRecordQuerySet):
 class Event(AbstractRecord):
     deadline = models.BooleanField(default=False, verbose_name=_("Dead-line"))
     time = models.DateTimeField(verbose_name=_("Time"))
-    text = models.CharField(max_length=150, verbose_name=_("Subject"))
+    text = models.TextField(verbose_name=_("Subject"))
     created_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
                                    related_name='event_created_by',
                                    verbose_name=_("Created by"))
@@ -51,6 +51,12 @@ class Event(AbstractRecord):
                                        blank=True,
                                        verbose_name=_("Modified on"))
     objects = EventQuerySet.as_manager()
+
+    @property
+    def subject(self):
+        if len(self.text) > 100:
+            return "{} ...".format(self.text[:100])
+        return self.text
 
     def get_absolute_url(self):
         case_url = self.record.case_get_absolute_url()

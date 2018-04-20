@@ -1,0 +1,355 @@
+interactions:
+- request:
+    body: act=szukaj&data_posiedzenia=2018-04-16&data_posiedzenia_do=2018-04-16&guzik=Filtruj+%2F+Sortuj&opis=&sala_rozpraw=---&sortowanie=3&sygnatura=&symbol=&wydzial_orzeczniczy=---
+    headers:
+      Accept: ['*/*']
+      Accept-Encoding: ['gzip, deflate']
+      Connection: [keep-alive]
+      Content-Length: ['173']
+      Content-Type: [application/x-www-form-urlencoded]
+      User-Agent: [python-requests/2.18.4]
+    method: POST
+    uri: http://www.gliwice.wsa.gov.pl/56/49/elektroniczny-terminarz-rozpraw-etr.html
+  response:
+    body: {string: "\t\r\n\t\n\t<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.1//EN\"
+        \"http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd\">\n\n\t<html xmlns=\"http://www.w3.org/1999/xhtml\"
+        lang=\"en\" xml:lang=\"en\">\n\t\n\t\t<head>\n\t\t\t<title>Elektroniczny Terminarz
+        Posiedze\u0144 (ETP) - Wojew\xF3dzki S\u0105d Administracyjny w Gliwicach</title>\n\t\t\t<meta
+        http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n\t\t\t\n\t\t\t\n\t\t\t<script
+        type=\"text/javascript\" src=\"http://www.gliwice.wsa.gov.pl/min/?g=publicJS&amp;path=L3Zhci93d3cvc2t5Y21zLmNvbS5wbC87Y21zL3NjcmlwdDtjbXMvcHVibGljL3NjcmlwdDtjbXMvcGx1Z2luL3NsaWRlci9wdWJsaWMvc2NyaXB0&amp;version=1498036536_1350\"></script>\r\n
+        \                           <script type=\"text/javascript\">\r\n                                var
+        URL_CLIENT_REQUEST='http://www.gliwice.wsa.gov.pl/public/request.php';\r\n
+        \                               var URL_STATIC='http://www.gliwice.wsa.gov.pl/';\r\n
+        \                               var URL_IMAGE='http://www.gliwice.wsa.gov.pl/cms_wsagliwice/image/default/';\r\n
+        \                               var PAGE_ID='56';\r\n                            </script>\r\n
+        \                       \n\t\t\t<link type=\"text/css\" rel=\"stylesheet\"
+        href=\"http://www.gliwice.wsa.gov.pl/min/?g=publicCSS&amp;path=L3Zhci93d3cvc2t5Y21zLmNvbS5wbC87Y21zL3N0eWxlL2RlZmF1bHQ7Y21zL3BsdWdpbi9zbGlkZXIvcHVibGljL3N0eWxlO2Ntc193c2FnbGl3aWNlL3N0eWxlL2RlZmF1bHQ7Y21zX3dzYWdsaXdpY2Uvc3R5bGUvZGVmYXVsdC9ldHI=&amp;version=1517215008_1350\"/>\n\t\t\t<link
+        rel=\"shortcut icon\" href=\"http://www.gliwice.wsa.gov.pl/cms_wsagliwice/image/default/favicon.ico\"
+        /><link rel=\"icon\" type=\"image/x-icon\" href=\"http://www.gliwice.wsa.gov.pl/cms_wsagliwice/image/default/favicon.ico\"
+        />\n\t\t</head>\n\t\t\n\t\t<body>\n\t\t\n\t\t\n\r\n\r\n\t<div class=\"main
+        boxCenter\">\r\n\t\t<div class=\"header clearFix overFlowFix\">\r\n\t\t\t\r\n\t\t\t\t<ul
+        class=\"sf-menu\">\r\n                            <li class=\"menuElement
+        menuElementN1 menuElement_1_1 menuElementFirst\">\r\n                            <a
+        href=\"http://www.bip.gov.pl/\" class=\"menuElement menuElementN1 menuElement_1_1
+        menuElementFirst\"><span class=\"menuElementLinkBefore\"></span><span class=\"menuElementLink\">Strona
+        g\u0142\xF3wna BIP </span><span class=\"menuElementLinkAfter\"></span></a>\r\n
+        \                       \r\n                                </li>\r\n                            \r\n
+        \                           <li class=\"menuElement menuElementN1 menuElement_1_2\">\r\n
+        \                           <a href=\"http://www.gliwice.wsa.gov.pl/2/2/pobierz-programy.html\"
+        class=\"menuElement menuElementN1 menuElement_1_2\"><span class=\"menuElementLinkBefore\"></span><span
+        class=\"menuElementLink\">Pobierz programy </span><span class=\"menuElementLinkAfter\"></span></a>\r\n
+        \                       \r\n                                </li>\r\n                            \r\n
+        \                           <li class=\"menuElement menuElementN1 menuElement_1_3\">\r\n
+        \                           <a href=\"http://www.gliwice.wsa.gov.pl/3/3/mapa-biuletynu.html\"
+        class=\"menuElement menuElementN1 menuElement_1_3\"><span class=\"menuElementLinkBefore\"></span><span
+        class=\"menuElementLink\">Mapa biuletynu </span><span class=\"menuElementLinkAfter\"></span></a>\r\n
+        \                       \r\n                                </li>\r\n                            \r\n
+        \                           <li class=\"menuElement menuElementN1 menuElement_1_4\">\r\n
+        \                           <a href=\"http://www.gliwice.wsa.gov.pl/4/4/statystyki-podstron.html\"
+        class=\"menuElement menuElementN1 menuElement_1_4\"><span class=\"menuElementLinkBefore\"></span><span
+        class=\"menuElementLink\">Statystyki podstron </span><span class=\"menuElementLinkAfter\"></span></a>\r\n
+        \                       \r\n                                </li>\r\n                            \r\n
+        \                           <li class=\"menuElement menuElementN1 menuElement_1_5\">\r\n
+        \                           <a href=\"http://www.gliwice.wsa.gov.pl/5/5/redaktorzy-biuletynu.html\"
+        class=\"menuElement menuElementN1 menuElement_1_5\"><span class=\"menuElementLinkBefore\"></span><span
+        class=\"menuElementLink\">Redaktorzy biuletynu </span><span class=\"menuElementLinkAfter\"></span></a>\r\n
+        \                       \r\n                                </li>\r\n                            \r\n
+        \                           <li class=\"menuElement menuElementN1 menuElement_1_6\">\r\n
+        \                           <a href=\"http://www.gliwice.wsa.gov.pl/6/6/jak-przegladac-bip.html\"
+        class=\"menuElement menuElementN1 menuElement_1_6\"><span class=\"menuElementLinkBefore\"></span><span
+        class=\"menuElementLink\">Jak przegl\u0105da\u0107 BIP </span><span class=\"menuElementLinkAfter\"></span></a>\r\n
+        \                       \r\n                                </li>\r\n                            \r\n
+        \                           <li class=\"menuElement menuElementN1 menuElement_1_7\">\r\n
+        \                           <a href=\"http://www.gliwice.wsa.gov.pl/54/7/rejestr-zmian-strony.html\"
+        class=\"menuElement menuElementN1 menuElement_1_7\"><span class=\"menuElementLinkBefore\"></span><span
+        class=\"menuElementLink\">Rejestr zmian strony </span><span class=\"menuElementLinkAfter\"></span></a>\r\n
+        \                       \r\n                                </li>\r\n                            </ul>\r\n\t\t\t
+        \   \n\r\n\t\t\t<a href=\"http://www.gliwice.wsa.gov.pl/\" class=\"headerLogo\"></a>\r\n\t\t</div>\r\n\t\t\r\n\t\t<div
+        class=\"content\">\r\n\t\t\t\t\r\n\t\r\n\t\t\t\t\t\t<ul class=\"pageBreadcumb\">\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t<li
+        class=\"pageBreadcumbLink\">\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t\t<a href=\"http://www.gliwice.wsa.gov.pl/56/49/elektroniczny-terminarz-posiedzen-etp.html\">Elektroniczny
+        Terminarz Posiedze\u0144 (ETP)</a>\r\n\t\t\t\t\t\t\t\r\n\t\t\t\t\t\t\t</li>\r\n\t\t\t\t\t\t\r\n\t\t\t\t\t\t</ul>\r\n\t\t\t\t\t\r\n\r\n\t<div
+        id=\"printArea\">\r\n\t\r\n\t<div class=\"overflowFix clearFix\">\r\n\t\t<h1
+        class=\"pageHeader\">Elektroniczny Terminarz Posiedze\u0144 (ETP)</h1>\r\n\r\n\t\t</p>\r\n\r\n\r\n\t<br
+        style=\"clear:both;\" />\r\n\t<form action=\"\" method=\"post\">\r\n\t\r\n\t<div
+        class=\"searchWokanda\">\r\n\t\t<div class=\"label\">Sygnatura</div><div class=\"poleform\"><input
+        type=\"text\" name=\"sygnatura\" value=\"\" id=\"sygnatura\" /></div>\r\n\t\t<div
+        class=\"label\">Data posiedzenia od</div><div class=\"poleform\"><input type=\"text\"
+        name=\"data_posiedzenia\" id=\"data_posiedzenia\" value=\"2018-04-16\" /></div>\r\n\t\t<div
+        class=\"label\">Data posiedzenia do</div><div class=\"poleform\"><input type=\"text\"
+        name=\"data_posiedzenia_do\" id=\"data_posiedzenia_do\" value=\"2018-04-16\"
+        /></div>\r\n\t\t<div class=\"label\">Sala rozpraw</div><div class=\"poleform\">\r\n\t\t\t<select
+        name=\"sala_rozpraw\" id=\"sala_rozpraw\">\r\n\t\t\t\t<option value=\"---\"
+        selected=\"selected\">---</option><option value=\"sala nr 2\">sala nr 2</option><option
+        value=\"sala nr 3\">sala nr 3</option><option value=\"sala nr 5\">sala nr
+        5</option><option value=\"sala nr 7\">sala nr 7</option><option value=\"sala
+        nr 16\">sala nr 16</option>\t\t\t</select>\r\n\t\t</div>\r\n\t</div>\r\n\t\t\r\n\t<div
+        class=\"searchWokanda\">\r\n\t\t<div class=\"label\">Wydzia\u0142 Orzeczniczy</div><div
+        class=\"poleform\">\r\n\t\t\t<select name=\"wydzial_orzeczniczy\" id=\"wydzial_orzeczniczy\">\r\n\t\t\t\t<option
+        value=\"---\" selected=\"selected\">---</option><option value=\"I\">I</option><option
+        value=\"II\">II</option><option value=\"III\">III</option><option value=\"IV\">IV</option>\t\t\t</select>\r\n\t\t</div>\r\n\t\t<div
+        class=\"label\">Symbol</div><div class=\"poleform\"><input type=\"text\" name=\"symbol\"
+        id=\"symbol\" value=\"\" /></div>\r\n\t\t<div class=\"label\">Opis</div><div
+        class=\"poleform\"><input type=\"text\" name=\"opis\" id=\"opis\" value=\"\"
+        /></div>\r\n\t\t<div class=\"label\">Sortuj po</div>\r\n\t\t\t<div class=\"poleform\">\r\n\t\t\t\t<select
+        name=\"sortowanie\" id=\"sortowanie\">\r\n\t\t\t\t\t<option value=\"1\">Sygnatura
+        rosn\u0105co</option><option value=\"2\">Sygnatura malej\u0105co</option><option
+        value=\"3\" selected=\"selected\">Data/godzina posiedzenia rosn\u0105co</option><option
+        value=\"4\">Data/godzina posiedzenia malej\u0105co</option><option value=\"5\">Sala
+        rozpraw rosn\u0105co</option><option value=\"6\">Sala rozpraw malej\u0105co</option>\t\t\t\t</select>\r\n\t\t\t</div>\r\n\t\t\r\n\t</div>\r\n\t<div>\t\r\n\t\t<input
+        type=\"hidden\" name=\"act\" value=\"szukaj\" />\r\n\t\t<input type=\"submit\"
+        name=\"guzik\" value=\"Filtruj / Sortuj\" />\r\n\t\t<input type=\"button\"
+        name=\"wyczysc\" id=\"wyczysc\" value=\"Wyczy\u015B\u0107\" />\r\n\t</div>\r\n\t</form>\r\n\t\r\n\t<table
+        class=\"ftabela_123\"><tr style=\"border-width: 2px; border-style: double;\"><th
+        style=\"width: 130px;\">Wydzia\u0142 orzeczniczy<br />Sygnatura akt<br /></th><th
+        style=\"width: 100px;\">Data<br />Godzina<br />Sala<br /></th><th>Organ administracji<br
+        />Symbol, Przedmiot<br /></th><th style=\"width: 240px;\">Przewodnicz\u0105cy<br
+        />S\u0119dziowie<br /></th></tr><tr><td>IV<br />IV SA/Gl 745/17<br /></td><td>2018-04-16<br
+        />09:30<br />sala nr 7<br /></td><td>Dyrektor \u015Al\u0105skiego Oddz. Regionalnego
+        Agencji Restrukturyzacji i Modernizacji Rolnictwa w Cz-wie<br />6550 - P\u0142atno\u015Bci
+        obszarowe<br /><br /><span class=\"firstLetter\">P\u0142atno\u015Bci obszarowe</span><br
+        /></td><td>Renata Siudyka<br />Beata Kozicka (spr.)<br />Ma\u0142gorzata Walentek<br
+        /></td></tr><tr style=\"border-bottom-width: 2px; border-bottom-style: double;
+        border-top: none;\"><td colspan=\"4\" style=\"text-align: center; color: #F00;
+        border-top: none;\"><br /></td></tr><tr><td>IV<br />IV SA/Gl 746/17<br /></td><td>2018-04-16<br
+        />09:45<br />sala nr 7<br /></td><td>Dyrektor \u015Al\u0105skiego Oddz. Regionalnego
+        Agencji Restrukturyzacji i Modernizacji Rolnictwa w Cz-wie<br />6550 - P\u0142atno\u015Bci
+        obszarowe<br /><br /><span class=\"firstLetter\">P\u0142atno\u015Bci obszarowe</span><br
+        /></td><td>Renata Siudyka<br />Beata Kozicka (spr.)<br />Ma\u0142gorzata Walentek<br
+        /></td></tr><tr style=\"border-bottom-width: 2px; border-bottom-style: double;
+        border-top: none;\"><td colspan=\"4\" style=\"text-align: center; color: #F00;
+        border-top: none;\"><br /></td></tr><tr><td>I<br />I SA/Gl 1322/17<br /></td><td>2018-04-16<br
+        />10:00<br />sala nr 3<br /></td><td>S.K.O. w Katowicach<br />6118 - Koszty;
+        Egzekucja \u015Bwiadcze\u0144 pieni\u0119\u017Cnych<br /><br /><span class=\"firstLetter\"></span><br
+        /></td><td>Anna Tyszkiewicz-Zi\u0119tek<br />Wojciech Gapi\u0144ski<br />Beata
+        Machci\u0144ska (spr.)<br /></td></tr><tr style=\"border-bottom-width: 2px;
+        border-bottom-style: double; border-top: none;\"><td colspan=\"4\" style=\"text-align:
+        center; color: #F00; border-top: none;\"><br /></td></tr><tr><td>IV<br />IV
+        SA/Gl 893/17<br /></td><td>2018-04-16<br />10:05<br />sala nr 7<br /></td><td>Rada
+        Miejska Skoczowa<br />6401/645 - Inne<br /><br /><span class=\"firstLetter\">Nadanie
+        nazw dla dr\xF3g</span><br /></td><td>Renata Siudyka<br />Beata Kalaga-Gajewska
+        (spr.)<br />Ma\u0142gorzata Walentek<br /></td></tr><tr style=\"border-bottom-width:
+        2px; border-bottom-style: double; border-top: none;\"><td colspan=\"4\" style=\"text-align:
+        center; color: #F00; border-top: none;\"><br /></td></tr><tr><td>I<br />I
+        SA/Gl 1054/17<br /></td><td>2018-04-16<br />10:30<br />sala nr 3<br /></td><td>S.K.O.
+        w Cz\u0119stochowie<br />6116 - Podatek od \u015Brodk\xF3w transportowych<br
+        /><br /><span class=\"firstLetter\">Podatek od \u015Brodk\xF3w transportowych
+        za 2017 r.</span><br /></td><td>Bo\u017Cena Suleja-Klimczyk (spr.)<br />Beata
+        Machci\u0144ska<br />Teresa Randak<br /></td></tr><tr style=\"border-bottom-width:
+        2px; border-bottom-style: double; border-top: none;\"><td colspan=\"4\" style=\"text-align:
+        center; color: #F00; border-top: none;\">Zdj\u0119to z wokandy</td></tr><tr><td>IV<br
+        />IV SA/Gl 622/17<br /></td><td>2018-04-16<br />10:30<br />sala nr 7<br /></td><td>S.K.O.
+        w Katowicach<br />6329 - Inne<br /><br /><span class=\"firstLetter\">Pomoc
+        w realizacji koszt\xF3w zwi\u0105zanych z utrzymaniem rodziny</span><br /></td><td>Renata
+        Siudyka (spr.)<br />Marzanna Sa\u0142uda<br />Ma\u0142gorzata Walentek<br
+        /></td></tr><tr style=\"border-bottom-width: 2px; border-bottom-style: double;
+        border-top: none;\"><td colspan=\"4\" style=\"text-align: center; color: #F00;
+        border-top: none;\"><br /></td></tr><tr><td>I<br />I SA/Gl 1125/17<br /></td><td>2018-04-16<br
+        />11:00<br />sala nr 3<br /></td><td>S.K.O. w Katowicach<br />6115 - Podatek
+        od nieruchomo\u015Bci<br /><br /><span class=\"firstLetter\">Wznowienie post\u0119powania
+        w sprawie podatku od nieruchomo\u015Bci za 2003 r.</span><br /></td><td>Bo\u017Cena
+        Suleja-Klimczyk (spr.)<br />Wojciech Gapi\u0144ski<br />Pawe\u0142 Kornacki<br
+        /></td></tr><tr style=\"border-bottom-width: 2px; border-bottom-style: double;
+        border-top: none;\"><td colspan=\"4\" style=\"text-align: center; color: #F00;
+        border-top: none;\">Zdj\u0119to z wokandy</td></tr><tr><td>IV<br />IV SA/Gl
+        1004/17<br /></td><td>2018-04-16<br />11:00<br />sala nr 7<br /></td><td>S.K.O.
+        w Katowicach<br />6329 - \u015Awiadczenie wychowawcze<br /><br /><span class=\"firstLetter\">Uznanie
+        i zwrot nienale\u017Cnie pobranego \u015Bwiadczenia wychowawczego</span><br
+        /></td><td>Teresa Kurcyusz-Furmanik (spr.)<br />Tadeusz Michalik<br />Marzanna
+        Sa\u0142uda<br /></td></tr><tr style=\"border-bottom-width: 2px; border-bottom-style:
+        double; border-top: none;\"><td colspan=\"4\" style=\"text-align: center;
+        color: #F00; border-top: none;\"><br /></td></tr><tr><td>I<br />I SA/Gl 936/15<br
+        /></td><td>2018-04-16<br />11:30<br />sala nr 3<br /></td><td>S.K.O. w Katowicach<br
+        />6115 - Podatek od nieruchomo\u015Bci<br /><br /><span class=\"firstLetter\">Podatek
+        od nieruchomo\u015Bci za 2004 r. po wznowieniu post\u0119powania podatkowego.</span><br
+        /></td><td>Teresa Randak<br />Bo\u017Cena Suleja-Klimczyk (spr.)<br />Anna
+        Tyszkiewicz-Zi\u0119tek<br /></td></tr><tr style=\"border-bottom-width: 2px;
+        border-bottom-style: double; border-top: none;\"><td colspan=\"4\" style=\"text-align:
+        center; color: #F00; border-top: none;\">Zdj\u0119to z wokandy</td></tr><tr><td>IV<br
+        />IV SA/Gl 633/17<br /></td><td>2018-04-16<br />11:30<br />sala nr 7<br /></td><td>S.K.O.
+        w Katowicach<br />6324 - Inne<br /><br /><span class=\"firstLetter\">Op\u0142ata
+        za pobyt dziecka w pieczy zast\u0119pczej</span><br /></td><td>Tadeusz Michalik<br
+        />Beata Kalaga-Gajewska<br />Beata Kozicka (spr.)<br /></td></tr><tr style=\"border-bottom-width:
+        2px; border-bottom-style: double; border-top: none;\"><td colspan=\"4\" style=\"text-align:
+        center; color: #F00; border-top: none;\"><br /></td></tr><tr><td>I<br />I
+        SA/Gl 318/16<br /></td><td>2018-04-16<br />12:00<br />sala nr 3<br /></td><td>S.K.O.
+        w Katowicach<br />6115 - Podatek od nieruchomo\u015Bci<br /><br /><span class=\"firstLetter\">Podatek
+        od nieruchomo\u015Bci za 2010 r.</span><br /></td><td>Teresa Randak<br />Pawe\u0142
+        Kornacki<br />Dorota Koz\u0142owska (spr.)<br /></td></tr><tr style=\"border-bottom-width:
+        2px; border-bottom-style: double; border-top: none;\"><td colspan=\"4\" style=\"text-align:
+        center; color: #F00; border-top: none;\"><br /></td></tr><tr><td>III<br />III
+        SA/Gl 5/18<br /></td><td>2018-04-16<br />12:00<br />sala nr 5<br /></td><td>Dyrektor
+        Izby Administracji Skarbowej w Katowicach<br />6110 - Podatek od towar\xF3w
+        i us\u0142ug; Podatek od towar\xF3w i us\u0142ug<br /><br /><span class=\"firstLetter\"></span><br
+        /></td><td>Krzysztof Kandut (spr.)<br /><br /><span style=\"color: #F00;\">PUBLIKACJA</span></td></tr><tr
+        style=\"border-bottom-width: 2px; border-bottom-style: double; border-top:
+        none;\"><td colspan=\"4\" style=\"text-align: center; color: #F00; border-top:
+        none;\"><br /></td></tr><tr><td>III<br />III SA/Gl 807/17<br /></td><td>2018-04-16<br
+        />12:00<br />sala nr 5<br /></td><td>Dyrektor Izby Administracji Skarbowej
+        w Katowicach<br />6110 - Podatek od towar\xF3w i us\u0142ug; Podatek od towar\xF3w
+        i us\u0142ug; Podatek od towar\xF3w i us\u0142ug<br /><br /><span class=\"firstLetter\"></span><br
+        /></td><td>Iwona Wiesner (spr.)<br /><br /><span style=\"color: #F00;\">PUBLIKACJA</span></td></tr><tr
+        style=\"border-bottom-width: 2px; border-bottom-style: double; border-top:
+        none;\"><td colspan=\"4\" style=\"text-align: center; color: #F00; border-top:
+        none;\"><br /></td></tr><tr><td>I<br />I SA/Gl 193/16<br /></td><td>2018-04-16<br
+        />12:30<br />sala nr 3<br /></td><td>Dyrektor Izby Skarbowej w Katowicach<br
+        />6112 - Podatek dochodowy od os\xF3b fizycznych<br /><br /><span class=\"firstLetter\">Podatek
+        dochodowy od os\xF3b fizycznych za 2009 r.</span><br /></td><td>Dorota Koz\u0142owska
+        (spr.)<br />Beata Machci\u0144ska<br />Teresa Randak<br /></td></tr><tr style=\"border-bottom-width:
+        2px; border-bottom-style: double; border-top: none;\"><td colspan=\"4\" style=\"text-align:
+        center; color: #F00; border-top: none;\"><br /></td></tr><tr><td>III<br />III
+        SA/Gl 868/17<br /></td><td>2018-04-16<br />12:30<br />sala nr 5<br /></td><td>Dyrektor
+        Izby Administracji Skarbowej w Katowicach<br />6110 - Podatek od towar\xF3w
+        i us\u0142ug; Podatek od towar\xF3w i us\u0142ug<br /><br /><span class=\"firstLetter\"></span><br
+        /></td><td>Magdalena Jankiewicz (spr.)<br /><br /><span style=\"color: #F00;\">PUBLIKACJA</span></td></tr><tr
+        style=\"border-bottom-width: 2px; border-bottom-style: double; border-top:
+        none;\"><td colspan=\"4\" style=\"text-align: center; color: #F00; border-top:
+        none;\"><br /></td></tr><tr><td>IV<br />IV SA/Gl 841/17<br /></td><td>2018-04-16<br
+        />12:45<br />sala nr 7<br /></td><td>Dyrektor \u015Al\u0105skiego Oddzia\u0142u
+        Wojew\xF3dzkiego Narodowego Funduszu  Zdrowia w Katowicach<br />652 - Inne;
+        Inne<br /><br /><span class=\"firstLetter\"></span><br /></td><td>Marzanna
+        Sa\u0142uda (spr.)<br /><br /><span style=\"color: #F00;\">PUBLIKACJA</span></td></tr><tr
+        style=\"border-bottom-width: 2px; border-bottom-style: double; border-top:
+        none;\"><td colspan=\"4\" style=\"text-align: center; color: #F00; border-top:
+        none;\"><br /></td></tr></table><script>\r\n\t$(document).ready(function()
+        {\r\n\t   $(\"#data_posiedzenia\").datepicker();\r\n\t   $(\"#data_posiedzenia_do\").datepicker();\r\n\t
+        \  \r\n\t   $(\"#wyczysc\").click(function(){\r\n\t\t\t$(\"#sygnatura\").val(\"\");\r\n\t\t\t$(\"#data_posiedzenia\").val(\"2018-04-16\");\r\n\t\t\t$(\"#data_posiedzenia_do\").val(\"2018-04-16\");\r\n\t\t\t$(\"#sala_rozpraw\").val(\"---\");\r\n\t\t\t$(\"#wydzial_orzeczniczy\").val(\"---\");\r\n\t\t\t$(\"#symbol\").val(\"\");\r\n\t\t\t$(\"#opis\").val(\"\");\r\n\t\t\t$(\"#sortowanie\").val(\"3\");\r\n\t
+        \  });\r\n\t });\r\n</script>\r\n<p>\r\n\t\t\r\n\t</div>\r\n\t</div>\r\n\t<div
+        class=\"pageFooter overflowFix clearFix\">\r\n\t\t<div class=\"c8020\"> \r\n\t\t\tIlo\u015B\u0107
+        wizyt na stronie: 53349\t\t\r\n\t\t\t<div class=\"c8020Right\">\r\n\t\t\t\r\n\t\t\t\t<ul
+        class=\"noList floatRight\">\r\n\t\t\t\t\t<li class=\"floatLeft\"><a href=\"#\"
+        class=\"printIcon\" title=\"Drukuj stron\u0119\" id=\"printButton\"></a></li>\r\n\t\t\t\t\t<li
+        class=\"floatLeft marginRight5\"><a href=\"#sendToFriendForm\" class=\"sendToFriendIcon\"
+        title=\"Pole\u0107 t\u0119 stron\u0119 znajomemu\"></a></li>\r\n\t\t\t\t</ul>\r\n\t\t\t\r\n\t\t\t</div>\t\t\r\n\t\t\t<div
+        class=\"clearFix\">\r\n\t\t\t\t<a href=\" javascript:history.go(-1)\" class=\"pageBack\">Powr\xF3t
+        do poprzedniej strony \xBB</a>\r\n\t\t\t</div>\r\n\t\t</div>\r\n\t</div>\r\n\t\r\n\r\n\t\r\n\t\t\t\t\t<div
+        class=\"hidden\">\r\n\r\n\t\t\t\t\t\t<div class=\"sendToFriendForm\" id=\"sendToFriendForm\">\r\n\r\n\t\t\t\t\t\t\t<div
+        class=\"sendToFriendFormHeader\">Pole\u0107 stron\u0119 znajomemu</div><br/>\r\n\r\n\t\t\t\t\t\t\t<div
+        id=\"SendToFriendForm_Notice_2932DF6885A7509A6959E04C1F0CB290\"></div>\r\n\r\n\t\t\t\t\t\t\t<form
+        name=\"SendToFriendForm_2932DF6885A7509A6959E04C1F0CB290\" id=\"SendToFriendForm_2932DF6885A7509A6959E04C1F0CB290\"
+        method=\"post\">\r\n\r\n\t\t\t\t\t\t\t\t<div class=\"formLine\">\r\n\t\t\t\t\t\t\t\t\t<label
+        class=\"required\">Przedstaw si\u0119</label>\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t<input
+        type=\"text\" name=\"SendToFriendForm_Name_2932DF6885A7509A6959E04C1F0CB290\"
+        id=\"SendToFriendForm_Name_2932DF6885A7509A6959E04C1F0CB290\" value=\"\" maxlength=\"255\"/>\r\n\t\t\t\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div
+        class=\"formLine\">\r\n\t\t\t\t\t\t\t\t\t<label class=\"required\">Adres e-mail
+        znajomego</label>\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t<input type=\"text\" name=\"SendToFriendForm_Email_2932DF6885A7509A6959E04C1F0CB290\"
+        id=\"SendToFriendForm_Email_2932DF6885A7509A6959E04C1F0CB290\" value=\"\"
+        maxlength=\"255\"/>\r\n\t\t\t\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t<div
+        class=\"formLine\">\r\n\t\t\t\t\t\t\t\t\t<label>Dodatkowa wiadomo\u015B\u0107</label>\r\n\t\t\t\t\t\t\t\t\t<textarea
+        name=\"SendToFriendForm_Message_2932DF6885A7509A6959E04C1F0CB290\" id=\"SendToFriendForm_Message_2932DF6885A7509A6959E04C1F0CB290\"
+        ></textarea>\r\n\t\t\t\t\t\t\t\t</div>\r\n\r\n                                <div
+        class=\"formLine\">\r\n                                    <label class=\"required\">Captcha</label>\r\n
+        \                                   <div class=\"SendToFriendFormRecaptcha\"
+        id=\"SendToFriendFormRecaptchaDiv\"></div>\r\n                                </div>\r\n\r\n
+        \                               \r\n\t\t\t\t<input type=\"hidden\" name=\"SendToFriendForm_Recaptcha_2932DF6885A7509A6959E04C1F0CB290\"
+        id=\"SendToFriendForm_Recaptcha_2932DF6885A7509A6959E04C1F0CB290\" value=\"\"
+        />\r\n\t\t\t\r\n\r\n\t\t\t\t\t\t\t\t<div class=\"formLine\">\r\n\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t<input
+        type=\"submit\" name=\"SendToFriendForm_Send_2932DF6885A7509A6959E04C1F0CB290\"
+        id=\"SendToFriendForm_Send_2932DF6885A7509A6959E04C1F0CB290\" value=\"Wy\u015Blij\"
+        class=\"sendToFriendFormButton\"/>\r\n\t\t\t\r\n\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t</form>\r\n\r\n\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t</div>\r\n\t\t\t\t\r\n\t\t\t\t\t<div
+        id=\"bootstrap-modal-sendToFriendForm\" class=\"modal fade bs-example-modal-lg\"
+        tabindex=\"-1\" role=\"dialog\" aria-hidden=\"true\">\r\n\t\t\t\t\t\t<div
+        class=\"modal-dialog modal-lg\">\r\n\t\t\t\t\t\t\t<div class=\"modal-content\">\r\n\t\t\t\t\t\t\t
+        \   <div class=\"sendToFiendFormModalClose\"></div>\r\n\t\t\t\t\t\t\t\t<div
+        class=\"sendToFriendForm\" style=\"width:100%;\" id=\"bootstrapsendToFriendForm\">\r\n\t\t\t\t\t\t\t\t\t<div
+        class=\"sendToFriendFormHeader\">Pole\u0107 stron\u0119 znajomemu</div><br/>\r\n\t\t\t\t\t\t\t\t\t<div
+        id=\"SendToFriendFormBootstrap_Notice_bootstrap_2932DF6885A7509A6959E04C1F0CB290\"></div>\r\n\t\t\t\t\t\t\t\t\t<form
+        name=\"SendToFriendFormBootstrap_bootstrap_2932DF6885A7509A6959E04C1F0CB290\"
+        id=\"SendToFriendFormBootstrap_bootstrap_2932DF6885A7509A6959E04C1F0CB290\"
+        method=\"post\">\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"formLine  form-group\">\r\n\t\t\t\t\t\t\t\t\t\t\t<label
+        class=\"required\">Przedstaw si\u0119</label>\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t<input
+        type=\"text\" name=\"SendToFriendFormBootstrap_Name_2932DF6885A7509A6959E04C1F0CB290\"
+        id=\"SendToFriendFormBootstrap_Name_2932DF6885A7509A6959E04C1F0CB290\" value=\"\"
+        maxlength=\"255\"/>\r\n\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t<div
+        class=\"formLine  form-group\">\r\n\t\t\t\t\t\t\t\t\t\t\t<label class=\"required\">Adres
+        e-mail znajomego</label>\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t<input type=\"text\"
+        name=\"SendToFriendFormBootstrap_Email_2932DF6885A7509A6959E04C1F0CB290\"
+        id=\"SendToFriendFormBootstrap_Email_2932DF6885A7509A6959E04C1F0CB290\" value=\"\"
+        maxlength=\"255\"/>\r\n\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t\t<div
+        class=\"formLine  form-group\">\r\n\t\t\t\t\t\t\t\t\t\t\t<label>Dodatkowa
+        wiadomo\u015B\u0107</label>\r\n\t\t\t\t\t\t\t\t\t\t\t<textarea name=\"SendToFriendFormBootstrap_Message_2932DF6885A7509A6959E04C1F0CB290\"
+        id=\"SendToFriendFormBootstrap_Message_2932DF6885A7509A6959E04C1F0CB290\"
+        ></textarea>\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t\t\t\t\t\t<div
+        class=\"formLine\">\r\n                                            <label
+        class=\"required\">Captcha</label>\r\n                                            <div
+        class=\"SendToFriendFormRecaptcha\" id=\"SendToFriendFormBootstrapRecaptchaDiv\"></div>\r\n
+        \                                       </div>\r\n\r\n                                        \r\n\t\t\t\t<input
+        type=\"hidden\" name=\"SendToFriendFormBootstrap_Recaptcha_2932DF6885A7509A6959E04C1F0CB290\"
+        id=\"SendToFriendFormBootstrap_Recaptcha_2932DF6885A7509A6959E04C1F0CB290\"
+        value=\"\" />\r\n\t\t\t\r\n\r\n\t\t\t\t\t\t\t\t\t\t<div class=\"formLine  form-group
+        clearfix\" style=\"padding-top:20px;\">\r\n\t\t\t\t\t\t\t\t\t\t\t\r\n\t\t\t\t<input
+        type=\"submit\" name=\"SendToFriendFormBootstrap_Send_2932DF6885A7509A6959E04C1F0CB290\"
+        id=\"SendToFriendFormBootstrap_Send_2932DF6885A7509A6959E04C1F0CB290\" value=\"Wy\u015Blij\"
+        class=\"sendToFriendFormButton btn btn-primary\"/>\r\n\t\t\t\r\n\t\t\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t\t\t</form>\r\n\t\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t\t</div>\r\n\t\t\t\t\t\t</div>\r\n\t\t\t\t\t</div>\r\n\r\n\t\t\t\t\t<script
+        type=\"text/javascript\">\r\n\r\n                        var SendToFriend;\r\n\r\n\t\t\t\t\t\t$(document).ready(function()\r\n\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\tif
+        (typeof(Request) == \"undefined\")\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\tloadScript(\"/cms/assets/js/request.js\",
+        function(){\r\n\t\t\t\t\t\t\t\t\tif (typeof(CMSSendToFriend) == \"undefined\")\r\n\t\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\tloadScript(\"/cms/assets/js/bootstrap.CMSSendToFriend.js\",
+        function(){\r\n\t\t\t\t\t\t\t\t\t\t\tSendToFriend=new CMSSendToFriend('sendToFriendForm','2932DF6885A7509A6959E04C1F0CB290','http://www.gliwice.wsa.gov.pl/56/elektroniczny-terminarz-posiedzen-etp.html',\"6LdDMQoUAAAAAFWwxj--YCgTFusRm01Kb6gne6ry\",\"https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit\");\r\n\t\t\t\t\t\t\t\t\t\t\tSendToFriend.create();\r\n\t\t\t\t\t\t\t\t\t\t\tSendToFriend.loadRecaptcha();\r\n\t\t\t\t\t\t\t\t\t\t});\r\n\t\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\t\tSendToFriend=new
+        CMSSendToFriend('sendToFriendForm','2932DF6885A7509A6959E04C1F0CB290','http://www.gliwice.wsa.gov.pl/56/elektroniczny-terminarz-posiedzen-etp.html',\"6LdDMQoUAAAAAFWwxj--YCgTFusRm01Kb6gne6ry\",\"https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit\");\r\n\t\t\t\t\t\t\t\t\t\tSendToFriend.create();\r\n\t\t\t\t\t\t\t\t\t\tSendToFriend.loadRecaptcha();\r\n\t\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\t});\r\n\r\n\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\tif
+        (typeof(CMSSendToFriend) == \"undefined\")\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\tloadScript(\"/cms/assets/js/bootstrap.CMSSendToFriend.js\",
+        function(){\r\n\t\t\t\t\t\t\t\t\t\tSendToFriend=new CMSSendToFriend('sendToFriendForm','2932DF6885A7509A6959E04C1F0CB290','http://www.gliwice.wsa.gov.pl/56/elektroniczny-terminarz-posiedzen-etp.html',\"6LdDMQoUAAAAAFWwxj--YCgTFusRm01Kb6gne6ry\",\"https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit\");\r\n\t\t\t\t\t\t\t\t\t\tSendToFriend.create();\r\n\t\t\t\t\t\t\t\t\t\tSendToFriend.loadRecaptcha();\r\n\t\t\t\t\t\t\t\t\t});\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t\telse\r\n\t\t\t\t\t\t\t\t{\r\n\t\t\t\t\t\t\t\t\tSendToFriend=new
+        CMSSendToFriend('sendToFriendForm','2932DF6885A7509A6959E04C1F0CB290','http://www.gliwice.wsa.gov.pl/56/elektroniczny-terminarz-posiedzen-etp.html',\"6LdDMQoUAAAAAFWwxj--YCgTFusRm01Kb6gne6ry\",\"https://www.google.com/recaptcha/api.js?onload=CaptchaCallback&render=explicit\");\r\n\t\t\t\t\t\t\t\t\tSendToFriend.create();\r\n\t\t\t\t\t\t\t\t\tSendToFriend.loadRecaptcha();\r\n\t\t\t\t\t\t\t\t}\r\n\t\t\t\t\t\t\t}\r\n\r\n\t\t\t\t\t\t});\r\n\r\n\t\t\t\t\t\tvar
+        CaptchaCallback = function()\r\n\t\t\t\t\t\t{\r\n                            SendToFriend.renderRecaptcha();\r\n
+        \                       };\r\n\r\n\t\t\t\t\t</script>\r\n\t\t\t\t\t\r\n\t\t</div>\r\n\t</div>\r\n\t\t\r\n\t\r\n\t\n\t\t\n\t\t\t<div
+        class=\"bipFooter\">\n\t\t\t\n\t\t\t\t<div class=\"bipFooterTop\">\n\t\t\t\t\t\n\t\t\t\t</div>\n\t\t\t\n\t\t\t\t<div
+        class=\"bipFooterMiddle bipMain boxCenter clearFix overflowFix\">\n\t\t\t\t\n\t\t\t\t\t<div
+        class=\"footerLogo\"></div>\n\t\t\t\t\n\t\t\t\t\t\t<div class=\"floatLeftBip\">\n\t\t\t\t\t\t\t\t\t<p>\n
+        \t\t\t\t\t\t\t\t\t\tWojew\xF3dzki S\u0105d Administracyjny w Gliwicach<br/>\t\n\t\t\t\t\t\t\t\t\t\t44-101
+        Gliwice<br/>\t\n\t\t\t\t\t\t\t\t\t\tul. Prymasa Stefana Wyszy\u0144skiego
+        2\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div class=\"floatLeftBip\">\n\t\t\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t\t\t\ttel.:
+        32 238 98 30<br/>\n\t\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\te-mail: <span
+        class=\"liam12\"></span><script  type=\"text/javascript\">/* <![CDATA[ */$(document).ready(function(){var
+        tekst12= \"3c6120687265663d226d61696c746f3a696e666f40676c69776963652e7773612e676f762e706c223e696e666f40676c69776963652e7773612e676f762e706c3c2f613e\";var
+        i12 = 0;var len12 = tekst12.length, result12 = \"\";for(; i12 < len12; i12+=2)result12
+        += '%' + tekst12.substr(i12, 2);$(\".liam12\").html(decodeURIComponent(result12));});/*
+        ]]> */</script><br/>\n\t\t\t\t\t\t\t\t\t\t<a href=\"http://gliwice.wsa.gov.pl/\">http://gliwice.wsa.gov.pl/</a>\n\t\t\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div
+        class=\"floatRightBip floatRight\">\n\t\t\t\t\t\t\t<p>\n\t\t\t\t\t\t\t<!--Projekt
+        i realizacja: <br/>\n\t\t\t\t\t\t\t<a href=\"http://netkoncept.com\" class=\"footerCopy\">&copy;
+        2011-2018&nbsp;<span class=\"footerCopyNet\">net</span><span class=\"footerCopyKoncept\">koncept.com</span></a>
+        - sky<span class=\"footerLogoCMS\">cms</span><br/>-->\n\t\t\t\t\t\t\t<a class=\"cookie\"
+        title=\"Polityka prywatno\u015Bci\" href=\"http://www.gliwice.wsa.gov.pl/48/polityka-prywatnosci.html\">Polityka
+        prywatno\u015Bci</a>\n\t\t\t\t\t\t\t</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div
+        class=\"pasek_cookie\">\n\t\t\t\t<div class=\"obszar_komunikatu\">\n\t\t\t\t\tNasza
+        strona u\u017Cywa plik\xF3w cookies. Przeczytaj <a href=\"http://www.gliwice.wsa.gov.pl/48/Polityka_prywatnosci.html\">Polityk\u0119
+        prywatno\u015Bci</a><span id=\"zamknij_cookie\">zamknij pasek</span>\n\t\t\t\t</div>\n\t\t\t</div>\t\n\t<script
+        type=\"text/javascript\">\n\n\t\t\t\t$(document).ready(function() \n\t\t\t\t{
+        \n\t\t\t\t\t//cookie\n\t\t\t\t\tfunction setCookie(name, value, expires, path,
+        domain, secure){\n\t\t\t\t\t\t\tdocument.cookie=name+'='+escape(value||'')+\n\t\t\t\t\t\t\t(expires?';expires='+new
+        Date(+new Date()+expires*864e5).toGMTString():'')+\n\t\t\t\t\t\t\t(path?';path='+path:'')+\n\t\t\t\t\t\t\t(domain?';domain='+domain:'')+\n\t\t\t\t\t\t\t(secure?';secure':'');\n\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\tfunction
+        ReadCookie(cookieName) {\n\t\t\t\t\t\t\tvar theCookie=\" \"+document.cookie;\n\t\t\t\t\t\t\tvar
+        ind=theCookie.indexOf(\" \"+cookieName+\"=\");\n\t\t\t\t\t\t\tif (ind==-1)
+        ind=theCookie.indexOf(\";\"+cookieName+\"=\");\n\t\t\t\t\t\t\tif (ind==-1
+        || cookieName==\"\") return \"\";\n\t\t\t\t\t\t\tvar ind1=theCookie.indexOf(\";\",ind+1);\n\t\t\t\t\t\t\tif
+        (ind1==-1) ind1=theCookie.length; \n\t\t\t\t\t\t\treturn unescape(theCookie.substring(ind+cookieName.length+2,ind1));\n\t\t\t\t\t}\n\t\t\t\t\t\n\t\t\t\t\tif
+        (ReadCookie('komunikat')==1) {\n\t\t\t\t\t\t$(\".pasek_cookie\").css(\"display\",\"none\");\n\t\t\t\t\t}\n\t\t\t\t\telse
+        {\n\t\t\t\t\t\t$(\".pasek_cookie\").css(\"display\",\"block\");\n\t\t\t\t\t}\n\t\t\t\t\t\t\n\t\t\t\t\t$(\"#zamknij_cookie\").click(function
+        () {\n\t\t\t\t\t\t$(\".pasek_cookie\").css(\"display\",\"none\");\n\t\t\t\t\t\tsetCookie('komunikat'
+        , 1, 12, '/');\n\t\t\t\t\t});\n\t\t\t\t\t\n\t\t\t\t\tprintPage('#printButton','#printArea');\n\t\t\t\t\tfancybox();
+        \n\t\t\t\t\t\n\t\t\t   }); \n\t\t\t   \n\t\t\t\t$('.menuLeft li.menuElementSelected
+        > ul').css('display','block');\n\t\t\t\t$('.menuLeft a').bind('click',function(event)
+        { if($(this).attr('href')=='#') event.preventDefault(); $(this).next().fadeToggle(300,'linear');
+        });\n\t</script>\n\n\n\n\t\r\n\t\t\t\t<script type='text/javascript'>\r\n\t\t\t\t\t
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\r\n\t\t\t\t\t
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\r\n\t\t\t\t\t
+        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\r\n\t\t\t\t\t
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');\r\n\r\n\t\t\t\t\t
+        ga('create', 'UA-26930904-1', 'auto');\r\n\t\t\t\t\t ga('send', 'pageview');\r\n\t\t\t\t</script>\r\n\r\n\t\t\t</body>\n</html>"}
+    headers:
+      Access-Control-Allow-Headers: ['origin, x-requested-with, content-type']
+      Access-Control-Allow-Methods: ['PUT, GET, POST, DELETE, OPTIONS']
+      Access-Control-Allow-Origin: ['*']
+      Cache-Control: ['no-store, no-cache, must-revalidate, post-check=0, pre-check=0']
+      Connection: [Keep-Alive]
+      Content-Type: [text/html; charset=utf-8]
+      Date: ['Mon, 16 Apr 2018 02:51:59 GMT']
+      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
+      Keep-Alive: ['timeout=5, max=95']
+      Pragma: [no-cache]
+      Server: [Apache]
+      Set-Cookie: [cms_public=3e5a7nm7t1mlbm1do3kl5a4f72; path=/, 'LanguageId=1; expires=Tue,
+          17-Apr-2018 02:51:59 GMT; path=/', 'PageCounter=56; expires=Tue, 17-Apr-2018
+          02:51:59 GMT; path=/', 'Counter=1; expires=Tue, 17-Apr-2018 02:51:59 GMT;
+          path=/']
+      Vary: [Accept-Encoding]
+      content-length: ['29069']
+    status: {code: 200, message: OK}
+version: 1

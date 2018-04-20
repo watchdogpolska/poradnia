@@ -9,26 +9,26 @@ install_devs:
 	pip install -r requirements/test.txt
 
 test:
-	time python poradnia/manage.py test --keepdb
+	time python manage.py test --keepdb
 
 makemigrations:
-	python poradnia/manage.py makemigrations
+	python manage.py makemigrations
 
 migrate:
-	python poradnia/manage.py migrate
+	python manage.py migrate
 
 test_parallel:
-	time python poradnia/manage.py test --keepdb --parallel $(grep -c ^processor /proc/cpuinfo)
+	time python manage.py test --keepdb --parallel $(grep -c ^processor /proc/cpuinfo)
 
 coverage:
-	coverage run --branch --omit=*/site-packages/* poradnia/manage.py test --verbosity=2 --keepdb
+	coverage run --branch --omit=*/site-packages/* manage.py test --verbosity=2 --keepdb
 
 coverage_html: coverage
 	coverage html
 	x-www-browser htmlcov/index.html
 
 server:
-	python poradnia/manage.py runserver
+	python manage.py runserver
 
 drop_test_databases:
-	echo "drop database test_poradnia; drop database test_poradnia_1; drop database test_poradnia_2; drop database test_poradnia_3; drop database test_poradnia_4;" | python poradnia/manage.py dbshell
+	echo "drop database test_poradnia; drop database test_poradnia_1; drop database test_poradnia_2; drop database test_poradnia_3; drop database test_poradnia_4;" | python manage.py dbshell

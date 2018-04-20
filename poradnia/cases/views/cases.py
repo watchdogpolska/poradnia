@@ -17,6 +17,7 @@ from poradnia.cases.forms import (CaseCloseForm, CaseForm,
                                   CaseGroupPermissionForm)
 from poradnia.cases.models import Case
 from poradnia.events.forms import EventForm
+from poradnia.judgements.views import CourtCaseForm
 from poradnia.letters.forms import AddLetterForm
 from poradnia.letters.helpers import AttachmentFormSet
 from poradnia.records.models import Record
@@ -62,6 +63,9 @@ class CaseDetailView(SingleObjectPermissionMixin, SelectRelatedMixin, DetailView
             forms['event'] = {'title': _('Event'),
                               'form': EventForm(user=self.request.user,
                                                 case=self.object)}
+        forms['court'] = {'title': _('Court Case'),
+                          'form': CourtCaseForm(user=self.request.user,
+                                                      case=self.object)}
         return forms
 
     def get_next_and_prev(self):
