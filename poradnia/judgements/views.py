@@ -51,7 +51,7 @@ class CourtCaseCreateView(RaisePermissionRequiredMixin, UserFormKwargsMixin, Cre
         return self.case
 
     def get_form_kwargs(self):
-        kw = super().get_form_kwargs()
+        kw = super(CourtCaseCreateView, self).get_form_kwargs()
         kw['case'] = self.case
         return kw
 
