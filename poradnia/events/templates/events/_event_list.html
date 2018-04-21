@@ -32,7 +32,7 @@
             </tr>
         </table>
         <div class="panel-body">
-            <p>{{ object.text }}</p>
+            <p>{{ object.text | linebreaks }}</p>
         </div>
         <div class="panel-footer">
             <i class="fa fa-user"></i> {{ object.created_by }} &bull;

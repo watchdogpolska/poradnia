@@ -68,6 +68,7 @@ LOCAL_APPS = (
     'poradnia.feedback_custom',
     'poradnia.tasty_feedback',
     'poradnia.navsearch',
+    'poradnia.judgements'
     # Your stuff: custom apps go here
 )
 
@@ -138,8 +139,12 @@ MANAGERS = ADMINS
 # DATABASE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': env.db(default='sqlite://:memory:'),
+    'default': env.db(default='sqlite://:memory:')
 }
+
+DATABASES['default']['TEST_CHARSET'] = "utf8"
+DATABASES['default']['TEST_COLLATION'] = "utf8_general_ci"
+
 # END DATABASE CONFIGURATION
 
 # CACHING

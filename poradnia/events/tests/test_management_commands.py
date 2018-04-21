@@ -4,7 +4,7 @@ from django.core import mail, management
 from django.test import TestCase
 from django.utils import timezone
 
-from poradnia.cases.factories import CaseFactory
+from poradnia.cases.factories import CaseFactory, CaseUserObjectPermissionFactory
 from poradnia.events.factories import EventFactory
 from poradnia.events.models import Reminder
 from poradnia.users.factories import ProfileFactory, StaffFactory
@@ -22,6 +22,7 @@ class RemindersCommandsTestCase(TestCase):
         ProfileFactory(user=self.user, event_reminder_time=3)
         self.case = CaseFactory(created_by=self.user)
         self.stdout = StringIO()
+
     def test_triggering_reminders(self):
 
         # event in 2 and 4 days from now
@@ -48,6 +49,18 @@ class RemindersCommandsTestCase(TestCase):
         self.assertIn(str(event_to_trigger.case.id), email.subject)
         self.assertIn(event_to_trigger.text, email.body)
         self.assertIn(str(event_to_trigger.case), email.body)
+
+    def test_sending_notification_if_no_profile(self):
+        cuop = CaseUserObjectPermissionFactory(user__profile=None,
+                                               user__is_staff=True,
+                                               content_object=self.case)
+        event_to_trigger = EventFactory(case=self.case, time=timezone.now())
+        management.call_command('send_event_reminders', stdout=self.stdout)
+
+        self.assertTrue(cuop.user.reminder_set.filter(event=event_to_trigger).exists())
+
+        email = mail.outbox.pop()
+        self.assertIn(cuop.user.email, email.recipients())
 
     def test_send_notification_once_to_user(self):
         event_to_trigger = EventFactory(case=self.case, time=timezone.now() + timedelta(days=2))

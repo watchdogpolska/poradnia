@@ -1,0 +1,102 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2018-04-16 04:56+0200\n"
+"PO-Revision-Date: 2018-04-16 04:58+0200\n"
+"Language: pl\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
+"%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
+"%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"Language-Team: \n"
+"X-Generator: Poedit 1.8.7.1\n"
+
+#: admin.py:14
+msgid "None"
+msgstr "Brak"
+
+#: models.py:18 models.py:36 models.py:47
+#: templates/judgements/_courtcase_list.html:10
+msgid "Court"
+msgstr "Sąd"
+
+#: models.py:19
+msgid "Active status"
+msgstr "Status aktywności"
+
+#: models.py:22 models.py:72
+msgid "Parser key"
+msgstr "Klucz parsera"
+
+#: models.py:23
+msgid "Identifier of parser"
+msgstr "Identyfikator parsera"
+
+#: models.py:37
+msgid "Courts"
+msgstr "Sądy"
+
+#: models.py:50 templates/judgements/_courtcase_list.html:14
+msgid "Court signature"
+msgstr "Sygnatura sądowa"
+
+#: models.py:53
+msgid "Created by"
+msgstr "Utworzony przez"
+
+#: models.py:55
+msgid "Modified by"
+msgstr "Zmodyfikowany przez"
+
+#: models.py:61 models.py:68
+msgid "Court case"
+msgstr "Sprawa sądowa"
+
+#: models.py:62
+msgid "Court cases"
+msgstr "Sprawy sądowe"
+
+#: models.py:70
+msgid "Event"
+msgstr "Wydarzenie"
+
+#: models.py:75
+msgid "Court session"
+msgstr "Rozprawa sądowa"
+
+#: models.py:76
+msgid "Court sessions"
+msgstr "Rozprawy sądowe"
+
+#: templates/judgements/_courtcase_list.html:29
+#: templates/judgements/courtcase_form.html:8
+msgid "Edit"
+msgstr "Edytuj"
+
+#: templates/judgements/courtcase_form.html:6
+msgid "Cases"
+msgstr "Sprawy"
+
+#: views.py:63
+#, python-brace-format
+msgid "{0} created!"
+msgstr "{0} utworzony!"
+
+#: views.py:76
+#, python-brace-format
+msgid "{0} updated!"
+msgstr "{0} zaktualizowany!"
+
+#: views.py:85
+#, python-brace-format
+msgid "{0} deleted!"
+msgstr "{0} usunięty!"
