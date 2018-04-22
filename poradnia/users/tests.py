@@ -5,7 +5,7 @@ import json
 from atom.mixins import AdminTestCaseMixin
 from django.core import mail
 from django.test import RequestFactory
-from django.utils import timezone
+from django.utils import timezone, six
 from django.utils.six import text_type
 from guardian.shortcuts import assign_perm, get_perms
 from test_plus.test import TestCase
@@ -358,9 +358,12 @@ class UserAutocompleteViewTestCase(TestCase):
         request = self.factory.get("?q={}".format(self.regular_user.username))
         request.user = self.staff_user
         assign_perm('users.can_view_other', self.staff_user)
-        response = json.loads(UserAutocomplete.as_view()(request=request).getvalue())
-        self.assertEqual(len(response['results']), 1)
-        self.assertEqual(response['results'][0]['text'], text_type(self.regular_user))
+        response = UserAutocomplete.as_view()(request=request).getvalue()
+        if six.PY3:
+            response = response.decode('utf-8')
+        response_json = json.loads(response)
+        self.assertEqual(len(response_json['results']), 1)
+        self.assertEqual(response_json['results'][0]['text'], text_type(self.regular_user))
 
     def test_staff_user_with_permission_can_not_view_reqular_user(self):
         request = self.factory.get("?q={}".format(self.regular_user.username))

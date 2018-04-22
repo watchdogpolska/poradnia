@@ -1,9 +1,16 @@
 import string
 
 import factory.fuzzy
+from django.utils import six
 from django.utils.six import binary_type
 
-polish_letters = string.ascii_letters + binary_type('\xc4\x85\xc5\xbc\xc5\xba\xc4\x87\xc5\x84\xc3\xb3', 'utf-8').decode('utf-8')
+
+polish_letters = string.ascii_letters
+
+if six.PY3:
+    polish_letters += binary_type('\xc4\x85\xc5\xbc\xc5\xba\xc4\x87\xc5\x84\xc3\xb3', 'utf-8').decode('utf-8')
+else:
+    polish_letters = binary_type('\xc4\x85\xc5\xbc\xc5\xba\xc4\x87\xc5\x84\xc3\xb3').decode('utf-8')
 
 
 class FuzzyPolishText(factory.fuzzy.FuzzyText):
