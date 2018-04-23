@@ -330,8 +330,9 @@ class ValueListView(TimeMixin):
                                  key=self.kwargs['key'])
 
     def get_queryset(self):
-        return Value.objects.filter(time__date__lte=self.end,
-                                    time__date__gte=self.start,
+        # TODO: Debug why time__date__* make fails on TravisCI
+        return Value.objects.filter(time__lte=self.end,
+                                    time__gte=self.start,
                                     item=self.item).all()
 
 
