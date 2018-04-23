@@ -2,7 +2,7 @@ from datetime import timedelta
 
 from django.core.management import BaseCommand
 from django.utils import timezone
-
+from django.utils.six import text_type
 from poradnia.events.models import Reminder, Event
 
 
@@ -16,8 +16,8 @@ class Command(BaseCommand):
 
             for user in event.get_users_with_perms().filter(is_staff=True).select_related('profile').all():
                 if user.id in user_notified:
-                    self.stdout.write("Skip notification about {} to user {}".format(event,
-                                                                                     user))
+                    self.stdout.write(text_type("Skip notification about {} to user {}").format(event,
+                                                                                                user))
                     continue
                 self.event_for_user(event, user)
 
@@ -32,8 +32,8 @@ class Command(BaseCommand):
         notification_deadline = timedelta(days=deadline_days)
 
         if self.today + notification_deadline > event.time:
-            self.stdout.write("Sending notification about {} to user {}".format(event,
-                                                                                user))
+            self.stdout.write(text_type("Sending notification about {} to user {}").format(event,
+                                                                                           user))
 
             user.notify(actor=user,
                         verb='reminder',
