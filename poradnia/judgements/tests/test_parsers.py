@@ -1,13 +1,16 @@
 # -*- coding: utf-8 -*-
 # import inspect
+import datetime
 import inspect
 import os
 
 from django.test import TestCase
 from django.utils import six
+from pytz import timezone
 from vcr import VCR
 
 from poradnia.judgements.factories import CourtFactory
+from poradnia.judgements.parsers.gliwice import GliwiceETRParser
 from poradnia.judgements.registry import get_parser_keys
 
 try:
@@ -61,3 +64,10 @@ class ParserTestCaseMixin(TestCase):
         supported = set(get_parser_keys())
         for requirement in required_parsers:
             self.assertIn(requirement, supported, msg="Missing {}".format(requirement))
+
+    @my_vcr.use_cassette()
+    def test_parse_date_and_hours(self):
+        expected_time = datetime.datetime(2018, 4, 24, 9, 0, tzinfo=timezone('Europe/Warsaw'))
+        parser = CourtFactory(parser_key="WSA_Bialystok").get_parser()
+        session_row = next(parser.get_session_rows())
+        self.assertAlmostEqual(expected_time, session_row.datetime, delta=datetime.timedelta(seconds=1))

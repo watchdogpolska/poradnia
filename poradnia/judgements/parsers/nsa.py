@@ -12,6 +12,7 @@ from ..registry import register_parser
 
 class NSAETRParser(BaseParser):
     URL = 'http://www.nsa.gov.pl/ewokanda/'
+    HOUR_FIELD = 'Godz.'
     POST_DATA = {'data': '',
                  'do': '',
                  'kierunek': 'rosnaco',
@@ -27,13 +28,6 @@ class NSAETRParser(BaseParser):
         response = requests.post(self.URL, data=self.POST_DATA)
         response.raise_for_status()
         return response.text
-
-    def get_datetime(self, content):
-        try:
-            struct = strptime(content['Data'] + " " + content['Godz.'], "%Y-%m-%d %H:%M")
-        except ValueError:
-            struct = strptime(content['Data'], "%Y-%m-%d")
-        return datetime(*struct[:6]).replace(tzinfo=timezone('Europe/Warsaw'))
 
     def get_session_rows(self):
         content = self.get_content()
