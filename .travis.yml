@@ -10,7 +10,7 @@ cache:
 env:
   fast_finish: true
   global:
-    - DATABASE_URL="mysql://root:@localhost/test_poradnia"
+    - DATABASE_URL="mysql://root:@localhost/poradnia"
   matrix:
     - TOX_ENV=flake8
     - TOX_ENV=docs
@@ -21,6 +21,8 @@ matrix:
   allow_failures:
     - env: TOX_ENV=flake8
 
+before_install:
+  - .contrib/travis-ci/create-database.sh
 install:
   - pip install -U pip wheel
   - pip install tox

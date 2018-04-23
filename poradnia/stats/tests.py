@@ -707,7 +707,6 @@ class JSONValueListViewTestCase(TestCase):
 
     def test_output_contains_values(self):
         response = self.client.get(self.url).json()
-        sorted(self.values, key=lambda x: x.time)
         self.assertTrue(any(entry['value'] == self.values[0].value for entry in response['values']))
 
     def test_output_contains_item_name(self):
@@ -716,13 +715,15 @@ class JSONValueListViewTestCase(TestCase):
 
 
 class TestManagementCommand(TestCase):
+    def setUp(self):
+        self.stdout = StringIO()
+
     def test_command_no_raises_exception(self):
-        call_command('update_stats')
+        call_command('update_stats', stdout=self.stdout)
 
     def test_command_outputs(self):
-        out = StringIO()
-        call_command('update_stats', stdout=out)
-        output = out.getvalue()
+        call_command('update_stats', stdout=self.stdout)
+        output = self.stdout.getvalue()
         self.assertTrue(re.search("Registered .* new items", output))
         self.assertTrue(re.search("Registered .* values.", output))
 
