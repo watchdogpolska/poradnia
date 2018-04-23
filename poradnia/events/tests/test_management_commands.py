@@ -6,7 +6,6 @@ from django.utils import timezone
 
 from poradnia.cases.factories import CaseFactory, CaseUserObjectPermissionFactory
 from poradnia.events.factories import EventFactory
-from poradnia.events.models import Reminder
 from poradnia.users.factories import ProfileFactory, StaffFactory
 
 try:

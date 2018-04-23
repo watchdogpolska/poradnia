@@ -139,8 +139,13 @@ MANAGERS = ADMINS
 # DATABASE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': env.db(default='sqlite://:memory:'),
+    'default': env.db(default='sqlite://:memory:')
 }
+
+DATABASES['default']['TEST'] = {'CHARSET': "utf8mb4",
+                                'COLLATION': "utf8_general_ci"}
+DATABASES['default']['CHARSET'] = "utf8mb4"
+
 # END DATABASE CONFIGURATION
 
 # CACHING
