@@ -68,5 +68,6 @@ class ParserTestCaseMixin(TestCase):
     @my_vcr.use_cassette()
     def test_parse_date_and_hours(self):
         expected_time = datetime.datetime(2018, 4, 24, 9, 0, tzinfo=timezone('Europe/Warsaw'))
-        session_row = next(CourtFactory().get_parser().get_session_rows())
+        parser = CourtFactory(parser_key="WSA_Bialystok").get_parser()
+        session_row = next(parser.get_session_rows())
         self.assertAlmostEqual(expected_time, session_row.datetime, delta=datetime.timedelta(seconds=1))
