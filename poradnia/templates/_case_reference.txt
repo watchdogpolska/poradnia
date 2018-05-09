@@ -1,0 +1,1 @@
+Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl/{{target.get_absolute_url}}.

@@ -17,7 +17,7 @@ from guardian.shortcuts import (assign_perm, get_objects_for_user,
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
-from poradnia.template_mail.utils import send_tpl_email
+from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 
 try:
     from django.core.urlresolvers import reverse
@@ -327,9 +327,9 @@ def notify_new_case(sender, instance, created, **kwargs):
         User = get_user_model()
         users = User.objects.filter(notify_new_case=True).all()
         email = [x.email for x in users]
-        send_tpl_email('cases/email/case_new.html',
-                       recipient_list=email,
-                       context={'case': instance})
+        TemplateMailManager.send(TemplateKey.CASE_NEW,
+                                 recipient_list=email,
+                                 context={'case': instance})
 
 
 post_save.connect(notify_new_case, sender=Case, dispatch_uid="new_case_notify")

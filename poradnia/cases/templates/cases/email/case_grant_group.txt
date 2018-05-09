@@ -1,8 +1,6 @@
 {{actor}} w {{target}}: Nadano uprawnienia dla {{action_object}}
 Użytkownik/-ka {{actor}} nadał/-a dla {{action_object}} uprawnienia grupy {{action_target}} dla sprawy {{target}}
 
-Zapoznaj się z aktami sprawy pod adresem http://porady.siecobywatelska.pl/{{target.get_absolute_url}}.
-
-{% if email %} Prosimy, używaj adresu {{email}} do korespondencji w tej sprawie, dzięki temu wymiana korespondencji będzie sprawniejsza. Dziękujemy za współpracę.{% endif %}
-
+{% include '_case_reference.txt' %}
+{% include '_email_reference.txt' %}
 {% include '_email_signature.txt' %}

@@ -1,0 +1,13 @@
+<p>{{actor}} utworzył wydarzenie "{{target}}" w sprawie "{{target.case}}".</p>
+
+<p>Wydarzenie dotyczy:<p>
+
+<div>
+    <pre>
+{{ target.text }}
+    </pre>
+</div>
+
+{% include '_case_reference.html' %}
+{% include '_email_reference.html' %}
+{% include '_email_signature.html' %}

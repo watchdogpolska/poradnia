@@ -3,7 +3,7 @@ Szanowna Pani/Szanowny Panie {{user}},
 
 Informujemy, że pytanie zostało zarejestrowane w naszym systemie.
 
-Zgodnie z dostępnym na stronie „Regulaminem poradnictwa”, odpowiedź zostanie przygotowana przez nas zespół w terminie do 30 dni kalendarzowych, chyba że wymaga dochowania krótszego terminu (ponieważ dotyczy np. złożenia odwołania od decyzji lub wniosku o ponowne rozpatrzenie sprawy). W takiej sytuacji, zgodnie z regulaminem, mamy nadzieję, że zaznaczyli Państwo ten termin w temacie wiadomości.
+Zgodnie z dostępnym na stronie „Regulaminem poradnictwa”, odpowiedź zostanie przygotowana przez nasz zespół w terminie do 30 dni kalendarzowych, chyba że wymaga dochowania krótszego terminu (ponieważ dotyczy np. złożenia odwołania od decyzji lub wniosku o ponowne rozpatrzenie sprawy). W takiej sytuacji, zgodnie z regulaminem, mamy nadzieję, że zaznaczyli Państwo ten termin w temacie wiadomości.
 
 Z przesłanym pytaniem oraz dokumentami można zapoznać się poprzez naszą stronę internetową, która wymaga logowania http://porady.siecobywatelska.pl/{{case.get_absolute_url}}. Przez stronę można przesyłać dodatkowe dokumenty i pytania.
 

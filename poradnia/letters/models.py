@@ -118,6 +118,15 @@ class Letter(AbstractRecord):
     def is_done(self):
         return True if self.status == self.STATUS.done else False
 
+    def is_html(self):
+        return bool(self.html)
+
+    def render_as_html(self):
+        if self.is_html():
+            return self.html
+        else:
+            return "<pre>{text}</pre>".format(text=self.text)
+
     def get_edit_url(self):
         return reverse('letters:edit', kwargs={'pk': self.pk})
 

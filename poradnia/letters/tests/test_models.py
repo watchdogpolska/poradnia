@@ -188,4 +188,20 @@ class ReceiveEmailTestCase(TestCase):
 
         letter = message.letter_set.all()[0]
         letter.refresh_from_db()
+        #xaxa
         self.assertIsNotNone(letter.html)
+
+
+class ModelTestCase(TestCase):
+    def test_render_as_html_returns_html(self):
+        text = "some text"
+        html = "<pre>some_html</pre>"
+        letter = LetterFactory(text=text, html=html)
+        self.assertEqual(letter.render_as_html(), html)
+
+    def test_render_as_html_decorates_text(self):
+        text = "some text"
+        html = ""
+        letter = LetterFactory(text=text, html=html)
+        expected = "<{tag}>{text}</{tag}>".format(tag="pre", text=text)
+        self.assertEqual(letter.render_as_html(), expected)
