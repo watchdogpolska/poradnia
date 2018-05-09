@@ -1,7 +1,6 @@
-{{actor}}: Uprawnienia do {{target}}
-
-{{actor}} nadał dla Ciebie uprawnienia do sprawy {{target}}.
+{% include 'letters/email/_attachment_set.txt' %}
 
 {% include '_case_reference.txt' %}
+
 {% include '_email_reference.txt' %}
 {% include '_email_signature.txt' %}

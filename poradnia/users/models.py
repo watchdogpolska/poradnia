@@ -16,7 +16,7 @@ from model_utils.choices import Choices
 from sorl.thumbnail import ImageField
 
 from poradnia.cases.models import Case as CaseModel
-from poradnia.template_mail.utils import send_tpl_email
+from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 
 try:
     from django.core.urlresolvers import reverse
@@ -118,9 +118,9 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
         user = self.create_user(username, email, password)
         if notify:
             context = {'user': user, 'password': password}
-            send_tpl_email(template_name='users/email_new_user.html',
-                           recipient_list=[email],
-                           context=context)
+            TemplateMailManager.send(TemplateKey.USER_NEW,
+                                     recipient_list=[email],
+                                     context=context)
         return user
 
 
@@ -155,15 +155,12 @@ class User(GuardianUserMixin, AbstractUser):
             text += ' (team)'
         return text
 
-    def send_template_email(self, template_name, context=None, from_email=None, **kwds):
-        return send_tpl_email(template_name=template_name,
-                              recipient_list=[self.email],
-                              context=context or {},
-                              from_email=from_email,
-                              **kwds)
-
-    def _get_notify_template_name(self, target, verb):
-        return '%s/email/%s_%s.txt' % (target._meta.app_label, target._meta.model_name, verb)
+    def send_template_email(self, template_key, context=None, from_email=None, **kwds):
+        return TemplateMailManager.send(template_key=template_key,
+                                        recipient_list=[self.email],
+                                        context=context or {},
+                                        from_email=from_email,
+                                        **kwds)
 
     def _get_email_name(self, actor, from_email):
         if from_email:
@@ -174,7 +171,9 @@ class User(GuardianUserMixin, AbstractUser):
         if 'target' not in kwargs:
             return
 
-        template_name = self._get_notify_template_name(kwargs['target'], verb)
+        letter = kwargs['target']
+
+        template_key = TemplateKey.get_by_target_verb(kwargs['target'], verb)
         from_email = kwargs.get('from_email', None)
 
         email_name = self._get_email_name(actor, from_email)
@@ -182,7 +181,7 @@ class User(GuardianUserMixin, AbstractUser):
         context = kwargs
         context['email'] = from_email  # TODO: Drop this alias
         context['actor'] = actor
-        return self.send_template_email(template_name, context, email_name)
+        return self.send_template_email(template_key, context, email_name)
 
     def get_absolute_url(self):
         return reverse('users:detail', kwargs={'username': self.username})

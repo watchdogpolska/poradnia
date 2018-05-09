@@ -1,0 +1,13 @@
+<p>Wydarzenie "{{target.text}}" w sprawie "{{target.case}}" upływa o {{ target.time }}.</p>
+
+<p>Wydarzenie dotyczy:</p>
+
+<div>
+    <pre>
+{{ target.text }}
+    </pre>
+</div>
+
+{% include '_case_reference.html' %}
+{% include '_email_reference.html' %}
+{% include '_email_signature.html' %}

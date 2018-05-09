@@ -22,20 +22,22 @@ class CaseMixin(object):
         assign_perm('can_view', user, case)
         return user
 
+    @staticmethod
+    def _templates_used(email):
+        return [template for template in email.extra_headers['Template'].split('-') if email.extra_headers['Template'] and template != 'None']
+
 
 class NewCaseMixin(CaseMixin):
     url = reverse_lazy('letters:add')
     template_name = 'letters/form_new.html'
     fields = None
 
-    def assertSendTemplate(self, template_name):
-        templates = {msg.extra_headers['Template'] for msg in mail.outbox
-                     if 'Template' in msg.extra_headers}
-        if template_name in templates:
-            return True
-        template_list = ", ".join(templates)
-        self.fail("Mail with template {name} wasn't send (used {tpls}).".format(name=template_name,
-                                                                                tpls=template_list))
+    def assertSendTemplates(self, *template_names):
+        templates_used = [template for email in mail.outbox for template in self._templates_used(email)]
+        if all(name in templates_used for name in template_names):
+            return
+        self.fail("Mail with templates {names} wasn't send (used {tpls}).".format(names=", ".join(template_names),
+                                                                                  tpls=", ".join(templates_used)))
 
     def post(self, data=None):
         return self.client.post(self.url, data=data or self.get_data())
@@ -71,11 +73,11 @@ class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
 
     def test_user_registration(self):
         self.post()
-        self.assertSendTemplate('users/email_new_user.html')
+        self.assertSendTemplates('users/email/new_user.txt')
 
     def test_user_notification(self):
         self.post()
-        self.assertSendTemplate('cases/email/case_registered.txt')
+        self.assertSendTemplates('cases/email/case_registered.txt')
 
     def test_case_exists(self):
         self.post()
@@ -137,12 +139,11 @@ class AdminNewCaseTestCase(NewCaseMixin, TestCase):
 
     def test_user_registration(self):
         self.post()
-        self.assertSendTemplate('users/email_new_user.html')
+        self.assertSendTemplates('users/email/new_user.txt')
 
     def test_user_notification(self):
         self.post()
-        self.assertEqual(mail.outbox[1].extra_headers['Template'],
-                         'cases/email/case_registered.txt')
+        self.assertSendTemplates('cases/email/case_registered.txt')
         self.assertIn(self.email, mail.outbox[1].to)
 
 
@@ -175,8 +176,7 @@ class UserNewCaseTestCase(NewCaseMixin, TestCase):
 
     def test_user_self_notify(self):
         self.post()
-        self.assertEqual(mail.outbox[0].extra_headers['Template'],
-                         'cases/email/case_registered.txt')
+        self.assertSendTemplates('cases/email/case_registered.txt')
         self.assertIn(self.user.email, mail.outbox[0].to)
 
 
@@ -254,8 +254,9 @@ class AddLetterTestCase(CaseMixin, TestCase):
         user_staff = self._add_random_user(self.case, is_staff=True)
         func()
         self.assertEqual(Letter.objects.get().status, status)
+        template = 'letters/email/letter_created.txt'
         emails = [x.to[0] for x in mail.outbox
-                  if x.extra_headers['Template'] == 'letters/email/letter_created.txt']
+                  if template in self._templates_used(x)]
         self.assertEqual(user_user.email in emails, user_notify)
         self.assertEqual(user_staff.email in emails, staff_notify)
 
@@ -361,15 +362,15 @@ class SendLetterTestCase(CaseMixin, TestCase):
     note_text = 'Lorem ipsum XYZ123'
 
     def assertEmailTemplateUsed(self, template):
-        emails = [x.to[0] for x in mail.outbox if x.extra_headers['Template'] == template]
+        emails = [x.to[0] for x in mail.outbox if template in self._templates_used(x)]
         return emails
 
     def assertEmailReceived(self, email, template=None):
-        emails = [x.to[0] for x in mail.outbox if not template or x.extra_headers['Template'] == template]
+        emails = [x.to[0] for x in mail.outbox if not template or template in self._templates_used(x)]
         self.assertIn(email, emails)
 
     def assertEmailNotReceived(self, email, template=None):
-        emails = [x.to[0] for x in mail.outbox if not template or x.extra_headers['Template'] == template]
+        emails = [x.to[0] for x in mail.outbox if not template or template in self._templates_used(x)]
         self.assertNotIn(email, emails)
 
     def setUp(self):

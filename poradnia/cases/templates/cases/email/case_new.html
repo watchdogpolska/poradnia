@@ -1,7 +1,11 @@
-Nowa sprawa {{ case }} od {{ case.client }}
-Szanowny/-a,
+<p>Szanowny/-a,</p>
 
-W systemie Poradnia została nowa sprawa. Przejdź pod adres http://poradnia.siecobywatelska.pl/{{ case.get_absolute_url }} , aby się z nią zapoznać.
+<p>
+W systemie Poradnia została dodana nowa sprawa.
+Przejdź pod adres <a href="http://poradnia.siecobywatelska.pl/{{ case.get_absolute_url }}">http://poradnia.siecobywatelska.pl/{{ case.get_absolute_url }}</a>, aby się z nią zapoznać.
+</p>
 
+<p>
 Z wyrazami szacunku,
-{% include '_email_signature.txt' %}
+{% include '_email_signature.html' %}
+</p>

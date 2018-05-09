@@ -1,0 +1,8 @@
+{% if target.attachment_set.all %}
+<p>Załączniki pisma:</p>
+<ul>
+{% for att in target.attachment_set.all %}
+<li><a href="{{att.get_full_url}}">{{att.get_full_url}}</a></li>
+{% endfor %}
+</ul>
+{% endif %}

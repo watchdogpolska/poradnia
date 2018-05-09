@@ -1,0 +1,8 @@
+Nowa sprawa {{ case }} od {{ case.client }}
+Szanowny/-a,
+
+W systemie Poradnia została dodana nowa sprawa.
+Przejdź pod adres http://poradnia.siecobywatelska.pl/{{ case.get_absolute_url }} , aby się z nią zapoznać.
+
+Z wyrazami szacunku,
+{% include '_email_signature.txt' %}
