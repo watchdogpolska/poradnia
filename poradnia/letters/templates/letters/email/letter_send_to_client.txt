@@ -1,5 +1,7 @@
 {{target.created_by}}: {{target.name}}
-{{target.created_by}} napisał ({{actor}} zatwierdził):
 {{target.text}}
+
+Sporządził/-a: {{target.created_by}}
+Zatwierdził/-a: {{actor}}
 
 {% include 'letters/email/_footer.txt' %}

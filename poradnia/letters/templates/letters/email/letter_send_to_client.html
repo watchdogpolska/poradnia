@@ -1,7 +1,9 @@
-<p>{{target.created_by}} napisał ({{actor}} zatwierdził):</p>
 <div>
 {{target.render_as_html|safe}}
 </div>
+
+<p>Sporządził/-a: {{target.created_by}}</p>
+<p>Zatwierdził/-a: {{actor}}</p>
 
 {% include 'letters/email/_footer.html' %}
 
