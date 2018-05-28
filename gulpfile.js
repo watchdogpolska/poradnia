@@ -1,7 +1,6 @@
 "use strict";
 var fs = require('fs'),
     gulp = require('gulp'),
-    bower = require('gulp-bower'),
     concat = require('gulp-concat'),
     livereload = require('gulp-livereload'),
     minifycss = require('gulp-minify-css'),
@@ -16,7 +15,6 @@ var config = (function () {
     var appName = json.name;
 
     var path = {
-        bower: './bower_components/',
         npm: './node_modules/',
         app: './' + appName,
         assets: './' + appName + '/assets',
@@ -29,9 +27,8 @@ var config = (function () {
         scss: {
             input: path.assets + '/scss/style.scss',
             include: [
-                path.bower + '/bootstrap-sass/assets/stylesheets',
-                path.bower + '/font-awesome/scss',
-                path.bower + '/pikaday-time/scss/',
+                path.npm,
+                path.npm + '/pikaday-time/scss/',
                 path.staticfiles,
                 path.assets + '/scss/',
 
@@ -43,25 +40,25 @@ var config = (function () {
         },
         icons: {
             input: [
-                path.bower + '/font-awesome/fonts/**.*'
+                path.npm + '/font-awesome/fonts/**.*'
             ],
             output: path.static + "/fonts"
         },
         script: {
             input: [
-                path.bower + '/jquery/dist/jquery.js',
-                path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
-                path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
-                path.bower + '/bootstrap-sass/assets/javascripts/bootstrap/modal.js',
+                path.npm + '/jquery/dist/jquery.js',
+                path.npm + '/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
+                path.npm + '/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
+                path.npm + '/bootstrap-sass/assets/javascripts/bootstrap/modal.js',
                 path.staticfiles + '/autocomplete_light/vendor/select2/dist/js/select2.full.js',
                 path.staticfiles + '/autocomplete_light/jquery.init.js',
                 path.staticfiles + '/autocomplete_light/autocomplete.init.js',
                 path.staticfiles + '/autocomplete_light/select2.js',
                 path.staticfiles + '/tasty_feedback/style.js',
-                path.bower + '/chart.js/dist/Chart.js',
-                path.bower + '/moment/moment.js',
-                path.bower + '/moment/locale/pl.js',
-                path.bower + '/pikaday-time/pikaday.js',
+                path.npm + '/chart.js/dist/Chart.js',
+                path.npm + '/moment/moment.js',
+                path.npm + '/moment/locale/pl.js',
+                path.npm + '/pikaday-time/pikaday.js',
                 path.npm + '/patternomaly/dist/patternomaly.js',
                 path.assets + '/js/*.js',
                 path.app + '/navsearch/static/navsearch/*.js',
@@ -76,10 +73,6 @@ var config = (function () {
         }
     };
 }());
-
-gulp.task('bower', function () {
-    return bower(config.path.bower);
-});
 
 gulp.task('icons', function () {
     return gulp.src(config.icons.input)
@@ -125,4 +118,4 @@ gulp.task('watch', function () {
     });
 });
 
-gulp.task('default', ['bower', 'icons', 'js', 'scss', 'watch']);
+gulp.task('default', ['icons', 'js', 'scss', 'watch']);
