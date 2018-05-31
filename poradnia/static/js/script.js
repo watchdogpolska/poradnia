@@ -7426,11 +7426,11 @@ S2.define('jquery.select2',[
 var yl = yl || {};
 
 if (yl.jQuery === undefined) {
-    if ((typeof django !== 'undefined') && (typeof django.jQuery !== 'undefined'))
-        yl.jQuery = django.jQuery;
-
-    else if (typeof $ !== 'undefined')
+    /* If the user has included another copy of jQuery use that, even in the admin */
+    if (typeof $ !== 'undefined')
         yl.jQuery = $;
+    else if ((typeof django !== 'undefined') && (typeof django.jQuery !== 'undefined'))
+        yl.jQuery = django.jQuery;
 }
 
 /*
@@ -7475,7 +7475,7 @@ element was cloned with data - which should be the case.
             element = this;
         }
 
-        if (initialized.indexOf(element) >= 0) {
+        if (window.__dal__initListenerIsSet !== true || initialized.indexOf(element) >= 0) {
             return;
         }
 
@@ -7618,7 +7618,7 @@ element was cloned with data - which should be the case.
             debug: true,
             placeholder: '',
             minimumInputLength: 0,
-            allowClear: ! $(this).is('required'),
+            allowClear: ! $(this).is('[required]'),
             templateResult: template,
             templateSelection: template,
             ajax: ajax,
@@ -7656,6 +7656,7 @@ element was cloned with data - which should be the case.
         });
 
     });
+    window.__dal__initListenerIsSet = true;
     $('[data-autocomplete-light-function]:not([id*="__prefix__"])').each(function() {
         window.__dal__initialize(this);
     });

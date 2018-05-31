@@ -15,22 +15,8 @@ services:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
       retries: 10
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - 8080:8080
-
-  gulp:
-    image: node:latest
-    working_dir: /app
-    command: npx gulp
-    # ports:
-    #   - "9000:9000"
-    #   - "3001:3001"
     volumes:
-      - .:/app
+      - mysql_db:/var/lib/mysql
 
   web:
     build: .
@@ -38,9 +24,12 @@ services:
     volumes:
       - .:/code
     environment:
-     DATABASE_URL: mysql://user:password@db/database
+      DATABASE_URL: mysql://user:password@db/database
     ports:
       - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
+
+volumes:
+  mysql_db:
