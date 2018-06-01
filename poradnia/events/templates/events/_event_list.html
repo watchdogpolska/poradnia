@@ -20,8 +20,13 @@
                     {% if object.reminder_set.all %}
                         <ul>
                             {% for reminder in object.reminder_set.all %}
-                                <li><a href="{{ reminder.user.get_absolute_url }}">{{ reminder }}</a>
-                                    - {{ reminder.created_on }}</li>
+                                <li>
+                                    <a href="{{ reminder.user.get_absolute_url }}">{{ reminder.user }}</a>
+                                    -
+                                    <time datetime="{{ reminder.created_on }}" title="{{ reminder.created_on }}">
+                                        {{ reminder.created_on | naturaltime }}
+                                    </time>
+                                </li>
                             {% endfor %}
                         </ul>
                     {% else %}
