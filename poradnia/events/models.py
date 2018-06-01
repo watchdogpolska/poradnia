@@ -35,7 +35,9 @@ class EventQuerySet(AbstractRecordQuerySet):
 
 
 class Event(AbstractRecord):
-    deadline = models.BooleanField(default=False, verbose_name=_("Dead-line"))
+    deadline = models.BooleanField(default=False, verbose_name=_("Dead-line"),
+                                   help_text=_("A significant event, especially highlighted, "
+                                               "for example, in the list of cases."))
     time = models.DateTimeField(verbose_name=_("Time"))
     text = models.TextField(verbose_name=_("Subject"))
     created_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
