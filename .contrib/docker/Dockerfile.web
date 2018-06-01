@@ -1,3 +1,4 @@
+# This is Dockerfile for development purposes only.
 FROM python:3-slim
 RUN mkdir /code /code/production
 WORKDIR /code
@@ -12,10 +13,5 @@ RUN apt-get update && apt-get install -y\
 COPY requirements/*.txt ./requirements/
 RUN pip install --no-cache-dir pip wheel -U
 RUN pip install --no-cache-dir -r requirements/local.txt 'django<2.0' && pip install --no-cache-dir -r requirements/test.txt 'django<2.0'
-# Install NodeJS dependencies
-RUN curl -sL https://deb.nodesource.com/setup_10.x | bash - && apt-get install -y nodejs
-COPY package.json package-lock.json ./
-RUN npm install
-# Finish setup
-ENTRYPOINT ["bash", "docker-entrypoint.sh"]
-COPY . /code/
+COPY .contrib/docker/docker-entrypoint.web.sh /docker-entrypoint.sh
+ENTRYPOINT ["/docker-entrypoint.sh"]

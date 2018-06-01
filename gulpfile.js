@@ -30,8 +30,7 @@ var config = (function () {
                 path.npm,
                 path.npm + '/pikaday-time/scss/',
                 path.staticfiles,
-                path.assets + '/scss/',
-
+                path.assets + '/scss/'
             ],
             output: path.static + "/css",
             watch: [
@@ -119,4 +118,5 @@ gulp.task('watch', function () {
 });
 
 gulp.task('build', ['icons', 'js', 'scss']);
+
 gulp.task('default', ['build', 'watch']);
