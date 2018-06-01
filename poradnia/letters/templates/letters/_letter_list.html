@@ -16,7 +16,9 @@
             </div>
             {% endif %}
             {% if object.html %}
-            <iframe srcdoc="{{object.html|escape}}" sandbox="allow-top-navigation"></iframe>
+                <div class="embed-responsive embed-responsive-4by3">
+                    <iframe srcdoc="{{object.html|escape}}" sandbox="allow-top-navigation"></iframe>
+                </div>
             {% else %}
             <p>{{object.text|linebreaks}}</p>
             {% endif %}
@@ -59,7 +61,6 @@
             {% if object.eml %} &bull;
             <a href="{{object.eml.url}}"><i class="fa fa-life-ring"></i></a>
             {% endif %}
-
         </div>
     </div>
 </div>
