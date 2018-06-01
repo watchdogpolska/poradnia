@@ -88,14 +88,14 @@ class CaseQuerySetTestCase(TestCase):
 
     def test_order_for_user(self):
         a = repr(CaseFactory(name="CaseA",
-                             last_action=now() + timedelta(days=0),
-                             last_send=now() + timedelta(days=+1)))
+                             last_action=timezone.now() + timedelta(days=0),
+                             last_send=timezone.now() + timedelta(days=+1)))
         b = repr(CaseFactory(name="CaseB",
-                             last_action=now() + timedelta(days=+2),
-                             last_send=now() + timedelta(days=-1)))
+                             last_action=timezone.now() + timedelta(days=+2),
+                             last_send=timezone.now() + timedelta(days=-1)))
         c = repr(CaseFactory(name="CaseC",
-                             last_action=now() + timedelta(days=-1),
-                             last_send=now() + timedelta(days=+3)))
+                             last_action=timezone.now() + timedelta(days=-1),
+                             last_send=timezone.now() + timedelta(days=+3)))
         user = UserFactory(is_staff=True)
         self.assertQuerysetEqual(Case.objects.order_for_user(user, True).all(),
                                  [c, a, b])
