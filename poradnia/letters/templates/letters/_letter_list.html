@@ -16,7 +16,7 @@
             </div>
             {% endif %}
             {% if object.html %}
-            <iframe srcdoc="{{object.html|escape}}" sandbox="allow-top-navigation"></iframe>
+            <iframe srcdoc="{{object.html|escape}}" sandbox="allow-top-navigation" style="width:100%; height:600px" ></iframe>
             {% else %}
             <p>{{object.text|linebreaks}}</p>
             {% endif %}
