@@ -6,7 +6,7 @@ from django.utils import timezone
 
 from poradnia.cases.factories import CaseFactory, CaseUserObjectPermissionFactory
 from poradnia.events.factories import EventFactory
-from poradnia.users.factories import ProfileFactory, StaffFactory
+from poradnia.users.factories import ProfileFactory, StaffFactory, UserFactory
 
 try:
     from StringIO import StringIO
@@ -23,7 +23,6 @@ class RemindersCommandsTestCase(TestCase):
         self.stdout = StringIO()
 
     def test_triggering_reminders(self):
-
         # event in 2 and 4 days from now
         event_should_trigger = EventFactory(case=self.case,
                                             time=timezone.now() + timedelta(days=2))
@@ -62,7 +61,7 @@ class RemindersCommandsTestCase(TestCase):
         self.assertIn(cuop.user.email, email.recipients())
 
     def test_send_notification_once_to_user(self):
-        event_to_trigger = EventFactory(case=self.case, time=timezone.now() + timedelta(days=2))
+        EventFactory(case=self.case, time=timezone.now() + timedelta(days=2))
         management.call_command('send_event_reminders', stdout=self.stdout)
         management.call_command('send_event_reminders', stdout=self.stdout)
 
@@ -71,3 +70,16 @@ class RemindersCommandsTestCase(TestCase):
 
         # check if reminder was saved once
         self.assertTrue(self.user.reminder_set.count(), 1)
+
+    def test_send_notification_to_management_in_free_cases(self):
+        free_case = CaseFactory()
+        management_user = UserFactory(notify_unassigned_letter=True)
+
+        EventFactory(case=free_case,
+                     time=timezone.now())
+
+        management.call_command('send_event_reminders', stdout=self.stdout)
+
+        self.assertEqual(len(mail.outbox), 1)
+        email = mail.outbox.pop()
+        self.assertIn(management_user.email, email.recipients())
