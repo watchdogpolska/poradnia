@@ -15,4 +15,4 @@ def date_random_path(instance, filename):
                                                 m=now().month,
                                                 d=now().day,
                                                 r=prefix_gen(),
-                                                f=filename[-25:])
+                                                f=filename[-75:])
