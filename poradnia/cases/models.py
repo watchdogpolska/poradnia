@@ -9,6 +9,7 @@ from django.db import models
 from django.db.models import Count, F, Func, IntegerField, Prefetch, Q
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save
+from django.utils import timezone
 from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
@@ -219,7 +220,9 @@ class Case(models.Model):
             self.last_received = None
 
         try:
-            self.deadline = self.event_set.filter(deadline=True).order_by('time').all()[0]
+            self.deadline = self.event_set.filter(deadline=True). \
+                filter(time__gte=timezone.now()). \
+                order_by('time').all()[0]
         except IndexError:
             self.deadline = None
 
