@@ -10,7 +10,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse_lazy
 from django.test import RequestFactory
 from django.test.utils import override_settings
-from django.utils.timezone import now
+from django.utils import timezone
 from guardian.shortcuts import assign_perm
 from test_plus.test import TestCase
 
@@ -20,6 +20,7 @@ from poradnia.cases.filters import StaffCaseFilter
 from poradnia.cases.forms import CaseCloseForm
 from poradnia.cases.models import Case, PermissionGroup
 from poradnia.cases.views import CaseListView
+from poradnia.events.factories import EventFactory
 from poradnia.letters.factories import LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
@@ -174,6 +175,16 @@ class CaseTestCase(TestCase):
         new = self._make_letter()
         self.object.update_counters()
         self.assertEqual(new.created_on, self.object.last_received)
+
+    def test_update_counters_hide_past_deadline(self):
+        event = EventFactory(time=timezone.now() - timedelta(days=5), deadline=True, case=self.object)
+        self.object.update_counters()
+        self.assertEqual(self.object.deadline, None)
+
+    def test_update_counters_show_future_deadline(self):
+        event = EventFactory(time=timezone.now() + timedelta(days=5), deadline=True, case=self.object)
+        self.object.update_counters()
+        self.assertEqual(self.object.deadline, event)
 
 
 class CaseDetailViewTestCase(TestCase):
