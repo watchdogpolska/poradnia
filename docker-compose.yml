@@ -2,18 +2,21 @@ version: '2.1'
 
 services:
   db:
-    image: healthcheck/mysql
-    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci --init-connect='SET NAMES UTF8;' --innodb-flush-log-at-trx-commit=0
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: example
-      MYSQL_DATABASE: poradnia
-
-  adminer:
-    image: adminer
-    restart: always
+    container_name: db
+    image: mysql:5.7
     ports:
-      - 8080:8080
+      - "3306"
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"
+      MYSQL_USER: "user"
+      MYSQL_PASSWORD: "password"
+      MYSQL_DATABASE: "database"
+    healthcheck:
+      test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
+      timeout: 20s
+      retries: 10
+    volumes:
+      - mysql_db:/var/lib/mysql
 
   web:
     build: .
@@ -21,9 +24,12 @@ services:
     volumes:
       - .:/code
     environment:
-     DATABASE_URL: mysql://root:example@db/poradnia
+      DATABASE_URL: mysql://user:password@db/database
     ports:
       - "8000:8000"
     depends_on:
       db:
         condition: service_healthy
+
+volumes:
+  mysql_db:
