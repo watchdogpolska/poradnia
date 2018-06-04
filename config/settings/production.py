@@ -42,10 +42,10 @@ TEMPLATES[0]['OPTIONS']['loaders'] = (
 
 # Your production stuff: Below this line define 3rd party libary settings
 # Ustaw wartość twojego DSN
-RELEASE_ID = auto.revision
+REVISION_ID = auto.revision
 RAVEN_CONFIG = {
     'dsn': env.str('RAVEN_DSN', 'http://example.com'),
-    'release': RELEASE_ID
+    'release': REVISION_ID
 }
 
 INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
