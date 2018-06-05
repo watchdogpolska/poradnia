@@ -73,6 +73,8 @@ var config = (function () {
     };
 }());
 
+console.log(config.script);
+
 gulp.task('icons', function () {
     return gulp.src(config.icons.input)
         .pipe(gulp.dest(config.icons.output));
