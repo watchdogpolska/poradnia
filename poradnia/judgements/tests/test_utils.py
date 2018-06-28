@@ -1,3 +1,5 @@
+from poradnia.judgements.tests.test_parsers import my_vcr
+
 try:
     from StringIO import StringIO
 except ImportError:
@@ -97,3 +99,14 @@ class ManagerTestCase(TestCase):
         my_mock = mock.Mock(get_session_rows=lambda: [session_row])
         self.manager.handle_court(CourtFactory(), my_mock)
         self.assertEqual(Event.objects.count(), 0)
+
+    @my_vcr.use_cassette()
+    def test_against_unnecessary_changes(self):
+        courtcase = CourtCaseFactory(court__parser_key='WSA_Gdansk', signature='II SA/Gd 243/18')
+        CaseUserObjectPermissionFactory(content_object=courtcase.case,
+                                        permission_name='can_send_to_client',
+                                        user__is_staff=True)
+        self.manager.handle_court(courtcase.court)
+        self.assertTrue(len(mail.outbox) == 1)
+        self.manager.handle_court(courtcase.court)
+        self.assertTrue(len(mail.outbox) == 1, mail)

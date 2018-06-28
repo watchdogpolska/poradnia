@@ -1,5 +1,5 @@
 import sys
-
+from pytz import timezone
 from django.utils.encoding import force_text
 
 from poradnia.events.models import Event
@@ -32,8 +32,10 @@ class Manager(object):
             self.handle_new_courtsession(court, courtcase, session_row)
 
     def _cmp_event_sessionrow(self, event, session_row):
-        return event.time.hour == session_row.datetime.hour and \
-               event.time.minute == session_row.datetime.minute and \
+        event_time = event.time.astimezone(timezone('UTC'))
+        session_row_time = session_row.datetime.astimezone(timezone('UTC'))
+        return event_time.hour == session_row_time.hour and \
+               event_time.minute == session_row_time.minute and \
                event.text == session_row.description
 
     def handle_update_courtsession(self, courtsession, session_row):
