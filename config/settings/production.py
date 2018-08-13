@@ -58,7 +58,7 @@ CACHES = {
 INSTALLED_APPS = INSTALLED_APPS + (
     'elasticapm.contrib.django', )
 
-MIDDLEWARE = (
+MIDDLEWARE_CLASSES = (
     'elasticapm.contrib.django.middleware.TracingMiddleware',
-) + MIDDLEWARE
+) + MIDDLEWARE_CLASSES
 
