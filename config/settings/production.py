@@ -53,3 +53,12 @@ INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
 CACHES = {
     'default': env.cache(),
 }
+
+# APM
+INSTALLED_APPS = INSTALLED_APPS + (
+    'elasticapm.contrib.django', )
+
+MIDDLEWARE = (
+    'elasticapm.contrib.django.middleware.TracingMiddleware',
+) + MIDDLEWARE
+
