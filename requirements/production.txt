@@ -2,7 +2,7 @@
 #	production that isn't in development.
 -r base.txt
 Django==1.11.15 # pyup: <2.0
-gunicorn==19.7.1
+gunicorn==19.8.1
 gevent==1.2.2
 
 elastic-apm==3.0.0
