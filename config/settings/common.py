@@ -139,7 +139,7 @@ MANAGERS = ADMINS
 # DATABASE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {
-    'default': env.db(default='sqlite://:memory:')
+    'default': env.db(default='mysql:///porady')
 }
 
 DATABASES['default']['TEST'] = {'CHARSET': "utf8mb4",
