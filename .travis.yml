@@ -1,7 +1,5 @@
 language: python
-python:
-  - "2.7"
-  - "3.5"
+python: "3.6"
 
 cache:
   directories:
@@ -14,7 +12,8 @@ env:
   matrix:
     - TOX_ENV=flake8
     - TOX_ENV=docs
-    - TOX_ENV=dj111-coveralls
+    - TOX_ENV=py27-dj111-coveralls
+    - TOX_ENV=py36-dj111-coveralls
 
 matrix:
   allow_failures:
@@ -27,9 +26,6 @@ install:
   - pip install tox
 script:
   - tox -e $TOX_ENV
-
-notifications:
-  slack: watchdogpolska:mQq180xGu9UcuJgK73hVWECD
 
 after_script:
 - rm $HOME/.cache/pip/log/*
