@@ -143,7 +143,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         self.helper.form_tag = False
         self._fill_footer()
         self._add_buttons()
-        self.fields['name'].initial = "Odp: %s" % (self.case)
+        self.fields['name'].initial = "Odp: %s" % (self.case, )
 
     def _add_buttons(self):
         if self.user_can_send:

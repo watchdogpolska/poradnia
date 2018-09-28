@@ -34,7 +34,7 @@
             {% include object.get_template_list with object=object %}
         </div>
     {% endif %}
-    <form method="post" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data" data-form-save="case-{{ object.pk }}">
         {% crispy form %}
         {% if formset %}
             {% crispy formset %}
