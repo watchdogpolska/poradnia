@@ -12,11 +12,11 @@ $(function () {
             showTime: true,
             use24hour: true
         });
-    })
+    });
 });
 
 $(function () {
-    $('[data-toggle="tooltip"]').tooltip()
+    $('[data-toggle="tooltip"]').tooltip();
 });
 
 $(function () {
