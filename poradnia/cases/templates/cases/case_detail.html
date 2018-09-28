@@ -155,7 +155,7 @@
                     <div role="tabpanel" class="tab-pane {% if forloop.first %} active{% endif %}" id="{{ key }}">
                         <h2>{{ row.title }}</h2>
                         <form method="post" class="{{ row.form.helper.form_class }}" enctype="multipart/form-data"
-                              action="{{ row.form.helper.form_action }}">
+                              action="{{ row.form.helper.form_action }}" data-form-save="form-{{ key }}-{{ object.pk }}">
                             {% crispy row.form %}
                             {% if row.formset %}
                                 {% crispy row.formset %}
