@@ -75,7 +75,9 @@ class Letter(AbstractRecord):
     genre = models.CharField(choices=GENRE, default=GENRE.comment, max_length=20)
     status = StatusField(db_index=True)
     status_changed = MonitorField(monitor='status')
-    accept = MonitorField(monitor='status', when=['done'], verbose_name=_("Accepted on"))
+    accept = MonitorField(monitor='status',
+                          when=['done'],
+                          verbose_name=_("Accepted on"))
     name = models.CharField(max_length=250, verbose_name=_("Subject"))
     text = models.TextField(verbose_name=_("Text"))
     html = models.TextField(verbose_name=_("HTML"), blank=True)
@@ -83,7 +85,8 @@ class Letter(AbstractRecord):
     created_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
                                    related_name='letter_created_by',
                                    verbose_name=_("Created by"))
-    created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))
+    created_on = models.DateTimeField(auto_now_add=True,
+                                      verbose_name=_("Created on"))
     modified_by = models.ForeignKey(settings.AUTH_USER_MODEL,
                                     verbose_name=_("Modified by"),
                                     null=True,
