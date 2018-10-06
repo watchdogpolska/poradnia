@@ -66,8 +66,7 @@ def send(request, pk):
         if form.is_valid():
             obj = form.save()
             messages.success(request,
-                             _("Letter %(object)s send!") % {'object': obj, })
-            obj.send_notification(actor=request.user, verb='accepted')
+                             _("Letter %(object)s send!") % {'object': obj})
             return HttpResponseRedirect(case.get_absolute_url())
     else:
         form = SendLetterForm(user=request.user, instance=letter)
