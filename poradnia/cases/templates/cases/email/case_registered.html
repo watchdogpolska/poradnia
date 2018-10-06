@@ -1,10 +1,10 @@
-<p>Szanowna Pani/Szanowny Panie {{user}},</p>
+{% load cases_tags %}<p>Szanowna Pani/Szanowny Panie {{user}},</p>
 
 <p>Informujemy, że pytanie zostało zarejestrowane w naszym systemie.<p>
 
 <p>Zgodnie z dostępnym na stronie „Regulaminem poradnictwa”, odpowiedź zostanie przygotowana przez nasz zespół w terminie do 30 dni kalendarzowych, chyba że wymaga dochowania krótszego terminu (ponieważ dotyczy np. złożenia odwołania od decyzji lub wniosku o ponowne rozpatrzenie sprawy). W takiej sytuacji, zgodnie z regulaminem, mamy nadzieję, że zaznaczyli Państwo ten termin w temacie wiadomości.</p>
 
-<p>Z przesłanym pytaniem oraz dokumentami można zapoznać się poprzez naszą stronę internetową, która wymaga logowania <a href="http://porady.siecobywatelska.pl/{{case.get_absolute_url}}">http://porady.siecobywatelska.pl/{{case.get_absolute_url}}</a>. Przez stronę można przesyłać dodatkowe dokumenty i pytania.</p>
+<p>Z przesłanym pytaniem oraz dokumentami można zapoznać się poprzez naszą stronę internetową, która wymaga logowania <a href="{% full_link case.get_absolute_url %}">{% full_link case.get_absolute_url %}</a>. Przez stronę można przesyłać dodatkowe dokumenty i pytania.</p>
 
 {% if email %}
 <p>Kontaktować się można również używając adresu <a href="mailto:{{email}}">{{email}}</a> do korespondencji w tej (konkretnej) sprawie. Dzięki temu wymiana korespondencji będzie sprawniejsza.</p>
