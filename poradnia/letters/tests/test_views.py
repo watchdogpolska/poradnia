@@ -414,6 +414,9 @@ class SendLetterTestCase(CaseMixin, TestCase):
         self.assertEmailTemplateUsed('letters/email/letter_send_to_client.txt')
         self.assertEmailReceived(user1.email, 'letters/email/letter_send_to_client.txt')
         self.assertEmailReceived(user2.email, 'letters/email/letter_send_to_client.txt')
+        recipient_list = [addr for x in mail.outbox for addr in x.to]
+        self.assertEqual(recipient_list.count(user2.email), 1,
+                         'Sended double notificatiton to client')
 
     def test_accepted_letter_contains_attachment(self):
         letter = AttachmentFactory(letter=self.object)
