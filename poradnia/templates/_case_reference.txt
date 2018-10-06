@@ -1,1 +1,1 @@
-{%cases cases_tags %}Zapoznaj się z aktami sprawy pod adresem {% full_link target.get_absolute_url%}.
+{%load cases_tags %}Zapoznaj się z aktami sprawy pod adresem {% full_link target.get_absolute_url%}.
