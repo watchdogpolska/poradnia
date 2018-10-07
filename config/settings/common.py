@@ -362,3 +362,5 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 
 # Django-GitHub-Revision
 GITHUB_REVISION_REPO_URL = 'https://github.com/watchdogpolska/poradnia'
+
+LETTER_RECEIVE_SECRET = 'xxxxxxxxx'

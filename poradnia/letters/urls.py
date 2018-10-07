@@ -1,4 +1,5 @@
 from django.conf.urls import url
+from django.views.decorators.csrf import csrf_exempt
 
 from . import views
 
@@ -11,4 +12,9 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/wyslij/$', views.send, name="send"),
     url(r'^(?P<pk>\d+)/edytuj/$', views.LetterUpdateView.as_view(), name="edit"),
     url(r'^(?P<pk>\d+)/$', views.send, name="detail"),
+    url(r'^webhook',
+        csrf_exempt(views.ReceiveEmail.as_view()),
+        name="webhook"
+),
+
 ]
