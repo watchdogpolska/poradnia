@@ -15,15 +15,19 @@ class RecordQuerySet(QuerySet):
         if user.has_perm('cases.can_view_all'):
             return self
         content_type = ContentType.objects.get_for_model(Case)
-        return self.filter(case__caseuserobjectpermission__permission__codename='can_view',
-                           case__caseuserobjectpermission__permission__content_type=content_type,
-                           case__caseuserobjectpermission__user=user)
+        return self.filter(
+            case__caseuserobjectpermission__permission__codename='can_view',
+            case__caseuserobjectpermission__permission__content_type=content_type,
+            case__caseuserobjectpermission__user=user
+        )
 
     def for_user(self, user):
         qs = self._for_user_by_view(user)
         if user.is_staff:
             return qs
-        return qs.filter(Q(event=None) & Q(letter__status='done'))
+        return qs.filter(
+            Q(event=None) & Q(letter__status='done')
+        )
 
 
 class Record(models.Model):
@@ -32,7 +36,8 @@ class Record(models.Model):
     created_on = models.DateTimeField(auto_now_add=True)
     letter = models.OneToOneField('letters.Letter', null=True, blank=True)
     event = models.OneToOneField('events.Event', null=True, blank=True)
-    courtcase = models.OneToOneField('judgements.CourtCase', null=True, blank=True)
+    courtcase = models.OneToOneField('judgements.CourtCase', null=True,
+                                     blank=True)
     content_type = models.ForeignKey(ContentType, null=True, blank=True)
     object_id = models.PositiveIntegerField(null=True)
     related_object = GenericForeignKey('content_type', 'object_id')
@@ -70,24 +75,32 @@ class AbstractRecordQuerySet(QuerySet):
         if user.has_perm('cases.can_view_all'):
             return self
         content_type = ContentType.objects.get_for_model(Case)
-        return self.filter(case__caseuserobjectpermission__permission__codename='can_view',
-                           case__caseuserobjectpermission__permission__content_type=content_type,
-                           case__caseuserobjectpermission__user=user)
+        return self.filter(
+            case__caseuserobjectpermission__permission__codename='can_view',
+            case__caseuserobjectpermission__permission__content_type=content_type,
+            case__caseuserobjectpermission__user=user
+        )
 
 
 @python_2_unicode_compatible
 class AbstractRecord(models.Model):
-    record_general = GenericRelation('records.Record', related_query_name='record')
+    record_general = GenericRelation(
+        to='records.Record',
+        related_query_name='record'
+    )
     case = models.ForeignKey(Case)
 
     def show_modifier(self):
-        return (self.modified_by_id and self.modified_by_id != self.created_by_id)
+        return self.modified_by_id and self.modified_by_id != self.created_by_id
 
     def get_users_with_perms(self, *args, **kwargs):
         return self.case.get_users_with_perms(*args, **kwargs)
 
     def get_template_list(self):
-        return u"%s/_%s_list.html" % (self._meta.app_label, self._meta.model_name)
+        return u"%s/_%s_list.html" % (
+            self._meta.app_label,
+            self._meta.model_name
+        )
 
     def send_notification(self, *args, **kwargs):
         return self.case.send_notification(target=self, *args, **kwargs)
@@ -102,9 +115,11 @@ class AbstractRecord(models.Model):
         self.case.update_counters()
 
     def __str__(self):
-        return _("{object_name} (#{pk}) in case #{case_id}").format(object_name=self._meta.verbose_name,
-                                                                    case_id=self.case_id,
-                                                                    pk=self.pk)
+        return _("{object_name} (#{pk}) in case #{case_id}").format(
+            object_name=self._meta.verbose_name,
+            case_id=self.case_id,
+            pk=self.pk
+        )
 
     class Meta:
         abstract = True

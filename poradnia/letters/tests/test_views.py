@@ -1,6 +1,11 @@
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
+import json
 import hashlib
 import zipfile
 from six import BytesIO
+
+import six
 from django.core import mail
 from django.test import TestCase
 from guardian.shortcuts import assign_perm
@@ -9,6 +14,7 @@ from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
 from poradnia.letters.factories import LetterFactory, AttachmentFactory
 from poradnia.letters.models import Letter
+from poradnia.letters.settings import LETTER_RECEIVE_SECRET
 from poradnia.users.factories import UserFactory
 
 from .compat import refresh_from_db
@@ -27,7 +33,9 @@ class CaseMixin(object):
 
     @staticmethod
     def _templates_used(email):
-        return [template for template in email.extra_headers['Template'].split('-') if email.extra_headers['Template'] and template != 'None']
+        return [template for template in
+                email.extra_headers['Template'].split('-') if
+                email.extra_headers['Template'] and template != 'None']
 
 
 class NewCaseMixin(CaseMixin):
@@ -36,11 +44,14 @@ class NewCaseMixin(CaseMixin):
     fields = None
 
     def assertSendTemplates(self, *template_names):
-        templates_used = [template for email in mail.outbox for template in self._templates_used(email)]
+        templates_used = [template for email in mail.outbox for template in
+                          self._templates_used(email)]
         if all(name in templates_used for name in template_names):
             return
-        self.fail("Mail with templates {names} wasn't send (used {tpls}).".format(names=", ".join(template_names),
-                                                                                  tpls=", ".join(templates_used)))
+        self.fail(
+            "Mail with templates {names} wasn't send (used {tpls}).".format(
+                names=", ".join(template_names),
+                tpls=", ".join(templates_used)))
 
     def post(self, data=None):
         return self.client.post(self.url, data=data or self.get_data())
@@ -57,7 +68,8 @@ class NewCaseMixin(CaseMixin):
 
     def test_field_map(self):
         resp = self.client.get(self.url)
-        self.assertEqual(list(resp.context_data['form'].fields.keys()), self.fields)
+        self.assertEqual(list(resp.context_data['form'].fields.keys()),
+                         self.fields)
 
 
 class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
@@ -213,7 +225,8 @@ class AddLetterTestCase(CaseMixin, TestCase):
             assign_perm('can_send_to_client', self.user, self.case)
         return self.post(data=kwargs)
 
-    def _test_status_field(self, staff, can_send_to_client, expected, **kwargs):
+    def _test_status_field(self, staff, can_send_to_client, expected,
+                           **kwargs):
         self.resp_user(can_send_to_client=can_send_to_client,
                        staff=staff,
                        **kwargs)
@@ -264,10 +277,12 @@ class AddLetterTestCase(CaseMixin, TestCase):
         self.assertEqual(user_staff.email in emails, staff_notify)
 
     def test_email_make_done(self):
-        self._test_email(self.test_status_field_staff_can_send, Letter.STATUS.done, True)
+        self._test_email(self.test_status_field_staff_can_send,
+                         Letter.STATUS.done, True)
 
     def test_email_make_staff(self):
-        self._test_email(self.test_status_field_staff_can_send_staff, Letter.STATUS.staff, False)
+        self._test_email(self.test_status_field_staff_can_send_staff,
+                         Letter.STATUS.staff, False)
 
     def test_notify_user_with_notify_unassigned_letter(self):
         management_user = UserFactory(notify_unassigned_letter=True)
@@ -310,7 +325,8 @@ class AddLetterTestCase(CaseMixin, TestCase):
 
         self.user = UserFactory(is_staff=False)
         assign_perm('can_add_record', self.user, self.case)
-        assign_perm('can_send_to_client', UserFactory(is_staff=True), self.case)
+        assign_perm('can_send_to_client', UserFactory(is_staff=True),
+                    self.case)
         self.client.login(username=self.user.username, password='pass')
 
         data = self.post_data.copy()
@@ -320,6 +336,7 @@ class AddLetterTestCase(CaseMixin, TestCase):
         emails = [x.to[0] for x in mail.outbox]
 
         self.assertNotIn(management_user.email, emails)
+
 
 class ProjectAddLetterTestCase(CaseMixin, TestCase):
     post_data = {'attachment_set-0-DELETE': '',
@@ -356,7 +373,8 @@ class ProjectAddLetterTestCase(CaseMixin, TestCase):
         self.assertEqual(self.case.has_project, False)
 
     def test_project_voluntier(self):
-        self.resp_user(staff=True, can_send_to_client=True, project='Hell yeah!')
+        self.resp_user(staff=True, can_send_to_client=True,
+                       project='Hell yeah!')
         self.case = refresh_from_db(self.case)
         self.assertEqual(self.case.has_project, True)
 
@@ -365,15 +383,18 @@ class SendLetterTestCase(CaseMixin, TestCase):
     note_text = 'Lorem ipsum XYZ123'
 
     def assertEmailTemplateUsed(self, template):
-        emails = [x.to[0] for x in mail.outbox if template in self._templates_used(x)]
+        emails = [x.to[0] for x in mail.outbox if
+                  template in self._templates_used(x)]
         return emails
 
     def assertEmailReceived(self, email, template=None):
-        emails = [x.to[0] for x in mail.outbox if not template or template in self._templates_used(x)]
+        emails = [x.to[0] for x in mail.outbox if
+                  not template or template in self._templates_used(x)]
         self.assertIn(email, emails)
 
     def assertEmailNotReceived(self, email, template=None):
-        emails = [x.to[0] for x in mail.outbox if not template or template in self._templates_used(x)]
+        emails = [x.to[0] for x in mail.outbox if
+                  not template or template in self._templates_used(x)]
         self.assertNotIn(email, emails)
 
     def setUp(self):
@@ -404,7 +425,8 @@ class SendLetterTestCase(CaseMixin, TestCase):
         assign_perm('can_send_to_client', user1, self.object.case)
         self._test_send()
 
-        emails = self.assertEmailTemplateUsed('letters/email/letter_drop_a_note.txt')
+        emails = self.assertEmailTemplateUsed(
+            'letters/email/letter_drop_a_note.txt')
         self.assertEqual(user1.email in emails, True)
         self.assertEqual(user2.email in emails, False)
 
@@ -415,8 +437,10 @@ class SendLetterTestCase(CaseMixin, TestCase):
         self._test_send()
 
         self.assertEmailTemplateUsed('letters/email/letter_send_to_client.txt')
-        self.assertEmailReceived(user1.email, 'letters/email/letter_send_to_client.txt')
-        self.assertEmailReceived(user2.email, 'letters/email/letter_send_to_client.txt')
+        self.assertEmailReceived(user1.email,
+                                 'letters/email/letter_send_to_client.txt')
+        self.assertEmailReceived(user2.email,
+                                 'letters/email/letter_send_to_client.txt')
         recipient_list = [addr for x in mail.outbox for addr in x.to]
         self.assertEqual(recipient_list.count(user2.email), 1,
                          'Sended double notificatiton to client')
@@ -443,9 +467,12 @@ class SendLetterTestCase(CaseMixin, TestCase):
         self._test_send()
 
         self.assertEmailTemplateUsed('letters/email/letter_drop_a_note.txt')
-        self.assertEmailReceived(user1.email, 'letters/email/letter_drop_a_note.txt')
-        self.assertEmailReceived(user2.email, 'letters/email/letter_drop_a_note.txt')
-        self.assertEmailReceived(user3.email, 'letters/email/letter_drop_a_note.txt')
+        self.assertEmailReceived(user1.email,
+                                 'letters/email/letter_drop_a_note.txt')
+        self.assertEmailReceived(user2.email,
+                                 'letters/email/letter_drop_a_note.txt')
+        self.assertEmailReceived(user3.email,
+                                 'letters/email/letter_drop_a_note.txt')
 
     def test_not_notify_management_to_internal_if_lawyer_assigned(self):
         user1 = UserFactory(notify_unassigned_letter=True, is_staff=True)
@@ -456,10 +483,12 @@ class SendLetterTestCase(CaseMixin, TestCase):
         self._test_send()
 
         self.assertEmailTemplateUsed('letters/email/letter_drop_a_note.txt')
-        self.assertEmailNotReceived(user1.email, 'letters/email/letter_drop_a_note.txt')
-        self.assertEmailReceived(user2.email, 'letters/email/letter_drop_a_note.txt')
-        self.assertEmailReceived(user3.email, 'letters/email/letter_drop_a_note.txt')
-
+        self.assertEmailNotReceived(user1.email,
+                                    'letters/email/letter_drop_a_note.txt')
+        self.assertEmailReceived(user2.email,
+                                 'letters/email/letter_drop_a_note.txt')
+        self.assertEmailReceived(user3.email,
+                                 'letters/email/letter_drop_a_note.txt')
 
 class StreamAttachmentViewTestCase(TestCase):
     def setUp(self):
@@ -494,3 +523,96 @@ class StreamAttachmentViewTestCase(TestCase):
         for chunk in iter(lambda: myfile.read(4096), b""):
             hash_md5.update(chunk)
         return hash_md5.hexdigest()
+
+
+class ReceiveEmailTestCase(TestCase):
+    def setUp(self):
+        self.url = reverse('letters:webhook')
+        self.authenticated_url = "{}?secret={}".format(
+            self.url,
+            LETTER_RECEIVE_SECRET
+        )
+
+    def test_required_autentication(self):
+        response = self.client.get(self.url)
+        self.assertEqual(response.status_code, 405)
+
+    def test_sample_request(self):
+        case = CaseFactory()
+
+        body = self._get_body(case)
+        response = self.client.post(
+            path=self.authenticated_url,
+            data=json.dumps(body),
+            content_type='application/imap-to-webhook-v1+json'
+        )
+        self.assertEqual(response.json()['status'], 'OK')
+
+        self.assertEqual(case.record_set.count(), 1)
+        letter = case.record_set.all()[0].content_object
+        self.assertEqual(
+            letter.text,
+            'W dniach 3.07-17.08.2018 r. przebywam na urlopie.'
+        )
+        if six.PY3:
+            self.assertEqual(letter.eml.read().decode('utf-8'), '12345')
+            self.assertEqual(
+                letter.attachment_set.all()[0].attachment.read().decode(
+                    'utf-8'), '12345')
+        else:
+            self.assertEqual(letter.eml.read(), '12345')
+            self.assertEqual(letter.attachment_set.all()[0].attachment.read(),
+                             '12345')
+
+    def test_no_valid_email(self):
+        body = self._get_body()
+
+        response = self.client.post(
+            path=self.authenticated_url,
+            data=json.dumps(body),
+            content_type='application/imap-to-webhook-v1+json'
+        )
+        letter = Letter.objects.first()
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            letter.case.created_by.email,
+            "new-user@example.com"
+        )
+
+    def _get_body(self, case=None):
+        return {
+            "headers": {
+                "auto_reply_type": "vacation-reply",
+                "cc": [],
+                "date": "2018-07-30T11:33:22",
+                "from": [
+                    "new-user@example.com"
+                ],
+                "message_id": "<E1fk6QU-00CPTw-Ey@s50.hekko.net.pl>",
+                "subject": "Nowa wiadomość",
+                "to": [
+                    case.get_email() if case else 'user-b@example.com'
+                ],
+                "to+": [
+                    "user-b@siecobywatelska.pl",
+                    "user-c@siecobywatelska.pl",
+                    case.get_email() if case else 'user-b@example.com'
+                ]
+            },
+            "text": {
+                "content": "W dniach 3.07-17.08.2018 r. przebywam na urlopie.",
+                "quote": ""
+            },
+            "files_count": 1,
+            "files": [
+                {
+                    "content": "MTIzNDU=",
+                    "filename": "my-doc.txt"
+                }
+            ],
+            "eml": {
+                "filename": "a9a7b32cdfa34a7f91c826ff9b3831bb.eml.gz",
+                "compressed": True,
+                "content": "MTIzNDU="
+            }
+        }
