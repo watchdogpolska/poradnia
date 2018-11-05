@@ -1,11 +1,11 @@
-Sprawa {{case}} zarejestrowana w systemie
+{%load cases_tags %}Sprawa {{case}} zarejestrowana w systemie
 Szanowna Pani/Szanowny Panie {{user}},
 
 Informujemy, że pytanie zostało zarejestrowane w naszym systemie.
 
 Zgodnie z dostępnym na stronie „Regulaminem poradnictwa”, odpowiedź zostanie przygotowana przez nasz zespół w terminie do 30 dni kalendarzowych, chyba że wymaga dochowania krótszego terminu (ponieważ dotyczy np. złożenia odwołania od decyzji lub wniosku o ponowne rozpatrzenie sprawy). W takiej sytuacji, zgodnie z regulaminem, mamy nadzieję, że zaznaczyli Państwo ten termin w temacie wiadomości.
 
-Z przesłanym pytaniem oraz dokumentami można zapoznać się poprzez naszą stronę internetową, która wymaga logowania http://porady.siecobywatelska.pl/{{case.get_absolute_url}}. Przez stronę można przesyłać dodatkowe dokumenty i pytania.
+Z przesłanym pytaniem oraz dokumentami można zapoznać się poprzez naszą stronę internetową, która wymaga logowania {% full_link case.get_absolute_url %}. Przez stronę można przesyłać dodatkowe dokumenty i pytania.
 
 {% if email %}Kontaktować się można również używając adresu {{email}} do korespondencji w tej (konkretnej) sprawie. Dzięki temu wymiana korespondencji będzie sprawniejsza.{% endif %}
 
