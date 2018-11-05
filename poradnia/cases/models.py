@@ -62,7 +62,7 @@ class CaseQuerySet(QuerySet):
         if not envelope:
             return self.none()
 
-        result = match('^sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl$', envelope)
+        result = match('sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl', envelope)
 
         if not result:
             return self.none()
