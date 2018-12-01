@@ -42,7 +42,7 @@ icalendar==4.0.3
 html2text==2018.1.9
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.7.0
-raven==6.4.0
+raven==6.9.0
 django-import-export==0.6.1
 python-dateutil==2.6.1
 monotonic==1.4
