@@ -191,6 +191,14 @@ class ReceiveEmailTestCase(TestCase):
         #xaxa
         self.assertIsNotNone(letter.html)
 
+    def test_zenbox_match_message(self):
+        case = CaseFactory(pk=8428)
+
+        message = self.get_message('zenbox_match_message.eml')
+        MessageParser.receive_signal(sender=self.mailbox, message=message)
+
+        self.assertEqual(case.letter_set.get().case_id, case.pk)
+
 
 class ModelTestCase(TestCase):
     def test_render_as_html_returns_html(self):

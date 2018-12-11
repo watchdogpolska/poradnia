@@ -287,7 +287,7 @@ LANGUAGES = (
 LOCALE_PATHS = (str(APPS_DIR.path('templates/locale')),)
 
 PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
-PORADNIA_EMAIL_INPUT = "^sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl$"
+PORADNIA_EMAIL_INPUT = "sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
 ATOMIC_REQUESTS = True
 
 TINYMCE_DEFAULT_CONFIG = {
