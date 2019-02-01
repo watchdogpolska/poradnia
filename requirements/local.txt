@@ -6,4 +6,4 @@ Sphinx==1.8.3
 django-debug-toolbar==1.11
 django-extensions==2.1.5
 django-autofixture==0.12.1
-graphviz==0.9
+graphviz==0.10.1
