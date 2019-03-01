@@ -5,4 +5,4 @@ Django==1.11.20 # pyup: <2.0
 gunicorn==19.9.0
 gevent==1.4.0
 
-elastic-apm==3.0.0
+elastic-apm==4.1.0
