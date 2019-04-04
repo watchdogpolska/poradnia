@@ -71,21 +71,29 @@ class Advice(models.Model):
                                verbose_name=_("Subject"),
                                null=True,
                                blank=True)
-    issues = models.ManyToManyField(Issue,
-                                    verbose_name=Issue._meta.verbose_name_plural,
-                                    blank=True)
-    area = models.ForeignKey(Area,
-                             null=True,
-                             verbose_name=Area._meta.verbose_name,
-                             blank=True)
-    person_kind = models.ForeignKey(PersonKind,
-                                    null=True,
-                                    blank=True,
-                                    verbose_name=PersonKind._meta.verbose_name)
-    institution_kind = models.ForeignKey(InstitutionKind,
-                                         verbose_name=InstitutionKind._meta.verbose_name,
-                                         null=True,
-                                         blank=True)
+    issues = models.ManyToManyField(
+        Issue,
+        verbose_name=Issue._meta.verbose_name_plural,
+        blank=True
+    )
+    area = models.ForeignKey(
+        Area,
+        null=True,
+        verbose_name=Area._meta.verbose_name,
+        blank=True
+    )
+    person_kind = models.ForeignKey(
+        PersonKind,
+        null=True,
+        blank=True,
+        verbose_name=PersonKind._meta.verbose_name
+    )
+    institution_kind = models.ForeignKey(
+        InstitutionKind,
+        verbose_name=InstitutionKind._meta.verbose_name,
+        null=True,
+        blank=True
+    )
     advicer = models.ForeignKey(settings.AUTH_USER_MODEL,
                                 verbose_name=_("Advicer"),
                                 help_text=_("Person who give a advice"),
