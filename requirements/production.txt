@@ -3,6 +3,6 @@
 -r base.txt
 Django==1.11.20 # pyup: <2.0
 gunicorn==19.7.1
-gevent==1.2.2
+gevent==1.4.0
 
 elastic-apm==3.0.5
