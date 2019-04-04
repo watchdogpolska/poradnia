@@ -1,4 +1,5 @@
 from django import template
+from django.contrib.sites.shortcuts import get_current_site
 from django.template.defaultfilters import stringfilter
 
 from poradnia.cases.models import Case
@@ -20,3 +21,14 @@ def status2css(status):
 def status2display(status):
     """Converts a status into display name"""
     return Case.STATUS[status]
+
+
+@register.simple_tag(takes_context=True)
+def full_link(context, path):
+    scheme = '{}://'.format(context['request'].scheme) \
+        if 'request' in context else 'https://'
+    return ''.join([
+        scheme,
+        get_current_site(context.get('request', None)).domain,
+        path if path.startswith('/') else '/' + path
+    ])

@@ -1,8 +1,9 @@
+{% load cases_tags %}
 <p>Szanowny/-a,</p>
 
 <p>
 W systemie Poradnia została dodana nowa sprawa.
-Przejdź pod adres <a href="http://poradnia.siecobywatelska.pl/{{ case.get_absolute_url }}">http://poradnia.siecobywatelska.pl/{{ case.get_absolute_url }}</a>, aby się z nią zapoznać.
+Przejdź pod adres <a href="{% full_link case.get_absolute_url %}">{% full_link case.get_absolute_url %}</a>, aby się z nią zapoznać.
 </p>
 
 <p>

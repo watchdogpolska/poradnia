@@ -1,0 +1,16 @@
+{
+  "extends": [
+    "config:base"
+  ],
+  "enabledManagers": ["dockerfile", "pip_requirements", "pip_setup"],
+  "packageRules": [
+    {
+      "managers": ["pip_requirements"],
+      "paths": ["requirements/local.txt","requirements/test.txt","requirements/doc.txt"],
+      "groupName": "non-production-dependencies"
+    }
+  ],
+  "pip_requirements": {
+    "fileMatch": ["requirements/.+?.txt"]
+  }
+}

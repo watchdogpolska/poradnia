@@ -1,4 +1,4 @@
-from re import match
+from re import search
 
 from django.conf import settings
 from django.contrib.auth import get_user_model
@@ -58,11 +58,10 @@ class CaseQuerySet(QuerySet):
     def by_msg(self, message):
         envelope = (message.get_email_object().get('Envelope-To') or
                     message.get_email_object().get('To'))
-
         if not envelope:
             return self.none()
 
-        result = match('^sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl$', envelope)
+        result = search('sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl', envelope)
 
         if not result:
             return self.none()
@@ -155,13 +154,6 @@ class Case(models.Model):
 
     def get_email(self):
         return settings.PORADNIA_EMAIL_OUTPUT % self.__dict__
-
-    @classmethod
-    def get_by_email(cls, email):
-        filter_param = match(settings.PORADNIA_EMAIL_INPUT, email)
-        if not filter_param:
-            raise cls.DoesNotExist
-        return cls.objects.get(**filter_param.groupdict())
 
     # TODO: Remove
     def perm_check(self, user, perm):

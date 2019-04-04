@@ -1,3 +1,4 @@
+{% load cases_tags %}
 <p>
-Zapoznaj się z aktami sprawy pod adresem <a href="http://porady.siecobywatelska.pl/{{target.get_absolute_url}}">http://porady.siecobywatelska.pl/{{target.get_absolute_url}}</a>.
+Zapoznaj się z aktami sprawy pod adresem <a href="{% full_link target.get_absolute_url%}">{% full_link target.get_absolute_url%}</a>.
 </p>

@@ -115,15 +115,6 @@ class CaseTestCase(TestCase):
     def test_get_edit_url(self):
         self.assertEqual(CaseFactory(pk=50).get_edit_url(), '/sprawy/sprawa-50/edytuj/')
 
-    @override_settings(PORADNIA_EMAIL_INPUT='case-(?P<pk>\d+)@example.com')
-    def test_get_by_email(self):
-        with self.assertRaises(Case.DoesNotExist):
-            Case.get_by_email('case-22@example.com')
-            Case.get_by_email('broken@example.com')
-        obj = CaseFactory(pk=22)
-        obj2 = Case.get_by_email('case-22@example.com')
-        self.assertEqual(obj, obj2)
-
     def test_perm_check(self):
         u1 = UserFactory()
         assign_perm('cases.can_view', u1)
