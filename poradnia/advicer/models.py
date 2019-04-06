@@ -72,7 +72,7 @@ class Advice(models.Model):
         verbose_name=_("Case")
     )
     subject = models.CharField(
-        max_length=50,
+        max_length=100,
         verbose_name=_("Subject"),
         null=True,
         blank=True
