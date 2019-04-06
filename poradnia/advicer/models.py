@@ -18,9 +18,9 @@ except ImportError:
 @python_2_unicode_compatible
 class AbstractCategory(models.Model):
     name = models.CharField(
-
         max_length=100,
-        verbose_name=_("Name"))
+        verbose_name=_("Name")
+    )
 
     def __str__(self):
         return self.name
@@ -71,7 +71,7 @@ class Advice(models.Model):
         blank=True,
         verbose_name=_("Case"))
     subject = models.CharField(
-        max_length=50,
+        max_length=100,
         verbose_name=_("Subject"),
         null=True,
         blank=True
