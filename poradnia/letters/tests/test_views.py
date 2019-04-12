@@ -1,3 +1,6 @@
+import hashlib
+import zipfile
+from six import StringIO
 from django.core import mail
 from django.test import TestCase
 from guardian.shortcuts import assign_perm
@@ -456,3 +459,38 @@ class SendLetterTestCase(CaseMixin, TestCase):
         self.assertEmailNotReceived(user1.email, 'letters/email/letter_drop_a_note.txt')
         self.assertEmailReceived(user2.email, 'letters/email/letter_drop_a_note.txt')
         self.assertEmailReceived(user3.email, 'letters/email/letter_drop_a_note.txt')
+
+
+class StreamAttachmentViewTestCase(TestCase):
+    def setUp(self):
+        self.attachment = AttachmentFactory()
+        self.url = reverse('letters:attachments_zip', kwargs={
+            'case_pk': self.attachment.letter.case_id,
+            'letter_pk': self.attachment.letter.pk
+        })
+        self.user = UserFactory(is_staff=True, is_superuser=True)
+        self.client.login(username=self.user.username, password='pass')
+
+    def test_streaming_of_file(self):
+        resp = self.client.get(self.url)
+        # self.assertContains(resp, self.attacment)
+        # self.assertIn('form', resp.context)
+        output = StringIO()
+        for chunk in resp.streaming_content:
+            output.write(chunk)
+        with zipfile.ZipFile(output) as myzip:
+            filename = myzip.filelist[0].orig_filename
+            self.assertEqual(
+                self.attachment.filename,
+                filename
+            )
+            with myzip.open(filename) as myfile:
+                archived_file_md5 = self._hash_of_file(myfile)
+                original_file_md5 = self._hash_of_file(self.attachment.attachment.file)
+                self.assertEqual(archived_file_md5, original_file_md5)
+
+    def _hash_of_file(self, myfile):
+        hash_md5 = hashlib.md5()
+        for chunk in iter(lambda: myfile.read(4096), b""):
+            hash_md5.update(chunk)
+        return hash_md5.hexdigest()
