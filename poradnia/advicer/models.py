@@ -69,7 +69,8 @@ class Advice(models.Model):
         to=Case,
         null=True,
         blank=True,
-        verbose_name=_("Case"))
+        verbose_name=_("Case")
+    )
     subject = models.CharField(
         max_length=100,
         verbose_name=_("Subject"),
@@ -87,7 +88,7 @@ class Advice(models.Model):
         blank=True
     )
     person_kind = models.ForeignKey(
-        to=PersonKind,
+        PersonKind,
         null=True,
         blank=True,
         verbose_name=PersonKind._meta.verbose_name
