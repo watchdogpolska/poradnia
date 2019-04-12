@@ -53,3 +53,5 @@ django-github-revision==0.0.3
 enum34==1.1.6
 numpy==1.14.5 # pyup: ignore
 unicodecsv==0.14.1
+zipstream==1.1.4
+
