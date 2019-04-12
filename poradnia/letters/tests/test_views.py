@@ -1,6 +1,6 @@
 import hashlib
 import zipfile
-from six import StringIO
+from six import BytesIO
 from django.core import mail
 from django.test import TestCase
 from guardian.shortcuts import assign_perm
@@ -475,7 +475,7 @@ class StreamAttachmentViewTestCase(TestCase):
         resp = self.client.get(self.url)
         # self.assertContains(resp, self.attacment)
         # self.assertIn('form', resp.context)
-        output = StringIO()
+        output = BytesIO()
         for chunk in resp.streaming_content:
             output.write(chunk)
         with zipfile.ZipFile(output) as myzip:
