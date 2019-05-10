@@ -46,7 +46,7 @@
             by {{modified_by}})
             {% endblocktrans %}
             {% endif %}
-            {% if "can_change_all_record" in case_perms or requests.user == object.user and "can_change_own_record" in case_perms %} &bull;
+            {% if "can_change_all_record" in case_perms or request.user == object.user and "can_change_own_record" in case_perms %} &bull;
             <i class="fa fa-pencil"></i>
             <a href="{{object.get_edit_url}}">
                 {% trans 'Edit'%}
@@ -60,6 +60,9 @@
             {% endif %}
             {% if object.eml %} &bull;
             <a href="{{object.eml.url}}"><i class="fa fa-life-ring"></i></a>
+            {% endif %}
+            {% if request.user.is_staff %} &bull;
+            <a href="{% url 'letters:attachments_zip' case_pk=object.case_id letter_pk=object.pk %}"><i class="fa fa-archive"></i></a>
             {% endif %}
         </div>
     </div>

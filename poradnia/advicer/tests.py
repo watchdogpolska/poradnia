@@ -1,5 +1,8 @@
 from __future__ import absolute_import
 
+import datetime
+
+from atom.ext.guardian.tests import PermissionStatusMixin
 from atom.mixins import AdminTestCaseMixin
 from django.core.urlresolvers import reverse, reverse_lazy
 from guardian.shortcuts import assign_perm
@@ -8,7 +11,7 @@ from test_plus.test import TestCase
 from poradnia.advicer.models import Advice
 from poradnia.users.factories import StaffFactory, UserFactory
 
-from .factories import AdviceFactory
+from .factories import AdviceFactory, IssueFactory
 
 try:
     from django.core.urlresolvers import reverse, reverse_lazy
@@ -97,6 +100,26 @@ class AdviceUpdateTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
 class AdviceCreateTestCase(PermissionMixin, TemplateUsedMixin, TestCase):
     template_name = 'advicer/advice_form.html'
     url = reverse_lazy('advicer:create')
+
+    def setUp(self):
+        super(AdviceCreateTestCase, self).setUp()
+        self.user = StaffFactory(username='john')
+        self.issue = IssueFactory()
+
+    def test_keep_issues(self):
+        self.login()
+        resp = self.client.post(self.url, data={
+            'issues': [self.issue.pk],
+            'advicer': self.user.pk,
+            'grant_on': datetime.datetime.now(),
+            'attachment_set-INITIAL_FORMS': '0',
+            'attachment_set-MAX_NUM_FORMS': '1000',
+            'attachment_set-MIN_NUM_FORMS': '0',
+            'attachment_set-TOTAL_FORMS': '3',
+        })
+        self.assertEqual(resp.status_code, 302)
+        advice = Advice.objects.last()
+        self.assertTrue(advice.issues.filter(pk=self.issue.pk).exists())
 
 
 class AdviceDeleteTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, TestCase):

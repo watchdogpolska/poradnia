@@ -10,7 +10,7 @@ django-floppyforms==1.7.0
 django-model-utils==3.1.2
 
 # images
-Pillow==5.4.1
+Pillow==6.0.0
 sorl-thumbnail==12.5.0
 
 # For user registration, either via email or social
@@ -26,7 +26,7 @@ django-autoslug==1.9.4
 
 # Useful things
 # Time zones support
-pytz==2018.9
+pytz==2019.1
 
 # Your custom requirements go here
 django-guardian==1.4.9
@@ -38,13 +38,13 @@ https://github.com/ad-m/django-flatpages-tinymce/archive/patch-1.zip
 django-atom==0.16.3
 django-tinymce==2.8.0
 django-tinycontent==0.7.1
-icalendar==4.0.0
+icalendar==4.0.3
 html2text==2018.1.9
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.6.3
 raven==6.10.0
 django-import-export==0.7.0
-python-dateutil==2.6.1
+python-dateutil==2.8.0
 monotonic==1.5
 cached-property==1.5.1
 django-braces==1.13.0
@@ -53,3 +53,5 @@ django-github-revision==0.0.3
 enum34==1.1.6
 numpy==1.14.5 # pyup: ignore
 unicodecsv==0.14.1
+zipstream==1.1.4
+

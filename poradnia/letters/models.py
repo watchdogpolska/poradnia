@@ -2,6 +2,8 @@ from __future__ import unicode_literals
 
 import logging
 import os
+
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
 from os.path import basename
 from cached_property import cached_property
@@ -164,10 +166,27 @@ class Letter(AbstractRecord):
         ordering = ['-created_on']
 
 
+class AttachmentQuerySet(models.QuerySet):
+    def for_user(self, user):
+        qs = self
+        if not user.has_perm('cases.can_view_all'):
+            content_type = ContentType.objects.get_for_model(Case)
+            qs = qs.filter(
+                letter__record__case__caseuserobjectpermission__permission__codename='can_view',
+                letter__record__case__caseuserobjectpermission__permission__content_type=content_type,
+                letter__record__case__caseuserobjectpermission__user=user
+            )
+        if not user.is_staff:
+            qs = qs.filter(letter__status=Letter.STATUS.done)
+        return qs
+
+
 @python_2_unicode_compatible
 class Attachment(models.Model):
     letter = models.ForeignKey(Letter)
     attachment = models.FileField(upload_to=date_random_path, verbose_name=_("File"))
+
+    objects = AttachmentQuerySet.as_manager()
 
     @property
     def filename(self):
