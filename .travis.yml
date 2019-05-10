@@ -5,6 +5,9 @@ cache:
   directories:
     - $HOME/.cache/pip
 
+services:
+  - mysql
+
 env:
   fast_finish: true
   global:
