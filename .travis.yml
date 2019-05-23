@@ -9,7 +9,6 @@ services:
   - mysql
 
 env:
-  fast_finish: true
   global:
     - DATABASE_URL="mysql://root:@localhost/poradnia"
   matrix:
@@ -22,12 +21,11 @@ matrix:
   allow_failures:
     - env: TOX_ENV=flake8
 
-before_install:
-  - .contrib/travis-ci/create-database.sh
 install:
   - pip install -U pip wheel
   - pip install tox
 script:
+  - .contrib/travis-ci/create-database.sh
   - tox -e $TOX_ENV
 
 after_script:
