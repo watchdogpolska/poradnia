@@ -37,3 +37,6 @@ class EventForm(PartialMixin, AuthorMixin, FormHorizontalMixin, SingleButtonMixi
         # Set this form to use the User model.
         model = Event
         fields = ("deadline", "time", "text")
+        widgets = {
+            "time": forms.DateTimeInput(attrs={"autocomplete": "off"}),
+        }
