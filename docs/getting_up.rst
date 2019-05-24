@@ -11,7 +11,8 @@ Obraz przygotowany dla środowiska Docker właściwy jest wyłącznie do pracy w
 
 Uruchomienie::
 
-    $ docker-compose --build up
+    $ docker-compose build
+    $ docker-compose up
 
 Po poprawnym uruchomieniu usług można przejść w przeglądarce pod adres ``http://localhost:8000``.
 
