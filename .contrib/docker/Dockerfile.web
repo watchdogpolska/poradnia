@@ -6,7 +6,7 @@ WORKDIR /code
 # Install python dependencies
 ENV PYTHONUNBUFFERED 1
 RUN apt-get update && apt-get install -y\
-    libmysqlclient-dev \
+    default-libmysqlclient-dev \
     gcc \
     build-essential \
     curl
