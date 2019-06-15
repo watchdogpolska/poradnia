@@ -3,6 +3,7 @@ from atom.ext.crispy_forms.forms import (FormHorizontalMixin, HelperMixin,
 from atom.forms import AuthorMixin
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.layout import Fieldset, Layout
+from dal import autocomplete
 from django import forms
 from django.forms import ModelForm
 from django.utils.timezone import now
@@ -31,6 +32,7 @@ class AdviceForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin
                 'area',
                 'person_kind',
                 'institution_kind',
+                'jst',
                 'helped'
             ),
             Fieldset(
@@ -45,7 +47,10 @@ class AdviceForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin
     class Meta:
         model = Advice
         fields = ['case', 'subject', 'grant_on', 'issues', 'area',
-                  'person_kind', 'institution_kind', 'advicer', 'comment', 'helped']
+                  'person_kind', 'institution_kind', 'advicer', 'comment', 'helped', 'jst']
+        widgets = {
+            'jst': autocomplete.ModelSelect2(url='teryt:community-autocomplete')
+        }
 
 
 class AttachmentForm(HelperMixin, forms.ModelForm):
