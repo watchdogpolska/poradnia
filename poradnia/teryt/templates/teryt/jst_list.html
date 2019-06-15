@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% block content %}
+
+    <div class="gray">
+        <h2 class="page-header">{% trans 'Voivodeship' %}</h2>
+        <p>{% trans 'Select voivodeship.' %}</p>
+        <ul class="select-list">
+            {% for jst in object_list %}
+                <li><a href="{{ jst.get_absolute_url }}">{{ jst }}</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

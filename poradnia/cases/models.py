@@ -19,6 +19,7 @@ from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
+from poradnia.teryt.models import JST
 
 try:
     from django.core.urlresolvers import reverse
@@ -133,6 +134,12 @@ class Case(models.Model):
                                        verbose_name=_("Modified on"))
     handled = models.BooleanField(default=False, verbose_name=_("Handled"))
     has_project = models.BooleanField(default=False, verbose_name=_("Has project"))
+    jst = models.ForeignKey(JST,
+                            null=True,
+                            blank=True,
+                            on_delete=models.CASCADE,
+                            verbose_name=_('Unit of administrative division'),
+                            db_index=True)
 
     def status_display(self):
         return self.STATUS[self.status]
