@@ -52,7 +52,9 @@ THIRD_PARTY_APPS = (
     'import_export',
     'django_filters',
     'bootstrap_pagination',
-    'github_revision'
+    'github_revision',
+    'mptt',
+    'teryt_tree'
 )
 
 # Apps specific for this project go here.
@@ -68,7 +70,8 @@ LOCAL_APPS = (
     'poradnia.feedback_custom',
     'poradnia.tasty_feedback',
     'poradnia.navsearch',
-    'poradnia.judgements'
+    'poradnia.judgements',
+    'poradnia.teryt'
     # Your stuff: custom apps go here
 )
 

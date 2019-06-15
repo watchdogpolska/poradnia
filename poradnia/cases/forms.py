@@ -42,7 +42,10 @@ class CaseForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, 
 
     class Meta:
         model = Case
-        fields = ("name", "status", "has_project")
+        fields = ("name", "status", "has_project", "jst")
+        widgets = {
+            'jst': autocomplete.ModelSelect2(url='teryt:community-autocomplete')
+        }
 
 
 class CaseGroupPermissionForm(HelperMixin, forms.Form):
