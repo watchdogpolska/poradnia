@@ -8,6 +8,7 @@ from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
 from poradnia.cases.models import Case
+from poradnia.teryt.models import JST
 
 try:
     from django.core.urlresolvers import reverse
@@ -143,6 +144,12 @@ class Advice(models.Model):
         null=True,
         blank=True
     )
+    jst = models.ForeignKey(JST,
+                            null=True,
+                            blank=True,
+                            on_delete=models.CASCADE,
+                            verbose_name=_('Unit of administrative division'),
+                            db_index=True)
     objects = AdviceQuerySet.as_manager()
 
     def __str__(self):
