@@ -152,7 +152,7 @@ class Advice(models.Model):
         return reverse('advicer:detail', kwargs={'pk': self.pk})
 
     class Meta:
-        ordering = ['created_on', ]
+        ordering = ['-created_on', ]
         permissions = (('can_view_all_advices', _("Can view all advices"),),
                        )
         verbose_name = _("Advice")
