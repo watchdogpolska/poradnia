@@ -29,7 +29,7 @@ django-autoslug==1.9.4
 pytz==2019.1
 
 # Your custom requirements go here
-django-guardian==1.5.1
+django-guardian==2.0.0
 django-mailbox==4.8.0
 talon==1.4.4
 django-filter==1.0.4
