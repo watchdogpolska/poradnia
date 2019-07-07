@@ -26,5 +26,6 @@ before_install:
   - sudo mv docker-compose /usr/local/bin
 
 script:
+  - docker-compose run web python manage.py makemigrations --check
   - docker-compose run -e TRAVIS -e TRAVIS_JOB_ID -e TRAVIS_BRANCH -e TRAVIS_PULL_REQUEST web bash -c 'pip install coverage coveralls && coverage run --branch --omit=*/site-packages/*,poradnia/*/migrations/*.py manage.py test --keepdb --verbosity=2 && coveralls'
   - docker-compose run web sphinx-build -b html -d docs/_build/doctrees docs docs/_build/html

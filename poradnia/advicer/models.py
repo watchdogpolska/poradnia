@@ -85,7 +85,7 @@ class Advice(models.Model):
     )
     area = models.ManyToManyField(
         to=Area,
-        verbose_name=Issue._meta.verbose_name_plural,
+        verbose_name=Area._meta.verbose_name_plural,
         blank=True
     )
     person_kind = models.ForeignKey(
