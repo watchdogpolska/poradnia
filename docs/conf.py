@@ -17,7 +17,7 @@ import os
 import sys
 
 import django
-from django.core.urlresolvers import get_resolver
+from django.urls.resolvers import get_resolver
 from django.utils.html import strip_tags
 
 # Py3 compatible, TODO: rebuild config
