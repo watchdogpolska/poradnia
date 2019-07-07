@@ -10,6 +10,10 @@ from .models import Advice
 
 
 class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
+    name = django_filters.CharFilter(
+        label=_("Subject"),
+        lookup_expr='icontains'
+    )
     advicer = UserChoiceFilter(label=_("Advicer"))
     created_by = UserChoiceFilter(label=_("Created by"))
     created_on = django_filters.DateRangeFilter(label=_("Created on"))
@@ -17,7 +21,7 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
     class Meta:
         model = Advice
         fields = ['advicer', 'created_by', 'created_on',
-                  'area', 'issues', 'person_kind', 'institution_kind', 'helped']
+                  'area', 'issues', 'person_kind', 'institution_kind', 'helped', 'subject']
         order_by = (
             ('created_on', _('Creation date')),
             ('modified_on', _('Modification date')),
@@ -47,7 +51,7 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
             ),
             Fieldset(
                 _('Details'),
-                'advicer', 'created_by', 'created_on',
+                'advicer', 'created_by', 'created_on','subject'
             ),
         )
         self._form.helper.add_input(Submit('filter', _('Filter')))
