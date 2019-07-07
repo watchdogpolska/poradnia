@@ -1,32 +1,29 @@
-language: python
-python: "3.6"
-
-cache:
-  directories:
-    - $HOME/.cache/pip
+language: generic
 
 services:
-  - mysql
+  - docker
 
-env:
-  global:
-    - DATABASE_URL="mysql://root:@localhost/poradnia"
-  matrix:
-    - TOX_ENV=flake8
-    - TOX_ENV=docs
-    - TOX_ENV=py27-dj111-coveralls
-    - TOX_ENV=py36-dj111-coveralls
+templates:
+  django111: &django111 DJANGO_VERSION="==1.11.*"
+  django22: &django22 DJANGO_VERSION="==2.2.*"
+  django23: &django23 DJANGO_VERSION="==2.3.*"
+  py2: &py2 PYTHON_VERSION=2
+  py3: &py3 PYTHON_VERSION=3
 
 matrix:
-  allow_failures:
-    - env: TOX_ENV=flake8
+  fast_finish: true
+  include:
+    - env: [*django111, *py2]
+    - env: [*django22, *py3]
+    - env: [*django23, *py3]
 
-install:
-  - pip install -U pip wheel
-  - pip install tox
+
+before_install:
+  - export DOCKER_COMPOSE_VERSION=1.23.2
+  - curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m` > docker-compose
+  - echo curl -L https://github.com/docker/compose/releases/download/${DOCKER_COMPOSE_VERSION}/docker-compose-`uname -s`-`uname -m`
+  - chmod +x docker-compose
+  - sudo mv docker-compose /usr/local/bin
+
 script:
-  - .contrib/travis-ci/create-database.sh
-  - tox -e $TOX_ENV
-
-after_script:
-- rm $HOME/.cache/pip/log/*
+  - docker-compose run -e TRAVIS -e TRAVIS_JOB_ID -e TRAVIS_BRANCH -e TRAVIS_PULL_REQUEST web bash -c 'pip install coverage coveralls && coverage run --branch --omit=*/site-packages/*,poradnia/*/migrations/*.py manage.py test --keepdb --verbosity=2 && coveralls'
