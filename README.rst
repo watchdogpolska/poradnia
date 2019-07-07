@@ -10,22 +10,18 @@ Poradnia
    :alt: Code Climate
 
 .. image:: https://pyup.io/repos/github/watchdogpolska/poradnia/shield.svg
-     :target: https://pyup.io/repos/github/watchdogpolska/poradnia/
-     :alt: Updates
+   :target: https://pyup.io/repos/github/watchdogpolska/poradnia/
+   :alt: Updates
 
 .. image:: https://img.shields.io/github/issues/watchdogpolska/poradnia.svg
-     :target: https://github.com/watchdogpolska/poradnia/issues
-     :alt: GitHub issues counter
-
-.. image:: https://img.shields.io/github/license/watchdogpolska/poradnia.svg
-     :alt: License
+   :target: https://github.com/watchdogpolska/poradnia/issues
+   :alt: GitHub issues counter
 
 .. image:: https://coveralls.io/repos/watchdogpolska/poradnia/badge.svg?branch=master&service=github
-  :target: https://coveralls.io/github/watchdogpolska/poradnia?branch=master
+   :target: https://coveralls.io/github/watchdogpolska/poradnia?branch=master
 
-.. image:: https://badges.gitter.im/watchdogpolska/poradnia.svg
-  :target: https://gitter.im/watchdogpolska/poradnia?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge
-  :alt: Gitter
+.. image:: https://img.shields.io/github/license/watchdogpolska/poradnia.svg
+   :alt: License
 
 Oprogramowanie ma na celu usprawnienie obsługi klientów Pozarządowego Centrum Dostępu do Informacji Publicznej oraz
 zwiększenie efektywności wsparcia ze strony praktykantów i ekspertów zewnętrznych. Powstałe narzędzie ma również
