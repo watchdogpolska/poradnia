@@ -14,7 +14,6 @@ RUN apt-get update \
    curl \
 && rm -rf /var/lib/apt/lists/*
 COPY requirements/*.txt ./requirements/
-RUN pip install --no-cache-dir pip wheel -U
 ARG DJANGO_VERSION='==1.11.21'
 RUN pip install --no-cache-dir -r requirements/dev.txt "django${DJANGO_VERSION}"
 CMD ["bash", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]

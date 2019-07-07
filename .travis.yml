@@ -5,8 +5,8 @@ services:
 
 templates:
   django111: &django111 DJANGO_VERSION="==1.11.*"
+  django21: &django21 DJANGO_VERSION="==2.1.*"
   django22: &django22 DJANGO_VERSION="==2.2.*"
-  django23: &django23 DJANGO_VERSION="==2.3.*"
   py2: &py2 PYTHON_VERSION=2
   py3: &py3 PYTHON_VERSION=3
 
@@ -14,8 +14,8 @@ matrix:
   fast_finish: true
   include:
     - env: [*django111, *py2]
-    - env: [*django22, *py3]
-    - env: [*django23, *py3]
+#    - env: [*django21, *py3]
+#    - env: [*django23, *py3]
 
 
 before_install:
