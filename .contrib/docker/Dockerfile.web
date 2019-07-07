@@ -11,6 +11,7 @@ RUN apt-get update \
    default-libmysqlclient-dev \
    gcc \
    build-essential \
+   git \
    curl \
 && rm -rf /var/lib/apt/lists/*
 COPY requirements/*.txt ./requirements/
