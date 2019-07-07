@@ -19,7 +19,6 @@ class AdviceForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin
     def __init__(self, *args, **kwargs):
         super(AdviceForm, self).__init__(*args, **kwargs)
         self.helper.form_method = 'post'
-        self.fields['advicer'].initial = self.user
         self.fields['grant_on'].initial = now()
         self.fields['case'].queryset = Case.objects.for_user(self.user).all()
         self.fields['case'].help_text = _('Select from poradnia.cases which do '
