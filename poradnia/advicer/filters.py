@@ -42,13 +42,15 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
             Fieldset(
                 _('Statistic data'),
                 Div(
-                    Div('area', css_class="col-sm-12 col-md-2"),
+                    Div('area', css_class="col-sm-12 col-md-4"),
                     Div('issues', css_class="col-sm-12 col-md-4"),
-                    Div('person_kind', css_class="col-sm-12 col-md-2"),
-                    Div('institution_kind', css_class="col-sm-12 col-md-2"),
-                    Div('helped', css_class="col-sm-12 col-md-2"),
+                    Div('person_kind', css_class="col-sm-12 col-md-4"),
+                    css_class='row'),
+                Div(
+                    Div('institution_kind', css_class="col-sm-12 col-md-3"),
+                    Div('helped', css_class="col-sm-12 col-md-3"),
                     css_class='row')
-            ),
+        ),
             Fieldset(
                 _('Details'),
                 'advicer', 'created_by', 'created_on','subject'
