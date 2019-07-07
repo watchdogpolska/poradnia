@@ -9,7 +9,6 @@ services:
       - "3306"
     environment:
       MYSQL_ROOT_PASSWORD: "password"
-      MYSQL_DATABASE: "poradnia"
     healthcheck:
       test: ["CMD", "mysqladmin" ,"ping", "-h", "localhost"]
       timeout: 20s
@@ -22,8 +21,6 @@ services:
     build:
       context: .
       dockerfile: .contrib/docker/Dockerfile.gulp
-    working_dir: /app
-    command: npx gulp build
     ports:
       - "35729:35729"
     volumes:
@@ -33,7 +30,6 @@ services:
     build:
       context: .
       dockerfile: .contrib/docker/Dockerfile.web
-    command: python manage.py runserver 0.0.0.0:8000
     volumes:
       - .:/code
     environment:
