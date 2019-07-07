@@ -34,7 +34,7 @@ django-mailbox==4.8.0
 talon==1.4.4
 django-filter==1.0.4
 django-autocomplete-light==3.2.10
-https://github.com/ad-m/django-flatpages-tinymce/archive/patch-1.zip
+https://github.com/ad-m/django-flatpages-tinymce/archive/master.zip
 django-atom==0.16.3
 django-tinymce==2.8.0
 django-tinycontent==0.7.1
