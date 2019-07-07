@@ -20,9 +20,6 @@ Poradnia
 .. image:: https://coveralls.io/repos/watchdogpolska/poradnia/badge.svg?branch=master&service=github
    :target: https://coveralls.io/github/watchdogpolska/poradnia?branch=master
 
-.. image:: https://img.shields.io/github/license/watchdogpolska/poradnia.svg
-   :alt: License
-
 Oprogramowanie ma na celu usprawnienie obsługi klientów Pozarządowego Centrum Dostępu do Informacji Publicznej oraz
 zwiększenie efektywności wsparcia ze strony praktykantów i ekspertów zewnętrznych. Powstałe narzędzie ma również
 dostarczać dane o charakterze ilościowym na temat zakresu udzielanego wsparcia, uwzględniając drogę mailowa,
