@@ -1,17 +1,19 @@
 # This is Dockerfile for development purposes only.
-FROM python:3-slim
+ARG PYTHON_VERSION='2'
+FROM python:${PYTHON_VERSION}-slim
 RUN mkdir /code /code/production
 WORKDIR /code
 
 # Install python dependencies
 ENV PYTHONUNBUFFERED 1
-RUN apt-get update && apt-get install -y\
-    default-libmysqlclient-dev \
-    gcc \
-    build-essential \
-    curl
+RUN apt-get update \
+&& apt-get install -y --no-install-recommends \
+   default-libmysqlclient-dev \
+   gcc \
+   build-essential \
+   curl \
+&& rm -rf /var/lib/apt/lists/*
 COPY requirements/*.txt ./requirements/
-RUN pip install --no-cache-dir pip wheel -U
-RUN pip install --no-cache-dir -r requirements/local.txt 'django<2.0' && pip install --no-cache-dir -r requirements/test.txt 'django<2.0'
-COPY .contrib/docker/docker-entrypoint.web.sh /docker-entrypoint.sh
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ARG DJANGO_VERSION='==1.11.21'
+RUN pip install --no-cache-dir -r requirements/dev.txt "django${DJANGO_VERSION}"
+CMD ["bash", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]

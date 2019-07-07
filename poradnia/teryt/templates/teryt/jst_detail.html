@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+{% load mptt_tags i18n %}
+
+{% block title %}{{ object }} - {{ block.super }}{% endblock %}
+
+{% block breadcrumbs %}
+    <ol
+        class="breadcrumb"
+        itemscope
+        itemtype="http://schema.org/BreadcrumbList">
+        {% for jst in object.get_ancestors.all %}
+            <li
+                itemprop="itemListElement"
+                itemscope
+                itemtype="http://schema.org/ListItem">
+                <a itemprop="item" href="{{ jst.get_absolute_url }}">
+                    <span itemprop="name">{{ jst }}</span>
+                </a>
+            </li>
+        {% endfor %}
+        <li
+            itemprop="itemListElement"
+            itemscope
+            itemtype="http://schema.org/ListItem"
+            class="active">
+            <span itemprop="name">{{ object }}</span>
+        </li>
+    </ol>
+{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h2><i class="fa fa-globe"></i> {{ object }}
+            <small>{{ object.category }}</small>
+        </h2>
+    </div>
+
+    <div class="row">
+        {% if object.children.with_category.all %}
+            <div class="col-md-3">
+                {% if object.level < 2 %}
+                    <div class="gray">
+                        <h3 class="title">{% trans 'Voivodeships' %}</h3>
+                        {% include 'teryt/_voivodeship_map.svg.html' with selected=object %}
+                    </div>
+                {% endif %}
+                <div class="gray">
+                    <h3 class="title">{% trans 'Subordinate units' %}</h3>
+                    <ul class="select-list">
+                        {% for jst in object.children.with_category.all %}
+                            <li><a href="{{ jst.get_absolute_url }}">{{ jst }} ({{ jst.category }})</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="col-md-2">
+            <div class="red">
+                <h3 class="title">
+                    <i class="fa fa-search"></i>
+                    {% trans 'Advices' %}
+                </h3>
+                {% include '_list.html' with object_list=object.advice_qs.all %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

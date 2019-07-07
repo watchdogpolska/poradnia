@@ -18,7 +18,11 @@ Po poprawnym uruchomieniu usług można przejść w przeglądarce pod adres ``ht
 
 Warto na początku pracy utworzyć konto administratora poprzez polecenie::
 
-    $ docker-compose exec web python manage.py createsuperuser
+    $ docker-compose run web python manage.py createsuperuser
+
+Wskazane jest także zaimportowanie danych z rejestru TERC poprzez polecenie::
+
+    $ docker-compose run web bash ./.contrib/load_terc.sh
 
 Wdrożenie
 ---------
