@@ -9,5 +9,5 @@ django-autofixture==0.12.1
 graphviz==0.9
 factory-boy==2.11.1
 django-coverage-plugin==1.6.0
-django-test-plus==1.1.1
+django-test-plus==1.2.1
 vcrpy==2.0.1
