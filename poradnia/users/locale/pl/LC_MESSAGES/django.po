@@ -190,9 +190,13 @@ msgstr "Zmiana hasła"
 msgid "Keys"
 msgstr "Klucze"
 
-#: templates/users/user_detail.html:41 templates/users/user_filter.html:39
+#: templates/users/user_filter.html:39
 msgid "Client cases"
 msgstr "Sprawy klienta"
+
+#: templates/users/user_detail.html:41
+msgid "My cases"
+msgstr "Moje sprawy"
 
 #: templates/users/user_detail.html:48
 msgid "Assigned cases"
