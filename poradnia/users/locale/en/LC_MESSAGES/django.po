@@ -98,7 +98,7 @@ msgstr ""
 msgid "Keys"
 msgstr ""
 
-#: templates/users/user_filter.html:43
+#: templates/users/user_filter.html:43 templates/users/user_detail.html:41
 msgid "Client cases"
 msgstr ""
 
