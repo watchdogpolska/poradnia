@@ -33,9 +33,6 @@
             <i class="fa fa-puzzle-piece "></i>
             {% trans 'Keys' %}
         </a>
-    {% endif %}
-
-    {% if object == request.user or perms.cases.can_assign %}
         <a class="btn btn-info" href="{% url 'cases:list' %}?client={{ object.pk }}">
             <i class="fa fa-book"></i>
             {% trans 'My cases' %}
@@ -43,6 +40,10 @@
     {% endif %}
 
     {% if perms.cases.can_assign %}
+        <a class="btn btn-info" href="{% url 'cases:list' %}?client={{ object.pk }}">
+            <i class="fa fa-book"></i>
+            {% trans 'Client cases' %}
+        </a>
         <a class="btn btn-info" href="{% url 'cases:list' %}?permission={{ object.pk }}">
             <i class="fa fa-book"></i>
             {% trans 'Assigned cases' %}
