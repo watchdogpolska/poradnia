@@ -64,7 +64,7 @@ class AdviceCreate(StaffuserRequiredMixin, FormSetMixin, FormInitialMixin, UserF
     raise_exception = True
 
     def get_initial(self, *args, **kwargs):
-        initial = super(FormInitialMixin, self).get_initial(*args, **kwargs)
+        initial = super(AdviceCreate, self).get_initial(*args, **kwargs)
         if 'case' in self.request.GET.dict():
             case = get_object_or_404(
                 Case.objects.for_user(self.request.user),
