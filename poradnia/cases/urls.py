@@ -17,5 +17,9 @@ urlpatterns = [
     url(r'^sprawa-(?P<pk>\d+)/uprawnienia/przyznaj/$',
         views.CaseGroupPermissionView.as_view(),
         name="permission_grant"),
-    url(r'^sprawa-(?P<pk>\d+)/$', views.CaseDetailView.as_view(), name="detail"),
+    url(r'^sprawa-(?P<pk>\d+)/$', views.CaseDetailView.as_view(),
+        name="detail"),
+    url(r'^~autocomplete$', views.CaseAutocomplete.as_view(),
+        name="autocomplete"),
+
 ]
