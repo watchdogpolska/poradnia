@@ -61,7 +61,16 @@
                     <i class="fa fa-search"></i>
                     {% trans 'Advices' %}
                 </h3>
-                {% include '_list.html' with object_list=object.advice_qs.all %}
+                {% include '_list.html' with object_list=advice_qs %}
+            </div>
+        </div>
+        <div class="col-md-7">
+            <div class="red">
+                <h3 class="title">
+                    <i class="fa fa-search"></i>
+                    {% trans 'Cases' %}
+                </h3>
+                {% include '_list.html' with object_list=case_qs %}
             </div>
         </div>
     </div>
