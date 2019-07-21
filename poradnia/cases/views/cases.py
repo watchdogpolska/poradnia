@@ -5,7 +5,9 @@ from collections import OrderedDict
 from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from braces.views import SelectRelatedMixin, UserFormKwargsMixin
 from cached_property import cached_property
+from dal import autocomplete
 from django.contrib import messages
+from django.db.models import Q
 from django.shortcuts import redirect
 from django.utils.translation import ugettext as _
 from django.views.generic import UpdateView
@@ -140,3 +142,12 @@ class CaseCloseView(RaisePermissionRequiredMixin, UserFormKwargsMixin, UpdateVie
         obj = form.save()
         messages.success(self.request, _('Successfully closed "%(object)s".') % {'object': obj})
         return redirect(obj)
+
+
+class CaseAutocomplete(autocomplete.Select2QuerySetView):
+    def get_queryset(self):
+        qs = Case.objects.for_user(self.request.user).all()
+
+        if self.q:
+            qs = qs.filter(Q(name__icontains=self.q) | Q(pk=self.q))
+        return qs
