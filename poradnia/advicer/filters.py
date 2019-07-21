@@ -1,8 +1,10 @@
 from atom.ext.django_filters.filters import CrispyFilterMixin
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Fieldset, Layout, Submit
+from dal import autocomplete
 from django.utils.translation import ugettext_lazy as _
 import django_filters
+from teryt_tree.dal_ext.filters import AreaFilter
 
 from poradnia.users.filters import UserChoiceFilter
 
@@ -17,6 +19,10 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
     advicer = UserChoiceFilter(label=_("Advicer"))
     created_by = UserChoiceFilter(label=_("Created by"))
     created_on = django_filters.DateRangeFilter(label=_("Created on"))
+    community = AreaFilter(
+        label=_("Community"),
+        widget=autocomplete.ModelSelect2(url='teryt:community-autocomplete')
+    )
 
     class Meta:
         model = Advice
@@ -49,8 +55,9 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
                 Div(
                     Div('institution_kind', css_class="col-sm-12 col-md-3"),
                     Div('helped', css_class="col-sm-12 col-md-3"),
+                    Div('community', css_class="col-sm-12 col-md-3"),
                     css_class='row')
-        ),
+            ),
             Fieldset(
                 _('Details'),
                 'advicer', 'created_by', 'created_on', 'subject'

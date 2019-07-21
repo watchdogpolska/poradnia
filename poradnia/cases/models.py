@@ -101,6 +101,12 @@ class CaseQuerySet(QuerySet):
             ),
         )
 
+    def area(self, jst):
+        return self.filter(
+            advice__jst__tree_id=jst.tree_id,
+            advice__jst__lft__range=(jst.lft, jst.rght)
+        )
+
 @python_2_unicode_compatible
 class Case(models.Model):
     STAFF_ORDER_DEFAULT_FIELD = 'last_action'

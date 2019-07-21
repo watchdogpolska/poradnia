@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-21 19:25+0200\n"
-"PO-Revision-Date: 2017-08-04 21:24+0200\n"
+"POT-Creation-Date: 2019-09-30 04:14+0200\n"
+"PO-Revision-Date: 2019-09-30 04:14+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -21,53 +21,57 @@ msgstr ""
 msgid "Advicer system"
 msgstr "Rejestr porad"
 
-#: filters.py:14 models.py:77 templates/advicer/advice_filter.html:30
+#: filters.py:16 models.py:82 templates/advicer/advice_filter.html:30
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: filters.py:17 filters.py:29 models.py:105
+#: filters.py:19 filters.py:35 models.py:110
 #: templates/advicer/advice_detail.html:103
 #: templates/advicer/advice_filter.html:29
 msgid "Advicer"
 msgstr "Radzący"
 
-#: filters.py:18 models.py:115 templates/advicer/advice_filter.html:28
+#: filters.py:20 models.py:120 templates/advicer/advice_filter.html:28
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: filters.py:19
+#: filters.py:21
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: filters.py:26 models.py:120 templates/advicer/advice_filter.html:27
+#: filters.py:23
+msgid "Community"
+msgstr "Gmina"
+
+#: filters.py:32 models.py:125 templates/advicer/advice_filter.html:27
 msgid "Creation date"
 msgstr "Data utworzenia"
 
-#: filters.py:27 models.py:136
+#: filters.py:33 models.py:141
 msgid "Modification date"
 msgstr "Data modyfikacji"
 
-#: filters.py:28
+#: filters.py:34
 msgid "ID"
 msgstr "ID"
 
-#: filters.py:30
+#: filters.py:36
 msgid "Person kind"
 msgstr "Rodzaj osoby"
 
-#: filters.py:31 models.py:53
+#: filters.py:37 models.py:53
 msgid "Institution kind"
 msgstr "Rodzaj podmiotu zobowiązanego"
 
-#: filters.py:43 forms.py:28 templates/advicer/advice_detail.html:26
+#: filters.py:49 forms.py:28 templates/advicer/advice_detail.html:26
 msgid "Statistic data"
 msgstr "Dane statystyczne"
 
-#: filters.py:55 forms.py:38 templates/advicer/advice_detail.html:73
+#: filters.py:62 forms.py:38 templates/advicer/advice_detail.html:73
 msgid "Details"
 msgstr "Szczegóły"
 
-#: filters.py:59
+#: filters.py:66
 msgid "Filter"
 msgstr "Filtruj"
 
@@ -107,61 +111,61 @@ msgstr "Rodzaj osobów, które się zgłaszają o poradę:"
 msgid "Institution kinds"
 msgstr "Rodzaje podmiotów zobowiązanych"
 
-#: models.py:73 templates/advicer/advice_detail.html:30
+#: models.py:78 templates/advicer/advice_detail.html:30
 #: templates/advicer/advice_filter.html:32
 msgid "Case"
 msgstr "Sprawa"
 
-#: models.py:106
+#: models.py:111
 msgid "Person who give a advice"
 msgstr "Osoba, która udzieliła porady"
 
-#: models.py:111 templates/advicer/advice_detail.html:77
+#: models.py:116 templates/advicer/advice_detail.html:77
 msgid "Grant on"
 msgstr "Udzielona o"
 
-#: models.py:123 templates/advicer/advice_detail.html:64
+#: models.py:128 templates/advicer/advice_detail.html:64
 msgid "We helped?"
 msgstr "Czy pomogliśmy?"
 
-#: models.py:129
+#: models.py:134
 msgid "Modified by"
 msgstr "Zmodyfikowane przez"
 
-#: models.py:140
+#: models.py:145
 msgid "Visible"
 msgstr "Widoczne"
 
-#: models.py:143
+#: models.py:148
 msgid "Comment"
 msgstr "Komentarz"
 
-#: models.py:151
+#: models.py:156
 msgid "Unit of administrative division"
 msgstr "Jednostka podziału terytorialnego"
 
-#: models.py:156
+#: models.py:161
 #, python-format
 msgid "Advice #%d"
 msgstr "Porada #%d"
 
-#: models.py:163
+#: models.py:168
 msgid "Can view all advices"
 msgstr "Może oglądać wszystkie porady"
 
-#: models.py:165
+#: models.py:170
 msgid "Advice"
 msgstr "Porada"
 
-#: models.py:166
+#: models.py:171
 msgid "Advices"
 msgstr "Porady"
 
-#: models.py:175
+#: models.py:180
 msgid "Attachment"
 msgstr "Załącznik"
 
-#: models.py:176 templates/advicer/advice_detail.html:114
+#: models.py:181 templates/advicer/advice_detail.html:114
 msgid "Attachments"
 msgstr "Załączniki"
 
