@@ -46,7 +46,7 @@
                             <td><a href="{{ object.get_absolute_url }}">{{ object }}</a></td>
                             {% if object.case %}
                                 <td><a href="{{ object.case.client.get_absolute_url }}">{{ object.case.client }}</a>
-                                <td><a href="{{ object.case.pk }}">{{ object.case }}</a></td>
+                                <td><a href="{{ object.case.get_absolute_url }}">{{ object.case }}</a></td>
                             {% else %}
                                 <td>-</td>
                                 <td>-</td>
