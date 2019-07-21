@@ -10,7 +10,7 @@ from .models import Advice
 
 
 class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
-    name = django_filters.CharFilter(
+    subject = django_filters.CharFilter(
         label=_("Subject"),
         lookup_expr='icontains'
     )
