@@ -6,7 +6,9 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from django.db import models
-from django.db.models import Count, F, Func, IntegerField, Prefetch, Q
+from django.db.models import Count, F, Func, IntegerField, Prefetch, Q, \
+    expressions, BooleanField
+
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save
 from django.utils import timezone
@@ -88,6 +90,16 @@ class CaseQuerySet(QuerySet):
                       output_field=IntegerField())
         )
 
+    def with_advice_status(self):
+        return self.annotate(
+            advice_count=Count('advice')
+        ).annotate(
+            has_advice=expressions.Case(
+                expressions.When(advice_count=0, then=False),
+                default=True,
+                output_field=BooleanField(),
+            ),
+        )
 
 @python_2_unicode_compatible
 class Case(models.Model):

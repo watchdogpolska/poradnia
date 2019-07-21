@@ -112,6 +112,8 @@ class CaseListView(PermissionMixin, SelectRelatedMixin, FilterView):
         qs = super(CaseListView, self).get_queryset(*args, **kwargs)
         if self.request.user.is_staff:
             qs = qs.with_involved_staff()
+        if self.request.user.is_staff:
+            qs = qs.with_advice_status()
         return qs
 
     def get_context_data(self, **kwargs):
