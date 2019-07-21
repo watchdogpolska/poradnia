@@ -63,6 +63,11 @@ class AdviceQuerySet(QuerySet):
     def visible(self):
         return self.filter(visible=True)
 
+    def area(self, jst):
+        return self.filter(
+            jst__tree_id=jst.tree_id,
+            jst__lft__range=(jst.lft, jst.rght)
+        )
 
 @python_2_unicode_compatible
 class Advice(models.Model):

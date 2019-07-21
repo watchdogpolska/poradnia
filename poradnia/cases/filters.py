@@ -41,6 +41,7 @@ class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterS
         label=_("Status"),
         choices=Case.STATUS
     )
+    has_advice = django_filters.BooleanFilter(label=("Advice registered"))
     o = django_filters.OrderingFilter(
         fields=['last_action', 'deadline', 'pk', 'client', 'created_on',
                 'last_send', 'last_action', 'last_received'],

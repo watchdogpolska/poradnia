@@ -53,7 +53,7 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
         ),
             Fieldset(
                 _('Details'),
-                'advicer', 'created_by', 'created_on','subject'
+                'advicer', 'created_by', 'created_on', 'subject'
             ),
         )
         self._form.helper.add_input(Submit('filter', _('Filter')))
