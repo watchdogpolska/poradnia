@@ -55,4 +55,4 @@ numpy==1.14.5 # pyup: ignore
 unicodecsv==0.14.1
 zipstream-new==1.1.6
 django-teryt-tree==0.15.0
-django-mptt==0.9.1
+django-mptt==0.10.0
