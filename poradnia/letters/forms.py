@@ -155,12 +155,12 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
                                          css_class="btn-primary"))
             self.helper.add_input(SimpleSubmit(name='send_staff',
                                                input_type='submit',
-                                               value=_("Reply to staff"),
+                                               value=_("Write to staff"),
                                                css_class="btn-default"))
         else:
             if self.user.is_staff:
                 self.helper.add_input(Submit(name='send',
-                                             value=_("Reply to staff"),
+                                             value=_("Write to staff"),
                                              css_class="btn-primary"))
                 self.helper.add_input(Submit(name='project',
                                              value=_("Save to review"),
