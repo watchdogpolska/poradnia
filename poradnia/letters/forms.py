@@ -26,6 +26,12 @@ access to the archive and data about persons responsible for the case.""")
 CASE_NAME_TEXT = _(""""Short description of the case for organizational purposes.
 The institution name and two words will suffice.""")
 
+REPLY_ALL_TITLE = _("""After choosing this option, your message will be sent to the client and the members of the legal team, who can see this case (admins and assigned team members).
+Select this option if your message is finalized and ready to be sent to the advicer's client.""")
+
+SAVE_TO_REVIEW_TITLE = _("""After choosing this option, your message will be saved in the system as a draft. The admin will check the saved draft and will either suggest changes, or will send it to the client.""")
+
+REPLY_TO_TEAM_TITLE = _("""After choosing this option, your message will only be sent to the members of the legal team who can see this case (admins and assigned team members). Select this option if you want to consult something within the team.""")
 
 class SimpleSubmit(BaseInput):
     input_type = 'submit'
@@ -149,21 +155,26 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         if self.user_can_send:
             self.helper.add_input(Submit(name='send',
                                          value=_("Reply to all"),
+                                         title=REPLY_ALL_TITLE,
                                          css_class="btn-primary"))
             self.helper.add_input(Submit(name='project',
                                          value=_("Save to review"),
+                                         title=SAVE_TO_REVIEW_TITLE,
                                          css_class="btn-primary"))
             self.helper.add_input(SimpleSubmit(name='send_staff',
                                                input_type='submit',
                                                value=_("Write to staff"),
+                                               title=REPLY_TO_TEAM_TITLE,
                                                css_class="btn-default"))
         else:
             if self.user.is_staff:
                 self.helper.add_input(Submit(name='send',
                                              value=_("Write to staff"),
+                                             title=REPLY_TO_TEAM_TITLE,
                                              css_class="btn-primary"))
                 self.helper.add_input(Submit(name='project',
                                              value=_("Save to review"),
+                                             title=SAVE_TO_REVIEW_TITLE,
                                              css_class="btn-primary"))
             else:
                 self.helper.add_input(Submit(name='send',
