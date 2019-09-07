@@ -63,7 +63,7 @@ msgid "Reply to all"
 msgstr ""
 
 #: letters/forms.py:150 letters/forms.py:155
-msgid "Reply to staff"
+msgid "Write to staff"
 msgstr ""
 
 #: letters/forms.py:159

@@ -77,8 +77,8 @@ msgid "Save to review"
 msgstr "Zapisz do przejrzenia"
 
 #: forms.py:158 forms.py:163
-msgid "Reply to staff"
-msgstr "Odpowiedz dla zespołu"
+msgid "Write to staff"
+msgstr "Napisz do zespołu"
 
 #: forms.py:170
 msgid "Reply"
