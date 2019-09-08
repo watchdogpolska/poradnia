@@ -14,6 +14,7 @@ from poradnia.users.utils import PermissionMixin
 from .fbv import REGISTRATION_TEXT
 from ..forms import AttachmentForm, LetterForm, NewCaseForm
 from ..models import Attachment, Letter
+from poradnia.cases.models import Case
 
 
 class NewCaseCreateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, CreateView):
@@ -74,9 +75,14 @@ class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Upda
 
 
 class StaffLetterFilter(CrispyFilterMixin, django_filters.FilterSet):
+    status = django_filters.MultipleChoiceFilter(
+        label=_("Status"),
+        # null_label=_("Any"),
+        choices=[('', u'---------')] + Case.STATUS
+    )
+
     def __init__(self, *args, **kwargs):
         super(StaffLetterFilter, self).__init__(*args, **kwargs)
-        self.filters['status'].field.choices.insert(0, ('', u'---------'))
 
     class Meta:
         model = Letter
