@@ -17,5 +17,5 @@ RUN apt-get update \
 COPY requirements/*.txt ./requirements/
 ARG DJANGO_VERSION='==1.11.21'
 RUN pip install --no-cache-dir -r requirements/dev.txt "django${DJANGO_VERSION}"
-RUN apt-get update && apt-get install -y gettext libgettextpo-dev
-CMD ["bash", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+RUN apt-get update && apt-get install -y gettext libgettextpo-dev wait-for-it
+CMD ["bash", "-c", "./wait-for-it.sh db:3306 && python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
