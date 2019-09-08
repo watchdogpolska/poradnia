@@ -1,0 +1,42 @@
+name: Python package
+
+on: [push]
+
+jobs:
+  django:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: 4
+      fail-fast: false
+      matrix:
+        python: 
+          - 2.7
+          # - 3.5
+          - 3.6
+          - 3.7
+        django:
+          - "==1.11.*"
+          # - "==2.2.*"
+        # exclude:
+        #   - django: "==2.2.*"
+        #     python: 2.7
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build application
+      run: docker-compose build web
+      env:
+        PYTHON_VERSION: ${{ matrix.python }}
+        DJANGO_VERSION: ${{ matrix.django }}
+    - name: Migration check
+      run: docker-compose run web bash -c 'wait-for-it db:3306 && python manage.py makemigrations --check'
+    - name: Build test
+      run: docker-compose run web python manage.py test --keepdb --verbosity=2
+
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Build application
+      run: docker-compose build web
+    - name: Build documentation
+      run: docker-compose run web sphinx-build -b html -d docs/_build/doctrees docs docs/_build/html
