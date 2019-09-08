@@ -9,10 +9,6 @@ Poradnia
    :target: https://codeclimate.com/github/watchdogpolska/poradnia
    :alt: Code Climate
 
-.. image:: https://pyup.io/repos/github/watchdogpolska/poradnia/shield.svg
-   :target: https://pyup.io/repos/github/watchdogpolska/poradnia/
-   :alt: Updates
-
 .. image:: https://img.shields.io/github/issues/watchdogpolska/poradnia.svg
    :target: https://github.com/watchdogpolska/poradnia/issues
    :alt: GitHub issues counter
