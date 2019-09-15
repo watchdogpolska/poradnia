@@ -232,6 +232,7 @@ class StaffCaseFilterTestCase(TestCase):
                                'name',
                                'has_project',
                                'permission',
+                               'has_advice',
                                'o'])
         self.assertItemsEqual(self.get_filter(user=UserFactory(is_staff=True)).form.fields.keys(),
                               ['status',
@@ -241,6 +242,7 @@ class StaffCaseFilterTestCase(TestCase):
                                'name',
                                'has_project',
                                'permission',
+                               'has_advice',
                                'o'])
 
 

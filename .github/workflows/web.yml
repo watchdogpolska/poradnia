@@ -29,7 +29,7 @@ jobs:
         DJANGO_VERSION: ${{ matrix.django }}
     - name: Migration check
       run: docker-compose run web bash -c 'wait-for-it db:3306 && python manage.py makemigrations --check'
-    - name: Build test
+    - name: Show settings
       run: docker-compose run web python manage.py diffsettings
     - name: Build test
       run: docker-compose run web python manage.py test --keepdb --verbosity=2
