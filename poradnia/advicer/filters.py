@@ -21,7 +21,7 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
     created_on = django_filters.DateRangeFilter(label=_("Created on"))
     community = AreaFilter(
         label=_("Community"),
-        widget=autocomplete.ModelSelect2(url='teryt:community-autocomplete')
+        widget=autocomplete.ModelSelect2(url='teryt:community-full-path-autocomplete')
     )
 
     class Meta:

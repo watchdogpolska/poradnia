@@ -48,7 +48,7 @@ class AdviceForm(UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin
         fields = ['case', 'subject', 'grant_on', 'issues', 'area',
                   'person_kind', 'institution_kind', 'advicer', 'comment', 'helped', 'jst']
         widgets = {
-            'jst': autocomplete.ModelSelect2(url='teryt:community-autocomplete'),
+            'jst': autocomplete.ModelSelect2(url='teryt:community-full-path-autocomplete'),
             'case': autocomplete.ModelSelect2(url='cases:autocomplete'),
         }
 
