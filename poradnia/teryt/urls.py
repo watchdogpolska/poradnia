@@ -19,6 +19,8 @@ urlpatterns = [
         name='county-autocomplete', ),
     url(_(r'^community-autocomplete/$'), CommunityAutocomplete.as_view(),
         name='community-autocomplete', ),
+    url(_(r'^community-full-path-autocomplete/$'), views.CommunityFullPathAutocomplete.as_view(),
+        name='community-full-path-autocomplete', ),
 ]
 
 app_name = 'poradnia.teryt'
