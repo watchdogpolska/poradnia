@@ -13,7 +13,7 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/edytuj/$', views.LetterUpdateView.as_view(), name="edit"),
     url(r'^(?P<pk>\d+)/$', views.send, name="detail"),
     url(r'^webhook',
-        csrf_exempt(views.ReceiveEmail.as_view()),
+        csrf_exempt(views.ReceiveEmailView.as_view()),
         name="webhook"
 ),
 
