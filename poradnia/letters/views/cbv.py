@@ -196,7 +196,7 @@ class ReceiveEmailView(View):
                           attachment=file_obj)
 
     def get_eml_file(self, eml):
-        eml_extensions = "eml.gz" if ['compressed'] else "eml"
+        eml_extensions = "eml.gz" if eml['compressed'] else "eml"
         eml_filename = "{}.{}".format(uuid.uuid4().hex, eml_extensions)
         eml_content = base64.b64decode(eml['content'])
         return ContentFile(eml_content, eml_filename)
