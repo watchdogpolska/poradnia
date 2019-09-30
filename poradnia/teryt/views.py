@@ -50,3 +50,7 @@ class CommunityFullPathAutocomplete(CommunityAutocomplete):
                 break
         return names
 
+    def get_queryset(self):
+        return super(
+            CommunityFullPathAutocomplete, self
+        ).get_queryset().select_related('parent__parent')
