@@ -1,7 +1,6 @@
-import base64
 import json
-import uuid
-from re import match
+
+import django_filters
 from atom.ext.crispy_forms.views import FormSetMixin
 from atom.ext.django_filters.filters import CrispyFilterMixin
 from braces.views import (PrefetchRelatedMixin, SelectRelatedMixin,
@@ -9,23 +8,21 @@ from braces.views import (PrefetchRelatedMixin, SelectRelatedMixin,
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
-from django.core.files.base import ContentFile, File
-from django.http import HttpResponseRedirect, HttpResponseBadRequest, \
-    JsonResponse
+from django.core.files.base import File
+from django.http import (HttpResponseBadRequest, HttpResponseRedirect,
+                         JsonResponse)
 from django.utils.translation import ugettext_lazy as _
 from django.views import View
 from django.views.generic import CreateView, UpdateView
-import django_filters
 from django_filters.views import FilterView
 
 from poradnia.cases.models import Case
 from poradnia.letters.settings import LETTER_RECEIVE_SECRET
 from poradnia.users.utils import PermissionMixin
 
-from .fbv import REGISTRATION_TEXT
 from ..forms import AttachmentForm, LetterForm, NewCaseForm
 from ..models import Attachment, Letter
-from poradnia.cases.models import Case
+from .fbv import REGISTRATION_TEXT
 
 
 class NewCaseCreateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin,
