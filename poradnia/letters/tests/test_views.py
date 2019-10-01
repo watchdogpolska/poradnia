@@ -8,6 +8,7 @@ from six import BytesIO
 import six
 from django.core import mail
 from django.test import TestCase
+from django.core.files.uploadedfile import SimpleUploadedFile
 from guardian.shortcuts import assign_perm
 
 from poradnia.cases.factories import CaseFactory
@@ -490,6 +491,7 @@ class SendLetterTestCase(CaseMixin, TestCase):
         self.assertEmailReceived(user3.email,
                                  'letters/email/letter_drop_a_note.txt')
 
+
 class StreamAttachmentViewTestCase(TestCase):
     def setUp(self):
         self.attachment = AttachmentFactory()
@@ -515,7 +517,9 @@ class StreamAttachmentViewTestCase(TestCase):
             )
             with myzip.open(filename) as myfile:
                 archived_file_md5 = self._hash_of_file(myfile)
-                original_file_md5 = self._hash_of_file(self.attachment.attachment.file)
+                original_file_md5 = self._hash_of_file(
+                    self.attachment.attachment.file
+                )
                 self.assertEqual(archived_file_md5, original_file_md5)
 
     def _hash_of_file(self, myfile):
@@ -533,44 +537,45 @@ class ReceiveEmailTestCase(TestCase):
             LETTER_RECEIVE_SECRET
         )
 
-    def test_required_autentication(self):
+    def test_required_authentication(self):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 405)
 
     def test_sample_request(self):
         case = CaseFactory()
-
-        body = self._get_body(case)
         response = self.client.post(
             path=self.authenticated_url,
-            data=json.dumps(body),
-            content_type='application/imap-to-webhook-v1+json'
+            data=self._get_body(case),
         )
+
         self.assertEqual(response.json()['status'], 'OK')
 
         self.assertEqual(case.record_set.count(), 1)
         letter = case.record_set.all()[0].content_object
+
         self.assertEqual(
             letter.text,
             'W dniach 3.07-17.08.2018 r. przebywam na urlopie.'
         )
+        self.assertEqual(
+            letter.attachment_set.all().count(),
+            1
+        )
+
+        eml_content = letter.eml.read()
+        attachment_content = letter.attachment_set.all()[0].attachment.read()
+
         if six.PY3:
-            self.assertEqual(letter.eml.read().decode('utf-8'), '12345')
-            self.assertEqual(
-                letter.attachment_set.all()[0].attachment.read().decode(
-                    'utf-8'), '12345')
-        else:
-            self.assertEqual(letter.eml.read(), '12345')
-            self.assertEqual(letter.attachment_set.all()[0].attachment.read(),
-                             '12345')
+            eml_content = eml_content.decode('utf-8')
+            attachment_content = attachment_content.decode('utf-8')
+
+        self.assertEqual(eml_content, '12345')
+        self.assertEqual(attachment_content, 'my-content')
 
     def test_no_valid_email(self):
-        body = self._get_body()
-
         response = self.client.post(
             path=self.authenticated_url,
-            data=json.dumps(body),
-            content_type='application/imap-to-webhook-v1+json'
+            data=self._get_body()
         )
         letter = Letter.objects.first()
         self.assertEqual(response.status_code, 200)
@@ -580,7 +585,7 @@ class ReceiveEmailTestCase(TestCase):
         )
 
     def _get_body(self, case=None):
-        return {
+        manifest = {
             "headers": {
                 "auto_reply_type": "vacation-reply",
                 "cc": [],
@@ -604,15 +609,15 @@ class ReceiveEmailTestCase(TestCase):
                 "quote": ""
             },
             "files_count": 1,
-            "files": [
-                {
-                    "content": "MTIzNDU=",
-                    "filename": "my-doc.txt"
-                }
-            ],
-            "eml": {
-                "filename": "a9a7b32cdfa34a7f91c826ff9b3831bb.eml.gz",
-                "compressed": True,
-                "content": "MTIzNDU="
-            }
+        }
+        attachments = [
+            SimpleUploadedFile('my-doc.bin', 'my-content'.encode('utf-8'))
+        ]
+
+        eml = SimpleUploadedFile('my-content.eml', '12345'.encode('utf-8'))
+
+        return {
+            'manifest': SimpleUploadedFile('manifest.json', json.dumps(manifest).encode('utf-8')),
+            'eml': eml,
+            'attachment': attachments
         }
