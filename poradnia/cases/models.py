@@ -1,3 +1,5 @@
+import re
+
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
@@ -25,7 +27,8 @@ try:
 except ImportError:
     from django.urls import reverse
 
-CASE_PK_RE = '^sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl$';
+
+CASE_PK_RE = 'sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl';
 
 
 class CaseQuerySet(QuerySet):
@@ -70,7 +73,7 @@ class CaseQuerySet(QuerySet):
         if not envelope:
             return self.none()
 
-        result = match(CASE_PK_RE, envelope)
+        result = re.search(CASE_PK_RE, envelope)
 
         if not result:
             return self.none()
@@ -78,9 +81,9 @@ class CaseQuerySet(QuerySet):
 
     def by_addresses(self, addresses):
         pks = [
-            match(CASE_PK_RE, address).group('pk')
+            re.match(CASE_PK_RE, address).group('pk')
             for address in addresses
-            if match(CASE_PK_RE, address)
+            if re.match(CASE_PK_RE, address)
         ]
         return self.filter(pk__in=pks)
 

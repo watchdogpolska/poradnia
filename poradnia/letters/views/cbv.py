@@ -1,7 +1,7 @@
 import base64
 import json
 import uuid
-
+from re import match
 from atom.ext.crispy_forms.views import FormSetMixin
 from atom.ext.django_filters.filters import CrispyFilterMixin
 from braces.views import (PrefetchRelatedMixin, SelectRelatedMixin,
@@ -9,7 +9,7 @@ from braces.views import (PrefetchRelatedMixin, SelectRelatedMixin,
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.core.exceptions import PermissionDenied
-from django.core.files.base import ContentFile
+from django.core.files.base import ContentFile, File
 from django.http import HttpResponseRedirect, HttpResponseBadRequest, \
     JsonResponse
 from django.utils.translation import ugettext_lazy as _
@@ -123,7 +123,7 @@ class LetterListView(PermissionMixin, SelectRelatedMixin, PrefetchRelatedMixin,
 
 
 class ReceiveEmailView(View):
-    required_content_type = 'application/imap-to-webhook-v1+json'
+    required_content_type = 'multipart/form-data'
 
     def post(self, request):
         if request.GET.get('secret') != LETTER_RECEIVE_SECRET:
@@ -135,13 +135,42 @@ class ReceiveEmailView(View):
                     self.required_content_type
                 )
             )
-        body = json.load(request)
-        letter = self.get_letter(**body)
+        if not 'manifest' in request.FILES:
+            return HttpResponseBadRequest(
+                'The request has an invalid format. '
+                'Missing "manifest" filed.'
+            )
+        if not 'eml' in request.FILES:
+            return HttpResponseBadRequest(
+                'The request has an invalid format. '
+                'Missing "eml" filed.'
+            )
+        manifest = json.load(request.FILES['manifest'])
 
-        Attachment.objects.bulk_create(
-            self.get_attachment(attachment, letter)
-            for attachment in body['files']
+        actor = get_user_model().objects.get_by_email_or_create(
+            manifest['headers']['from'][0]
         )
+        case = self.get_case(
+            manifest['headers']['subject'], manifest['headers']['to+'], actor)
+        letter = Letter.objects.create(
+            name=manifest['headers']['subject'],
+            created_by=actor,
+            case=case,
+            status=self.get_letter_status(
+                actor=actor,
+                case=case
+            ),
+            text=manifest['text']['content'],
+            html='',
+            signature=manifest['text']['quote'],
+            eml=File(self.request.FILES['eml'])
+        )
+        for attachment in request.FILES.getlist('attachment'):
+            Attachment.objects.create(
+                letter=letter,
+                attachment=File(attachment)
+            )
+
         return JsonResponse({'status': 'OK', 'letter': letter.pk})
 
     def get_case(self, subject, addresses, actor):
@@ -162,41 +191,7 @@ class ReceiveEmailView(View):
         return case
 
     def get_letter_status(self, actor, case):
-        if actor.is_staff and not actor.has_perm('cases.can_send_to_client',
-                                                 case):
+        if actor.is_staff and not actor.has_perm('cases.can_send_to_client', case):
             return Letter.STATUS.staff
         else:
             return Letter.STATUS.done
-
-    def get_letter(self, headers, eml, text, **kwargs):
-        actor = get_user_model().objects.get_by_email_or_create(
-            headers['from'][0]
-        )
-        case = self.get_case(headers['subject'], headers['to+'], actor)
-        eml_file = self.get_eml_file(eml)
-
-        return Letter.objects.create(
-            name=headers['subject'],
-            created_by=actor,
-            case=case,
-            status=self.get_letter_status(
-                actor=actor,
-                case=case
-            ),
-            text=text['content'],
-            html='',
-            signature=text['quote'],
-            eml=eml_file
-        )
-
-    def get_attachment(self, attachment, letter):
-        file_obj = ContentFile(content=base64.b64decode(attachment['content']),
-                               name=attachment['filename'])
-        return Attachment(letter=letter,
-                          attachment=file_obj)
-
-    def get_eml_file(self, eml):
-        eml_extensions = "eml.gz" if eml['compressed'] else "eml"
-        eml_filename = "{}.{}".format(uuid.uuid4().hex, eml_extensions)
-        eml_content = base64.b64decode(eml['content'])
-        return ContentFile(eml_content, eml_filename)
