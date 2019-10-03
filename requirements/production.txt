@@ -1,6 +1,6 @@
 # Pro-tip: Try not to put anything here. There should be no dependency in
 #	production that isn't in development.
 -r base.txt
-Django==1.11.24 # pyup: <2.0
+Django==1.11.25 # pyup: <2.0
 gunicorn==19.9.0
 gevent==1.4.0
