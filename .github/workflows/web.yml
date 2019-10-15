@@ -29,10 +29,23 @@ jobs:
         DJANGO_VERSION: ${{ matrix.django }}
     - name: Migration check
       run: docker-compose run web bash -c 'wait-for-it db:3306 && python manage.py makemigrations --check'
+
     - name: Show settings
       run: docker-compose run web python manage.py diffsettings
-    - name: Build test
-      run: docker-compose run web python manage.py test --keepdb --verbosity=2
+
+    - name: Run tests
+      run: docker-compose run web coverage run --source=. manage.py test --keepdb --verbosity=2
+
+    - name: Coveralls Parallel
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel: true
+    - name: Coveralls Finished
+      uses: coverallsapp/github-action@master
+      with:
+        github-token: ${{ secrets.github_token }}
+        parallel-finished: true
 
   docs:
     runs-on: ubuntu-latest
