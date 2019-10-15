@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 """
 Django settings for poradnia project.
 
@@ -8,7 +8,6 @@ https://docs.djangoproject.com/en/dev/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
-from __future__ import absolute_import, unicode_literals
 
 from django.utils.translation import ugettext_lazy as _
 import environ

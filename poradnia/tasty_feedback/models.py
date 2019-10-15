@@ -5,7 +5,6 @@ except ImportError:
 from django.conf import settings
 from django.db import models
 from django.db.models.signals import post_save
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from model_utils.fields import MonitorField
 
@@ -17,7 +16,6 @@ except ImportError:
     from django.urls import reverse
 
 
-@python_2_unicode_compatible
 class Feedback(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, help_text=_("Author"), null=True)
     text = models.TextField(verbose_name=_("Comment"),

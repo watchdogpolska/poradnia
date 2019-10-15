@@ -3,7 +3,6 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
@@ -16,7 +15,6 @@ except ImportError:
     from django.urls import reverse
 
 
-@python_2_unicode_compatible
 class AbstractCategory(models.Model):
     name = models.CharField(
         max_length=100,
@@ -69,7 +67,6 @@ class AdviceQuerySet(QuerySet):
             jst__lft__range=(jst.lft, jst.rght)
         )
 
-@python_2_unicode_compatible
 class Advice(models.Model):
     case = models.OneToOneField(
         to=Case,

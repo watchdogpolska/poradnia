@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from braces.views import (LoginRequiredMixin, StaffuserRequiredMixin,
                           UserFormKwargsMixin)
 from dal import autocomplete

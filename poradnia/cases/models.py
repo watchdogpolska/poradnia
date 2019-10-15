@@ -12,7 +12,6 @@ from django.db.models import Count, F, Func, IntegerField, Prefetch, Q, \
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save
 from django.utils import timezone
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import (assign_perm, get_objects_for_user,
@@ -130,7 +129,6 @@ class CaseQuerySet(QuerySet):
             advice__jst__lft__range=(jst.lft, jst.rght)
         )
 
-@python_2_unicode_compatible
 class Case(models.Model):
     STAFF_ORDER_DEFAULT_FIELD = 'last_action'
     USER_ORDER_DEFAULT_FIELD = 'last_send'
@@ -398,7 +396,6 @@ limit = {
 }
 
 
-@python_2_unicode_compatible
 class PermissionGroup(models.Model):
     name = models.CharField(
         max_length=25,

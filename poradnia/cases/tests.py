@@ -1,7 +1,6 @@
 from datetime import timedelta
 
 import django
-import six
 from atom.ext.guardian.tests import PermissionStatusMixin
 from atom.mixins import AdminTestCaseMixin
 from django.contrib.admin.sites import AdminSite
@@ -204,8 +203,6 @@ class CaseDetailViewTestCase(TestCase):
 class StaffCaseFilterTestCase(TestCase):
     def __init__(self, methodName='runTest'):
         super(StaffCaseFilterTestCase, self).__init__(methodName)
-        if six.PY3:  # In Python 3, assertItemsEqual is named assertCountEqual.
-            self.assertItemsEqual = self.assertCountEqual
 
     def get_filter(self, *args, **kwargs):
         return StaffCaseFilter(queryset=Case.objects.all(),
@@ -224,7 +221,7 @@ class StaffCaseFilterTestCase(TestCase):
 
     def test_form_fields(self):
         su_user = UserFactory(is_staff=True, is_superuser=True)
-        self.assertItemsEqual(self.get_filter(user=su_user).form.fields.keys(),
+        self.assertCountEqual(self.get_filter(user=su_user).form.fields.keys(),
                               ['status',
                                'handled',
                                'id',
@@ -234,7 +231,7 @@ class StaffCaseFilterTestCase(TestCase):
                                'permission',
                                'has_advice',
                                'o'])
-        self.assertItemsEqual(self.get_filter(user=UserFactory(is_staff=True)).form.fields.keys(),
+        self.assertCountEqual(self.get_filter(user=UserFactory(is_staff=True)).form.fields.keys(),
                               ['status',
                                'handled',
                                'id',

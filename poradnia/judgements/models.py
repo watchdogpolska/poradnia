@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db import models
 
 # Create your models here.
-from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
 from django.utils.translation import ugettext_lazy as _
 
@@ -13,7 +12,6 @@ from poradnia.judgements.registry import parser_registry
 from poradnia.records.models import AbstractRecord
 
 
-@python_2_unicode_compatible
 class Court(TimeStampedModel):
     name = models.CharField(max_length=250, verbose_name=_("Court"))
     active = models.BooleanField(default=True, verbose_name=_("Active status"))

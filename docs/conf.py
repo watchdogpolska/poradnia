@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 #
 # Poradnia documentation build configuration file, created by
 # sphinx-quickstart on Fri Feb 12 06:34:12 2016.
