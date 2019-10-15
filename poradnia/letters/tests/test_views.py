@@ -11,7 +11,7 @@ from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 from guardian.shortcuts import assign_perm
 
-from poradnia.cases.factories import CaseFactory
+from poradnia.cases.factories import CaseFactory, CaseUserObjectPermissionFactory
 from poradnia.cases.models import Case
 from poradnia.letters.factories import LetterFactory, AttachmentFactory
 from poradnia.letters.models import Letter
@@ -572,6 +572,46 @@ class ReceiveEmailTestCase(TestCase):
         self.assertEqual(eml_content, '12345')
         self.assertEqual(attachment_content, 'my-content')
 
+    def test_reopen_case_free(self):
+        case = CaseFactory(
+            status=Case.STATUS.closed,
+            handled=True
+        )
+        response = self.client.post(
+            path=self.authenticated_url,
+            data=self._get_body(case),
+        )
+        self.assertEqual(response.json()['status'], 'OK')
+        self.assertEqual(
+            Case.objects.get(pk=case.pk).status,
+            Case.STATUS.free
+        )
+        self.assertEqual(
+            Case.objects.get(pk=case.pk).handled,
+            False
+        )
+
+    def test_reopen_case_assigned(self):
+        case = CaseFactory(
+            status=Case.STATUS.closed,
+            handled=True
+        )
+        CaseUserObjectPermissionFactory(content_object=case,
+                                        permission_name='can_send_to_client',
+                                        user__is_staff=True)
+        response = self.client.post(
+            path=self.authenticated_url,
+            data=self._get_body(case),
+        )
+        self.assertEqual(response.json()['status'], 'OK')
+        self.assertEqual(
+            Case.objects.get(pk=case.pk).status,
+            Case.STATUS.assigned
+        )
+        self.assertEqual(
+            Case.objects.get(pk=case.pk).handled,
+            False
+        )
     def test_no_valid_email(self):
         response = self.client.post(
             path=self.authenticated_url,

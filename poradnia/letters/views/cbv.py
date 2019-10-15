@@ -148,7 +148,10 @@ class ReceiveEmailView(View):
             manifest['headers']['from'][0]
         )
         case = self.get_case(
-            manifest['headers']['subject'], manifest['headers']['to+'], actor)
+            subject=manifest['headers']['subject'],
+            addresses=manifest['headers']['to+'],
+            actor=actor
+        )
         letter = Letter.objects.create(
             name=manifest['headers']['subject'],
             created_by=actor,
@@ -167,7 +170,11 @@ class ReceiveEmailView(View):
                 letter=letter,
                 attachment=File(attachment)
             )
-
+        if case.status == Case.STATUS.closed and letter.status == Letter.STATUS.done:
+            case.status_update(reopen=True, save=False)
+        case.handled = (actor.is_staff is True and letter.status == Letter.STATUS.done)
+        case.update_counters()
+        case.save()
         return JsonResponse({'status': 'OK', 'letter': letter.pk})
 
     def get_case(self, subject, addresses, actor):
