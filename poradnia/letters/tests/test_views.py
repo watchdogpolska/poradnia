@@ -2,9 +2,8 @@
 import json
 import hashlib
 import zipfile
-from six import BytesIO
+from io import BytesIO
 
-import six
 from django.core import mail
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -561,12 +560,8 @@ class ReceiveEmailTestCase(TestCase):
             1
         )
 
-        eml_content = letter.eml.read()
-        attachment_content = letter.attachment_set.all()[0].attachment.read()
-
-        if six.PY3:
-            eml_content = eml_content.decode('utf-8')
-            attachment_content = attachment_content.decode('utf-8')
+        eml_content = letter.eml.read().decode('utf-8')
+        attachment_content = letter.attachment_set.all()[0].attachment.read().decode('utf-8')
 
         self.assertEqual(eml_content, '12345')
         self.assertEqual(attachment_content, 'my-content')
