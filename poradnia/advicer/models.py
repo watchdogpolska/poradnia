@@ -72,6 +72,7 @@ class Advice(models.Model):
         to=Case,
         null=True,
         blank=True,
+        on_delete=models.CASCADE,
         verbose_name=_("Case")
     )
     subject = models.CharField(
@@ -94,19 +95,22 @@ class Advice(models.Model):
         PersonKind,
         null=True,
         blank=True,
+        on_delete=models.CASCADE,
         verbose_name=PersonKind._meta.verbose_name
     )
     institution_kind = models.ForeignKey(
         to=InstitutionKind,
         verbose_name=InstitutionKind._meta.verbose_name,
         null=True,
-        blank=True
+        blank=True,
+        on_delete=models.CASCADE
     )
     advicer = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         verbose_name=_("Advicer"),
         help_text=_("Person who give a advice"),
-        limit_choices_to={'is_staff': True}
+        limit_choices_to={'is_staff': True},
+        on_delete=models.CASCADE
     )
     grant_on = models.DateTimeField(
         default=now,
@@ -115,7 +119,8 @@ class Advice(models.Model):
     created_by = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         verbose_name=_("Created by"),
-        related_name='advice_created_by'
+        related_name='advice_created_by',
+        on_delete=models.CASCADE
     )
     created_on = models.DateTimeField(
         auto_now_add=True,
@@ -129,7 +134,8 @@ class Advice(models.Model):
         settings.AUTH_USER_MODEL,
         null=True,
         verbose_name=_("Modified by"),
-        related_name='advice_modified_by'
+        related_name='advice_modified_by',
+        on_delete=models.CASCADE
     )
     modified_on = models.DateTimeField(
         auto_now=True,
@@ -146,12 +152,14 @@ class Advice(models.Model):
         null=True,
         blank=True
     )
-    jst = models.ForeignKey(JST,
-                            null=True,
-                            blank=True,
-                            on_delete=models.CASCADE,
-                            verbose_name=_('Unit of administrative division'),
-                            db_index=True)
+    jst = models.ForeignKey(
+        to=JST,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        verbose_name=_('Unit of administrative division'),
+        db_index=True
+    )
     objects = AdviceQuerySet.as_manager()
 
     def __str__(self):
@@ -170,7 +178,8 @@ class Advice(models.Model):
 
 class Attachment(AttachmentBase):
     advice = models.ForeignKey(
-        to=Advice
+        to=Advice,
+        on_delete=models.CASCADE
     )
 
     class Meta:

@@ -40,3 +40,5 @@ urlpatterns = [
         name='autocomplete'
     ),
 ]
+
+app_name = 'poradnia.users'

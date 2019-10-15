@@ -17,7 +17,12 @@ except ImportError:
 
 
 class Feedback(models.Model):
-    user = models.ForeignKey(settings.AUTH_USER_MODEL, help_text=_("Author"), null=True)
+    user = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        help_text=_("Author"), 
+        null=True,
+        on_delete=models.CASCADE
+    )
     text = models.TextField(verbose_name=_("Comment"),
                             help_text=_("Text reported by user"))
     status = models.BooleanField(default=False, verbose_name=_("Status"),

@@ -13,13 +13,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='record',
             name='alarm',
-            field=models.OneToOneField(null=True, blank=True, to='events.Alarm'),
+            field=models.OneToOneField(on_delete=models.CASCADE,null=True, blank=True, to='events.Alarm'),
             preserve_default=True,
         ),
         migrations.AddField(
             model_name='record',
             name='event',
-            field=models.OneToOneField(null=True, blank=True, to='events.Event'),
+            field=models.OneToOneField(on_delete=models.CASCADE,null=True, blank=True, to='events.Event'),
             preserve_default=True,
         ),
     ]

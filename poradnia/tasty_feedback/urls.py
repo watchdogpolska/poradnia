@@ -9,3 +9,5 @@ urlpatterns = [
         name="details"),
     url(r'^(?P<pk>\d+)/update$', views.FeedbackStatusView.as_view(), name="status"),
 ]
+
+app_name = 'poradnia.tasty_feedback'

@@ -11,7 +11,7 @@ urlpatterns = [
     url(r'^$',
         TemplateView.as_view(template_name='pages/home.html'),
         name="home"),
-    url(r'^admin/', include(admin.site.urls)),
+    url(r'^admin/', admin.site.urls),
     url(r'^navsearch/', include('poradnia.navsearch.urls', namespace="navsearch")),
 
     # User management
@@ -40,6 +40,3 @@ if settings.DEBUG:
     urlpatterns += [
         url(r'^__debug__/', include(debug_toolbar.urls)),
     ]
-
-
-handler500 = TemplateView.as_view(template_name='500.html')

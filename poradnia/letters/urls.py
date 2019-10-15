@@ -14,7 +14,7 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/$', views.send, name="detail"),
     url(r'^webhook',
         csrf_exempt(views.ReceiveEmailView.as_view()),
-        name="webhook"
-),
-
+        name="webhook"),
 ]
+
+app_name = 'poradnia.letters'

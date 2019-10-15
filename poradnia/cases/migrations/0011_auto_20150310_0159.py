@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='case',
             name='created_by',
-            field=models.ForeignKey(default=1, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(default=1, on_delete=models.CASCADE,to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
         migrations.AddField(
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='case',
             name='client',
-            field=models.ForeignKey(related_name='case_client', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='case_client', on_delete=models.CASCADE, to=settings.AUTH_USER_MODEL),
             preserve_default=True,
         ),
     ]

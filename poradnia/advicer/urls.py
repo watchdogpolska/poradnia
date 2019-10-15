@@ -9,3 +9,5 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/edytuj/$', views.AdviceUpdate.as_view(), name="update"),
     url(r'^(?P<pk>\d+)/usun/$', views.AdviceDelete.as_view(), name="delete"),
 ]
+
+app_name = 'poradnia.advicer'

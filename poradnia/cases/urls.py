@@ -21,5 +21,6 @@ urlpatterns = [
         name="detail"),
     url(r'^~autocomplete$', views.CaseAutocomplete.as_view(),
         name="autocomplete"),
-
 ]
+
+app_name = 'poradnia.cases'

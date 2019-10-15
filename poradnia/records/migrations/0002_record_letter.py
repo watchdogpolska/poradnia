@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='record',
             name='letter',
-            field=models.ForeignKey(blank=True, to='letters.Letter', null=True),
+            field=models.ForeignKey(on_delete=models.CASCADE,blank=True, to='letters.Letter', null=True),
             preserve_default=True,
         ),
     ]
