@@ -47,11 +47,8 @@ django-import-export==1.2.0
 python-dateutil==2.8.0
 monotonic==1.5
 cached-property==1.5.1
-django-braces==1.13.0
 future==0.18.0
 django-github-revision==0.0.3
-enum34==1.1.6
-numpy==1.14.5 # pyup: ignore
 unicodecsv==0.14.1
 zipstream-new==1.1.6
 django-teryt-tree==0.15.0
