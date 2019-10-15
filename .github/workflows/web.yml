@@ -10,16 +10,11 @@ jobs:
       fail-fast: false
       matrix:
         python: 
-          - 2.7
-          # - 3.5
           - 3.6
           - 3.7
         django:
           - "==1.11.*"
           # - "==2.2.*"
-        # exclude:
-        #   - django: "==2.2.*"
-        #     python: 2.7
     steps:
     - uses: actions/checkout@v1
     - name: Build application

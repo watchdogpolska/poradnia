@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from atom.ext.crispy_forms.forms import FormHorizontalMixin, SingleButtonMixin
 from atom.forms import AuthorMixin
 from django import forms

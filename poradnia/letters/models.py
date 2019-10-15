@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import logging
 import os
 
@@ -13,7 +11,6 @@ from django.core.files import File
 from django.db import models
 from django.db.models import F, Func, IntegerField, Q
 from django.dispatch import receiver
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django_mailbox.models import Message
 from django_mailbox.signals import message_received
@@ -70,7 +67,6 @@ class LetterQuerySet(AbstractRecordQuerySet):
         )
 
 
-@python_2_unicode_compatible
 class Letter(AbstractRecord):
     STATUS = Choices(('staff', _('Staff')), ('done', _('Done')))
     GENRE = Choices('mail', 'comment')
@@ -181,7 +177,6 @@ class AttachmentQuerySet(models.QuerySet):
         return qs
 
 
-@python_2_unicode_compatible
 class Attachment(models.Model):
     letter = models.ForeignKey(Letter)
     attachment = models.FileField(upload_to=date_random_path, verbose_name=_("File"))

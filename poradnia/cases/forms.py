@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from atom.ext.crispy_forms.forms import (FormHorizontalMixin, HelperMixin,
                                          SingleButtonMixin)
 from braces.forms import UserKwargModelFormMixin

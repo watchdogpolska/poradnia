@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 from atom.ext.crispy_forms.forms import FormHorizontalMixin
 from atom.ext.tinycontent.forms import GIODOMixin
 from crispy_forms.bootstrap import PrependedText

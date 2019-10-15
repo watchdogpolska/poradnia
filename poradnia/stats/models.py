@@ -1,8 +1,5 @@
-from __future__ import unicode_literals
-
 from django.db import models
 from django.db.models import Max, QuerySet
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from model_utils.models import TimeStampedModel
@@ -27,7 +24,6 @@ class ItemQueryset(QuerySet):
         # return result
 
 
-@python_2_unicode_compatible
 class Item(TimeStampedModel):
     key = models.CharField(db_index=True, max_length=50, verbose_name=_("Metric key"))
     name = models.CharField(max_length=100, verbose_name=_("Name"))
@@ -83,7 +79,6 @@ class Value(models.Model):
         ordering = ['item_id', 'time']
 
 
-@python_2_unicode_compatible
 class Graph(models.Model):
     name = models.CharField(verbose_name=_("Name"), max_length=100)
     description = models.TextField(verbose_name=_("Description"))
