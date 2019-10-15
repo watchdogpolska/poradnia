@@ -145,7 +145,7 @@ DATABASES = {
 }
 
 DATABASES['default']['TEST'] = {'CHARSET': "utf8mb4",
-                                'COLLATION': "utf8_general_ci"}
+                                'COLLATION': "utf8mb4_unicode_520_ci"}
 DATABASES['default']['CHARSET'] = "utf8mb4"
 
 # END DATABASE CONFIGURATION
