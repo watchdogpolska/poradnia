@@ -8,7 +8,7 @@ from django.db import connection
 from django.http.response import HttpResponse
 from django.test import TestCase
 from django.utils.module_loading import import_string
-from django.utils.six import StringIO
+from io import StringIO
 from django.utils.timezone import make_aware
 
 from poradnia.cases.factories import CaseFactory

@@ -3,7 +3,6 @@ import re
 from datetime import datetime
 from time import strptime
 
-from django.utils.six import text_type
 from pytz import timezone
 
 
@@ -26,8 +25,8 @@ class BaseParser(object):
         return []
 
     def get_description(self, row):
-        lines = [text_type("{}: {}").format(key, clean_text(value)) for key, value in sorted(row.items())]
-        return text_type("\n").join(lines)
+        lines = ["{}: {}".format(key, clean_text(value)) for key, value in sorted(row.items())]
+        return "\n".join(lines)
 
     def get_datetime(self, row):
         if self.HOUR_FIELD in row and not row[self.HOUR_FIELD]:

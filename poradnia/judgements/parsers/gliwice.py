@@ -4,8 +4,6 @@ from datetime import datetime
 from time import strptime
 
 import requests
-import six
-from django.utils.six import text_type
 from lxml import html
 
 from poradnia.judgements.models import SessionRow
@@ -49,15 +47,13 @@ class GliwiceETRParser(BaseParser):
                        'Godzina': top_content[3],
                        'Sala': top_content[4],
                        'Organ administracji': top_content[5],
-                       'Symbol, Przedmiot': text_type("{}: {}").format(top_content[6], top_content[7]),
+                       'Symbol, Przedmiot': "{}: {}".format(top_content[6], top_content[7]),
                        'Przewodniczący': top_content[8],
                        'Sędziowie': ";".join(top_content[9:])
                        }
             bottom_tr = trs[i * 2 + 2]
             status = bottom_tr.text_content()
             content['Status'] = status
-            if six.PY2:
-                content = {k.decode('utf-8'): v for k, v in content.items()}
             yield SessionRow(signature=content['Sygnatura akt'],
                              datetime=self.get_datetime(content),
                              description=self.get_description(content))
