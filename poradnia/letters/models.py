@@ -13,10 +13,8 @@ from django.db.models import F, Func, IntegerField, Q
 from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from django_mailbox.models import Message
-from django_mailbox.signals import message_received
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
-import talon
 
 from poradnia.cases.models import Case
 from poradnia.cases.utils import get_users_with_perm
@@ -26,8 +24,6 @@ from poradnia.users.models import User
 from .utils import date_random_path
 
 from django.urls import reverse
-
-talon.init()
 
 logger = logging.getLogger(__name__)
 
@@ -202,120 +198,3 @@ class Attachment(models.Model):
     class Meta:
         verbose_name = _('Attachment')
         verbose_name_plural = _('Attachments')
-
-
-class MessageParser(object):
-    def __init__(self, message):
-        self.message = message
-        self.email_object = message.get_email_object()
-
-    @staticmethod
-    @receiver(message_received)
-    def receive_signal(sender, message, **kwargs):
-        MessageParser(message).insert()
-
-    @cached_property
-    def from_address(self):
-        return self.message.from_address[0]
-
-    def is_autoreply(self):
-        return self.email_object.get('Auto-Submitted', None) == 'auto-replied'
-
-    @cached_property
-    def actor(self):
-        return get_user_model().objects.get_by_email_or_create(self.from_address)
-
-    @cached_property
-    def case(self):
-        try:
-            case = Case.objects.by_msg(self.message).get()
-        except Case.DoesNotExist:
-            case = Case.objects.create(name=self.message.subject,
-                                       created_by=self.actor,
-                                       client=self.actor)
-            self.actor.notify(actor=self.actor,
-                              verb='registered',
-                              target=case,
-                              from_email=case.get_email())
-        return case
-
-    @cached_property
-    def quote(self):
-        if self.message.text:
-            return self.message.text.replace(self.text, '')
-        return self.message.text.replace(self.text, '')
-
-    @cached_property
-    def text(self):
-        if self.message.text:
-            return talon.quotations.extract_from(self.message.text)
-        return talon.quotations.extract_from(self.message.html, 'text/html')
-
-    @cached_property
-    def html(self):
-        if self.message.html:
-            return talon.quotations.extract_from_html(self.message.html)
-        else:
-            return ''
-
-    @cached_property
-    def letter_status(self):
-        if self.actor.is_staff and not self.actor.has_perm('cases.can_send_to_client', self.case):
-            return Letter.STATUS.staff
-        else:
-            return Letter.STATUS.done
-
-    def save_letter(self):
-        return Letter.objects.create(name=self.message.subject,
-                                     created_by=self.actor,
-                                     case=self.case,
-                                     status=self.letter_status,
-                                     text=self.text,
-                                     html=self.html,
-                                     message=self.message,
-                                     signature=self.quote,
-                                     eml=self.message.eml)
-
-    def save_attachments(self, letter):
-        attachments = []
-        for attachment in self.message.attachments.all():
-            name = attachment.get_filename() or 'Unknown.bin'
-            if len(name) > 70:
-                name, ext = os.path.splitext(name)
-                ext = ext[:70]
-                name = name[:70 - len(ext)] + ext
-            att_file = File(attachment.document, name)
-            att = Attachment(letter=letter, attachment=att_file)
-            attachments.append(att)
-        Attachment.objects.bulk_create(attachments)
-        return attachments
-
-    def insert(self):
-        # Skip autoreply messages - see RFC3834
-        if self.is_autoreply():
-            logger.info("Delete .eml from {email} as auto-replied".format(email=self.from_address))
-            self.message.eml.delete(save=True)
-            return
-
-        letter = self.save_letter()
-        logger.info("Message #{message} registered in case #{case} as letter #{letter}".
-                    format(message=self.message.pk,
-                           case=self.case.pk,
-                           letter=letter.pk))
-        attachments = self.save_attachments(letter)
-        logger.debug("Saved {attachment_count} attachments for letter #{letter}".
-                     format(attachment_count=len(attachments),
-                            letter=letter.pk))
-        self.case_update(self.case)
-        letter.send_notification(actor=self.actor, verb='created')
-
-    def case_update(self, case):
-        if case.status == Case.STATUS.closed and self.letter_status == Letter.STATUS.done:  # re-open
-            case.status_update(reopen=True, save=False)
-
-        if case.handled is False and self.actor.is_staff is True and self.letter_status == Letter.STATUS.done:
-            case.handled = True
-        elif case.handled is False and self.actor.is_staff is False:
-            case.handled = False
-        self.case.update_counters()
-        case.save()

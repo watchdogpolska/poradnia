@@ -1,6 +1,5 @@
 import email
 from datetime import timedelta
-from distutils.version import StrictVersion
 from os.path import dirname, join
 
 import django_mailbox
@@ -12,7 +11,7 @@ from guardian.shortcuts import assign_perm
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
 from poradnia.letters.factories import LetterFactory, AttachmentFactory
-from poradnia.letters.models import Letter, MessageParser
+from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
 
 
@@ -118,82 +117,6 @@ class LastQuerySetTestCase(TestCase):
 
         l2 = LetterFactory(status='done', case=self.case, created_by__is_staff=True)
         self.assertEqual(Letter.objects.case(self.case).last_staff_send(), l2)
-
-
-class ReceiveEmailTestCase(TestCase):
-    def setUp(self):
-        super(TestCase, self).setUp()
-        self.mailbox = Mailbox.objects.create(from_email='from@example.com')
-
-    @staticmethod
-    def _get_email_object(filename):  # See coddingtonbear/django-mailbox#89
-        path = join(dirname(__file__), 'messages', filename)
-        msg_content = open(path, 'rb').read()
-        return email.message_from_bytes(msg_content)
-
-    def get_message(self, filename):
-        message = self._get_email_object(filename)
-        msg = self.mailbox._process_message(message)
-        msg.save()
-        return msg
-
-    def test_user_identification(self):
-        user = UserFactory(email='user@example.com')
-        message = self.get_message('cc_message.eml')
-        MessageParser.receive_signal(sender=self.mailbox, message=message)
-        self.assertEqual(user, message.letter_set.all()[0].created_by)
-
-    def test_cc_message(self):
-        case = CaseFactory(pk=639)
-        message = self.get_message('cc_message.eml')
-        MessageParser.receive_signal(sender=self.mailbox, message=message)
-        self.assertEqual(case, message.letter_set.all()[0].case)
-
-    def test_closed_to_free(self):
-        case = CaseFactory(pk=639, status=Case.STATUS.closed)
-        message = self.get_message('cc_message.eml')
-        MessageParser.receive_signal(sender=self.mailbox, message=message)
-
-        case.refresh_from_db()
-        self.assertEqual(case.status, Case.STATUS.free)
-
-    def test_closed_to_assigned(self):
-        case = CaseFactory(pk=639, status=Case.STATUS.closed)
-        assign_perm('cases.can_send_to_client', UserFactory(is_staff=True), case)
-        msg = self.get_message('cc_message.eml')
-
-        MessageParser.receive_signal(sender=self.mailbox, message=msg)
-
-        case.refresh_from_db()
-        self.assertEqual(case.status, Case.STATUS.assigned)
-
-    def test_utf8_message(self):
-        if StrictVersion(django_mailbox.__version__) <= StrictVersion('4.5.3'):
-            self.skipTest("Django-mailbox is lower than required 4.5.3 " +
-                          "to UTF-8 filename attachment")
-        case = CaseFactory(pk=639)
-        message = self.get_message('utf8_message.eml')
-        MessageParser.receive_signal(sender=self.mailbox, message=message)
-
-        case.refresh_from_db()
-        self.assertEqual(case.status, Case.STATUS.free)
-
-    def test_html_message(self):
-        message = self.get_message('html_message.eml')
-        MessageParser.receive_signal(sender=self.mailbox, message=message)
-
-        letter = message.letter_set.all()[0]
-        letter.refresh_from_db()
-        #xaxa
-        self.assertIsNotNone(letter.html)
-
-    def test_zenbox_match_message(self):
-        case = CaseFactory(pk=8428)
-
-        message = self.get_message('zenbox_match_message.eml')
-        MessageParser.receive_signal(sender=self.mailbox, message=message)
-
-        self.assertEqual(case.letter_set.get().case_id, case.pk)
 
 
 class ModelTestCase(TestCase):
