@@ -82,10 +82,10 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
             del self.fields['client']
             del self.fields['email']
 
-        if not self.user.is_anonymous():  # is registered
+        if not self.user.is_anonymous:  # is registered
             del self.fields['email_registration']
 
-        if not (self.user.is_anonymous() or self._is_super_staff()):
+        if not (self.user.is_anonymous or self._is_super_staff()):
             del self.fields['giodo']
         elif self._is_super_staff():
             self.fields['giodo'].required = False
@@ -101,13 +101,13 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
         return super(NewCaseForm, self).clean()
 
     def get_user(self):
-        if self.user.is_anonymous():
+        if self.user.is_anonymous:
             return get_user_model().objects.get_by_email_or_create(
                 self.cleaned_data['email_registration'])
         return self.user
 
     def get_client(self, user):
-        if self.user.is_anonymous() and self.cleaned_data['email_registration']:
+        if self.user.is_anonymous and self.cleaned_data['email_registration']:
             return user
         if not self.user.has_perm('cases.can_select_client'):
             return self.user

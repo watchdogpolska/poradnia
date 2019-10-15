@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='feedback',
             name='user',
-            field=models.ForeignKey(to=settings.AUTH_USER_MODEL, help_text='Author', null=True),
+            field=models.ForeignKey(on_delete=models.CASCADE,to=settings.AUTH_USER_MODEL, help_text='Author', null=True),
             preserve_default=True,
         ),
     ]

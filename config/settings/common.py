@@ -79,7 +79,7 @@ LOCAL_APPS = (
 INSTALLED_APPS = LOCAL_APPS + THIRD_PARTY_APPS + DJANGO_APPS
 
 # MIDDLEWARE CONFIGURATION
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     # 'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',

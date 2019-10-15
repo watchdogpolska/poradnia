@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='case',
             name='modified_by',
-            field=models.ForeignKey(related_name='case_modified', to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='case_modified',on_delete=models.CASCADE, to=settings.AUTH_USER_MODEL, null=True),
             preserve_default=True,
         ),
     ]

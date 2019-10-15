@@ -43,7 +43,7 @@ class NewCaseCreateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin,
                                   verb='registered',
                                   target=self.object.case,
                                   from_email=self.object.case.get_email())
-        if self.request.user.is_anonymous():
+        if self.request.user.is_anonymous:
             messages.success(self.request, _(REGISTRATION_TEXT) % {
                 'user': self.object.created_by})
         return HttpResponseRedirect(self.object.case.get_absolute_url())

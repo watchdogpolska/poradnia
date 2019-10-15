@@ -20,7 +20,7 @@ class FeedbackForm(UserKwargModelFormMixin, ModelForm):
         self.helper.form_action = reverse('tasty_feedback:submit')
 
     def save(self, *args, **kwargs):
-        if not self.user.is_anonymous():
+        if not self.user.is_anonymous:
             self.instance.user = self.user
         return super(FeedbackForm, self).save(*args, **kwargs)
 

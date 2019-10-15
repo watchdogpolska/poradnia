@@ -13,7 +13,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='case',
             name='deadline',
-            field=models.ForeignKey(related_name='event_deadline', blank=True, to='events.Event', null=True),
+            field=models.ForeignKey(related_name='event_deadline',on_delete=models.CASCADE, blank=True, to='events.Event', null=True),
             preserve_default=True,
         ),
     ]

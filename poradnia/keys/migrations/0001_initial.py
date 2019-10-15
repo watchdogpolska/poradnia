@@ -21,7 +21,7 @@ class Migration(migrations.Migration):
                 ('created_on', models.DateField(auto_now_add=True, verbose_name='Created on')),
                 ('used_on', models.DateField(null=True, verbose_name='Used on')),
                 ('download_on', models.DateField(null=True, verbose_name='Download on')),
-                ('user', models.ForeignKey(verbose_name='User', to=settings.AUTH_USER_MODEL)),
+                ('user', models.ForeignKey(verbose_name='User', on_delete=models.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
             options={
                 'verbose_name': 'Access key',

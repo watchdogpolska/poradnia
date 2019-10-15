@@ -31,13 +31,31 @@ class RecordQuerySet(QuerySet):
 
 class Record(models.Model):
     STATIC_RELATION = ['letter', 'event']
-    case = models.ForeignKey(to='cases.Case')
+    case = models.ForeignKey(
+        to='cases.Case',
+        on_delete=models.CASCADE
+    )
     created_on = models.DateTimeField(auto_now_add=True)
-    letter = models.OneToOneField('letters.Letter', null=True, blank=True)
-    event = models.OneToOneField('events.Event', null=True, blank=True)
-    courtcase = models.OneToOneField('judgements.CourtCase', null=True,
-                                     blank=True)
-    content_type = models.ForeignKey(ContentType, null=True, blank=True)
+    letter = models.OneToOneField(
+        to='letters.Letter',
+        on_delete=models.CASCADE,
+        null=True, blank=True
+    )
+    event = models.OneToOneField(
+        to='events.Event',
+        null=True, blank=True,
+        on_delete=models.CASCADE,
+    )
+    courtcase = models.OneToOneField(
+        to='judgements.CourtCase', 
+        null=True, blank=True,
+        on_delete=models.CASCADE
+    )
+    content_type = models.ForeignKey(
+        to=ContentType,
+        null=True, blank=True,
+        on_delete=models.CASCADE
+    )
     object_id = models.PositiveIntegerField(null=True)
     related_object = GenericForeignKey('content_type', 'object_id')
 
@@ -53,7 +71,7 @@ class Record(models.Model):
     @content_object.setter
     def content_object(self, obj):
         for field in self.STATIC_RELATION:
-            if self._meta.get_field(field).rel.to == obj._meta.model:
+            if self._meta.get_field(field).related_model == obj._meta.model:
                 setattr(self, field, obj)
         self.related_object = obj
 
@@ -86,7 +104,7 @@ class AbstractRecord(models.Model):
         to='records.Record',
         related_query_name='record'
     )
-    case = models.ForeignKey(Case)
+    case = models.ForeignKey(to=Case, on_delete=models.CASCADE)
 
     def show_modifier(self):
         return self.modified_by_id and self.modified_by_id != self.created_by_id

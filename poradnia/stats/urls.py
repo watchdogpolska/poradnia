@@ -51,3 +51,5 @@ urlpatterns = [
     url(_(r'^graph-(?P<pk>\d+)/(?P<month>\d+)/(?P<year>\d+)/~json$'), views.JSONGraphDetailView.as_view(),
         name="graph_detail_json"),
 ]
+
+app_name = 'poradnia.stats'

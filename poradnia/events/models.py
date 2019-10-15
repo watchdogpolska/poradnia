@@ -16,8 +16,12 @@ except ImportError:
 
 
 class Reminder(TimeStampedModel):
-    event = models.ForeignKey('Event')
-    user = models.ForeignKey(to=settings.AUTH_USER_MODEL, help_text=_("Recipient"))
+    event = models.ForeignKey(to='Event', on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        help_text=_("Recipient"),
+        on_delete=models.CASCADE
+    )
     active = models.BooleanField(default=True, help_text=_("Active status"))
 
     class Meta:
@@ -42,11 +46,13 @@ class Event(AbstractRecord):
     text = models.TextField(verbose_name=_("Subject"))
     created_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
                                    related_name='event_created_by',
-                                   verbose_name=_("Created by"))
+                                   verbose_name=_("Created by"),
+                                   on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))
     modified_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
                                     verbose_name=_("Modified by"),
                                     null=True,
+                                    on_delete=models.CASCADE,
                                     related_name='event_modified_by')
     modified_on = models.DateTimeField(auto_now=True,
                                        null=True,

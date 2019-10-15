@@ -82,16 +82,22 @@ class Letter(AbstractRecord):
     signature = models.TextField(verbose_name=_("Signature"), blank=True, null=True)
     created_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
                                    related_name='letter_created_by',
-                                   verbose_name=_("Created by"))
+                                   verbose_name=_("Created by"),
+                                   on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True,
                                       verbose_name=_("Created on"))
     modified_by = models.ForeignKey(settings.AUTH_USER_MODEL,
                                     verbose_name=_("Modified by"),
                                     null=True,
+                                    on_delete=models.CASCADE,
                                     related_name='letter_modified_by')
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
-    message = models.ForeignKey(Message, null=True, blank=True)
+    message = models.ForeignKey(
+        to=Message,
+        null=True, blank=True,
+        on_delete=models.CASCADE
+    )
     eml = models.FileField(
         _(u'Raw message contents'),
         null=True,
@@ -178,7 +184,7 @@ class AttachmentQuerySet(models.QuerySet):
 
 
 class Attachment(models.Model):
-    letter = models.ForeignKey(Letter)
+    letter = models.ForeignKey(to=Letter, on_delete=models.CASCADE)
     attachment = models.FileField(upload_to=date_random_path, verbose_name=_("File"))
 
     objects = AttachmentQuerySet.as_manager()

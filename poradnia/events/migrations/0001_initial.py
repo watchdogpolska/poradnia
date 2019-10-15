@@ -31,8 +31,8 @@ class Migration(migrations.Migration):
                 ('text', models.CharField(max_length=150)),
                 ('created_on', models.DateTimeField(auto_now_add=True)),
                 ('modified_on', models.DateTimeField(auto_now=True, null=True)),
-                ('created_by', models.ForeignKey(related_name='event_created_by', to=settings.AUTH_USER_MODEL)),
-                ('modified_by', models.ForeignKey(related_name='event_modified_by', to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(on_delete=models.CASCADE,related_name='event_created_by', to=settings.AUTH_USER_MODEL)),
+                ('modified_by', models.ForeignKey(on_delete=models.CASCADE,related_name='event_modified_by', to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='alarm',
             name='event',
-            field=models.ForeignKey(to='events.Event'),
+            field=models.ForeignKey(on_delete=models.CASCADE,to='events.Event'),
             preserve_default=True,
         ),
     ]

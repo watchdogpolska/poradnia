@@ -42,14 +42,17 @@ class CourtCaseQuerySet(models.QuerySet):
 
 class CourtCase(AbstractRecord):
     court = models.ForeignKey(to=Court,
+                              on_delete=models.CASCADE,
                               verbose_name=_("Court"),
                               null=True, blank=True)
     signature = models.CharField(max_length=50,
                                  help_text=_("Court signature"))
     created_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                                   on_delete=models.CASCADE,
                                    related_name='courtcase_created_by',
                                    verbose_name=_("Created by"))
     modified_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                                    on_delete=models.CASCADE,
                                     verbose_name=_("Modified by"),
                                     null=True,
                                     related_name='courtcase_modified_by')
@@ -63,8 +66,10 @@ class CourtCase(AbstractRecord):
 
 class CourtSession(TimeStampedModel):
     courtcase = models.ForeignKey(to=CourtCase,
+                                  on_delete=models.CASCADE,
                                   verbose_name=_("Court case"))
     event = models.OneToOneField(Event,
+                                 on_delete=models.CASCADE,
                                  verbose_name=_("Event"))
     parser_key = models.CharField(max_length=25,
                                   verbose_name=_("Parser key"))

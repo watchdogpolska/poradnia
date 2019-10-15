@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='advice',
             name='case',
-            field=models.OneToOneField(null=True, blank=True, to='cases.Case', verbose_name='Case'),
+            field=models.OneToOneField(on_delete=models.CASCADE,null=True, blank=True, to='cases.Case', verbose_name='Case'),
             preserve_default=True,
         ),
     ]
