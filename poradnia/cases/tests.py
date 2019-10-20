@@ -6,7 +6,7 @@ from atom.mixins import AdminTestCaseMixin
 from django.contrib.admin.sites import AdminSite
 from django.core import mail
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.test import RequestFactory
 from django.test.utils import override_settings
 from django.utils import timezone
