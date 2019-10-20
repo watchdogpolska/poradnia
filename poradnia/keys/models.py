@@ -6,10 +6,7 @@ from poradnia.users.models import User
 
 from .utils import make_random_password
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 
 class KeyQuerySet(QuerySet):

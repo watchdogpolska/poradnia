@@ -18,10 +18,7 @@ from poradnia.users.forms import (TranslatedManageObjectPermissionForm,
 from poradnia.users.models import User
 from poradnia.users.views import UserAutocomplete
 
-try:
-    from django.core.urlresolvers import reverse, reverse_lazy
-except ImportError:
-    from django.urls import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 
 
 class UserTestCase(TestCase):

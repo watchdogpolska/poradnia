@@ -23,10 +23,7 @@ from poradnia.users.factories import UserFactory
 from poradnia.users.models import User
 from poradnia.stats.settings import STAT_METRICS
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 
 def polyfill_http_response_json():

@@ -24,10 +24,7 @@ from poradnia.letters.factories import LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 
 class CaseQuerySetTestCase(TestCase):

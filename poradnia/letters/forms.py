@@ -13,10 +13,7 @@ from poradnia.cases.models import Case
 
 from .models import Attachment, Letter
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 CLIENT_FIELD_TEXT = _("Leave empty to use email field and create a new one user.")
 

@@ -14,10 +14,7 @@ from .forms import ProfileForm, UserForm
 from .models import Profile, User
 from .utils import PermissionMixin
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 
 class UserDetailView(PermissionRequiredMixin, DetailView):

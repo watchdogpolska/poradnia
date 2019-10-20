@@ -9,10 +9,7 @@ from django.utils.translation import ugettext_lazy as _
 from poradnia.cases.models import Case
 from poradnia.teryt.models import JST
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 
 class AbstractCategory(models.Model):

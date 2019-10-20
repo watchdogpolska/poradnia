@@ -21,10 +21,7 @@ from model_utils.fields import MonitorField, StatusField
 
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 
 CASE_PK_RE = 'sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl';
