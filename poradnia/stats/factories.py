@@ -1,7 +1,6 @@
 # coding=utf-8
-from datetime import timedelta
+from datetime import datetime, timedelta
 
-from django.utils.datetime_safe import datetime
 import factory
 import factory.fuzzy
 import pytz
