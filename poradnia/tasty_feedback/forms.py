@@ -6,10 +6,7 @@ from django.utils.translation import ugettext as _
 
 from .models import Feedback
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 
 class FeedbackForm(UserKwargModelFormMixin, ModelForm):

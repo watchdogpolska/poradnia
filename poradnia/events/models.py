@@ -9,10 +9,7 @@ from model_utils.models import TimeStampedModel
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from poradnia.users.models import Profile
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 
 class Reminder(TimeStampedModel):

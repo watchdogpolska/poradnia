@@ -18,10 +18,7 @@ from poradnia.users.factories import UserFactory
 
 from .compat import refresh_from_db
 
-try:
-    from django.core.urlresolvers import reverse, reverse_lazy
-except ImportError:
-    from django.urls import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 
 
 class CaseMixin(object):

@@ -15,10 +15,7 @@ from sorl.thumbnail import ImageField
 from poradnia.cases.models import Case as CaseModel
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 _('Username or e-mail')  # Hack to overwrite django translation
 _('Login')

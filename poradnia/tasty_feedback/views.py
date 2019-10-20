@@ -10,10 +10,7 @@ from django_filters.views import FilterView
 from .models import Feedback
 from .utils import get_filter, get_form
 
-try:
-    from django.core.urlresolvers import reverse_lazy
-except ImportError:
-    from django.urls import reverse_lazy
+from django.urls import reverse_lazy
 
 
 class FeedbackListView(LoginRequiredMixin, PermissionRequiredMixin, SelectRelatedMixin, FilterView):

@@ -25,10 +25,7 @@ from poradnia.users.models import User
 
 from .utils import date_random_path
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 talon.init()
 
