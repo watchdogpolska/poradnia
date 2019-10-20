@@ -150,7 +150,7 @@ class AdviceDetailTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
         obj = AdviceFactory(created_by=self.user, comment="Lorem\nipsum")
         self.login()
         resp = self.client.get(obj.get_absolute_url())
-        self.assertContains(resp, 'Lorem<br />ipsum')
+        self.assertContains(resp, 'Lorem<br>ipsum')
 
 
 class AdviceQuerySetTestCase(TestCase):

@@ -198,9 +198,6 @@ class CaseDetailViewTestCase(TestCase):
 
 
 class StaffCaseFilterTestCase(TestCase):
-    def __init__(self, methodName='runTest'):
-        super(StaffCaseFilterTestCase, self).__init__(methodName)
-
     def get_filter(self, *args, **kwargs):
         return StaffCaseFilter(queryset=Case.objects.all(),
                                *args, **kwargs)
@@ -211,7 +208,7 @@ class StaffCaseFilterTestCase(TestCase):
 
     def test_permission_filter(self):
         obj = CaseFactory()
-        self.assertFalse(self.get_permission_filter_qs(user=UserFactory(), pk=obj.pk).exists())
+        self.assertFalse(self.get_permission_filter_qs(user=UserFactory(is_staff=True), pk=obj.pk).exists())
         user = UserFactory(is_staff=True)
         assign_perm('cases.can_view', user, obj)
         self.assertTrue(self.get_permission_filter_qs(user=user, pk=obj.pk).exists())

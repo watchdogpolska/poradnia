@@ -28,7 +28,6 @@ services:
 
   web:
     image: docker-registry.siecobywatelska.pl/poradnia/web
-    command: /bin/bash -c "sleep 9999999999999999999"
     build:
       context: .
       dockerfile: .contrib/docker/Dockerfile.web
