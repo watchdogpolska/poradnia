@@ -10,7 +10,7 @@ DATE_FORMAT_WEEKLY = "%Y-%W"
 
 def raise_unless_unauthenticated(view, request):
     # Hack from SO due to https://github.com/brack3t/django-braces/issues/181 bug
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         return redirect('/konta/login/?next=%s' % request.path)
     return None
 
