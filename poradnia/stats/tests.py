@@ -204,7 +204,7 @@ class StatsCaseReactionApiTestCase(TestCase):
     def _prepare_cases(self, db_data):
         for created_on, letter_data in db_data:
             for obj in CaseFactory.create_batch(size=1):
-                obj.letter_set = self._prepare_letters(letter_data, obj)
+                obj.letter_set.set(self._prepare_letters(letter_data, obj))
                 obj.created_on = make_aware(created_on)
                 obj.save()
 
