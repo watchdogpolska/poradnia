@@ -1,5 +1,5 @@
 # This is Dockerfile for development purposes only.
-ARG PYTHON_VERSION='2'
+ARG PYTHON_VERSION='3'
 FROM python:${PYTHON_VERSION}-slim
 RUN mkdir /code /code/production
 WORKDIR /code
@@ -16,6 +16,6 @@ RUN apt-get update \
    gettext libgettextpo-dev wait-for-it \
 && rm -rf /var/lib/apt/lists/*
 COPY requirements/*.txt ./requirements/
-ARG DJANGO_VERSION='==1.11.21'
+ARG DJANGO_VERSION='==2.2.*'
 RUN pip install --no-cache-dir -r requirements/dev.txt "django${DJANGO_VERSION}"
 CMD ["bash", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
