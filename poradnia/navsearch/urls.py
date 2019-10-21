@@ -1,9 +1,9 @@
-from django.conf.urls import url
+from django.urls import path
 
 from .views import AutocompleteView
 
 urlpatterns = [
-    url(r'^$', AutocompleteView.as_view(), name="navigation_autocomplete"),
+    path('', AutocompleteView.as_view(), name="navigation_autocomplete"),
 ]
 
 app_name = 'poradnia.navsearch'

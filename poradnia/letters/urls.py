@@ -1,18 +1,18 @@
-from django.conf.urls import url
+from django.urls import path
 from django.views.decorators.csrf import csrf_exempt
 
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.NewCaseCreateView.as_view(), name='home'),
-    url(r'^$', views.NewCaseCreateView.as_view(), name='add'),
-    url(r'^rejestr$', views.LetterListView.as_view(), name='list'),
-    url(r'^sprawa-(?P<case_pk>\d+)/$', views.add, name="add"),
-    url(r'^sprawa-(?P<case_pk>\d+)/list-(?P<letter_pk>\d+)/zalaczniki$', views.StreamAttachmentView.as_view(), name="attachments_zip"),
-    url(r'^(?P<pk>\d+)/wyslij/$', views.send, name="send"),
-    url(r'^(?P<pk>\d+)/edytuj/$', views.LetterUpdateView.as_view(), name="edit"),
-    url(r'^(?P<pk>\d+)/$', views.send, name="detail"),
-    url(r'^webhook',
+    path('', views.NewCaseCreateView.as_view(), name='home'),
+    path('', views.NewCaseCreateView.as_view(), name='add'),
+    path('rejestr', views.LetterListView.as_view(), name='list'),
+    path('sprawa-<int:case_pk>/', views.add, name="add"),
+    path('sprawa-<int:case_pk>/list-<int:letter_pk>/zalaczniki', views.StreamAttachmentView.as_view(), name="attachments_zip"),
+    path('<int:pk>/wyslij/', views.send, name="send"),
+    path('<int:pk>/edytuj/', views.LetterUpdateView.as_view(), name="edit"),
+    path('<int:pk>/', views.send, name="detail"),
+    path('webhook',
         csrf_exempt(views.ReceiveEmailView.as_view()),
         name="webhook"),
 ]

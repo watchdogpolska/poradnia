@@ -19,22 +19,24 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Build application
-      run: docker-compose build web
+      run: make build
       env:
         PYTHON_VERSION: ${{ matrix.python }}
         DJANGO_VERSION: ${{ matrix.django }}
+    - name: Lint
+      run: make lint
     - name: Migration check
-      run: docker-compose run web bash -c 'wait-for-it db:3306 && python manage.py makemigrations --check'
+      run: make check
     - name: Show settings
-      run: docker-compose run web python manage.py diffsettings
+      run: make settings
     - name: Build test
-      run: docker-compose run web python manage.py test --keepdb --verbosity=2
+      run: make test
 
   docs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
     - name: Build application
-      run: docker-compose build web
+      run: make build
     - name: Build documentation
-      run: docker-compose run web sphinx-build -b html -d docs/_build/doctrees docs docs/_build/html
+      run: make docs

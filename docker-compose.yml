@@ -3,7 +3,6 @@ version: '2.1'
 
 services:
   db:
-    container_name: db
     image: mysql:5.7
     ports:
       - "3306"

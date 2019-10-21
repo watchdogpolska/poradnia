@@ -23,9 +23,7 @@ from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 
 from django.urls import reverse
 
-
-CASE_PK_RE = 'sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl';
-
+CASE_PK_RE = 'sprawa-<int:pk>@porady.siecobywatelska.pl'
 
 class CaseQuerySet(QuerySet):
     def for_assign(self, user):
