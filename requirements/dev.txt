@@ -4,7 +4,7 @@ Sphinx==2.2.0
 
 # django-debug-toolbar that works with Django 1.5+
 django-debug-toolbar==2.0
-django-extensions==2.2.3
+django-extensions==2.2.5
 django-autofixture==0.12.1
 graphviz==0.13
 factory-boy==2.12.0
