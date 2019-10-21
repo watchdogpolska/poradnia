@@ -6,7 +6,6 @@ jobs:
   django:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: 4
       fail-fast: false
       matrix:
         python: 
@@ -15,9 +14,10 @@ jobs:
         django:
           - "==2.1.*"
           - "==2.2.*"
-          # - "==2.2.*"
     steps:
     - uses: actions/checkout@v1
+    - name: Start database early
+      run: docker-compose up db
     - name: Build application
       run: make build
       env:
