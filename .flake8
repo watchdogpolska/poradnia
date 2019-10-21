@@ -1,0 +1,4 @@
+[flake8]
+exclude = docs,env,migrations,south_migrations,.tox,node_modules
+ignore = E128
+max-line-length = 120

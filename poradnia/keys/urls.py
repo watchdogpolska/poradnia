@@ -1,12 +1,12 @@
-from django.conf.urls import url
+from django.urls import path
 
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.KeyListView.as_view(), name="list"),
-    url(r'^(?P<pk>\d+)/$', views.KeyDetailView.as_view(), name="details"),
-    url(r'^(?P<pk>\d+)/usun/$', views.KeyDeleteView.as_view(), name="delete"),
-    url(r'^stworz/$', views.KeyCreateView.as_view(), name="create"),
+    path('', views.KeyListView.as_view(), name="list"),
+    path('<int:pk>/', views.KeyDetailView.as_view(), name="details"),
+    path('<int:pk>/usun/', views.KeyDeleteView.as_view(), name="delete"),
+    path('stworz/', views.KeyCreateView.as_view(), name="create"),
 ]
 
 app_name = 'poradnia.keys'
