@@ -1,12 +1,11 @@
-from __future__ import absolute_import
+
 
 import json
 
 from atom.mixins import AdminTestCaseMixin
 from django.core import mail
 from django.test import RequestFactory
-from django.utils import timezone, six
-from django.utils.six import text_type
+from django.utils import timezone
 from guardian.shortcuts import assign_perm, get_perms
 from test_plus.test import TestCase
 
@@ -19,10 +18,7 @@ from poradnia.users.forms import (TranslatedManageObjectPermissionForm,
 from poradnia.users.models import User
 from poradnia.users.views import UserAutocomplete
 
-try:
-    from django.core.urlresolvers import reverse, reverse_lazy
-except ImportError:
-    from django.urls import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 
 
 class UserTestCase(TestCase):
@@ -359,11 +355,10 @@ class UserAutocompleteViewTestCase(TestCase):
         request.user = self.staff_user
         assign_perm('users.can_view_other', self.staff_user)
         response = UserAutocomplete.as_view()(request=request).getvalue()
-        if six.PY3:
-            response = response.decode('utf-8')
+        response = response.decode('utf-8')
         response_json = json.loads(response)
         self.assertEqual(len(response_json['results']), 1)
-        self.assertEqual(response_json['results'][0]['text'], text_type(self.regular_user))
+        self.assertEqual(response_json['results'][0]['text'], str(self.regular_user))
 
     def test_staff_user_with_permission_can_not_view_reqular_user(self):
         request = self.factory.get("?q={}".format(self.regular_user.username))

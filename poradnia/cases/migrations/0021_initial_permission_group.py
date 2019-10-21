@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 from django.db import migrations
 
@@ -32,7 +30,7 @@ def add_groups(apps, schema_editor):
     Permission = apps.get_model('auth', 'Permission')
     for name, codenames in PERM_INITIAL.items():
         p, _ = PermissionGroup.objects.get_or_create(name=name)
-        p.permissions = get_perm(Permission, codenames)
+        p.permissions.set(get_perm(Permission, codenames))
         p.save()
 
 

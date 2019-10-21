@@ -10,3 +10,5 @@ urlpatterns = [
     url(r'^courtcase-(?P<pk>\d+)/~delete$', views.CourtCaseDeleteView.as_view(),
         name="delete"),
 ]
+
+app_name = 'poradnia.judgements'

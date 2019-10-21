@@ -1,5 +1,3 @@
-from __future__ import unicode_literals
-
 import logging
 import os
 
@@ -13,7 +11,6 @@ from django.core.files import File
 from django.db import models
 from django.db.models import F, Func, IntegerField, Q
 from django.dispatch import receiver
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 from django_mailbox.models import Message
 from django_mailbox.signals import message_received
@@ -28,10 +25,7 @@ from poradnia.users.models import User
 
 from .utils import date_random_path
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 talon.init()
 
@@ -70,7 +64,6 @@ class LetterQuerySet(AbstractRecordQuerySet):
         )
 
 
-@python_2_unicode_compatible
 class Letter(AbstractRecord):
     STATUS = Choices(('staff', _('Staff')), ('done', _('Done')))
     GENRE = Choices('mail', 'comment')
@@ -86,16 +79,22 @@ class Letter(AbstractRecord):
     signature = models.TextField(verbose_name=_("Signature"), blank=True, null=True)
     created_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
                                    related_name='letter_created_by',
-                                   verbose_name=_("Created by"))
+                                   verbose_name=_("Created by"),
+                                   on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True,
                                       verbose_name=_("Created on"))
     modified_by = models.ForeignKey(settings.AUTH_USER_MODEL,
                                     verbose_name=_("Modified by"),
                                     null=True,
+                                    on_delete=models.CASCADE,
                                     related_name='letter_modified_by')
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modified on"))
-    message = models.ForeignKey(Message, null=True, blank=True)
+    message = models.ForeignKey(
+        to=Message,
+        null=True, blank=True,
+        on_delete=models.CASCADE
+    )
     eml = models.FileField(
         _(u'Raw message contents'),
         null=True,
@@ -181,9 +180,8 @@ class AttachmentQuerySet(models.QuerySet):
         return qs
 
 
-@python_2_unicode_compatible
 class Attachment(models.Model):
-    letter = models.ForeignKey(Letter)
+    letter = models.ForeignKey(to=Letter, on_delete=models.CASCADE)
     attachment = models.FileField(upload_to=date_random_path, verbose_name=_("File"))
 
     objects = AttachmentQuerySet.as_manager()
@@ -235,7 +233,10 @@ class MessageParser(object):
             case = Case.objects.create(name=self.message.subject,
                                        created_by=self.actor,
                                        client=self.actor)
-            self.actor.notify(actor=self.actor, verb='registered', target=case, from_email=case.get_email())
+            self.actor.notify(actor=self.actor,
+                              verb='registered',
+                              target=case,
+                              from_email=case.get_email())
         return case
 
     @cached_property

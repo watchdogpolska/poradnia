@@ -15,10 +15,7 @@ from .filters import AdviceFilter
 from .forms import AdviceForm, AttachmentForm
 from .models import Advice, Attachment
 
-try:
-    from django.core.urlresolvers import reverse_lazy
-except ImportError:
-    from django.urls import reverse_lazy
+from django.urls import reverse_lazy
 
 
 ORDERING_TEXT = _("Ordering")

@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 # flake8: noqa: F405
 '''
 Production Configurations
@@ -53,3 +53,5 @@ INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
 CACHES = {
     'default': env.cache(),
 }
+
+LETTER_RECEIVE_SECRET = env.str('LETTER_RECEIVE_SECRET')

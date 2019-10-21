@@ -10,10 +10,7 @@ from poradnia.users.utils import PermissionMixin
 from .forms import KeyForm
 from .models import Key
 
-try:
-    from django.core.urlresolvers import reverse_lazy
-except ImportError:
-    from django.urls import reverse_lazy
+from django.urls import reverse_lazy
 
 
 class KeyCreateView(PermissionMixin, UserFormKwargsMixin, CreateView):

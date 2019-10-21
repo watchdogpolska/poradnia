@@ -13,10 +13,7 @@ from poradnia.cases.models import Case
 
 from .models import Attachment, Letter
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 CLIENT_FIELD_TEXT = _("Leave empty to use email field and create a new one user.")
 
@@ -26,6 +23,12 @@ access to the archive and data about persons responsible for the case.""")
 CASE_NAME_TEXT = _(""""Short description of the case for organizational purposes.
 The institution name and two words will suffice.""")
 
+REPLY_ALL_TITLE = _("""After choosing this option, your message will be sent to the client and the members of the legal team, who can see this case (admins and assigned team members).
+Select this option if your message is finalized and ready to be sent to the advicer's client.""")
+
+SAVE_TO_REVIEW_TITLE = _("""After choosing this option, your message will be saved in the system as a draft. The admin will check the saved draft and will either suggest changes, or will send it to the client.""")
+
+REPLY_TO_TEAM_TITLE = _("""After choosing this option, your message will only be sent to the members of the legal team who can see this case (admins and assigned team members). Select this option if you want to consult something within the team.""")
 
 class SimpleSubmit(BaseInput):
     input_type = 'submit'
@@ -76,10 +79,10 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
             del self.fields['client']
             del self.fields['email']
 
-        if not self.user.is_anonymous():  # is registered
+        if not self.user.is_anonymous:  # is registered
             del self.fields['email_registration']
 
-        if not (self.user.is_anonymous() or self._is_super_staff()):
+        if not (self.user.is_anonymous or self._is_super_staff()):
             del self.fields['giodo']
         elif self._is_super_staff():
             self.fields['giodo'].required = False
@@ -95,13 +98,13 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
         return super(NewCaseForm, self).clean()
 
     def get_user(self):
-        if self.user.is_anonymous():
+        if self.user.is_anonymous:
             return get_user_model().objects.get_by_email_or_create(
                 self.cleaned_data['email_registration'])
         return self.user
 
     def get_client(self, user):
-        if self.user.is_anonymous() and self.cleaned_data['email_registration']:
+        if self.user.is_anonymous and self.cleaned_data['email_registration']:
             return user
         if not self.user.has_perm('cases.can_select_client'):
             return self.user
@@ -149,21 +152,26 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         if self.user_can_send:
             self.helper.add_input(Submit(name='send',
                                          value=_("Reply to all"),
+                                         title=REPLY_ALL_TITLE,
                                          css_class="btn-primary"))
             self.helper.add_input(Submit(name='project',
                                          value=_("Save to review"),
+                                         title=SAVE_TO_REVIEW_TITLE,
                                          css_class="btn-primary"))
             self.helper.add_input(SimpleSubmit(name='send_staff',
                                                input_type='submit',
-                                               value=_("Reply to staff"),
+                                               value=_("Write to staff"),
+                                               title=REPLY_TO_TEAM_TITLE,
                                                css_class="btn-default"))
         else:
             if self.user.is_staff:
                 self.helper.add_input(Submit(name='send',
-                                             value=_("Reply to staff"),
+                                             value=_("Write to staff"),
+                                             title=REPLY_TO_TEAM_TITLE,
                                              css_class="btn-primary"))
                 self.helper.add_input(Submit(name='project',
                                              value=_("Save to review"),
+                                             title=SAVE_TO_REVIEW_TITLE,
                                              css_class="btn-primary"))
             else:
                 self.helper.add_input(Submit(name='send',

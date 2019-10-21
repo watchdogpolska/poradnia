@@ -1,11 +1,10 @@
-# -*- coding: utf-8 -*-
+
 # import inspect
 import datetime
 import inspect
 import os
 
 from django.test import TestCase
-from django.utils import six
 from pytz import timezone
 from vcr import VCR
 
@@ -20,10 +19,7 @@ except ImportError:
 
 
 def generator(f, suffix=None):
-    if six.PY3:
-        filename = "{}.{}".format(f.__self__.__class__.__name__, f.__name__)
-    else:
-        filename = "{}.{}".format(f.im_class.__name__, f.__name__)
+    filename = "{}.{}".format(f.__self__.__class__.__name__, f.__name__)
     if suffix:
         filename = "{}.{}".format(suffix, filename)
     return os.path.join(os.path.dirname(inspect.getfile(f)),

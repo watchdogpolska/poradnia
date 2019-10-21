@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 from django.db import migrations, models
 
@@ -18,7 +16,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='alarm',
             name='event',
-            field=models.OneToOneField(to='events.Event'),
+            field=models.OneToOneField(on_delete=models.CASCADE,to='events.Event'),
             preserve_default=True,
         ),
     ]

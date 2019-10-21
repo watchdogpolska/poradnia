@@ -4,7 +4,6 @@ from django.conf import settings
 from django.db import models
 
 # Create your models here.
-from django.utils.encoding import python_2_unicode_compatible
 from model_utils.models import TimeStampedModel
 from django.utils.translation import ugettext_lazy as _
 
@@ -13,7 +12,6 @@ from poradnia.judgements.registry import parser_registry
 from poradnia.records.models import AbstractRecord
 
 
-@python_2_unicode_compatible
 class Court(TimeStampedModel):
     name = models.CharField(max_length=250, verbose_name=_("Court"))
     active = models.BooleanField(default=True, verbose_name=_("Active status"))
@@ -44,14 +42,17 @@ class CourtCaseQuerySet(models.QuerySet):
 
 class CourtCase(AbstractRecord):
     court = models.ForeignKey(to=Court,
+                              on_delete=models.CASCADE,
                               verbose_name=_("Court"),
                               null=True, blank=True)
     signature = models.CharField(max_length=50,
                                  help_text=_("Court signature"))
     created_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                                   on_delete=models.CASCADE,
                                    related_name='courtcase_created_by',
                                    verbose_name=_("Created by"))
     modified_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
+                                    on_delete=models.CASCADE,
                                     verbose_name=_("Modified by"),
                                     null=True,
                                     related_name='courtcase_modified_by')
@@ -65,8 +66,10 @@ class CourtCase(AbstractRecord):
 
 class CourtSession(TimeStampedModel):
     courtcase = models.ForeignKey(to=CourtCase,
+                                  on_delete=models.CASCADE,
                                   verbose_name=_("Court case"))
     event = models.OneToOneField(Event,
+                                 on_delete=models.CASCADE,
                                  verbose_name=_("Event"))
     parser_key = models.CharField(max_length=25,
                                   verbose_name=_("Parser key"))

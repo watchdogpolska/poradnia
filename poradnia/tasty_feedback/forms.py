@@ -6,10 +6,7 @@ from django.utils.translation import ugettext as _
 
 from .models import Feedback
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 
 class FeedbackForm(UserKwargModelFormMixin, ModelForm):
@@ -20,7 +17,7 @@ class FeedbackForm(UserKwargModelFormMixin, ModelForm):
         self.helper.form_action = reverse('tasty_feedback:submit')
 
     def save(self, *args, **kwargs):
-        if not self.user.is_anonymous():
+        if not self.user.is_anonymous:
             self.instance.user = self.user
         return super(FeedbackForm, self).save(*args, **kwargs)
 

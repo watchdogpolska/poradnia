@@ -10,16 +10,12 @@ jobs:
       fail-fast: false
       matrix:
         python: 
-          - 2.7
-          # - 3.5
           - 3.6
           - 3.7
         django:
-          - "==1.11.*"
+          - "==2.1.*"
+          - "==2.2.*"
           # - "==2.2.*"
-        # exclude:
-        #   - django: "==2.2.*"
-        #     python: 2.7
     steps:
     - uses: actions/checkout@v1
     - name: Build application
@@ -29,6 +25,8 @@ jobs:
         DJANGO_VERSION: ${{ matrix.django }}
     - name: Migration check
       run: docker-compose run web bash -c 'wait-for-it db:3306 && python manage.py makemigrations --check'
+    - name: Show settings
+      run: docker-compose run web python manage.py diffsettings
     - name: Build test
       run: docker-compose run web python manage.py test --keepdb --verbosity=2
 

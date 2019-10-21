@@ -8,3 +8,5 @@ urlpatterns = [
     url(r'^(?P<pk>\d+)/usun/$', views.KeyDeleteView.as_view(), name="delete"),
     url(r'^stworz/$', views.KeyCreateView.as_view(), name="create"),
 ]
+
+app_name = 'poradnia.keys'

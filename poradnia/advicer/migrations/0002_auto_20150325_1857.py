@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import migrations, models
@@ -25,13 +23,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='advice',
             name='advicer',
-            field=models.ForeignKey(default=1, verbose_name='Advicer', to=settings.AUTH_USER_MODEL, help_text='Person who give a advice'),
+            field=models.ForeignKey(on_delete=models.CASCADE,default=1, verbose_name='Advicer', to=settings.AUTH_USER_MODEL, help_text='Person who give a advice'),
             preserve_default=False,
         ),
         migrations.AlterField(
             model_name='advice',
             name='area',
-            field=models.ForeignKey(verbose_name='Area', blank=True, to='advicer.Area', null=True),
+            field=models.ForeignKey(on_delete=models.CASCADE,verbose_name='Area', blank=True, to='advicer.Area', null=True),
             preserve_default=True,
         ),
         migrations.AlterField(
@@ -43,7 +41,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='advice',
             name='created_by',
-            field=models.ForeignKey(related_name='advice_created_by', verbose_name='Created by', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(on_delete=models.CASCADE,related_name='advice_created_by', verbose_name='Created by', to=settings.AUTH_USER_MODEL),
             preserve_default=True,
         ),
         migrations.AlterField(
@@ -61,7 +59,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='advice',
             name='institution_kind',
-            field=models.ForeignKey(verbose_name='Kind of institution', blank=True, to='advicer.InstitutionKind', null=True),
+            field=models.ForeignKey(on_delete=models.CASCADE,verbose_name='Kind of institution', blank=True, to='advicer.InstitutionKind', null=True),
             preserve_default=True,
         ),
         migrations.AlterField(
@@ -73,7 +71,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='advice',
             name='modified_by',
-            field=models.ForeignKey(related_name='advice_modified_by', verbose_name='Modified by', to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(on_delete=models.CASCADE,related_name='advice_modified_by', verbose_name='Modified by', to=settings.AUTH_USER_MODEL, null=True),
             preserve_default=True,
         ),
         migrations.AlterField(
@@ -85,7 +83,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='advice',
             name='person_kind',
-            field=models.ForeignKey(verbose_name='Kind of person ', blank=True, to='advicer.PersonKind', null=True),
+            field=models.ForeignKey(on_delete=models.CASCADE,verbose_name='Kind of person ', blank=True, to='advicer.PersonKind', null=True),
             preserve_default=True,
         ),
         migrations.AlterField(

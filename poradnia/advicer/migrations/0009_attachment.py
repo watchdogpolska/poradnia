@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 from django.db import migrations, models
 
@@ -16,7 +14,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('attachment', models.FileField(upload_to=b'letters/%Y/%m/%d', verbose_name='File')),
-                ('letter', models.ForeignKey(to='advicer.Advice')),
+                ('letter', models.ForeignKey(on_delete=models.CASCADE,to='advicer.Advice')),
             ],
             options={
                 'abstract': False,

@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import migrations, models
@@ -19,13 +17,13 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='case',
             name='client',
-            field=models.ForeignKey(related_name='case_client', verbose_name='Client', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='case_client',on_delete=models.CASCADE, verbose_name='Client', to=settings.AUTH_USER_MODEL),
             preserve_default=True,
         ),
         migrations.AlterField(
             model_name='case',
             name='created_by',
-            field=models.ForeignKey(related_name='case_created', verbose_name='Created by', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='case_created', on_delete=models.CASCADE, verbose_name='Created by', to=settings.AUTH_USER_MODEL),
             preserve_default=True,
         ),
         migrations.AlterField(
@@ -37,7 +35,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='case',
             name='deadline',
-            field=models.ForeignKey(related_name='event_deadline', verbose_name='Dead-line', blank=True, to='events.Event', null=True),
+            field=models.ForeignKey(related_name='event_deadline', on_delete=models.CASCADE, verbose_name='Dead-line', blank=True, to='events.Event', null=True),
             preserve_default=True,
         ),
         migrations.AlterField(
@@ -61,7 +59,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='case',
             name='modified_by',
-            field=models.ForeignKey(related_name='case_modified', verbose_name='Modified by', to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(related_name='case_modified', on_delete=models.CASCADE, verbose_name='Modified by', to=settings.AUTH_USER_MODEL, null=True),
             preserve_default=True,
         ),
         migrations.AlterField(

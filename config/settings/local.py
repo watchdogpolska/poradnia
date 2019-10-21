@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 # flake8: noqa: F405
 '''
 Local Configurations
@@ -7,10 +7,12 @@ Local Configurations
 - Uses console backend for emails
 - Use Django Debug Toolbar
 '''
+import sys
 from .common import *  # noqa
 
 # DEBUG
 DEBUG = env('DEBUG', default=True)
+TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
 TEMPLATES[0]['OPTIONS']['debug'] = DEBUG
 # END DEBUG
 
@@ -25,7 +27,7 @@ INSTALLED_APPS += ('autofixture',)
 # django-debug-toolbar
 
 INSTALLED_APPS += ('debug_toolbar',)
-MIDDLEWARE_CLASSES += ('debug_toolbar.middleware.DebugToolbarMiddleware', )
+MIDDLEWARE += ('debug_toolbar.middleware.DebugToolbarMiddleware', )
 DEBUG_TOOLBAR_PANELS = [
     'debug_toolbar.panels.versions.VersionsPanel',
     'debug_toolbar.panels.timer.TimerPanel',
@@ -48,5 +50,6 @@ DEBUG_TOOLBAR_CONFIG = {
     'DISABLE_PANELS': [
         'debug_toolbar.panels.redirects.RedirectsPanel',
     ],
+    'SHOW_TOOLBAR_CALLBACK': lambda x: not TESTING,
     'SHOW_TEMPLATE_CONTEXT': True,
 }

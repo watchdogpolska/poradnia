@@ -16,10 +16,7 @@ from poradnia.users.models import User
 from ..forms import CaseGroupPermissionForm
 from ..models import Case, CaseUserObjectPermission
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 
 class CasePermissionTestMixin(RaisePermissionRequiredMixin):

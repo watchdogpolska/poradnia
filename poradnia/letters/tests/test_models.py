@@ -4,7 +4,6 @@ from distutils.version import StrictVersion
 from os.path import dirname, join
 
 import django_mailbox
-import six
 from django.test import TestCase
 from django.utils.timezone import now
 from django_mailbox.models import Mailbox
@@ -130,10 +129,7 @@ class ReceiveEmailTestCase(TestCase):
     def _get_email_object(filename):  # See coddingtonbear/django-mailbox#89
         path = join(dirname(__file__), 'messages', filename)
         msg_content = open(path, 'rb').read()
-        if six.PY3:
-            return email.message_from_bytes(msg_content)
-        else:
-            return email.message_from_string(msg_content)
+        return email.message_from_bytes(msg_content)
 
     def get_message(self, filename):
         message = self._get_email_object(filename)

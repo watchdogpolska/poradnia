@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+
 """
 Django settings for poradnia project.
 
@@ -8,7 +8,6 @@ https://docs.djangoproject.com/en/dev/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
-from __future__ import absolute_import, unicode_literals
 
 from django.utils.translation import ugettext_lazy as _
 import environ
@@ -80,7 +79,7 @@ LOCAL_APPS = (
 INSTALLED_APPS = LOCAL_APPS + THIRD_PARTY_APPS + DJANGO_APPS
 
 # MIDDLEWARE CONFIGURATION
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = (
     # 'django.middleware.locale.LocaleMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -146,7 +145,7 @@ DATABASES = {
 }
 
 DATABASES['default']['TEST'] = {'CHARSET': "utf8mb4",
-                                'COLLATION': "utf8_general_ci"}
+                                'COLLATION': "utf8mb4_unicode_520_ci"}
 DATABASES['default']['CHARSET'] = "utf8mb4"
 
 # END DATABASE CONFIGURATION
@@ -362,3 +361,5 @@ FILE_UPLOAD_PERMISSIONS = 0o644
 
 # Django-GitHub-Revision
 GITHUB_REVISION_REPO_URL = 'https://github.com/watchdogpolska/poradnia'
+
+LETTER_RECEIVE_SECRET = 'xxxxxxxxx'

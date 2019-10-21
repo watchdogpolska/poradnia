@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 import django.utils.timezone
 import model_utils.fields
@@ -37,9 +35,9 @@ class Migration(migrations.Migration):
                 ('text', models.TextField()),
                 ('created_on', models.DateTimeField(auto_now_add=True)),
                 ('modified_on', models.DateTimeField(auto_now=True, null=True)),
-                ('created_by', models.ForeignKey(related_name='letter_created', to=settings.AUTH_USER_MODEL)),
-                ('modified_by', models.ForeignKey(related_name='letter_modified', to=settings.AUTH_USER_MODEL, null=True)),
-                ('send_by', models.ForeignKey(related_name='senders', blank=True, to=settings.AUTH_USER_MODEL, null=True)),
+                ('created_by', models.ForeignKey(related_name='letter_created', on_delete=models.CASCADE,to=settings.AUTH_USER_MODEL)),
+                ('modified_by', models.ForeignKey(related_name='letter_modified', on_delete=models.CASCADE,to=settings.AUTH_USER_MODEL, null=True)),
+                ('send_by', models.ForeignKey(related_name='senders', on_delete=models.CASCADE,blank=True, to=settings.AUTH_USER_MODEL, null=True)),
             ],
             options={
                 'abstract': False,
@@ -49,7 +47,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='attachment',
             name='letter',
-            field=models.ForeignKey(to='letters.Letter'),
+            field=models.ForeignKey(on_delete=models.CASCADE,to='letters.Letter'),
             preserve_default=True,
         ),
     ]

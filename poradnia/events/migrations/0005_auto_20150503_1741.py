@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import migrations, models
@@ -23,7 +21,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='event',
             name='created_by',
-            field=models.ForeignKey(related_name='event_created_by', verbose_name='Created by', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(on_delete=models.CASCADE,related_name='event_created_by', verbose_name='Created by', to=settings.AUTH_USER_MODEL),
             preserve_default=True,
         ),
         migrations.AlterField(
@@ -47,7 +45,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='event',
             name='modified_by',
-            field=models.ForeignKey(related_name='event_modified_by', verbose_name='Modified by', to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(on_delete=models.CASCADE,related_name='event_modified_by', verbose_name='Modified by', to=settings.AUTH_USER_MODEL, null=True),
             preserve_default=True,
         ),
         migrations.AlterField(

@@ -1,16 +1,12 @@
 from django.db import models
 from django.db.models.query import QuerySet
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.translation import ugettext_lazy as _
 
 from poradnia.users.models import User
 
 from .utils import make_random_password
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 
 class KeyQuerySet(QuerySet):
@@ -18,7 +14,6 @@ class KeyQuerySet(QuerySet):
         return self.filter(user=user)
 
 
-@python_2_unicode_compatible
 class Key(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
     password = models.CharField(max_length=75, default=make_random_password, verbose_name=_("Key"))

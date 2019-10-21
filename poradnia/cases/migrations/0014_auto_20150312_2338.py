@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 import datetime
 
@@ -19,7 +17,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='case',
             name='created_by',
-            field=models.ForeignKey(related_name='case_created', default=1, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='case_created',on_delete=models.CASCADE, default=1, to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
         migrations.AddField(
@@ -31,7 +29,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='case',
             name='modified_by',
-            field=models.ForeignKey(related_name='case_modified', default=1, to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(related_name='case_modified', on_delete=models.CASCADE,default=1, to=settings.AUTH_USER_MODEL),
             preserve_default=False,
         ),
         migrations.AddField(

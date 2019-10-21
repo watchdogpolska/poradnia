@@ -10,3 +10,5 @@ urlpatterns = [
     url(r'^$', views.CalendarListView.as_view(), name="calendar"),
     url(r'^ical/$', views.ICalendarView.as_view(), name="calendar_ical"),
 ]
+
+app_name = 'poradnia.events'

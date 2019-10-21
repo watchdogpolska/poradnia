@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 import django.utils.timezone
 import model_utils.fields
@@ -30,7 +28,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='letter',
             name='message',
-            field=models.ForeignKey(blank=True, to='django_mailbox.Message', null=True),
+            field=models.ForeignKey(on_delete=models.CASCADE,blank=True, to='django_mailbox.Message', null=True),
             preserve_default=True,
         ),
         migrations.AddField(
@@ -48,7 +46,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='letter',
             name='created_by',
-            field=models.ForeignKey(related_name='letter_created_by', verbose_name='Created by', to=settings.AUTH_USER_MODEL),
+            field=models.ForeignKey(on_delete=models.CASCADE,related_name='letter_created_by', verbose_name='Created by', to=settings.AUTH_USER_MODEL),
             preserve_default=True,
         ),
         migrations.AlterField(
@@ -66,7 +64,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='letter',
             name='modified_by',
-            field=models.ForeignKey(related_name='letter_modified_by', verbose_name='Modified by', to=settings.AUTH_USER_MODEL, null=True),
+            field=models.ForeignKey(on_delete=models.CASCADE,related_name='letter_modified_by', verbose_name='Modified by', to=settings.AUTH_USER_MODEL, null=True),
             preserve_default=True,
         ),
         migrations.AlterField(

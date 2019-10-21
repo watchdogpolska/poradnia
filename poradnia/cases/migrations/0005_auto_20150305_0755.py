@@ -1,5 +1,3 @@
-# -*- coding: utf-8 -*-
-from __future__ import unicode_literals
 
 from django.conf import settings
 from django.db import migrations, models
@@ -18,9 +16,9 @@ class Migration(migrations.Migration):
             name='CaseGroupObjectPermission',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('content_object', models.ForeignKey(to='cases.Case')),
-                ('group', models.ForeignKey(to='auth.Group')),
-                ('permission', models.ForeignKey(to='auth.Permission')),
+                ('content_object', models.ForeignKey(to='cases.Case', on_delete=models.CASCADE,)),
+                ('group', models.ForeignKey(to='auth.Group',on_delete=models.CASCADE,)),
+                ('permission', models.ForeignKey(to='auth.Permission',on_delete=models.CASCADE,)),
             ],
             options={
                 'abstract': False,
@@ -31,9 +29,9 @@ class Migration(migrations.Migration):
             name='CaseUserObjectPermission',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('content_object', models.ForeignKey(to='cases.Case')),
-                ('permission', models.ForeignKey(to='auth.Permission')),
-                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL)),
+                ('content_object', models.ForeignKey(to='cases.Case', on_delete=models.CASCADE,)),
+                ('permission', models.ForeignKey(to='auth.Permission', on_delete=models.CASCADE,)),
+                ('user', models.ForeignKey(to=settings.AUTH_USER_MODEL, on_delete=models.CASCADE,)),
             ],
             options={
                 'abstract': False,

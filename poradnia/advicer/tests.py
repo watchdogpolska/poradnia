@@ -1,10 +1,10 @@
-from __future__ import absolute_import
+
 
 import datetime
 
 from atom.ext.guardian.tests import PermissionStatusMixin
 from atom.mixins import AdminTestCaseMixin
-from django.core.urlresolvers import reverse, reverse_lazy
+from django.urls import reverse, reverse_lazy
 from guardian.shortcuts import assign_perm
 from test_plus.test import TestCase
 
@@ -13,10 +13,7 @@ from poradnia.users.factories import StaffFactory, UserFactory
 
 from .factories import AdviceFactory, IssueFactory
 
-try:
-    from django.core.urlresolvers import reverse, reverse_lazy
-except ImportError:
-    from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 
 
 class PermissionMixin(object):
@@ -153,7 +150,7 @@ class AdviceDetailTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
         obj = AdviceFactory(created_by=self.user, comment="Lorem\nipsum")
         self.login()
         resp = self.client.get(obj.get_absolute_url())
-        self.assertContains(resp, 'Lorem<br />ipsum')
+        self.assertContains(resp, 'Lorem<br>ipsum')
 
 
 class AdviceQuerySetTestCase(TestCase):

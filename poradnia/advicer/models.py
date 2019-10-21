@@ -3,20 +3,15 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
-from django.utils.encoding import python_2_unicode_compatible
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 
 from poradnia.cases.models import Case
 from poradnia.teryt.models import JST
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 
-@python_2_unicode_compatible
 class AbstractCategory(models.Model):
     name = models.CharField(
         max_length=100,
@@ -63,13 +58,18 @@ class AdviceQuerySet(QuerySet):
     def visible(self):
         return self.filter(visible=True)
 
+    def area(self, jst):
+        return self.filter(
+            jst__tree_id=jst.tree_id,
+            jst__lft__range=(jst.lft, jst.rght)
+        )
 
-@python_2_unicode_compatible
 class Advice(models.Model):
     case = models.OneToOneField(
         to=Case,
         null=True,
         blank=True,
+        on_delete=models.CASCADE,
         verbose_name=_("Case")
     )
     subject = models.CharField(
@@ -92,19 +92,22 @@ class Advice(models.Model):
         PersonKind,
         null=True,
         blank=True,
+        on_delete=models.CASCADE,
         verbose_name=PersonKind._meta.verbose_name
     )
     institution_kind = models.ForeignKey(
         to=InstitutionKind,
         verbose_name=InstitutionKind._meta.verbose_name,
         null=True,
-        blank=True
+        blank=True,
+        on_delete=models.CASCADE
     )
     advicer = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         verbose_name=_("Advicer"),
         help_text=_("Person who give a advice"),
-        limit_choices_to={'is_staff': True}
+        limit_choices_to={'is_staff': True},
+        on_delete=models.CASCADE
     )
     grant_on = models.DateTimeField(
         default=now,
@@ -113,7 +116,8 @@ class Advice(models.Model):
     created_by = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         verbose_name=_("Created by"),
-        related_name='advice_created_by'
+        related_name='advice_created_by',
+        on_delete=models.CASCADE
     )
     created_on = models.DateTimeField(
         auto_now_add=True,
@@ -127,7 +131,8 @@ class Advice(models.Model):
         settings.AUTH_USER_MODEL,
         null=True,
         verbose_name=_("Modified by"),
-        related_name='advice_modified_by'
+        related_name='advice_modified_by',
+        on_delete=models.CASCADE
     )
     modified_on = models.DateTimeField(
         auto_now=True,
@@ -144,12 +149,14 @@ class Advice(models.Model):
         null=True,
         blank=True
     )
-    jst = models.ForeignKey(JST,
-                            null=True,
-                            blank=True,
-                            on_delete=models.CASCADE,
-                            verbose_name=_('Unit of administrative division'),
-                            db_index=True)
+    jst = models.ForeignKey(
+        to=JST,
+        null=True,
+        blank=True,
+        on_delete=models.CASCADE,
+        verbose_name=_('Unit of administrative division'),
+        db_index=True
+    )
     objects = AdviceQuerySet.as_manager()
 
     def __str__(self):
@@ -168,7 +175,8 @@ class Advice(models.Model):
 
 class Attachment(AttachmentBase):
     advice = models.ForeignKey(
-        to=Advice
+        to=Advice,
+        on_delete=models.CASCADE
     )
 
     class Meta:

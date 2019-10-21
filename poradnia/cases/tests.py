@@ -1,13 +1,12 @@
 from datetime import timedelta
 
 import django
-import six
 from atom.ext.guardian.tests import PermissionStatusMixin
 from atom.mixins import AdminTestCaseMixin
 from django.contrib.admin.sites import AdminSite
 from django.core import mail
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse_lazy
+from django.urls import reverse_lazy
 from django.test import RequestFactory
 from django.test.utils import override_settings
 from django.utils import timezone
@@ -25,10 +24,7 @@ from poradnia.letters.factories import LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
 
-try:
-    from django.core.urlresolvers import reverse
-except ImportError:
-    from django.urls import reverse
+from django.urls import reverse
 
 
 class CaseQuerySetTestCase(TestCase):
@@ -202,11 +198,6 @@ class CaseDetailViewTestCase(TestCase):
 
 
 class StaffCaseFilterTestCase(TestCase):
-    def __init__(self, methodName='runTest'):
-        super(StaffCaseFilterTestCase, self).__init__(methodName)
-        if six.PY3:  # In Python 3, assertItemsEqual is named assertCountEqual.
-            self.assertItemsEqual = self.assertCountEqual
-
     def get_filter(self, *args, **kwargs):
         return StaffCaseFilter(queryset=Case.objects.all(),
                                *args, **kwargs)
@@ -217,14 +208,14 @@ class StaffCaseFilterTestCase(TestCase):
 
     def test_permission_filter(self):
         obj = CaseFactory()
-        self.assertFalse(self.get_permission_filter_qs(user=UserFactory(), pk=obj.pk).exists())
+        self.assertFalse(self.get_permission_filter_qs(user=UserFactory(is_staff=True), pk=obj.pk).exists())
         user = UserFactory(is_staff=True)
         assign_perm('cases.can_view', user, obj)
         self.assertTrue(self.get_permission_filter_qs(user=user, pk=obj.pk).exists())
 
     def test_form_fields(self):
         su_user = UserFactory(is_staff=True, is_superuser=True)
-        self.assertItemsEqual(self.get_filter(user=su_user).form.fields.keys(),
+        self.assertCountEqual(self.get_filter(user=su_user).form.fields.keys(),
                               ['status',
                                'handled',
                                'id',
@@ -232,8 +223,9 @@ class StaffCaseFilterTestCase(TestCase):
                                'name',
                                'has_project',
                                'permission',
+                               'has_advice',
                                'o'])
-        self.assertItemsEqual(self.get_filter(user=UserFactory(is_staff=True)).form.fields.keys(),
+        self.assertCountEqual(self.get_filter(user=UserFactory(is_staff=True)).form.fields.keys(),
                               ['status',
                                'handled',
                                'id',
@@ -241,6 +233,7 @@ class StaffCaseFilterTestCase(TestCase):
                                'name',
                                'has_project',
                                'permission',
+                               'has_advice',
                                'o'])
 
 

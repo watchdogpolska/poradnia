@@ -1,23 +1,32 @@
+import json
+
+import django_filters
 from atom.ext.crispy_forms.views import FormSetMixin
 from atom.ext.django_filters.filters import CrispyFilterMixin
 from braces.views import (PrefetchRelatedMixin, SelectRelatedMixin,
                           SetHeadlineMixin, UserFormKwargsMixin)
 from django.contrib import messages
-from django.http import HttpResponseRedirect
+from django.contrib.auth import get_user_model
+from django.core.exceptions import PermissionDenied
+from django.core.files.base import File
+from django.http import (HttpResponseBadRequest, HttpResponseRedirect,
+                         JsonResponse)
 from django.utils.translation import ugettext_lazy as _
+from django.views import View
 from django.views.generic import CreateView, UpdateView
-import django_filters
 from django_filters.views import FilterView
 
+from poradnia.cases.models import Case
+from poradnia.letters.settings import LETTER_RECEIVE_SECRET
 from poradnia.users.utils import PermissionMixin
 
-from .fbv import REGISTRATION_TEXT
 from ..forms import AttachmentForm, LetterForm, NewCaseForm
 from ..models import Attachment, Letter
-from poradnia.cases.models import Case
+from .fbv import REGISTRATION_TEXT
 
 
-class NewCaseCreateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, CreateView):
+class NewCaseCreateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin,
+                        CreateView):
     model = Letter
     form_class = NewCaseForm
     headline = _('Create a new case')
@@ -28,17 +37,20 @@ class NewCaseCreateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Cre
     def formset_valid(self, form, formset, *args, **kwargs):
         formset.save()
         messages.success(self.request,
-                         _("Case about {object} created!").format(object=self.object.name))
+                         _("Case about {object} created!").format(
+                             object=self.object.name))
         self.object.client.notify(actor=self.object.created_by,
                                   verb='registered',
                                   target=self.object.case,
                                   from_email=self.object.case.get_email())
-        if self.request.user.is_anonymous():
-            messages.success(self.request, _(REGISTRATION_TEXT) % {'user': self.object.created_by})
+        if self.request.user.is_anonymous:
+            messages.success(self.request, _(REGISTRATION_TEXT) % {
+                'user': self.object.created_by})
         return HttpResponseRedirect(self.object.case.get_absolute_url())
 
 
-class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, UpdateView):
+class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin,
+                       UpdateView):
     model = Letter
     form_class = LetterForm
     headline = _('Edit')
@@ -95,7 +107,8 @@ class UserLetterFilter(CrispyFilterMixin, django_filters.FilterSet):
         fields = []
 
 
-class LetterListView(PermissionMixin, SelectRelatedMixin, PrefetchRelatedMixin, FilterView):
+class LetterListView(PermissionMixin, SelectRelatedMixin, PrefetchRelatedMixin,
+                     FilterView):
     @property
     def filterset_class(self):
         return StaffLetterFilter if self.request.user.is_staff else UserLetterFilter
@@ -104,3 +117,85 @@ class LetterListView(PermissionMixin, SelectRelatedMixin, PrefetchRelatedMixin, 
     paginate_by = 20
     select_related = ['created_by', 'modified_by', 'case']
     prefetch_related = ['attachment_set', ]
+
+
+class ReceiveEmailView(View):
+    required_content_type = 'multipart/form-data'
+
+    def post(self, request):
+        if request.GET.get('secret') != LETTER_RECEIVE_SECRET:
+            raise PermissionDenied
+        if request.content_type != self.required_content_type:
+            return HttpResponseBadRequest(
+                'The request has an invalid format. '
+                'The acceptable format is "{}"'.format(
+                    self.required_content_type
+                )
+            )
+        if not 'manifest' in request.FILES:
+            return HttpResponseBadRequest(
+                'The request has an invalid format. '
+                'Missing "manifest" filed.'
+            )
+        if not 'eml' in request.FILES:
+            return HttpResponseBadRequest(
+                'The request has an invalid format. '
+                'Missing "eml" filed.'
+            )
+        manifest = json.load(request.FILES['manifest'])
+
+        actor = get_user_model().objects.get_by_email_or_create(
+            manifest['headers']['from'][0]
+        )
+        case = self.get_case(
+            subject=manifest['headers']['subject'],
+            addresses=manifest['headers']['to+'],
+            actor=actor
+        )
+        letter = Letter.objects.create(
+            name=manifest['headers']['subject'],
+            created_by=actor,
+            case=case,
+            status=self.get_letter_status(
+                actor=actor,
+                case=case
+            ),
+            text=manifest['text']['content'],
+            html='',
+            signature=manifest['text']['quote'],
+            eml=File(self.request.FILES['eml'])
+        )
+        for attachment in request.FILES.getlist('attachment'):
+            Attachment.objects.create(
+                letter=letter,
+                attachment=File(attachment)
+            )
+        if case.status == Case.STATUS.closed and letter.status == Letter.STATUS.done:
+            case.status_update(reopen=True, save=False)
+        case.handled = (actor.is_staff is True and letter.status == Letter.STATUS.done)
+        case.update_counters()
+        case.save()
+        return JsonResponse({'status': 'OK', 'letter': letter.pk})
+
+    def get_case(self, subject, addresses, actor):
+        try:
+            case = Case.objects.by_addresses(addresses).get()
+        except Case.DoesNotExist:
+            case = Case.objects.create(
+                name=subject,
+                created_by=actor,
+                client=actor
+            )
+            actor.notify(
+                actor=actor,
+                verb='registered',
+                target=case,
+                from_email=case.get_email()
+            )
+        return case
+
+    def get_letter_status(self, actor, case):
+        if actor.is_staff and not actor.has_perm('cases.can_send_to_client', case):
+            return Letter.STATUS.staff
+        else:
+            return Letter.STATUS.done
