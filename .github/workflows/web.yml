@@ -17,7 +17,7 @@ jobs:
     steps:
     - uses: actions/checkout@v1
     - name: Start database early
-      run: docker-compose up db
+      run: docker-compose up -d db
     - name: Build application
       run: make build
       env:
