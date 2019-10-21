@@ -8,10 +8,6 @@ services:
       - "3306"
     environment:
       MYSQL_ROOT_PASSWORD: "password"
-    healthcheck:
-      test: mysqladmin ping -h 127.0.0.1 -u root --password=password
-      timeout: 20s
-      retries: 10
     volumes:
       - ./.contrib/docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
       - mysql_db:/var/lib/mysql
@@ -40,9 +36,6 @@ services:
       DATABASE_URL: mysql://root:password@db/poradnia
     ports:
       - "8000:8000"
-    depends_on:
-      db:
-        condition: service_healthy
 
 volumes:
   mysql_db:
