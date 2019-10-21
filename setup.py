@@ -11,17 +11,13 @@ import poradnia
 version = poradnia.__version__
 
 setup(
-    name='poradnia',
+    name="poradnia",
     version=version,
-    author='',
-    author_email='naczelnik@jawnosc.tk',
-    packages=[
-        'poradnia',
-    ],
+    author="",
+    author_email="naczelnik@jawnosc.tk",
+    packages=["poradnia"],
     include_package_data=True,
-    install_requires=[
-        'Django>=1.7.10',
-    ],
+    install_requires=["Django>=1.7.10"],
     zip_safe=False,
-    scripts=['poradnia/manage.py'],
+    scripts=["poradnia/manage.py"],
 )

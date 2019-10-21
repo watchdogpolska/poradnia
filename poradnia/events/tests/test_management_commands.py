@@ -24,19 +24,27 @@ class RemindersCommandsTestCase(TestCase):
 
     def test_triggering_reminders(self):
         # event in 2 and 4 days from now
-        event_should_trigger = EventFactory(case=self.case,
-                                            time=timezone.now() + timedelta(days=2))
-        event_should_not_trigger = EventFactory(case=self.case,
-                                                time=timezone.now() + timedelta(days=4))
+        event_should_trigger = EventFactory(
+            case=self.case, time=timezone.now() + timedelta(days=2)
+        )
+        event_should_not_trigger = EventFactory(
+            case=self.case, time=timezone.now() + timedelta(days=4)
+        )
 
-        management.call_command('send_event_reminders', stdout=self.stdout)
+        management.call_command("send_event_reminders", stdout=self.stdout)
 
-        self.assertTrue(self.user.reminder_set.filter(event=event_should_trigger).exists())
-        self.assertFalse(self.user.reminder_set.filter(event=event_should_not_trigger).exists())
+        self.assertTrue(
+            self.user.reminder_set.filter(event=event_should_trigger).exists()
+        )
+        self.assertFalse(
+            self.user.reminder_set.filter(event=event_should_not_trigger).exists()
+        )
 
     def test_sending_notification(self):
-        event_to_trigger = EventFactory(case=self.case, time=timezone.now() + timedelta(days=2))
-        management.call_command('send_event_reminders', stdout=self.stdout)
+        event_to_trigger = EventFactory(
+            case=self.case, time=timezone.now() + timedelta(days=2)
+        )
+        management.call_command("send_event_reminders", stdout=self.stdout)
         self.assertTrue(self.user.reminder_set.filter(event=event_to_trigger).exists())
 
         # check if mail was sent
@@ -49,11 +57,11 @@ class RemindersCommandsTestCase(TestCase):
         self.assertIn(str(event_to_trigger.case), email.body)
 
     def test_sending_notification_if_no_profile(self):
-        cuop = CaseUserObjectPermissionFactory(user__profile=None,
-                                               user__is_staff=True,
-                                               content_object=self.case)
+        cuop = CaseUserObjectPermissionFactory(
+            user__profile=None, user__is_staff=True, content_object=self.case
+        )
         event_to_trigger = EventFactory(case=self.case, time=timezone.now())
-        management.call_command('send_event_reminders', stdout=self.stdout)
+        management.call_command("send_event_reminders", stdout=self.stdout)
 
         self.assertTrue(cuop.user.reminder_set.filter(event=event_to_trigger).exists())
 
@@ -62,8 +70,8 @@ class RemindersCommandsTestCase(TestCase):
 
     def test_send_notification_once_to_user(self):
         EventFactory(case=self.case, time=timezone.now() + timedelta(days=2))
-        management.call_command('send_event_reminders', stdout=self.stdout)
-        management.call_command('send_event_reminders', stdout=self.stdout)
+        management.call_command("send_event_reminders", stdout=self.stdout)
+        management.call_command("send_event_reminders", stdout=self.stdout)
 
         # check if email was sent once
         self.assertEqual(len(mail.outbox), 1)
@@ -75,10 +83,9 @@ class RemindersCommandsTestCase(TestCase):
         free_case = CaseFactory()
         management_user = UserFactory(notify_unassigned_letter=True)
 
-        EventFactory(case=free_case,
-                     time=timezone.now())
+        EventFactory(case=free_case, time=timezone.now())
 
-        management.call_command('send_event_reminders', stdout=self.stdout)
+        management.call_command("send_event_reminders", stdout=self.stdout)
 
         self.assertEqual(len(mail.outbox), 1)
         email = mail.outbox.pop()

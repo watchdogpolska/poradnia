@@ -15,6 +15,7 @@ cases_count.description = _("Total cases registered")
 def cases_status(status):
     def cases_for_status(*args, **kwargs):
         return Case.objects.filter(status=status).count()
+
     return cases_for_status
 
 
@@ -32,7 +33,7 @@ cases_closed.description = _("Count of cases status closed")
 
 
 def cases_monthly(*args, **kwargs):
-    return filter_month(Case.objects, 'created_on').count()
+    return filter_month(Case.objects, "created_on").count()
 
 
 cases_monthly.name = _("Cases monthly")

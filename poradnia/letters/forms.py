@@ -17,22 +17,33 @@ from django.urls import reverse
 
 CLIENT_FIELD_TEXT = _("Leave empty to use email field and create a new one user.")
 
-EMAIL_TEXT = _("""The user account will be created automatically, so you have
-access to the archive and data about persons responsible for the case.""")
+EMAIL_TEXT = _(
+    """The user account will be created automatically, so you have
+access to the archive and data about persons responsible for the case."""
+)
 
-CASE_NAME_TEXT = _(""""Short description of the case for organizational purposes.
-The institution name and two words will suffice.""")
+CASE_NAME_TEXT = _(
+    """"Short description of the case for organizational purposes.
+The institution name and two words will suffice."""
+)
 
-REPLY_ALL_TITLE = _("""After choosing this option, your message will be sent to the client and the members of the legal team, who can see this case (admins and assigned team members).
-Select this option if your message is finalized and ready to be sent to the advicer's client.""")
+REPLY_ALL_TITLE = _(
+    """After choosing this option, your message will be sent to the client and the members of the legal team, who can see this case (admins and assigned team members).
+Select this option if your message is finalized and ready to be sent to the advicer's client."""
+)
 
-SAVE_TO_REVIEW_TITLE = _("""After choosing this option, your message will be saved in the system as a draft. The admin will check the saved draft and will either suggest changes, or will send it to the client.""")
+SAVE_TO_REVIEW_TITLE = _(
+    """After choosing this option, your message will be saved in the system as a draft. The admin will check the saved draft and will either suggest changes, or will send it to the client."""
+)
 
-REPLY_TO_TEAM_TITLE = _("""After choosing this option, your message will only be sent to the members of the legal team who can see this case (admins and assigned team members). Select this option if you want to consult something within the team.""")
+REPLY_TO_TEAM_TITLE = _(
+    """After choosing this option, your message will only be sent to the members of the legal team who can see this case (admins and assigned team members). Select this option if you want to consult something within the team."""
+)
+
 
 class SimpleSubmit(BaseInput):
-    input_type = 'submit'
-    field_classes = 'btn'
+    input_type = "submit"
+    field_classes = "btn"
 
 
 class UserEmailField(forms.EmailField):
@@ -41,81 +52,88 @@ class UserEmailField(forms.EmailField):
         super(UserEmailField, self).validate(value)
         if get_user_model().objects.filter(email=value).exists():
             raise ValidationError(
-                _('E-mail %(email)s are already used. Please log in.'),
-                code='invalid',
-                params={'email': value},
+                _("E-mail %(email)s are already used. Please log in."),
+                code="invalid",
+                params={"email": value},
             )
 
 
 class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
     attachment_cls = Attachment
-    attachment_rel_field = 'letter'
-    attachment_file_field = 'attachment'
+    attachment_rel_field = "letter"
+    attachment_file_field = "attachment"
     action_text = _("Report case")
 
-    client = forms.ModelChoiceField(queryset=get_user_model().objects.none(),
-                                    label=_("Client"),
-                                    required=False,
-                                    help_text=CLIENT_FIELD_TEXT,
-                                    widget=autocomplete.ModelSelect2('users:autocomplete'))
-    email = forms.EmailField(required=False,
-                             label=_("User e-mail"))
-    email_registration = UserEmailField(required=True,
-                                        help_text=EMAIL_TEXT,
-                                        label=_("E-mail"))
+    client = forms.ModelChoiceField(
+        queryset=get_user_model().objects.none(),
+        label=_("Client"),
+        required=False,
+        help_text=CLIENT_FIELD_TEXT,
+        widget=autocomplete.ModelSelect2("users:autocomplete"),
+    )
+    email = forms.EmailField(required=False, label=_("User e-mail"))
+    email_registration = UserEmailField(
+        required=True, help_text=EMAIL_TEXT, label=_("E-mail")
+    )
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
+        self.user = kwargs.pop("user")
         super(NewCaseForm, self).__init__(*args, **kwargs)
         self.helper.form_tag = False
-        self.helper.form_method = 'post'
-        self.fields['name'].help_text = CASE_NAME_TEXT
+        self.helper.form_method = "post"
+        self.fields["name"].help_text = CASE_NAME_TEXT
 
         if self._is_super_staff():
-            self.fields['client'].initial = self.user
-            self.fields['client'].queryset = (get_user_model().objects.
-                                              for_user(self.user).all())
+            self.fields["client"].initial = self.user
+            self.fields["client"].queryset = (
+                get_user_model().objects.for_user(self.user).all()
+            )
         else:
-            del self.fields['client']
-            del self.fields['email']
+            del self.fields["client"]
+            del self.fields["email"]
 
         if not self.user.is_anonymous:  # is registered
-            del self.fields['email_registration']
+            del self.fields["email_registration"]
 
         if not (self.user.is_anonymous or self._is_super_staff()):
-            del self.fields['giodo']
+            del self.fields["giodo"]
         elif self._is_super_staff():
-            self.fields['giodo'].required = False
+            self.fields["giodo"].required = False
 
     def _is_super_staff(self):
-        return self.user.has_perm('cases.can_select_client')
+        return self.user.has_perm("cases.can_select_client")
 
     def clean(self):
-        client_or_email = self.cleaned_data.get('email') or self.cleaned_data.get('client')
+        client_or_email = self.cleaned_data.get("email") or self.cleaned_data.get(
+            "client"
+        )
 
-        if (self.user.has_perm('cases.can_select_client') and not client_or_email):
+        if self.user.has_perm("cases.can_select_client") and not client_or_email:
             raise ValidationError(_("Have to enter user email or select a client"))
         return super(NewCaseForm, self).clean()
 
     def get_user(self):
         if self.user.is_anonymous:
             return get_user_model().objects.get_by_email_or_create(
-                self.cleaned_data['email_registration'])
+                self.cleaned_data["email_registration"]
+            )
         return self.user
 
     def get_client(self, user):
-        if self.user.is_anonymous and self.cleaned_data['email_registration']:
+        if self.user.is_anonymous and self.cleaned_data["email_registration"]:
             return user
-        if not self.user.has_perm('cases.can_select_client'):
+        if not self.user.has_perm("cases.can_select_client"):
             return self.user
-        elif self.cleaned_data['client']:
-            return self.cleaned_data['client']
-        elif self.cleaned_data['email']:
-            return get_user_model().objects.get_by_email_or_create(self.cleaned_data['email'])
+        elif self.cleaned_data["client"]:
+            return self.cleaned_data["client"]
+        elif self.cleaned_data["email"]:
+            return get_user_model().objects.get_by_email_or_create(
+                self.cleaned_data["email"]
+            )
         return self.user
 
     def get_case(self, client, user):
-        case = Case(name=self.cleaned_data['name'], created_by=user, client=client)
+        case = Case(name=self.cleaned_data["name"], created_by=user, client=client)
         case.save()
         return case
 
@@ -132,64 +150,86 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
         return obj
 
     class Meta:
-        fields = ['name', 'text']
+        fields = ["name", "text"]
         model = Letter
 
 
 class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
-        self.case = kwargs.pop('case')
-        self.user_can_send = self.user.has_perm('cases.can_send_to_client', self.case)
+        self.user = kwargs.pop("user")
+        self.case = kwargs.pop("case")
+        self.user_can_send = self.user.has_perm("cases.can_send_to_client", self.case)
         super(AddLetterForm, self).__init__(*args, **kwargs)
-        self.helper.form_action = reverse('letters:add', kwargs={'case_pk': self.case.pk})
+        self.helper.form_action = reverse(
+            "letters:add", kwargs={"case_pk": self.case.pk}
+        )
         self.helper.form_tag = False
         self._fill_footer()
         self._add_buttons()
-        self.fields['name'].initial = "Odp: %s" % (self.case, )
+        self.fields["name"].initial = "Odp: %s" % (self.case,)
 
     def _add_buttons(self):
         if self.user_can_send:
-            self.helper.add_input(Submit(name='send',
-                                         value=_("Reply to all"),
-                                         title=REPLY_ALL_TITLE,
-                                         css_class="btn-primary"))
-            self.helper.add_input(Submit(name='project',
-                                         value=_("Save to review"),
-                                         title=SAVE_TO_REVIEW_TITLE,
-                                         css_class="btn-primary"))
-            self.helper.add_input(SimpleSubmit(name='send_staff',
-                                               input_type='submit',
-                                               value=_("Write to staff"),
-                                               title=REPLY_TO_TEAM_TITLE,
-                                               css_class="btn-default"))
+            self.helper.add_input(
+                Submit(
+                    name="send",
+                    value=_("Reply to all"),
+                    title=REPLY_ALL_TITLE,
+                    css_class="btn-primary",
+                )
+            )
+            self.helper.add_input(
+                Submit(
+                    name="project",
+                    value=_("Save to review"),
+                    title=SAVE_TO_REVIEW_TITLE,
+                    css_class="btn-primary",
+                )
+            )
+            self.helper.add_input(
+                SimpleSubmit(
+                    name="send_staff",
+                    input_type="submit",
+                    value=_("Write to staff"),
+                    title=REPLY_TO_TEAM_TITLE,
+                    css_class="btn-default",
+                )
+            )
         else:
             if self.user.is_staff:
-                self.helper.add_input(Submit(name='send',
-                                             value=_("Write to staff"),
-                                             title=REPLY_TO_TEAM_TITLE,
-                                             css_class="btn-primary"))
-                self.helper.add_input(Submit(name='project',
-                                             value=_("Save to review"),
-                                             title=SAVE_TO_REVIEW_TITLE,
-                                             css_class="btn-primary"))
+                self.helper.add_input(
+                    Submit(
+                        name="send",
+                        value=_("Write to staff"),
+                        title=REPLY_TO_TEAM_TITLE,
+                        css_class="btn-primary",
+                    )
+                )
+                self.helper.add_input(
+                    Submit(
+                        name="project",
+                        value=_("Save to review"),
+                        title=SAVE_TO_REVIEW_TITLE,
+                        css_class="btn-primary",
+                    )
+                )
             else:
-                self.helper.add_input(Submit(name='send',
-                                             value=_("Reply"),
-                                             css_class="btn-primary"))
+                self.helper.add_input(
+                    Submit(name="send", value=_("Reply"), css_class="btn-primary")
+                )
 
     def _fill_footer(self):
-        if self.user.is_staff and hasattr(self.user, 'profile'):
+        if self.user.is_staff and hasattr(self.user, "profile"):
             footer = self.user.profile.email_footer
             if footer:
-                self.fields['text'].initial = "\n--\n%s" % footer
+                self.fields["text"].initial = "\n--\n%s" % footer
 
     def get_status(self):
         if not self.user.is_staff:
             return Letter.STATUS.done
         if not self.user_can_send:
             return Letter.STATUS.staff
-        if 'send_staff' in self.data or 'project' in self.data:
+        if "send_staff" in self.data or "project" in self.data:
             return Letter.STATUS.staff
         return Letter.STATUS.done
 
@@ -199,7 +239,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         obj.created_by = self.user
         obj.case = self.case
         if self.user.is_staff:
-            if 'project' in self.data:
+            if "project" in self.data:
                 self.case.has_project = True
             elif obj.status == Letter.STATUS.done:
                 self.case.has_project = False
@@ -214,18 +254,18 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         return obj
 
     class Meta:
-        fields = ['name', 'text']
+        fields = ["name", "text"]
         model = Letter
 
 
 class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
-    comment = forms.CharField(widget=forms.widgets.Textarea,
-                              label=_("Comment for staff"),
-                              required=False)
+    comment = forms.CharField(
+        widget=forms.widgets.Textarea, label=_("Comment for staff"), required=False
+    )
 
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
-        ins = kwargs['instance']
+        self.user = kwargs.pop("user")
+        ins = kwargs["instance"]
         super(SendLetterForm, self).__init__(*args, **kwargs)
         self.helper.form_action = ins.get_send_url()
 
@@ -239,14 +279,16 @@ class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
         obj.case.has_project = False
         obj.case.save()
 
-        obj.send_notification(actor=self.user, verb='send_to_client')
-        if self.cleaned_data['comment']:
-            msg = Letter(case=obj.case,
-                         created_by=self.user,
-                         text=self.cleaned_data['comment'],
-                         status=obj.STATUS.staff)
+        obj.send_notification(actor=self.user, verb="send_to_client")
+        if self.cleaned_data["comment"]:
+            msg = Letter(
+                case=obj.case,
+                created_by=self.user,
+                text=self.cleaned_data["comment"],
+                status=obj.STATUS.staff,
+            )
             msg.save()
-            msg.send_notification(actor=self.user, verb='drop_a_note')
+            msg.send_notification(actor=self.user, verb="drop_a_note")
         return obj
 
     class Meta:
@@ -256,16 +298,16 @@ class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
 
 class AttachmentForm(ModelForm):
     class Meta:
-        fields = ['attachment']
+        fields = ["attachment"]
         model = Attachment
 
 
 class LetterForm(SingleButtonMixin, PartialMixin, ModelForm):  # eg. edit form
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user')
+        self.user = kwargs.pop("user")
         super(LetterForm, self).__init__(*args, **kwargs)
-        self.helper.form_action = kwargs['instance'].get_edit_url()
-        self.helper.form_method = 'post'
+        self.helper.form_action = kwargs["instance"].get_edit_url()
+        self.helper.form_method = "post"
 
     def save(self, commit=True, *args, **kwargs):
         obj = super(LetterForm, self).save(commit=False, *args, **kwargs)
@@ -274,5 +316,5 @@ class LetterForm(SingleButtonMixin, PartialMixin, ModelForm):  # eg. edit form
         return obj
 
     class Meta:
-        fields = ['name', 'text']
+        fields = ["name", "text"]
         model = Letter

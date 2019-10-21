@@ -1,114 +1,162 @@
-
 from django.conf import settings
 from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
+    dependencies = [migrations.swappable_dependency(settings.AUTH_USER_MODEL)]
 
     operations = [
         migrations.CreateModel(
-            name='Advice',
+            name="Advice",
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('subject', models.CharField(max_length=50, null=True, blank=True)),
-                ('grant_on', models.DateTimeField()),
-                ('created_on', models.DateTimeField(auto_now_add=True)),
-                ('modified_on', models.DateTimeField(auto_now=True, null=True)),
-                ('visible', models.BooleanField(default=True)),
-                ('comment', models.TextField()),
+                (
+                    "id",
+                    models.AutoField(
+                        verbose_name="ID",
+                        serialize=False,
+                        auto_created=True,
+                        primary_key=True,
+                    ),
+                ),
+                ("subject", models.CharField(max_length=50, null=True, blank=True)),
+                ("grant_on", models.DateTimeField()),
+                ("created_on", models.DateTimeField(auto_now_add=True)),
+                ("modified_on", models.DateTimeField(auto_now=True, null=True)),
+                ("visible", models.BooleanField(default=True)),
+                ("comment", models.TextField()),
             ],
-            options={
-            },
+            options={},
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='Area',
+            name="Area",
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.AutoField(
+                        verbose_name="ID",
+                        serialize=False,
+                        auto_created=True,
+                        primary_key=True,
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False},
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='InstitutionKind',
+            name="InstitutionKind",
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.AutoField(
+                        verbose_name="ID",
+                        serialize=False,
+                        auto_created=True,
+                        primary_key=True,
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False},
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='Issue',
+            name="Issue",
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.AutoField(
+                        verbose_name="ID",
+                        serialize=False,
+                        auto_created=True,
+                        primary_key=True,
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False},
             bases=(models.Model,),
         ),
         migrations.CreateModel(
-            name='PersonKind',
+            name="PersonKind",
             fields=[
-                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('name', models.CharField(max_length=50)),
+                (
+                    "id",
+                    models.AutoField(
+                        verbose_name="ID",
+                        serialize=False,
+                        auto_created=True,
+                        primary_key=True,
+                    ),
+                ),
+                ("name", models.CharField(max_length=50)),
             ],
-            options={
-                'abstract': False,
-            },
+            options={"abstract": False},
             bases=(models.Model,),
         ),
         migrations.AddField(
-            model_name='advice',
-            name='area',
-            field=models.ForeignKey(blank=True, on_delete=models.CASCADE,to='advicer.Area', null=True),
+            model_name="advice",
+            name="area",
+            field=models.ForeignKey(
+                blank=True, on_delete=models.CASCADE, to="advicer.Area", null=True
+            ),
             preserve_default=True,
         ),
         migrations.AddField(
-            model_name='advice',
-            name='created_by',
-            field=models.ForeignKey(on_delete=models.CASCADE,related_name='advice_created_by', to=settings.AUTH_USER_MODEL),
+            model_name="advice",
+            name="created_by",
+            field=models.ForeignKey(
+                on_delete=models.CASCADE,
+                related_name="advice_created_by",
+                to=settings.AUTH_USER_MODEL,
+            ),
             preserve_default=True,
         ),
         migrations.AddField(
-            model_name='advice',
-            name='institution_kind',
-            field=models.ForeignKey(on_delete=models.CASCADE,blank=True, to='advicer.InstitutionKind', null=True),
+            model_name="advice",
+            name="institution_kind",
+            field=models.ForeignKey(
+                on_delete=models.CASCADE,
+                blank=True,
+                to="advicer.InstitutionKind",
+                null=True,
+            ),
             preserve_default=True,
         ),
         migrations.AddField(
-            model_name='advice',
-            name='issues',
-            field=models.ManyToManyField(to='advicer.Issue', null=True, blank=True),
+            model_name="advice",
+            name="issues",
+            field=models.ManyToManyField(to="advicer.Issue", null=True, blank=True),
             preserve_default=True,
         ),
         migrations.AddField(
-            model_name='advice',
-            name='modified_by',
-            field=models.ForeignKey(on_delete=models.CASCADE,related_name='advice_modified_by', to=settings.AUTH_USER_MODEL, null=True),
+            model_name="advice",
+            name="modified_by",
+            field=models.ForeignKey(
+                on_delete=models.CASCADE,
+                related_name="advice_modified_by",
+                to=settings.AUTH_USER_MODEL,
+                null=True,
+            ),
             preserve_default=True,
         ),
         migrations.AddField(
-            model_name='advice',
-            name='person_kind',
-            field=models.ForeignKey(on_delete=models.CASCADE,blank=True, to='advicer.PersonKind', null=True),
+            model_name="advice",
+            name="person_kind",
+            field=models.ForeignKey(
+                on_delete=models.CASCADE, blank=True, to="advicer.PersonKind", null=True
+            ),
             preserve_default=True,
         ),
         migrations.AddField(
-            model_name='advice',
-            name='who',
-            field=models.ForeignKey(on_delete=models.CASCADE,to=settings.AUTH_USER_MODEL),
+            model_name="advice",
+            name="who",
+            field=models.ForeignKey(
+                on_delete=models.CASCADE, to=settings.AUTH_USER_MODEL
+            ),
             preserve_default=True,
         ),
     ]

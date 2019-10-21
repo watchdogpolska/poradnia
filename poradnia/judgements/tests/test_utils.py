@@ -11,7 +11,12 @@ from django.test import TestCase
 from poradnia.cases.factories import CaseUserObjectPermissionFactory
 from poradnia.events.models import Event
 from poradnia.judgements import settings
-from poradnia.judgements.factories import CourtCaseFactory, SessionRowFactory, CourtSessionFactory, CourtFactory
+from poradnia.judgements.factories import (
+    CourtCaseFactory,
+    SessionRowFactory,
+    CourtSessionFactory,
+    CourtFactory,
+)
 from poradnia.judgements.utils import Manager
 from poradnia.users.factories import UserFactory
 
@@ -38,8 +43,9 @@ class ManagerTestCase(TestCase):
         self.assertEqual(event.text, session_row.description)
 
     def test_notify_about_create_new_event(self):
-        cuop = CaseUserObjectPermissionFactory(user__is_staff=True,
-                                               permission_name='can_send_to_client')
+        cuop = CaseUserObjectPermissionFactory(
+            user__is_staff=True, permission_name="can_send_to_client"
+        )
 
         courtcase = CourtCaseFactory(case=cuop.content_object)
         session_row = SessionRowFactory(signature=courtcase.signature)
@@ -55,8 +61,9 @@ class ManagerTestCase(TestCase):
         courtsession = CourtSessionFactory()
         courtcase = courtsession.courtcase
         old_event = courtsession.event
-        session_row = SessionRowFactory(signature=courtcase.signature,
-                                        datetime=old_event.time)
+        session_row = SessionRowFactory(
+            signature=courtcase.signature, datetime=old_event.time
+        )
         my_mock = mock.Mock(get_session_rows=lambda: [session_row])
         self.manager.handle_court(courtsession.courtcase.court, my_mock)
         self.assertEqual(Event.objects.count(), 1)
@@ -66,8 +73,9 @@ class ManagerTestCase(TestCase):
         self.assertEqual(old_event.modified_by, self.user)
 
     def test_notify_about_update_event(self):
-        cuop = CaseUserObjectPermissionFactory(user__is_staff=True,
-                                               permission_name='can_send_to_client')
+        cuop = CaseUserObjectPermissionFactory(
+            user__is_staff=True, permission_name="can_send_to_client"
+        )
 
         courtcase = CourtCaseFactory(case=cuop.content_object)
         session_row = SessionRowFactory(signature=courtcase.signature)
@@ -83,9 +91,11 @@ class ManagerTestCase(TestCase):
         courtsession = CourtSessionFactory()
         courtcase = courtsession.courtcase
         old_event = courtsession.event
-        session_row = SessionRowFactory(signature=courtcase.signature,
-                                        datetime=old_event.time,
-                                        description=old_event.text)
+        session_row = SessionRowFactory(
+            signature=courtcase.signature,
+            datetime=old_event.time,
+            description=old_event.text,
+        )
         my_mock = mock.Mock(get_session_rows=lambda: [session_row])
         self.manager.handle_court(courtsession.courtcase.court, my_mock)
         self.assertEqual(Event.objects.count(), 1)
@@ -102,10 +112,14 @@ class ManagerTestCase(TestCase):
 
     @my_vcr.use_cassette()
     def test_against_unnecessary_changes(self):
-        courtcase = CourtCaseFactory(court__parser_key='WSA_Gdansk', signature='II SA/Gd 243/18')
-        CaseUserObjectPermissionFactory(content_object=courtcase.case,
-                                        permission_name='can_send_to_client',
-                                        user__is_staff=True)
+        courtcase = CourtCaseFactory(
+            court__parser_key="WSA_Gdansk", signature="II SA/Gd 243/18"
+        )
+        CaseUserObjectPermissionFactory(
+            content_object=courtcase.case,
+            permission_name="can_send_to_client",
+            user__is_staff=True,
+        )
         self.manager.handle_court(courtcase.court)
         self.assertTrue(len(mail.outbox) == 1)
         self.manager.handle_court(courtcase.court)

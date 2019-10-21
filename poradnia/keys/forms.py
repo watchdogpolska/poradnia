@@ -8,7 +8,7 @@ from .models import Key
 class KeyForm(UserKwargModelFormMixin, SingleButtonMixin, ModelForm):
     class Meta:
         model = Key
-        fields = ['description', ]
+        fields = ["description"]
 
     def save(self, commit=True, *args, **kwargs):
         obj = super(KeyForm, self).save(commit=False, *args, **kwargs)

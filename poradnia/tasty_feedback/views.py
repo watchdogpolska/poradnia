@@ -1,6 +1,10 @@
-from braces.views import (FormValidMessageMixin, LoginRequiredMixin,
-                          PermissionRequiredMixin, SelectRelatedMixin,
-                          UserFormKwargsMixin)
+from braces.views import (
+    FormValidMessageMixin,
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    SelectRelatedMixin,
+    UserFormKwargsMixin,
+)
 from django.contrib import messages
 from django.http import HttpResponseRedirect
 from django.utils.translation import ugettext as _
@@ -13,10 +17,12 @@ from .utils import get_filter, get_form
 from django.urls import reverse_lazy
 
 
-class FeedbackListView(LoginRequiredMixin, PermissionRequiredMixin, SelectRelatedMixin, FilterView):
+class FeedbackListView(
+    LoginRequiredMixin, PermissionRequiredMixin, SelectRelatedMixin, FilterView
+):
     permission_required = "tasty_feedback.view_feedback"
     filterset_class = get_filter()
-    select_related = ["user", ]
+    select_related = ["user"]
     paginate_by = 25
     model = Feedback
 
@@ -24,7 +30,7 @@ class FeedbackListView(LoginRequiredMixin, PermissionRequiredMixin, SelectRelate
 class FeedbackCreateView(UserFormKwargsMixin, FormValidMessageMixin, CreateView):
     model = Feedback
     form_class = get_form()
-    success_url = '/'
+    success_url = "/"
 
     def get_form_valid_message(self):
         return _("Feedback saved.")
@@ -38,8 +44,8 @@ class FeedbackDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView
 class FeedbackStatusView(LoginRequiredMixin, PermissionRequiredMixin, DeleteView):
     permission_required = "tasty_feedback.change_feedback"
     model = Feedback
-    template_name_suffix = '_switch_status'
-    success_url = reverse_lazy('tasty_feedback:list')
+    template_name_suffix = "_switch_status"
+    success_url = reverse_lazy("tasty_feedback:list")
 
     def get_success_message(self):
         return _("%s updated") % (self.object)

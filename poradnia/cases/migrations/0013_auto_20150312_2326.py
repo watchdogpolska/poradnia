@@ -1,28 +1,13 @@
-
 from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('cases', '0012_auto_20150311_0434'),
-    ]
+    dependencies = [("cases", "0012_auto_20150311_0434")]
 
     operations = [
-        migrations.RemoveField(
-            model_name='case',
-            name='created_by',
-        ),
-        migrations.RemoveField(
-            model_name='case',
-            name='created_on',
-        ),
-        migrations.RemoveField(
-            model_name='case',
-            name='modified_by',
-        ),
-        migrations.RemoveField(
-            model_name='case',
-            name='modified_on',
-        ),
+        migrations.RemoveField(model_name="case", name="created_by"),
+        migrations.RemoveField(model_name="case", name="created_on"),
+        migrations.RemoveField(model_name="case", name="modified_by"),
+        migrations.RemoveField(model_name="case", name="modified_on"),
     ]

@@ -13,10 +13,10 @@ def stat_metrics_check(app_configs, **kwargs):
         except ImportError:
             errors.append(
                 Error(
-                    'I can not load {} as a statistical metric.'.format(value),
-                    hint='Update STAT_METRICS[\"{}\"] settings .'.format(key),
+                    "I can not load {} as a statistical metric.".format(value),
+                    hint='Update STAT_METRICS["{}"] settings .'.format(key),
                     obj=key,
-                    id='stats.E001',
+                    id="stats.E001",
                 )
             )
     return errors

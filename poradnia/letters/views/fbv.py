@@ -11,37 +11,41 @@ from ..forms import AddLetterForm, SendLetterForm
 from ..helpers import AttachmentFormSet
 from ..models import Letter
 
-REGISTRATION_TEXT = _("User  %(user)s registered! You will receive a password by mail. " +
-                      "Log in to get access to archive")
+REGISTRATION_TEXT = _(
+    "User  %(user)s registered! You will receive a password by mail. "
+    + "Log in to get access to archive"
+)
 
 
 @login_required
 def add(request, case_pk):
     context = {}
     case = get_object_or_404(Case, pk=case_pk)
-    case.perm_check(request.user, 'can_add_record')
+    case.perm_check(request.user, "can_add_record")
 
     LocalLetterForm = AddLetterForm.partial(case=case, user=request.user)
-    context['case'] = case
+    context["case"] = case
 
     formset = None
-    if request.method == 'POST':
+    if request.method == "POST":
         form = LocalLetterForm(request.POST, request.FILES)
         if form.is_valid():
             obj = form.save(commit=False)
             formset = AttachmentFormSet(request.POST, request.FILES, instance=obj)
             if formset.is_valid():
                 obj.save()
-                messages.success(request, _("Letter %(object)s created!") % {'object': obj, })
+                messages.success(
+                    request, _("Letter %(object)s created!") % {"object": obj}
+                )
                 formset.save()
-                obj.send_notification(actor=request.user, verb='created')
+                obj.send_notification(actor=request.user, verb="created")
                 return HttpResponseRedirect(case.get_absolute_url())
     else:
         form = LocalLetterForm()
-    context['form'] = form
-    context['formset'] = formset or AttachmentFormSet(instance=None)
-    context['headline'] = _('Add letter')
-    return render(request, 'letters/form_add.html', context)
+    context["form"] = form
+    context["formset"] = formset or AttachmentFormSet(instance=None)
+    context["headline"] = _("Add letter")
+    return render(request, "letters/form_add.html", context)
 
 
 @login_required
@@ -51,9 +55,9 @@ def send(request, pk):
     letter = get_object_or_404(Letter, pk=pk)
     case = letter.case
 
-    case.perm_check(request.user, 'can_add_record')
-    context['object'] = letter
-    context['case'] = case
+    case.perm_check(request.user, "can_add_record")
+    context["object"] = letter
+    context["case"] = case
 
     if letter.status == Letter.STATUS.done:
         messages.warning(request, _("You can not send one letter twice."))
@@ -61,18 +65,17 @@ def send(request, pk):
 
     LetterForm = SendLetterForm.partial(user=request.user, instance=letter)
 
-    if request.method == 'POST':
+    if request.method == "POST":
         form = LetterForm(request.POST)
         if form.is_valid():
             obj = form.save()
-            messages.success(request,
-                             _("Letter %(object)s send!") % {'object': obj})
+            messages.success(request, _("Letter %(object)s send!") % {"object": obj})
             return HttpResponseRedirect(case.get_absolute_url())
     else:
         form = SendLetterForm(user=request.user, instance=letter)
-    context['form'] = form
-    context['headline'] = _('Send to client')
-    return render(request, 'letters/form_send.html', context)
+    context["form"] = form
+    context["headline"] = _("Send to client")
+    return render(request, "letters/form_send.html", context)
 
 
 def detail(request, pk):

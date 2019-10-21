@@ -11,12 +11,12 @@ class LetterFactory(factory.django.DjangoModelFactory):
     text = factory.fuzzy.FuzzyText()
     signature = factory.fuzzy.FuzzyText()
     created_by = factory.SubFactory(UserFactory)
-    status = 'done'
+    status = "done"
 
     case = factory.SubFactory(CaseFactory)
 
     class Meta:
-        model = 'letters.Letter'
+        model = "letters.Letter"
 
 
 class AttachmentFactory(factory.django.DjangoModelFactory):
@@ -24,4 +24,4 @@ class AttachmentFactory(factory.django.DjangoModelFactory):
     attachment = ImageField()
 
     class Meta:
-        model = 'letters.Attachment'
+        model = "letters.Attachment"

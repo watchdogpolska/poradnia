@@ -1,4 +1,3 @@
-
 """
 Django settings for poradnia project.
 
@@ -14,63 +13,62 @@ import environ
 
 ROOT_DIR = environ.Path(__file__) - 3
 
-APPS_DIR = ROOT_DIR.path('poradnia')
+APPS_DIR = ROOT_DIR.path("poradnia")
 
 env = environ.Env()
 
 # APP CONFIGURATION
 DJANGO_APPS = (
     # Default Django apps:
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.sites',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.contrib.flatpages',
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.sites",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    "django.contrib.flatpages",
     # Useful template tags:
-    'django.contrib.humanize',
-
+    "django.contrib.humanize",
     # Admin
-    'django.contrib.admin',
+    "django.contrib.admin",
 )
 THIRD_PARTY_APPS = (
-    'crispy_forms',  # Form layouts
-    'allauth',  # registration
-    'allauth.account',  # registration
-    'allauth.socialaccount',  # registration
-    'guardian',
-    'django_mailbox',
-    'dal',
-    'dal_select2',
-    'tinymce',
-    'flatpages_tinymce',
-    'tinycontent',
-    'sorl.thumbnail',
-    'atom',
-    'import_export',
-    'django_filters',
-    'bootstrap_pagination',
-    'github_revision',
-    'mptt',
-    'teryt_tree'
+    "crispy_forms",  # Form layouts
+    "allauth",  # registration
+    "allauth.account",  # registration
+    "allauth.socialaccount",  # registration
+    "guardian",
+    "django_mailbox",
+    "dal",
+    "dal_select2",
+    "tinymce",
+    "flatpages_tinymce",
+    "tinycontent",
+    "sorl.thumbnail",
+    "atom",
+    "import_export",
+    "django_filters",
+    "bootstrap_pagination",
+    "github_revision",
+    "mptt",
+    "teryt_tree",
 )
 
 # Apps specific for this project go here.
 LOCAL_APPS = (
-    'poradnia.users',  # custom users app
-    'poradnia.keys',
-    'poradnia.cases',
-    'poradnia.letters',
-    'poradnia.records',
-    'poradnia.events',
-    'poradnia.stats',
-    'poradnia.advicer',
-    'poradnia.feedback_custom',
-    'poradnia.tasty_feedback',
-    'poradnia.navsearch',
-    'poradnia.judgements',
-    'poradnia.teryt'
+    "poradnia.users",  # custom users app
+    "poradnia.keys",
+    "poradnia.cases",
+    "poradnia.letters",
+    "poradnia.records",
+    "poradnia.events",
+    "poradnia.stats",
+    "poradnia.advicer",
+    "poradnia.feedback_custom",
+    "poradnia.tasty_feedback",
+    "poradnia.navsearch",
+    "poradnia.judgements",
+    "poradnia.teryt"
     # Your stuff: custom apps go here
 )
 
@@ -81,24 +79,22 @@ INSTALLED_APPS = LOCAL_APPS + THIRD_PARTY_APPS + DJANGO_APPS
 # MIDDLEWARE CONFIGURATION
 MIDDLEWARE = (
     # 'django.middleware.locale.LocaleMiddleware',
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    "django.contrib.sessions.middleware.SessionMiddleware",
+    "django.middleware.common.CommonMiddleware",
+    "django.middleware.csrf.CsrfViewMiddleware",
+    "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "django.contrib.messages.middleware.MessageMiddleware",
+    "django.middleware.clickjacking.XFrameOptionsMiddleware",
 )
 # END MIDDLEWARE CONFIGURATION
 
 # MIGRATIONS CONFIGURATION
-MIGRATION_MODULES = {
-    'sites': 'poradnia.contrib.sites.migrations'
-}
+MIGRATION_MODULES = {"sites": "poradnia.contrib.sites.migrations"}
 # END MIGRATIONS CONFIGURATION
 
 # DEBUG
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#debug
-DEBUG = env.bool('DJANGO_DEBUG', default=False)
+DEBUG = env.bool("DJANGO_DEBUG", default=False)
 
 # SECRET CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#secret-key
@@ -109,30 +105,29 @@ SECRET_KEY = env.str("SECRET_KEY", default="CHANGEME!!!")
 
 # FIXTURE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#std:setting-FIXTURE_DIRS
-FIXTURE_DIRS = (
-    str(APPS_DIR.path('fixtures')),
-)
+FIXTURE_DIRS = (str(APPS_DIR.path("fixtures")),)
 # END FIXTURE CONFIGURATION
 
 # EMAIL
-EMAIL_BACKEND = env.str('DJANGO_EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
-EMAIL_HOST = env.str('DJANGO_EMAIL_HOST', '')
-EMAIL_HOST_PASSWORD = env.str('DJANGO_EMAIL_HOST_PASSWORD', '')
-EMAIL_HOST_USER = env.str('DJANGO_EMAIL_HOST_USER', '')
-EMAIL_PORT = env.str('DJANGO_EMAIL_PORT', '')
+EMAIL_BACKEND = env.str(
+    "DJANGO_EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend"
+)
+EMAIL_HOST = env.str("DJANGO_EMAIL_HOST", "")
+EMAIL_HOST_PASSWORD = env.str("DJANGO_EMAIL_HOST_PASSWORD", "")
+EMAIL_HOST_USER = env.str("DJANGO_EMAIL_HOST_USER", "")
+EMAIL_PORT = env.str("DJANGO_EMAIL_PORT", "")
 
-DEFAULT_FROM_EMAIL = env.str('DJANGO_DEFAULT_FROM_EMAIL',
-                             'poradnia <noreply@porady.siecobywatelska.pl>')
-EMAIL_SUBJECT_PREFIX = env.str('DJANGO_EMAIL_SUBJECT_PREFIX', '[poradnia] ')
-EMAIL_USE_TLS = env.bool('DJANGO_EMAIL_USE_TLS', True)
+DEFAULT_FROM_EMAIL = env.str(
+    "DJANGO_DEFAULT_FROM_EMAIL", "poradnia <noreply@porady.siecobywatelska.pl>"
+)
+EMAIL_SUBJECT_PREFIX = env.str("DJANGO_EMAIL_SUBJECT_PREFIX", "[poradnia] ")
+EMAIL_USE_TLS = env.bool("DJANGO_EMAIL_USE_TLS", True)
 SERVER_EMAIL = EMAIL_HOST_USER
 # END EMAIL
 
 # MANAGER CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = (
-    ("""Adam Dobrawy""", 'naczelnik@jawnosc.tk'),
-)
+ADMINS = (("""Adam Dobrawy""", "naczelnik@jawnosc.tk"),)
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
@@ -140,30 +135,28 @@ MANAGERS = ADMINS
 
 # DATABASE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
-DATABASES = {
-    'default': env.db(default='mysql:///porady')
-}
+DATABASES = {"default": env.db(default="mysql:///porady")}
 
-DATABASES['default']['TEST'] = {'CHARSET': "utf8mb4",
-                                'COLLATION': "utf8mb4_unicode_520_ci"}
-DATABASES['default']['CHARSET'] = "utf8mb4"
+DATABASES["default"]["TEST"] = {
+    "CHARSET": "utf8mb4",
+    "COLLATION": "utf8mb4_unicode_520_ci",
+}
+DATABASES["default"]["CHARSET"] = "utf8mb4"
 
 # END DATABASE CONFIGURATION
 
 # CACHING
 # Do this here because thanks to django-pylibmc-sasl and pylibmc
 # memcacheify (used on heroku) is painful to install on windows.
-CACHES = {
-    'default': env.cache_url(default='locmemcache://')
-}
+CACHES = {"default": env.cache_url(default="locmemcache://")}
 # END CACHING
 
 # GENERAL CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#time-zone
-TIME_ZONE = 'Europe/Warsaw'
+TIME_ZONE = "Europe/Warsaw"
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#language-code
-LANGUAGE_CODE = 'pl'
+LANGUAGE_CODE = "pl"
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#site-id
 SITE_ID = 1
@@ -180,47 +173,45 @@ USE_TZ = True
 
 
 # See: http://django-crispy-forms.readthedocs.org/en/latest/install.html#template-packs
-CRISPY_TEMPLATE_PACK = 'bootstrap3'
+CRISPY_TEMPLATE_PACK = "bootstrap3"
 # END TEMPLATE CONFIGURATION
 
 # STATIC FILE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-ROOT_DIR
-STATIC_ROOT = str(ROOT_DIR.path('staticfiles'))
+STATIC_ROOT = str(ROOT_DIR.path("staticfiles"))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
-STATIC_URL = '/static/'
+STATIC_URL = "/static/"
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
-STATICFILES_DIRS = (
-    str(APPS_DIR.path('static')),
-)
+STATICFILES_DIRS = (str(APPS_DIR.path("static")),)
 
 # See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (
-    'django.contrib.staticfiles.finders.FileSystemFinder',
-    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
 )
 # END STATIC FILE CONFIGURATION
 
 # MEDIA CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-ROOT_DIR
-MEDIA_ROOT = str(APPS_DIR.path('media'))
+MEDIA_ROOT = str(APPS_DIR.path("media"))
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#media-url
-MEDIA_URL = '/media/'
+MEDIA_URL = "/media/"
 # END MEDIA CONFIGURATION
 
 # URL Configuration
-ROOT_URLCONF = 'config.urls'
+ROOT_URLCONF = "config.urls"
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#wsgi-application
-WSGI_APPLICATION = 'config.wsgi.application'
+WSGI_APPLICATION = "config.wsgi.application"
 # End URL Configuration
 
 # AUTHENTICATION CONFIGURATION
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
-    'guardian.backends.ObjectPermissionBackend',
+    "guardian.backends.ObjectPermissionBackend",
     "allauth.account.auth_backends.AuthenticationBackend",
 )
 
@@ -233,8 +224,8 @@ ACCOUNT_EMAIL_VERIFICATION = "optional"
 # Custom user app defaults
 # Select the correct user model
 AUTH_USER_MODEL = "users.User"
-ACCOUNT_SIGNUP_FORM_CLASS = 'poradnia.users.forms.SignupForm'
-ACCOUNT_FORMS = {'login': 'poradnia.users.login_form.CustomLoginForm'}
+ACCOUNT_SIGNUP_FORM_CLASS = "poradnia.users.forms.SignupForm"
+ACCOUNT_FORMS = {"login": "poradnia.users.login_form.CustomLoginForm"}
 LOGIN_REDIRECT_URL = "home"
 LOGIN_URL = "account_login"
 # END Custom user app defaults
@@ -251,115 +242,106 @@ AUTOSLUG_SLUGIFY_FUNCTION = "slugify.slugify"
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
 LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-    'filters': {
-        'require_debug_false': {
-            '()': 'django.utils.log.RequireDebugFalse'
+    "version": 1,
+    "disable_existing_loggers": False,
+    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
+    "handlers": {
+        "mail_admins": {
+            "level": "ERROR",
+            "filters": ["require_debug_false"],
+            "class": "django.utils.log.AdminEmailHandler",
         }
     },
-    'handlers': {
-        'mail_admins': {
-            'level': 'ERROR',
-            'filters': ['require_debug_false'],
-            'class': 'django.utils.log.AdminEmailHandler'
-        },
+    "loggers": {
+        "django.request": {
+            "handlers": ["mail_admins"],
+            "level": "ERROR",
+            "propagate": True,
+        }
     },
-    'loggers': {
-        'django.request': {
-            'handlers': ['mail_admins'],
-            'level': 'ERROR',
-            'propagate': True,
-        },
-    }
 }
 # END LOGGING CONFIGURATION
 
 # Your common stuff: Below this line define 3rd party library settings
 # Guardian settings
 ANONYMOUS_USER_ID = -1
-ANONYMOUS_USER_NAME = 'AnonymousUser'
+ANONYMOUS_USER_NAME = "AnonymousUser"
 GUARDIAN_MONKEY_PATCH = False
 
-LANGUAGES = (
-    ('pl', _('Polish')),
-    ('en', _('English')),
-)
+LANGUAGES = (("pl", _("Polish")), ("en", _("English")))
 
-LOCALE_PATHS = (str(APPS_DIR.path('templates/locale')),)
+LOCALE_PATHS = (str(APPS_DIR.path("templates/locale")),)
 
 PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
-PORADNIA_EMAIL_INPUT = "sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
+PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
 ATOMIC_REQUESTS = True
 
-TINYMCE_DEFAULT_CONFIG = {
-    'theme': "advanced",
-}
+TINYMCE_DEFAULT_CONFIG = {"theme": "advanced"}
 
-AVATAR_GRAVATAR_DEFAULT = 'retro'
-FEEDBACK_FILTER = 'poradnia.feedback_custom.filters.AtomFeedbackFilter'
-FEEDBACK_FORM_SUBMIT = 'poradnia.feedback_custom.forms.FeedbackForm'
-FEEDBACK_GITHUB_REPO = 'https://github.com/watchdogpolska/poradnia'
+AVATAR_GRAVATAR_DEFAULT = "retro"
+FEEDBACK_FILTER = "poradnia.feedback_custom.filters.AtomFeedbackFilter"
+FEEDBACK_FORM_SUBMIT = "poradnia.feedback_custom.forms.FeedbackForm"
+FEEDBACK_GITHUB_REPO = "https://github.com/watchdogpolska/poradnia"
 
 DJANGO_MAILBOX_STORE_ORIGINAL_MESSAGE = True
 
-TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+TEST_RUNNER = "django.test.runner.DiscoverRunner"
 
-EMAIL_BACKEND = env.str('DJANGO_EMAIL_BACKEND', 'django.core.mail.backends.console.EmailBackend')
+EMAIL_BACKEND = env.str(
+    "DJANGO_EMAIL_BACKEND", "django.core.mail.backends.console.EmailBackend"
+)
 
 TEMPLATES = [
     {
-        'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [
-            str(APPS_DIR.path('templates'))
-        ],
-        'OPTIONS': {
-            'context_processors': (
-                'django.contrib.auth.context_processors.auth',
-                'django.template.context_processors.debug',
-                'django.template.context_processors.i18n',
-                'django.template.context_processors.media',
-                'django.template.context_processors.static',
-                'django.template.context_processors.tz',
-                'django.contrib.messages.context_processors.messages',
-                'django.template.context_processors.request',
+        "BACKEND": "django.template.backends.django.DjangoTemplates",
+        "DIRS": [str(APPS_DIR.path("templates"))],
+        "OPTIONS": {
+            "context_processors": (
+                "django.contrib.auth.context_processors.auth",
+                "django.template.context_processors.debug",
+                "django.template.context_processors.i18n",
+                "django.template.context_processors.media",
+                "django.template.context_processors.static",
+                "django.template.context_processors.tz",
+                "django.contrib.messages.context_processors.messages",
+                "django.template.context_processors.request",
             ),
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader'
+            "loaders": [
+                "django.template.loaders.filesystem.Loader",
+                "django.template.loaders.app_directories.Loader",
             ],
-            'debug': DEBUG,
-            'libraries': {  # Adding this section should work around the issue.
-                'staticfiles': 'django.templatetags.static',
-                'i18n': 'django.templatetags.i18n',
+            "debug": DEBUG,
+            "libraries": {  # Adding this section should work around the issue.
+                "staticfiles": "django.templatetags.static",
+                "i18n": "django.templatetags.i18n",
             },
-        }
-    },
+        },
+    }
 ]
 FILTERS_HELP_TEXT_FILTER = False
 
 STAT_METRICS = {
-    'cases.count': 'poradnia.cases.metric.cases_count',
-    'cases.free': 'poradnia.cases.metric.cases_free',
-    'cases.assigned': 'poradnia.cases.metric.cases_assigned',
-    'cases.closed': 'poradnia.cases.metric.cases_closed',
-    'cases.monthly': 'poradnia.cases.metric.cases_monthly',
-    'users.total': 'poradnia.users.metric.users_total',
-    'users.monthly': 'poradnia.users.metric.users_monthly',
-    'users.active': 'poradnia.users.metric.users_active',
-    'users.active.staff': 'poradnia.users.metric.users_active_staff',
-    'letters.documents_written_for_clients': 'poradnia.letters.metric.documents_written_for_clients',
-    'letters.letter.month': 'poradnia.letters.metric.letter_month',
-    'letters.letter.staff.email': 'poradnia.letters.metric.letter_staff_email',
-    'letters.letter.staff.www': 'poradnia.letters.metric.letter_staff_www',
-    'letters.letter.total': 'poradnia.letters.metric.letter_total',
-    'letters.letter.user.email': 'poradnia.letters.metric.letter_user_email',
-    'letters.letter.user.www': 'poradnia.letters.metric.letter_user_www',
+    "cases.count": "poradnia.cases.metric.cases_count",
+    "cases.free": "poradnia.cases.metric.cases_free",
+    "cases.assigned": "poradnia.cases.metric.cases_assigned",
+    "cases.closed": "poradnia.cases.metric.cases_closed",
+    "cases.monthly": "poradnia.cases.metric.cases_monthly",
+    "users.total": "poradnia.users.metric.users_total",
+    "users.monthly": "poradnia.users.metric.users_monthly",
+    "users.active": "poradnia.users.metric.users_active",
+    "users.active.staff": "poradnia.users.metric.users_active_staff",
+    "letters.documents_written_for_clients": "poradnia.letters.metric.documents_written_for_clients",
+    "letters.letter.month": "poradnia.letters.metric.letter_month",
+    "letters.letter.staff.email": "poradnia.letters.metric.letter_staff_email",
+    "letters.letter.staff.www": "poradnia.letters.metric.letter_staff_www",
+    "letters.letter.total": "poradnia.letters.metric.letter_total",
+    "letters.letter.user.email": "poradnia.letters.metric.letter_user_email",
+    "letters.letter.user.www": "poradnia.letters.metric.letter_user_www",
 }
 
 FILE_UPLOAD_PERMISSIONS = 0o644
 
 # Django-GitHub-Revision
-GITHUB_REVISION_REPO_URL = 'https://github.com/watchdogpolska/poradnia'
+GITHUB_REVISION_REPO_URL = "https://github.com/watchdogpolska/poradnia"
 
-LETTER_RECEIVE_SECRET = 'xxxxxxxxx'
+LETTER_RECEIVE_SECRET = "xxxxxxxxx"

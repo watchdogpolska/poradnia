@@ -9,7 +9,6 @@ from .models import User
 
 
 class MyUserChangeForm(UserChangeForm):
-
     class Meta(UserChangeForm.Meta):
         model = User
 
@@ -24,7 +23,7 @@ class MyUserCreationForm(UserCreationForm):
             User.objects.get(username=username)
         except User.DoesNotExist:
             return username
-        raise forms.ValidationError(self.error_messages['duplicate_username'])
+        raise forms.ValidationError(self.error_messages["duplicate_username"])
 
 
 @admin.register(User)
@@ -32,5 +31,8 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
     form = MyUserChangeForm
     add_form = MyUserCreationForm
     fieldsets = list(AuthUserAdmin.fieldsets) + [
-        (_('Notifications'), {'fields': ('notify_new_case', 'notify_unassigned_letter')}),
+        (
+            _("Notifications"),
+            {"fields": ("notify_new_case", "notify_unassigned_letter")},
+        )
     ]

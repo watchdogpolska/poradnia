@@ -9,8 +9,10 @@ from django.utils.translation import ugettext as _
 from django.views.generic import FormView
 from guardian.shortcuts import get_perms
 
-from poradnia.users.forms import (TranslatedManageObjectPermissionForm,
-                                  TranslatedUserObjectPermissionsForm)
+from poradnia.users.forms import (
+    TranslatedManageObjectPermissionForm,
+    TranslatedUserObjectPermissionsForm,
+)
 from poradnia.users.models import User
 
 from ..forms import CaseGroupPermissionForm
@@ -24,58 +26,66 @@ class CasePermissionTestMixin(RaisePermissionRequiredMixin):
 
     @cached_property
     def case(self):
-        return get_object_or_404(Case, pk=self.kwargs['pk'])
+        return get_object_or_404(Case, pk=self.kwargs["pk"])
 
     def get_permission_object(self):
         return self.case
 
     def get_required_permissions(self, request=None):
         if self.case.status == self.case.STATUS.free:
-            return ['cases.can_assign', ]
+            return ["cases.can_assign"]
         else:
-            return ['cases.can_manage_permission', ]
+            return ["cases.can_manage_permission"]
 
 
 class UserPermissionCreateView(CasePermissionTestMixin, FormView):
     form_class = TranslatedManageObjectPermissionForm
-    template_name = 'cases/case_form_permission_add.html'
+    template_name = "cases/case_form_permission_add.html"
 
     def get_form_kwargs(self, *args, **kwargs):
         kwargs = super(UserPermissionCreateView, self).get_form_kwargs(*args, **kwargs)
-        kwargs.update({'obj': self.case, 'actor': self.request.user})
+        kwargs.update({"obj": self.case, "actor": self.request.user})
         return kwargs
 
     def form_valid(self, form):
         form.save_obj_perms()
-        for user in form.cleaned_data['users']:
-            self.case.send_notification(actor=self.request.user,
-                                        user_qs=self.case.get_users_with_perms().filter(is_staff=True),
-                                        verb='granted')
-            messages.success(self.request,
-                             _("Success granted permission of %(user)s to %(case)s").
-                             format(user=user, case=self.case))
+        for user in form.cleaned_data["users"]:
+            self.case.send_notification(
+                actor=self.request.user,
+                user_qs=self.case.get_users_with_perms().filter(is_staff=True),
+                verb="granted",
+            )
+            messages.success(
+                self.request,
+                _("Success granted permission of %(user)s to %(case)s").format(
+                    user=user, case=self.case
+                ),
+            )
         self.case.status_update()
         return super(UserPermissionCreateView, self).form_valid(form)
 
     def get_success_url(self):
-        return reverse('cases:detail', kwargs={'pk': str(self.case.pk)})
+        return reverse("cases:detail", kwargs={"pk": str(self.case.pk)})
 
     def get_context_data(self, **kwargs):
         context = super(UserPermissionCreateView, self).get_context_data(**kwargs)
-        context['object'] = self.case
+        context["object"] = self.case
         return context
 
 
-class UserPermissionUpdateView(CasePermissionTestMixin, FormValidMessageMixin, FormView):
+class UserPermissionUpdateView(
+    CasePermissionTestMixin, FormValidMessageMixin, FormView
+):
     form_class = TranslatedUserObjectPermissionsForm
-    template_name = 'cases/case_form_permission_update.html'
+    template_name = "cases/case_form_permission_update.html"
 
     def get_form_kwargs(self):
         kwargs = super(UserPermissionUpdateView, self).get_form_kwargs()
-        self.action_user = get_object_or_404(get_user_model(), username=self.kwargs['username'])
-        kwargs.update({'user': self.action_user,
-                       'obj': self.case})
-        del kwargs['initial']
+        self.action_user = get_object_or_404(
+            get_user_model(), username=self.kwargs["username"]
+        )
+        kwargs.update({"user": self.action_user, "obj": self.case})
+        del kwargs["initial"]
         return kwargs
 
     def get_obj_perms_field_initial(self, *args, **kwargs):
@@ -83,8 +93,8 @@ class UserPermissionUpdateView(CasePermissionTestMixin, FormValidMessageMixin, F
 
     def get_context_data(self, **kwargs):
         context = super(UserPermissionUpdateView, self).get_context_data(**kwargs)
-        context['object'] = self.case
-        context['action_user'] = self.action_user
+        context["object"] = self.case
+        context["action_user"] = self.action_user
         return context
 
     def form_valid(self, form):
@@ -92,8 +102,9 @@ class UserPermissionUpdateView(CasePermissionTestMixin, FormValidMessageMixin, F
         return super(UserPermissionUpdateView, self).form_valid(form)
 
     def get_form_valid_message(self):
-        return _("Updated permission %(user)s to %(case)s!").format(user=self.action_user,
-                                                                    case=self.case)
+        return _("Updated permission %(user)s to %(case)s!").format(
+            user=self.action_user, case=self.case
+        )
 
     def get_success_url(self):
         return self.case.get_absolute_url()
@@ -102,52 +113,61 @@ class UserPermissionUpdateView(CasePermissionTestMixin, FormValidMessageMixin, F
 class CaseGroupPermissionView(CasePermissionTestMixin, FormValidMessageMixin, FormView):
     model = Case
     form_class = CaseGroupPermissionForm
-    template_name = 'cases/case_form.html'
+    template_name = "cases/case_form.html"
 
     def get_form_valid_message(self):
-        return _("{user} granted permissions from {group}!").format(**self.form.cleaned_data)
+        return _("{user} granted permissions from {group}!").format(
+            **self.form.cleaned_data
+        )
 
     def get_form_kwargs(self):
         self.object = self.get_object()
         kwargs = super(CaseGroupPermissionView, self).get_form_kwargs()
-        kwargs.update({'case': self.object, 'user': self.request.user})
+        kwargs.update({"case": self.object, "user": self.request.user})
         return kwargs
 
     def form_valid(self, form, *args, **kwargs):
         self.form = form
         form.assign()
-        return super(CaseGroupPermissionView, self).form_valid(form=form, *args, **kwargs)
+        return super(CaseGroupPermissionView, self).form_valid(
+            form=form, *args, **kwargs
+        )
 
     def get_success_url(self):
-        return reverse('cases:detail', kwargs={'pk': str(self.object.pk)})
+        return reverse("cases:detail", kwargs={"pk": str(self.object.pk)})
 
     def get_context_data(self, *args, **kwargs):
         context = super(CaseGroupPermissionView, self).get_context_data(*args, **kwargs)
-        context['object'] = self.object
+        context["object"] = self.object
         return context
 
     def get_object(self):
         return self.case
 
 
-class UserPermissionRemoveView(RaisePermissionRequiredMixin, ActionMessageMixin, ActionView):
+class UserPermissionRemoveView(
+    RaisePermissionRequiredMixin, ActionMessageMixin, ActionView
+):
     model = Case
-    permission_required = 'cases.can_manage_permission'
-    template_name_suffix = '_permission_remove_confirm'
+    permission_required = "cases.can_manage_permission"
+    template_name_suffix = "_permission_remove_confirm"
 
     def get_permission_object(self):
         return None
 
     @cached_property
     def user(self):
-        return get_object_or_404(User, username=self.kwargs['username'])
+        return get_object_or_404(User, username=self.kwargs["username"])
 
     def action(self):
-        CaseUserObjectPermission.objects.filter(user=self.user, content_object=self.object).delete()
+        CaseUserObjectPermission.objects.filter(
+            user=self.user, content_object=self.object
+        ).delete()
 
     def get_success_message(self):
-        return _('Removed all permission of "{user}" in case "{case}"').format(user=self.user,
-                                                                               case=self.object)
+        return _('Removed all permission of "{user}" in case "{case}"').format(
+            user=self.user, case=self.object
+        )
 
     def get_context_data(self, **kwargs):
         return super(UserPermissionRemoveView, self).get_context_data(**kwargs)

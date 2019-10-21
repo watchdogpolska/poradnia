@@ -5,19 +5,50 @@ from itertools import groupby
 from django.utils.html import conditional_escape as esc
 from django.utils.translation import ugettext_lazy as _
 
-day_name = [_('Monday'), _('Tuesday'), _('Wednesday'), _('Thursday'), _('Friday'),
-            _('Saturday'), _('Sunday')]
-day_abbr = [_('Mon'), _('Tue'), _('Wed'), _('Thu'), _('Fri'), _('Sat'), _('Sun')]
+day_name = [
+    _("Monday"),
+    _("Tuesday"),
+    _("Wednesday"),
+    _("Thursday"),
+    _("Friday"),
+    _("Saturday"),
+    _("Sunday"),
+]
+day_abbr = [_("Mon"), _("Tue"), _("Wed"), _("Thu"), _("Fri"), _("Sat"), _("Sun")]
 
-month_name = [_('January'), _('February'), _('March'), _('April'), _('May'), _('June'),
-              _('July'), _('August'), _('September'), _('October'), _('November'), _('December')]
+month_name = [
+    _("January"),
+    _("February"),
+    _("March"),
+    _("April"),
+    _("May"),
+    _("June"),
+    _("July"),
+    _("August"),
+    _("September"),
+    _("October"),
+    _("November"),
+    _("December"),
+]
 
-month_abbr = [_('Jan'), _('Feb'), _('Mar'), _('Apr'), _('May'), _('Jun'), _('Jul'),
-              _('Aug'), _('Sep'), _('Oct'), _('Nov'), _('Dec')]
+month_abbr = [
+    _("Jan"),
+    _("Feb"),
+    _("Mar"),
+    _("Apr"),
+    _("May"),
+    _("Jun"),
+    _("Jul"),
+    _("Aug"),
+    _("Sep"),
+    _("Oct"),
+    _("Nov"),
+    _("Dec"),
+]
 
 
 class AbstractCalendar(HTMLCalendar):
-    field = 'time'
+    field = "time"
 
     def __init__(self, events, *args, **kwargs):
         super(AbstractCalendar, self).__init__(*args, **kwargs)
@@ -28,9 +59,9 @@ class AbstractCalendar(HTMLCalendar):
         Return a month name as a table row.
         """
         if withyear:
-            s = '%s %s' % (month_name[themonth - 1], theyear)
+            s = "%s %s" % (month_name[themonth - 1], theyear)
         else:
-            s = '%s' % month_name[themonth]
+            s = "%s" % month_name[themonth]
         return '<tr><th colspan="7" class="month">%s</th></tr>' % s
 
     def formatweekday(self, day):
@@ -43,17 +74,17 @@ class AbstractCalendar(HTMLCalendar):
         if day != 0:
             cssclass = self.cssclasses[weekday]
             if date.today() == date(self.year, self.month, day):
-                cssclass += ' today'
+                cssclass += " today"
             if day in self.events:
-                cssclass += ' filled'
-                body = ['<ul>']
+                cssclass += " filled"
+                body = ["<ul>"]
                 for event in self.events[day]:
                     body.append(self.get_row_content(event))
-                body.append('</ul>')
-                html = '<span class="day">%d</span> %s' % (day, ''.join(body))
+                body.append("</ul>")
+                html = '<span class="day">%d</span> %s' % (day, "".join(body))
                 return self.day_cell(cssclass, html)
             return self.day_cell(cssclass, '<span class="day">%d</span>' % day)
-        return self.day_cell('noday', '&nbsp;')
+        return self.day_cell("noday", "&nbsp;")
 
     def formatmonth(self, year, month):
         self.year, self.month = year, month
@@ -76,12 +107,13 @@ class AbstractCalendar(HTMLCalendar):
 
 
 class EventCalendar(AbstractCalendar):
-    field = 'time'
+    field = "time"
 
     def get_row_content(self, event):
-        text = ('<li{class_attr}><a href="{link}" title="{title}">{content}</a></li>'.format(
-            class_attr=' class="deadline"' if event.deadline else '',
+        text = '<li{class_attr}><a href="{link}" title="{title}">{content}</a></li>'.format(
+            class_attr=' class="deadline"' if event.deadline else "",
             link=event.get_absolute_url(),
             title=event.text,
-            content=esc(event.case)))
+            content=esc(event.case),
+        )
         return text

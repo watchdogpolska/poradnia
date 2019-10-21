@@ -25,17 +25,18 @@ class KeyDetailView(PermissionMixin, DetailView):
         obj = super(KeyDetailView, self).get_object(*args, **kwargs)
         obj.download_on = now()
         obj.save()
-        messages.add_message(self.request, messages.SUCCESS,
-                             "{object} downloaded!".format(object=obj))
+        messages.add_message(
+            self.request, messages.SUCCESS, "{object} downloaded!".format(object=obj)
+        )
         return obj
 
 
 class KeyDeleteView(PermissionMixin, DeleteMessageMixin, DeleteView):
     model = Key
-    success_url = reverse_lazy('list')
+    success_url = reverse_lazy("list")
 
     def get_success_message(self):
-        return _(u"{object} deleted!").format(object=self.object)
+        return _("{object} deleted!").format(object=self.object)
 
 
 class KeyListView(PermissionMixin, ListView):

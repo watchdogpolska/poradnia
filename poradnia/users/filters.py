@@ -13,9 +13,11 @@ except ImportError:
 
 class UserChoiceFilter(django_filters.ModelChoiceFilter):
     def __init__(self, queryset=None, widget=None, *args, **kwargs):
-        widget = widget or autocomplete.ModelSelect2(url='users:autocomplete')
+        widget = widget or autocomplete.ModelSelect2(url="users:autocomplete")
         queryset = queryset or get_user_model().objects.all()
-        super(UserChoiceFilter, self).__init__(queryset=queryset, widget=widget, *args, **kwargs)
+        super(UserChoiceFilter, self).__init__(
+            queryset=queryset, widget=widget, *args, **kwargs
+        )
 
 
 class UserFilter(CrispyFilterMixin, django_filters.FilterSet):
@@ -24,4 +26,4 @@ class UserFilter(CrispyFilterMixin, django_filters.FilterSet):
 
     class Meta:
         model = User
-        fields = ['is_superuser', ]
+        fields = ["is_superuser"]

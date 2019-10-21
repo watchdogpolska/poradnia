@@ -25,16 +25,20 @@ class Item(TimeStampedModel):
     key = models.CharField(db_index=True, max_length=50, verbose_name=_("Metric key"))
     name = models.CharField(max_length=100, verbose_name=_("Name"))
     description = models.TextField(verbose_name=_("Description"), blank=True)
-    last_updated = models.DateTimeField(null=True, blank=True,
-                                        verbose_name=_("Time to get the last value"))
-    public = models.BooleanField(default=True, verbose_name=_("Public?"),
-                                 help_text="Select to publish metric for everyone on-line.")
+    last_updated = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Time to get the last value")
+    )
+    public = models.BooleanField(
+        default=True,
+        verbose_name=_("Public?"),
+        help_text="Select to publish metric for everyone on-line.",
+    )
     objects = ItemQueryset.as_manager()
 
     class Meta:
         verbose_name = _("Item")
         verbose_name_plural = _("Items")
-        ordering = ['key', ]
+        ordering = ["key"]
 
     def __str__(self):
         if self.name == self.key:
@@ -42,20 +46,26 @@ class Item(TimeStampedModel):
         return "%s [%s]" % (self.name, self.key)
 
     def as_dict(self):
-        return {'key': self.key,
-                'name': self.name,
-                'description': self.description,
-                'last_updated': self.last_updated.strftime("%s"),
-                'public': self.public}
+        return {
+            "key": self.key,
+            "name": self.name,
+            "description": self.description,
+            "last_updated": self.last_updated.strftime("%s"),
+            "public": self.public,
+        }
 
     def get_absolute_url(self):
-        return reverse('stats:item_detail', kwargs={'key': self.key})
+        return reverse("stats:item_detail", kwargs={"key": self.key})
 
 
 class ValueQueryset(QuerySet):
     def get_last_value(self, items):
-        return dict(self.filter(item_id__in=items).values_list('item_id').
-                    annotate(Max('time')).values_list('item__id', 'value'))
+        return dict(
+            self.filter(item_id__in=items)
+            .values_list("item_id")
+            .annotate(Max("time"))
+            .values_list("item__id", "value")
+        )
 
 
 class Value(models.Model):
@@ -66,14 +76,16 @@ class Value(models.Model):
     objects = ValueQueryset.as_manager()
 
     def as_dict(self):
-        return {'time': self.time.strftime("%s"),
-                'value': self.value,
-                'comment': self.comment}
+        return {
+            "time": self.time.strftime("%s"),
+            "value": self.value,
+            "comment": self.comment,
+        }
 
     class Meta:
         verbose_name = _("Value")
         verbose_name_plural = _("Values")
-        ordering = ['item_id', 'time']
+        ordering = ["item_id", "time"]
 
 
 class Graph(models.Model):
@@ -82,7 +94,7 @@ class Graph(models.Model):
     items = models.ManyToManyField(Item, verbose_name=_("Items"))
 
     def get_absolute_url(self):
-        return reverse('stats:graph_detail', kwargs={'pk': self.pk})
+        return reverse("stats:graph_detail", kwargs={"pk": self.pk})
 
     def __str__(self):
         return self.name

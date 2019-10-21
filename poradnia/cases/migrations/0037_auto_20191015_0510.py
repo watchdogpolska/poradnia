@@ -5,14 +5,19 @@ from django.db import migrations, models
 
 class Migration(migrations.Migration):
 
-    dependencies = [
-        ('cases', '0036_remove_case_jst'),
-    ]
+    dependencies = [("cases", "0036_remove_case_jst")]
 
     operations = [
         migrations.AlterField(
-            model_name='permissiongroup',
-            name='permissions',
-            field=models.ManyToManyField(limit_choices_to={'content_type__app_label': 'cases', 'content_type__model': 'case'}, to='auth.Permission', verbose_name='Permissions'),
-        ),
+            model_name="permissiongroup",
+            name="permissions",
+            field=models.ManyToManyField(
+                limit_choices_to={
+                    "content_type__app_label": "cases",
+                    "content_type__model": "case",
+                },
+                to="auth.Permission",
+                verbose_name="Permissions",
+            ),
+        )
     ]

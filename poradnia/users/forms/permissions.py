@@ -10,32 +10,39 @@ from guardian.shortcuts import assign_perm, remove_perm
 class PermissionsTranslationMixin(object):
     def __init__(self, *args, **kwargs):
         super(PermissionsTranslationMixin, self).__init__(*args, **kwargs)
-        self.fields['permissions'].choices = [(key, _(value))
-                                              for key, value in self.fields['permissions'].choices]
+        self.fields["permissions"].choices = [
+            (key, _(value)) for key, value in self.fields["permissions"].choices
+        ]
 
 
-class TranslatedUserObjectPermissionsForm(SingleButtonMixin, PermissionsTranslationMixin,
-                                          UserObjectPermissionsForm):
+class TranslatedUserObjectPermissionsForm(
+    SingleButtonMixin, PermissionsTranslationMixin, UserObjectPermissionsForm
+):
     pass
 
 
-class TranslatedManageObjectPermissionForm(SingleButtonMixin, PermissionsTranslationMixin,
-                                           BaseObjectPermissionsForm):
-    users = forms.ModelMultipleChoiceField(queryset=get_user_model().objects.none(),
-                                           required=True,
-                                           widget=autocomplete.ModelSelect2Multiple(url='users:autocomplete'))
+class TranslatedManageObjectPermissionForm(
+    SingleButtonMixin, PermissionsTranslationMixin, BaseObjectPermissionsForm
+):
+    users = forms.ModelMultipleChoiceField(
+        queryset=get_user_model().objects.none(),
+        required=True,
+        widget=autocomplete.ModelSelect2Multiple(url="users:autocomplete"),
+    )
 
     def __init__(self, *args, **kwargs):
-        self.actor = kwargs.pop('actor')
-        self.staff_only = kwargs.pop('staff_only', False)
+        self.actor = kwargs.pop("actor")
+        self.staff_only = kwargs.pop("staff_only", False)
         super(TranslatedManageObjectPermissionForm, self).__init__(*args, **kwargs)
-        self.fields['users'].queryset = get_user_model().objects.for_user(self.actor).all()
+        self.fields["users"].queryset = (
+            get_user_model().objects.for_user(self.actor).all()
+        )
 
     def are_obj_perms_required(self):
         return True
 
     def save_obj_perms(self):
-        for user in self.cleaned_data['users']:
+        for user in self.cleaned_data["users"]:
             perms = self.cleaned_data[self.get_obj_perms_field_name()]
             model_perms = [c[0] for c in self.get_obj_perms_field_choices()]
 

@@ -11,9 +11,9 @@ register = template.Library()
 @stringfilter
 def status2css(status):
     """Converts a status into css style"""
-    return {u'0': 'fa fa-circle-o ',
-            u'1': 'fa fa-dot-circle-o',
-            u'2': 'fa fa-circle'}[status]
+    return {"0": "fa fa-circle-o ", "1": "fa fa-dot-circle-o", "2": "fa fa-circle"}[
+        status
+    ]
 
 
 @register.filter
@@ -25,10 +25,15 @@ def status2display(status):
 
 @register.simple_tag(takes_context=True)
 def full_link(context, path):
-    scheme = '{}://'.format(context['request'].scheme) \
-        if 'request' in context else 'https://'
-    return ''.join([
-        scheme,
-        get_current_site(context.get('request', None)).domain,
-        path if path.startswith('/') else '/' + path
-    ])
+    scheme = (
+        "{}://".format(context["request"].scheme)
+        if "request" in context
+        else "https://"
+    )
+    return "".join(
+        [
+            scheme,
+            get_current_site(context.get("request", None)).domain,
+            path if path.startswith("/") else "/" + path,
+        ]
+    )

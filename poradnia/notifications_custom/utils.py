@@ -2,10 +2,10 @@ from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
 
 
 def paginator(request, queryset, per_page=25):
-    per_page = request.GET.get('per_page', per_page)
+    per_page = request.GET.get("per_page", per_page)
 
     paginator = Paginator(queryset, per_page)
-    page = request.GET.get('page')
+    page = request.GET.get("page")
     try:
         return paginator.page(page)
     except PageNotAnInteger:

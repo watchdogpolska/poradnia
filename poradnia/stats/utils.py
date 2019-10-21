@@ -11,7 +11,7 @@ DATE_FORMAT_WEEKLY = "%Y-%W"
 def raise_unless_unauthenticated(view, request):
     # Hack from SO due to https://github.com/brack3t/django-braces/issues/181 bug
     if not request.user.is_authenticated:
-        return redirect('/konta/login/?next=%s' % request.path)
+        return redirect("/konta/login/?next=%s" % request.path)
     return None
 
 
@@ -45,21 +45,29 @@ class GapFiller(object):
             date_format = DATE_FORMAT_MONTHLY
             start = start[self.date_key]
             end = end[self.date_key]
-            return list(rrule(
-                freq=self.freq,
-                dtstart=datetime.strptime(start, date_format),
-                until=datetime.strptime(end, date_format)))
+            return list(
+                rrule(
+                    freq=self.freq,
+                    dtstart=datetime.strptime(start, date_format),
+                    until=datetime.strptime(end, date_format),
+                )
+            )
         if self.freq == WEEKLY:
-            date_format = DATE_FORMAT_WEEKLY + "-%w"  # append weekday to parse date by week number
+            date_format = (
+                DATE_FORMAT_WEEKLY + "-%w"
+            )  # append weekday to parse date by week number
             start = start[self.date_key] + "-1"
             end = end[self.date_key] + "-1"
-            return list(rrule(
-                freq=self.freq,
-                dtstart=datetime.strptime(start, date_format),
-                until=datetime.strptime(end, date_format)))
+            return list(
+                rrule(
+                    freq=self.freq,
+                    dtstart=datetime.strptime(start, date_format),
+                    until=datetime.strptime(end, date_format),
+                )
+            )
 
     def _get_params(self):
-        if hasattr(self, 'params'):
+        if hasattr(self, "params"):
             return self.params
         else:
             keys = list(self.qs[0].keys())
@@ -75,9 +83,9 @@ class GapFiller(object):
 
 def filter_today(qs, field):
     today = datetime.today()
-    return qs.filter(**{'{}__date__gte'.format(field): today})
+    return qs.filter(**{"{}__date__gte".format(field): today})
 
 
 def filter_month(qs, field):
     start = datetime.today().replace(day=1)
-    return qs.filter(**{'{}__date__gte'.format(field): start})
+    return qs.filter(**{"{}__date__gte".format(field): start})

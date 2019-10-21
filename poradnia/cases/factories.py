@@ -27,8 +27,9 @@ class PermissionGroupFactory(factory.DjangoModelFactory):
 
         if extracted:
             ct = ContentType.objects.get_for_model(Case)
-            permissions = Permission.objects.filter(codename__in=extracted,
-                                                    content_type=ct).all()
+            permissions = Permission.objects.filter(
+                codename__in=extracted, content_type=ct
+            ).all()
             for permission in permissions:
                 self.permissions.add(permission)
 
@@ -43,11 +44,12 @@ class CaseUserObjectPermissionFactory(factory.DjangoModelFactory):
     @factory.lazy_attribute
     def permission(self):
         content_type = ContentType.objects.get_for_model(self.content_object)
-        return Permission.objects.get(codename=self.permission_name,
-                                      content_type=content_type)
+        return Permission.objects.get(
+            codename=self.permission_name, content_type=content_type
+        )
 
     class Params:
-        permission_name = 'can_send_to_client'
+        permission_name = "can_send_to_client"
 
     class Meta:
         model = CaseUserObjectPermission

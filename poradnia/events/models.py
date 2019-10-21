@@ -13,17 +13,15 @@ from django.urls import reverse
 
 
 class Reminder(TimeStampedModel):
-    event = models.ForeignKey(to='Event', on_delete=models.CASCADE)
+    event = models.ForeignKey(to="Event", on_delete=models.CASCADE)
     user = models.ForeignKey(
-        to=settings.AUTH_USER_MODEL,
-        help_text=_("Recipient"),
-        on_delete=models.CASCADE
+        to=settings.AUTH_USER_MODEL, help_text=_("Recipient"), on_delete=models.CASCADE
     )
     active = models.BooleanField(default=True, help_text=_("Active status"))
 
     class Meta:
-        verbose_name = _('Reminder')
-        verbose_name_plural = _('Reminders')
+        verbose_name = _("Reminder")
+        verbose_name_plural = _("Reminders")
 
 
 class EventQuerySet(AbstractRecordQuerySet):
@@ -36,25 +34,33 @@ class EventQuerySet(AbstractRecordQuerySet):
 
 
 class Event(AbstractRecord):
-    deadline = models.BooleanField(default=False, verbose_name=_("Dead-line"),
-                                   help_text=_("A significant event, especially highlighted, "
-                                               "for example, in the list of cases."))
+    deadline = models.BooleanField(
+        default=False,
+        verbose_name=_("Dead-line"),
+        help_text=_(
+            "A significant event, especially highlighted, "
+            "for example, in the list of cases."
+        ),
+    )
     time = models.DateTimeField(verbose_name=_("Time"))
     text = models.TextField(verbose_name=_("Subject"))
-    created_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
-                                   related_name='event_created_by',
-                                   verbose_name=_("Created by"),
-                                   on_delete=models.CASCADE)
+    created_by = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        related_name="event_created_by",
+        verbose_name=_("Created by"),
+        on_delete=models.CASCADE,
+    )
     created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))
-    modified_by = models.ForeignKey(to=settings.AUTH_USER_MODEL,
-                                    verbose_name=_("Modified by"),
-                                    null=True,
-                                    on_delete=models.CASCADE,
-                                    related_name='event_modified_by')
-    modified_on = models.DateTimeField(auto_now=True,
-                                       null=True,
-                                       blank=True,
-                                       verbose_name=_("Modified on"))
+    modified_by = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        verbose_name=_("Modified by"),
+        null=True,
+        on_delete=models.CASCADE,
+        related_name="event_modified_by",
+    )
+    modified_on = models.DateTimeField(
+        auto_now=True, null=True, blank=True, verbose_name=_("Modified on")
+    )
     objects = EventQuerySet.as_manager()
 
     @property
@@ -68,11 +74,13 @@ class Event(AbstractRecord):
         return "%s#event-%s" % (case_url, self.pk)
 
     def get_edit_url(self):
-        return reverse('events:edit', kwargs={'pk': self.pk})
+        return reverse("events:edit", kwargs={"pk": self.pk})
 
     def get_calendar_url(self):
-        return reverse('events:calendar', kwargs={'month': self.time.month, 'year': self.time.year})
+        return reverse(
+            "events:calendar", kwargs={"month": self.time.month, "year": self.time.year}
+        )
 
     class Meta:
-        verbose_name = _('Event')
-        verbose_name_plural = _('Events')
+        verbose_name = _("Event")
+        verbose_name_plural = _("Events")

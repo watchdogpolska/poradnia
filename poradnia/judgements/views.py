@@ -17,12 +17,16 @@ from poradnia.judgements.models import CourtCase
 
 class CourtCaseForm(UserKwargModelFormMixin, SingleButtonMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        self.case = kwargs.pop('case', None)
+        self.case = kwargs.pop("case", None)
         super(CourtCaseForm, self).__init__(*args, **kwargs)
         if self.case:
-            self.helper.form_action = reverse('judgements:create', kwargs={'case_pk': self.case.pk})
+            self.helper.form_action = reverse(
+                "judgements:create", kwargs={"case_pk": self.case.pk}
+            )
         else:
-            self.helper.form_action = reverse('judgements:update', kwargs={'pk': self.instance.pk})
+            self.helper.form_action = reverse(
+                "judgements:update", kwargs={"pk": self.instance.pk}
+            )
 
     def save(self, commit=True):
         if self.case:
@@ -35,28 +39,30 @@ class CourtCaseForm(UserKwargModelFormMixin, SingleButtonMixin, forms.ModelForm)
 
     class Meta:
         model = CourtCase
-        fields = ['court', 'signature']
+        fields = ["court", "signature"]
 
 
-class CourtCaseCreateView(RaisePermissionRequiredMixin, UserFormKwargsMixin, CreateView):
+class CourtCaseCreateView(
+    RaisePermissionRequiredMixin, UserFormKwargsMixin, CreateView
+):
     model = CourtCase
     form_class = CourtCaseForm
-    permission_required = ['cases.can_add_record']
+    permission_required = ["cases.can_add_record"]
 
     @cached_property
     def case(self):
-        return get_object_or_404(Case, pk=self.kwargs['case_pk'])
+        return get_object_or_404(Case, pk=self.kwargs["case_pk"])
 
     def get_permission_object(self):
         return self.case
 
     def get_form_kwargs(self):
         kw = super(CourtCaseCreateView, self).get_form_kwargs()
-        kw['case'] = self.case
+        kw["case"] = self.case
         return kw
 
     def get_context_data(self, **kwargs):
-        kwargs['case'] = self.case
+        kwargs["case"] = self.case
         return super(CourtCaseCreateView, self).get_context_data(**kwargs)
 
     def get_form_valid_message(self):
@@ -66,11 +72,12 @@ class CourtCaseCreateView(RaisePermissionRequiredMixin, UserFormKwargsMixin, Cre
         return self.case.get_absolute_url()
 
 
-class CourtCaseUpdateView(RaisePermissionRequiredMixin, UserFormKwargsMixin, FormValidMessageMixin,
-                          UpdateView):
+class CourtCaseUpdateView(
+    RaisePermissionRequiredMixin, UserFormKwargsMixin, FormValidMessageMixin, UpdateView
+):
     model = CourtCase
     form_class = CourtCaseForm
-    permission_required = ['cases.can_add_record']
+    permission_required = ["cases.can_add_record"]
 
     def get_permission_object(self):
         return self.get_object().case
@@ -81,8 +88,8 @@ class CourtCaseUpdateView(RaisePermissionRequiredMixin, UserFormKwargsMixin, For
 
 class CourtCaseDeleteView(RaisePermissionRequiredMixin, DeleteMessageMixin, DeleteView):
     model = CourtCase
-    success_url = reverse_lazy('judgements:list')
-    permission_required = ['cases.can_add_record']
+    success_url = reverse_lazy("judgements:list")
+    permission_required = ["cases.can_add_record"]
 
     def get_permission_object(self):
         return self.get_object().case
