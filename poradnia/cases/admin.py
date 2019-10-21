@@ -9,7 +9,7 @@ from .models import Case, PermissionGroup
 @admin.register(Case)
 class CaseAdmin(GuardedModelAdmin):
     inlines = [RecordInline]
-    list_display = ['name', 'client', 'record_count']
+    list_display = ["name", "client", "record_count"]
 
     def record_count(self, obj):
         return obj.record_count
@@ -21,15 +21,16 @@ class CaseAdmin(GuardedModelAdmin):
 
 @admin.register(PermissionGroup)
 class PermissionGroupAdmin(admin.ModelAdmin):
-    '''
+    """
         Admin View for PermissionGroup
-    '''
-    list_display = ['name', 'get_permissions']
-    select_related = ['permissions']
+    """
+
+    list_display = ["name", "get_permissions"]
+    select_related = ["permissions"]
 
     def get_permissions(self, obj):
         return ", ".join([_(x.name) for x in obj.permissions.all()])
 
     def get_queryset(self, request):
         qs = super(PermissionGroupAdmin, self).get_queryset(request)
-        return qs.prefetch_related('permissions')
+        return qs.prefetch_related("permissions")

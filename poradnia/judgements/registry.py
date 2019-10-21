@@ -7,7 +7,9 @@ def register_parser(parser_key):
 
         def func_wrapper(*args, **kwargs):
             return func(*args, **kwargs)
+
         return func_wrapper
+
     return tags_decorator
 
 

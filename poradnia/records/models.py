@@ -1,5 +1,4 @@
-from django.contrib.contenttypes.fields import (GenericForeignKey,
-                                                GenericRelation)
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.db.models import Q
@@ -11,53 +10,40 @@ from poradnia.cases.models import Case
 
 class RecordQuerySet(QuerySet):
     def _for_user_by_view(self, user):
-        if user.has_perm('cases.can_view_all'):
+        if user.has_perm("cases.can_view_all"):
             return self
         content_type = ContentType.objects.get_for_model(Case)
         return self.filter(
-            case__caseuserobjectpermission__permission__codename='can_view',
+            case__caseuserobjectpermission__permission__codename="can_view",
             case__caseuserobjectpermission__permission__content_type=content_type,
-            case__caseuserobjectpermission__user=user
+            case__caseuserobjectpermission__user=user,
         )
 
     def for_user(self, user):
         qs = self._for_user_by_view(user)
         if user.is_staff:
             return qs
-        return qs.filter(
-            Q(event=None) & Q(letter__status='done')
-        )
+        return qs.filter(Q(event=None) & Q(letter__status="done"))
 
 
 class Record(models.Model):
-    STATIC_RELATION = ['letter', 'event']
-    case = models.ForeignKey(
-        to='cases.Case',
-        on_delete=models.CASCADE
-    )
+    STATIC_RELATION = ["letter", "event"]
+    case = models.ForeignKey(to="cases.Case", on_delete=models.CASCADE)
     created_on = models.DateTimeField(auto_now_add=True)
     letter = models.OneToOneField(
-        to='letters.Letter',
-        on_delete=models.CASCADE,
-        null=True, blank=True
+        to="letters.Letter", on_delete=models.CASCADE, null=True, blank=True
     )
     event = models.OneToOneField(
-        to='events.Event',
-        null=True, blank=True,
-        on_delete=models.CASCADE,
+        to="events.Event", null=True, blank=True, on_delete=models.CASCADE
     )
     courtcase = models.OneToOneField(
-        to='judgements.CourtCase', 
-        null=True, blank=True,
-        on_delete=models.CASCADE
+        to="judgements.CourtCase", null=True, blank=True, on_delete=models.CASCADE
     )
     content_type = models.ForeignKey(
-        to=ContentType,
-        null=True, blank=True,
-        on_delete=models.CASCADE
+        to=ContentType, null=True, blank=True, on_delete=models.CASCADE
     )
     object_id = models.PositiveIntegerField(null=True)
-    related_object = GenericForeignKey('content_type', 'object_id')
+    related_object = GenericForeignKey("content_type", "object_id")
 
     objects = RecordQuerySet.as_manager()
 
@@ -82,28 +68,25 @@ class Record(models.Model):
         return Case(pk=self.case_id).get_absolute_url()
 
     class Meta:
-        ordering = ['created_on', 'id']
-        verbose_name = _('Record')
-        verbose_name_plural = _('Records')
+        ordering = ["created_on", "id"]
+        verbose_name = _("Record")
+        verbose_name_plural = _("Records")
 
 
 class AbstractRecordQuerySet(QuerySet):
     def for_user(self, user):
-        if user.has_perm('cases.can_view_all'):
+        if user.has_perm("cases.can_view_all"):
             return self
         content_type = ContentType.objects.get_for_model(Case)
         return self.filter(
-            case__caseuserobjectpermission__permission__codename='can_view',
+            case__caseuserobjectpermission__permission__codename="can_view",
             case__caseuserobjectpermission__permission__content_type=content_type,
-            case__caseuserobjectpermission__user=user
+            case__caseuserobjectpermission__user=user,
         )
 
 
 class AbstractRecord(models.Model):
-    record_general = GenericRelation(
-        to='records.Record',
-        related_query_name='record'
-    )
+    record_general = GenericRelation(to="records.Record", related_query_name="record")
     case = models.ForeignKey(to=Case, on_delete=models.CASCADE)
 
     def show_modifier(self):
@@ -113,10 +96,7 @@ class AbstractRecord(models.Model):
         return self.case.get_users_with_perms(*args, **kwargs)
 
     def get_template_list(self):
-        return u"%s/_%s_list.html" % (
-            self._meta.app_label,
-            self._meta.model_name
-        )
+        return "%s/_%s_list.html" % (self._meta.app_label, self._meta.model_name)
 
     def send_notification(self, *args, **kwargs):
         return self.case.send_notification(target=self, *args, **kwargs)
@@ -132,9 +112,7 @@ class AbstractRecord(models.Model):
 
     def __str__(self):
         return _("{object_name} (#{pk}) in case #{case_id}").format(
-            object_name=self._meta.verbose_name,
-            case_id=self.case_id,
-            pk=self.pk
+            object_name=self._meta.verbose_name, case_id=self.case_id, pk=self.pk
         )
 
     class Meta:

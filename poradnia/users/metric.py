@@ -34,4 +34,6 @@ def users_active_staff(*args, **kwargs):
 
 
 users_active_staff.name = _("Active staff member")
-users_active_staff.description = _("Number of team members who have made at least one message in the current month.")
+users_active_staff.description = _(
+    "Number of team members who have made at least one message in the current month."
+)

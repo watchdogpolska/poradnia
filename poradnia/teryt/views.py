@@ -10,12 +10,12 @@ class JSTDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(JSTDetailView, self).get_context_data(**kwargs)
-        context['advice_qs'] = Advice.objects.for_user(
-            self.request.user
-        ).area(self.object).all()
-        context['case_qs'] = Case.objects.for_user(
-            self.request.user
-        ).area(self.object).all()
+        context["advice_qs"] = (
+            Advice.objects.for_user(self.request.user).area(self.object).all()
+        )
+        context["case_qs"] = (
+            Case.objects.for_user(self.request.user).area(self.object).all()
+        )
         return context
 
 

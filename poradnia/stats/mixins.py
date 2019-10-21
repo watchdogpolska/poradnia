@@ -15,6 +15,7 @@ class PermissionStatusMixin(object):
         url (str): url to test
     NOTE: based on https://github.com/watchdogpolska/feder/blob/a80d6ea7/feder/main/mixins.py#L113
     """
+
     url = None
     permissions = None
     status_anonymous = 302
@@ -33,8 +34,9 @@ class PermissionStatusMixin(object):
         """
         if self.url is None:
             raise ImproperlyConfigured(
-                '{0} is missing a url to test. Define {0}.url '
-                'or override {0}.get_url().'.format(self.__class__.__name__))
+                "{0} is missing a url to test. Define {0}.url "
+                "or override {0}.get_url().".format(self.__class__.__name__)
+            )
         return self.url
 
     def get_permissions(self):
@@ -46,8 +48,9 @@ class PermissionStatusMixin(object):
         """
         if self.permissions is None:
             raise ImproperlyConfigured(
-                '{0} is missing a permissions to assign. Define {0}.permission '
-                'or override {0}.get_permission().'.format(self.__class__.__name__))
+                "{0} is missing a permissions to assign. Define {0}.permission "
+                "or override {0}.get_permission().".format(self.__class__.__name__)
+            )
         return self.permissions[:]
 
     def make_regular_user(self):
@@ -68,7 +71,7 @@ class PermissionStatusMixin(object):
 
     def login(self, user):
         """Login client to user"""
-        self.client.login(username=user.username, password='pass')
+        self.client.login(username=user.username, password="pass")
 
     def test_status_code_for_anonymous_user(self):
         """A test status code of response for anonymous user"""

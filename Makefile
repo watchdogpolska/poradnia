@@ -4,7 +4,7 @@ clean:
 build:
 	docker-compose build web
 
-test: wait_mysql
+test:
 	docker-compose run web python manage.py test --keepdb --verbosity=2
 
 wait_mysql:
@@ -14,7 +14,10 @@ migrate:
 	docker-compose run web python manage.py migrate
 
 lint:
-	docker-compose run web flake8 teryt_tree
+	docker run --rm -v $$(pwd):/data cytopia/black --check /data
+
+fmt:
+	docker run --rm -v $$(pwd):/data cytopia/black /data
 
 check: wait_mysql
 	docker-compose run web python manage.py makemigrations --check

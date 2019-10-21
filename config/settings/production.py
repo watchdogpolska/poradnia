@@ -1,8 +1,7 @@
-
 # flake8: noqa: F405
-'''
+"""
 Production Configurations
-'''
+"""
 import os
 import raven
 from dealer.auto import auto
@@ -10,7 +9,7 @@ from dealer.auto import auto
 from .common import *  # noqa
 
 # SECRET KEY
-SECRET_KEY = env.str('DJANGO_SECRET_KEY')
+SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 # END SECRET KEY
 
 # SITE CONFIGURATION
@@ -20,23 +19,27 @@ ALLOWED_HOSTS = ["*"]
 # END SITE CONFIGURATION
 
 # EMAIL
-DEFAULT_FROM_EMAIL = env.str('DJANGO_DEFAULT_FROM_EMAIL',
-                             'poradnia <noreply@porady.siecobywatelska.pl>')
-EMAIL_SUBJECT_PREFIX = env.str('DJANGO_EMAIL_SUBJECT_PREFIX', '[poradnia] ')
+DEFAULT_FROM_EMAIL = env.str(
+    "DJANGO_DEFAULT_FROM_EMAIL", "poradnia <noreply@porady.siecobywatelska.pl>"
+)
+EMAIL_SUBJECT_PREFIX = env.str("DJANGO_EMAIL_SUBJECT_PREFIX", "[poradnia] ")
 
-EMAIL_CONFIG = env.email_url('EMAIL_URL', default='smtp://localhost:25')
+EMAIL_CONFIG = env.email_url("EMAIL_URL", default="smtp://localhost:25")
 vars().update(EMAIL_CONFIG)
 
-SERVER_EMAIL = env.str('DJANGO_SERVER_EMAIL')
+SERVER_EMAIL = env.str("DJANGO_SERVER_EMAIL")
 # END EMAIL
 
 # TEMPLATE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
-TEMPLATES[0]['OPTIONS']['loaders'] = (
-    ('django.template.loaders.cached.Loader', (
-        'django.template.loaders.filesystem.Loader',
-        'django.template.loaders.app_directories.Loader',
-    )),
+TEMPLATES[0]["OPTIONS"]["loaders"] = (
+    (
+        "django.template.loaders.cached.Loader",
+        (
+            "django.template.loaders.filesystem.Loader",
+            "django.template.loaders.app_directories.Loader",
+        ),
+    ),
 )
 # END TEMPLATE CONFIGURATION
 
@@ -44,14 +47,12 @@ TEMPLATES[0]['OPTIONS']['loaders'] = (
 # Ustaw wartość twojego DSN
 REVISION_ID = auto.revision
 RAVEN_CONFIG = {
-    'dsn': env.str('RAVEN_DSN', 'http://example.com'),
-    'release': REVISION_ID
+    "dsn": env.str("RAVEN_DSN", "http://example.com"),
+    "release": REVISION_ID,
 }
 
-INSTALLED_APPS += ('raven.contrib.django.raven_compat',)
+INSTALLED_APPS += ("raven.contrib.django.raven_compat",)
 
-CACHES = {
-    'default': env.cache(),
-}
+CACHES = {"default": env.cache()}
 
-LETTER_RECEIVE_SECRET = env.str('LETTER_RECEIVE_SECRET')
+LETTER_RECEIVE_SECRET = env.str("LETTER_RECEIVE_SECRET")

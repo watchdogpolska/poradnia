@@ -1,5 +1,3 @@
-
-
 import datetime
 
 from atom.ext.guardian.tests import PermissionStatusMixin
@@ -22,7 +20,7 @@ class PermissionMixin(object):
         self.user = StaffFactory()
 
     def login(self, username=None):
-        self.client.login(username=username or self.user.username, password='pass')
+        self.client.login(username=username or self.user.username, password="pass")
 
     def test_anonymous_denied(self):
         resp = self.client.get(self.url)
@@ -52,13 +50,15 @@ class InstanceMixin(object):
 
     def test_hide_unvisible(self):
         self.login()
-        resp = self.client.get(AdviceFactory(advicer=self.user, visible=False).get_absolute_url())
+        resp = self.client.get(
+            AdviceFactory(advicer=self.user, visible=False).get_absolute_url()
+        )
         self.assertEqual(resp.status_code, 404)
 
 
 class AdviceListTestCase(PermissionMixin, TemplateUsedMixin, TestCase):
-    url = reverse_lazy('advicer:list')
-    template_name = 'advicer/advice_filter.html'
+    url = reverse_lazy("advicer:list")
+    template_name = "advicer/advice_filter.html"
 
     def test_hide_unvisible(self):
         self.login()
@@ -81,12 +81,12 @@ class AdviceListTestCase(PermissionMixin, TemplateUsedMixin, TestCase):
 
 
 class AdviceUpdateTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, TestCase):
-    template_name = 'advicer/advice_form.html'
+    template_name = "advicer/advice_form.html"
 
     def setUp(self):
         super(AdviceUpdateTestCase, self).setUp()
         self.instance = AdviceFactory(advicer=self.user)
-        self.url = reverse('advicer:update', kwargs={'pk': self.instance.pk})
+        self.url = reverse("advicer:update", kwargs={"pk": self.instance.pk})
 
     def test_contains_subject(self):
         self.login()
@@ -95,37 +95,40 @@ class AdviceUpdateTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
 
 
 class AdviceCreateTestCase(PermissionMixin, TemplateUsedMixin, TestCase):
-    template_name = 'advicer/advice_form.html'
-    url = reverse_lazy('advicer:create')
+    template_name = "advicer/advice_form.html"
+    url = reverse_lazy("advicer:create")
 
     def setUp(self):
         super(AdviceCreateTestCase, self).setUp()
-        self.user = StaffFactory(username='john')
+        self.user = StaffFactory(username="john")
         self.issue = IssueFactory()
 
     def test_keep_issues(self):
         self.login()
-        resp = self.client.post(self.url, data={
-            'issues': [self.issue.pk],
-            'advicer': self.user.pk,
-            'grant_on': datetime.datetime.now(),
-            'attachment_set-INITIAL_FORMS': '0',
-            'attachment_set-MAX_NUM_FORMS': '1000',
-            'attachment_set-MIN_NUM_FORMS': '0',
-            'attachment_set-TOTAL_FORMS': '3',
-        })
+        resp = self.client.post(
+            self.url,
+            data={
+                "issues": [self.issue.pk],
+                "advicer": self.user.pk,
+                "grant_on": datetime.datetime.now(),
+                "attachment_set-INITIAL_FORMS": "0",
+                "attachment_set-MAX_NUM_FORMS": "1000",
+                "attachment_set-MIN_NUM_FORMS": "0",
+                "attachment_set-TOTAL_FORMS": "3",
+            },
+        )
         self.assertEqual(resp.status_code, 302)
         advice = Advice.objects.last()
         self.assertTrue(advice.issues.filter(pk=self.issue.pk).exists())
 
 
 class AdviceDeleteTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, TestCase):
-    template_name = 'advicer/advice_confirm_delete.html'
+    template_name = "advicer/advice_confirm_delete.html"
 
     def setUp(self):
         super(AdviceDeleteTestCase, self).setUp()
         self.instance = AdviceFactory(advicer=self.user)
-        self.url = reverse('advicer:delete', kwargs={'pk': self.instance.pk})
+        self.url = reverse("advicer:delete", kwargs={"pk": self.instance.pk})
 
     def test_field_update(self):
         self.login()
@@ -140,35 +143,53 @@ class AdviceDeleteTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
 
 
 class AdviceDetailTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, TestCase):
-    template_name = 'advicer/advice_detail.html'
+    template_name = "advicer/advice_detail.html"
 
     def setUp(self):
         super(AdviceDetailTestCase, self).setUp()
-        self.url = reverse('advicer:detail', kwargs={'pk': self.instance.pk})
+        self.url = reverse("advicer:detail", kwargs={"pk": self.instance.pk})
 
     def test_linebreaks_in_comment(self):
         obj = AdviceFactory(created_by=self.user, comment="Lorem\nipsum")
         self.login()
         resp = self.client.get(obj.get_absolute_url())
-        self.assertContains(resp, 'Lorem<br>ipsum')
+        self.assertContains(resp, "Lorem<br>ipsum")
 
 
 class AdviceQuerySetTestCase(TestCase):
     def test_for_user(self):
-        self.assertFalse(Advice.objects.for_user(UserFactory()).filter(pk=AdviceFactory().pk).exists())
+        self.assertFalse(
+            Advice.objects.for_user(UserFactory())
+            .filter(pk=AdviceFactory().pk)
+            .exists()
+        )
         # has perm
         user = UserFactory()
-        assign_perm('advicer.can_view_all_advices', user)
-        self.assertTrue(Advice.objects.for_user(user).filter(pk=AdviceFactory().pk).exists())
+        assign_perm("advicer.can_view_all_advices", user)
+        self.assertTrue(
+            Advice.objects.for_user(user).filter(pk=AdviceFactory().pk).exists()
+        )
         # advicer
         user = UserFactory()
-        self.assertTrue(Advice.objects.for_user(user).filter(pk=AdviceFactory(advicer=user).pk).exists())
+        self.assertTrue(
+            Advice.objects.for_user(user)
+            .filter(pk=AdviceFactory(advicer=user).pk)
+            .exists()
+        )
         # created_by
-        self.assertTrue(Advice.objects.for_user(user).filter(pk=AdviceFactory(created_by=user).pk).exists())
+        self.assertTrue(
+            Advice.objects.for_user(user)
+            .filter(pk=AdviceFactory(created_by=user).pk)
+            .exists()
+        )
 
     def test_visible(self):
-        self.assertTrue(Advice.objects.visible().filter(pk=AdviceFactory(visible=True).pk).exists())
-        self.assertFalse(Advice.objects.visible().filter(pk=AdviceFactory(visible=False).pk).exists())
+        self.assertTrue(
+            Advice.objects.visible().filter(pk=AdviceFactory(visible=True).pk).exists()
+        )
+        self.assertFalse(
+            Advice.objects.visible().filter(pk=AdviceFactory(visible=False).pk).exists()
+        )
 
 
 class AdviceAdminTestCase(AdminTestCaseMixin, TestCase):

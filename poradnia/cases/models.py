@@ -6,16 +6,23 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from django.db import models
-from django.db.models import Count, F, Func, IntegerField, Prefetch, Q, \
-    expressions, BooleanField
+from django.db.models import (
+    Count,
+    F,
+    Func,
+    IntegerField,
+    Prefetch,
+    Q,
+    expressions,
+    BooleanField,
+)
 
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
-from guardian.shortcuts import (assign_perm, get_objects_for_user,
-                                get_users_with_perms)
+from guardian.shortcuts import assign_perm, get_objects_for_user, get_users_with_perms
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
@@ -23,30 +30,33 @@ from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 
 from django.urls import reverse
 
-CASE_PK_RE = 'sprawa-<int:pk>@porady.siecobywatelska.pl'
+CASE_PK_RE = "sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
+
 
 class CaseQuerySet(QuerySet):
     def for_assign(self, user):
         return self.filter(
             caseuserobjectpermission__user=user,
-            caseuserobjectpermission__permission__codename='can_view')
+            caseuserobjectpermission__permission__codename="can_view",
+        )
 
     def for_user(self, user):
-        return get_objects_for_user(user, 'can_view', self)
+        return get_objects_for_user(user, "can_view", self)
 
     def with_perm(self):
-        return self.prefetch_related('caseuserobjectpermission_set')
+        return self.prefetch_related("caseuserobjectpermission_set")
 
     def with_record_count(self):
-        return self.annotate(record_count=Count('record'))
+        return self.annotate(record_count=Count("record"))
 
     def with_involved_staff(self):
-        qs = (CaseUserObjectPermission.objects
-              .filter(user__is_staff=True)
-              .select_related('permission', 'user')
-              .all())
+        qs = (
+            CaseUserObjectPermission.objects.filter(user__is_staff=True)
+            .select_related("permission", "user")
+            .all()
+        )
         return self.prefetch_related(
-            Prefetch('caseuserobjectpermission_set', queryset=qs)
+            Prefetch("caseuserobjectpermission_set", queryset=qs)
         )
 
     def by_involved_in(self, user, by_user=True, by_group=False):
@@ -54,16 +64,13 @@ class CaseQuerySet(QuerySet):
         if by_user:
             condition = condition | Q(caseuserobjectpermission__user=user)
         if by_group:
-            condition = condition | Q(
-                casegroupobjectpermission__group__user=user
-            )
+            condition = condition | Q(casegroupobjectpermission__group__user=user)
         return self.filter(condition)
 
     def by_msg(self, message):
-        envelope = (
-            message.get_email_object().get('Envelope-To') or
-            message.get_email_object().get('To')
-        )
+        envelope = message.get_email_object().get(
+            "Envelope-To"
+        ) or message.get_email_object().get("To")
         if not envelope:
             return self.none()
 
@@ -71,159 +78,116 @@ class CaseQuerySet(QuerySet):
 
         if not result:
             return self.none()
-        return self.filter(pk=result.group('pk'))
+        return self.filter(pk=result.group("pk"))
 
     def by_addresses(self, addresses):
         pks = [
-            re.match(CASE_PK_RE, address).group('pk')
+            re.match(CASE_PK_RE, address).group("pk")
             for address in addresses
             if re.match(CASE_PK_RE, address)
         ]
         return self.filter(pk__in=pks)
 
     def order_for_user(self, user, is_next):
-        order = '' if is_next else '-'
+        order = "" if is_next else "-"
         if user.is_staff:
             field_name = self.model.STAFF_ORDER_DEFAULT_FIELD
         else:
             field_name = self.model.USER_ORDER_DEFAULT_FIELD
-        return self.order_by(
-            '%s%s' % (order, field_name),
-            '%s%s' % (order, 'pk')
-        )
+        return self.order_by("%s%s" % (order, field_name), "%s%s" % (order, "pk"))
 
     def with_month_year(self):
         return self.annotate(
-            month=Func(
-                F('created_on'),
-                function='month',
-                output_field=IntegerField()
-            )
+            month=Func(F("created_on"), function="month", output_field=IntegerField())
         ).annotate(
-            year=Func(
-                F('created_on'),
-                function='year',
-                output_field=IntegerField()
-            )
+            year=Func(F("created_on"), function="year", output_field=IntegerField())
         )
 
     def with_advice_status(self):
-        return self.annotate(
-            advice_count=Count('advice')
-        ).annotate(
+        return self.annotate(advice_count=Count("advice")).annotate(
             has_advice=expressions.Case(
                 expressions.When(advice_count=0, then=False),
                 default=True,
                 output_field=BooleanField(),
-            ),
+            )
         )
 
     def area(self, jst):
         return self.filter(
             advice__jst__tree_id=jst.tree_id,
-            advice__jst__lft__range=(jst.lft, jst.rght)
+            advice__jst__lft__range=(jst.lft, jst.rght),
         )
 
+
 class Case(models.Model):
-    STAFF_ORDER_DEFAULT_FIELD = 'last_action'
-    USER_ORDER_DEFAULT_FIELD = 'last_send'
-    STATUS = Choices(('0', 'free', _('free')),
-                     ('1', 'assigned', _('assigned')),
-                     ('2', 'closed', _('closed'))
-                     )
-    id = models.AutoField(
-        verbose_name=_('Numer sprawy'),
-        primary_key=True
+    STAFF_ORDER_DEFAULT_FIELD = "last_action"
+    USER_ORDER_DEFAULT_FIELD = "last_send"
+    STATUS = Choices(
+        ("0", "free", _("free")),
+        ("1", "assigned", _("assigned")),
+        ("2", "closed", _("closed")),
     )
-    name = models.CharField(
-        max_length=150,
-        verbose_name=_("Subject")
-    )
+    id = models.AutoField(verbose_name=_("Numer sprawy"), primary_key=True)
+    name = models.CharField(max_length=150, verbose_name=_("Subject"))
     status = StatusField()
-    status_changed = MonitorField(monitor='status')
+    status_changed = MonitorField(monitor="status")
     client = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
-        related_name='case_client',
+        related_name="case_client",
         on_delete=models.CASCADE,
-        verbose_name=_("Client")
+        verbose_name=_("Client"),
     )
-    letter_count = models.IntegerField(
-        default=0,
-        verbose_name=_("Letter count")
-    )
-    last_send = models.DateTimeField(
-        null=True,
-        blank=True,
-        verbose_name=_("Last send")
-    )
+    letter_count = models.IntegerField(default=0, verbose_name=_("Letter count"))
+    last_send = models.DateTimeField(null=True, blank=True, verbose_name=_("Last send"))
     last_action = models.DateTimeField(
-        null=True,
-        blank=True,
-        verbose_name=_("Last action")
+        null=True, blank=True, verbose_name=_("Last action")
     )
     last_received = models.DateTimeField(
-        null=True,
-        blank=True,
-        verbose_name=_("Last received")
+        null=True, blank=True, verbose_name=_("Last received")
     )
     deadline = models.ForeignKey(
-        to='events.Event',
+        to="events.Event",
         null=True,
         blank=True,
-        related_name='event_deadline',
+        related_name="event_deadline",
         on_delete=models.CASCADE,
-        verbose_name=_("Dead-line")
+        verbose_name=_("Dead-line"),
     )
     objects = CaseQuerySet.as_manager()
     created_by = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         related_name="case_created",
         verbose_name=_("Created by"),
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
-    created_on = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name=_("Created on")
-    )
+    created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))
     modified_by = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         null=True,
         on_delete=models.CASCADE,
         related_name="case_modified",
-        verbose_name=_("Modified by")
+        verbose_name=_("Modified by"),
     )
     modified_on = models.DateTimeField(
-        auto_now=True,
-        null=True,
-        blank=True,
-        verbose_name=_("Modified on")
+        auto_now=True, null=True, blank=True, verbose_name=_("Modified on")
     )
-    handled = models.BooleanField(
-        default=False,
-        verbose_name=_("Handled")
-    )
-    has_project = models.BooleanField(
-        default=False,
-        verbose_name=_("Has project")
-    )
+    handled = models.BooleanField(default=False, verbose_name=_("Handled"))
+    has_project = models.BooleanField(default=False, verbose_name=_("Has project"))
 
     def status_display(self):
         return self.STATUS[self.status]
 
     def get_absolute_url(self):
-        return reverse('cases:detail', kwargs={'pk': str(self.pk)})
+        return reverse("cases:detail", kwargs={"pk": str(self.pk)})
 
     def get_edit_url(self):
-        return reverse('cases:edit', kwargs={'pk': str(self.pk)})
+        return reverse("cases:edit", kwargs={"pk": str(self.pk)})
 
     def get_close_url(self):
-        return reverse('cases:close', kwargs={'pk': str(self.pk)})
+        return reverse("cases:close", kwargs={"pk": str(self.pk)})
 
     def get_users_with_perms(self, *args, **kwargs):
-        return get_users_with_perms(
-            self, with_group_users=False,
-            *args, **kwargs
-        )
+        return get_users_with_perms(self, with_group_users=False, *args, **kwargs)
 
     def __str__(self):
         return self.name
@@ -233,34 +197,32 @@ class Case(models.Model):
 
     # TODO: Remove
     def perm_check(self, user, perm):
-        if not (
-            user.has_perm('cases.' + perm) or
-            user.has_perm('cases.' + perm, self)
-        ):
+        if not (user.has_perm("cases." + perm) or user.has_perm("cases." + perm, self)):
             raise PermissionDenied
         return True
 
     class Meta:
-        ordering = ['last_send', ]
+        ordering = ["last_send"]
         verbose_name = _("Case")
         verbose_name_plural = _("Cases")
         permissions = (
-            ('can_view', _("Can view")),
-            ('can_assign', _("Can assign new permissions")),
-            ('can_send_to_client', _("Can send text to client")),
-            ('can_manage_permission', _("Can assign permission")),
-            ('can_add_record', _('Can add record')),
-            ('can_change_own_record', _("Can change own records")),
-            ('can_change_all_record', _("Can change all records")),
-            ('can_close_case', _("Can close case")),
+            ("can_view", _("Can view")),
+            ("can_assign", _("Can assign new permissions")),
+            ("can_send_to_client", _("Can send text to client")),
+            ("can_manage_permission", _("Can assign permission")),
+            ("can_add_record", _("Can add record")),
+            ("can_change_own_record", _("Can change own records")),
+            ("can_change_all_record", _("Can change all records")),
+            ("can_close_case", _("Can close case")),
             # Global permission
-            ('can_select_client', _("Can select client")),
+            ("can_select_client", _("Can select client")),
         )
 
     def update_handled(self):
         from poradnia.letters.models import Letter
+
         try:
-            obj = Letter.objects.case(self).filter(status='done').last()
+            obj = Letter.objects.case(self).filter(status="done").last()
             if obj.created_by.is_staff:
                 self.handled = True
             else:
@@ -271,6 +233,7 @@ class Case(models.Model):
 
     def update_counters(self, save=True):
         from poradnia.letters.models import Letter
+
         letters_list = Letter.objects.case(self)
         self.letter_count = letters_list.count()
         try:
@@ -292,9 +255,12 @@ class Case(models.Model):
             self.last_received = None
 
         try:
-            self.deadline = self.event_set.filter(deadline=True). \
-                filter(time__gte=timezone.now()). \
-                order_by('time').all()[0]
+            self.deadline = (
+                self.event_set.filter(deadline=True)
+                .filter(time__gte=timezone.now())
+                .order_by("time")
+                .all()[0]
+            )
         except IndexError:
             self.deadline = None
 
@@ -306,10 +272,10 @@ class Case(models.Model):
             return False
         content_type = ContentType.objects.get_for_model(Case)
         qs = CaseUserObjectPermission.objects.filter(
-            permission__codename='can_send_to_client',
+            permission__codename="can_send_to_client",
             permission__content_type=content_type,
             content_object=self,
-            user__is_staff=True
+            user__is_staff=True,
         )
         check = qs.exists()
         self.status = self.STATUS.assigned if check else self.STATUS.free
@@ -317,13 +283,13 @@ class Case(models.Model):
             self.save()
 
     def assign_perm(self):
-        assign_perm('can_view', self.created_by, self)  # assign creator
-        assign_perm('can_add_record', self.created_by, self)  # assign creator
-        if self.created_by.has_perm('cases.can_send_to_client'):
-            assign_perm('can_send_to_client', self.created_by, self)
+        assign_perm("can_view", self.created_by, self)  # assign creator
+        assign_perm("can_add_record", self.created_by, self)  # assign creator
+        if self.created_by.has_perm("cases.can_send_to_client"):
+            assign_perm("can_send_to_client", self.created_by, self)
         if self.created_by != self.client:
-            assign_perm('can_view', self.client, self)  # assign client
-            assign_perm('can_add_record', self.client, self)  # assign client
+            assign_perm("can_view", self.client, self)  # assign client
+            assign_perm("can_add_record", self.client, self)  # assign client
 
     # TODO: Remove
     def send_notification(self, actor, user_qs, target=None, **context):
@@ -331,10 +297,9 @@ class Case(models.Model):
             target = self
 
         for user in user_qs.exclude(pk=actor.pk):
-            user.notify(actor=actor,
-                        target=target,
-                        from_email=self.get_email(),
-                        **context)
+            user.notify(
+                actor=actor, target=target, from_email=self.get_email(), **context
+            )
 
     def get_next_for_user(self, user, **kwargs):
         return self.get_next_or_prev_for_user(is_next=True, user=user)
@@ -343,7 +308,7 @@ class Case(models.Model):
         return self.get_next_or_prev_for_user(is_next=False, user=user)
 
     def get_next_or_prev_for_user(self, is_next, user, **kwargs):
-        op = 'gt' if is_next else 'lt'
+        op = "gt" if is_next else "lt"
         if user.is_staff:
             field_name = self.STAFF_ORDER_DEFAULT_FIELD
         else:
@@ -351,11 +316,10 @@ class Case(models.Model):
         param = getattr(self, field_name)
         q = Q()
         if param:
-            q = q | Q(**{'%s__%s' % (field_name, op): param})
+            q = q | Q(**{"%s__%s" % (field_name, op): param})
         if self.pk:
-            q = q | Q(**{field_name: param, 'pk__%s' % op: self.pk})
-        manager = (self.__class__._default_manager.using(self._state.db)
-                   .filter(**kwargs))
+            q = q | Q(**{field_name: param, "pk__%s" % op: self.pk})
+        manager = self.__class__._default_manager.using(self._state.db).filter(**kwargs)
         qs = manager.filter(q)
         qs = qs.order_for_user(user=user, is_next=is_next)
         qs = qs.for_user(user)
@@ -363,8 +327,9 @@ class Case(models.Model):
         try:
             return qs[0]
         except IndexError:
-            raise self.DoesNotExist("%s matching query does not exist." %
-                                    self.__class__._meta.object_name)
+            raise self.DoesNotExist(
+                "%s matching query does not exist." % self.__class__._meta.object_name
+            )
 
 
 class CaseUserObjectPermission(UserObjectPermissionBase):
@@ -372,7 +337,7 @@ class CaseUserObjectPermission(UserObjectPermissionBase):
 
     def save(self, *args, **kwargs):
         super(CaseUserObjectPermission, self).save(*args, **kwargs)
-        if self.permission.codename == 'can_send_to_client':
+        if self.permission.codename == "can_send_to_client":
             self.content_object.status = self.content_object.STATUS.assigned
             self.content_object.save()
 
@@ -385,21 +350,13 @@ class CaseGroupObjectPermission(GroupObjectPermissionBase):
     content_object = models.ForeignKey(Case, on_delete=models.CASCADE)
 
 
-limit = {
-    'content_type__app_label': 'cases',
-    'content_type__model': 'case'
-}
+limit = {"content_type__app_label": "cases", "content_type__model": "case"}
 
 
 class PermissionGroup(models.Model):
-    name = models.CharField(
-        max_length=25,
-        verbose_name=_("Name")
-    )
+    name = models.CharField(max_length=25, verbose_name=_("Name"))
     permissions = models.ManyToManyField(
-        to=Permission,
-        verbose_name=_("Permissions"),
-        limit_choices_to=limit
+        to=Permission, verbose_name=_("Permissions"), limit_choices_to=limit
     )
 
     def __str__(self):
@@ -414,15 +371,11 @@ def notify_new_case(sender, instance, created, **kwargs):
         TemplateMailManager.send(
             template_key=TemplateKey.CASE_NEW,
             recipient_list=email,
-            context={'case': instance}
+            context={"case": instance},
         )
 
 
-post_save.connect(
-    receiver=notify_new_case,
-    sender=Case,
-    dispatch_uid="new_case_notify"
-)
+post_save.connect(receiver=notify_new_case, sender=Case, dispatch_uid="new_case_notify")
 
 
 def assign_perm_new_case(sender, instance, created, **kwargs):
@@ -431,7 +384,5 @@ def assign_perm_new_case(sender, instance, created, **kwargs):
 
 
 post_save.connect(
-    receiver=assign_perm_new_case,
-    sender=Case,
-    dispatch_uid="assign_perm_new_case"
+    receiver=assign_perm_new_case, sender=Case, dispatch_uid="assign_perm_new_case"
 )

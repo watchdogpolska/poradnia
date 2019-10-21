@@ -7,7 +7,8 @@ admin.site.register(Record)
 
 
 class RecordInline(admin.StackedInline):
-    '''
+    """
         Stacked Inline View for Record
-    '''
+    """
+
     model = Record

@@ -14,16 +14,18 @@ try:
 except ImportError:
     from django_filters.auth.models import User
 
-REGISTRATION_SUBJECT = 'Rejestracja w Poradni Sieci Obywatelskiej - Watchdog Polska'
+REGISTRATION_SUBJECT = "Rejestracja w Poradni Sieci Obywatelskiej - Watchdog Polska"
 
 
 class AnonymousNewCaseFormMyTests(TestCase):
     form_cls = NewCaseForm
-    data = {'email_registration': 'x123@wykop.pl',
-            'name': 'My famous subject',
-            'text': 'Letter text - Lorem ipsum',
-            'giodo': 'x'}
-    fields = ['name', 'text', 'email_registration', 'giodo']
+    data = {
+        "email_registration": "x123@wykop.pl",
+        "name": "My famous subject",
+        "text": "Letter text - Lorem ipsum",
+        "giodo": "x",
+    }
+    fields = ["name", "text", "email_registration", "giodo"]
 
     def get_form_kwargs(self):
         return dict(user=self.user, data=self.data)
@@ -60,10 +62,12 @@ class AnonymousNewCaseFormMyTests(TestCase):
         form = self.get_bound()
         form.is_valid()
 
-        staff = User.objects.create(username='user',
-                                    email='jack@example.com',
-                                    password='top_secret',
-                                    is_staff=True)
+        staff = User.objects.create(
+            username="user",
+            email="jack@example.com",
+            password="top_secret",
+            is_staff=True,
+        )
 
         staff.notify_new_case = True
         staff.save()
@@ -71,17 +75,17 @@ class AnonymousNewCaseFormMyTests(TestCase):
         obj = form.save()
 
         self.assertEqual(len(mail.outbox), 2)
-        self.assertIn(self.data['name'], mail.outbox[1].subject)
+        self.assertIn(self.data["name"], mail.outbox[1].subject)
         self.assertIn(str(obj.created_by), mail.outbox[1].subject)
 
     def test_fields_compare(self):
         self.assertEqual(list(self.get_bound().fields.keys()), self.fields)
 
     def test_login_required(self):
-        UserFactory(email=self.data['email_registration'])
+        UserFactory(email=self.data["email_registration"])
         form = self.get_bound()
-        self.assertIn('email_registration', form.errors)
+        self.assertIn("email_registration", form.errors)
 
     def test_login_not_required(self):
         form = self.get_bound()
-        self.assertNotIn('email_registration', form.errors)
+        self.assertNotIn("email_registration", form.errors)

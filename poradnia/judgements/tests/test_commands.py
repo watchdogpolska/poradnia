@@ -13,5 +13,5 @@ class RunCourtSessionParserTestCase(TestCase):
     def test_run_command_basic(self):
         court = CourtFactory(name="MyFooCourt")
         stdout = StringIO()
-        call_command('run_court_session_parser', stdout=stdout)
+        call_command("run_court_session_parser", stdout=stdout)
         self.assertIn("MyFooCourt", stdout.getvalue())

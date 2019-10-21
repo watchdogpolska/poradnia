@@ -16,7 +16,9 @@ class KeyQuerySet(QuerySet):
 
 class Key(models.Model):
     user = models.ForeignKey(User, verbose_name=_("User"), on_delete=models.CASCADE)
-    password = models.CharField(max_length=75, default=make_random_password, verbose_name=_("Key"))
+    password = models.CharField(
+        max_length=75, default=make_random_password, verbose_name=_("Key")
+    )
     description = models.CharField(max_length=75, verbose_name=_("Description"))
     created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))
     used_on = models.DateTimeField(null=True, verbose_name=_("Used on"))
@@ -24,7 +26,7 @@ class Key(models.Model):
     objects = KeyQuerySet.as_manager()
 
     def get_absolute_url(self):
-        return reverse('keys:details', kwargs={'pk': self.pk})
+        return reverse("keys:details", kwargs={"pk": self.pk})
 
     def __str__(self):
         return "%s" % (self.created_on)

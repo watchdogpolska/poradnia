@@ -1,8 +1,12 @@
 from atom.ext.crispy_forms.views import FormSetMixin
 from atom.views import ActionMessageMixin, ActionView, FormInitialMixin
-from braces.views import (FormValidMessageMixin, LoginRequiredMixin,
-                          SelectRelatedMixin, StaffuserRequiredMixin,
-                          UserFormKwargsMixin)
+from braces.views import (
+    FormValidMessageMixin,
+    LoginRequiredMixin,
+    SelectRelatedMixin,
+    StaffuserRequiredMixin,
+    UserFormKwargsMixin,
+)
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DetailView, UpdateView
@@ -27,18 +31,35 @@ class VisibleMixin(object):
         return qs.visible()
 
 
-class AdviceList(StaffuserRequiredMixin, PermissionMixin, SelectRelatedMixin, VisibleMixin,
-                 FilterView):
+class AdviceList(
+    StaffuserRequiredMixin,
+    PermissionMixin,
+    SelectRelatedMixin,
+    VisibleMixin,
+    FilterView,
+):
     model = Advice
     filterset_class = AdviceFilter
-    select_related = ["person_kind", "created_by", "advicer", "institution_kind",
-                      "case__client"]
+    select_related = [
+        "person_kind",
+        "created_by",
+        "advicer",
+        "institution_kind",
+        "case__client",
+    ]
     paginate_by = 25
     raise_exception = True
 
 
-class AdviceUpdate(StaffuserRequiredMixin, FormSetMixin, PermissionMixin, FormValidMessageMixin,
-                   UserFormKwargsMixin, VisibleMixin, UpdateView):
+class AdviceUpdate(
+    StaffuserRequiredMixin,
+    FormSetMixin,
+    PermissionMixin,
+    FormValidMessageMixin,
+    UserFormKwargsMixin,
+    VisibleMixin,
+    UpdateView,
+):
     model = Advice
     form_class = AdviceForm
     inline_model = Attachment
@@ -52,8 +73,14 @@ class AdviceUpdate(StaffuserRequiredMixin, FormSetMixin, PermissionMixin, FormVa
         return self.object
 
 
-class AdviceCreate(StaffuserRequiredMixin, FormSetMixin, FormInitialMixin, UserFormKwargsMixin,
-                   LoginRequiredMixin, CreateView):
+class AdviceCreate(
+    StaffuserRequiredMixin,
+    FormSetMixin,
+    FormInitialMixin,
+    UserFormKwargsMixin,
+    LoginRequiredMixin,
+    CreateView,
+):
     model = Advice
     form_class = AdviceForm
     inline_model = Attachment
@@ -62,23 +89,26 @@ class AdviceCreate(StaffuserRequiredMixin, FormSetMixin, FormInitialMixin, UserF
 
     def get_initial(self, *args, **kwargs):
         initial = super(AdviceCreate, self).get_initial(*args, **kwargs)
-        if 'case' in self.request.GET.dict():
+        if "case" in self.request.GET.dict():
             case = get_object_or_404(
-                Case.objects.for_user(self.request.user),
-                pk=self.request.GET['case']
+                Case.objects.for_user(self.request.user), pk=self.request.GET["case"]
             )
-            advicer = case.get_users_with_perms().\
-                filter(is_staff=True).first()
-            initial['advicer'] = advicer
+            advicer = case.get_users_with_perms().filter(is_staff=True).first()
+            initial["advicer"] = advicer
         return initial
 
 
-class AdviceDelete(StaffuserRequiredMixin, PermissionMixin, ActionView, VisibleMixin,
-                   ActionMessageMixin):
+class AdviceDelete(
+    StaffuserRequiredMixin,
+    PermissionMixin,
+    ActionView,
+    VisibleMixin,
+    ActionMessageMixin,
+):
     model = Advice
-    success_url = reverse_lazy('advicer:list')
+    success_url = reverse_lazy("advicer:list")
     success_message = _("{subject} deleted!")
-    template_name_suffix = '_confirm_delete'
+    template_name_suffix = "_confirm_delete"
     raise_exception = True
 
     def action(self):

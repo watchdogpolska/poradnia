@@ -7,13 +7,13 @@ from django.utils.translation import ugettext_lazy as _l
 
 
 class CustomLoginForm(SingleButtonMixin, LoginForm):
-    action_text = _l('Sign In')
+    action_text = _l("Sign In")
 
     def __init__(self, *args, **kwargs):
         super(CustomLoginForm, self).__init__(*args, **kwargs)
-        self.fields['login'].label = _('Login')
-        self.helper.form_class = 'login-form'
+        self.fields["login"].label = _("Login")
+        self.helper.form_class = "login-form"
         self.helper.layout = Layout(
-            PrependedText('login', '<i class="fa fa-user"></i>'),
-            PrependedText('password', '<i class="fa fa-key"></i>', type='password'),
+            PrependedText("login", '<i class="fa fa-user"></i>'),
+            PrependedText("password", '<i class="fa fa-key"></i>', type="password"),
         )

@@ -15,7 +15,7 @@ class CourtFactory(factory.django.DjangoModelFactory):
     parser_key = factory.Iterator(get_parser_keys())
 
     class Meta:
-        model = 'judgements.Court'
+        model = "judgements.Court"
 
 
 class CourtCaseFactory(factory.django.DjangoModelFactory):
@@ -25,7 +25,7 @@ class CourtCaseFactory(factory.django.DjangoModelFactory):
     created_by = factory.SubFactory(UserFactory)
 
     class Meta:
-        model = 'judgements.CourtCase'
+        model = "judgements.CourtCase"
 
 
 class CourtSessionFactory(factory.django.DjangoModelFactory):
@@ -34,7 +34,7 @@ class CourtSessionFactory(factory.django.DjangoModelFactory):
     parser_key = factory.Iterator(get_parser_keys())
 
     class Meta:
-        model = 'judgements.CourtSession'
+        model = "judgements.CourtSession"
 
 
 DESCRIPTION_PATTERN = "Sequanece:{n}\nSignature:{signature}\nTime:{datetime}"
@@ -46,9 +46,11 @@ class SessionRowFactory(factory.Factory):
 
     @factory.lazy_attribute_sequence
     def description(self, n):
-        return DESCRIPTION_PATTERN.format(n=n,
-                                          signature=self.signature,
-                                          datetime=self.datetime.strftime("%Y-%M-%D %h-%m"))
+        return DESCRIPTION_PATTERN.format(
+            n=n,
+            signature=self.signature,
+            datetime=self.datetime.strftime("%Y-%M-%D %h-%m"),
+        )
 
     class Meta:
         model = SessionRow

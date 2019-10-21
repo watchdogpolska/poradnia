@@ -13,10 +13,7 @@ from django.urls import reverse
 
 
 class AbstractCategory(models.Model):
-    name = models.CharField(
-        max_length=100,
-        verbose_name=_("Name")
-    )
+    name = models.CharField(max_length=100, verbose_name=_("Name"))
 
     def __str__(self):
         return self.name
@@ -51,7 +48,7 @@ class InstitutionKind(AbstractCategory):
 
 class AdviceQuerySet(QuerySet):
     def for_user(self, user):
-        if user.has_perm('advicer.can_view_all_advices'):
+        if user.has_perm("advicer.can_view_all_advices"):
             return self
         return self.filter(Q(advicer=user.pk) | Q(created_by=user.pk))
 
@@ -60,102 +57,74 @@ class AdviceQuerySet(QuerySet):
 
     def area(self, jst):
         return self.filter(
-            jst__tree_id=jst.tree_id,
-            jst__lft__range=(jst.lft, jst.rght)
+            jst__tree_id=jst.tree_id, jst__lft__range=(jst.lft, jst.rght)
         )
+
 
 class Advice(models.Model):
     case = models.OneToOneField(
-        to=Case,
-        null=True,
-        blank=True,
-        on_delete=models.CASCADE,
-        verbose_name=_("Case")
+        to=Case, null=True, blank=True, on_delete=models.CASCADE, verbose_name=_("Case")
     )
     subject = models.CharField(
-        max_length=100,
-        verbose_name=_("Subject"),
-        null=True,
-        blank=True
+        max_length=100, verbose_name=_("Subject"), null=True, blank=True
     )
     issues = models.ManyToManyField(
-        to=Issue,
-        verbose_name=Issue._meta.verbose_name_plural,
-        blank=True
+        to=Issue, verbose_name=Issue._meta.verbose_name_plural, blank=True
     )
     area = models.ManyToManyField(
-        to=Area,
-        verbose_name=Area._meta.verbose_name_plural,
-        blank=True
+        to=Area, verbose_name=Area._meta.verbose_name_plural, blank=True
     )
     person_kind = models.ForeignKey(
         PersonKind,
         null=True,
         blank=True,
         on_delete=models.CASCADE,
-        verbose_name=PersonKind._meta.verbose_name
+        verbose_name=PersonKind._meta.verbose_name,
     )
     institution_kind = models.ForeignKey(
         to=InstitutionKind,
         verbose_name=InstitutionKind._meta.verbose_name,
         null=True,
         blank=True,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
     )
     advicer = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         verbose_name=_("Advicer"),
         help_text=_("Person who give a advice"),
-        limit_choices_to={'is_staff': True},
-        on_delete=models.CASCADE
+        limit_choices_to={"is_staff": True},
+        on_delete=models.CASCADE,
     )
-    grant_on = models.DateTimeField(
-        default=now,
-        verbose_name=_("Grant on")
-    )
+    grant_on = models.DateTimeField(default=now, verbose_name=_("Grant on"))
     created_by = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         verbose_name=_("Created by"),
-        related_name='advice_created_by',
-        on_delete=models.CASCADE
+        related_name="advice_created_by",
+        on_delete=models.CASCADE,
     )
     created_on = models.DateTimeField(
-        auto_now_add=True,
-        verbose_name=_("Creation date")
+        auto_now_add=True, verbose_name=_("Creation date")
     )
-    helped = models.NullBooleanField(
-        verbose_name=_("We helped?"),
-        blank=True
-    )
+    helped = models.NullBooleanField(verbose_name=_("We helped?"), blank=True)
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         null=True,
         verbose_name=_("Modified by"),
-        related_name='advice_modified_by',
-        on_delete=models.CASCADE
+        related_name="advice_modified_by",
+        on_delete=models.CASCADE,
     )
     modified_on = models.DateTimeField(
-        auto_now=True,
-        null=True,
-        blank=True,
-        verbose_name=_("Modification date")
+        auto_now=True, null=True, blank=True, verbose_name=_("Modification date")
     )
-    visible = models.BooleanField(
-        default=True,
-        verbose_name=_("Visible")
-    )
-    comment = models.TextField(
-        verbose_name=_("Comment"),
-        null=True,
-        blank=True
-    )
+    visible = models.BooleanField(default=True, verbose_name=_("Visible"))
+    comment = models.TextField(verbose_name=_("Comment"), null=True, blank=True)
     jst = models.ForeignKey(
         to=JST,
         null=True,
         blank=True,
         on_delete=models.CASCADE,
-        verbose_name=_('Unit of administrative division'),
-        db_index=True
+        verbose_name=_("Unit of administrative division"),
+        db_index=True,
     )
     objects = AdviceQuerySet.as_manager()
 
@@ -163,21 +132,17 @@ class Advice(models.Model):
         return self.subject or _("Advice #%d") % (self.pk)
 
     def get_absolute_url(self):
-        return reverse('advicer:detail', kwargs={'pk': self.pk})
+        return reverse("advicer:detail", kwargs={"pk": self.pk})
 
     class Meta:
-        ordering = ['-created_on', ]
-        permissions = (('can_view_all_advices', _("Can view all advices"),),
-                       )
+        ordering = ["-created_on"]
+        permissions = (("can_view_all_advices", _("Can view all advices")),)
         verbose_name = _("Advice")
         verbose_name_plural = _("Advices")
 
 
 class Attachment(AttachmentBase):
-    advice = models.ForeignKey(
-        to=Advice,
-        on_delete=models.CASCADE
-    )
+    advice = models.ForeignKey(to=Advice, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = _("Attachment")
