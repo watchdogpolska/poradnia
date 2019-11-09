@@ -26,7 +26,7 @@ class ItemAdmin(admin.ModelAdmin):
         return obj.count_values
 
     def get_queryset(self, request):
-        qs = super(ItemAdmin, self).get_queryset(request)
+        qs = super().get_queryset(request)
         return qs.annotate(count_values=Count("value"))
 
     def get_list_display(self, request):
@@ -37,7 +37,7 @@ class ItemAdmin(admin.ModelAdmin):
                 )
             return self._cached_last_value.get(obj.pk, None)
 
-        return super(ItemAdmin, self).get_list_display(request) + [last_value]
+        return super().get_list_display(request) + [last_value]
 
 
 @admin.register(Graph)
@@ -54,5 +54,5 @@ class GraphAdmin(admin.ModelAdmin):
         return obj.count_items
 
     def get_queryset(self, request):
-        qs = super(GraphAdmin, self).get_queryset(request)
+        qs = super().get_queryset(request)
         return qs.annotate(count_items=Count("items"))

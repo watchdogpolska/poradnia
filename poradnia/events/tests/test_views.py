@@ -13,7 +13,7 @@ class EventCreateViewTestCase(PermissionStatusMixin, TestCase):
     permission = ["cases.can_add_record"]
 
     def setUp(self):
-        super(EventCreateViewTestCase, self).setUp()
+        super().setUp()
         self.user = UserFactory(username="john")
         self.case = self.permission_object = CaseFactory()
         self.url = reverse("events:add", kwargs={"case_pk": self.case.pk})
@@ -37,7 +37,7 @@ class EventUpdateViewTestCase(PermissionStatusMixin, TestCase):
     permission = ["cases.can_add_record"]
 
     def setUp(self):
-        super(EventUpdateViewTestCase, self).setUp()
+        super().setUp()
         self.user = UserFactory(username="john")
         self.event = EventFactory()
         self.permission_object = self.event.case

@@ -43,7 +43,7 @@ class UserPermissionCreateView(CasePermissionTestMixin, FormView):
     template_name = "cases/case_form_permission_add.html"
 
     def get_form_kwargs(self, *args, **kwargs):
-        kwargs = super(UserPermissionCreateView, self).get_form_kwargs(*args, **kwargs)
+        kwargs = super().get_form_kwargs(*args, **kwargs)
         kwargs.update({"obj": self.case, "actor": self.request.user})
         return kwargs
 
@@ -62,13 +62,13 @@ class UserPermissionCreateView(CasePermissionTestMixin, FormView):
                 ),
             )
         self.case.status_update()
-        return super(UserPermissionCreateView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_success_url(self):
         return reverse("cases:detail", kwargs={"pk": str(self.case.pk)})
 
     def get_context_data(self, **kwargs):
-        context = super(UserPermissionCreateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["object"] = self.case
         return context
 
@@ -80,7 +80,7 @@ class UserPermissionUpdateView(
     template_name = "cases/case_form_permission_update.html"
 
     def get_form_kwargs(self):
-        kwargs = super(UserPermissionUpdateView, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         self.action_user = get_object_or_404(
             get_user_model(), username=self.kwargs["username"]
         )
@@ -92,14 +92,14 @@ class UserPermissionUpdateView(
         return get_perms(self.action_user, self.case)
 
     def get_context_data(self, **kwargs):
-        context = super(UserPermissionUpdateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["object"] = self.case
         context["action_user"] = self.action_user
         return context
 
     def form_valid(self, form):
         form.save_obj_perms()
-        return super(UserPermissionUpdateView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_form_valid_message(self):
         return _("Updated permission %(user)s to %(case)s!").format(
@@ -122,22 +122,20 @@ class CaseGroupPermissionView(CasePermissionTestMixin, FormValidMessageMixin, Fo
 
     def get_form_kwargs(self):
         self.object = self.get_object()
-        kwargs = super(CaseGroupPermissionView, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs.update({"case": self.object, "user": self.request.user})
         return kwargs
 
     def form_valid(self, form, *args, **kwargs):
         self.form = form
         form.assign()
-        return super(CaseGroupPermissionView, self).form_valid(
-            form=form, *args, **kwargs
-        )
+        return super().form_valid(form=form, *args, **kwargs)
 
     def get_success_url(self):
         return reverse("cases:detail", kwargs={"pk": str(self.object.pk)})
 
     def get_context_data(self, *args, **kwargs):
-        context = super(CaseGroupPermissionView, self).get_context_data(*args, **kwargs)
+        context = super().get_context_data(*args, **kwargs)
         context["object"] = self.object
         return context
 
@@ -170,7 +168,7 @@ class UserPermissionRemoveView(
         )
 
     def get_context_data(self, **kwargs):
-        return super(UserPermissionRemoveView, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)
 
     def get_success_url(self):
         return self.object.get_absolute_url()

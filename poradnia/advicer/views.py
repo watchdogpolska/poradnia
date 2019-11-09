@@ -25,9 +25,9 @@ from django.urls import reverse_lazy
 ORDERING_TEXT = _("Ordering")
 
 
-class VisibleMixin(object):
+class VisibleMixin:
     def get_queryset(self, *args, **kwargs):
-        qs = super(VisibleMixin, self).get_queryset(*args, **kwargs)
+        qs = super().get_queryset(*args, **kwargs)
         return qs.visible()
 
 
@@ -88,7 +88,7 @@ class AdviceCreate(
     raise_exception = True
 
     def get_initial(self, *args, **kwargs):
-        initial = super(AdviceCreate, self).get_initial(*args, **kwargs)
+        initial = super().get_initial(*args, **kwargs)
         if "case" in self.request.GET.dict():
             case = get_object_or_404(
                 Case.objects.for_user(self.request.user), pk=self.request.GET["case"]

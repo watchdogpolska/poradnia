@@ -6,5 +6,5 @@ from poradnia.users.filters import UserChoiceFilter
 
 class AtomFeedbackFilter(FeedbackFilter):
     def __init__(self, *args, **kwargs):
-        super(AtomFeedbackFilter, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.filters["user"] = UserChoiceFilter(label=_("User"), field_name="user")

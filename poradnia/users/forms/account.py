@@ -9,7 +9,7 @@ from django.utils.translation import ugettext as _
 
 class SignupForm(FormHorizontalMixin, GIODOMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(SignupForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper.label_class = "col-lg-3"
         self.helper.field_class = "col-lg-9"
         self.helper.layout = Layout(

@@ -337,11 +337,11 @@ def process_django_model(app, what, name, obj, options, lines):
             if help_text:
                 # Add the model field to the end of the docstring as a param
                 # using the help text as the description
-                lines.append(":param %s: %s" % (field.attname, help_text))
+                lines.append(":param {}: {}".format(field.attname, help_text))
             else:
                 # Add the model field to the end of the docstring as a param
                 # using the verbose name as the description
-                lines.append(":param %s: %s" % (field.attname, verbose_name))
+                lines.append(":param {}: {}".format(field.attname, verbose_name))
 
             # Add the field's type to the docstring
             if isinstance(
@@ -357,7 +357,7 @@ def process_django_model(app, what, name, obj, options, lines):
                     )
                 )
             else:
-                lines.append(":type %s: %s" % (field.attname, type(field).__name__))
+                lines.append(":type {}: {}".format(field.attname, type(field).__name__))
     # Return the extended docstring
     return lines
 
@@ -372,7 +372,7 @@ def process_django_view(app, what, name, obj, options, lines):
                 walker(flat_patterns, pattern.url_patterns, pattern.namespace)
             else:
                 urlname = (
-                    "%s:%s" % (namespace, pattern.name) if namespace else pattern.name
+                    "{}:{}".format(namespace, pattern.name) if namespace else pattern.name
                 )
                 flat_patterns.append([urlname, pattern.callback])
 
@@ -390,7 +390,7 @@ def process_django_form(app, what, name, obj, options, lines):
 
     if inspect.isclass(obj) and issubclass(obj, (forms.Form, forms.ModelForm)):
         for fieldname, field in obj.base_fields.items():
-            lines.append(":param %s: %s" % (fieldname, field.label))
+            lines.append(":param {}: {}".format(fieldname, field.label))
 
 
 def setup(app):

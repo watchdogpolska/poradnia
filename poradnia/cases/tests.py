@@ -337,7 +337,7 @@ class CaseAdminTestCase(AdminTestCaseMixin, TestCase):
 
     def setUp(self):
         self.site = AdminSite()
-        super(CaseAdminTestCase, self).setUp()
+        super().setUp()
 
     def assertIsValid(
         self, model_admin, model

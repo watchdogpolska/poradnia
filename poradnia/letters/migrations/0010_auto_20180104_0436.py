@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
                 default=django.utils.timezone.now,
                 monitor="status",
                 verbose_name="Accepted on",
-                when=set(["done"]),
+                when={"done"},
             ),
         ),
         migrations.AlterField(

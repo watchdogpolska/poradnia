@@ -19,5 +19,5 @@ def has_perms(user, perms, obj=None, required_all=True):
 
 class PermissionMixin(LoginRequiredMixin, View):
     def get_queryset(self, *args, **kwargs):
-        qs = super(PermissionMixin, self).get_queryset(*args, **kwargs)
+        qs = super().get_queryset(*args, **kwargs)
         return qs.for_user(self.request.user)

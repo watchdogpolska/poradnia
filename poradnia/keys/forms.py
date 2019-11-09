@@ -11,7 +11,7 @@ class KeyForm(UserKwargModelFormMixin, SingleButtonMixin, ModelForm):
         fields = ["description"]
 
     def save(self, commit=True, *args, **kwargs):
-        obj = super(KeyForm, self).save(commit=False, *args, **kwargs)
+        obj = super().save(commit=False, *args, **kwargs)
         obj.user = self.user
         if commit:
             obj.save()

@@ -12,7 +12,7 @@ def get_perm(p, codenames=None):
     qs = p.objects.filter(
         **{"content_type__app_label": "cases", "content_type__model": "case"}
     )
-    if codenames is not "__all__":
+    if codenames != "__all__":
         qs = qs.filter(codename__in=codenames)
     return qs.all()
 

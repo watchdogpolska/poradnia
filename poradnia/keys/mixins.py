@@ -6,7 +6,7 @@ from django.utils.timezone import now
 from .models import Key
 
 
-class KeyAuthMixin(object):
+class KeyAuthMixin:
     def get_user_data(self, request):
         if "HTTP_AUTHORIZATION" in request.META:
             auth = request.META["HTTP_AUTHORIZATION"].split()
@@ -29,5 +29,5 @@ class KeyAuthMixin(object):
                 user = None
             if user is not None and user.is_active:
                 request.user = user
-                return super(KeyAuthMixin, self).dispatch(request, *args, **kwargs)
+                return super().dispatch(request, *args, **kwargs)
         return HttpResponse("Unauthorized", status=401)

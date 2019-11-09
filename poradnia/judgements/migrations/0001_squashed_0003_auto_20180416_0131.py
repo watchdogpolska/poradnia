@@ -194,6 +194,6 @@ class Migration(migrations.Migration):
             field=models.CharField(help_text="Court signature", max_length=50),
         ),
         migrations.AlterUniqueTogether(
-            name="courtcase", unique_together=set([("court", "signature")])
+            name="courtcase", unique_together={("court", "signature")}
         ),
     ]

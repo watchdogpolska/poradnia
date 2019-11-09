@@ -15,7 +15,7 @@ class CaseAdmin(GuardedModelAdmin):
         return obj.record_count
 
     def get_queryset(self, *args, **kwargs):
-        qs = super(CaseAdmin, self).get_queryset(*args, **kwargs)
+        qs = super().get_queryset(*args, **kwargs)
         return qs.with_record_count()
 
 
@@ -32,5 +32,5 @@ class PermissionGroupAdmin(admin.ModelAdmin):
         return ", ".join([_(x.name) for x in obj.permissions.all()])
 
     def get_queryset(self, request):
-        qs = super(PermissionGroupAdmin, self).get_queryset(request)
+        qs = super().get_queryset(request)
         return qs.prefetch_related("permissions")

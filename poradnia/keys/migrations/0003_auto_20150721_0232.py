@@ -7,6 +7,6 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.AlterUniqueTogether(
-            name="key", unique_together=set([("user", "password")])
+            name="key", unique_together={("user", "password")}
         )
     ]

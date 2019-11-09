@@ -14,9 +14,9 @@ from .factories import AdviceFactory, IssueFactory
 from django.urls import reverse
 
 
-class PermissionMixin(object):
+class PermissionMixin:
     def setUp(self):
-        super(PermissionMixin, self).setUp()
+        super().setUp()
         self.user = StaffFactory()
 
     def login(self, username=None):
@@ -31,16 +31,16 @@ class PermissionMixin(object):
         self.test_anonymous_denied()
 
 
-class TemplateUsedMixin(object):
+class TemplateUsedMixin:
     def test_template_used(self):
         self.login()
         resp = self.client.get(self.url)
         self.assertTemplateUsed(resp, self.template_name)
 
 
-class InstanceMixin(object):
+class InstanceMixin:
     def setUp(self):
-        super(InstanceMixin, self).setUp()
+        super().setUp()
         self.instance = AdviceFactory(advicer=self.user)
 
     def test_contains_subject(self):
@@ -84,7 +84,7 @@ class AdviceUpdateTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
     template_name = "advicer/advice_form.html"
 
     def setUp(self):
-        super(AdviceUpdateTestCase, self).setUp()
+        super().setUp()
         self.instance = AdviceFactory(advicer=self.user)
         self.url = reverse("advicer:update", kwargs={"pk": self.instance.pk})
 
@@ -99,7 +99,7 @@ class AdviceCreateTestCase(PermissionMixin, TemplateUsedMixin, TestCase):
     url = reverse_lazy("advicer:create")
 
     def setUp(self):
-        super(AdviceCreateTestCase, self).setUp()
+        super().setUp()
         self.user = StaffFactory(username="john")
         self.issue = IssueFactory()
 
@@ -126,7 +126,7 @@ class AdviceDeleteTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
     template_name = "advicer/advice_confirm_delete.html"
 
     def setUp(self):
-        super(AdviceDeleteTestCase, self).setUp()
+        super().setUp()
         self.instance = AdviceFactory(advicer=self.user)
         self.url = reverse("advicer:delete", kwargs={"pk": self.instance.pk})
 
@@ -146,7 +146,7 @@ class AdviceDetailTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
     template_name = "advicer/advice_detail.html"
 
     def setUp(self):
-        super(AdviceDetailTestCase, self).setUp()
+        super().setUp()
         self.url = reverse("advicer:detail", kwargs={"pk": self.instance.pk})
 
     def test_linebreaks_in_comment(self):

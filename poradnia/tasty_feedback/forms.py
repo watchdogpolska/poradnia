@@ -11,7 +11,7 @@ from django.urls import reverse
 
 class FeedbackForm(UserKwargModelFormMixin, ModelForm):
     def __init__(self, *args, **kwargs):
-        super(FeedbackForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper = getattr(self, "helper", FormHelper())
         self.helper.add_input(
             Submit("action", _("Submit feedback"), css_class="btn-primary")
@@ -21,7 +21,7 @@ class FeedbackForm(UserKwargModelFormMixin, ModelForm):
     def save(self, *args, **kwargs):
         if not self.user.is_anonymous:
             self.instance.user = self.user
-        return super(FeedbackForm, self).save(*args, **kwargs)
+        return super().save(*args, **kwargs)
 
     class Meta:
         model = Feedback

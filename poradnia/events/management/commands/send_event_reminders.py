@@ -34,9 +34,7 @@ class Command(BaseCommand):
             users = users.select_related("profile")
             for user in users:
                 if user.id in user_notified:
-                    msg = str("Skip notification about {} to user {}").format(
-                        event, user
-                    )
+                    msg = "Skip notification about {} to user {}".format(event, user)
                     self.stdout.write(msg)
                     continue
                 self.event_for_user(event, user)
@@ -52,7 +50,7 @@ class Command(BaseCommand):
         notification_deadline = timedelta(days=deadline_days)
 
         if self.today + notification_deadline > event.time:
-            msg = str("Sending notification about {} to user {}").format(event, user)
+            msg = "Sending notification about {} to user {}".format(event, user)
             self.stdout.write(msg)
 
             user.notify(

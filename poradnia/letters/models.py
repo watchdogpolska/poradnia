@@ -30,7 +30,7 @@ logger = logging.getLogger(__name__)
 
 class LetterQuerySet(AbstractRecordQuerySet):
     def for_user(self, user):
-        qs = super(LetterQuerySet, self).for_user(user)
+        qs = super().for_user(user)
         if not user.is_staff:
             qs = qs.filter(status=Letter.STATUS.done)
         return qs
@@ -118,7 +118,7 @@ class Letter(AbstractRecord):
 
     def get_absolute_url(self):
         case_url = self.record.case_get_absolute_url()
-        return "%s#letter-%s" % (case_url, self.pk)
+        return "{}#letter-{}".format(case_url, self.pk)
 
     def is_done(self):
         return True if self.status == self.STATUS.done else False
@@ -161,7 +161,7 @@ class Letter(AbstractRecord):
                     Q(pk__in=self.get_users_with_perms().filter(is_staff=True))
                     | Q(pk__in=management)
                 )
-        return super(Letter, self).send_notification(*args, **kwargs)
+        return super().send_notification(*args, **kwargs)
 
     class Meta:
         verbose_name = _("Letter")

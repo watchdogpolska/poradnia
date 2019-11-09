@@ -9,7 +9,7 @@ polish_letters += b"\xc4\x85\xc5\xbc\xc5\xba\xc4\x87\xc5\x84\xc3\xb3".decode("ut
 
 class FuzzyPolishText(factory.fuzzy.FuzzyText):
     def __init__(self, prefix="", length=12, suffix="", chars=polish_letters, **kwargs):
-        super(FuzzyPolishText, self).__init__(prefix, length, suffix, chars, **kwargs)
+        super().__init__(prefix, length, suffix, chars, **kwargs)
 
 
 class UserFactory(factory.django.DjangoModelFactory):

@@ -68,11 +68,11 @@ class Migration(migrations.Migration):
         ),
         migrations.AlterUniqueTogether(
             name="caseuserobjectpermission",
-            unique_together=set([("user", "permission", "content_object")]),
+            unique_together={("user", "permission", "content_object")},
         ),
         migrations.AlterUniqueTogether(
             name="casegroupobjectpermission",
-            unique_together=set([("group", "permission", "content_object")]),
+            unique_together={("group", "permission", "content_object")},
         ),
         migrations.AlterModelOptions(
             name="case",

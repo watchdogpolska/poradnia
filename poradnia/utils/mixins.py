@@ -4,7 +4,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.db.models import Q
 
 
-class ExprAutocompleteMixin(object):
+class ExprAutocompleteMixin:
     def get_search_expr(self):
         if not hasattr(self, "search_expr"):
             raise ImproperlyConfigured(
