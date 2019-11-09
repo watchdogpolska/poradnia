@@ -14,7 +14,7 @@ migrate:
 	docker-compose run web python manage.py migrate
 
 pyupgrade:
-	docker-compose run web bash -c 'find . -name "*.py" ! \( -wholename "./node_modules/*" -o -wholename "./bower_components/*" \) | xargs pyupgrade --py3-only'
+	docker run --rm -v $$(pwd):/data quay.io/watchdogpolska/pyupgrade
 
 lint: pyupgrade
 	docker run --rm -v $$(pwd):/data cytopia/black --check /data
