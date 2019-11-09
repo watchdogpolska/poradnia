@@ -6,7 +6,7 @@ from poradnia.events.models import Event
 from poradnia.judgements.models import CourtCase, CourtSession
 
 
-class Manager(object):
+class Manager:
     def __init__(self, bot, stdout=sys.stdout, stderr=sys.stderr):
         self.bot = bot
         self.stdout = stdout

@@ -66,7 +66,7 @@ class Migration(migrations.Migration):
                     "accept",
                     model_utils.fields.MonitorField(
                         default=django.utils.timezone.now,
-                        when=set([b"done"]),
+                        when={b"done"},
                         monitor=b"status",
                     ),
                 ),

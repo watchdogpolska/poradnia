@@ -22,7 +22,7 @@ class KeyDetailView(PermissionMixin, DetailView):
     model = Key
 
     def get_object(self, *args, **kwargs):
-        obj = super(KeyDetailView, self).get_object(*args, **kwargs)
+        obj = super().get_object(*args, **kwargs)
         obj.download_on = now()
         obj.save()
         messages.add_message(

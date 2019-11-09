@@ -51,7 +51,7 @@ class AbstractCalendar(HTMLCalendar):
     field = "time"
 
     def __init__(self, events, *args, **kwargs):
-        super(AbstractCalendar, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.events = self.group_by_day(events)
 
     def formatmonthname(self, theyear, themonth, withyear=True):
@@ -59,7 +59,7 @@ class AbstractCalendar(HTMLCalendar):
         Return a month name as a table row.
         """
         if withyear:
-            s = "%s %s" % (month_name[themonth - 1], theyear)
+            s = "{} {}".format(month_name[themonth - 1], theyear)
         else:
             s = "%s" % month_name[themonth]
         return '<tr><th colspan="7" class="month">%s</th></tr>' % s
@@ -68,7 +68,7 @@ class AbstractCalendar(HTMLCalendar):
         """
         Return a weekday name as a table header.
         """
-        return '<th class="%s">%s</th>' % (self.cssclasses[day], day_abbr[day])
+        return '<th class="{}">{}</th>'.format(self.cssclasses[day], day_abbr[day])
 
     def formatday(self, day, weekday):
         if day != 0:
@@ -88,13 +88,13 @@ class AbstractCalendar(HTMLCalendar):
 
     def formatmonth(self, year, month):
         self.year, self.month = year, month
-        return super(AbstractCalendar, self).formatmonth(year, month)
+        return super().formatmonth(year, month)
 
     def group_by_day(self, events):
         return {day: list(items) for day, items in groupby(events, self.get_field)}
 
     def day_cell(self, cssclass, body):
-        return '<td class="%s">%s</td>' % (cssclass, body)
+        return '<td class="{}">{}</td>'.format(cssclass, body)
 
     def get_field_name(self):
         return self.field

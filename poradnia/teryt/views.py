@@ -9,7 +9,7 @@ class JSTDetailView(DetailView):
     model = JST
 
     def get_context_data(self, **kwargs):
-        context = super(JSTDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["advice_qs"] = (
             Advice.objects.for_user(self.request.user).area(self.object).all()
         )
@@ -23,5 +23,5 @@ class JSTListView(ListView):
     model = JST
 
     def get_queryset(self):
-        qs = super(JSTListView, self).get_queryset()
+        qs = super().get_queryset()
         return qs.voivodeship()

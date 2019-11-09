@@ -20,12 +20,12 @@ class CaseForm(
     UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, forms.ModelForm
 ):
     def __init__(self, *args, **kwargs):
-        super(CaseForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if "instance" in kwargs:
             self.helper.form_action = kwargs["instance"].get_edit_url()
 
     def save(self, commit=True, *args, **kwargs):
-        obj = super(CaseForm, self).save(commit=False, *args, **kwargs)
+        obj = super().save(commit=False, *args, **kwargs)
         if obj.pk:  # old
             obj.modified_by = self.user
             if obj.status == Case.STATUS.assigned:
@@ -65,7 +65,7 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
         self.case = kwargs.pop("case")
-        super(CaseGroupPermissionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["user"].queryset = get_user_model().objects.for_user(self.user)
         self.helper.form_class = "form-inline"
         self.helper.layout.append(Submit("grant", _("Grant")))
@@ -91,14 +91,14 @@ class CaseCloseForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
     notify = forms.BooleanField(required=False, label=_("Notify user"))
 
     def __init__(self, *args, **kwargs):
-        super(CaseCloseForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper.add_input(Submit("action", _("Close"), css_class="btn-primary"))
 
         if "instance" in kwargs:
             self.helper.form_action = kwargs["instance"].get_close_url()
 
     def save(self, commit=True, *args, **kwargs):
-        obj = super(CaseCloseForm, self).save(commit=False, *args, **kwargs)
+        obj = super().save(commit=False, *args, **kwargs)
         obj.modified_by = self.user
         obj.status = Case.STATUS.closed
         if self.cleaned_data["notify"]:

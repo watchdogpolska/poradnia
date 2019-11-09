@@ -9,7 +9,7 @@ from ..models import Profile
 
 class UserForm(FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(UserForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if not self.instance or self.instance and not self.instance.is_staff:
             del self.fields["codename"]
 
@@ -25,7 +25,7 @@ class ProfileForm(
     UserKwargModelFormMixin, FormHorizontalMixin, SingleButtonMixin, forms.ModelForm
 ):
     def __init__(self, *args, **kwargs):
-        super(ProfileForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         # dynamically exclude event_reminder_time if user is not a staff member
         if not self.user.is_staff:
             del self.fields["event_reminder_time"]

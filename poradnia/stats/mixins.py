@@ -4,7 +4,7 @@ from guardian.shortcuts import assign_perm
 from poradnia.users.factories import UserFactory
 
 
-class PermissionStatusMixin(object):
+class PermissionStatusMixin:
     """Mixin to verify object permission status codes for different users
     Require user with username='john' and password='pass'
     Attributes:
@@ -23,7 +23,7 @@ class PermissionStatusMixin(object):
     status_has_permission = 200
 
     def setUp(self):
-        super(PermissionStatusMixin, self).setUp()
+        super().setUp()
 
     def get_url(self):
         """Get url to tests

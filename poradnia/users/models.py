@@ -176,7 +176,7 @@ class User(GuardianUserMixin, AbstractUser):
 
     def _get_email_name(self, actor, from_email):
         if from_email:
-            return "%s <%s>" % (actor, from_email)
+            return "{} <{}>".format(actor, from_email)
         return None
 
     def notify(self, actor, verb, **kwargs):

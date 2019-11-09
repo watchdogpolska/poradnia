@@ -15,7 +15,7 @@ class EventForm(
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
         self.case = kwargs.pop("case")
-        super(EventForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper.form_action = reverse(
             "events:add", kwargs={"case_pk": self.case.pk}
         )
@@ -23,7 +23,7 @@ class EventForm(
             self.helper.form_action = kwargs["instance"].get_edit_url()
 
     def save(self, commit=True, *args, **kwargs):
-        obj = super(EventForm, self).save(commit=False, *args, **kwargs)
+        obj = super().save(commit=False, *args, **kwargs)
         created = obj.pk is None
         obj.case = self.case
         obj.save()

@@ -66,7 +66,7 @@ class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Upda
     inline_form_cls = AttachmentForm
 
     def get_context_data(self, **kwargs):
-        context = super(LetterUpdateView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["case"] = self.object.case
         return context
 
@@ -74,7 +74,7 @@ class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Upda
         return self.object
 
     def get_object(self):
-        obj = super(LetterUpdateView, self).get_object()
+        obj = super().get_object()
         if obj.created_by_id == self.request.user.pk:
             obj.case.perm_check(self.request.user, "can_change_own_record")
         else:
@@ -88,7 +88,7 @@ class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, Upda
         return self.object.case.get_absolute_url()
 
     def formset_valid(self, form, formset):
-        resp = super(LetterUpdateView, self).formset_valid(form, formset)
+        resp = super().formset_valid(form, formset)
         self.object.send_notification(actor=self.request.user, verb="updated")
         return resp
 
@@ -101,7 +101,7 @@ class StaffLetterFilter(CrispyFilterMixin, django_filters.FilterSet):
     )
 
     def __init__(self, *args, **kwargs):
-        super(StaffLetterFilter, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     class Meta:
         model = Letter

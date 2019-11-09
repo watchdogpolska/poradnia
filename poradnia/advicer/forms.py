@@ -25,7 +25,7 @@ class AdviceForm(
     ModelForm,
 ):
     def __init__(self, *args, **kwargs):
-        super(AdviceForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper.form_method = "post"
         self.fields["grant_on"].initial = now()
         self.fields["case"].queryset = Case.objects.for_user(self.user).all()
@@ -69,7 +69,7 @@ class AdviceForm(
 
 class AttachmentForm(HelperMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
-        super(AttachmentForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper.form_tag = False
         self.helper.form_method = "post"
 

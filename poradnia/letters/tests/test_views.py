@@ -20,7 +20,7 @@ from .compat import refresh_from_db
 from django.urls import reverse, reverse_lazy
 
 
-class CaseMixin(object):
+class CaseMixin:
     def _add_random_user(self, case, **kwargs):
         user = UserFactory(**kwargs)
         assign_perm("can_view", user, case)
@@ -618,9 +618,9 @@ class ReceiveEmailTestCase(TestCase):
             },
             "files_count": 1,
         }
-        attachments = [SimpleUploadedFile("my-doc.bin", "my-content".encode("utf-8"))]
+        attachments = [SimpleUploadedFile("my-doc.bin", b"my-content")]
 
-        eml = SimpleUploadedFile("my-content.eml", "12345".encode("utf-8"))
+        eml = SimpleUploadedFile("my-content.eml", b"12345")
 
         return {
             "manifest": SimpleUploadedFile(

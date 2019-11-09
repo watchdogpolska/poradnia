@@ -15,7 +15,7 @@ def raise_unless_unauthenticated(view, request):
     return None
 
 
-class GapFiller(object):
+class GapFiller:
     def __init__(self, qs, freq, date_key, date_format):
         self.qs = list(qs)
         self.freq = freq

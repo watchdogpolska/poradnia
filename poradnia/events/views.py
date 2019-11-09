@@ -49,7 +49,7 @@ class EventCreateView(
         return self.case
 
     def get_form_kwargs(self, *args, **kwargs):
-        kwargs = super(EventCreateView, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs["case"] = self.case
         return kwargs
 
@@ -70,19 +70,19 @@ class EventUpdateView(
 
     @cached_property
     def _object(self):
-        return super(EventUpdateView, self).get_object()
+        return super().get_object()
 
     def get_object(self, *args, **kwargs):
         return self._object
 
     def get_form_kwargs(self):
-        kwargs = super(EventUpdateView, self).get_form_kwargs()
+        kwargs = super().get_form_kwargs()
         kwargs["case"] = self.object.case
         return kwargs
 
     def form_valid(self, form):
         self.object.reminder_set.all().update(active=False)
-        return super(EventUpdateView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_form_valid_message(self):
         return _("Success updated event %(event)s") % {"event": self.object}
@@ -120,7 +120,7 @@ class CalendarEventView(
         return mark_safe(cal)
 
     def get_context_data(self, **kwargs):
-        context = super(CalendarEventView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["calendar"] = self.get_calendar()
         return context
 
@@ -161,7 +161,7 @@ class ICalendarView(KeyAuthMixin, PermissionMixin, BaseListView):
         return now() + relativedelta(months=-self.window)
 
     def get_queryset(self):
-        qs = super(ICalendarView, self).get_queryset()
+        qs = super().get_queryset()
         qs = qs.filter(time__lt=self.get_start())
         qs = qs.filter(time__gt=self.get_end())
         return qs

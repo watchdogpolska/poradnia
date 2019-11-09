@@ -71,7 +71,7 @@ class Event(AbstractRecord):
 
     def get_absolute_url(self):
         case_url = self.record.case_get_absolute_url()
-        return "%s#event-%s" % (case_url, self.pk)
+        return "{}#event-{}".format(case_url, self.pk)
 
     def get_edit_url(self):
         return reverse("events:edit", kwargs={"pk": self.pk})

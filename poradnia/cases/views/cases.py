@@ -29,7 +29,7 @@ class SingleObjectPermissionMixin(RaisePermissionRequiredMixin):
 
     @cached_property
     def object(self):
-        return super(SingleObjectPermissionMixin, self).get_object(self.get_queryset())
+        return super().get_object(self.get_queryset())
 
     def get_object(self, queryset=None):
         return self.object
@@ -94,7 +94,7 @@ class CaseDetailView(SingleObjectPermissionMixin, SelectRelatedMixin, DetailView
         return next, previous
 
     def get_context_data(self, **kwargs):
-        context = super(CaseDetailView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
 
         context["forms"] = self.get_forms()
         context["record_list"] = self.get_record_list()
@@ -114,12 +114,12 @@ class CaseListView(PermissionMixin, SelectRelatedMixin, FilterView):
         return StaffCaseFilter if self.request.user.is_staff else UserCaseFilter
 
     def get_filterset_kwargs(self, *args, **kwargs):
-        kw = super(CaseListView, self).get_filterset_kwargs(*args, **kwargs)
+        kw = super().get_filterset_kwargs(*args, **kwargs)
         kw["user"] = self.request.user
         return kw
 
     def get_queryset(self, *args, **kwargs):  # TODO: Mixins
-        qs = super(CaseListView, self).get_queryset(*args, **kwargs)
+        qs = super().get_queryset(*args, **kwargs)
         if self.request.user.is_staff:
             qs = qs.with_involved_staff()
         if self.request.user.is_staff:
@@ -127,7 +127,7 @@ class CaseListView(PermissionMixin, SelectRelatedMixin, FilterView):
         return qs
 
     def get_context_data(self, **kwargs):
-        context = super(CaseListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["statuses"] = Case.STATUS
         return context
 

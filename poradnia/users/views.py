@@ -25,7 +25,7 @@ class UserDetailView(PermissionRequiredMixin, DetailView):
     def has_permission(self, *args, **kwargs):
         if self.kwargs["username"] == self.request.user.username:
             return True
-        return super(UserDetailView, self).has_permission(*args, **kwargs)
+        return super().has_permission(*args, **kwargs)
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
@@ -85,7 +85,7 @@ class UserListView(StaffuserRequiredMixin, PermissionMixin, FilterView):
         return num
 
     def get_queryset(self, *args, **kwargs):
-        qs = super(UserListView, self).get_queryset(*args, **kwargs)
+        qs = super().get_queryset(*args, **kwargs)
         qs = qs.filter(**self.IS_STAFF_FILTER[self.get_is_staff_choice()][1])
         qs = qs.with_case_count()
         if self.request.user.has_perm("cases.can_assign"):
@@ -93,7 +93,7 @@ class UserListView(StaffuserRequiredMixin, PermissionMixin, FilterView):
         return qs
 
     def get_context_data(self, **kwargs):
-        context = super(UserListView, self).get_context_data(**kwargs)
+        context = super().get_context_data(**kwargs)
         context["is_staff"] = dict(
             choices=enumerate(self.IS_STAFF_FILTER), selected=self.get_is_staff_choice()
         )

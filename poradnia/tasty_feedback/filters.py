@@ -12,7 +12,7 @@ class FeedbackFilter(django_filters.FilterSet):
 
     @property
     def form(self):
-        self._form = super(FeedbackFilter, self).form
+        self._form = super().form
         self._form.helper = FormHelper(self._form)
         self._form.helper.form_class = "form-inline"
         self._form.helper.form_method = "get"

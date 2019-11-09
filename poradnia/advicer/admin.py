@@ -19,7 +19,7 @@ class AdviceAdmin(admin.ModelAdmin):
     list_filter = ["created_on", "grant_on", "advicer", "visible"]
 
     def get_queryset(self, request):
-        qs = super(AdviceAdmin, self).get_queryset(request)
+        qs = super().get_queryset(request)
         return qs.for_user(request.user)
 
 

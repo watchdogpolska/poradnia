@@ -56,7 +56,7 @@ class TemplateKey(Enum):
         return TemplateKey[name]
 
 
-class MailTemplate(object):
+class MailTemplate:
     def __init__(self, txt_path, html_path=None):
         self.txt_path = txt_path
         self.html_path = html_path
@@ -76,7 +76,7 @@ class MailTemplate(object):
         return (txt, html)
 
 
-class TemplateMailManager(object):
+class TemplateMailManager:
 
     TEMPLATE_MAP = {
         TemplateKey.CASE_CLOSED: MailTemplate.from_prefix("cases/email/case_closed"),

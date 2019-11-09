@@ -14,13 +14,13 @@ class NullDateRangeFilter(django_filters.DateRangeFilter):
             none_label or _("None"),
             lambda qs, name: qs.filter(**{"%s__isnull" % name: True}),
         )
-        super(NullDateRangeFilter, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
-class CaseFilterMixin(object):
+class CaseFilterMixin:
     def __init__(self, user=None, *args, **kwargs):
         self.user = user
-        super(CaseFilterMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class PermissionChoiceFilter(django_filters.ModelChoiceFilter):
@@ -32,7 +32,7 @@ class PermissionChoiceFilter(django_filters.ModelChoiceFilter):
                 queryset=get_user_model().objects.filter(is_staff=True).all(),
             )
         )
-        super(PermissionChoiceFilter, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
 
 class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSet):
@@ -70,11 +70,11 @@ class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterS
         kwargs["queryset"] = kwargs.pop("queryset").order_by(
             "-%s" % (Case.STAFF_ORDER_DEFAULT_FIELD)
         )
-        super(StaffCaseFilter, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     @property
     def form(self):
-        form = super(StaffCaseFilter, self).form
+        form = super().form
         form.helper.include_media = False
         return form
 
@@ -88,7 +88,7 @@ class UserCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSe
         kwargs["queryset"] = kwargs.pop("queryset").order_by(
             "-%s" % (Case.USER_ORDER_DEFAULT_FIELD)
         )
-        super(UserCaseFilter, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
 
     name = django_filters.CharFilter(label=_("Subject"), lookup_expr="icontains")
     created_on = django_filters.DateRangeFilter(label=_("Created on"))

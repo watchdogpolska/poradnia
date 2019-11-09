@@ -7,9 +7,9 @@ from guardian.forms import BaseObjectPermissionsForm, UserObjectPermissionsForm
 from guardian.shortcuts import assign_perm, remove_perm
 
 
-class PermissionsTranslationMixin(object):
+class PermissionsTranslationMixin:
     def __init__(self, *args, **kwargs):
-        super(PermissionsTranslationMixin, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["permissions"].choices = [
             (key, _(value)) for key, value in self.fields["permissions"].choices
         ]
@@ -33,7 +33,7 @@ class TranslatedManageObjectPermissionForm(
     def __init__(self, *args, **kwargs):
         self.actor = kwargs.pop("actor")
         self.staff_only = kwargs.pop("staff_only", False)
-        super(TranslatedManageObjectPermissionForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.fields["users"].queryset = (
             get_user_model().objects.for_user(self.actor).all()
         )

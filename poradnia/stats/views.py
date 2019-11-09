@@ -39,7 +39,7 @@ class StatsIndexView(TemplateView):
     def get_context_data(self, **kwargs):
         kwargs["item_list"] = Item.objects.for_user(self.request.user).all()
         kwargs["graph_list"] = Graph.objects.all()
-        return super(StatsIndexView, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)
 
 
 class StatsCaseCreatedView(LoginRequiredMixin, SuperuserRequiredMixin, TemplateView):
@@ -92,7 +92,7 @@ class StatsCaseCreatedApiView(
 
         result = [
             {
-                "date": "{0:04d}-{1:02d}".format(obj["year"], obj["month"]),
+                "date": "{:04d}-{:02d}".format(obj["year"], obj["month"]),
                 "open": obj["open"],
                 "assigned": obj["assigned"],
                 "closed": obj["closed"],
@@ -137,7 +137,7 @@ class StatsCaseReactionApiView(
 
         deltas = {}
         for obj in qs:
-            date = "{0:04d}-{1:02d}".format(
+            date = "{:04d}-{:02d}".format(
                 obj["created_on"].year, obj["created_on"].month
             )
             time_delta = (obj["first_accepted"] - obj["created_on"]).total_seconds()
@@ -190,7 +190,7 @@ class StatsCaseUnansweredApiView(
 
         qs = [
             {
-                "date": "{0:04d}-{1:02d}".format(obj["year"], obj["month"]),
+                "date": "{:04d}-{:02d}".format(obj["year"], obj["month"]),
                 "count": obj["count"],
             }
             for obj in qs
@@ -242,7 +242,7 @@ class StatsLetterCreatedApiView(
 
         qs = [
             {
-                "date": "{0:04d}-{1:02d}".format(obj["year"], obj["month"]),
+                "date": "{:04d}-{:02d}".format(obj["year"], obj["month"]),
                 "staff": obj["staff"],
                 "client": obj["client"],
             }
@@ -303,7 +303,7 @@ class StatsUserRegisteredApiView(
 
         serialized = [
             {
-                "date": "{0:04d}-{1:02d}".format(obj["year"], obj["month"]),
+                "date": "{:04d}-{:02d}".format(obj["year"], obj["month"]),
                 "count": obj["count"],
             }
             for obj in selected_dates
@@ -320,7 +320,7 @@ class StatsUserRegisteredApiView(
         return ans
 
 
-class TimeMixin(object):
+class TimeMixin:
     @property
     def today(self):
         today = date.today()
@@ -365,7 +365,7 @@ class ValueBrowseListView(ValueListView, TemplateView):
             self.start,
             self.end,
         )
-        return super(ValueBrowseListView, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)
 
 
 class CSVValueListView(ValueListView, View):
@@ -479,7 +479,7 @@ class GraphDetailView(GraphTimeMixin, TemplateView):
         )
         kwargs["graph"] = self.get_graph()
         kwargs["table"] = self.get_table()
-        return super(GraphDetailView, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)
 
 
 class JSONGraphDetailView(GraphTimeMixin, View):

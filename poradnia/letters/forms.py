@@ -49,7 +49,7 @@ class SimpleSubmit(BaseInput):
 class UserEmailField(forms.EmailField):
     def validate(self, value):
         "Check if value consists only of unique user emails."
-        super(UserEmailField, self).validate(value)
+        super().validate(value)
         if get_user_model().objects.filter(email=value).exists():
             raise ValidationError(
                 _("E-mail %(email)s are already used. Please log in."),
@@ -78,7 +78,7 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
-        super(NewCaseForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper.form_tag = False
         self.helper.form_method = "post"
         self.fields["name"].help_text = CASE_NAME_TEXT
@@ -110,7 +110,7 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
 
         if self.user.has_perm("cases.can_select_client") and not client_or_email:
             raise ValidationError(_("Have to enter user email or select a client"))
-        return super(NewCaseForm, self).clean()
+        return super().clean()
 
     def get_user(self):
         if self.user.is_anonymous:
@@ -139,7 +139,7 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
 
     def save(self, commit=True, *args, **kwargs):
         user = self.get_user()
-        obj = super(NewCaseForm, self).save(commit=False, *args, **kwargs)
+        obj = super().save(commit=False, *args, **kwargs)
         obj.status = obj.STATUS.done
         obj.created_by = user
         obj.client = self.get_client(user)
@@ -159,14 +159,14 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         self.user = kwargs.pop("user")
         self.case = kwargs.pop("case")
         self.user_can_send = self.user.has_perm("cases.can_send_to_client", self.case)
-        super(AddLetterForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper.form_action = reverse(
             "letters:add", kwargs={"case_pk": self.case.pk}
         )
         self.helper.form_tag = False
         self._fill_footer()
         self._add_buttons()
-        self.fields["name"].initial = "Odp: %s" % (self.case,)
+        self.fields["name"].initial = "Odp: {}".format(self.case)
 
     def _add_buttons(self):
         if self.user_can_send:
@@ -234,7 +234,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         return Letter.STATUS.done
 
     def save(self, commit=True, *args, **kwargs):
-        obj = super(AddLetterForm, self).save(commit=False, *args, **kwargs)
+        obj = super().save(commit=False, *args, **kwargs)
         obj.status = self.get_status()
         obj.created_by = self.user
         obj.case = self.case
@@ -266,11 +266,11 @@ class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
         ins = kwargs["instance"]
-        super(SendLetterForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper.form_action = ins.get_send_url()
 
     def save(self, commit=True, *args, **kwargs):
-        obj = super(SendLetterForm, self).save(commit=False, *args, **kwargs)
+        obj = super().save(commit=False, *args, **kwargs)
         obj.modified_by = self.user
         obj.status = obj.STATUS.done
         obj.save()
@@ -305,12 +305,12 @@ class AttachmentForm(ModelForm):
 class LetterForm(SingleButtonMixin, PartialMixin, ModelForm):  # eg. edit form
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
-        super(LetterForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         self.helper.form_action = kwargs["instance"].get_edit_url()
         self.helper.form_method = "post"
 
     def save(self, commit=True, *args, **kwargs):
-        obj = super(LetterForm, self).save(commit=False, *args, **kwargs)
+        obj = super().save(commit=False, *args, **kwargs)
         obj.modified_by = self.user
         obj.save()
         return obj

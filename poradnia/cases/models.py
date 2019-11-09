@@ -30,7 +30,7 @@ from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 
 from django.urls import reverse
 
-CASE_PK_RE = "sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
+CASE_PK_RE = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
 
 
 class CaseQuerySet(QuerySet):
@@ -94,7 +94,9 @@ class CaseQuerySet(QuerySet):
             field_name = self.model.STAFF_ORDER_DEFAULT_FIELD
         else:
             field_name = self.model.USER_ORDER_DEFAULT_FIELD
-        return self.order_by("%s%s" % (order, field_name), "%s%s" % (order, "pk"))
+        return self.order_by(
+            "{}{}".format(order, field_name), "{}{}".format(order, "pk")
+        )
 
     def with_month_year(self):
         return self.annotate(
@@ -316,7 +318,7 @@ class Case(models.Model):
         param = getattr(self, field_name)
         q = Q()
         if param:
-            q = q | Q(**{"%s__%s" % (field_name, op): param})
+            q = q | Q(**{"{}__{}".format(field_name, op): param})
         if self.pk:
             q = q | Q(**{field_name: param, "pk__%s" % op: self.pk})
         manager = self.__class__._default_manager.using(self._state.db).filter(**kwargs)
@@ -336,13 +338,13 @@ class CaseUserObjectPermission(UserObjectPermissionBase):
     content_object = models.ForeignKey(Case, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
-        super(CaseUserObjectPermission, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
         if self.permission.codename == "can_send_to_client":
             self.content_object.status = self.content_object.STATUS.assigned
             self.content_object.save()
 
     def delete(self, *args, **kwargs):
-        super(CaseUserObjectPermission, self).delete(*args, **kwargs)
+        super().delete(*args, **kwargs)
         self.content_object.status_update()
 
 

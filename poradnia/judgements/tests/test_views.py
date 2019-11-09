@@ -11,7 +11,7 @@ class CaseCourtCreateViewTestCase(PermissionStatusMixin, TestCase):
     permission = ["cases.can_add_record"]
 
     def setUp(self):
-        super(CaseCourtCreateViewTestCase, self).setUp()
+        super().setUp()
         self.user = UserFactory(username="john")
         self.case = CaseFactory()
         self.permission_object = self.case
@@ -22,7 +22,7 @@ class CaseCourtUpdateViewTestCase(PermissionStatusMixin, TestCase):
     permission = ["cases.can_add_record"]
 
     def setUp(self):
-        super(CaseCourtUpdateViewTestCase, self).setUp()
+        super().setUp()
         self.user = UserFactory(username="john")
         self.court_case = CourtCaseFactory()
         self.permission_object = self.court_case.case
@@ -33,7 +33,7 @@ class CaseCourtDeleteViewTestCase(PermissionStatusMixin, TestCase):
     permission = ["cases.can_add_record"]
 
     def setUp(self):
-        super(CaseCourtDeleteViewTestCase, self).setUp()
+        super().setUp()
         self.user = UserFactory(username="john")
         self.court_case = CourtCaseFactory()
         self.permission_object = self.court_case.case

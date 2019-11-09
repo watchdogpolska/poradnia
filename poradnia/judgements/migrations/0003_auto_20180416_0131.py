@@ -54,6 +54,6 @@ class Migration(migrations.Migration):
             ),
         ),
         migrations.AlterUniqueTogether(
-            name="courtcase", unique_together=set([("court", "signature")])
+            name="courtcase", unique_together={("court", "signature")}
         ),
     ]

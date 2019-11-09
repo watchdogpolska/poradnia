@@ -13,7 +13,7 @@ def clean_text(text):
 logger = logging.getLogger(__name__)
 
 
-class BaseParser(object):
+class BaseParser:
     signature_rule = None
     DATE_FIELD = "Data"
     HOUR_FIELD = "Godzina"

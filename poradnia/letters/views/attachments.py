@@ -12,11 +12,11 @@ class StreamAttachmentView(PermissionMixin, ListView):
     model = Attachment
 
     def get_queryset(self, *args, **kwargs):
-        qs = super(StreamAttachmentView, self).get_queryset(*args, **kwargs)
+        qs = super().get_queryset(*args, **kwargs)
         return qs.filter(letter__case=self.kwargs["case_pk"])
 
     def get_context_data(self, **kwargs):
-        context = super(StreamAttachmentView, self).get_context_data()
+        context = super().get_context_data()
         z = zipstream.ZipFile()
         for attachment in self.get_queryset():
             z.write(attachment.attachment.path, basename(attachment.attachment.path))

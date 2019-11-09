@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
             name="accept",
             field=model_utils.fields.MonitorField(
                 default=django.utils.timezone.now,
-                when=set([b"done"]),
+                when={b"done"},
                 verbose_name="Accepted on",
                 monitor=b"status",
             ),

@@ -18,7 +18,7 @@ from poradnia.judgements.models import CourtCase
 class CourtCaseForm(UserKwargModelFormMixin, SingleButtonMixin, forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.case = kwargs.pop("case", None)
-        super(CourtCaseForm, self).__init__(*args, **kwargs)
+        super().__init__(*args, **kwargs)
         if self.case:
             self.helper.form_action = reverse(
                 "judgements:create", kwargs={"case_pk": self.case.pk}
@@ -35,7 +35,7 @@ class CourtCaseForm(UserKwargModelFormMixin, SingleButtonMixin, forms.ModelForm)
             self.instance.modified_by = self.user
         else:
             self.instance.created_by = self.user
-        super(CourtCaseForm, self).save(commit)
+        super().save(commit)
 
     class Meta:
         model = CourtCase
@@ -57,13 +57,13 @@ class CourtCaseCreateView(
         return self.case
 
     def get_form_kwargs(self):
-        kw = super(CourtCaseCreateView, self).get_form_kwargs()
+        kw = super().get_form_kwargs()
         kw["case"] = self.case
         return kw
 
     def get_context_data(self, **kwargs):
         kwargs["case"] = self.case
-        return super(CourtCaseCreateView, self).get_context_data(**kwargs)
+        return super().get_context_data(**kwargs)
 
     def get_form_valid_message(self):
         return _("{0} created!").format(self.object)
