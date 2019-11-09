@@ -13,7 +13,10 @@ wait_mysql:
 migrate:
 	docker-compose run web python manage.py migrate
 
-lint:
+pyupgrade:
+	docker-compose run web bash -c 'find . -name "*.py" ! \( -wholename "./node_modules/*" -o -wholename "./bower_components/*" \) | xargs pyupgrade --py3-only'
+
+lint: pyupgrade
 	docker run --rm -v $$(pwd):/data cytopia/black --check /data
 
 fmt:
