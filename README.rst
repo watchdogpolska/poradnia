@@ -23,4 +23,4 @@ telefoniczną, ustną i szkoleniową.
 
 Aplikacja została wykorzystana z wykorzystaniem frameworka Django w języku Python.
 
-Opis uruchomienia i wdrożenia aplikacji zostało przeniesione do pliku ```docs/getting_up.rst```.
+Opis uruchomienia i wdrożenia aplikacji zostało przeniesione do pliku ``docs/getting_up.rst``.
