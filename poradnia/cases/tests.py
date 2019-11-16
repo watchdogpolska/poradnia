@@ -10,14 +10,18 @@ from django.urls import reverse_lazy
 from django.test import RequestFactory
 from django.test.utils import override_settings
 from django.utils import timezone
-from guardian.shortcuts import assign_perm
+from guardian.shortcuts import assign_perm, remove_perm
 from test_plus.test import TestCase
 
 from poradnia.cases.admin import CaseAdmin
-from poradnia.cases.factories import CaseFactory, PermissionGroupFactory
+from poradnia.cases.factories import (
+    CaseFactory,
+    PermissionGroupFactory,
+    CaseUserObjectPermissionFactory,
+)
 from poradnia.cases.filters import StaffCaseFilter
 from poradnia.cases.forms import CaseCloseForm
-from poradnia.cases.models import Case, PermissionGroup
+from poradnia.cases.models import Case, PermissionGroup, CaseUserObjectPermission
 from poradnia.cases.views import CaseListView
 from poradnia.events.factories import EventFactory
 from poradnia.letters.factories import LetterFactory
@@ -151,27 +155,43 @@ class CaseTestCase(TestCase):
         with self.assertRaises(PermissionDenied):
             self.object.perm_check(UserFactory(), "can_view")
 
-    def test_status_update_initial(self):
-        self.assertEqual(self.object.status, Case.STATUS.free)
+    def test_has_assignees_lifecycle(self):
+        user = UserFactory(is_staff=True)
+        self.assertFalse(self.object.has_assignees())
 
-    def test_status_update_still_open(self):
-        assign_perm(
-            "cases.can_send_to_client", UserFactory(is_staff=False), self.object
+        permission = CaseUserObjectPermissionFactory(
+            content_object=self.object, permission_name="can_send_to_client", user=user,
         )
-        self.object.status_update()
-        self.assertEqual(self.object.status, Case.STATUS.free)
+        self.assertTrue(self.object.has_assignees())
 
-    def test_status_update_assigned(self):
-        assign_perm("cases.can_send_to_client", UserFactory(is_staff=True), self.object)
-        self.object.status_update()
-        self.assertEqual(self.object.status, Case.STATUS.assigned)
+        permission.delete()
+        self.assertFalse(self.object.has_assignees())
 
-    def test_status_update_closed(self):
+    def test_has_assignees_non_staff(self):
+        user = UserFactory(is_staff=False)
+        assign_perm("cases.can_send_to_client", user, self.object)
+        self.assertFalse(self.object.has_assignees())
+
+    def test_has_assignees_other_case(self):
+        user = UserFactory(is_staff=True)
+        other_object = CaseFactory()
+        assign_perm("cases.can_send_to_client", user, other_object)
+        self.assertFalse(self.object.has_assignees())
+
+    def test_status_update_reopen(self):
         self.object.status = Case.STATUS.closed
-        self.object.status_update()
+        self.object.status_update(reopen=False)
         self.assertEqual(self.object.status, Case.STATUS.closed)
         self.object.status_update(reopen=True)
         self.assertEqual(self.object.status, Case.STATUS.free)
+
+    def test_status_update_reopen_with_assignee(self):
+        assign_perm("cases.can_send_to_client", UserFactory(is_staff=True), self.object)
+        self.object.status = Case.STATUS.closed
+        self.object.status_update(reopen=False)
+        self.assertEqual(self.object.status, Case.STATUS.closed)
+        self.object.status_update(reopen=True)
+        self.assertEqual(self.object.status, Case.STATUS.assigned)
 
     def test_update_counters_last_received_default(self):
         self.object.update_counters()
@@ -206,6 +226,109 @@ class CaseTestCase(TestCase):
         )
         self.object.update_counters()
         self.assertEqual(self.object.deadline, event)
+
+
+class CaseUserObjectPermissionTestCase(TestCase):
+    def case_with_assignees(
+        self, case_status, staff_assignees=0, non_staff_assignees=0
+    ):
+        """
+        Build a case with a given set of assignees and set its status afterwards.
+
+        Will throw if provided params result in a volatile case, i.e. one that might change its status on the first `status_update` call. Such cases are not feasible for testing status restoration.
+        """
+        perm_id = "cases.can_send_to_client"
+        case = CaseFactory()
+        for i in range(staff_assignees):
+            assign_perm(perm_id, UserFactory(is_staff=True), case)
+
+        for i in range(non_staff_assignees):
+            assign_perm(perm_id, UserFactory(is_staff=False), case)
+
+        case.status = case_status
+        case.save()
+
+        # Check if the status is valid, i.e. didn't change on the status update after making no changes.
+        case.status_update()
+        if case.status != case_status:
+            raise Exception(
+                f"Invalid case specified. Status changed to {case.status} after first update. Expected {case_status}."
+            )
+
+        return case
+
+    def test_updates_status(self):
+        """
+        Test that granting the permission sets the correct case status.
+        """
+        user_non_staff = UserFactory(is_staff=False)
+        user_staff = UserFactory(is_staff=True)
+
+        data = [
+            {
+                "case": self.case_with_assignees(
+                    Case.STATUS.free, staff_assignees=0, non_staff_assignees=0
+                ),
+                "user": user_staff,
+                "expected_status": Case.STATUS.assigned,
+            },
+            {
+                "case": self.case_with_assignees(
+                    Case.STATUS.free, staff_assignees=0, non_staff_assignees=0
+                ),
+                "user": user_non_staff,
+                "expected_status": Case.STATUS.free,
+            },
+            {
+                "case": self.case_with_assignees(
+                    Case.STATUS.free, staff_assignees=0, non_staff_assignees=1
+                ),
+                "user": user_staff,
+                "expected_status": Case.STATUS.assigned,
+            },
+            {
+                "case": self.case_with_assignees(
+                    Case.STATUS.assigned, staff_assignees=1, non_staff_assignees=0
+                ),
+                "user": user_staff,
+                "expected_status": Case.STATUS.assigned,
+            },
+            {
+                "case": self.case_with_assignees(
+                    Case.STATUS.closed, staff_assignees=0, non_staff_assignees=0
+                ),
+                "user": user_staff,
+                "expected_status": Case.STATUS.closed,
+            },
+            {
+                "case": self.case_with_assignees(
+                    Case.STATUS.closed, staff_assignees=0, non_staff_assignees=0
+                ),
+                "user": user_non_staff,
+                "expected_status": Case.STATUS.closed,
+            },
+        ]
+
+        for i, datum in enumerate(data):
+            with self.subTest(i=i):
+                case = datum["case"]
+                user = datum["user"]
+                expected_status = datum["expected_status"]
+
+                status_before = case.status
+
+                assign_perm("cases.can_send_to_client", user, case)
+                self.assertEqual(
+                    case.status, expected_status, "Status not set to expected value."
+                )
+
+                remove_perm("cases.can_send_to_client", user, case)
+
+                # Manually update status, as `remove_perm` doesn't trigger the `delete` logic.
+                case.status_update(save=True)
+                case.refresh_from_db()
+
+                self.assertEqual(case.status, status_before, "Status not restored.")
 
 
 class CaseDetailViewTestCase(TestCase):
