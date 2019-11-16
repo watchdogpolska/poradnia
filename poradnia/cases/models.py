@@ -270,8 +270,18 @@ class Case(models.Model):
             self.save()
 
     def status_update(self, reopen=False, save=True):
-        if self.status == self.STATUS.closed and not reopen:
-            return False
+        if reopen or (self.status != self.STATUS.closed):
+            self.status = (
+                self.STATUS.assigned if self.has_assignees() else self.STATUS.free
+            )
+        if save:
+            self.save()
+
+    def has_assignees(self):
+        """
+        Checks if there exists a staff member who has a permission to handle
+        the case.
+        """
         content_type = ContentType.objects.get_for_model(Case)
         qs = CaseUserObjectPermission.objects.filter(
             permission__codename="can_send_to_client",
@@ -279,10 +289,7 @@ class Case(models.Model):
             content_object=self,
             user__is_staff=True,
         )
-        check = qs.exists()
-        self.status = self.STATUS.assigned if check else self.STATUS.free
-        if save:
-            self.save()
+        return qs.exists()
 
     def assign_perm(self):
         assign_perm("can_view", self.created_by, self)  # assign creator
@@ -340,10 +347,12 @@ class CaseUserObjectPermission(UserObjectPermissionBase):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.permission.codename == "can_send_to_client":
-            self.content_object.status = self.content_object.STATUS.assigned
-            self.content_object.save()
+            self.content_object.status_update()
 
     def delete(self, *args, **kwargs):
+        """
+        Note: this method is not invoked in usual circumstances (`remove_perm` call).
+        """
         super().delete(*args, **kwargs)
         self.content_object.status_update()
 
