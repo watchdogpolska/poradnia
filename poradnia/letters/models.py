@@ -1,16 +1,11 @@
 import logging
-import os
 
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
 from os.path import basename
-from cached_property import cached_property
 from django.conf import settings
-from django.contrib.auth import get_user_model
-from django.core.files import File
 from django.db import models
 from django.db.models import F, Func, IntegerField, Q
-from django.dispatch import receiver
 from django.utils.translation import ugettext_lazy as _
 from django_mailbox.models import Message
 from model_utils import Choices
@@ -169,15 +164,20 @@ class Letter(AbstractRecord):
         ordering = ["-created_on"]
 
 
+lrc_cup = "letter__record__case__caseuserobjectpermission"
+
+
 class AttachmentQuerySet(models.QuerySet):
     def for_user(self, user):
         qs = self
         if not user.has_perm("cases.can_view_all"):
             content_type = ContentType.objects.get_for_model(Case)
             qs = qs.filter(
-                letter__record__case__caseuserobjectpermission__permission__codename="can_view",
-                letter__record__case__caseuserobjectpermission__permission__content_type=content_type,
-                letter__record__case__caseuserobjectpermission__user=user,
+                **{
+                    "{}__permission__codename".format(lrc_cup): "can_view",
+                    "{}__permission__content_type".format(lrc_cup): content_type,
+                    "{}__user".format(lrc_cup): user,
+                }
             )
         if not user.is_staff:
             qs = qs.filter(letter__status=Letter.STATUS.done)

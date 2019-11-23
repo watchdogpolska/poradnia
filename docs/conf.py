@@ -372,7 +372,9 @@ def process_django_view(app, what, name, obj, options, lines):
                 walker(flat_patterns, pattern.url_patterns, pattern.namespace)
             else:
                 urlname = (
-                    "{}:{}".format(namespace, pattern.name) if namespace else pattern.name
+                    "{}:{}".format(namespace, pattern.name)
+                    if namespace else
+                    pattern.name
                 )
                 flat_patterns.append([urlname, pattern.callback])
 

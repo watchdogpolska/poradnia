@@ -1,5 +1,4 @@
-from django.contrib.auth.models import AnonymousUser, Permission
-from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import AnonymousUser
 from django.core import mail
 from django.test import TestCase
 

@@ -7,13 +7,14 @@ from poradnia.users.factories import UserFactory
 class PermissionStatusMixin:
     """Mixin to verify object permission status codes for different users
     Require user with username='john' and password='pass'
+    Based on https://github.com/watchdogpolska/feder
+             /blob/a80d6ea7/feder/main/mixins.py#L113
     Attributes:
         permission (str): Permission name or "superuser"
         status_anonymous (int): Status code for anonymouser
         status_has_permission (int): Status code for user with permission
         status_no_permission (403): Status code for user without permission
         url (str): url to test
-    NOTE: based on https://github.com/watchdogpolska/feder/blob/a80d6ea7/feder/main/mixins.py#L113
     """
 
     url = None
@@ -21,9 +22,6 @@ class PermissionStatusMixin:
     status_anonymous = 302
     status_no_permission = 403
     status_has_permission = 200
-
-    def setUp(self):
-        super().setUp()
 
     def get_url(self):
         """Get url to tests

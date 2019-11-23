@@ -1,4 +1,3 @@
-import os
 import sys
 from enum import Enum
 
@@ -21,8 +20,7 @@ def make_auto():
             i += 1
 
     loop = loop()
-    auto = lambda: next(loop)
-    return auto
+    return lambda: next(loop)
 
 
 auto = make_auto()
@@ -50,7 +48,6 @@ class TemplateKey(Enum):
 
     @classmethod
     def get_by_target_verb(cls, target, verb):
-        app_label = target._meta.app_label
         model_name = target._meta.model_name
         name = "{model}_{verb}".format(model=model_name, verb=verb).upper()
         return TemplateKey[name]

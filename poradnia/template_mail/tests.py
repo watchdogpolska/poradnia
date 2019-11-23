@@ -1,7 +1,7 @@
 from django.template import TemplateDoesNotExist, TemplateSyntaxError, loader
 from django.test import TestCase
 
-from poradnia.template_mail.utils import MailTemplate, TemplateKey, TemplateMailManager
+from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 
 
 class TemplateMailManagerTestCase(TestCase):
