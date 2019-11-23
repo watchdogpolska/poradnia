@@ -2,8 +2,6 @@
 """
 Production Configurations
 """
-import os
-import raven
 from dealer.auto import auto
 
 from .common import *  # noqa

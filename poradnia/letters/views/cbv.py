@@ -138,13 +138,13 @@ class ReceiveEmailView(View):
                 "The request has an invalid format. "
                 'The acceptable format is "{}"'.format(self.required_content_type)
             )
-        if not "manifest" in request.FILES:
+        if "manifest" not in request.FILES:
             return HttpResponseBadRequest(
-                "The request has an invalid format. " 'Missing "manifest" filed.'
+                "The request has an invalid format. Missing 'manifest' filed."
             )
-        if not "eml" in request.FILES:
+        if "eml" not in request.FILES:
             return HttpResponseBadRequest(
-                "The request has an invalid format. " 'Missing "eml" filed.'
+                "The request has an invalid format. Missing 'eml' filed."
             )
         manifest = json.load(request.FILES["manifest"])
 

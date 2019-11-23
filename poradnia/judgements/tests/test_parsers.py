@@ -8,13 +8,12 @@ from pytz import timezone
 from vcr import VCR
 
 from poradnia.judgements.factories import CourtFactory
-from poradnia.judgements.parsers.gliwice import GliwiceETRParser
 from poradnia.judgements.registry import get_parser_keys
 
 try:
-    from StringIO import StringIO
+    pass
 except ImportError:
-    from io import StringIO
+    pass
 
 
 def generator(f, suffix=None):

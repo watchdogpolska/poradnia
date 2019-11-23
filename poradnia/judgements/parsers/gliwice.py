@@ -1,7 +1,3 @@
-import logging
-from datetime import datetime
-from time import strptime
-
 import requests
 from lxml import html
 
@@ -36,7 +32,6 @@ class GliwiceETRParser(BaseParser):
         tree = html.document_fromstring(content)
         table = tree.cssselect(".ftabela_123")[0]
         trs = table.cssselect("tr")
-        header = [x for x in table.cssselect("tr")[0].itertext()]
 
         for i in range(0, int(len(trs) / 2)):
             top_tr = trs[i * 2 + 1]

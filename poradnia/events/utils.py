@@ -46,6 +46,8 @@ month_abbr = [
     _("Dec"),
 ]
 
+EVENT_CONTENT = '<li{class_attr}><a href="{link}" title="{title}">{content}</a></li>'
+
 
 class AbstractCalendar(HTMLCalendar):
     field = "time"
@@ -103,14 +105,14 @@ class AbstractCalendar(HTMLCalendar):
         return getattr(obj, self.get_field_name()).day
 
     def get_row_content(self, event):
-        raise NotImplementedError("Method 'get_row_content' should be overwriten.")
+        raise NotImplementedError("Method 'get_row_content' should be overwritten.")
 
 
 class EventCalendar(AbstractCalendar):
     field = "time"
 
     def get_row_content(self, event):
-        text = '<li{class_attr}><a href="{link}" title="{title}">{content}</a></li>'.format(
+        text = EVENT_CONTENT.format(
             class_attr=' class="deadline"' if event.deadline else "",
             link=event.get_absolute_url(),
             title=event.text,

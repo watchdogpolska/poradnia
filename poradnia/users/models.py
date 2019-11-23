@@ -19,6 +19,8 @@ from django.urls import reverse
 _("Username or e-mail")  # Hack to overwrite django translation
 _("Login")
 
+cup_co = "caseuserobjectpermission__content_object"
+
 
 class UserQuerySet(QuerySet):
     def for_user(self, user):
@@ -33,8 +35,10 @@ class UserQuerySet(QuerySet):
         free = Count(
             Case(
                 When(
-                    caseuserobjectpermission__content_object__status=CaseModel.STATUS.free,
-                    then="caseuserobjectpermission__content_object__pk",
+                    **{
+                        "{}__status".format(cup_co): CaseModel.STATUS.free,
+                        "then": "{}__pk".format(cup_co),
+                    }
                 ),
                 default=None,
                 output_field=IntegerField(),
@@ -45,8 +49,10 @@ class UserQuerySet(QuerySet):
         active = Count(
             Case(
                 When(
-                    caseuserobjectpermission__content_object__status=CaseModel.STATUS.assigned,
-                    then="caseuserobjectpermission__content_object__pk",
+                    **{
+                        "{}__status".format(cup_co): CaseModel.STATUS.assigned,
+                        "then": "{}__pk".format(cup_co),
+                    }
                 ),
                 default=None,
                 output_field=IntegerField(),
@@ -57,8 +63,10 @@ class UserQuerySet(QuerySet):
         closed = Count(
             Case(
                 When(
-                    caseuserobjectpermission__content_object__status=CaseModel.STATUS.closed,
-                    then="caseuserobjectpermission__content_object__pk",
+                    **{
+                        "{}__status".format(cup_co): CaseModel.STATUS.closed,
+                        "then": "{}__pk".format(cup_co),
+                    }
                 ),
                 default=None,
                 output_field=IntegerField(),
@@ -113,7 +121,7 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
                 return username
             limit -= 1
         raise ValueError(
-            "This email are completly creapy. I am unable to generate username"
+            "This email are completely creepy. Unable to generate username"
         )
 
     def register_email(self, email, notify=True, **extra_fields):
@@ -182,8 +190,6 @@ class User(GuardianUserMixin, AbstractUser):
     def notify(self, actor, verb, **kwargs):
         if "target" not in kwargs:
             return
-
-        letter = kwargs["target"]
 
         template_key = TemplateKey.get_by_target_verb(kwargs["target"], verb)
         from_email = kwargs.get("from_email", None)

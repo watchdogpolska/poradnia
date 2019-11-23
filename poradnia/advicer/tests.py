@@ -1,6 +1,5 @@
 import datetime
 
-from atom.ext.guardian.tests import PermissionStatusMixin
 from atom.mixins import AdminTestCaseMixin
 from django.urls import reverse, reverse_lazy
 from guardian.shortcuts import assign_perm

@@ -1,9 +1,5 @@
-from datetime import datetime
-from time import strptime
-
 import requests
 from lxml import html
-from pytz import timezone
 
 from ..models import SessionRow
 from .base import BaseParser

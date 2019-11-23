@@ -1,15 +1,9 @@
-import email
 from datetime import timedelta
-from os.path import dirname, join
 
-import django_mailbox
 from django.test import TestCase
 from django.utils.timezone import now
-from django_mailbox.models import Mailbox
-from guardian.shortcuts import assign_perm
 
 from poradnia.cases.factories import CaseFactory
-from poradnia.cases.models import Case
 from poradnia.letters.factories import LetterFactory, AttachmentFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory

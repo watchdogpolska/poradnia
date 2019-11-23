@@ -1,10 +1,8 @@
 import unicodecsv as csv
 from datetime import datetime, timedelta
-from time import strptime
 
 import requests
 from lxml import html
-from pytz import timezone
 
 from poradnia.judgements.models import SessionRow
 from poradnia.judgements.parsers.base import BaseParser
