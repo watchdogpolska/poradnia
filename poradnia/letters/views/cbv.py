@@ -174,6 +174,7 @@ class ReceiveEmailView(View):
         case.handled = actor.is_staff is True and letter.status == Letter.STATUS.done
         case.update_counters()
         case.save()
+        letter.send_notification(actor=actor, verb="created")
         return JsonResponse({"status": "OK", "letter": letter.pk})
 
     def get_case(self, subject, addresses, actor):
