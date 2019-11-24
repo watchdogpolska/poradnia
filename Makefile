@@ -8,6 +8,7 @@ test:
 	docker-compose run web python manage.py test --keepdb --verbosity=2
 
 wait_mysql:
+	docker-compose up -d db
 	docker-compose run web bash -c 'wait-for-it db:3306'
 
 migrate:
@@ -34,3 +35,9 @@ settings:
 
 docs:
 	docker-compose run web sphinx-build -b html -d docs/_build/doctrees docs docs/_build/html
+
+push:
+	docker-compose push web
+
+pull:
+	docker pull docker-registry.siecobywatelska.pl/poradnia/web
