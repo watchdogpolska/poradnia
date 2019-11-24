@@ -4,7 +4,7 @@ clean:
 build:
 	docker-compose build web
 
-test:
+test: check
 	docker-compose run web python manage.py test --keepdb --verbosity=2
 
 wait_mysql:
