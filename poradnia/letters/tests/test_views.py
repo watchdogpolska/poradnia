@@ -596,13 +596,47 @@ class ReceiveEmailTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(letter.case.created_by.email, "new-user@example.com")
 
-    def _get_body(self, case=None):
+    def test_notify_staff_about_user_letter(self):
+        case = CaseFactory(client__is_staff=False)
+        cuop_user = CaseUserObjectPermissionFactory(
+            content_object=case,
+            user__is_staff=True,
+        )
+        cuop_lawyer = CaseUserObjectPermissionFactory(
+            content_object=case,
+            permission_name="can_send_to_client",
+            user__is_staff=True,
+        )
+        response = self.client.post(
+            path=self.authenticated_url, data=self._get_body(case, case.client.email)
+        )
+        self.assertEqual(response.json()["status"], "OK")
+
+        emails = [x.to[0] for x in mail.outbox]
+        self.assertEqual(len(emails), 2)
+        self.assertIn(cuop_lawyer.user.email, emails)
+        self.assertIn(cuop_user.user.email, emails)
+        self.assertNotIn(case.client.email, emails)  # skip notify self
+
+    def test_user_permission_after_create(self):
+        user = UserFactory()
+        response = self.client.post(
+            path=self.authenticated_url, data=self._get_body(from_=user.email)
+        )
+        self.assertEqual(response.json()["status"], "OK")
+        case = Case.objects.get()
+        self.assertTrue(
+            case.get_users_with_perms().
+            filter(pk=case.created_by.pk).
+            exists()
+        )
+    def _get_body(self, case=None, from_=None):
         manifest = {
             "headers": {
                 "auto_reply_type": "vacation-reply",
                 "cc": [],
                 "date": "2018-07-30T11:33:22",
-                "from": ["new-user@example.com"],
+                "from": [from_ or "new-user@example.com"],
                 "message_id": "<E1fk6QU-00CPTw-Ey@s50.hekko.net.pl>",
                 "subject": "Nowa wiadomość",
                 "to": [case.get_email() if case else "user-b@example.com"],
