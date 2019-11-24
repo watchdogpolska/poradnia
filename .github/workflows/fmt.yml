@@ -1,0 +1,23 @@
+name: Auto-format
+
+on: [push]
+
+jobs:
+  django:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Format source
+      run: make fmt
+    - name: Lint source
+      run: make lint
+    - name: Commit files
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git commit -m "Fix formatting" -a
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: "{{github.ref}}"
