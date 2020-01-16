@@ -40,7 +40,7 @@ django-atom==0.16.3
 django-tinymce==2.8.0
 django-tinycontent==0.7.1
 icalendar==4.0.4
-html2text==2019.9.26
+html2text==2020.1.16
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.7.1
 raven==6.10.0
