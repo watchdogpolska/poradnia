@@ -11,7 +11,7 @@ django-model-utils==4.0.0
 
 # images
 Pillow==6.2.1
-sorl-thumbnail==12.5.0
+sorl-thumbnail==12.6.2
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
