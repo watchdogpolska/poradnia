@@ -1,4 +1,4 @@
-import unicodecsv as csv
+import csv as csv
 from datetime import datetime, timedelta
 
 import requests

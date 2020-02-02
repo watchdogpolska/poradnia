@@ -31,7 +31,6 @@ lxml==4.5.0
 cssselect==1.1.0
 # Your custom requirements go here
 django-guardian==2.2.0
-talon==1.4.4
 django-filter==2.2.0
 django-autocomplete-light==3.5.0
 https://github.com/ad-m/django-flatpages-tinymce/archive/master.zip
@@ -49,7 +48,6 @@ monotonic==1.5
 cached-property==1.5.1
 future==0.18.2
 django-github-revision==0.0.3
-unicodecsv==0.14.1
 zipstream-new==1.1.7
 django-teryt-tree==0.16.1
 django-mptt==0.11.0
