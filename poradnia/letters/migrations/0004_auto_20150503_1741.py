@@ -7,7 +7,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ("django_mailbox", "0003_auto_20150409_0316"),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ("letters", "0003_remove_attachment_text"),
     ]
 
@@ -30,7 +30,9 @@ class Migration(migrations.Migration):
             field=models.ForeignKey(
                 on_delete=models.CASCADE,
                 blank=True,
-                to="django_mailbox.Message",
+                # to="django_mailbox.Message",
+                # edited to unlock removing depency
+                to=settings.AUTH_USER_MODEL,
                 null=True,
             ),
             preserve_default=True,

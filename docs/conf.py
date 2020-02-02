@@ -55,7 +55,6 @@ intersphinx_mapping = {
         "https://docs.djangoproject.com/en/dev/_objects/",
     ),
     "sphinx": ("https://sphinx.readthedocs.io/en/latest/", None),
-    "mailbox": ("https://django-mailbox.readthedocs.io/en/latest/", None),
 }
 
 # Add any paths that contain templates here, relative to this directory.

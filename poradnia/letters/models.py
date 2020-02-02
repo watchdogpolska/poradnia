@@ -7,7 +7,6 @@ from django.conf import settings
 from django.db import models
 from django.db.models import F, Func, IntegerField, Q
 from django.utils.translation import ugettext_lazy as _
-from django_mailbox.models import Message
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
@@ -87,9 +86,6 @@ class Letter(AbstractRecord):
     )
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modified on")
-    )
-    message = models.ForeignKey(
-        to=Message, null=True, blank=True, on_delete=models.CASCADE
     )
     eml = models.FileField(
         _("Raw message contents"),

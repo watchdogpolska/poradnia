@@ -38,7 +38,6 @@ THIRD_PARTY_APPS = (
     "allauth.account",  # registration
     "allauth.socialaccount",  # registration
     "guardian",
-    "django_mailbox",
     "dal",
     "dal_select2",
     "tinymce",
@@ -282,8 +281,6 @@ AVATAR_GRAVATAR_DEFAULT = "retro"
 FEEDBACK_FILTER = "poradnia.feedback_custom.filters.AtomFeedbackFilter"
 FEEDBACK_FORM_SUBMIT = "poradnia.feedback_custom.forms.FeedbackForm"
 FEEDBACK_GITHUB_REPO = "https://github.com/watchdogpolska/poradnia"
-
-DJANGO_MAILBOX_STORE_ORIGINAL_MESSAGE = True
 
 TEST_RUNNER = "django.test.runner.DiscoverRunner"
 
