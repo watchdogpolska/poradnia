@@ -42,7 +42,7 @@ class WarsawETRParser(BaseParser):
         csv_text = csv_text.encode("utf-8")
 
         csv_data = csv.DictReader(
-            csvfile=BytesIO(csv_text),
+            f=BytesIO(csv_text),
             delimiter=" ",
             quotechar="'",
             quoting=csv.QUOTE_ALL,
