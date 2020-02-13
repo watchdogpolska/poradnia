@@ -39,7 +39,6 @@ class WarsawETRParser(BaseParser):
         content = self.get_content()
         tree = html.document_fromstring(content)
         csv_text = tree.cssselect("#csv_text")[0].text_content()
-        csv_text = csv_text.encode("utf-8")
 
         csv_data = csv.DictReader(
             f=StringIO(csv_text), delimiter=" ", quotechar="'", quoting=csv.QUOTE_ALL,
