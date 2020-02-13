@@ -42,10 +42,7 @@ class WarsawETRParser(BaseParser):
         csv_text = csv_text.encode("utf-8")
 
         csv_data = csv.DictReader(
-            f=BytesIO(csv_text),
-            delimiter=" ",
-            quotechar="'",
-            quoting=csv.QUOTE_ALL,
+            f=BytesIO(csv_text), delimiter=" ", quotechar="'", quoting=csv.QUOTE_ALL,
         )
         csv_data = map(self.fix_dict, csv_data)
         for csv_row in csv_data:
