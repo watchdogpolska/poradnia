@@ -1,4 +1,4 @@
-import csv as csv
+import csv
 from datetime import datetime, timedelta
 
 import requests
