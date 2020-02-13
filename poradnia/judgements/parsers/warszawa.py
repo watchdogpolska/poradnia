@@ -8,7 +8,7 @@ from poradnia.judgements.models import SessionRow
 from poradnia.judgements.parsers.base import BaseParser
 from poradnia.judgements.registry import register_parser
 
-from io import BytesIO
+from io import StringIO
 
 
 @register_parser("WSA_Warszawa")
@@ -42,7 +42,7 @@ class WarsawETRParser(BaseParser):
         csv_text = csv_text.encode("utf-8")
 
         csv_data = csv.DictReader(
-            f=BytesIO(csv_text), delimiter=" ", quotechar="'", quoting=csv.QUOTE_ALL,
+            f=StringIO(csv_text), delimiter=" ", quotechar="'", quoting=csv.QUOTE_ALL,
         )
         csv_data = map(self.fix_dict, csv_data)
         for csv_row in csv_data:
