@@ -44,7 +44,7 @@ html2text==2020.1.16
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.7.1
 raven==6.10.0
-django-import-export==2.0.1
+django-import-export==2.0.2
 python-dateutil==2.8.1
 monotonic==1.5
 cached-property==1.5.1
