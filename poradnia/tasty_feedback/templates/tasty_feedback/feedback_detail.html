@@ -21,6 +21,10 @@
                 <td>{{ object.user }}</td>
             </tr>
             <tr>
+                <td>{% trans "url" %}</td>
+                <td>{{ object.url }}</td>
+            </tr>
+            <tr>
                 <td>{% trans "Status" %}</td>
                 <td>{{ object.get_status_display }}
                     {% if object.status_changed %}{% blocktrans with date=object.status_changed %}since {{ date }}

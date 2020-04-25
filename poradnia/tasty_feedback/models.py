@@ -20,6 +20,7 @@ class Feedback(models.Model):
         null=True,
         on_delete=models.CASCADE,
     )
+    url = models.CharField(help_text=_("URL"), max_length=300)
     text = models.TextField(
         verbose_name=_("Comment"), help_text=_("Text reported by user")
     )
@@ -53,7 +54,7 @@ class Feedback(models.Model):
 
 def notify_manager(sender, instance, **kwargs):
     subject = _("New feedback - %(created)s") % instance.__dict__
-    message = instance.text
+    message = f"{instance.text}\nURL:{instance.url}"
     reply_email = instance.user.email if instance.user else None
     mail_managers_replyable(subject, message, reply_email=reply_email)
 
