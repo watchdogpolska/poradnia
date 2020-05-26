@@ -20,10 +20,7 @@ from poradnia.judgements.factories import (
 from poradnia.judgements.utils import Manager
 from poradnia.users.factories import UserFactory
 
-try:
-    from unittest import mock
-except ImportError:
-    import mock
+from unittest import mock
 
 
 class ManagerTestCase(TestCase):
