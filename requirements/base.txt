@@ -27,7 +27,7 @@ django-autoslug==1.9.6
 # Useful things
 # Time zones support
 pytz==2020.1
-lxml==4.5.0
+lxml==4.5.1
 cssselect==1.1.0
 # Your custom requirements go here
 django-guardian==2.2.0
