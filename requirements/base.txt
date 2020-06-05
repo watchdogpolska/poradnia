@@ -33,7 +33,7 @@ cssselect==1.1.0
 django-guardian==2.2.0
 django-mailbox==4.8.1
 talon==1.4.4
-django-filter==2.2.0
+django-filter==2.3.0
 django-autocomplete-light==3.5.0
 https://github.com/ad-m/django-flatpages-tinymce/archive/master.zip
 django-atom==0.16.3
