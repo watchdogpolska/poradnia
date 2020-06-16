@@ -3,4 +3,4 @@
 -r base.txt
 Django==2.2.13 # pyup: <2.0
 gunicorn==20.0.4
-gevent==20.6.1
+gevent==20.6.2
