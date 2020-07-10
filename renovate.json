@@ -8,6 +8,11 @@
       "managers": ["pip_requirements"],
       "paths": ["requirements/local.txt","requirements/test.txt","requirements/doc.txt"],
       "groupName": "non-production-dependencies"
+    },
+    {
+      "managers": ["pip_requirements"],
+      "packageNames": ["lxml", "mysqlclient", "ipdb", "gevent", "Sphinx"],
+      "automerge": true
     }
   ],
   "pip_requirements": {
