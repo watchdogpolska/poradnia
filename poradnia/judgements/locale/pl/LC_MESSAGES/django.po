@@ -7,8 +7,10 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-04-16 04:56+0200\n"
-"PO-Revision-Date: 2018-04-16 04:58+0200\n"
+"POT-Creation-Date: 2020-07-16 22:48+0200\n"
+"PO-Revision-Date: 2020-07-16 22:51+0200\n"
+"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"Language-Team: \n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -16,28 +18,26 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n"
 "%100<12 || n%100>=14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n"
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
-"Language-Team: \n"
 "X-Generator: Poedit 1.8.7.1\n"
 
-#: admin.py:14
+#: admin.py:15
 msgid "None"
 msgstr "Brak"
 
-#: models.py:18 models.py:36 models.py:47
+#: models.py:16 models.py:36 models.py:49
 #: templates/judgements/_courtcase_list.html:10
 msgid "Court"
 msgstr "Sąd"
 
-#: models.py:19
+#: models.py:17
 msgid "Active status"
 msgstr "Status aktywności"
 
-#: models.py:22 models.py:72
+#: models.py:21 models.py:82
 msgid "Parser key"
 msgstr "Klucz parsera"
 
-#: models.py:23
+#: models.py:22
 msgid "Identifier of parser"
 msgstr "Identyfikator parsera"
 
@@ -45,58 +45,71 @@ msgstr "Identyfikator parsera"
 msgid "Courts"
 msgstr "Sądy"
 
-#: models.py:50 templates/judgements/_courtcase_list.html:14
+#: models.py:53 templates/judgements/_courtcase_list.html:14
 msgid "Court signature"
 msgstr "Sygnatura sądowa"
 
-#: models.py:53
+#: models.py:58
 msgid "Created by"
 msgstr "Utworzony przez"
 
-#: models.py:55
+#: models.py:63
 msgid "Modified by"
 msgstr "Zmodyfikowany przez"
 
-#: models.py:61 models.py:68
+#: models.py:70 models.py:77
 msgid "Court case"
 msgstr "Sprawa sądowa"
 
-#: models.py:62
+#: models.py:71
 msgid "Court cases"
 msgstr "Sprawy sądowe"
 
-#: models.py:70
+#: models.py:80
 msgid "Event"
 msgstr "Wydarzenie"
 
-#: models.py:75
+#: models.py:85
 msgid "Court session"
 msgstr "Rozprawa sądowa"
 
-#: models.py:76
+#: models.py:86
 msgid "Court sessions"
 msgstr "Rozprawy sądowe"
 
-#: templates/judgements/_courtcase_list.html:29
+#: templates/judgements/_courtcase_list.html:34
 #: templates/judgements/courtcase_form.html:8
 msgid "Edit"
 msgstr "Edytuj"
+
+#: templates/judgements/courtcase_confirm_delete.html:6
+msgid "Confirm delete"
+msgstr "Potwierdź usuwanie"
+
+#: templates/judgements/courtcase_confirm_delete.html:13
+#, python-format
+msgid "Delete%(object)s"
+msgstr "Usunięto %(object)s"
+
+#: templates/judgements/courtcase_confirm_delete.html:15
+msgid "Cancel"
+msgstr "Anuluj"
 
 #: templates/judgements/courtcase_form.html:6
 msgid "Cases"
 msgstr "Sprawy"
 
-#: views.py:63
+#: views.py:69
 #, python-brace-format
 msgid "{0} created!"
 msgstr "{0} utworzony!"
 
-#: views.py:76
+#: views.py:86
 #, python-brace-format
 msgid "{0} updated!"
 msgstr "{0} zaktualizowany!"
 
-#: views.py:85
+#: views.py:98
 #, python-brace-format
 msgid "{0} deleted!"
 msgstr "{0} usunięty!"

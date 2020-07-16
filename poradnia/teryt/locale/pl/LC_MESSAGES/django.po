@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-06-15 15:19+0200\n"
+"POT-Creation-Date: 2020-07-16 22:51+0200\n"
 "PO-Revision-Date: 2017-08-13 06:29+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: \n"
@@ -93,12 +93,12 @@ msgid "Subordinate units"
 msgstr "Jednostki podrzędne"
 
 #: templates/teryt/jst_detail.html:62
-msgid "Cases"
-msgstr "Sprawy"
-
-#: templates/teryt/jst_detail.html:71
 msgid "Advices"
 msgstr "Porady"
+
+#: templates/teryt/jst_detail.html:71
+msgid "Cases"
+msgstr "Sprawy"
 
 #: templates/teryt/jst_list.html:6
 msgid "Voivodeship"
@@ -108,11 +108,11 @@ msgstr "Województwa"
 msgid "Select voivodeship."
 msgstr "Wybierz województwo"
 
-#: urls.py:13
+#: urls.py:12
 msgid "^(?P<slug>[\\w-]+)$"
 msgstr "^(?P<slug>[\\w-]+)$"
 
-#: urls.py:14 urls.py:15
+#: urls.py:13 urls.py:14
 msgid "^$"
 msgstr "^$"
 
@@ -120,11 +120,11 @@ msgstr "^$"
 msgid "^voivodeship-autocomplete/$"
 msgstr "^wojewodztwo-autouzupelnianie/$"
 
-#: urls.py:18
+#: urls.py:21
 msgid "^county-autocomplete/$"
 msgstr "^powiat-autouzupelnianie/$"
 
-#: urls.py:20
+#: urls.py:26
 msgid "^community-autocomplete/$"
 msgstr "^gminy-autouzupelnianie/$"
 

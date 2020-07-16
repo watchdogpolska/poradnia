@@ -19,10 +19,6 @@ TEMPLATES[0]["OPTIONS"]["debug"] = DEBUG
 
 INSTALLED_APPS += ("django_extensions",)
 
-# django-autofixture
-
-INSTALLED_APPS += ("autofixture",)
-
 # django-debug-toolbar
 
 INSTALLED_APPS += ("debug_toolbar",)

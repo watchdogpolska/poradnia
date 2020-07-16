@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-05 19:56+0200\n"
-"PO-Revision-Date: 2017-08-05 19:56+0200\n"
+"POT-Creation-Date: 2020-07-16 22:46+0200\n"
+"PO-Revision-Date: 2020-07-16 22:47+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -21,28 +21,28 @@ msgstr ""
 msgid "Statistics"
 msgstr "Statystyki"
 
-#: management/commands/update_stats.py:43
+#: management/commands/update_stats.py:50
 msgid "Time (seconds) in which metric statistical information was collected."
 msgstr ""
 "Czas (sekundy) w jakim zostały zebrane metrykowe informacje statystyczne."
 
-#: management/commands/update_stats.py:45
+#: management/commands/update_stats.py:54
 msgid "Time to calculate statistics"
 msgstr "Czas obliczenia statystyk"
 
-#: models.py:28
+#: models.py:25
 msgid "Metric key"
 msgstr "Klucz metryczny"
 
-#: models.py:29 models.py:84 views.py:349
+#: models.py:26 models.py:92 views.py:377
 msgid "Name"
 msgstr "Nazwa"
 
-#: models.py:30 models.py:85
+#: models.py:27 models.py:93
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:32
+#: models.py:29
 msgid "Time to get the last value"
 msgstr "Czas ostatniej wartości"
 
@@ -50,27 +50,27 @@ msgstr "Czas ostatniej wartości"
 msgid "Public?"
 msgstr "Publicznie dostępne?"
 
-#: models.py:38
+#: models.py:39
 msgid "Item"
 msgstr "Parametr"
 
-#: models.py:39 models.py:86 templates/stats/index.html:23
+#: models.py:40 models.py:94 templates/stats/index.html:23
 msgid "Items"
 msgstr "Parametry"
 
-#: models.py:77 templates/stats/item_details.html:59 views.py:349
+#: models.py:86 templates/stats/item_details.html:59 views.py:377
 msgid "Value"
 msgstr "Wartość"
 
-#: models.py:78
+#: models.py:87
 msgid "Values"
 msgstr "Wartości"
 
-#: models.py:95
+#: models.py:103
 msgid "Graph"
 msgstr "Wykres"
 
-#: models.py:96 templates/stats/index.html:31
+#: models.py:104 templates/stats/index.html:31
 msgid "Graphs"
 msgstr "Wykresy"
 
@@ -120,45 +120,54 @@ msgstr "Zarejestrowani użytkownicy"
 msgid "CSV"
 msgstr "CSV"
 
-#: templates/stats/item_details.html:58 views.py:349
+#: templates/stats/item_details.html:58 views.py:377
 msgid "Time"
 msgstr "Czas"
 
-#: urls.py:39
-msgid "^item-(?P<key>[\\w.]+)/$"
-msgstr "^parametr-(?P<key>[\\w.]+)/$"
+#: urls.py:78
+msgid "item-<slug:key>/"
+msgstr "parametr-<slug:key>/"
 
-#: urls.py:41
-msgid "^item-(?P<key>[\\w.]+)/(?P<month>\\d+)/(?P<year>\\d+)/~csv$"
-msgstr "^parametr-(?P<key>[\\w.]+)/(?P<month>\\d+)/(?P<year>\\d+)/~csv$"
+#: urls.py:81
+msgid "item-<slug:key>/<month>/<int:year>/~csv"
+msgstr "parametr-<slug:key>/<month>/<int:year>/~csv"
 
-#: urls.py:43
-msgid "^item-(?P<key>[\\w.]+)/(?P<month>\\d+)/(?P<year>\\d+)/~json$"
-msgstr "^parametr-(?P<key>[\\w.]+)/(?P<month>\\d+)/(?P<year>\\d+)/~json$"
+#: urls.py:86
+msgid "item-<slug:key>/<month>/<int:year>/~json"
+msgstr "parametr-<slug:key>/<month>/<int:year>/~json"
 
-#: urls.py:45
-msgid "^item-(?P<key>[\\w.]+)/(?P<month>\\d+)/(?P<year>\\d+)$"
-msgstr "^parametr-(?P<key>[\\w.]+)/(?P<month>\\d+)/(?P<year>\\d+)$"
+#: urls.py:91
+msgid "item-<slug:key>/<month>/<int:year>"
+msgstr "parametr-<slug:key>/<month>/<int:year>"
 
-#: urls.py:47
-msgid "^graph-(?P<pk>\\d+)$"
-msgstr "^wykres-(?P<pk>\\d+)$"
+#: urls.py:95
+msgid "graph-<int:pk>"
+msgstr "wykres-<int:pk>"
 
-#: urls.py:49
-msgid "^graph-(?P<pk>\\d+)/(?P<month>\\d+)/(?P<year>\\d+)$"
-msgstr "^wykres-(?P<pk>\\d+)/(?P<month>\\d+)/(?P<year>\\d+)$"
+#: urls.py:97
+msgid "graph-<int:pk>/<int:month>/<int:year>"
+msgstr "wykres-<int:pk>/<int:month>/<int:year>"
 
-#: urls.py:51
-msgid "^graph-(?P<pk>\\d+)/(?P<month>\\d+)/(?P<year>\\d+)/~json$"
-msgstr "^wykres-(?P<pk>\\d+)/(?P<month>\\d+)/(?P<year>\\d+)/~json$"
+#: urls.py:102
+msgid "graph-<int:pk>/<int:month>/<int:year>/~json"
+msgstr "wykres-<int:pk>/<int:month>/<int:year>/~json"
 
-#: views.py:349
+#: views.py:377
 msgid "Key"
 msgstr "Klucz"
 
-#: views.py:349
+#: views.py:377
 msgid "Time (unix)"
 msgstr "Czas (unix)"
+
+#~ msgid "^item-(?P<key>[\\w.]+)/$"
+#~ msgstr "^parametr-(?P<key>[\\w.]+)/$"
+
+#~ msgid "^item-(?P<key>[\\w.]+)/(?P<month>\\d+)/(?P<year>\\d+)$"
+#~ msgstr "^parametr-(?P<key>[\\w.]+)/(?P<month>\\d+)/(?P<year>\\d+)$"
+
+#~ msgid "^graph-(?P<pk>\\d+)/(?P<month>\\d+)/(?P<year>\\d+)$"
+#~ msgstr "^wykres-(?P<pk>\\d+)/(?P<month>\\d+)/(?P<year>\\d+)$"
 
 #, fuzzy
 #~| msgid "Cases created"

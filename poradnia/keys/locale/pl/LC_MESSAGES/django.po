@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-04 21:26+0200\n"
-"PO-Revision-Date: 2017-08-04 21:26+0200\n"
+"POT-Creation-Date: 2020-07-16 22:55+0200\n"
+"PO-Revision-Date: 2020-07-16 22:56+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -21,35 +21,35 @@ msgstr ""
 msgid "Keys"
 msgstr "Klucze"
 
-#: models.py:16
+#: models.py:18
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: models.py:17 templates/keys/key_detail.html:12
+#: models.py:20 templates/keys/key_detail.html:12
 msgid "Key"
 msgstr "Klucz"
 
-#: models.py:18 templates/keys/key_list.html:17
+#: models.py:22 templates/keys/key_list.html:17
 msgid "Description"
 msgstr "Opis"
 
-#: models.py:19 templates/keys/key_list.html:18
+#: models.py:23 templates/keys/key_list.html:18
 msgid "Created on"
 msgstr "Utworzony o"
 
-#: models.py:20 templates/keys/key_list.html:20
+#: models.py:24 templates/keys/key_list.html:20
 msgid "Used on"
 msgstr "Użyty o"
 
-#: models.py:21
+#: models.py:25
 msgid "Download on"
 msgstr "Pobrany o"
 
-#: models.py:32
+#: models.py:36
 msgid "Access key"
 msgstr "Klucz dostępu"
 
-#: models.py:33
+#: models.py:37
 msgid "Access keys"
 msgstr "Klucze dostępu"
 
@@ -62,8 +62,7 @@ msgid "Confirm delete"
 msgstr "Potwierdzenie usunięcia"
 
 #: templates/keys/key_confirm_delete.html:11
-#, fuzzy, python-format
-#| msgid "Delete %(object)s"
+#, python-format
 msgid ""
 "Delete\n"
 "                %(object)s"
@@ -105,7 +104,7 @@ msgstr "Pobierz"
 msgid "Delete"
 msgstr "Usuń"
 
-#: views.py:36
+#: views.py:39
 #, python-brace-format
 msgid "{object} deleted!"
 msgstr "{object} usunięty!"
