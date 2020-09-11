@@ -37,7 +37,7 @@
         <div class="panel-footer">
             <i class="fa fa-user"></i> {{object.created_by}} &bull;
             <i class="fa fa-clock-o"></i>
-            <time datetime="{{object.created_on}}" title="{{object.created_on}}">{{object.created_on}}
+            <time datetime="{{object.created_on}}">{{object.created_on}}
             </time>
             {% if object.modified_by %}
             {% blocktrans with modified_on=object.modified_on modified_on_natural=object.modified_on|naturaltime modified_by=object.modified_by %}
