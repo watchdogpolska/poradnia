@@ -7659,7 +7659,10 @@ ul li.select2-search {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  width: 400px; }
+  }
+  @media (min-width: 490px) {
+    .login-form {width: 400px;}
+  }  
 
 .registration-form {
   display: block;
