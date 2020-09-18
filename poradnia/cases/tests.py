@@ -160,7 +160,9 @@ class CaseTestCase(TestCase):
         self.assertFalse(self.object.has_assignees())
 
         permission = CaseUserObjectPermissionFactory(
-            content_object=self.object, permission_name="can_send_to_client", user=user,
+            content_object=self.object,
+            permission_name="can_send_to_client",
+            user=user,
         )
         self.assertTrue(self.object.has_assignees())
 

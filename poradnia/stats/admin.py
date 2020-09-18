@@ -7,7 +7,7 @@ from poradnia.stats.models import Graph, Item, Value
 @admin.register(Item)
 class ItemAdmin(admin.ModelAdmin):
     """
-        Admin View for Item
+    Admin View for Item
     """
 
     list_display = [
@@ -43,7 +43,7 @@ class ItemAdmin(admin.ModelAdmin):
 @admin.register(Graph)
 class GraphAdmin(admin.ModelAdmin):
     """
-        Admin View for Item
+    Admin View for Item
     """
 
     list_display = ["name", "description", "count_items"]
