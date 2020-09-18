@@ -1,4 +1,4 @@
-{% load guardian_tags crispy_forms_tags humanize users_tags letter_tags i18n %}
+{% load guardian_tags crispy_forms_tags humanize users_tags letter_tags i18n parse_markdown%}
 <div class="timeline-messange">
     <a href="#"><img src="{% get_avatar_url object.created_by %}" class="timeline-avatar"></a> 
     <div class="panel {{ object.created_by.is_staff|yesno:'panel-primary,panel-default' }}  timeline-comment">
@@ -16,11 +16,11 @@
             </div>
             {% endif %}
             {% if object.html %}
-                <div class="embed-responsive embed-responsive-4by3">
-                    <iframe srcdoc="{{object.html|escape}}" sandbox="allow-top-navigation"></iframe>
-                </div>
+            <div class="embed-responsive embed-responsive-4by3">
+                <iframe srcdoc="{{object.html|escape}}" sandbox="allow-top-navigation"></iframe>
+            </div>
             {% else %}
-            <p>{{object.text|linebreaks}}</p>
+            <p>{{object.text|markdown}}</p>
             {% endif %}
             {% if object.signature %}
             <blockquote>{{object.signature | linebreaks}}</blockquote>
@@ -46,7 +46,8 @@
             by {{modified_by}})
             {% endblocktrans %}
             {% endif %}
-            {% if "can_change_all_record" in case_perms or request.user == object.created_by and "can_change_own_record" in case_perms %} &bull;
+            {% if "can_change_all_record" in case_perms or request.user == object.created_by and "can_change_own_record" in case_perms %}
+            &bull;
             <i class="fa fa-pencil"></i>
             <a href="{{object.get_edit_url}}">
                 {% trans 'Edit'%}
@@ -62,7 +63,8 @@
             <a href="{{object.eml.url}}"><i class="fa fa-life-ring"></i></a>
             {% endif %}
             {% if request.user.is_staff and object.attachment_set.all %} &bull;
-            <a href="{% url 'letters:attachments_zip' case_pk=object.case_id letter_pk=object.pk %}"><i class="fa fa-archive"></i></a>
+            <a href="{% url 'letters:attachments_zip' case_pk=object.case_id letter_pk=object.pk %}"><i
+                    class="fa fa-archive"></i></a>
             {% endif %}
         </div>
     </div>
