@@ -1,5 +1,6 @@
+{% load format_text%}
 {{target.created_by}}: {{target.name}}
-{{target.text}}
+{{target.text|format_text}}
 
 Sporządził/-a: {{target.created_by}}
 Zatwierdził/-a: {{actor}}

@@ -1,4 +1,4 @@
-{% load guardian_tags crispy_forms_tags humanize users_tags letter_tags i18n parse_markdown%}
+{% load guardian_tags crispy_forms_tags humanize users_tags letter_tags i18n format_text%}
 <div class="timeline-messange">
     <a href="#"><img src="{% get_avatar_url object.created_by %}" class="timeline-avatar"></a> 
     <div class="panel {{ object.created_by.is_staff|yesno:'panel-primary,panel-default' }}  timeline-comment">
@@ -20,7 +20,7 @@
                 <iframe srcdoc="{{object.html|escape}}" sandbox="allow-top-navigation"></iframe>
             </div>
             {% else %}
-            <p>{{object.text|markdown}}</p>
+            <p>{{object.text | format_text}}</p>
             {% endif %}
             {% if object.signature %}
             <blockquote>{{object.signature | linebreaks}}</blockquote>

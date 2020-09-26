@@ -1,5 +1,6 @@
+{% load format_text%}
 {{actor}}: {{target.name}}
 {{actor}} zaakceptował pismo:
-{{target.text}}
+{{target.text|format_text}}
 
 {% include 'letters/email/_footer.txt' %}
