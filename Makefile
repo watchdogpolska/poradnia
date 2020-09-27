@@ -6,7 +6,7 @@ build:
 
 regenerate_frontend:
 	docker-compose run web python manage.py collectstatic -c --noinput
-	docker-compose run gulp sh -c 'npm install && npx gulp build'
+	docker-compose up gulp
 
 test:
 	docker-compose run web python manage.py test --keepdb --verbosity=2

@@ -9,13 +9,12 @@ jobs:
     - uses: actions/checkout@v1
     - name: Build frontend
       run: make regenerate_frontend
-    - uses: marceloprado/has-changed-path@v1
-      id: changed-static
-      with:
-        paths: poradnia/static
+    - name: Show git status
+      run: git status
     - name: Require rebuild content
-      if: steps.changed-static.outputs.changed == 'true'
       run: >
-        echo "Pending changes in the front-end have been detected.";
-        echo "Use 'make regenerate_frontend' to regenerate front-end and commit changes."
-        exit 1;
+        git diff-index --quiet HEAD -- "poradnia/static/" || (
+          echo "Pending changes in the front-end have been detected.";
+          echo "Use 'make regenerate_frontend' to regenerate front-end and commit changes.";
+          exit 1;
+        )
