@@ -4,6 +4,10 @@ clean:
 build:
 	docker-compose build web
 
+regenerate_frontend:
+	docker-compose run web python manage.py collectstatic -c --noinput
+	docker-compose run gulp npx gulp build
+
 test:
 	docker-compose run web python manage.py test --keepdb --verbosity=2
 
