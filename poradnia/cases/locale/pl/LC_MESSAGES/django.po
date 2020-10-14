@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-10-14 16:56+0000\n"
+"POT-Creation-Date: 2020-10-14 17:11+0000\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: \n"
@@ -45,6 +45,10 @@ msgstr "Odpowiedziana"
 #: filters.py:43
 msgid "Status"
 msgstr "Status"
+
+#: filters.py:44
+msgid "Advice registered"
+msgstr "Zarejestrowana porada"
 
 #: filters.py:59 models.py:156 templates/cases/case_detail.html:91
 #: templates/cases/case_filter.html:40
