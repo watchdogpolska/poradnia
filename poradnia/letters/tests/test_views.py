@@ -3,6 +3,7 @@ import hashlib
 import zipfile
 from io import BytesIO
 
+from django.conf import settings
 from django.core import mail
 from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -213,7 +214,7 @@ class AddLetterTestCase(CaseMixin, TestCase):
         "attachment_set-TOTAL_FORMS": "1",
         "name": "Odp:  Pytanie o dostep do informacji publicznej",
         "status": "done",
-        "text": "XX",
+        "text": "*bold* **italic** [link](http://google.pl)",
     }
 
     def setUp(self):
@@ -282,6 +283,11 @@ class AddLetterTestCase(CaseMixin, TestCase):
         emails = [x.to[0] for x in mail.outbox if template in self._templates_used(x)]
         self.assertEqual(user_user.email in emails, user_notify)
         self.assertEqual(user_staff.email in emails, staff_notify)
+        if settings.RICH_TEXT_ENABLED:
+            self.assertIn(
+                '<p><em>bold</em> <strong>italic</strong> <a href="http://google.pl">link</a></p>',
+                mail.outbox[0].body,
+            )
 
     def test_email_make_done(self):
         self._test_email(
@@ -661,3 +667,4 @@ class ReceiveEmailTestCase(TestCase):
             "eml": eml,
             "attachment": attachments,
         }
+        
