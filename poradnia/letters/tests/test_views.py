@@ -667,4 +667,3 @@ class ReceiveEmailTestCase(TestCase):
             "eml": eml,
             "attachment": attachments,
         }
-        
