@@ -17,6 +17,7 @@ from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from poradnia.users.models import User
 
 from .utils import date_random_path
+from .templatetags.format_text import format_text
 
 from django.urls import reverse
 
@@ -125,7 +126,7 @@ class Letter(AbstractRecord):
         if self.is_html():
             return self.html
         else:
-            return "<pre>{text}</pre>".format(text=self.text)
+            return "<pre>{text}</pre>".format(text=format_text(self.text))
 
     def get_edit_url(self):
         return reverse("letters:edit", kwargs={"pk": self.pk})

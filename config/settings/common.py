@@ -341,6 +341,9 @@ STAT_METRICS = {
 
 FILE_UPLOAD_PERMISSIONS = 0o644
 
+# Enable rich text formatting. Reverts to legacy plain text display when disabled.
+RICH_TEXT_ENABLED = env.bool("DJANGO_RICH_TEXT_ENABLED", True)
+
 # Django-GitHub-Revision
 GITHUB_REVISION_REPO_URL = "https://github.com/watchdogpolska/poradnia"
 

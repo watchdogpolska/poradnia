@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-16 22:56+0200\n"
-"PO-Revision-Date: 2020-07-16 22:57+0200\n"
+"POT-Creation-Date: 2020-10-26 01:01+0100\n"
+"PO-Revision-Date: 2020-10-26 01:01+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -17,17 +17,17 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /letters/locale/en/LC_MESSAGES/django.po\n"
 
-#: apps.py:7 models.py:163
+#: apps.py:7 models.py:164
 msgid "Letters"
 msgstr "Listy"
 
-#: forms.py:18
+#: forms.py:19
 msgid "Leave empty to use email field and create a new one user."
 msgstr ""
 "Pozostaw puste, aby wykorzystać pole adresu e-mail i utworzyć nowego "
 "użytkownika."
 
-#: forms.py:21
+#: forms.py:22
 msgid ""
 "The user account will be created automatically, so you haveaccess to the "
 "archive and data about persons responsible for the case."
@@ -35,7 +35,7 @@ msgstr ""
 "Konto użytkownika zostanie utworzone automatycznie, dzięki czemu będziesz "
 "mieć dostęp do archiwum zawierającego wszystkie Twoje sprawy."
 
-#: forms.py:26
+#: forms.py:27
 msgid ""
 "Short description of the case for organizational purposes. The institution "
 "name and two words will suffice."
@@ -43,7 +43,7 @@ msgstr ""
 "Podaj nazwę instytucji i typ problemu np. „brak odpowiedzi”, „ochrona danych "
 "osobowych” itp."
 
-#: forms.py:31
+#: forms.py:32
 msgid ""
 "After choosing this option, your message will be sent to the client and the "
 "members of the legal team, who can see this case (admins and assigned team "
@@ -56,7 +56,7 @@ msgstr ""
 "Wybierz ją, jeśli Twoja wiadomość jest ostateczna i może trafić do klienta/"
 "klientki poradnictwa."
 
-#: forms.py:38
+#: forms.py:39
 msgid ""
 "After choosing this option, your message will be saved in the system as a "
 "draft. The admin will check the saved draft and will either suggest changes, "
@@ -67,7 +67,7 @@ msgstr ""
 "Admin sprawdzi zapisany projekt i albo poprosi Cię o jego zmianę albo wyśle "
 "go do klienta/klientki."
 
-#: forms.py:44
+#: forms.py:45
 msgid ""
 "After choosing this option, your message will only be sent to the members of "
 "the legal team who can see this case (admins and assigned team members). "
@@ -78,48 +78,56 @@ msgstr ""
 "zespołu).\n"
 "Wybierz ją, jeśli chcesz coś ustalić, skonsultować w ramach zespołu."
 
-#: forms.py:61
+#: forms.py:51
+msgid ""
+"This field supports <a href='https://www.markdownguide.org/cheat-"
+"sheet'>Markdown</a>"
+msgstr ""
+"To pole obsługuje składnię <a href='https://blog.nayma.pl/podstawy-"
+"markdown/'>Markdown</a>"
+
+#: forms.py:67
 #, python-format
 msgid "E-mail %(email)s are already used. Please log in."
 msgstr "Adres e-mail %(email)s jest aktualnie w użyciu. Proszę, zaloguj się."
 
-#: forms.py:71
+#: forms.py:77
 msgid "Report case"
 msgstr "Zgłoś sprawę"
 
-#: forms.py:75
+#: forms.py:81
 msgid "Client"
 msgstr "Klient"
 
-#: forms.py:80
+#: forms.py:86
 msgid "User e-mail"
 msgstr "E-mail użytkownika"
 
-#: forms.py:82
+#: forms.py:88
 msgid "E-mail"
 msgstr "E-mail"
 
-#: forms.py:118
+#: forms.py:127
 msgid "Have to enter user email or select a client"
 msgstr "Musisz podać adres e-mail klienta lub go wybrać z bazy."
 
-#: forms.py:182
+#: forms.py:194
 msgid "Reply to all"
 msgstr "Odpowiedz wszystkim"
 
-#: forms.py:190 forms.py:217
+#: forms.py:202 forms.py:229
 msgid "Save to review"
 msgstr "Zapisz do przejrzenia"
 
-#: forms.py:199 forms.py:209
+#: forms.py:211 forms.py:221
 msgid "Write to staff"
 msgstr "Napisz do zespołu"
 
-#: forms.py:224
+#: forms.py:236
 msgid "Reply"
 msgstr "Odpowiedz"
 
-#: forms.py:269
+#: forms.py:281
 msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
@@ -175,71 +183,71 @@ msgstr "Dokumenty napisane dla klientów"
 msgid "Number of attachments in staff messages send to clients."
 msgstr "Liczba załączników w pismach członków zespołu wysłanych do klientów"
 
-#: models.py:62 templates/letters/_letter_list.html:14
+#: models.py:63 templates/letters/_letter_list.html:14
 msgid "Staff"
 msgstr "Zespół"
 
-#: models.py:62
+#: models.py:63
 msgid "Done"
 msgstr "Wykonane"
 
-#: models.py:68
+#: models.py:69
 msgid "Accepted on"
 msgstr "Zaakceptowane o"
 
-#: models.py:70
+#: models.py:71
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: models.py:71
+#: models.py:72
 msgid "Text"
 msgstr "Treść"
 
-#: models.py:72
-msgid "HTML"
-msgstr ""
-
 #: models.py:73
+msgid "HTML"
+msgstr "HTML"
+
+#: models.py:74
 msgid "Signature"
 msgstr "Podpis"
 
-#: models.py:77
+#: models.py:78
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: models.py:80
+#: models.py:81
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: models.py:83
+#: models.py:84
 msgid "Modified by"
 msgstr "Zmienione o"
 
-#: models.py:89
+#: models.py:90
 msgid "Modified on"
 msgstr "Zmienione przez"
 
-#: models.py:95
+#: models.py:96
 msgid "Raw message contents"
 msgstr "Treść surowej wiadomości"
 
-#: models.py:98
+#: models.py:99
 msgid "Original full content of message"
 msgstr "Oryginalna, pełna treść wiadomości"
 
-#: models.py:162
+#: models.py:163
 msgid "Letter"
 msgstr "List"
 
-#: models.py:189
+#: models.py:190
 msgid "File"
 msgstr "Plik"
 
-#: models.py:209
+#: models.py:210
 msgid "Attachment"
 msgstr "Załącznik"
 
-#: models.py:210
+#: models.py:211
 msgid "Attachments"
 msgstr "Załączniki"
 
@@ -276,12 +284,12 @@ msgstr ""
 "            przez %(modified_by)s)\n"
 "            "
 
-#: templates/letters/_letter_list.html:52 templates/letters/form_edit.html:6
+#: templates/letters/_letter_list.html:53 templates/letters/form_edit.html:6
 #: views/cbv.py:63
 msgid "Edit"
 msgstr "Edytuj"
 
-#: templates/letters/_letter_list.html:58 templates/letters/form_send.html:7
+#: templates/letters/_letter_list.html:59 templates/letters/form_send.html:7
 msgid "Send"
 msgstr "Wyślij"
 
@@ -308,7 +316,7 @@ msgstr "Sprawa o tytule {object} została zarejestrowana!"
 
 #: views/cbv.py:98
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #: views/fbv.py:15
 #, python-format

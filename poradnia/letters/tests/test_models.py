@@ -2,6 +2,7 @@ from datetime import timedelta
 
 from django.test import TestCase
 from django.utils.timezone import now
+from django.conf import settings
 
 from poradnia.cases.factories import CaseFactory
 from poradnia.letters.factories import LetterFactory, AttachmentFactory
@@ -115,8 +116,11 @@ class ModelTestCase(TestCase):
         self.assertEqual(letter.render_as_html(), html)
 
     def test_render_as_html_decorates_text(self):
-        text = "some text"
+        text = "*italic* **bolded**\n# header1\n[link](www.google.pl)"
         html = ""
         letter = LetterFactory(text=text, html=html)
-        expected = "<{tag}>{text}</{tag}>".format(tag="pre", text=text)
+        if settings.RICH_TEXT_ENABLED:
+            expected = '<pre><p><em>italic</em> <strong>bolded</strong></p>\n<h1>header1</h1>\n<p><a href="www.google.pl">link</a></p>\n</pre>'
+        else:
+            expected = "<{tag}><p>{text}</p>\n</{tag}>".format(tag="pre", text=text)
         self.assertEqual(letter.render_as_html(), expected)

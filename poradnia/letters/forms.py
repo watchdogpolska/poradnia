@@ -8,6 +8,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
+from django.conf import settings
 
 from poradnia.cases.models import Case
 
@@ -44,6 +45,11 @@ REPLY_TO_TEAM_TITLE = _(
     "After choosing this option, your message will only be sent to the members of "
     "the legal team who can see this case (admins and assigned team members). "
     "Select this option if you want to consult something within the team."
+)
+
+INFO_ABOUT_MARKDOWN = _(
+    "This field supports <a href='https://www.markdownguide.org/cheat-sheet'>"
+    "Markdown</a>"
 )
 
 
@@ -88,6 +94,9 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
         self.helper.form_tag = False
         self.helper.form_method = "post"
         self.fields["name"].help_text = CASE_NAME_TEXT
+
+        if settings.RICH_TEXT_ENABLED:
+            self.fields["text"].help_text = INFO_ABOUT_MARKDOWN
 
         if self._is_super_staff():
             self.fields["client"].initial = self.user
@@ -173,6 +182,9 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         self._fill_footer()
         self._add_buttons()
         self.fields["name"].initial = "Odp: {}".format(self.case)
+
+        if settings.RICH_TEXT_ENABLED:
+            self.fields["text"].help_text = INFO_ABOUT_MARKDOWN
 
     def _add_buttons(self):
         if self.user_can_send:
