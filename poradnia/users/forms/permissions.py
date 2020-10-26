@@ -28,6 +28,7 @@ class TranslatedManageObjectPermissionForm(
         queryset=get_user_model().objects.none(),
         required=True,
         widget=autocomplete.ModelSelect2Multiple(url="users:autocomplete"),
+        label=_("Users"),
     )
 
     def __init__(self, *args, **kwargs):
