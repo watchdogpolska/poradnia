@@ -22,7 +22,7 @@ class CaseAdmin(GuardedModelAdmin):
 @admin.register(PermissionGroup)
 class PermissionGroupAdmin(admin.ModelAdmin):
     """
-        Admin View for PermissionGroup
+    Admin View for PermissionGroup
     """
 
     list_display = ["name", "get_permissions"]

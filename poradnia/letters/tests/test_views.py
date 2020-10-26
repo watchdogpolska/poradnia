@@ -605,7 +605,8 @@ class ReceiveEmailTestCase(TestCase):
     def test_notify_staff_about_user_letter(self):
         case = CaseFactory(client__is_staff=False)
         cuop_user = CaseUserObjectPermissionFactory(
-            content_object=case, user__is_staff=True,
+            content_object=case,
+            user__is_staff=True,
         )
         cuop_lawyer = CaseUserObjectPermissionFactory(
             content_object=case,

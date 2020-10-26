@@ -48,7 +48,8 @@ REPLY_TO_TEAM_TITLE = _(
 )
 
 INFO_ABOUT_MARKDOWN = _(
-    "This field supports <a href='https://www.markdownguide.org/cheat-sheet'>Markdown</a>"
+    "This field supports <a href='https://www.markdownguide.org/cheat-sheet'>"
+    "Markdown</a>"
 )
 
 
