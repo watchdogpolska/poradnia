@@ -127,7 +127,10 @@ SERVER_EMAIL = EMAIL_HOST_USER
 
 # MANAGER CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = (("""Adam Dobrawy""", "naczelnik@jawnosc.tk"),)
+ADMINS = (
+    ("Adam Dobrawy", "adam.dobrawy@siecobywatelska.pl"),
+    ("Marcin Bójko", "marcin.bojko@siecobywatelska.pl"),
+)
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
