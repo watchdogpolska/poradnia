@@ -1,3 +1,5 @@
+TEST=
+
 start:
 	docker-compose up -d
 
@@ -11,7 +13,7 @@ build:
 	docker-compose build web
 
 test:
-	docker-compose run web python manage.py test --keepdb --verbosity=2
+	docker-compose run web python manage.py test --keepdb --verbosity=2 ${TEST}
 
 wait_mysql:
 	docker-compose run web bash -c 'wait-for-it db:3306'

@@ -117,7 +117,7 @@ class TemplateMailManager:
     def send(cls, template_key, recipient_list, context=None, from_email=None, **kwds):
         template = cls.TEMPLATE_MAP[template_key]
         txt, html = template.render(context or {})
-        subject, txt = txt.split("\n", 1)
+        subject, txt = txt.strip().split("\n", 1)
         from_email = from_email if from_email else settings.DEFAULT_FROM_EMAIL
         headers = {}
         if len(sys.argv) > 1 and sys.argv[1] == "test":
