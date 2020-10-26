@@ -144,15 +144,11 @@ class AdminNewCaseTestCase(NewCaseMixin, TestCase):
 
     def test_user_registration(self):
         self.post()
-        self.assertMailSend(
-            template="users/email/new_user.txt", to=self.email
-        )
+        self.assertMailSend(template="users/email/new_user.txt", to=self.email)
 
     def test_user_notification(self):
         self.post()
-        self.assertMailSend(
-            template="cases/email/case_registered.txt", to=self.email
-        )
+        self.assertMailSend(template="cases/email/case_registered.txt", to=self.email)
 
 
 class UserNewCaseTestCase(NewCaseMixin, TestCase):

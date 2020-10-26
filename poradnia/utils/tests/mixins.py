@@ -10,9 +10,7 @@ class AssertSendMailMixin:
             if email.extra_headers["Template"] and template != "None"
         ]
 
-    def assertMailSend(
-        self, template=None, subject=None, to=None, expected_count=1
-    ):
+    def assertMailSend(self, template=None, subject=None, to=None, expected_count=1):
         emails = [
             email
             for email in mail.outbox
