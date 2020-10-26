@@ -70,15 +70,15 @@ class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
 
     def test_user_registration(self):
         self.post()
-        self.assertSendTemplates(
-            template_name="users/email/new_user.txt",
+        self.assertMailSend(
+            template="users/email/new_user.txt",
             subject="Rejestracja w Poradni Sieci Obywatelskiej - Watchdog Polska",
         )
 
     def test_user_notification(self):
         self.post()
-        self.assertSendTemplates(
-            template_name="cases/email/case_registered.txt",
+        self.assertMailSend(
+            template="cases/email/case_registered.txt",
             subject="Sprawa  zarejestrowana w systemie",
         )
 
@@ -144,12 +144,15 @@ class AdminNewCaseTestCase(NewCaseMixin, TestCase):
 
     def test_user_registration(self):
         self.post()
-        self.assertSendTemplates("users/email/new_user.txt")
+        self.assertMailSend(
+            template="users/email/new_user.txt", to=self.email
+        )
 
     def test_user_notification(self):
         self.post()
-        self.assertSendTemplates("cases/email/case_registered.txt")
-        self.assertIn(self.email, mail.outbox[1].to)
+        self.assertMailSend(
+            template="cases/email/case_registered.txt", to=self.email
+        )
 
 
 class UserNewCaseTestCase(NewCaseMixin, TestCase):
@@ -183,8 +186,8 @@ class UserNewCaseTestCase(NewCaseMixin, TestCase):
 
     def test_user_self_notify(self):
         self.post()
-        self.assertSendTemplates(
-            template_name="cases/email/case_registered.txt",
+        self.assertMailSend(
+            template="cases/email/case_registered.txt",
             subject="Sprawa  zarejestrowana w systemie",
             to=self.user.email,
         )
@@ -268,9 +271,16 @@ class AddLetterTestCase(CaseMixin, TestCase):
         func()
         self.assertEqual(Letter.objects.get().status, status)
         template = "letters/email/letter_created.txt"
-        emails = [x.to[0] for x in mail.outbox if template in self._templates_used(x)]
-        self.assertEqual(user_user.email in emails, user_notify)
-        self.assertEqual(user_staff.email in emails, staff_notify)
+        self.assertMailSend(
+            template=template,
+            to=user_user.email,
+            expected_count=1 if user_notify else 0,
+        )
+        self.assertMailSend(
+            template=template,
+            to=user_staff.email,
+            expected_count=1 if staff_notify else 0,
+        )
         if settings.RICH_TEXT_ENABLED:
             self.assertIn(
                 '<p><em>bold</em> <strong>italic</strong> <a href="http://google.pl">link</a></p>',
@@ -307,10 +317,7 @@ class AddLetterTestCase(CaseMixin, TestCase):
         data["project"] = "True"
 
         self.client.post(self.url, data=data)
-
-        emails = [x.to[0] for x in mail.outbox]
-
-        self.assertIn(management_user.email, emails)
+        self.assertMailSend(to=management_user.email)
 
     def test_notify_management_if_not_lawyer(self):
         management_user = UserFactory(notify_unassigned_letter=True)
@@ -323,9 +330,7 @@ class AddLetterTestCase(CaseMixin, TestCase):
 
         self.client.post(self.url, data=data)
 
-        emails = [x.to[0] for x in mail.outbox]
-
-        self.assertIn(management_user.email, emails)
+        self.assertMailSend(to=management_user.email)
 
         self.user = UserFactory(is_staff=True)
         assign_perm("can_send_to_client", self.user, self.case)
@@ -344,9 +349,7 @@ class AddLetterTestCase(CaseMixin, TestCase):
 
         self.client.post(self.url, data=data)
 
-        emails = [x.to[0] for x in mail.outbox]
-
-        self.assertNotIn(management_user.email, emails)
+        self.assertMailSend(to=management_user.email, expected_count=0)
 
 
 class ProjectAddLetterTestCase(CaseMixin, TestCase):
@@ -394,10 +397,6 @@ class ProjectAddLetterTestCase(CaseMixin, TestCase):
 class SendLetterTestCase(CaseMixin, TestCase):
     note_text = "Lorem ipsum XYZ123"
 
-    def assertEmailTemplateUsed(self, template):
-        emails = [x.to[0] for x in mail.outbox if template in self._templates_used(x)]
-        return emails
-
     def assertEmailReceived(self, email, template=None):
         emails = [
             x.to[0]
@@ -442,9 +441,9 @@ class SendLetterTestCase(CaseMixin, TestCase):
         assign_perm("can_send_to_client", user1, self.object.case)
         self._test_send()
 
-        emails = self.assertEmailTemplateUsed("letters/email/letter_drop_a_note.txt")
-        self.assertEqual(user1.email in emails, True)
-        self.assertEqual(user2.email in emails, False)
+        template = "letters/email/letter_drop_a_note.txt"
+        self.assertMailSend(template=template, to=user1.email)
+        self.assertMailSend(template=template, to=user2.email, expected_count=0)
 
     def test_notify_user_about_acceptation(self):
         user1 = self._add_random_user(is_staff=True, case=self.object.case)
@@ -452,15 +451,10 @@ class SendLetterTestCase(CaseMixin, TestCase):
 
         self._test_send()
 
-        self.assertEmailTemplateUsed("letters/email/letter_send_to_client.txt")
-        self.assertEmailReceived(user1.email, "letters/email/letter_send_to_client.txt")
-        self.assertEmailReceived(user2.email, "letters/email/letter_send_to_client.txt")
-        recipient_list = [addr for x in mail.outbox for addr in x.to]
-        self.assertEqual(
-            recipient_list.count(user2.email),
-            1,
-            "Sended double notificatiton to client",
-        )
+        template = "letters/email/letter_send_to_client.txt"
+        self.assertMailSend(template=template, to=user1.email)
+        self.assertMailSend(template=template, to=user2.email)
+        self.assertMailSend(to=user2.email)  # avoid double message
 
     def test_accepted_letter_contains_attachment(self):
         letter = AttachmentFactory(letter=self.object)
@@ -482,11 +476,11 @@ class SendLetterTestCase(CaseMixin, TestCase):
         user3 = self._add_random_user(is_staff=True, case=self.object.case)
 
         self._test_send()
-
-        self.assertEmailTemplateUsed("letters/email/letter_drop_a_note.txt")
-        self.assertEmailReceived(user1.email, "letters/email/letter_drop_a_note.txt")
-        self.assertEmailReceived(user2.email, "letters/email/letter_drop_a_note.txt")
-        self.assertEmailReceived(user3.email, "letters/email/letter_drop_a_note.txt")
+        template = "letters/email/letter_drop_a_note.txt"
+        self.assertMailSend(template=template, expected_count=3)
+        self.assertMailSend(template=template, to=user1.email)
+        self.assertMailSend(template=template, to=user2.email)
+        self.assertMailSend(template=template, to=user3.email)
 
     def test_not_notify_management_to_internal_if_lawyer_assigned(self):
         user1 = UserFactory(notify_unassigned_letter=True, is_staff=True)
@@ -496,10 +490,11 @@ class SendLetterTestCase(CaseMixin, TestCase):
 
         self._test_send()
 
-        self.assertEmailTemplateUsed("letters/email/letter_drop_a_note.txt")
-        self.assertEmailNotReceived(user1.email, "letters/email/letter_drop_a_note.txt")
-        self.assertEmailReceived(user2.email, "letters/email/letter_drop_a_note.txt")
-        self.assertEmailReceived(user3.email, "letters/email/letter_drop_a_note.txt")
+        template = "letters/email/letter_drop_a_note.txt"
+        self.assertMailSend(template=template, expected_count=2)
+        self.assertMailSend(template=template, to=user1.email, expected_count=0)
+        self.assertMailSend(template=template, to=user2.email)
+        self.assertMailSend(template=template, to=user3.email)
 
 
 class StreamAttachmentViewTestCase(TestCase):

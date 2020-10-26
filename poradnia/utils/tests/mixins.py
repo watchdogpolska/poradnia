@@ -10,13 +10,13 @@ class AssertSendMailMixin:
             if email.extra_headers["Template"] and template != "None"
         ]
 
-    def assertSendTemplates(
-        self, template_name=None, subject=None, to=None, expected_count=1
+    def assertMailSend(
+        self, template=None, subject=None, to=None, expected_count=1
     ):
         emails = [
             email
             for email in mail.outbox
-            if (template_name and template_name in self._templates_used(email))
+            if (not template or template in self._templates_used(email))
             and (not subject or subject in email.subject)
             and (not to or to in email.to)
         ]
@@ -24,6 +24,6 @@ class AssertSendMailMixin:
             len(emails),
             expected_count,
             "No mail with template {template_name} and subject {subject} was send to {to}".format(
-                template_name=template_name, subject=subject, to=to
+                template_name=template, subject=subject, to=to
             ),
         )
