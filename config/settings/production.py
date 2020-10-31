@@ -10,12 +10,6 @@ from .common import *  # noqa
 SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 # END SECRET KEY
 
-# SITE CONFIGURATION
-# Hosts/domain names that are valid for this site
-# See https://docs.djangoproject.com/en/1.6/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = ["*"]
-# END SITE CONFIGURATION
-
 # EMAIL
 DEFAULT_FROM_EMAIL = env.str(
     "DJANGO_DEFAULT_FROM_EMAIL", "poradnia <noreply@porady.siecobywatelska.pl>"
