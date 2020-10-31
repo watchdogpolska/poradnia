@@ -1,13 +1,17 @@
 # Service definitions for e2e testing.
-# This file is meant to be executed on top of a base docker-compose file, e.g.
+# Run the tests with
 # ```
-# docker-compose --file docker-compose.yml --file docker-compose.test.yml <your command>
+# docker-compose --file docker-compose.yml --file docker-compose.test.yml up --exit-code-from tests
 # ```
 version: '2.1'
 
 services:
   tests:
+    depends_on:
+      - db
+      - web
     image: cypress/included:3.2.0
     volumes: 
       - ./tests:/e2e
     working_dir: /e2e
+    entrypoint: cypress run
