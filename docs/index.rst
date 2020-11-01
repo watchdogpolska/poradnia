@@ -13,6 +13,7 @@ Spis treści
 
    readme
    getting_up
+   tests
    modules/index
 
 Wskaźniki i tabele
