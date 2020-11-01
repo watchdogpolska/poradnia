@@ -5,11 +5,13 @@ from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from functools import reduce
 
 from poradnia.cases.models import Case
 from poradnia.teryt.models import JST
 
 from django.urls import reverse
+from teryt_tree.dal_ext.filters import AreaMultipleFilter
 
 
 class AbstractCategory(models.Model):
@@ -59,6 +61,13 @@ class AdviceQuerySet(QuerySet):
         return self.filter(
             jst__tree_id=jst.tree_id, jst__lft__range=(jst.lft, jst.rght)
         )
+
+    def area_in(self, jsts):
+        if not jsts:
+            # Show all results if filter is empty.
+            return self
+        else:
+            return AreaMultipleFilter.filter_area_in(self, jsts, "jst")
 
 
 class Advice(models.Model):
