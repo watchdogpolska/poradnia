@@ -11,7 +11,7 @@
     },
     {
       "managers": ["pip_requirements"],
-      "packageNames": ["lxml", "mysqlclient", "ipdb", "gevent", "Sphinx"],
+      "packageNames": ["lxml", "mysqlclient", "ipdb", "gevent", "Sphinx", "pytz"],
       "automerge": true
     }
   ],
