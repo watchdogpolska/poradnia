@@ -1,0 +1,19 @@
+# Service definitions for e2e testing.
+# Run the tests with
+# ```
+# docker-compose --file docker-compose.yml --file docker-compose.test.yml up --build --exit-code-from tests db web tests
+# ```
+version: '2.1'
+
+services:
+  tests:
+    depends_on:
+      - db
+      - web
+    build:
+      context: ./tests/
+      dockerfile: Dockerfile
+    volumes: 
+      - ./tests:/e2e
+    working_dir: /e2e
+    command: sh -c "wait-for-it web:8000 -t 60 && npx cypress run"

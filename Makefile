@@ -15,6 +15,9 @@ build:
 test:
 	docker-compose run web python manage.py test --keepdb --verbosity=2 ${TEST}
 
+e2e:
+	docker-compose --file docker-compose.yml --file docker-compose.test.yml up --build --exit-code-from tests db web tests
+
 wait_mysql:
 	docker-compose run web bash -c 'wait-for-it db:3306'
 
