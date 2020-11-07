@@ -1,0 +1,6 @@
+{
+  "name": "tests",
+  "devDependencies": {
+    "mysql": "^2.18.1"
+  }
+}
