@@ -1,4 +1,10 @@
-const register = (cy) => (firstName, lastName, username, email, password) => {
+const register = (cy) => ({
+  firstName,
+  lastName,
+  username,
+  email,
+  password,
+}) => {
   // Homepage.
   cy.visit("/");
   cy.contains("Zarejestuj").click();
@@ -17,7 +23,7 @@ const register = (cy) => (firstName, lastName, username, email, password) => {
   cy.visit("/");
 };
 
-const login = (cy) => (username, password) => {
+const login = (cy) => ({ username, password }) => {
   // Homepage.
   cy.visit("/");
   cy.contains("Zaloguj").click();
