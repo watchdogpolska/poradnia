@@ -40,9 +40,15 @@ const query = withPromiseLogging("db:query")(
 // Clear all rows in tables provided.
 // The function is not aware of relations between tables.
 // If TableA references TableB, TableA should appear before TableB in the argument.
-const clearTables = (tables) =>
-  sequencePromises(tables.map((table) => query(`delete from ${table}`))).then(
-    () => null
+const clearTables = (tables) => {
+  // Create functions that will trigger queries, but do not execute them until scheduled.
+  const lazyDeletes = tables.map((table) => (previousQueryResult) =>
+    query(`delete from ${table}`)
   );
+
+  // By convention, cypress plugins mustn't return `undefined`.
+  // `null` is fine.
+  return sequencePromises(lazyDeletes).then(() => null);
+};
 
 module.exports = { query, clearTables };
