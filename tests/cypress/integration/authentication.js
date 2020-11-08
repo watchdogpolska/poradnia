@@ -3,7 +3,14 @@ const User = require("../testing/user");
 
 describe("authentication", () => {
   beforeEach(() => {
-    cy.task("db:clearTables", ["account_emailaddress", "users_user"]);
+    cy.task("db:clearTables", [
+      "records_record",
+      "letters_letter",
+      "cases_caseuserobjectpermission",
+      "cases_case",
+      "account_emailaddress",
+      "users_user",
+    ]);
   });
 
   it("user should be able to register and log in", () => {
