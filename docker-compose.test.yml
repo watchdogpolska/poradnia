@@ -22,5 +22,6 @@ services:
       dockerfile: Dockerfile
     volumes: 
       - ./tests:/e2e
+      - /e2e/node_modules  # un-shadow node_modules
     working_dir: /e2e
     command: sh -c "wait-for-it web:8000 -t 60 && npx cypress run"
