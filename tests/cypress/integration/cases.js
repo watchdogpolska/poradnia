@@ -3,14 +3,7 @@ const User = require("../testing/user");
 
 describe("cases", () => {
   beforeEach(() => {
-    cy.task("db:clearTables", [
-      "records_record",
-      "letters_letter",
-      "cases_caseuserobjectpermission",
-      "cases_case",
-      "account_emailaddress",
-      "users_user",
-    ]);
+    cy.task("db:clear");
   });
 
   it("user can open a new case, staff can act on it", () => {

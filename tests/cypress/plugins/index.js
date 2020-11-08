@@ -6,6 +6,6 @@ module.exports = (on, config) => {
   // Functions are not allowed.
   on("task", {
     "db:query": db.query,
-    "db:clearTables": db.clearTables,
+    "db:clear": db.clear,
   });
 };

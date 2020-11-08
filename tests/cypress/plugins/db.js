@@ -51,4 +51,17 @@ const clearTables = (tables) => {
   return sequencePromises(lazyDeletes).then(() => null);
 };
 
-module.exports = { query, clearTables };
+// Clears tables of content created during tests.
+// List of tables manually curated.
+// TODO: consider defining the dependency tree and clearing all tables.
+const clear = () =>
+  clearTables([
+    "records_record",
+    "letters_letter",
+    "cases_caseuserobjectpermission",
+    "cases_case",
+    "account_emailaddress",
+    "users_user",
+  ]);
+
+module.exports = { query, clear };
