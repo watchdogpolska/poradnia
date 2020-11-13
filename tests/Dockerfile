@@ -5,7 +5,9 @@ RUN apt-get install -y wait-for-it
 
 WORKDIR /e2e
 
-RUN npm install --save-dev cypress
+COPY package.json package-lock.json ./
+
+RUN npm install
 
 RUN npx cypress verify
 
