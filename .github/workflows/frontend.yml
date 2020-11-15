@@ -13,8 +13,10 @@ jobs:
       run: git status
     - name: Require rebuild content
       run: >
-        git diff-index --quiet HEAD -- "poradnia/static/" || (
+        git diff-index --quiet HEAD -- . || (
           echo "Pending changes in the front-end have been detected.";
           echo "Use 'make regenerate_frontend' to regenerate front-end and commit changes.";
+          echo "Following changes pending:";
+          git diff;
           exit 1;
         )
