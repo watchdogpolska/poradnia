@@ -57,6 +57,7 @@ const clearTables = (tables) => {
 const clear = () =>
   clearTables([
     "records_record",
+    "letters_attachment",
     "letters_letter",
     "cases_caseuserobjectpermission",
     "cases_case",
