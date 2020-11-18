@@ -1,4 +1,5 @@
 const { register, login, logout } = require("../testing/auth");
+const { addSuperUserPrivileges } = require("../testing/management");
 const User = require("../testing/user");
 
 describe("cases", () => {
@@ -17,12 +18,7 @@ describe("cases", () => {
     }
 
     // Adding staff privileges has to be done manually.
-    cy.task(
-      "db:query",
-      `update users_user
-      set is_staff=1, is_superuser=1
-      where username="${userStaff.username}"`
-    );
+    addSuperUserPrivileges(cy)(userStaff);
 
     // Open a case as a non-staff user.
     login(cy)(userRequester);
