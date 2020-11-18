@@ -1,7 +1,8 @@
 {
   "name": "tests",
   "devDependencies": {
-    "mysql": "^2.18.1",
-    "cypress": "^5.5.0"
+    "cypress": "^5.5.0",
+    "cypress-file-upload": "^4.1.1",
+    "mysql": "^2.18.1"
   }
 }
