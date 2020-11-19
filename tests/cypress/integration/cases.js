@@ -33,12 +33,12 @@ describe("cases", () => {
       cy.get('input[type="file"]')
         .filter(":visible")
         .first()
-        .attachFile("text_file.txt");
+        .attachFile("text_file1.txt");
       cy.contains("input", "Zgłoś").click();
     });
 
     // Filename should be displayed on the attachments list.
-    cy.contains("text_file.txt");
+    cy.contains("text_file1.txt");
 
     // Validate that the case has been registered and is visible.
     cy.contains("Wykaz spraw").click();
@@ -55,13 +55,13 @@ describe("cases", () => {
     // Get the attachment link and try to open it.
     // Downloading the file must be done by a task, rather than by the browser, to avoid crossing the web app's boundary.
     // It's discouraged to do it in cypress.
-    cy.contains("a", "text_file.txt")
+    cy.contains("a", "text_file1.txt")
       .invoke("attr", "href")
       .then((href) =>
         cy
           .task("fetch:get", Cypress.config("baseUrl") + href)
           .then((content) => {
-            expect(content).to.contain("Text file content.");
+            expect(content).to.contain("text_file1.txt content");
           })
       );
 
@@ -69,6 +69,10 @@ describe("cases", () => {
     cy.contains("form", "Przedmiot").within(($form) => {
       cy.get('input[name="name"]').clear().type(`letter-title`);
       cy.get('textarea[name="text"]').clear().type(`letter-content`);
+      cy.get('input[type="file"]')
+        .filter(":visible")
+        .first()
+        .attachFile("text_file2.txt");
       cy.contains("input", "Odpowiedz wszystkim").click();
     });
 
@@ -81,6 +85,16 @@ describe("cases", () => {
     cy.contains("Wykaz spraw").click();
     cy.contains("case-title").click();
 
+    // Fetch the attachment.
     cy.contains("letter-content");
+    cy.contains("a", "text_file2.txt")
+      .invoke("attr", "href")
+      .then((href) =>
+        cy
+          .task("fetch:get", Cypress.config("baseUrl") + href)
+          .then((content) => {
+            expect(content).to.contain("text_file2.txt content");
+          })
+      );
   });
 });
