@@ -30,8 +30,15 @@ describe("cases", () => {
     cy.contains("form", "Treść").within(($form) => {
       cy.get('input[name="name"]').clear().type(`case-title`);
       cy.get('textarea[name="text"]').clear().type(`case-content`);
+      cy.get('input[type="file"]')
+        .filter(":visible")
+        .first()
+        .attachFile("text_file.txt");
       cy.contains("input", "Zgłoś").click();
     });
+
+    // Filename should be displayed on the attachments list.
+    cy.contains("text_file.txt");
 
     // Validate that the case has been registered and is visible.
     cy.contains("Wykaz spraw").click();
@@ -44,6 +51,19 @@ describe("cases", () => {
     cy.visit("/");
     cy.contains("Wykaz spraw").click();
     cy.contains("case-title").click();
+
+    // Get the attachment link and try to open it.
+    // Downloading the file must be done by a task, rather than by the browser, to avoid crossing the web app's boundary.
+    // It's discouraged to do it in cypress.
+    cy.contains("a", "text_file.txt")
+      .invoke("attr", "href")
+      .then((href) =>
+        cy
+          .task("fetch:get", Cypress.config("baseUrl") + href)
+          .then((content) => {
+            expect(content).to.contain("Text file content.");
+          })
+      );
 
     // Respond with a letter.
     cy.contains("form", "Przedmiot").within(($form) => {
@@ -62,57 +82,5 @@ describe("cases", () => {
     cy.contains("case-title").click();
 
     cy.contains("letter-content");
-  });
-
-  it("user can open a case with an attachment, staff can access the attachment", () => {
-    // Create user accounts.
-    const userStaff = User.fromId("staff");
-    const userRequester = User.fromId("requester");
-
-    for (const user of [userRequester, userStaff]) {
-      register(cy)(user);
-      logout(cy)();
-    }
-
-    addSuperUserPrivileges(cy)(userStaff);
-
-    login(cy)(userRequester);
-
-    // Open a case with an attachment.
-    cy.visit("/");
-    cy.contains("Nowa sprawa").click();
-    cy.contains("form", "Treść").within(($form) => {
-      cy.get('input[name="name"]').clear().type(`case-title`);
-      cy.get('textarea[name="text"]').clear().type(`case-content`);
-      cy.get('input[type="file"]')
-        .filter(":visible")
-        .first()
-        .attachFile("text_file.txt");
-      cy.contains("input", "Zgłoś").click();
-    });
-
-    // Filename should be displayed on the attachments list.
-    cy.contains("text_file.txt");
-
-    logout(cy)();
-
-    // View the case as staff.
-    login(cy)(userStaff);
-    cy.visit("/");
-    cy.contains("Wykaz spraw").click();
-    cy.contains("case-title").click();
-
-    // Get the attachment link and try to open it.
-    // Downloading the file must be done by a task, rather than by the browser, to avoid crossing the web app's boundary.
-    // It's discouraged to do it in cypress.
-    cy.contains("a", "text_file.txt")
-      .invoke("attr", "href")
-      .then((href) =>
-        cy
-          .task("fetch:get", Cypress.config("baseUrl") + href)
-          .then((content) => {
-            expect(content).to.contain("Text file content.");
-          })
-      );
   });
 });
