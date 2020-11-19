@@ -107,9 +107,12 @@ describe("cases", () => {
     // It's discouraged to do it in cypress.
     cy.contains("a", "text_file.txt")
       .invoke("attr", "href")
-      .then((href) => {
-        // TODO: download the file through a task.
-        return expect(href).not.to.be.empty;
-      });
+      .then((href) =>
+        cy
+          .task("fetch:get", Cypress.config("baseUrl") + href)
+          .then((content) => {
+            expect(content).to.contain("Text file content.");
+          })
+      );
   });
 });
