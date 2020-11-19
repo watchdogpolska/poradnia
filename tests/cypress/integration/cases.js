@@ -1,6 +1,8 @@
 const { register, login, logout } = require("../testing/auth");
 const { addSuperUserPrivileges } = require("../testing/management");
 const { submitCaseForm, submitLetterForm } = require("../testing/forms");
+const Case = require("../testing/case");
+const Letter = require("../testing/letter");
 const User = require("../testing/user");
 
 describe("cases", () => {
@@ -13,16 +15,8 @@ describe("cases", () => {
     const userRequester = User.fromId("requester");
     const userStaff = User.fromId("staff");
     // `case` is a reserved keyword.
-    const case_ = {
-      title: "case-title",
-      content: "case-content",
-      attachment: "text_file1.txt",
-    };
-    const letter = {
-      title: "letter-title",
-      content: "letter-content",
-      attachment: "text_file2.txt",
-    };
+    const case_ = { attachment: "text_file1.txt", ...Case.fromId("case") };
+    const letter = { attachment: "text_file2.txt", ...Letter.fromId("letter") };
 
     for (const user of [userRequester, userStaff]) {
       register(cy)(user);
