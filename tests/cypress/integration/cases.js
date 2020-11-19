@@ -1,5 +1,6 @@
 const { register, login, logout } = require("../testing/auth");
 const { addSuperUserPrivileges } = require("../testing/management");
+const { submitCaseForm, submitLetterForm } = require("../testing/forms");
 const User = require("../testing/user");
 
 describe("cases", () => {
@@ -11,6 +12,17 @@ describe("cases", () => {
     // Create user accounts.
     const userRequester = User.fromId("requester");
     const userStaff = User.fromId("staff");
+    // `case` is a reserved keyword.
+    const case_ = {
+      title: "case-title",
+      content: "case-content",
+      attachment: "text_file1.txt",
+    };
+    const letter = {
+      title: "letter-title",
+      content: "letter-content",
+      attachment: "text_file2.txt",
+    };
 
     for (const user of [userRequester, userStaff]) {
       register(cy)(user);
@@ -28,13 +40,7 @@ describe("cases", () => {
 
     // Fill the case form.
     cy.contains("form", "Treść").within(($form) => {
-      cy.get('input[name="name"]').clear().type(`case-title`);
-      cy.get('textarea[name="text"]').clear().type(`case-content`);
-      cy.get('input[type="file"]')
-        .filter(":visible")
-        .first()
-        .attachFile("text_file1.txt");
-      cy.contains("input", "Zgłoś").click();
+      submitCaseForm(cy)($form, case_);
     });
 
     // Filename should be displayed on the attachments list.
@@ -42,7 +48,7 @@ describe("cases", () => {
 
     // Validate that the case has been registered and is visible.
     cy.contains("Wykaz spraw").click();
-    cy.contains("case-title");
+    cy.contains(case_.title);
 
     logout(cy)();
 
@@ -50,12 +56,12 @@ describe("cases", () => {
     login(cy)(userStaff);
     cy.visit("/");
     cy.contains("Wykaz spraw").click();
-    cy.contains("case-title").click();
+    cy.contains(case_.title).click();
 
     // Get the attachment link and try to open it.
     // Downloading the file must be done by a task, rather than by the browser, to avoid crossing the web app's boundary.
     // It's discouraged to do it in cypress.
-    cy.contains("a", "text_file1.txt")
+    cy.contains("a", case_.attachment)
       .invoke("attr", "href")
       .then((href) =>
         cy
@@ -67,13 +73,7 @@ describe("cases", () => {
 
     // Respond with a letter.
     cy.contains("form", "Przedmiot").within(($form) => {
-      cy.get('input[name="name"]').clear().type(`letter-title`);
-      cy.get('textarea[name="text"]').clear().type(`letter-content`);
-      cy.get('input[type="file"]')
-        .filter(":visible")
-        .first()
-        .attachFile("text_file2.txt");
-      cy.contains("input", "Odpowiedz wszystkim").click();
+      submitLetterForm(cy)($form, letter);
     });
 
     logout(cy)();
@@ -83,11 +83,11 @@ describe("cases", () => {
     cy.visit("/");
 
     cy.contains("Wykaz spraw").click();
-    cy.contains("case-title").click();
+    cy.contains(case_.title).click();
+    cy.contains(letter.content);
 
     // Fetch the attachment.
-    cy.contains("letter-content");
-    cy.contains("a", "text_file2.txt")
+    cy.contains("a", letter.attachment)
       .invoke("attr", "href")
       .then((href) =>
         cy
