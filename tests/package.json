@@ -1,4 +1,11 @@
 {
+  "description": "Integration tests for watchdogpolska/poradnia",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/watchdogpolska/poradnia.git",
+    "directory": "tests"
+  },
+  "license": "MIT",
   "name": "tests",
   "devDependencies": {
     "cypress": "^5.5.0",
