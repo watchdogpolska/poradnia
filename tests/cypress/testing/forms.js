@@ -7,7 +7,7 @@
 const submitCaseForm = (cy) => (form, { title, content, attachment }) => {
   cy.get('input[name="name"]').clear().type(title);
   cy.get('textarea[name="text"]').clear().type(content);
-  if (attachment !== null) {
+  if (attachment) {
     cy.get('input[type="file"]')
       .filter(":visible")
       .first()
@@ -19,7 +19,7 @@ const submitCaseForm = (cy) => (form, { title, content, attachment }) => {
 const submitLetterForm = (cy) => (form, { title, content, attachment }) => {
   cy.get('input[name="name"]').clear().type(title);
   cy.get('textarea[name="text"]').clear().type(content);
-  if (attachment !== null) {
+  if (attachment) {
     cy.get('input[type="file"]')
       .filter(":visible")
       .first()
