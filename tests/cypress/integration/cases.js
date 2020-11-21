@@ -91,4 +91,55 @@ describe("cases", () => {
           })
       );
   });
+
+  it("staff can search for a case", () => {
+    const user = User.fromId("testUser");
+    register(cy)(user);
+    addSuperUserPrivileges(cy)(user);
+
+    // Create a few cases.
+    const cases = ["caseA", "caseB", "caseC"].map(Case.fromId);
+    const caseA = cases[0];
+
+    for (const case_ of cases) {
+      cy.contains("Nowa sprawa").click();
+
+      // Fill the case form.
+      cy.contains("form", "Treść").within(($form) => {
+        submitCaseForm(cy)($form, case_);
+      });
+    }
+
+    // Find a case by title, using the simple search form.
+    cy.contains("Wyszukaj").click();
+    cy.get('input[type="search"]').clear().type("caseA");
+    cy.contains("a", caseA.title).click();
+    cy.contains(caseA.content);
+
+    // Find a case by title, using the rich form.
+    // Filter both by case title and client username.
+    cy.contains("Wykaz spraw").click();
+    // There's two sections with the text "Przedmiot".
+    // Select the one with an input field.
+    cy.contains("div", "Przedmiot")
+      .filter(":has(input)")
+      .within(($div) => {
+        cy.get('input[type="text"]').clear().type("caseA");
+      });
+    cy.contains("div", "Klient").within(($div) => {
+      // This block uses an autocomplete widget.
+      cy.get(".selection").click();
+      // After clicking, the input field should be focused.
+      // Type the user's last name.
+      // There should be a suggestion with the user's full name. Pressing Enter should select it.
+      // NOTE: it may be tempting to make the test case click on a suggestion, instead of using Enter, but the widget
+      // attaches the element outside of the selected div. It is possible to do it the other way around, but this
+      // solution is simpler.
+      cy.focused().type(user.lastName).type("{enter}");
+    });
+
+    cy.contains("Filtruj").click();
+    cy.contains(caseA.title).click();
+    cy.contains(caseA.content);
+  });
 });
