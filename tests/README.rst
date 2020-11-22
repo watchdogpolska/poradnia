@@ -20,6 +20,22 @@ Po każdym wykonaniu, Cypress pozostawia po sobie:
 Przy lokalnym wywołaniu testów poprzez docker-compose, pliki widoczne będą na maszynie użytkownika.
 Pliki te nie są śledzone przez repozytorium.
 
+Interfejs Cypress
+-----------------
+Testy uruchomione wewnątrz kontenera Docker używają uproszczonej przeglądarki Electron, wystarczającej
+do zastosowań CI.
+Możliwe jest także uruchomienie testów bez użycia Dockera, co pozwala na interakcję z interfejsem Cypress::
+
+    $ npm install
+    $ npx cypress open
+
+Praca z interfejsem jest przydatna zwłaszcza przy pisaniu nowych testów i debugowaniu istniejących.
+
+Lokalna instancja Cypress wymaga podania parametru `baseUrl`.
+Dokumentacja dotycząca konfiguracji Cypress dostępna jest tutaj_.
+
+.. _tutaj: https://docs.cypress.io/guides/references/configuration.html
+
 Rozbudowa
 ---------
 Kod jest formatowany z użyciem `<prettier.io>`_.

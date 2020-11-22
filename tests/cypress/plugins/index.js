@@ -1,4 +1,5 @@
 const db = require("./db");
+const fetch = require("./fetch");
 
 module.exports = (on, config) => {
   // Register tasks.
@@ -7,5 +8,6 @@ module.exports = (on, config) => {
   on("task", {
     "db:query": db.query,
     "db:clear": db.clear,
+    "fetch:get": fetch.get,
   });
 };
