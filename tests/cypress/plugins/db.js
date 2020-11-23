@@ -59,6 +59,7 @@ const clear = () =>
     "records_record",
     "letters_attachment",
     "letters_letter",
+    "events_event",
     "cases_caseuserobjectpermission",
     "cases_case",
     "account_emailaddress",

@@ -1,6 +1,10 @@
 const { register, login, logout } = require("../testing/auth");
 const { addSuperUserPrivileges } = require("../testing/management");
-const { submitCaseForm, submitLetterForm } = require("../testing/forms");
+const {
+  submitCaseForm,
+  submitLetterForm,
+  submitEventForm,
+} = require("../testing/forms");
 const Case = require("../testing/case");
 const Letter = require("../testing/letter");
 const User = require("../testing/user");
@@ -17,6 +21,10 @@ describe("cases", () => {
     // `case` is a reserved keyword.
     const case_ = { attachment: "text_file1.txt", ...Case.fromId("case") };
     const letter = { attachment: "text_file2.txt", ...Letter.fromId("letter") };
+    const event = {
+      text: "event-text",
+      datetime: { year: 2020, month: "January", day: 1, hour: 12, minute: 30 },
+    };
 
     for (const user of [userRequester, userStaff]) {
       register(cy)(user);
@@ -68,6 +76,12 @@ describe("cases", () => {
     // Respond with a letter.
     cy.contains("form", "Przedmiot").within(($form) => {
       submitLetterForm(cy)($form, letter);
+    });
+
+    // Add an event.
+    cy.contains("Wydarzenie").click();
+    cy.contains("form", "Czas").within(($form) => {
+      submitEventForm(cy)($form, event);
     });
 
     logout(cy)();
