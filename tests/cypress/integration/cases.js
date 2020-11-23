@@ -1,7 +1,11 @@
 const { register, login, logout } = require("../testing/auth");
-const { addSuperUserPrivileges } = require("../testing/management");
+const {
+  addSuperUserPrivileges,
+  createCourt,
+} = require("../testing/management");
 const {
   submitCaseForm,
+  submitCourtCaseForm,
   submitLetterForm,
   submitEventForm,
 } = require("../testing/forms");
@@ -25,14 +29,17 @@ describe("cases", () => {
       text: "event-text",
       datetime: { year: 2020, month: "January", day: 1, hour: 12, minute: 30 },
     };
+    const court = { id: 1, name: "court-name" };
+    const courtCase = { court: court.name, signature: "court-case-signature" };
 
     for (const user of [userRequester, userStaff]) {
       register(cy)(user);
       logout(cy)();
     }
 
-    // Adding staff privileges has to be done manually.
+    // Test specific db setup.
     addSuperUserPrivileges(cy)(userStaff);
+    createCourt(cy)(court);
 
     // Open a case as a non-staff user.
     login(cy)(userRequester);
@@ -82,6 +89,12 @@ describe("cases", () => {
     cy.contains("Wydarzenie").click();
     cy.contains("form", "Czas").within(($form) => {
       submitEventForm(cy)($form, event);
+    });
+
+    // Add a court case.
+    cy.contains("Sprawa sądowa").click();
+    cy.contains("form", "Sąd").within(($form) => {
+      submitCourtCaseForm(cy)($form, courtCase);
     });
 
     logout(cy)();

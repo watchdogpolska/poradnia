@@ -61,9 +61,22 @@ const submitEventForm = (cy) => (form, { datetime, text }) => {
   cy.contains("Zapisz").click();
 };
 
+const submitCourtCaseForm = (cy) => (form, { court, signature }) => {
+  cy.contains("div", "Sąd").within(($div) => {
+    cy.get("select").select(court);
+  });
+
+  cy.contains("div", "Signature").within(($div) => {
+    cy.get('input[type="text"]').clear().type(signature);
+  });
+
+  cy.contains("Zapisz").click();
+};
+
 module.exports = {
   submitCaseForm,
   submitLetterForm,
   fillPikaForm,
   submitEventForm,
+  submitCourtCaseForm,
 };

@@ -8,4 +8,17 @@ const addSuperUserPrivileges = (cy) => (user) => {
   );
 };
 
-module.exports = { addSuperUserPrivileges };
+const createCourt = (cy) => (court) => {
+  // For now, use hardcoded constants for all other fields.
+  // If need be, add them to the argument.
+  const { id, name } = court;
+  cy.task(
+    "db:query",
+    `insert into judgements_court
+    (id, name, created, modified, parser_key, active)
+    values
+    (${id}, "${name}", "2010-01-01", "2010-01-01", "parser_key", 1)`
+  );
+};
+
+module.exports = { addSuperUserPrivileges, createCourt };
