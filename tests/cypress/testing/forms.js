@@ -73,10 +73,47 @@ const submitCourtCaseForm = (cy) => (form, { court, signature }) => {
   cy.contains("Zapisz").click();
 };
 
+const submitAdviceForm = (cy) => (
+  form,
+  { subject, comment, datetime, solved, administrativeDivision, adviceAuthor }
+) => {
+  cy.contains("div", "Czy pomogliśmy").within(($div) => {
+    cy.get("select").select(solved ? "Tak" : "Nie");
+  });
+
+  cy.contains("div", "Jednostka podziału").within(($div) => {
+    // Autocomplete form.
+    // See other autocomplete forms for details (todo: do funkcji?)
+    cy.get(".selection").click();
+    cy.focused().type(administrativeDivision).type("{enter}");
+  });
+
+  cy.contains("div", "Przedmiot").within(($div) => {
+    cy.get('input[type="text"]').clear().type(subject);
+  });
+
+  cy.contains("div", "Komentarz").within(($div) => {
+    cy.get('textarea[name="comment"]').clear().type(comment);
+  });
+
+  // Datetime selection. See `submitEventForm` for details.
+  cy.contains("Udzielona o").click();
+  cy.document().within(($doc) => {
+    cy.get(".pika-single").within(($pika) => fillPikaForm(cy)($pika, datetime));
+  });
+
+  cy.contains("div", "Radzący").within(($div) => {
+    cy.get("select").selectContaining(adviceAuthor.firstName);
+  });
+
+  cy.contains("Zapisz").click();
+};
+
 module.exports = {
   submitCaseForm,
   submitLetterForm,
   fillPikaForm,
   submitEventForm,
   submitCourtCaseForm,
+  submitAdviceForm,
 };

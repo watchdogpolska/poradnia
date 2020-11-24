@@ -2,8 +2,11 @@ const { register, login, logout } = require("../testing/auth");
 const {
   addSuperUserPrivileges,
   createCourt,
+  createAdministrativeDivisionCategory,
+  createAdministrativeDivisionUnit,
 } = require("../testing/management");
 const {
+  submitAdviceForm,
   submitCaseForm,
   submitCourtCaseForm,
   submitLetterForm,
@@ -12,6 +15,7 @@ const {
 const Case = require("../testing/case");
 const Letter = require("../testing/letter");
 const User = require("../testing/user");
+const Advice = require("../testing/advice");
 
 describe("cases", () => {
   beforeEach(() => {
@@ -22,15 +26,39 @@ describe("cases", () => {
     // Create user accounts.
     const userRequester = User.fromId("requester");
     const userStaff = User.fromId("staff");
+    const datetime = {
+      year: 2020,
+      month: "January",
+      day: 1,
+      hour: 12,
+      minute: 30,
+    };
     // `case` is a reserved keyword.
     const case_ = { attachment: "text_file1.txt", ...Case.fromId("case") };
     const letter = { attachment: "text_file2.txt", ...Letter.fromId("letter") };
     const event = {
       text: "event-text",
-      datetime: { year: 2020, month: "January", day: 1, hour: 12, minute: 30 },
+      datetime,
     };
     const court = { id: 1, name: "court-name" };
     const courtCase = { court: court.name, signature: "court-case-signature" };
+    const administrativeDivisionCategory = {
+      id: 1,
+      name: "admin-category",
+      level: 3,
+    };
+    const administrativeDivisionUnit = {
+      name: "admin-division",
+      level: 3,
+      category: administrativeDivisionCategory.id,
+    };
+    const advice = {
+      datetime,
+      solved: 1,
+      administrativeDivision: administrativeDivisionUnit.name,
+      adviceAuthor: userStaff,
+      ...Advice.fromId("advice"),
+    };
 
     for (const user of [userRequester, userStaff]) {
       register(cy)(user);
@@ -40,6 +68,8 @@ describe("cases", () => {
     // Test specific db setup.
     addSuperUserPrivileges(cy)(userStaff);
     createCourt(cy)(court);
+    createAdministrativeDivisionCategory(cy)(administrativeDivisionCategory);
+    createAdministrativeDivisionUnit(cy)(administrativeDivisionUnit);
 
     // Open a case as a non-staff user.
     login(cy)(userRequester);
@@ -95,6 +125,12 @@ describe("cases", () => {
     cy.contains("Sprawa sądowa").click();
     cy.contains("form", "Sąd").within(($form) => {
       submitCourtCaseForm(cy)($form, courtCase);
+    });
+
+    // Add an advice.
+    cy.contains("Utwórz nową porade").click();
+    cy.contains("form", "Dane statystyczne").within(($form) => {
+      submitAdviceForm(cy)($form, advice);
     });
 
     logout(cy)();

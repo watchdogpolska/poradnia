@@ -56,6 +56,10 @@ const clearTables = (tables) => {
 // TODO: consider defining the dependency tree and clearing all tables.
 const clear = () =>
   clearTables([
+    "advicer_advice",
+    "teryt_tree_jednostkaadministracyjna",
+    "teryt_tree_category",
+    "django_admin_log",
     "records_record",
     "letters_attachment",
     "letters_letter",

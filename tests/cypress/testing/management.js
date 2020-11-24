@@ -37,4 +37,43 @@ const createCourt = (cy) => (court) => {
   );
 };
 
-module.exports = { addSuperUserPrivileges, createCourt };
+const createAdministrativeDivisionCategory = (cy) => (category) => {
+  const { id, name, level } = category;
+  cy.task(
+    "db:query",
+    buildInsertQuery("teryt_tree_category", {
+      id,
+      name: withExtraQuotes(name),
+      slug: withExtraQuotes(name),
+      level,
+    })
+  );
+};
+
+const createAdministrativeDivisionUnit = (cy) => (unit) => {
+  const { name, level, category } = unit;
+  cy.task(
+    "db:query",
+    buildInsertQuery("teryt_tree_jednostkaadministracyjna", {
+      // Id has a length limit.
+      // If substrings are not unique, DB will reject a transaction.
+      id: withExtraQuotes(name.slice(0, 7)),
+      name: withExtraQuotes(name),
+      slug: withExtraQuotes(name),
+      level,
+      category_id: category,
+      updated_on: withExtraQuotes("2010-01-01"),
+      active: 1,
+      lft: 0,
+      rght: 2,
+      tree_id: 1,
+    })
+  );
+};
+
+module.exports = {
+  addSuperUserPrivileges,
+  createCourt,
+  createAdministrativeDivisionCategory,
+  createAdministrativeDivisionUnit,
+};
