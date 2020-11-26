@@ -52,6 +52,7 @@ var config = (function () {
                 path.staticfiles + '/autocomplete_light/vendor/select2/dist/js/select2.full.js',
                 path.staticfiles + '/autocomplete_light/jquery.init.js',
                 path.staticfiles + '/autocomplete_light/autocomplete.init.js',
+                path.staticfiles + '/autocomplete_light/forward.js',
                 path.staticfiles + '/autocomplete_light/select2.js',
                 path.staticfiles + '/tasty_feedback/style.js',
                 path.npm + '/chart.js/dist/Chart.js',
