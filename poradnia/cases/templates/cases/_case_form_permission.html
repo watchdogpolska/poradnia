@@ -20,7 +20,7 @@
     {{ block.super }}
     {{ form.media.js }}
     <script src="{% static 'cases/lou-multiselect/js/jquery.multi-select.js' %}" type="text/javascript"></script>
-    <script>$('select[name*=permissions]').multiSelect();</script>
+    <script>jQuery('select[name*=permissions]').multiSelect();</script>
 {% endblock %}
 
 {% block content %}

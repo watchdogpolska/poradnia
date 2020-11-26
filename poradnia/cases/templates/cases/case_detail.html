@@ -5,18 +5,20 @@
     {{ block.super }}
     {{ casegroup_form.media.js }}
     <script type="text/javascript">
-        $(function () {
-            $('form tbody tr').formset({
-                addText: "{% trans 'add another'%}",
-                deleteText: "{% trans 'remove'%}",
-                prefix: 'attachment_set'
+        ;(function($) {
+            $(function () {
+                $('form tbody tr').formset({
+                    addText: "{% trans 'add another'%}",
+                    deleteText: "{% trans 'remove'%}",
+                    prefix: 'attachment_set'
+                });
             });
-        });
-        $('#form-tab a').click(function (e) {
-            e.preventDefault()
-            $(this).tab('show')
-        });
-        $('#form-tab a:first').tab('show')
+            $('#form-tab a').click(function (e) {
+                e.preventDefault()
+                $(this).tab('show')
+            });
+            $('#form-tab a:first').tab('show')
+        })(jQuery);
     </script>
 {% endblock %}
 
