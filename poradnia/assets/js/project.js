@@ -8,8 +8,8 @@
                 firstDay: 1,
                 format: 'DD.MM.YYYY HH:mm:ss',
                 minDate: new Date('2000-01-01'),
-                maxDate: new Date('2020-12-31'),
-                yearRange: [2000, 2020],
+                maxDate: new Date('2040-12-31'),
+                yearRange: [2000, 2040],
                 showTime: true,
                 use24hour: true
             });
