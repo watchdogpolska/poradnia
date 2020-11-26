@@ -6779,6 +6779,10 @@ ul li.select2-search {
   /* Cancel out django's style */
   list-style-type: none; }
 
+.errors .select2-selection {
+  /* Highlight select box with error */
+  border-color: #ba2121; }
+
 .select2-container {
   box-sizing: border-box;
   display: inline-block;
@@ -6918,12 +6922,14 @@ ul li.select2-search {
 .select2-hidden-accessible {
   border: 0 !important;
   clip: rect(0 0 0 0) !important;
+  -webkit-clip-path: inset(50%) !important;
+  clip-path: inset(50%) !important;
   height: 1px !important;
-  margin: -1px !important;
   overflow: hidden !important;
   padding: 0 !important;
   position: absolute !important;
-  width: 1px !important; }
+  width: 1px !important;
+  white-space: nowrap !important; }
 
 .select2-container--default .select2-selection--single {
   background-color: #fff;
@@ -7245,9 +7251,7 @@ ul li.select2-search {
   color: #555; }
 
 .select2-container--classic[dir="rtl"] .select2-selection--multiple .select2-selection__choice {
-  float: right; }
-
-.select2-container--classic[dir="rtl"] .select2-selection--multiple .select2-selection__choice {
+  float: right;
   margin-left: 5px;
   margin-right: auto; }
 
@@ -7659,10 +7663,7 @@ ul li.select2-search {
   display: block;
   margin-left: auto;
   margin-right: auto;
-  }
-  @media (min-width: 490px) {
-    .login-form {width: 400px;}
-  }  
+  width: 400px; }
 
 .registration-form {
   display: block;
