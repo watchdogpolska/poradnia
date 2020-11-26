@@ -28,4 +28,92 @@ const submitLetterForm = (cy) => (form, { title, content, attachment }) => {
   cy.contains("input", "Odpowiedz wszystkim").click();
 };
 
-module.exports = { submitCaseForm, submitLetterForm };
+// Fill a pikaday calendar.
+// Uses class selectors instead of text selectors because labels are non-deterministic (i.e. the month label is
+// displayed as the current month). This may require changing the test if class names change (rather unlikely), but
+// at least it won't require a change every month, or some locale-specific current datetime parsing logic.
+//
+// Named "fill*" instead of "submit*" because it doesn't submit anything. It's a single field, not a standalone form.
+const fillPikaForm = (cy) => (form, { year, month, day, hour, minute }) => {
+  // Pika seems to close upon selecting a day.
+  // Start with time selection, select day in very the last step.
+  // All items are `toString`ed because cypress expects an exact match upon calling `select`.
+  cy.get(".pika-select-hour").select(hour.toString());
+  cy.get(".pika-select-minute").select(minute.toString());
+  cy.get(".pika-select-month").select(month.toString());
+  cy.get(".pika-select-year").select(year.toString());
+  cy.get(".pika-table").contains(day).click();
+};
+
+const submitEventForm = (cy) => (form, { datetime, text }) => {
+  cy.contains("div", "Przedmiot").within(($div) => {
+    cy.get('textarea[name="text"]').clear().type(text);
+  });
+  // Click on the timeselect input. It will open a calender popup.
+  cy.contains("Czas").click();
+
+  // The popup is attached to body, outside of this element. Get the body to escape from the `within` block temporarily.
+  // TODO: consider attaching the popup to the clicked input.
+  cy.document().within(($doc) => {
+    cy.get(".pika-single").within(($pika) => fillPikaForm(cy)($pika, datetime));
+  });
+
+  cy.contains("Zapisz").click();
+};
+
+const submitCourtCaseForm = (cy) => (form, { court, signature }) => {
+  cy.contains("div", "Sąd").within(($div) => {
+    cy.get("select").select(court);
+  });
+
+  cy.contains("div", "Signature").within(($div) => {
+    cy.get('input[type="text"]').clear().type(signature);
+  });
+
+  cy.contains("Zapisz").click();
+};
+
+const submitAdviceForm = (cy) => (
+  form,
+  { subject, comment, datetime, solved, administrativeDivision, adviceAuthor }
+) => {
+  cy.contains("div", "Czy pomogliśmy").within(($div) => {
+    cy.get("select").select(solved ? "Tak" : "Nie");
+  });
+
+  cy.contains("div", "Jednostka podziału").within(($div) => {
+    // Autocomplete form.
+    // See other autocomplete forms for details (todo: do funkcji?)
+    cy.get(".selection").click();
+    cy.focused().type(administrativeDivision).type("{enter}");
+  });
+
+  cy.contains("div", "Przedmiot").within(($div) => {
+    cy.get('input[type="text"]').clear().type(subject);
+  });
+
+  cy.contains("div", "Komentarz").within(($div) => {
+    cy.get('textarea[name="comment"]').clear().type(comment);
+  });
+
+  // Datetime selection. See `submitEventForm` for details.
+  cy.contains("Udzielona o").click();
+  cy.document().within(($doc) => {
+    cy.get(".pika-single").within(($pika) => fillPikaForm(cy)($pika, datetime));
+  });
+
+  cy.contains("div", "Radzący").within(($div) => {
+    cy.get("select").selectContaining(adviceAuthor.firstName);
+  });
+
+  cy.contains("Zapisz").click();
+};
+
+module.exports = {
+  submitCaseForm,
+  submitLetterForm,
+  fillPikaForm,
+  submitEventForm,
+  submitCourtCaseForm,
+  submitAdviceForm,
+};
