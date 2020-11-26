@@ -11335,13 +11335,13 @@ return jQuery;
 }(jQuery);
 
 /*!
- * Select2 4.0.3
+ * Select2 4.0.6-rc.1
  * https://select2.github.io
  *
  * Released under the MIT license
  * https://github.com/select2/select2/blob/master/LICENSE.md
  */
-(function (factory) {
+;(function (factory) {
   if (typeof define === 'function' && define.amd) {
     // AMD. Register as an anonymous module.
     define(['jquery'], factory);
@@ -11380,13 +11380,11 @@ return jQuery;
 var S2;(function () { if (!S2 || !S2.requirejs) {
 if (!S2) { S2 = {}; } else { require = S2; }
 /**
- * @license almond 0.3.1 Copyright (c) 2011-2014, The Dojo Foundation All Rights Reserved.
- * Available via the MIT or new BSD license.
- * see: http://github.com/jrburke/almond for details
+ * @license almond 0.3.3 Copyright jQuery Foundation and other contributors.
+ * Released under MIT license, http://github.com/requirejs/almond/LICENSE
  */
 //Going sloppy to avoid 'use strict' string cost, but strict practices should
 //be followed.
-/*jslint sloppy: true */
 /*global setTimeout: false */
 
 var requirejs, require, define;
@@ -11414,60 +11412,58 @@ var requirejs, require, define;
      */
     function normalize(name, baseName) {
         var nameParts, nameSegment, mapValue, foundMap, lastIndex,
-            foundI, foundStarMap, starI, i, j, part,
+            foundI, foundStarMap, starI, i, j, part, normalizedBaseParts,
             baseParts = baseName && baseName.split("/"),
             map = config.map,
             starMap = (map && map['*']) || {};
 
         //Adjust any relative paths.
-        if (name && name.charAt(0) === ".") {
-            //If have a base name, try to normalize against it,
-            //otherwise, assume it is a top-level require that will
-            //be relative to baseUrl in the end.
-            if (baseName) {
-                name = name.split('/');
-                lastIndex = name.length - 1;
+        if (name) {
+            name = name.split('/');
+            lastIndex = name.length - 1;
 
-                // Node .js allowance:
-                if (config.nodeIdCompat && jsSuffixRegExp.test(name[lastIndex])) {
-                    name[lastIndex] = name[lastIndex].replace(jsSuffixRegExp, '');
-                }
+            // If wanting node ID compatibility, strip .js from end
+            // of IDs. Have to do this here, and not in nameToUrl
+            // because node allows either .js or non .js to map
+            // to same file.
+            if (config.nodeIdCompat && jsSuffixRegExp.test(name[lastIndex])) {
+                name[lastIndex] = name[lastIndex].replace(jsSuffixRegExp, '');
+            }
 
-                //Lop off the last part of baseParts, so that . matches the
-                //"directory" and not name of the baseName's module. For instance,
-                //baseName of "one/two/three", maps to "one/two/three.js", but we
-                //want the directory, "one/two" for this normalization.
-                name = baseParts.slice(0, baseParts.length - 1).concat(name);
+            // Starts with a '.' so need the baseName
+            if (name[0].charAt(0) === '.' && baseParts) {
+                //Convert baseName to array, and lop off the last part,
+                //so that . matches that 'directory' and not name of the baseName's
+                //module. For instance, baseName of 'one/two/three', maps to
+                //'one/two/three.js', but we want the directory, 'one/two' for
+                //this normalization.
+                normalizedBaseParts = baseParts.slice(0, baseParts.length - 1);
+                name = normalizedBaseParts.concat(name);
+            }
 
-                //start trimDots
-                for (i = 0; i < name.length; i += 1) {
-                    part = name[i];
-                    if (part === ".") {
-                        name.splice(i, 1);
-                        i -= 1;
-                    } else if (part === "..") {
-                        if (i === 1 && (name[2] === '..' || name[0] === '..')) {
-                            //End of the line. Keep at least one non-dot
-                            //path segment at the front so it can be mapped
-                            //correctly to disk. Otherwise, there is likely
-                            //no path mapping for a path starting with '..'.
-                            //This can still fail, but catches the most reasonable
-                            //uses of ..
-                            break;
-                        } else if (i > 0) {
-                            name.splice(i - 1, 2);
-                            i -= 2;
-                        }
+            //start trimDots
+            for (i = 0; i < name.length; i++) {
+                part = name[i];
+                if (part === '.') {
+                    name.splice(i, 1);
+                    i -= 1;
+                } else if (part === '..') {
+                    // If at the start, or previous value is still ..,
+                    // keep them so that when converted to a path it may
+                    // still work when converted to a path, even though
+                    // as an ID it is less than ideal. In larger point
+                    // releases, may be better to just kick out an error.
+                    if (i === 0 || (i === 1 && name[2] === '..') || name[i - 1] === '..') {
+                        continue;
+                    } else if (i > 0) {
+                        name.splice(i - 1, 2);
+                        i -= 2;
                     }
                 }
-                //end trimDots
-
-                name = name.join("/");
-            } else if (name.indexOf('./') === 0) {
-                // No baseName, so this is ID is resolved relative
-                // to baseUrl, pull off the leading dot.
-                name = name.substring(2);
             }
+            //end trimDots
+
+            name = name.join('/');
         }
 
         //Apply map config if available.
@@ -11580,32 +11576,39 @@ var requirejs, require, define;
         return [prefix, name];
     }
 
+    //Creates a parts array for a relName where first part is plugin ID,
+    //second part is resource ID. Assumes relName has already been normalized.
+    function makeRelParts(relName) {
+        return relName ? splitPrefix(relName) : [];
+    }
+
     /**
      * Makes a name map, normalizing the name, and using a plugin
      * for normalization if necessary. Grabs a ref to plugin
      * too, as an optimization.
      */
-    makeMap = function (name, relName) {
+    makeMap = function (name, relParts) {
         var plugin,
             parts = splitPrefix(name),
-            prefix = parts[0];
+            prefix = parts[0],
+            relResourceName = relParts[1];
 
         name = parts[1];
 
         if (prefix) {
-            prefix = normalize(prefix, relName);
+            prefix = normalize(prefix, relResourceName);
             plugin = callDep(prefix);
         }
 
         //Normalize according
         if (prefix) {
             if (plugin && plugin.normalize) {
-                name = plugin.normalize(name, makeNormalize(relName));
+                name = plugin.normalize(name, makeNormalize(relResourceName));
             } else {
-                name = normalize(name, relName);
+                name = normalize(name, relResourceName);
             }
         } else {
-            name = normalize(name, relName);
+            name = normalize(name, relResourceName);
             parts = splitPrefix(name);
             prefix = parts[0];
             name = parts[1];
@@ -11652,13 +11655,14 @@ var requirejs, require, define;
     };
 
     main = function (name, deps, callback, relName) {
-        var cjsModule, depName, ret, map, i,
+        var cjsModule, depName, ret, map, i, relParts,
             args = [],
             callbackType = typeof callback,
             usingExports;
 
         //Use name if no relName
         relName = relName || name;
+        relParts = makeRelParts(relName);
 
         //Call the callback to define the module, if necessary.
         if (callbackType === 'undefined' || callbackType === 'function') {
@@ -11667,7 +11671,7 @@ var requirejs, require, define;
             //Default to [require, exports, module] if no deps
             deps = !deps.length && callback.length ? ['require', 'exports', 'module'] : deps;
             for (i = 0; i < deps.length; i += 1) {
-                map = makeMap(deps[i], relName);
+                map = makeMap(deps[i], relParts);
                 depName = map.f;
 
                 //Fast path CommonJS standard dependencies.
@@ -11723,7 +11727,7 @@ var requirejs, require, define;
             //deps arg is the module name, and second arg (if passed)
             //is just the relName.
             //Normalize module name, if it contains . or ..
-            return callDep(makeMap(deps, callback).f);
+            return callDep(makeMap(deps, makeRelParts(callback)).f);
         } else if (!deps.splice) {
             //deps is a config object, not an array.
             config = deps;
@@ -11906,10 +11910,10 @@ S2.define('select2/utils',[
     DecoratedClass.prototype = new ctr();
 
     for (var m = 0; m < superMethods.length; m++) {
-        var superMethod = superMethods[m];
+      var superMethod = superMethods[m];
 
-        DecoratedClass.prototype[superMethod] =
-          SuperClass.prototype[superMethod];
+      DecoratedClass.prototype[superMethod] =
+        SuperClass.prototype[superMethod];
     }
 
     var calledMethod = function (methodName) {
@@ -12104,6 +12108,67 @@ S2.define('select2/utils',[
     $element.append($nodes);
   };
 
+  // Cache objects in Utils.__cache instead of $.data (see #4346)
+  Utils.__cache = {};
+
+  var id = 0;
+  Utils.GetUniqueElementId = function (element) {
+    // Get a unique element Id. If element has no id, 
+    // creates a new unique number, stores it in the id 
+    // attribute and returns the new id. 
+    // If an id already exists, it simply returns it.
+
+    var select2Id = element.getAttribute('data-select2-id');
+    if (select2Id == null) {
+      // If element has id, use it.
+      if (element.id) {
+        select2Id = element.id;
+        element.setAttribute('data-select2-id', select2Id);
+      } else {
+        element.setAttribute('data-select2-id', ++id);
+        select2Id = id.toString();
+      }
+    }
+    return select2Id;
+  };
+
+  Utils.StoreData = function (element, name, value) {
+    // Stores an item in the cache for a specified element.
+    // name is the cache key.    
+    var id = Utils.GetUniqueElementId(element);
+    if (!Utils.__cache[id]) {
+      Utils.__cache[id] = {};
+    }
+
+    Utils.__cache[id][name] = value;
+  };
+
+  Utils.GetData = function (element, name) {
+    // Retrieves a value from the cache by its key (name)
+    // name is optional. If no name specified, return 
+    // all cache items for the specified element.
+    // and for a specified element.
+    var id = Utils.GetUniqueElementId(element);
+    if (name) {
+      if (Utils.__cache[id]) {
+        return Utils.__cache[id][name] != null ? 
+	      Utils.__cache[id][name]:
+	      $(element).data(name); // Fallback to HTML5 data attribs.
+      }
+      return $(element).data(name); // Fallback to HTML5 data attribs.
+    } else {
+      return Utils.__cache[id];			   
+    }
+  };
+
+  Utils.RemoveData = function (element) {
+    // Removes all cached items for a specified element.
+    var id = Utils.GetUniqueElementId(element);
+    if (Utils.__cache[id] != null) {
+      delete Utils.__cache[id];
+    }
+  };
+
   return Utils;
 });
 
@@ -12239,7 +12304,7 @@ S2.define('select2/results',[
       $options.each(function () {
         var $option = $(this);
 
-        var item = $.data(this, 'data');
+        var item = Utils.GetData(this, 'data');
 
         // id needs to be converted to a string when comparing
         var id = '' + item.id;
@@ -12344,7 +12409,7 @@ S2.define('select2/results',[
       this.template(data, option);
     }
 
-    $.data(option, 'data', data);
+    Utils.StoreData(option, 'data', data);
 
     return option;
   };
@@ -12430,7 +12495,7 @@ S2.define('select2/results',[
         return;
       }
 
-      var data = $highlighted.data('data');
+      var data = Utils.GetData($highlighted[0], 'data');
 
       if ($highlighted.attr('aria-selected') == 'true') {
         self.trigger('close', {});
@@ -12449,7 +12514,8 @@ S2.define('select2/results',[
       var currentIndex = $options.index($highlighted);
 
       // If we are already at te top, don't move further
-      if (currentIndex === 0) {
+      // If no options, currentIndex will be -1
+      if (currentIndex <= 0) {
         return;
       }
 
@@ -12542,7 +12608,7 @@ S2.define('select2/results',[
       function (evt) {
       var $this = $(this);
 
-      var data = $this.data('data');
+      var data = Utils.GetData(this, 'data');
 
       if ($this.attr('aria-selected') === 'true') {
         if (self.options.get('multiple')) {
@@ -12565,7 +12631,7 @@ S2.define('select2/results',[
 
     this.$results.on('mouseenter', '.select2-results__option[aria-selected]',
       function (evt) {
-      var data = $(this).data('data');
+      var data = Utils.GetData(this, 'data');
 
       self.getHighlightedResults()
           .removeClass('select2-results__option--highlighted');
@@ -12680,8 +12746,8 @@ S2.define('select2/selection/base',[
 
     this._tabindex = 0;
 
-    if (this.$element.data('old-tabindex') != null) {
-      this._tabindex = this.$element.data('old-tabindex');
+    if (Utils.GetData(this.$element[0], 'old-tabindex') != null) {
+      this._tabindex = Utils.GetData(this.$element[0], 'old-tabindex');
     } else if (this.$element.attr('tabindex') != null) {
       this._tabindex = this.$element.attr('tabindex');
     }
@@ -12741,6 +12807,9 @@ S2.define('select2/selection/base',[
       self.$selection.removeAttr('aria-owns');
 
       self.$selection.focus();
+      window.setTimeout(function () {
+        self.$selection.focus();
+      }, 0);
 
       self._detachCloseHandler(container);
     });
@@ -12789,7 +12858,7 @@ S2.define('select2/selection/base',[
           return;
         }
 
-        var $element = $this.data('element');
+        var $element = Utils.GetData(this, 'element');
 
         $element.select2('close');
       });
@@ -12850,7 +12919,10 @@ S2.define('select2/selection/single',[
 
     var id = container.id + '-container';
 
-    this.$selection.find('.select2-selection__rendered').attr('id', id);
+    this.$selection.find('.select2-selection__rendered')
+      .attr('id', id)
+      .attr('role', 'textbox')
+      .attr('aria-readonly', 'true');
     this.$selection.attr('aria-labelledby', id);
 
     this.$selection.on('mousedown', function (evt) {
@@ -12877,14 +12949,12 @@ S2.define('select2/selection/single',[
         self.$selection.focus();
       }
     });
-
-    container.on('selection:update', function (params) {
-      self.update(params.data);
-    });
   };
 
   SingleSelection.prototype.clear = function () {
-    this.$selection.find('.select2-selection__rendered').empty();
+    var $rendered = this.$selection.find('.select2-selection__rendered');
+    $rendered.empty();
+    $rendered.removeAttr('title'); // clear tooltip on empty
   };
 
   SingleSelection.prototype.display = function (data, container) {
@@ -12910,7 +12980,7 @@ S2.define('select2/selection/single',[
     var formatted = this.display(selection, $rendered);
 
     $rendered.empty().append(formatted);
-    $rendered.prop('title', selection.title || selection.text);
+    $rendered.attr('title', selection.title || selection.text);
   };
 
   return SingleSelection;
@@ -12962,7 +13032,7 @@ S2.define('select2/selection/multiple',[
         var $remove = $(this);
         var $selection = $remove.parent();
 
-        var data = $selection.data('data');
+        var data = Utils.GetData($selection[0], 'data');
 
         self.trigger('unselect', {
           originalEvent: evt,
@@ -12973,7 +13043,9 @@ S2.define('select2/selection/multiple',[
   };
 
   MultipleSelection.prototype.clear = function () {
-    this.$selection.find('.select2-selection__rendered').empty();
+    var $rendered = this.$selection.find('.select2-selection__rendered');
+    $rendered.empty();
+    $rendered.removeAttr('title');
   };
 
   MultipleSelection.prototype.display = function (data, container) {
@@ -13011,9 +13083,9 @@ S2.define('select2/selection/multiple',[
       var formatted = this.display(selection, $selection);
 
       $selection.append(formatted);
-      $selection.prop('title', selection.title || selection.text);
+      $selection.attr('title', selection.title || selection.text);
 
-      $selection.data('data', selection);
+      Utils.StoreData($selection[0], 'data', selection);
 
       $selections.push($selection);
     }
@@ -13078,8 +13150,9 @@ S2.define('select2/selection/placeholder',[
 
 S2.define('select2/selection/allowClear',[
   'jquery',
-  '../keys'
-], function ($, KEYS) {
+  '../keys',
+  '../utils'
+], function ($, KEYS, Utils) {
   function AllowClear () { }
 
   AllowClear.prototype.bind = function (decorated, container, $container) {
@@ -13121,10 +13194,22 @@ S2.define('select2/selection/allowClear',[
 
     evt.stopPropagation();
 
-    var data = $clear.data('data');
+    var data = Utils.GetData($clear[0], 'data');
+
+    var previousVal = this.$element.val();
+    this.$element.val(this.placeholder.id);
+
+    var unselectData = {
+      data: data
+    };
+    this.trigger('clear', unselectData);
+    if (unselectData.prevented) {
+      this.$element.val(previousVal);
+      return;
+    }
 
     for (var d = 0; d < data.length; d++) {
-      var unselectData = {
+      unselectData = {
         data: data[d]
       };
 
@@ -13134,11 +13219,12 @@ S2.define('select2/selection/allowClear',[
 
       // If the event was prevented, don't clear it out.
       if (unselectData.prevented) {
+        this.$element.val(previousVal);
         return;
       }
     }
 
-    this.$element.val(this.placeholder.id).trigger('change');
+    this.$element.trigger('change');
 
     this.trigger('toggle', {});
   };
@@ -13166,7 +13252,7 @@ S2.define('select2/selection/allowClear',[
         '&times;' +
       '</span>'
     );
-    $remove.data('data', data);
+    Utils.StoreData($remove[0], 'data', data);
 
     this.$selection.find('.select2-selection__rendered').prepend($remove);
   };
@@ -13187,7 +13273,7 @@ S2.define('select2/selection/search',[
     var $search = $(
       '<li class="select2-search select2-search--inline">' +
         '<input class="select2-search__field" type="search" tabindex="-1"' +
-        ' autocomplete="off" autocorrect="off" autocapitalize="off"' +
+        ' autocomplete="off" autocorrect="off" autocapitalize="none"' +
         ' spellcheck="false" role="textbox" aria-autocomplete="list" />' +
       '</li>'
     );
@@ -13257,7 +13343,7 @@ S2.define('select2/selection/search',[
           .prev('.select2-selection__choice');
 
         if ($previousChoice.length > 0) {
-          var item = $previousChoice.data('data');
+          var item = Utils.GetData($previousChoice[0], 'data');
 
           self.searchRemoveChoice(item);
 
@@ -13351,7 +13437,13 @@ S2.define('select2/selection/search',[
 
     this.resizeSearch();
     if (searchHadFocus) {
-      this.$search.focus();
+      var isTagInput = this.$element.find('[data-select2-tag]').length;
+      if (isTagInput) {
+        // fix IE11 bug where tag input lost focus
+        this.$element.focus();
+      } else {
+        this.$search.focus();
+      }
     }
   };
 
@@ -13408,10 +13500,13 @@ S2.define('select2/selection/eventRelay',[
       'open', 'opening',
       'close', 'closing',
       'select', 'selecting',
-      'unselect', 'unselecting'
+      'unselect', 'unselecting',
+      'clear', 'clearing'
     ];
 
-    var preventableEvents = ['opening', 'closing', 'selecting', 'unselecting'];
+    var preventableEvents = [
+      'opening', 'closing', 'selecting', 'unselecting', 'clearing'
+    ];
 
     decorated.call(this, container, $container);
 
@@ -14490,7 +14585,7 @@ S2.define('select2/data/select',[
     // Remove anything added to child elements
     this.$element.find('*').each(function () {
       // Remove any custom data set by Select2
-      $.removeData(this, 'data');
+      Utils.RemoveData(this);
     });
   };
 
@@ -14563,7 +14658,7 @@ S2.define('select2/data/select',[
     normalizedData.element = option;
 
     // Override the option's data with the combined data
-    $.data(option, 'data', normalizedData);
+    Utils.StoreData(option, 'data', normalizedData);
 
     return $option;
   };
@@ -14571,7 +14666,7 @@ S2.define('select2/data/select',[
   SelectAdapter.prototype.item = function ($option) {
     var data = {};
 
-    data = $.data($option[0], 'data');
+    data = Utils.GetData($option[0], 'data');
 
     if (data != null) {
       return data;
@@ -14609,13 +14704,13 @@ S2.define('select2/data/select',[
     data = this._normalizeItem(data);
     data.element = $option[0];
 
-    $.data($option[0], 'data', data);
+    Utils.StoreData($option[0], 'data', data);
 
     return data;
   };
 
   SelectAdapter.prototype._normalizeItem = function (item) {
-    if (!$.isPlainObject(item)) {
+    if (item !== Object(item)) {
       item = {
         id: item,
         text: item
@@ -14819,7 +14914,8 @@ S2.define('select2/data/ajax',[
       }, function () {
         // Attempt to detect if a request was aborted
         // Only works if the transport exposes a status property
-        if ($request.status && $request.status === '0') {
+        if ('status' in $request &&
+            ($request.status === 0 || $request.status === '0')) {
           return;
         }
 
@@ -15241,7 +15337,7 @@ S2.define('select2/dropdown/search',[
     var $search = $(
       '<span class="select2-search select2-search--dropdown">' +
         '<input class="select2-search__field" type="search" tabindex="-1"' +
-        ' autocomplete="off" autocorrect="off" autocapitalize="off"' +
+        ' autocomplete="off" autocorrect="off" autocapitalize="none"' +
         ' spellcheck="false" role="textbox" />' +
       '</span>'
     );
@@ -15291,10 +15387,11 @@ S2.define('select2/dropdown/search',[
       self.$search.attr('tabindex', -1);
 
       self.$search.val('');
+      self.$search.blur();
     });
 
     container.on('focus', function () {
-      if (container.isOpen()) {
+      if (!container.isOpen()) {
         self.$search.focus();
       }
     });
@@ -15556,14 +15653,14 @@ S2.define('select2/dropdown/attachBody',[
 
     var $watchers = this.$container.parents().filter(Utils.hasScroll);
     $watchers.each(function () {
-      $(this).data('select2-scroll-position', {
+      Utils.StoreData(this, 'select2-scroll-position', {
         x: $(this).scrollLeft(),
         y: $(this).scrollTop()
       });
     });
 
     $watchers.on(scrollEvent, function (ev) {
-      var position = $(this).data('select2-scroll-position');
+      var position = Utils.GetData(this, 'select2-scroll-position');
       $(this).scrollTop(position.y);
     });
 
@@ -15728,8 +15825,8 @@ S2.define('select2/dropdown/minimumResultsForSearch',[
 });
 
 S2.define('select2/dropdown/selectOnClose',[
-
-], function () {
+  '../utils'
+], function (Utils) {
   function SelectOnClose () { }
 
   SelectOnClose.prototype.bind = function (decorated, container, $container) {
@@ -15760,7 +15857,7 @@ S2.define('select2/dropdown/selectOnClose',[
       return;
     }
 
-    var data = $highlightedResults.data('data');
+    var data = Utils.GetData($highlightedResults[0], 'data');
 
     // Don't re-select already selected resulte
     if (
@@ -16248,7 +16345,7 @@ S2.define('select2/defaults',[
 
     var convertedData = Utils._convertData(data);
 
-    $.extend(this.defaults, convertedData);
+    $.extend(true, this.defaults, convertedData);
   };
 
   var defaults = new Defaults();
@@ -16313,7 +16410,7 @@ S2.define('select2/options',[
     $e.prop('disabled', this.options.disabled);
     $e.prop('multiple', this.options.multiple);
 
-    if ($e.data('select2Tags')) {
+    if (Utils.GetData($e[0], 'select2Tags')) {
       if (this.options.debug && window.console && console.warn) {
         console.warn(
           'Select2: The `data-select2-tags` attribute has been changed to ' +
@@ -16322,11 +16419,11 @@ S2.define('select2/options',[
         );
       }
 
-      $e.data('data', $e.data('select2Tags'));
-      $e.data('tags', true);
+      Utils.StoreData($e[0], 'data', Utils.GetData($e[0], 'select2Tags'));
+      Utils.StoreData($e[0], 'tags', true);
     }
 
-    if ($e.data('ajaxUrl')) {
+    if (Utils.GetData($e[0], 'ajaxUrl')) {
       if (this.options.debug && window.console && console.warn) {
         console.warn(
           'Select2: The `data-ajax-url` attribute has been changed to ' +
@@ -16335,8 +16432,9 @@ S2.define('select2/options',[
         );
       }
 
-      $e.attr('ajax--url', $e.data('ajaxUrl'));
-      $e.data('ajax--url', $e.data('ajaxUrl'));
+      $e.attr('ajax--url', Utils.GetData($e[0], 'ajaxUrl'));
+      Utils.StoreData($e[0], 'ajax-Url', Utils.GetData($e[0], 'ajaxUrl'));
+	  
     }
 
     var dataset = {};
@@ -16344,9 +16442,9 @@ S2.define('select2/options',[
     // Prefer the element's `dataset` attribute if it exists
     // jQuery 1.x does not correctly handle data attributes with multiple dashes
     if ($.fn.jquery && $.fn.jquery.substr(0, 2) == '1.' && $e[0].dataset) {
-      dataset = $.extend(true, {}, $e[0].dataset, $e.data());
+      dataset = $.extend(true, {}, $e[0].dataset, Utils.GetData($e[0]));
     } else {
-      dataset = $e.data();
+      dataset = Utils.GetData($e[0]);
     }
 
     var data = $.extend(true, {}, dataset);
@@ -16386,8 +16484,8 @@ S2.define('select2/core',[
   './keys'
 ], function ($, Options, Utils, KEYS) {
   var Select2 = function ($element, options) {
-    if ($element.data('select2') != null) {
-      $element.data('select2').destroy();
+    if (Utils.GetData($element[0], 'select2') != null) {
+      Utils.GetData($element[0], 'select2').destroy();
     }
 
     this.$element = $element;
@@ -16403,7 +16501,7 @@ S2.define('select2/core',[
     // Set up the tabindex
 
     var tabindex = $element.attr('tabindex') || 0;
-    $element.data('old-tabindex', tabindex);
+    Utils.StoreData($element[0], 'old-tabindex', tabindex);
     $element.attr('tabindex', '-1');
 
     // Set up containers and adapters
@@ -16464,6 +16562,9 @@ S2.define('select2/core',[
     // Synchronize any monitored attributes
     this._syncAttributes();
 
+    Utils.StoreData($element[0], 'select2', this);
+
+    // Ensure backwards compatibility with $element.data('select2').
     $element.data('select2', this);
   };
 
@@ -16798,7 +16899,8 @@ S2.define('select2/core',[
       'open': 'opening',
       'close': 'closing',
       'select': 'selecting',
-      'unselect': 'unselecting'
+      'unselect': 'unselecting',
+      'clear': 'clearing'
     };
 
     if (args === undefined) {
@@ -16953,10 +17055,12 @@ S2.define('select2/core',[
     this._syncS = null;
 
     this.$element.off('.select2');
-    this.$element.attr('tabindex', this.$element.data('old-tabindex'));
+    this.$element.attr('tabindex',
+    Utils.GetData(this.$element[0], 'old-tabindex'));
 
     this.$element.removeClass('select2-hidden-accessible');
     this.$element.attr('aria-hidden', 'false');
+    Utils.RemoveData(this.$element[0]);
     this.$element.removeData('select2');
 
     this.dataAdapter.destroy();
@@ -16984,7 +17088,7 @@ S2.define('select2/core',[
 
     this.$container.addClass('select2-container--' + this.options.get('theme'));
 
-    $container.data('element', this.$element);
+    Utils.StoreData($container[0], 'element', this.$element);
 
     return $container;
   };
@@ -17194,8 +17298,9 @@ S2.define('select2/compat/initSelection',[
 });
 
 S2.define('select2/compat/inputData',[
-  'jquery'
-], function ($) {
+  'jquery',
+  '../utils'
+], function ($, Utils) {
   function InputData (decorated, $element, options) {
     this._currentData = [];
     this._valueSeparator = options.get('valueSeparator') || ',';
@@ -17312,7 +17417,7 @@ S2.define('select2/compat/inputData',[
 
   InputData.prototype.addOptions = function (_, $options) {
     var options = $.map($options, function ($option) {
-      return $.data($option[0], 'data');
+      return Utils.GetData($option[0], 'data');
     });
 
     this._currentData.push.apply(this._currentData, options);
@@ -17715,8 +17820,9 @@ S2.define('jquery.select2',[
   'jquery-mousewheel',
 
   './select2/core',
-  './select2/defaults'
-], function ($, _, Select2, Defaults) {
+  './select2/defaults',
+  './select2/utils'
+], function ($, _, Select2, Defaults, Utils) {
   if ($.fn.select2 == null) {
     // All methods that should return the element
     var thisMethods = ['open', 'close', 'destroy'];
@@ -17737,7 +17843,7 @@ S2.define('jquery.select2',[
         var args = Array.prototype.slice.call(arguments, 1);
 
         this.each(function () {
-          var instance = $(this).data('select2');
+          var instance = Utils.GetData(this, 'select2');
 
           if (instance == null && window.console && console.error) {
             console.error(
@@ -17789,13 +17895,40 @@ S2.define('jquery.select2',[
 }));
 
 var yl = yl || {};
+if (typeof django !== 'undefined' && typeof django.jQuery !== 'undefined') {
+    // If django.jQuery is already defined, use it.
+    yl.jQuery = django.jQuery;
+}
+else {
+    // We include jquery itself in our widget's media, because we need it.
+    // Normally, we expect our widget's reference to admin/js/vendor/jquery/jquery.js
+    // to be skipped, because django's own code has already included it.
+    // However, if django.jQuery is NOT defined, we know that jquery was not
+    // included before we did it ourselves. This can happen if we're not being
+    // rendered in a django admin form.
+    // However, someone ELSE'S jQuery may have been included before ours, in
+    // which case we must ensure that our jquery doesn't override theirs, since
+    // it might be a newer version that other code on the page relies on.
+    // Thus, we must run jQuery.noConflict(true) here to move our jQuery out of
+    // the way.
+    yl.jQuery = jQuery.noConflict(true);
+}
 
-if (yl.jQuery === undefined) {
-    /* If the user has included another copy of jQuery use that, even in the admin */
-    if (typeof $ !== 'undefined')
-        yl.jQuery = $;
-    else if ((typeof django !== 'undefined') && (typeof django.jQuery !== 'undefined'))
-        yl.jQuery = django.jQuery;
+// In addition to all of this, we must ensure that the global jQuery and $ are
+// defined, because Select2 requires that. jQuery will only be undefined at
+// this point if only we or django included it.
+if (typeof jQuery === 'undefined') {
+    jQuery = yl.jQuery;
+    $ = yl.jQuery;
+}
+else {
+    // jQuery IS still defined, which means someone else also included jQuery.
+    // In this situation, we need to store the old jQuery in a
+    // temp variable, set the global jQuery to our yl.jQuery, then let select2
+    // set itself up. We restore the global jQuery to its original value in
+    // jquery.post-setup.js.
+    dal_jquery_backup = jQuery.noConflict(true);
+    jQuery = yl.jQuery;
 }
 
 /*
@@ -17833,6 +17966,41 @@ element was cloned with data - which should be the case.
         return '';
     }
 
+    $.fn.getFormPrefixes = function() {
+        /*
+         * Get the form prefixes for a field, from the most specific to the least.
+         *
+         * For example:
+         *
+         *      $(':input[name$=owner]').getFormPrefixes()
+         *
+         * Would return:
+         * - [''] for an input named 'owner'.
+         * - ['inline_model-0-', ''] for an input named 'inline_model-0-owner' (i.e. nested with a nested inline).
+         * - ['sections-0-items-0-', 'sections-0-', ''] for an input named 'sections-0-items-0-product'
+         *   (i.e. nested multiple time with django-nested-admin).
+         */
+        var parts = $(this).attr('name').split('-').slice(0, -1);
+        var prefixes = [];
+
+        for (i = 0; i < parts.length; i += 2) {
+            var testPrefix = parts.slice(0, -i || parts.length).join('-');
+            if (!testPrefix.length)
+                continue;
+
+            testPrefix += '-';
+
+            var result = $(':input[name^=' + testPrefix + ']')
+
+            if (result.length)
+                prefixes.push(testPrefix);
+        }
+
+        prefixes.push('');
+
+        return prefixes;
+    }
+
     var initialized = [];
 
     function initialize(element) {
@@ -17847,15 +18015,18 @@ element was cloned with data - which should be the case.
         $(element).trigger('autocompleteLightInitialize');
         initialized.push(element);
     }
-    window.__dal__initialize = initialize;
 
-    $(document).ready(function() {
-        $('[data-autocomplete-light-function]:not([id*="__prefix__"])').each(initialize);
-    });
+    if (!window.__dal__initialize) {
+        window.__dal__initialize = initialize;
 
-    $(document).bind('DOMNodeInserted', function(e) {
-        $(e.target).find('[data-autocomplete-light-function]').each(initialize);
-    });
+        $(document).ready(function () {
+            $('[data-autocomplete-light-function=select2]:not([id*="__prefix__"])').each(initialize);
+        });
+
+        $(document).bind('DOMNodeInserted', function (e) {
+            $(e.target).find('[data-autocomplete-light-function=select2]').each(initialize);
+        });
+    }
 
     // using jQuery
     function getCookie(name) {
@@ -17875,12 +18046,190 @@ element was cloned with data - which should be the case.
     }
 
     document.csrftoken = getCookie('csrftoken');
+    if (document.csrftoken === null) {
+        // Try to get CSRF token from DOM when cookie is missing
+        var $csrf = $('form :input[name="csrfmiddlewaretoken"]');
+        if ($csrf.length > 0) {
+            document.csrftoken = $csrf[0].value;
+        }
+    }
 })(yl.jQuery);
 
-;(function ($) {
-    function get_forwards(element) {
-        var forwardElem, forwardList, prefix, forwardedData, divSelector, form;
+// Does the same thing as django's admin/js/autocomplete.js, but uses yl.jQuery.
+(function($) {
+    'use strict';
+    var init = function($element, options) {
+        var settings = $.extend({
+            ajax: {
+                data: function(params) {
+                    return {
+                        term: params.term,
+                        page: params.page
+                    };
+                }
+            }
+        }, options);
+        $element.select2(settings);
+    };
+
+    $.fn.djangoAdminSelect2 = function(options) {
+        var settings = $.extend({}, options);
+        $.each(this, function(i, element) {
+            var $element = $(element);
+            init($element, settings);
+        });
+        return this;
+    };
+
+    $(function() {
+        // Initialize all autocomplete widgets except the one in the template
+        // form used when a new formset is added.
+        $('.admin-autocomplete').not('[name*=__prefix__]').djangoAdminSelect2();
+    });
+
+    $(document).on('formset:added', (function() {
+        return function(event, $newFormset) {
+            return $newFormset.find('.admin-autocomplete').djangoAdminSelect2();
+        };
+    })(this));
+}(yl.jQuery));
+
+;(function($, yl) {
+    yl.forwardHandlerRegistry = yl.forwardHandlerRegistry || {};
+
+    yl.registerForwardHandler = function(name, handler) {
+        yl.forwardHandlerRegistry[name] = handler;
+    };
+
+    yl.getForwardHandler = function(name) {
+        return yl.forwardHandlerRegistry[name];
+    };
+
+    function getForwardStrategy(element) {
+        var checkForCheckboxes = function() {
+            var all = true;
+            $.each(element, function(ix, e) {
+                if ($(e).attr("type") !== "checkbox") {
+                    all = false;
+                }
+            });
+            return all;
+        };
+
+        if (element.length === 1 &&
+                element.attr("type") === "checkbox" &&
+                element.attr("value") === undefined) {
+            // Single checkbox without 'value' attribute
+            // Boolean field
+            return "exists";
+        } else if (element.length === 1 &&
+                element.attr("multiple") !== undefined) {
+            // Multiple by HTML semantics. E. g. multiple select
+            // Multiple choice field
+            return "multiple";
+        } else if (checkForCheckboxes()) {
+            // Multiple checkboxes or one checkbox with 'value' attribute.
+            // Multiple choice field represented by checkboxes
+            return "multiple";
+        } else {
+            // Other cases
+            return "single";
+        }
+    }
+
+    /**
+     * Get fields with name `name` relative to `element` with considering form
+     * prefixes.
+     * @param element the element
+     * @param name name of the field
+     * @returns jQuery object with found fields or empty jQuery object if no
+     * field was found
+     */
+    yl.getFieldRelativeTo = function(element, name) {
+        var prefixes = $(element).getFormPrefixes();
+
+        for (var i = 0; i < prefixes.length; i++) {
+            var fieldSelector = "[name=" + prefixes[i] + name + "]";
+            var field = $(fieldSelector);
+
+            if (field.length) {
+                return field;
+            }
+        }
+
+        return $();
+    };
+
+    /**
+     * Get field value which is put to forwarded dictionary
+     * @param field the field
+     * @returns forwarded value
+     */
+    yl.getValueFromField = function(field) {
+        var strategy = getForwardStrategy(field);
+        var serializedField = $(field).serializeArray();
+
+        if ((serializedField == false) && ($(field).prop('disabled'))) {
+            $(field).prop('disabled', false);
+            serializedField = $(field).serializeArray();
+            $(field).prop('disabled', true);
+        }
+
+        var getSerializedFieldElementAt = function (index) {
+            // Return serializedField[index]
+            // or null if something went wrong
+            if (serializedField.length > index) {
+                return serializedField[index];
+            } else {
+                return null;
+            }
+        };
+
+        var getValueOf = function (elem) {
+            // Return elem.value
+            // or null if something went wrong
+            if (elem.hasOwnProperty("value") &&
+                elem.value !== undefined
+            ) {
+                return elem.value;
+            } else {
+                return null;
+            }
+        };
+
+        var getSerializedFieldValueAt = function (index) {
+            // Return serializedField[index].value
+            // or null if something went wrong
+            var elem = getSerializedFieldElementAt(index);
+            if (elem !== null) {
+                return getValueOf(elem);
+            } else {
+                return null;
+            }
+        };
+
+        if (strategy === "multiple") {
+            return serializedField.map(
+                function (item) {
+                    return getValueOf(item);
+                }
+            );
+        } else if (strategy === "exists") {
+            return serializedField.length > 0;
+        } else {
+            return getSerializedFieldValueAt(0);
+        }
+    };
+
+    yl.getForwards = function(element) {
+        var forwardElem,
+            forwardList,
+            forwardedData,
+            divSelector,
+            form;
         divSelector = "div.dal-forward-conf#dal-forward-conf-for-" +
+                element.attr("id") + ", " +
+                "div.dal-forward-conf#dal-forward-conf-for_" +
                 element.attr("id");
         form = element.length > 0 ? $(element[0].form) : $();
 
@@ -17899,53 +18248,83 @@ element was cloned with data - which should be the case.
             return;
         }
 
-        prefix = $(element).getFormPrefix();
         forwardedData = {};
 
-        $.each(forwardList, function(ix, f) {
-            if (f["type"] === "const") {
-                forwardedData[f["dst"]] = f["val"];
-            } else if (f["type"] === "field") {
-                var srcName, dstName;
-                srcName = f["src"];
-                if (f.hasOwnProperty("dst")) {
-                    dstName = f["dst"];
+        $.each(forwardList, function(ix, field) {
+            var srcName, dstName;
+            if (field.type === "const") {
+                forwardedData[field.dst] = field.val;
+            } else if (field.type === "self") {
+                if (field.hasOwnProperty("dst")) {
+                    dstName = field.dst;
+                } else {
+                    dstName = "self";
+                }
+                forwardedData[dstName] = yl.getValueFromField(element);
+            } else if (field.type === "field") {
+                srcName = field.src;
+                if (field.hasOwnProperty("dst")) {
+                    dstName = field.dst;
                 } else {
                     dstName = srcName;
                 }
-                // First look for this field in the inline
-                $field_selector = '[name=' + prefix + srcName + ']';
-                $field = $($field_selector);
-                if (!$field.length) {
-                    // As a fallback, look for it outside the inline
-                    $field_selector = '[name=' + srcName + ']';
-                    $field = $($field_selector);
+                var forwardedField = yl.getFieldRelativeTo(element, srcName);
+
+                if (!forwardedField.length) {
+                    return;
                 }
-                if ($field.length) {
-                    if ($field.attr('type') === 'checkbox')
-                        forwardedData[dstName] = $field[0].checked;
-                    else if ($field.attr('type') === 'radio')
-                        forwardedData[dstName] = $($field_selector + ":checked").val();
-                    else
-                        forwardedData[dstName] = $field.val();
-                }
+
+                forwardedData[dstName] = yl.getValueFromField(forwardedField);
+            } else if (field.type === "javascript") {
+                var handler = yl.getForwardHandler(field.handler);
+                forwardedData[field.dst || field.handler] = handler(element);
             }
+
         });
         return JSON.stringify(forwardedData);
-    }
+    };
+
+})(yl.jQuery, yl);
+
+;(function ($) {
+    if (window.__dal__initListenerIsSet)
+        return;
 
     $(document).on('autocompleteLightInitialize', '[data-autocomplete-light-function=select2]', function() {
         var element = $(this);
 
         // Templating helper
-        function template(item) {
-            if (element.attr('data-html') !== undefined) {
+        function template(text, is_html) {
+            if (is_html) {
                 var $result = $('<span>');
-                $result.html(item.text);
+                $result.html(text);
                 return $result;
             } else {
-                return item.text;
+                return text;
             }
+        }
+
+        function result_template(item) {
+            var text = template(item.text,
+                element.attr('data-html') !== undefined || element.attr('data-result-html') !== undefined
+            );
+
+            if (item.create_id) {
+                return $('<span></span>').text(text).addClass('dal-create')
+            } else {
+                return text
+            }
+        }
+
+        function selected_template(item) {
+            if (item.selected_text !== undefined) {
+                return template(item.selected_text,
+                    element.attr('data-html') !== undefined || element.attr('data-selected-html') !== undefined
+                );
+            } else {
+                return result_template(item);
+            }
+            return
         }
 
         var ajax = null;
@@ -17960,7 +18339,7 @@ element was cloned with data - which should be the case.
                         q: params.term, // search term
                         page: params.page,
                         create: element.attr('data-autocomplete-light-create') && !element.attr('data-tags'),
-                        forward: get_forwards(element)
+                        forward: yl.getForwards(element)
                     };
 
                     return data;
@@ -17981,12 +18360,15 @@ element was cloned with data - which should be the case.
         $(this).select2({
             tokenSeparators: element.attr('data-tags') ? [','] : null,
             debug: true,
-            placeholder: '',
-            minimumInputLength: 0,
+            containerCssClass: ':all:',
+            placeholder: element.attr('data-placeholder') || '',
+            language: element.attr('data-autocomplete-light-language'),
+            minimumInputLength: element.attr('data-minimum-input-length') || 0,
             allowClear: ! $(this).is('[required]'),
-            templateResult: template,
-            templateSelection: template,
+            templateResult: result_template,
+            templateSelection: selected_template,
             ajax: ajax,
+            tags: Boolean(element.attr('data-tags')),
         });
 
         $(this).on('select2:selecting', function (e) {
@@ -18005,7 +18387,7 @@ element was cloned with data - which should be the case.
                 dataType: 'json',
                 data: {
                     text: data.id,
-                    forward: get_forwards($(this))
+                    forward: yl.getForwards($(this))
                 },
                 beforeSend: function(xhr, settings) {
                     xhr.setRequestHeader("X-CSRFToken", document.csrftoken);
@@ -18022,16 +18404,8 @@ element was cloned with data - which should be the case.
 
     });
     window.__dal__initListenerIsSet = true;
-    $('[data-autocomplete-light-function]:not([id*="__prefix__"])').each(function() {
+    $('[data-autocomplete-light-function=select2]:not([id*="__prefix__"])').each(function() {
         window.__dal__initialize(this);
-    });
-
-    // Remove this block when this is merged upstream:
-    // https://github.com/select2/select2/pull/4249
-    $(document).on('DOMSubtreeModified', '[data-autocomplete-light-function=select2] option', function() {
-        $(this).parents('select').next().find(
-            '.select2-selection--single .select2-selection__rendered'
-        ).text($(this).text());
     });
 })(yl.jQuery);
 
@@ -36070,105 +36444,104 @@ module.exports = function(Chart) {
     };
 })(jQuery);
 
-$(function () {
-    var fields = document.querySelectorAll('.datetimeinput');
-    var fields_array = Array.prototype.slice.call(fields);
-    fields_array.forEach(function (item) {
-        new Pikaday({
-            field: item,
-            firstDay: 1,
-            format: 'DD.MM.YYYY HH:mm:ss',
-            minDate: new Date('2000-01-01'),
-            maxDate: new Date('2020-12-31'),
-            yearRange: [2000, 2020],
-            showTime: true,
-            use24hour: true
-        });
-    });
-});
-
-$(function () {
-    $('[data-toggle="tooltip"]').tooltip();
-});
-
-$(function () {
-    function storageAvailable(type) {
-        try {
-            var storage = window[type],
-                x = "__storage_test__";
-            storage.setItem(x, x);
-            storage.removeItem(x);
-            return true;
-        } catch (e) {
-            return (
-                e instanceof DOMException &&
-                // everything except Firefox
-                (e.code === 22 ||
-                    // Firefox
-                    e.code === 1014 ||
-                    // test name field too, because code might not be present
-                    // everything except Firefox
-                    e.name === "QuotaExceededError" ||
-                    // Firefox
-                    e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
-                // acknowledge QuotaExceededError only if there's something already stored
-                window[type].length !== 0
-            );
-        }
-    }
-
-    if (!storageAvailable("localStorage")) {
-        return;
-    }
-
-    function findByName(inputs, name) {
-        return inputs.find(function (el) {
-            return el.name == name;
-        });
-    }
-
-    function loadInitalData(inputs, saveKey) {
-        try {
-            var formData = JSON.parse(localStorage.getItem(saveKey));
-            console.log("Load", saveKey, formData);
-            if (formData) {
-                formData.forEach(function (inputData) {
-                    var input = findByName(inputs, inputData.name);
-                    if (input) {
-                        input.value = inputData.value;
-                    }
-                });
-            }
-        } catch (e) {
-        }
-    }
-
-    function serializeForm(inputs) {
-        return inputs.map(function (input) {
-            return {name: input.name, value: input.value};
-        });
-    }
-
-    function setupListeners(inputs, saveKey) {
-        inputs.forEach(function (input) {
-            input.addEventListener("input", function () {
-                var formData = serializeForm(inputs);
-                localStorage.setItem(saveKey, JSON.stringify(formData));
-                console.log("Save", saveKey, formData);
+;(function($) {
+    $(function () {
+        var fields = document.querySelectorAll('.datetimeinput');
+        var fields_array = Array.prototype.slice.call(fields);
+        fields_array.forEach(function (item) {
+            new Pikaday({
+                field: item,
+                firstDay: 1,
+                format: 'DD.MM.YYYY HH:mm:ss',
+                minDate: new Date('2000-01-01'),
+                maxDate: new Date('2020-12-31'),
+                yearRange: [2000, 2020],
+                showTime: true,
+                use24hour: true
             });
         });
-    }
-
-    var forms = Array.from(document.querySelectorAll("[data-form-save]"));
-
-    forms.forEach(function (element) {
-        var saveKey = "form-" + element.getAttribute("data-form-save");
-        var inputs = Array.from(element.querySelectorAll('input:not([type="hidden"]), textarea'));
-        console.log(inputs);
-        loadInitalData(inputs, saveKey);
-        setupListeners(inputs, saveKey);
     });
-});
+
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+    $(function () {
+        function storageAvailable(type) {
+            try {
+                var storage = window[type],
+                    x = "__storage_test__";
+                storage.setItem(x, x);
+                storage.removeItem(x);
+                return true;
+            } catch (e) {
+                return (
+                    e instanceof DOMException &&
+                    // everything except Firefox
+                    (e.code === 22 ||
+                        // Firefox
+                        e.code === 1014 ||
+                        // test name field too, because code might not be present
+                        // everything except Firefox
+                        e.name === "QuotaExceededError" ||
+                        // Firefox
+                        e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
+                    // acknowledge QuotaExceededError only if there's something already stored
+                    window[type].length !== 0
+                );
+            }
+        }
+
+        if (!storageAvailable("localStorage")) {
+            return;
+        }
+
+        function findByName(inputs, name) {
+            return inputs.find(function (el) {
+                return el.name == name;
+            });
+        }
+
+        function loadInitalData(inputs, saveKey) {
+            try {
+                var formData = JSON.parse(localStorage.getItem(saveKey));
+                if (formData) {
+                    formData.forEach(function (inputData) {
+                        var input = findByName(inputs, inputData.name);
+                        if (input) {
+                            input.value = inputData.value;
+                        }
+                    });
+                }
+            } catch (e) {
+            }
+        }
+
+        function serializeForm(inputs) {
+            return inputs.map(function (input) {
+                return {name: input.name, value: input.value};
+            });
+        }
+
+        function setupListeners(inputs, saveKey) {
+            inputs.forEach(function (input) {
+                input.addEventListener("input", function () {
+                    var formData = serializeForm(inputs);
+                    localStorage.setItem(saveKey, JSON.stringify(formData));
+                });
+            });
+        }
+
+        var forms = Array.from(document.querySelectorAll("[data-form-save]"));
+
+        forms.forEach(function (element) {
+            var saveKey = "form-" + element.getAttribute("data-form-save");
+            var inputs = Array.from(element.querySelectorAll('input:not([type="hidden"]), textarea'));
+            loadInitalData(inputs, saveKey);
+            setupListeners(inputs, saveKey);
+        });
+    });
+})(jQuery);
 
 document.addEventListener('DOMContentLoaded', function() {
 			var menu_toogles = document.querySelectorAll('.navbar-toggle');
@@ -36804,45 +37177,47 @@ document.addEventListener('DOMContentLoaded', function() {
 if(e(t)&&(t=typeof t.valueOf=="function"?t.valueOf():t,t=e(t)?t+"":t),typeof t!="string")return 0===t?t:+t;t=t.replace(c,"");var n=l.test(t);return n||a.test(t)?b(t.slice(2),n?2:8):f.test(t)?u:+t}var o,u=NaN,c=/^\s+|\s+$/g,f=/^[-+]0x[0-9a-f]+$/i,l=/^0b[01]+$/i,a=/^0o[0-7]+$/i,b=parseInt,s=typeof self=="object"&&self&&self.Object===Object&&self,p=typeof global=="object"&&global&&global.Object===Object&&global||s||Function("return this")(),s=Object.prototype,y=s.hasOwnProperty,j=s.toString,m=(s=p.Symbol)?s.toStringTag:o,v=Math.max,g=Math.min,O=function(){
 return p.Date.now()};t.debounce=function(t,n,r){function u(e){var n=b,r=s;return b=s=o,h=e,y=t.apply(r,n)}function c(t){var e=t-m;return t-=h,m===o||e>=n||0>e||d&&t>=p}function f(){var t=O();if(c(t))return l(t);var e,r=setTimeout;e=t-h,t=n-(t-m),e=d?g(t,p-e):t,j=r(f,e)}function l(t){return j=o,S&&b?u(t):(b=s=o,y)}function a(){var t=O(),e=c(t);if(b=arguments,s=this,m=t,e){if(j===o)return h=t=m,j=setTimeout(f,n),T?u(t):y;if(d)return j=setTimeout(f,n),u(m)}return j===o&&(j=setTimeout(f,n)),y}var b,s,p,y,j,m,h=0,T=false,d=false,S=true;
 if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)||0,e(r)&&(T=!!r.leading,p=(d="maxWait"in r)?v(i(r.maxWait)||0,n):p,S="trailing"in r?!!r.trailing:S),a.cancel=function(){j!==o&&clearTimeout(j),h=0,b=m=s=j=o},a.flush=function(){return j===o?y:l(O())},a},t.isObject=e,t.isObjectLike=n,t.isSymbol=r,t.now=O,t.toNumber=i,t.VERSION="4.17.4",p._=t}).call(this);
-$(document).ready(function () {
-    $('.navsearch').each(function(){
-        $navsearch = $(this);
-        $input =  $navsearch.find('.navsearch__input');
-        $results = $navsearch.find('.navsearch__results');
-        $url = $navsearch.data('autocomplete-url');
-        $input.on('keyup, keydown', _.debounce(function(event) {
-            var keywords = $input.val();
+;(function($) {
+    $(document).ready(function () {
+        $('.navsearch').each(function(){
+            $navsearch = $(this);
+            $input =  $navsearch.find('.navsearch__input');
+            $results = $navsearch.find('.navsearch__results');
+            $url = $navsearch.data('autocomplete-url');
+            $input.on('keyup, keydown', _.debounce(function(event) {
+                var keywords = $input.val();
 
-            $.getJSON($url, {q: keywords}, function(response) {
-                // Clear
-                $results.empty();
+                $.getJSON($url, {q: keywords}, function(response) {
+                    // Clear
+                    $results.empty();
 
-                response.results.forEach(function(group) {
-                    // Create
-                    $group = $('<div class="panel panel-default">');
-                    $group_title = $('<div class="panel-heading"></div>')
-                    $group_list = $('<div class="list-group"></div>');
-
-                    // Bind
-                    $group_title.text(group.text);
-                    group.children.forEach(function(item) {
+                    response.results.forEach(function(group) {
                         // Create
-                        var $item = $('<a class="list-group-item">');
+                        $group = $('<div class="panel panel-default">');
+                        $group_title = $('<div class="panel-heading"></div>')
+                        $group_list = $('<div class="list-group"></div>');
 
                         // Bind
-                        $item.attr('href', item.url)
-                            .text(item.text);
+                        $group_title.text(group.text);
+                        group.children.forEach(function(item) {
+                            // Create
+                            var $item = $('<a class="list-group-item">');
+
+                            // Bind
+                            $item.attr('href', item.url)
+                                .text(item.text);
+
+                            // Append
+                            $group_list.append($item);
+                        })
 
                         // Append
-                        $group_list.append($item);
-                    })
-
-                    // Append
-                    $group.append($group_title);
-                    $group.append($group_list);
-                    $results.append($group);
+                        $group.append($group_title);
+                        $group.append($group_list);
+                        $results.append($group);
+                    });
                 });
-            });
-        }, 300))
-    })
-});
+            }, 300))
+        })
+    });
+})(jQuery);
