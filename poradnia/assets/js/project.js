@@ -59,7 +59,6 @@
         function loadInitalData(inputs, saveKey) {
             try {
                 var formData = JSON.parse(localStorage.getItem(saveKey));
-                console.log("Load", saveKey, formData);
                 if (formData) {
                     formData.forEach(function (inputData) {
                         var input = findByName(inputs, inputData.name);
@@ -83,7 +82,6 @@
                 input.addEventListener("input", function () {
                     var formData = serializeForm(inputs);
                     localStorage.setItem(saveKey, JSON.stringify(formData));
-                    console.log("Save", saveKey, formData);
                 });
             });
         }
@@ -93,7 +91,6 @@
         forms.forEach(function (element) {
             var saveKey = "form-" + element.getAttribute("data-form-save");
             var inputs = Array.from(element.querySelectorAll('input:not([type="hidden"]), textarea'));
-            console.log(inputs);
             loadInitalData(inputs, saveKey);
             setupListeners(inputs, saveKey);
         });

@@ -14,7 +14,6 @@
                     new_el.click(function (event) {
                         event.preventDefault();
                         el.slideToggle();
-                        console.log(this.innerHTML);
                         this.innerHTML = this.innerHTML == show ? hide : show;
                     });
                     el.before(new_el);
