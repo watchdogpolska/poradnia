@@ -9,13 +9,15 @@
     {{ block.super }}
     {{ form.media.js }}
     <script type="text/javascript">
-        $(function () {
-            $('form tbody tr').formset({
-                'deleteText': '{% trans "remove"%}',
-                'addText': '{% trans "add another"%}',
-                prefix: 'attachment_set'
-            });
-        })
+        ;(function($) {
+            $(function () {
+                $('form tbody tr').formset({
+                    'deleteText': '{% trans "remove"%}',
+                    'addText': '{% trans "add another"%}',
+                    prefix: 'attachment_set'
+                });
+            })
+        })(jQuery);
     </script>
 {% endblock %}
 
