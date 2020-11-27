@@ -12,6 +12,10 @@ clean:
 build:
 	docker-compose build web
 
+regenerate_frontend:
+	docker-compose run web python manage.py collectstatic -c --noinput
+	docker-compose up gulp
+
 test:
 	docker-compose run web python manage.py test --keepdb --verbosity=2 ${TEST}
 
