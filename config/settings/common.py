@@ -52,6 +52,8 @@ THIRD_PARTY_APPS = (
     "github_revision",
     "mptt",
     "teryt_tree",
+    'antispam',
+    'antispam.honeypot',
 )
 
 # Apps specific for this project go here.
