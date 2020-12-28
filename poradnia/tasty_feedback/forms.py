@@ -3,6 +3,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
 from django.forms import ModelForm, HiddenInput
 from django.utils.translation import ugettext as _
+from antispam.honeypot.forms import HoneypotField
 
 from .models import Feedback
 
@@ -10,6 +11,8 @@ from django.urls import reverse
 
 
 class FeedbackForm(UserKwargModelFormMixin, ModelForm):
+    spam = HoneypotField()
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper = getattr(self, "helper", FormHelper())
