@@ -9,6 +9,7 @@ from .models import Feedback
 
 from django.urls import reverse
 
+
 class FeedbackForm(UserKwargModelFormMixin, ModelForm):
     spam = HoneypotField()
 
