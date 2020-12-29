@@ -1,12 +1,13 @@
 import factory
 import factory.fuzzy
 from factory.django import ImageField
+from factory.django import DjangoModelFactory
 
 from poradnia.cases.factories import CaseFactory
 from poradnia.users.factories import UserFactory
 
 
-class LetterFactory(factory.django.DjangoModelFactory):
+class LetterFactory(DjangoModelFactory):
     name = factory.fuzzy.FuzzyText()
     text = factory.fuzzy.FuzzyText()
     signature = factory.fuzzy.FuzzyText()
@@ -19,7 +20,7 @@ class LetterFactory(factory.django.DjangoModelFactory):
         model = "letters.Letter"
 
 
-class AttachmentFactory(factory.django.DjangoModelFactory):
+class AttachmentFactory(DjangoModelFactory):
     letter = factory.SubFactory(LetterFactory)
     attachment = ImageField()
 

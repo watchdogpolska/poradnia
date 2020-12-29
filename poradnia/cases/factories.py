@@ -2,12 +2,13 @@ from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
 import factory
 import factory.fuzzy
+from factory.django import DjangoModelFactory
 
 from poradnia.cases.models import Case, PermissionGroup, CaseUserObjectPermission
 from poradnia.users.factories import UserFactory
 
 
-class CaseFactory(factory.django.DjangoModelFactory):
+class CaseFactory(DjangoModelFactory):
     name = factory.fuzzy.FuzzyText()
     client = factory.SubFactory(UserFactory)
     created_by = factory.LazyAttribute(lambda obj: obj.client)
