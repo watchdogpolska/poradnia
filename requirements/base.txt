@@ -31,7 +31,7 @@ lxml==4.6.2
 cssselect==1.1.0
 # Your custom requirements go here
 django-guardian==2.3.0
-django-mailbox==4.8.1
+django-mailbox==4.8.2
 talon==1.4.4
 django-filter==2.3.0
 django-autocomplete-light==3.5.0
