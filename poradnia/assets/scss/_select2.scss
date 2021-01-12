@@ -1,0 +1,8 @@
+.select2-selection--multiple {
+    // Enforce auto height on multiselect widgets.
+    // It should grow when the user selects multiple items.
+    height: auto;
+
+    // Padding would make the field larger than its neighbours.
+    padding: 0;
+}

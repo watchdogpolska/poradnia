@@ -6771,6 +6771,10 @@ button.close {
 .pika-time {
   margin: 7px auto 7px; }
 
+.select2-selection--multiple {
+  height: auto;
+  padding: 0; }
+
 .select2-container {
   min-width: 20em; }
 
