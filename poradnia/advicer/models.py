@@ -5,7 +5,6 @@ from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
-from functools import reduce
 
 from poradnia.cases.models import Case
 from poradnia.teryt.models import JST

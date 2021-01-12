@@ -10,10 +10,6 @@ from poradnia.users.filters import UserChoiceFilter
 
 from .models import Advice
 
-from teryt_tree.models import JednostkaAdministracyjna
-from django_filters.filters import ModelChoiceFilter, ModelMultipleChoiceFilter
-from django.utils.translation import ugettext as _
-
 
 class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
     subject = django_filters.CharFilter(label=_("Subject"), lookup_expr="icontains")
