@@ -4,7 +4,7 @@ from crispy_forms.layout import Div, Fieldset, Layout, Submit
 from dal import autocomplete
 from django.utils.translation import ugettext_lazy as _
 import django_filters
-from teryt_tree.dal_ext.filters import AreaFilter
+from teryt_tree.dal_ext.filters import AreaMultipleFilter
 
 from poradnia.users.filters import UserChoiceFilter
 
@@ -16,9 +16,9 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
     advicer = UserChoiceFilter(label=_("Advicer"))
     created_by = UserChoiceFilter(label=_("Created by"))
     created_on = django_filters.DateRangeFilter(label=_("Created on"))
-    community = AreaFilter(
+    community = AreaMultipleFilter(
         label=_("Community"),
-        widget=autocomplete.ModelSelect2(url="teryt:community-autocomplete"),
+        widget=autocomplete.ModelSelect2Multiple(url="teryt:community-autocomplete"),
     )
 
     class Meta:
