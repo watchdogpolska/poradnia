@@ -57,7 +57,7 @@ const createAdministrativeDivisionUnit = (cy) => (unit) => {
     buildInsertQuery("teryt_tree_jednostkaadministracyjna", {
       // Id has a length limit.
       // If substrings are not unique, DB will reject a transaction.
-      id: withExtraQuotes(name.slice(0, 7)),
+      id: withExtraQuotes(name.slice(-7)),
       name: withExtraQuotes(name),
       slug: withExtraQuotes(name),
       level,
