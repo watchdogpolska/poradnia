@@ -4,6 +4,8 @@ const {
   createCourt,
   createAdministrativeDivisionCategory,
   createAdministrativeDivisionUnit,
+  createAdviceArea,
+  createAdviceIssue,
 } = require("../testing/management");
 const {
   submitAdviceForm,
@@ -44,6 +46,18 @@ describe.only("advices", () => {
       administrativeDivisionCategory
     );
 
+    // Advice metadata.
+    const adviceAreas = [
+      "adviceAreaA",
+      "adviceAreaB",
+      "adviceAreaC",
+    ].map((name) => ({ name }));
+    const adviceIssues = [
+      "adviceIssueA",
+      "adviceIssueB",
+      "adviceIssueC",
+    ].map((name) => ({ name }));
+
     const user = User.fromId("testUser");
     register(cy)(user);
 
@@ -52,6 +66,12 @@ describe.only("advices", () => {
     createAdministrativeDivisionCategory(cy)(administrativeDivisionCategory);
     administrativeDivisionUnits.forEach((adminUnit) => {
       createAdministrativeDivisionUnit(cy)(adminUnit);
+    });
+    adviceAreas.forEach((adviceArea) => {
+      createAdviceArea(cy)(adviceArea);
+    });
+    adviceIssues.forEach((adviceIssue) => {
+      createAdviceIssue(cy)(adviceIssue);
     });
 
     // Create a few cases.
@@ -73,6 +93,8 @@ describe.only("advices", () => {
         datetime,
         solved: 1,
         administrativeDivision: administrativeDivisionUnits[0].name,
+        adviceArea: adviceAreas[0],
+        adviceIssue: adviceIssues[0],
         adviceAuthor: user,
         ...Advice.fromId("adviceA"),
       },
@@ -82,6 +104,8 @@ describe.only("advices", () => {
         datetime,
         solved: 1,
         administrativeDivision: administrativeDivisionUnits[1].name,
+        adviceArea: adviceAreas[1],
+        adviceIssue: adviceIssues[1],
         adviceAuthor: user,
         ...Advice.fromId("adviceB"),
       },
@@ -91,6 +115,8 @@ describe.only("advices", () => {
         datetime,
         solved: 0,
         administrativeDivision: administrativeDivisionUnits[2].name,
+        adviceArea: adviceAreas[2],
+        adviceIssue: adviceIssues[2],
         adviceAuthor: user,
         ...Advice.fromId("adviceC"),
       },
@@ -160,5 +186,16 @@ describe.only("advices", () => {
         });
       });
     validateContainsOnly([advices[0], advices[1]]);
+
+    // Another combination - multiselect by adviceArea and adviceIssue.
+    cy.get("form")
+      .filter(':has(input[value="Filtruj"])')
+      .within(($form) => {
+        submitAdviceFilterForm(cy)($form, {
+          adviceAreas: [adviceAreas[0], adviceAreas[1]],
+          adviceIssues: [adviceIssues[1], adviceIssues[2]],
+        });
+      });
+    validateContainsOnly([advices[1]]);
   });
 });

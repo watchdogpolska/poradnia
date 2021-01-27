@@ -75,8 +75,29 @@ const submitCourtCaseForm = (cy) => (form, { court, signature }) => {
 
 const submitAdviceForm = (cy) => (
   form,
-  { subject, comment, datetime, solved, administrativeDivision, adviceAuthor }
+  {
+    subject,
+    comment,
+    datetime,
+    solved,
+    administrativeDivision,
+    adviceAuthor,
+    adviceIssue,
+    adviceArea,
+  }
 ) => {
+  if (adviceIssue) {
+    cy.contains("div", "Zakresy tematyczne").within(($div) => {
+      cy.get("select").selectContaining(adviceIssue.name);
+    });
+  }
+
+  if (adviceArea) {
+    cy.contains("div", "Problemy z zakresu prawa").within(($div) => {
+      cy.get("select").selectContaining(adviceArea.name);
+    });
+  }
+
   cy.contains("div", "Czy pomogliśmy").within(($div) => {
     cy.get("select").select(solved ? "Tak" : "Nie");
   });
@@ -116,7 +137,14 @@ const submitAdviceForm = (cy) => (
 // filter) for any non-boolean value.
 const submitAdviceFilterForm = (cy) => (
   form,
-  { solved, administrativeDivisions, subject, adviceAuthor }
+  {
+    solved,
+    administrativeDivisions,
+    subject,
+    adviceAuthor,
+    adviceIssues,
+    adviceAreas,
+  }
 ) => {
   // If not true/false, set to a noop filter.
   cy.contains("div", "Czy pomogliśmy").within(($div) => {
@@ -167,7 +195,32 @@ const submitAdviceFilterForm = (cy) => (
     }
   });
 
+  // If falsy, unselect all.
+  cy.contains("div", "Problemy z zakresu prawa").within(($div) => {
+    const selectElement = cy.get("select");
+    if (adviceAreas) {
+      selectElement.select(adviceAreas.map(({ name }) => name));
+    } else {
+      clearSelect(selectElement);
+    }
+  });
+
+  // If falsy, unselect all.
+  cy.contains("div", "Zakresy tematyczne").within(($div) => {
+    const selectElement = cy.get("select");
+    if (adviceIssues) {
+      selectElement.select(adviceIssues.map(({ name }) => name));
+    } else {
+      clearSelect(selectElement);
+    }
+  });
+
   cy.contains("Filtruj").click();
+};
+
+// Credits: https://stackoverflow.com/a/56343368/7742560
+const clearSelect = (selectElement) => {
+  selectElement.invoke("val", "");
 };
 
 module.exports = {

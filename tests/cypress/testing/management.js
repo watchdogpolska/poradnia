@@ -76,9 +76,31 @@ const createAdministrativeDivisionUnit = (cy) => (unit) => {
   );
 };
 
+const createAdviceArea = (cy) => (adviceArea) => {
+  const { name } = adviceArea;
+  cy.task(
+    "db:query",
+    buildInsertQuery("advicer_area", {
+      name: withExtraQuotes(name),
+    })
+  );
+};
+
+const createAdviceIssue = (cy) => (adviceIssue) => {
+  const { name } = adviceIssue;
+  cy.task(
+    "db:query",
+    buildInsertQuery("advicer_issue", {
+      name: withExtraQuotes(name),
+    })
+  );
+};
+
 module.exports = {
   addSuperUserPrivileges,
   createCourt,
   createAdministrativeDivisionCategory,
   createAdministrativeDivisionUnit,
+  createAdviceArea,
+  createAdviceIssue,
 };
