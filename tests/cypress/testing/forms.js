@@ -116,7 +116,7 @@ const submitAdviceForm = (cy) => (
 // filter) for any non-boolean value.
 const submitAdviceFilterForm = (cy) => (
   form,
-  { solved, administrativeDivision, subject, adviceAuthor }
+  { solved, administrativeDivisions, subject, adviceAuthor }
 ) => {
   // If not true/false, set to a noop filter.
   cy.contains("div", "Czy pomogliśmy").within(($div) => {
@@ -127,17 +127,25 @@ const submitAdviceFilterForm = (cy) => (
 
   // If falsy, clear all input.
   cy.contains("div", "Gmina").within(($div) => {
-    // Autocomplete form.
-    // See other autocomplete forms for details.
-    cy.get(".selection").click();
-    if (administrativeDivision) {
-      cy.focused().type(administrativeDivision.name).wait(500).type("{enter}");
+    // Multi-select autocomplete form.
+    // See other autocomplete forms for more info.
+    if (administrativeDivisions) {
+      for (const administrativeDivision of administrativeDivisions) {
+        // Re-select the field on every iteration.
+        // Less fragile than depending on current state.
+        cy.get(".selection")
+          .click()
+          .focused()
+          .type(administrativeDivision.name)
+          .wait(500)
+          .type("{enter}");
+      }
     } else {
       // NOTE: this is a multiselect field.
       // `clear` seems to clean up all selections, but I have a feeling
       // that this approach may be a bit fragile.
       // Revisit if causes problems.
-      cy.focused().clear().type("{esc}");
+      cy.get(".selection").click().focused().clear().type("{esc}");
     }
   });
 

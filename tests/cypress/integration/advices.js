@@ -152,10 +152,13 @@ describe.only("advices", () => {
       .filter(':has(input[value="Filtruj"])')
       .within(($form) => {
         submitAdviceFilterForm(cy)($form, {
-          administrativeDivision: administrativeDivisionUnits[0],
+          administrativeDivisions: [
+            administrativeDivisionUnits[0],
+            administrativeDivisionUnits[1],
+          ],
           subject: "advice", // Non null, but matches all advices.
         });
       });
-    validateContainsOnly([advices[0]]);
+    validateContainsOnly([advices[0], advices[1]]);
   });
 });
