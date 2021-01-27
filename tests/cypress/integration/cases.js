@@ -16,6 +16,7 @@ const Case = require("../testing/case");
 const Letter = require("../testing/letter");
 const User = require("../testing/user");
 const Advice = require("../testing/advice");
+const AdministrativeDivisionUnit = require("../testing/administrative-division-unit");
 
 describe("cases", () => {
   beforeEach(() => {
@@ -47,11 +48,12 @@ describe("cases", () => {
       name: "admin-category",
       level: 3,
     };
-    const administrativeDivisionUnit = {
-      name: "admin-division",
-      level: 3,
-      category: administrativeDivisionCategory.id,
-    };
+    const [
+      administrativeDivisionUnit,
+    ] = AdministrativeDivisionUnit.batchFromIds(
+      ["admin-division"],
+      administrativeDivisionCategory
+    );
     const advice = {
       datetime,
       solved: 1,
@@ -195,10 +197,13 @@ describe("cases", () => {
       // After clicking, the input field should be focused.
       // Type the user's last name.
       // There should be a suggestion with the user's full name. Pressing Enter should select it.
+      //
+      // Filtering is not immediate, hence `wait`.
+      //
       // NOTE: it may be tempting to make the test case click on a suggestion, instead of using Enter, but the widget
       // attaches the element outside of the selected div. It is possible to do it the other way around, but this
       // solution is simpler.
-      cy.focused().type(user.lastName).type("{enter}");
+      cy.focused().type(user.lastName).wait(500).type("{enter}");
     });
 
     cy.contains("Filtruj").click();

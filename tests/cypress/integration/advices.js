@@ -7,6 +7,7 @@ const {
 } = require("../testing/management");
 const {
   submitAdviceForm,
+  submitAdviceFilterForm,
   submitCaseForm,
   submitCourtCaseForm,
   submitLetterForm,
@@ -16,6 +17,7 @@ const Case = require("../testing/case");
 const Letter = require("../testing/letter");
 const User = require("../testing/user");
 const Advice = require("../testing/advice");
+const AdministrativeDivisionUnit = require("../testing/administrative-division-unit");
 
 describe.only("advices", () => {
   beforeEach(() => {
@@ -37,15 +39,10 @@ describe.only("advices", () => {
       name: "admin-category",
       level: 3,
     };
-    const administrativeDivisionUnits = [
-      "adminDivisionA",
-      "adminDivisionB",
-      "adminDivisionC",
-    ].map((name) => ({
-      name,
-      level: 3,
-      category: administrativeDivisionCategory.id,
-    }));
+    const administrativeDivisionUnits = AdministrativeDivisionUnit.batchFromIds(
+      ["adminDivisionA", "adminDivisionB", "adminDivisionC"],
+      administrativeDivisionCategory
+    );
 
     const user = User.fromId("testUser");
     register(cy)(user);
@@ -70,8 +67,8 @@ describe.only("advices", () => {
     }
 
     // Create a few advices.
-    const advices = {
-      A: {
+    const advices = [
+      {
         case: cases[0],
         datetime,
         solved: 1,
@@ -80,7 +77,7 @@ describe.only("advices", () => {
         ...Advice.fromId("adviceA"),
       },
 
-      B: {
+      {
         case: cases[1],
         datetime,
         solved: 1,
@@ -89,7 +86,7 @@ describe.only("advices", () => {
         ...Advice.fromId("adviceB"),
       },
 
-      C: {
+      {
         case: cases[2],
         datetime,
         solved: 0,
@@ -97,10 +94,10 @@ describe.only("advices", () => {
         adviceAuthor: user,
         ...Advice.fromId("adviceC"),
       },
-    };
+    ];
 
     // For each advice, find its related case by title and fill an advice form.
-    for (const advice of Object.values(advices)) {
+    for (const advice of advices) {
       cy.contains("Wyszukaj").click();
       cy.get('input[type="search"]').clear().type(advice.case.title);
       cy.contains("a", advice.case.title).click();
@@ -119,7 +116,7 @@ describe.only("advices", () => {
     // For each expected advice, validate that its subject is visible.
     // For all remaining advices - validate that its subject is not visible.
     const validateContainsOnly = (expectedAdvices) => {
-      const notExpectedAdvices = Object.values(advices).filter(
+      const notExpectedAdvices = advices.filter(
         (advice) => !expectedAdvices.includes(advice)
       );
       expectedAdvices.forEach((advice) => cy.contains(advice.subject));
@@ -129,10 +126,36 @@ describe.only("advices", () => {
     };
 
     // Initially, all advices should be visible.
-    validateContainsOnly([advices["A"], advices["B"], advices["C"]]);
+    validateContainsOnly(advices);
 
-    // Pressing the filter button with default values.
-    cy.contains("Filtruj").click();
-    validateContainsOnly([advices["A"], advices["B"], advices["C"]]);
+    // Filter with default values.
+    // This step tests the form filling function, to some extent.
+    cy.get("form")
+      .filter(':has(input[value="Filtruj"])')
+      .within(($form) => {
+        submitAdviceFilterForm(cy)($form, {});
+      });
+    validateContainsOnly(advices);
+
+    // Filtering by whether a case has been marked as solved.
+    // The simplest filter there is.
+    cy.get("form")
+      .filter(':has(input[value="Filtruj"])')
+      .within(($form) => {
+        submitAdviceFilterForm(cy)($form, { solved: true });
+      });
+    validateContainsOnly([advices[0], advices[1]]);
+
+    // Disable the previous filter and set new fields.
+    // Test a combination of multiple filters.
+    cy.get("form")
+      .filter(':has(input[value="Filtruj"])')
+      .within(($form) => {
+        submitAdviceFilterForm(cy)($form, {
+          administrativeDivision: administrativeDivisionUnits[0],
+          subject: "advice", // Non null, but matches all advices.
+        });
+      });
+    validateContainsOnly([advices[0]]);
   });
 });

@@ -83,9 +83,10 @@ const submitAdviceForm = (cy) => (
 
   cy.contains("div", "Jednostka podziału").within(($div) => {
     // Autocomplete form.
-    // See other autocomplete forms for details (todo: do funkcji?)
+    // There may be a short delay between typing the text and the widget
+    // filtering its options, hence `wait`.
     cy.get(".selection").click();
-    cy.focused().type(administrativeDivision).type("{enter}");
+    cy.focused().type(administrativeDivision).wait(500).type("{enter}");
   });
 
   cy.contains("div", "Przedmiot").within(($div) => {
@@ -109,6 +110,58 @@ const submitAdviceForm = (cy) => (
   cy.contains("Zapisz").click();
 };
 
+// Fill the filters.
+// Where applicable, undefined / invalid values will fall back to default
+// values / empty filters, e.g. `solved` will be set to "Nieznane" (null
+// filter) for any non-boolean value.
+const submitAdviceFilterForm = (cy) => (
+  form,
+  { solved, administrativeDivision, subject, adviceAuthor }
+) => {
+  // If not true/false, set to a noop filter.
+  cy.contains("div", "Czy pomogliśmy").within(($div) => {
+    cy.get("select").select(
+      solved === true ? "Tak" : solved === false ? "Nie" : "Nieznane"
+    );
+  });
+
+  // If falsy, clear all input.
+  cy.contains("div", "Gmina").within(($div) => {
+    // Autocomplete form.
+    // See other autocomplete forms for details.
+    cy.get(".selection").click();
+    if (administrativeDivision) {
+      cy.focused().type(administrativeDivision.name).wait(500).type("{enter}");
+    } else {
+      // NOTE: this is a multiselect field.
+      // `clear` seems to clean up all selections, but I have a feeling
+      // that this approach may be a bit fragile.
+      // Revisit if causes problems.
+      cy.focused().clear().type("{esc}");
+    }
+  });
+
+  // If falsy, fill with an empty string.
+  cy.contains("div", "Przedmiot").within(($div) => {
+    const clearInput = cy.get('input[type="text"]').clear();
+    if (subject) {
+      clearInput.type(subject);
+    }
+  });
+
+  // If falsy, clear input.
+  cy.contains("div", "Radzący").within(($div) => {
+    cy.get(".selection").click();
+    if (adviceAuthor) {
+      cy.focused().type(adviceAuthor.firstName).wait(500).type("{enter}");
+    } else {
+      cy.focused().clear().type("{esc}");
+    }
+  });
+
+  cy.contains("Filtruj").click();
+};
+
 module.exports = {
   submitCaseForm,
   submitLetterForm,
@@ -116,4 +169,5 @@ module.exports = {
   submitEventForm,
   submitCourtCaseForm,
   submitAdviceForm,
+  submitAdviceFilterForm,
 };
