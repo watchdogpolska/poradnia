@@ -88,13 +88,16 @@ const submitAdviceForm = (cy) => (
 ) => {
   if (adviceIssue) {
     cy.contains("div", "Zakresy tematyczne").within(($div) => {
-      cy.get("select").selectContaining(adviceIssue.name);
+      selectAutocompleteOptionContaining(
+        cy.get(".selection"),
+        adviceIssue.name
+      );
     });
   }
 
   if (adviceArea) {
     cy.contains("div", "Problemy z zakresu prawa").within(($div) => {
-      cy.get("select").selectContaining(adviceArea.name);
+      selectAutocompleteOptionContaining(cy.get(".selection"), adviceArea.name);
     });
   }
 
@@ -103,11 +106,10 @@ const submitAdviceForm = (cy) => (
   });
 
   cy.contains("div", "Jednostka podziału").within(($div) => {
-    // Autocomplete form.
-    // There may be a short delay between typing the text and the widget
-    // filtering its options, hence `wait`.
-    cy.get(".selection").click();
-    cy.focused().type(administrativeDivision).wait(500).type("{enter}");
+    selectAutocompleteOptionContaining(
+      cy.get(".selection"),
+      administrativeDivision
+    );
   });
 
   cy.contains("div", "Przedmiot").within(($div) => {
@@ -161,19 +163,13 @@ const submitAdviceFilterForm = (cy) => (
       for (const administrativeDivision of administrativeDivisions) {
         // Re-select the field on every iteration.
         // Less fragile than depending on current state.
-        cy.get(".selection")
-          .click()
-          .focused()
-          .type(administrativeDivision.name)
-          .wait(500)
-          .type("{enter}");
+        selectAutocompleteOptionContaining(
+          cy.get(".selection"),
+          administrativeDivision.name
+        );
       }
     } else {
-      // NOTE: this is a multiselect field.
-      // `clear` seems to clean up all selections, but I have a feeling
-      // that this approach may be a bit fragile.
-      // Revisit if causes problems.
-      cy.get(".selection").click().focused().clear().type("{esc}");
+      clearAutocompleteField(cy.get(".selection"));
     }
   });
 
@@ -187,31 +183,39 @@ const submitAdviceFilterForm = (cy) => (
 
   // If falsy, clear input.
   cy.contains("div", "Radzący").within(($div) => {
-    cy.get(".selection").click();
+    const selectionEl = cy.get(".selection");
     if (adviceAuthor) {
-      cy.focused().type(adviceAuthor.firstName).wait(500).type("{enter}");
+      selectAutocompleteOptionContaining(selectionEl, adviceAuthor.firstName);
     } else {
-      cy.focused().clear().type("{esc}");
+      clearAutocompleteField(selectionEl);
     }
   });
 
   // If falsy, unselect all.
   cy.contains("div", "Problemy z zakresu prawa").within(($div) => {
-    const selectElement = cy.get("select");
     if (adviceAreas) {
-      selectElement.select(adviceAreas.map(({ name }) => name));
+      for (const adviceArea of adviceAreas) {
+        selectAutocompleteOptionContaining(
+          cy.get(".selection"),
+          adviceArea.name
+        );
+      }
     } else {
-      clearSelect(selectElement);
+      clearAutocompleteField(cy.get(".selection"));
     }
   });
 
   // If falsy, unselect all.
   cy.contains("div", "Zakresy tematyczne").within(($div) => {
-    const selectElement = cy.get("select");
     if (adviceIssues) {
-      selectElement.select(adviceIssues.map(({ name }) => name));
+      for (const adviceIssue of adviceIssues) {
+        selectAutocompleteOptionContaining(
+          cy.get(".selection"),
+          adviceIssue.name
+        );
+      }
     } else {
-      clearSelect(selectElement);
+      clearAutocompleteField(cy.get(".selection"));
     }
   });
 
@@ -221,6 +225,22 @@ const submitAdviceFilterForm = (cy) => (
 // Credits: https://stackoverflow.com/a/56343368/7742560
 const clearSelect = (selectElement) => {
   selectElement.invoke("val", "");
+};
+
+// Expected to be invoked inside a div containing one autocomplete field.
+// Waits a bit before pressing enter to give the async operation some time
+// to complete.
+// If flaky, consider increasing the timeout.
+const selectAutocompleteOptionContaining = (selectionElement, text) => {
+  selectionElement.click().focused().type(text).wait(1000).type("{enter}");
+};
+
+// Works with multiselect fields.
+// `clear` seems to clean up all selections, but I have a feeling
+// that this approach may be a bit fragile.
+// Revisit if causes problems.
+const clearAutocompleteField = (selectionElement) => {
+  selectionElement.click().focused().clear().wait(500).type("{esc}");
 };
 
 module.exports = {
