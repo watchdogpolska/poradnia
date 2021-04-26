@@ -1,6 +1,7 @@
 import datetime
 
 import factory.fuzzy
+from factory.django import DjangoModelFactory
 from django.utils.timezone import now
 
 from poradnia.cases.factories import CaseFactory
@@ -10,7 +11,7 @@ from poradnia.judgements.registry import get_parser_keys
 from poradnia.users.factories import UserFactory
 
 
-class CourtFactory(factory.django.DjangoModelFactory):
+class CourtFactory(DjangoModelFactory):
     name = factory.fuzzy.FuzzyText()
     parser_key = factory.Iterator(get_parser_keys())
 
@@ -18,7 +19,7 @@ class CourtFactory(factory.django.DjangoModelFactory):
         model = "judgements.Court"
 
 
-class CourtCaseFactory(factory.django.DjangoModelFactory):
+class CourtCaseFactory(DjangoModelFactory):
     court = factory.SubFactory(CourtFactory)
     case = factory.SubFactory(CaseFactory)
     signature = factory.Sequence("IV/Waw {}/2015".format)
@@ -28,7 +29,7 @@ class CourtCaseFactory(factory.django.DjangoModelFactory):
         model = "judgements.CourtCase"
 
 
-class CourtSessionFactory(factory.django.DjangoModelFactory):
+class CourtSessionFactory(DjangoModelFactory):
     courtcase = factory.SubFactory(CourtCaseFactory)
     event = factory.SubFactory(EventFactory)
     parser_key = factory.Iterator(get_parser_keys())

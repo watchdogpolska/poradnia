@@ -1,6 +1,7 @@
 import string
 
 import factory.fuzzy
+from factory.django import DjangoModelFactory
 
 
 polish_letters = string.ascii_letters
@@ -12,7 +13,7 @@ class FuzzyPolishText(factory.fuzzy.FuzzyText):
         super().__init__(prefix, length, suffix, chars, **kwargs)
 
 
-class UserFactory(factory.django.DjangoModelFactory):
+class UserFactory(DjangoModelFactory):
     username = factory.Sequence(lambda n: "user%d" % n)
     first_name = FuzzyPolishText()
     last_name = FuzzyPolishText()
@@ -30,7 +31,7 @@ class StaffFactory(UserFactory):
     is_staff = True
 
 
-class ProfileFactory(factory.django.DjangoModelFactory):
+class ProfileFactory(DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
     description = factory.fuzzy.FuzzyText()
     www = factory.fuzzy.FuzzyText()
