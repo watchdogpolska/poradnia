@@ -1,6 +1,7 @@
 import datetime
 
 from atom.mixins import AdminTestCaseMixin
+from django.test import RequestFactory
 from django.urls import reverse, reverse_lazy
 from guardian.shortcuts import assign_perm
 from test_plus.test import TestCase
@@ -8,7 +9,7 @@ from test_plus.test import TestCase
 from poradnia.advicer.models import Advice
 from poradnia.users.factories import StaffFactory, UserFactory
 
-from .factories import AdviceFactory, IssueFactory
+from .factories import AdviceFactory, IssueFactory, AreaFactory
 
 from django.urls import reverse
 
@@ -195,3 +196,146 @@ class AdviceAdminTestCase(AdminTestCaseMixin, TestCase):
     user_factory_cls = UserFactory
     factory_cls = AdviceFactory
     model = Advice
+
+
+def autocomplete_ids(autocomplete_response):
+    """
+    Autocomplete response contains more data than just the matching ids.
+    Dig ids from the object.
+
+    Note, that this function drops a lot of information. For each autocomplete
+    endpoint, there should exists a test that validates the whole object and
+    does not utilize this function.
+    """
+    results = autocomplete_response["results"]
+    return [int(result["id"]) for result in results]
+
+
+class IssueAutocompleteViewTestCase(TestCase):
+    url = reverse_lazy("advicer:issue-autocomplete")
+
+    def test_regular_user_cannot_access(self):
+        user = UserFactory()
+        IssueFactory(name="issue-1")
+
+        self.client.force_login(user)
+
+        response = self.client.get(self.url, {"q": "issue"})
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_response_format(self):
+        """
+        Validate that the response contains all data that we want to render in
+        the UI.
+        """
+        user = StaffFactory()
+        issue = IssueFactory(name="issue")
+
+        self.client.force_login(user)
+
+        response = self.client.get(self.url, {"q": "issue"})
+        self.assertEqual(response.status_code, 200)
+
+        results = response.json()["results"]
+        self.assertEqual(len(results), 1)
+
+        result = results[0]
+        self.assertEqual(result["id"], str(issue.id))
+        self.assertEqual(result["text"], issue.name)
+
+    def test_search_results(self):
+        """
+        Validate the endpoint's response to various queries.
+        """
+        user = StaffFactory()
+
+        # Create a few issues to search for.
+        issue_1 = IssueFactory(name="issue-1")
+        issue_2 = IssueFactory(name="issue-2")
+        issue_3 = IssueFactory(name="issue-3")
+
+        self.client.force_login(user)
+
+        # Search for a common fragment. Multiple matches expected.
+        response_common = self.client.get(self.url, {"q": "issue"})
+        self.assertEqual(response_common.status_code, 200)
+        # The order is not validated here.
+        self.assertEqual(
+            set(autocomplete_ids(response_common.json())),
+            {issue_1.id, issue_2.id, issue_3.id},
+        )
+
+        # Search for a unique fragment. Single match expected.
+        response_unique = self.client.get(self.url, {"q": "2"})
+        self.assertEqual(response_unique.status_code, 200)
+        self.assertEqual(autocomplete_ids(response_unique.json()), [issue_2.id])
+
+        # Search for a non-existent fragment. No matches expected.
+        response_nonexistent = self.client.get(self.url, {"q": "some-unknown-id"})
+        self.assertEqual(response_nonexistent.status_code, 200)
+        self.assertEqual(autocomplete_ids(response_nonexistent.json()), [])
+
+
+class AreaAutocompleteViewTestCase(TestCase):
+    url = reverse_lazy("advicer:area-autocomplete")
+
+    def test_regular_user_cannot_access(self):
+        user = UserFactory()
+        AreaFactory(name="area-1")
+
+        self.client.force_login(user)
+
+        response = self.client.get(self.url, {"q": "area"})
+        self.assertNotEqual(response.status_code, 200)
+
+    def test_response_format(self):
+        """
+        Validate that the response contains all data that we want to render in
+        the UI.
+        """
+        user = StaffFactory()
+        area = AreaFactory(name="area")
+
+        self.client.force_login(user)
+
+        response = self.client.get(self.url, {"q": "area"})
+        self.assertEqual(response.status_code, 200)
+
+        results = response.json()["results"]
+        self.assertEqual(len(results), 1)
+
+        result = results[0]
+        self.assertEqual(result["id"], str(area.id))
+        self.assertEqual(result["text"], area.name)
+
+    def test_search_results(self):
+        """
+        Validate the endpoint's response to various queries.
+        """
+        user = StaffFactory()
+
+        # Create a few areas to search for.
+        area_1 = AreaFactory(name="area-1")
+        area_2 = AreaFactory(name="area-2")
+        area_3 = AreaFactory(name="area-3")
+
+        self.client.force_login(user)
+
+        # Search for a common fragment. Multiple matches expected.
+        response_common = self.client.get(self.url, {"q": "area"})
+        self.assertEqual(response_common.status_code, 200)
+        # The order is not validated here.
+        self.assertEqual(
+            set(autocomplete_ids(response_common.json())),
+            {area_1.id, area_2.id, area_3.id},
+        )
+
+        # Search for a unique fragment. Single match expected.
+        response_unique = self.client.get(self.url, {"q": "2"})
+        self.assertEqual(response_unique.status_code, 200)
+        self.assertEqual(autocomplete_ids(response_unique.json()), [area_2.id])
+
+        # Search for a non-existent fragment. No matches expected.
+        response_nonexistent = self.client.get(self.url, {"q": "some-unknown-id"})
+        self.assertEqual(response_nonexistent.status_code, 200)
+        self.assertEqual(autocomplete_ids(response_nonexistent.json()), [])

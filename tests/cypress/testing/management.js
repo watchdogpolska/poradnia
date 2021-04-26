@@ -50,23 +50,48 @@ const createAdministrativeDivisionCategory = (cy) => (category) => {
   );
 };
 
+// We're manually setting fields that are usually handled by django-mptt.
+// This function should be kept as simple as possible, as long as it serves
+// its purpose.
+// For a flat tree, `lft` and `rght` should not overlap. Please use the helper
+// function in `administrativeDivistionUnit` to create a batch of values.
 const createAdministrativeDivisionUnit = (cy) => (unit) => {
-  const { name, level, category } = unit;
+  const { name, level, category, lft, rght } = unit;
   cy.task(
     "db:query",
     buildInsertQuery("teryt_tree_jednostkaadministracyjna", {
       // Id has a length limit.
       // If substrings are not unique, DB will reject a transaction.
-      id: withExtraQuotes(name.slice(0, 7)),
+      id: withExtraQuotes(name.slice(-7)),
       name: withExtraQuotes(name),
       slug: withExtraQuotes(name),
       level,
       category_id: category,
       updated_on: withExtraQuotes("2010-01-01"),
       active: 1,
-      lft: 0,
-      rght: 2,
-      tree_id: 1,
+      lft,
+      rght,
+      tree_id: 0,
+    })
+  );
+};
+
+const createAdviceArea = (cy) => (adviceArea) => {
+  const { name } = adviceArea;
+  cy.task(
+    "db:query",
+    buildInsertQuery("advicer_area", {
+      name: withExtraQuotes(name),
+    })
+  );
+};
+
+const createAdviceIssue = (cy) => (adviceIssue) => {
+  const { name } = adviceIssue;
+  cy.task(
+    "db:query",
+    buildInsertQuery("advicer_issue", {
+      name: withExtraQuotes(name),
     })
   );
 };
@@ -76,4 +101,6 @@ module.exports = {
   createCourt,
   createAdministrativeDivisionCategory,
   createAdministrativeDivisionUnit,
+  createAdviceArea,
+  createAdviceIssue,
 };

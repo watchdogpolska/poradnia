@@ -56,6 +56,8 @@ const clearTables = (tables) => {
 // TODO: consider defining the dependency tree and clearing all tables.
 const clear = () =>
   clearTables([
+    "advicer_advice_area",
+    "advicer_advice_issues",
     "advicer_advice",
     "teryt_tree_jednostkaadministracyjna",
     "teryt_tree_category",

@@ -8,7 +8,33 @@ from teryt_tree.dal_ext.filters import AreaMultipleFilter
 
 from poradnia.users.filters import UserChoiceFilter
 
-from .models import Advice
+from .models import Advice, Area, Issue
+
+
+class AdviceAreaFilter(django_filters.ModelMultipleChoiceFilter):
+    """
+    Filter by specifying a subset of existing `Area`s.
+    """
+
+    def __init__(self, queryset=None, widget=None, *args, **kwargs):
+        queryset = queryset or Area.objects.all()
+        widget = widget or autocomplete.ModelSelect2Multiple(
+            url="advicer:area-autocomplete"
+        )
+        super().__init__(queryset=queryset, widget=widget, *args, **kwargs)
+
+
+class AdviceIssueFilter(django_filters.ModelMultipleChoiceFilter):
+    """
+    Filter by specifying a subset of existing `Issue`s.
+    """
+
+    def __init__(self, queryset=None, widget=None, *args, **kwargs):
+        queryset = queryset or Issue.objects.all()
+        widget = widget or autocomplete.ModelSelect2Multiple(
+            url="advicer:issue-autocomplete"
+        )
+        super().__init__(queryset=queryset, widget=widget, *args, **kwargs)
 
 
 class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
@@ -20,6 +46,8 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
         label=_("Community"),
         widget=autocomplete.ModelSelect2Multiple(url="teryt:community-autocomplete"),
     )
+    issues = AdviceIssueFilter()
+    area = AdviceAreaFilter()
 
     class Meta:
         model = Advice

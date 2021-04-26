@@ -75,17 +75,41 @@ const submitCourtCaseForm = (cy) => (form, { court, signature }) => {
 
 const submitAdviceForm = (cy) => (
   form,
-  { subject, comment, datetime, solved, administrativeDivision, adviceAuthor }
+  {
+    subject,
+    comment,
+    datetime,
+    solved,
+    administrativeDivision,
+    adviceAuthor,
+    adviceIssue,
+    adviceArea,
+  }
 ) => {
+  if (adviceIssue) {
+    cy.contains("div", "Zakresy tematyczne").within(($div) => {
+      selectAutocompleteOptionContaining(
+        cy.get(".selection"),
+        adviceIssue.name
+      );
+    });
+  }
+
+  if (adviceArea) {
+    cy.contains("div", "Problemy z zakresu prawa").within(($div) => {
+      selectAutocompleteOptionContaining(cy.get(".selection"), adviceArea.name);
+    });
+  }
+
   cy.contains("div", "Czy pomogliśmy").within(($div) => {
     cy.get("select").select(solved ? "Tak" : "Nie");
   });
 
   cy.contains("div", "Jednostka podziału").within(($div) => {
-    // Autocomplete form.
-    // See other autocomplete forms for details (todo: do funkcji?)
-    cy.get(".selection").click();
-    cy.focused().type(administrativeDivision).type("{enter}");
+    selectAutocompleteOptionContaining(
+      cy.get(".selection"),
+      administrativeDivision
+    );
   });
 
   cy.contains("div", "Przedmiot").within(($div) => {
@@ -109,6 +133,116 @@ const submitAdviceForm = (cy) => (
   cy.contains("Zapisz").click();
 };
 
+// Fill the filters.
+// Where applicable, undefined / invalid values will fall back to default
+// values / empty filters, e.g. `solved` will be set to "Nieznane" (null
+// filter) for any non-boolean value.
+const submitAdviceFilterForm = (cy) => (
+  form,
+  {
+    solved,
+    administrativeDivisions,
+    subject,
+    adviceAuthor,
+    adviceIssues,
+    adviceAreas,
+  }
+) => {
+  // If not true/false, set to a noop filter.
+  cy.contains("div", "Czy pomogliśmy").within(($div) => {
+    cy.get("select").select(
+      solved === true ? "Tak" : solved === false ? "Nie" : "Nieznane"
+    );
+  });
+
+  // If falsy, clear all input.
+  cy.contains("div", "Gmina").within(($div) => {
+    // Multi-select autocomplete form.
+    // See other autocomplete forms for more info.
+    if (administrativeDivisions) {
+      for (const administrativeDivision of administrativeDivisions) {
+        // Re-select the field on every iteration.
+        // Less fragile than depending on current state.
+        selectAutocompleteOptionContaining(
+          cy.get(".selection"),
+          administrativeDivision.name
+        );
+      }
+    } else {
+      clearAutocompleteField(cy.get(".selection"));
+    }
+  });
+
+  // If falsy, fill with an empty string.
+  cy.contains("div", "Przedmiot").within(($div) => {
+    const clearInput = cy.get('input[type="text"]').clear();
+    if (subject) {
+      clearInput.type(subject);
+    }
+  });
+
+  // If falsy, clear input.
+  cy.contains("div", "Radzący").within(($div) => {
+    const selectionEl = cy.get(".selection");
+    if (adviceAuthor) {
+      selectAutocompleteOptionContaining(selectionEl, adviceAuthor.firstName);
+    } else {
+      clearAutocompleteField(selectionEl);
+    }
+  });
+
+  // If falsy, unselect all.
+  cy.contains("div", "Problemy z zakresu prawa").within(($div) => {
+    if (adviceAreas) {
+      for (const adviceArea of adviceAreas) {
+        selectAutocompleteOptionContaining(
+          cy.get(".selection"),
+          adviceArea.name
+        );
+      }
+    } else {
+      clearAutocompleteField(cy.get(".selection"));
+    }
+  });
+
+  // If falsy, unselect all.
+  cy.contains("div", "Zakresy tematyczne").within(($div) => {
+    if (adviceIssues) {
+      for (const adviceIssue of adviceIssues) {
+        selectAutocompleteOptionContaining(
+          cy.get(".selection"),
+          adviceIssue.name
+        );
+      }
+    } else {
+      clearAutocompleteField(cy.get(".selection"));
+    }
+  });
+
+  cy.contains("Filtruj").click();
+};
+
+// Credits: https://stackoverflow.com/a/56343368/7742560
+const clearSelect = (selectElement) => {
+  selectElement.invoke("val", "");
+};
+
+// Expected to be invoked inside a div containing one autocomplete field.
+// Waits a bit before pressing enter to give the async operation some time
+// to complete.
+// If flaky, consider increasing the timeout.
+const selectAutocompleteOptionContaining = (selectionElement, text) => {
+  selectionElement.click().focused().type(text).wait(1000).type("{enter}");
+};
+
+// Works with multiselect fields.
+// `clear` seems to clean up all selections, but I have a feeling
+// that this approach may be a bit fragile.
+// Revisit if causes problems.
+const clearAutocompleteField = (selectionElement) => {
+  selectionElement.click().focused().clear().wait(500).type("{esc}");
+};
+
 module.exports = {
   submitCaseForm,
   submitLetterForm,
@@ -116,4 +250,5 @@ module.exports = {
   submitEventForm,
   submitCourtCaseForm,
   submitAdviceForm,
+  submitAdviceFilterForm,
 };

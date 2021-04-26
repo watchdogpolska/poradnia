@@ -64,6 +64,10 @@ class AdviceForm(
         widgets = {
             "jst": autocomplete.ModelSelect2(url="teryt:community-autocomplete"),
             "case": autocomplete.ModelSelect2(url="cases:autocomplete"),
+            "issues": autocomplete.ModelSelect2Multiple(
+                url="advicer:issue-autocomplete"
+            ),
+            "area": autocomplete.ModelSelect2Multiple(url="advicer:area-autocomplete"),
         }
 
 
