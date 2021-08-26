@@ -101,13 +101,16 @@ class UserQuerySet(QuerySet):
             active=Count("letter_created_by")
         )
 
+    def by_email(self, email):
+        return self.filter(Q(email=email) | Q(emailaddress__email=email, emailaddress__verified=True))
 
 class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
     def get_by_email_or_create(self, email, notify=True):
         try:
-            user = self.model.objects.get(email=email)  # Support allauth EmailAddress
-        except self.model.DoesNotExist:
-            user = self.register_email(email=email, notify=notify)
+            # TODO: Support allauth EmailAddress
+            user = self.model.objects.by_email(email).order_by("pk")[0]
+        except IndexError:
+            user = self.register_by_email(email=email, notify=notify)
         return user
 
     def email_to_unique_username(self, email, limit=10):
@@ -127,7 +130,7 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
             "This email are completely creepy. Unable to generate username"
         )
 
-    def register_email(self, email, notify=True, **extra_fields):
+    def register_by_email(self, email, notify=True, **extra_fields):
         email = self.normalize_email(email)
         password = self.make_random_password()
         username = self.email_to_unique_username(email)

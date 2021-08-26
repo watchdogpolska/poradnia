@@ -155,16 +155,16 @@ class UserQuerySetTestCase(TestCase):
         self.assertEqual(user_updated.case_assigned_closed, 9)
         self.assertEqual(user_updated.case_assigned_sum, 21)
 
-    def _register_email_count(self, notify, count):
-        u = User.objects.register_email(email="sarah@example.com", notify=notify)
+    def _register_by_email_count(self, notify, count):
+        u = User.objects.register_by_email(email="sarah@example.com", notify=notify)
         self.assertEqual(len(mail.outbox), count)
         self.assertEqual(User.objects.get(email="sarah@example.com"), u)
 
-    def test_register_email_no_notify(self):
-        self._register_email_count(notify=True, count=1)
+    def test_register_by_email_no_notify(self):
+        self._register_by_email_count(notify=True, count=1)
 
-    def test_register_email_notify(self):
-        self._register_email_count(notify=False, count=0)
+    def test_register_by_email_notify(self):
+        self._register_by_email_count(notify=False, count=0)
 
 
 class UserFormTestCase(TestCase):
