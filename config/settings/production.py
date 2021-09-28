@@ -3,6 +3,8 @@
 Production Configurations
 """
 from dealer.auto import auto
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
 
 from .common import *  # noqa
 
@@ -38,12 +40,12 @@ TEMPLATES[0]["OPTIONS"]["loaders"] = (
 # Your production stuff: Below this line define 3rd party libary settings
 # Ustaw wartość twojego DSN
 REVISION_ID = auto.revision
-RAVEN_CONFIG = {
-    "dsn": env.str("RAVEN_DSN", "http://example.com"),
-    "release": REVISION_ID,
-}
 
-INSTALLED_APPS += ("raven.contrib.django.raven_compat",)
+sentry_sdk.init(
+    dsn=env.str("RAVEN_DSN", "http://example.com"),
+    release=REVISION_ID,
+    integrations=[DjangoIntegration()],
+)
 
 CACHES = {"default": env.cache()}
 
