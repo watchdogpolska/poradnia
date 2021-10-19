@@ -30,7 +30,7 @@ pytz==2021.3
 lxml==4.6.3
 cssselect==1.1.0
 # Your custom requirements go here
-django-guardian==2.3.0
+django-guardian==2.4.0
 django-mailbox==4.8.2
 talon==1.4.4
 django-filter==2.4.0
