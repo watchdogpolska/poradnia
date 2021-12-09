@@ -15,7 +15,7 @@ sorl-thumbnail==12.7.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==0.44.0
+django-allauth==0.47.0
 
 # For the persistance stores
 mysqlclient==2.0.3
