@@ -10,7 +10,11 @@ urlpatterns = [
         views.UserDetailView.as_view(),
         name="detail",
     ),
-    url(r"^(?P<username>[\w.@+-]+)/~deassign/$", views.UserDeassignView.as_view(), name="deassign"),
+    url(
+        r"^(?P<username>[\w.@+-]+)/~deassign/$",
+        views.UserDeassignView.as_view(),
+        name="deassign",
+    ),
     url(r"^~aktualizuj/$", views.UserUpdateView.as_view(), name="update"),
     url(r"^~profil/$", views.ProfileUpdateView.as_view(), name="profile"),
     url(

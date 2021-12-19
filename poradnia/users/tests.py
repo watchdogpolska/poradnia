@@ -406,17 +406,16 @@ class UserAdminTestCase(AdminTestCaseMixin, TestCase):
 
 class ObjectMixin:
     def setUp(self):
-        self.user = self.object =  UserFactory(username="john")
+        self.user = self.object = UserFactory(username="john")
 
 
 class UserDeassignViewTestCase(ObjectMixin, TestCase):
-
     def get_url(self):
         return reverse("users:deassign", kwargs={"username": self.object.username})
 
     def login_permitted(self):
         self.client.login(username="john", password="pass")
-        assign_perm('cases.can_assign', self.user)
+        assign_perm("cases.can_assign", self.user)
 
     def test_show_form_no_error(self):
         # Given
@@ -428,18 +427,18 @@ class UserDeassignViewTestCase(ObjectMixin, TestCase):
         # Given
         self.login_permitted()
         case = CaseFactory()
-        assign_perm('cases.can_view', self.user, case)
+        assign_perm("cases.can_view", self.user, case)
         # When
         self.client.post(self.get_url())
         # Then
-        self.assertNotIn('can_view', self.user.get_all_permissions(case))
+        self.assertNotIn("can_view", self.user.get_all_permissions(case))
 
     def test_keep_permission_for_client(self):
         self.login_permitted()
         # Given
         case = CaseFactory()
-        assign_perm('cases.can_view', case.client, case)
+        assign_perm("cases.can_view", case.client, case)
         # When
         self.client.post(self.get_url())
         # Then
-        self.assertIn('can_view', case.client.get_all_permissions(case))
+        self.assertIn("can_view", case.client.get_all_permissions(case))
