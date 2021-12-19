@@ -199,7 +199,14 @@ class Attachment(models.Model):
         return "%s" % (self.filename)
 
     def get_absolute_url(self):
-        return self.attachment.url
+        return reverse(
+            "letters:attachment_download",
+            kwargs={
+                "letter_pk": self.letter_id,
+                "case_pk": self.letter.case_id,
+                "pk": self.pk,
+            },
+        )
 
     def get_full_url(self):
         return "".join(

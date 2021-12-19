@@ -528,6 +528,18 @@ class StreamAttachmentViewTestCase(TestCase):
         return hash_md5.hexdigest()
 
 
+class DownloadAttachmentViewTestCase(TestCase):
+    def setUp(self):
+        self.attachment = AttachmentFactory()
+        self.url = self.attachment.get_absolute_url()
+        self.user = UserFactory(is_staff=True, is_superuser=True)
+        self.client.login(username=self.user.username, password="pass")
+
+    def test_get_file_url(self):
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 302)
+
+
 class ReceiveEmailTestCase(TestCase):
     def setUp(self):
         self.url = reverse("letters:webhook")

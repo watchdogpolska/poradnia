@@ -55,7 +55,6 @@ class AttachmentTestCase(TestCase):
 
     def test_get_full_url(self):
         self.assertTrue(self.attachment.get_full_url().startswith("https://"))
-        self.assertTrue(self.attachment.get_full_url().endswith("example.jpg"))
 
 
 class LastQuerySetTestCase(TestCase):
