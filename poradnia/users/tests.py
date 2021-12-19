@@ -87,6 +87,30 @@ class UserQuerySetTestCase(TestCase):
         )  # 2 staff with self
         self.assertEqual(User.objects.for_user(u3).registered().count(), 4)  # all
 
+    def test_for_user_manager_with_client_for_staff(self):
+        """
+        Client (User) should be visible to the staff who handles his case
+        """
+        client = UserFactory()
+        actor = UserFactory(is_staff=True)
+        case = CaseFactory(client=client)
+
+        self.assertEqual(User.objects.for_user(actor).filter(pk=client.pk).count(), 0)
+        assign_perm("cases.can_view", actor, case)
+        self.assertEqual(User.objects.for_user(actor).filter(pk=client.pk).count(), 1)
+
+    def test_for_user_manager_with_client_for_user(self):
+        """
+        A user must be a staff to see other users, even if they have access other client cases
+        """
+        client = UserFactory()
+        actor = UserFactory()
+        case = CaseFactory(client=client)
+
+        self.assertEqual(User.objects.for_user(actor).filter(pk=client.pk).count(), 0)
+        assign_perm("cases.can_view", actor, case)
+        self.assertEqual(User.objects.for_user(actor).filter(pk=client.pk).count(), 0)
+
     def test_with_case_count(self):
         user = UserFactory()
         CaseFactory.create_batch(size=25, client=user)

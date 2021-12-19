@@ -24,9 +24,12 @@ cup_co = "caseuserobjectpermission__content_object"
 
 class UserQuerySet(QuerySet):
     def for_user(self, user):
-        if not user.has_perm("users.can_view_other"):
-            return self.filter(Q(pk=user.pk) | Q(is_staff=True))
-        return self
+        if user.has_perm("users.can_view_other"):
+            return self
+        if user.is_staff:
+            client_qs = CaseModel.objects.for_user(user).all().values('client')
+            return self.filter(Q(pk=user.pk) | Q(is_staff=True) | Q(pk__in=client_qs))
+        return self.filter(Q(pk=user.pk) | Q(is_staff=True))
 
     def with_case_count(self):
         return self.annotate(case_count=Count("case_client", distinct=True))
