@@ -11,8 +11,6 @@ jobs:
         python: 
           - 3.6
           - 3.7
-        django:
-          - "==2.2.*"
     steps:
     - uses: actions/checkout@v1
     - name: Start database early
@@ -21,7 +19,6 @@ jobs:
       run: make build
       env:
         PYTHON_VERSION: ${{ matrix.python }}
-        DJANGO_VERSION: ${{ matrix.django }}
     - name: Lint
       run: make lint
     - name: Migration check
