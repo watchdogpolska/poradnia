@@ -52,36 +52,6 @@ $block-list-inidicator-color: $block-list-link-color !default;
 	}
 }
 
-.stats{
-	>ul {
-		display: flex;
-		padding: 0;
-		margin: 0;
-		> li{
-			flex: 1;
-			color: white;
-			list-style: none;
-		}
-		&:last-child{
-			border-right: none;
-		}
-	}
-	a{
-		height: 100%;
-		text-align: center;
-		display: block;
-		padding: $block-list-link-padding-vertical $block-list-link-padding-horizontal;
-		transition: .4s background-color;
-		&, &:hover, &:focus{
-			color: white;
-			text-decoration: none;
-		}
-		&:hover{
-			background: $block-list-item-hover-bg;
-
-		}
-	}
-}
 .sidebar{
 	position: fixed;
 	top: $navbar-height;

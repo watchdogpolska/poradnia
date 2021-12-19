@@ -64,7 +64,6 @@ LOCAL_APPS = (
     "poradnia.letters",
     "poradnia.records",
     "poradnia.events",
-    "poradnia.stats",
     "poradnia.advicer",
     "poradnia.feedback_custom",
     "poradnia.tasty_feedback",
