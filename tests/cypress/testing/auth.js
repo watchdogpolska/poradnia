@@ -7,7 +7,7 @@ const register = (cy) => ({
 }) => {
   // Homepage.
   cy.visit("/");
-  cy.contains("Zarejestuj").click();
+  cy.contains("Zarejestruj").click();
 
   // Register.
   cy.get('input[name="first_name"]').type(firstName);
