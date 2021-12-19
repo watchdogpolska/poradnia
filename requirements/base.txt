@@ -40,7 +40,7 @@ https://github.com/mjr27/django-flatpages-tinymce/archive/e58c852784829889676682
 django-atom==0.16.3
 django-tinymce==3.4.0
 django-tinycontent==0.8.0
-icalendar==4.0.7
+icalendar==4.0.9
 html2text==2020.1.16
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.7.1
