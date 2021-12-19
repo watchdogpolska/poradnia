@@ -27,7 +27,7 @@ class UserQuerySet(QuerySet):
         if user.has_perm("users.can_view_other"):
             return self
         if user.is_staff:
-            client_qs = CaseModel.objects.for_user(user).all().values('client')
+            client_qs = CaseModel.objects.for_user(user).all().values("client")
             return self.filter(Q(pk=user.pk) | Q(is_staff=True) | Q(pk__in=client_qs))
         return self.filter(Q(pk=user.pk) | Q(is_staff=True))
 
