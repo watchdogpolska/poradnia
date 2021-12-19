@@ -6,6 +6,8 @@ from django.test import RequestFactory
 from django.utils import timezone
 from guardian.shortcuts import assign_perm, get_perms
 from test_plus.test import TestCase
+from .factories import UserFactory
+from django.urls import reverse
 
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
@@ -400,3 +402,44 @@ class UserAdminTestCase(AdminTestCaseMixin, TestCase):
     user_factory_cls = UserFactory
     factory_cls = UserFactory
     model = User
+
+
+class ObjectMixin:
+    def setUp(self):
+        self.user = self.object =  UserFactory(username="john")
+
+
+class UserDeassignViewTestCase(ObjectMixin, TestCase):
+
+    def get_url(self):
+        return reverse("users:deassign", kwargs={"username": self.object.username})
+
+    def login_permitted(self):
+        self.client.login(username="john", password="pass")
+        assign_perm('cases.can_assign', self.user)
+
+    def test_show_form_no_error(self):
+        # Given
+        self.login_permitted()
+        # When & Then
+        self.get_check_200(self.get_url())
+
+    def test_perform_successfully_for_staff(self):
+        # Given
+        self.login_permitted()
+        case = CaseFactory()
+        assign_perm('cases.can_view', self.user, case)
+        # When
+        self.client.post(self.get_url())
+        # Then
+        self.assertNotIn('can_view', self.user.get_all_permissions(case))
+
+    def test_keep_permission_for_client(self):
+        self.login_permitted()
+        # Given
+        case = CaseFactory()
+        assign_perm('cases.can_view', case.client, case)
+        # When
+        self.client.post(self.get_url())
+        # Then
+        self.assertIn('can_view', case.client.get_all_permissions(case))

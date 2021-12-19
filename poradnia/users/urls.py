@@ -5,7 +5,6 @@ from poradnia.users import views
 urlpatterns = [
     url(r"^$", views.UserListView.as_view(), name="list"),
     url(r"^~przekieruj/$", views.UserRedirectView.as_view(), name="redirect"),
-    url(r"^~deassign/$", views.UserDeassignView.as_view(), name="deassign"),
     url(
         r"^(?P<username>[\w.@+-]+)/$",
         views.UserDetailView.as_view(),
