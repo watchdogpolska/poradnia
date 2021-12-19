@@ -13,10 +13,12 @@
     <div class="row">
         <div class="col-lg-12">
             <h1>{% block header %}{% trans 'User' %}: {{ user.get_nicename }}{% endblock %}</h1>
+            {% block form %}
             <form class="form-horizontal" method="post">
                 {% csrf_token %}
                 {% crispy form %}
             </form>
+            {% endblock %}
         </div>
     </div>
 {% endblock %}

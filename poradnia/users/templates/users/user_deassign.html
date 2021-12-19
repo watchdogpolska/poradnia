@@ -1,0 +1,19 @@
+{% extends 'users/user_form.html' %}
+{% load i18n %}
+{% block breadcrumbs_rows %}
+    <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+    <li class="active">{% trans 'Confirm deassign' %}</li>
+{% endblock %}
+{% block form %}
+<p>{% blocktrans %}The operation will remove all permissions on cases for the user where they is not a client. This is an irreversible operation. Are you sure you want to do this?{% endblocktrans %}</p>
+    <form method="post">
+        <div class="form-actions">
+            {% csrf_token %}
+
+            <button type="submit" class="btn btn-danger">
+                <i class="fa fa-warning"></i>{% blocktrans %}Deassign {{ object }}{% endblocktrans %}
+            </button>
+            <button class="btn" href="{{ object.get_absolute_url }}">{% trans 'Cancel' %}</button>
+        </div>
+    </form>
+{% endblock %}

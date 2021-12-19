@@ -47,6 +47,10 @@
             <i class="fa fa-book"></i>
             {% trans 'Assigned cases' %}
         </a>
+        <a class="btn btn-info" href="{% url 'users:deassign' username=object.username%}">
+            <i class="fa fa-warning"></i>
+            {% trans 'Deassign cases' %}
+        </a>
     {% endif %}
     <!-- End Action buttons -->
 
