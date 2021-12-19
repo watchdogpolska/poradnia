@@ -26,6 +26,10 @@ jobs:
     - uses: satackey/action-docker-layer-caching@v0.0.11
       # Ignore the failure of a step and avoid terminating the job.
       continue-on-error: true
+      with:
+        key: python-${{ matrix.python }}-${{ matrix.django }}-{hash}
+        restore-keys: |
+          python-${{ matrix.python }}-${{ matrix.django }}-
     - name: Start database early
       run: docker-compose up -d db
     - name: Build application
