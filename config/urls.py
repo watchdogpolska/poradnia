@@ -36,6 +36,7 @@ if settings.DEBUG:
 
     urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
 
+
 def handler500(request):
     """500 error handler which includes ``request`` in the context.
 
