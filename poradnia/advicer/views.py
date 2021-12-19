@@ -7,6 +7,7 @@ from braces.views import (
     StaffuserRequiredMixin,
     UserFormKwargsMixin,
 )
+from dal import autocomplete
 from django.shortcuts import get_object_or_404
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DetailView, UpdateView
@@ -14,10 +15,11 @@ from django_filters.views import FilterView
 
 from poradnia.cases.models import Case
 from poradnia.users.utils import PermissionMixin
+from poradnia.utils.mixins import ExprAutocompleteMixin
 
 from .filters import AdviceFilter
 from .forms import AdviceForm, AttachmentForm
-from .models import Advice, Attachment
+from .models import Advice, Attachment, Issue, Area
 
 from django.urls import reverse_lazy
 
@@ -118,3 +120,21 @@ class AdviceDelete(
 class AdviceDetail(StaffuserRequiredMixin, PermissionMixin, VisibleMixin, DetailView):
     model = Advice
     raise_exception = True
+
+
+class IssueAutocomplete(
+    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.Select2QuerySetView
+):
+    model = Issue
+    search_expr = [
+        "name__icontains",
+    ]
+
+
+class AreaAutocomplete(
+    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.Select2QuerySetView
+):
+    model = Area
+    search_expr = [
+        "name__icontains",
+    ]
