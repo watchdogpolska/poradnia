@@ -15,6 +15,23 @@ jobs:
           - "==2.2.*"
     steps:
     - uses: actions/checkout@v1
+    # Pull the latest image to build, and avoid caching pull-only images.
+    # (docker pull is faster than caching in most cases.)
+    - run: |
+        docker-compose  --file docker-compose.yml --file docker-compose.test.yml pull
+        docker pull python:${{matrix.python}}-slim
+    # In this step, this action saves a list of existing images,
+    # the cache is created without them in the post run.
+    # It also restores the cache if it exists.
+    - name: Lint
+      run: make lint
+    - uses: satackey/action-docker-layer-caching@v0.0.11
+      # Ignore the failure of a step and avoid terminating the job.
+      continue-on-error: true
+      with:
+        key: python-${{ matrix.python }}-${{ matrix.django }}-{hash}
+        restore-keys: |
+          python-${{ matrix.python }}-${{ matrix.django }}-
     - name: Start database early
       run: docker-compose up -d db
     - name: Build application
@@ -22,8 +39,6 @@ jobs:
       env:
         PYTHON_VERSION: ${{ matrix.python }}
         DJANGO_VERSION: ${{ matrix.django }}
-    - name: Lint
-      run: make lint
     - name: Migration check
       run: make check
     - name: Show settings
@@ -37,6 +52,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
+    - run: docker-compose pull
+    - uses: satackey/action-docker-layer-caching@v0.0.11
+      continue-on-error: true
     - name: Build application
       run: make build
     - name: Build documentation
