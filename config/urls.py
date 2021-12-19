@@ -3,6 +3,8 @@ from django.urls import include, path
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.views.generic import TemplateView
+from django.http import HttpResponseServerError
+from django.template import loader
 
 admin.autodiscover()
 
@@ -33,3 +35,13 @@ if settings.DEBUG:
     import debug_toolbar
 
     urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
+
+def handler500(request):
+    """500 error handler which includes ``request`` in the context.
+
+    Templates: `500.html`
+    Context: None
+    """
+
+    t = loader.get_template("500.html")
+    return HttpResponseServerError(t.render({"request": request}))
