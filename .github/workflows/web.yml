@@ -17,7 +17,9 @@ jobs:
     - uses: actions/checkout@v1
     # Pull the latest image to build, and avoid caching pull-only images.
     # (docker pull is faster than caching in most cases.)
-    - run: docker-compose pull
+    - run: |
+        docker-compose  --file docker-compose.yml --file docker-compose.test.yml pull
+        docker pull python:${{matrix.python}}-slim
     # In this step, this action saves a list of existing images,
     # the cache is created without them in the post run.
     # It also restores the cache if it exists.
