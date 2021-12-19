@@ -4,7 +4,7 @@ from django.utils import translation
 from django.utils.module_loading import import_string
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
-from monotonic import monotonic
+from time import monotonic
 
 from poradnia.stats.models import Item, Value
 from poradnia.stats.settings import STAT_METRICS
