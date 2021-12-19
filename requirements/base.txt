@@ -38,7 +38,7 @@ django-autocomplete-light==3.5.0
 # version from PR: https://github.com/mjr27/django-flatpages-tinymce/pull/19/files
 https://github.com/mjr27/django-flatpages-tinymce/archive/e58c852784829889676682515011c1d171ca8989.zip
 django-atom==0.16.3
-django-tinymce==3.2.0
+django-tinymce==3.4.0
 django-tinycontent==0.8.0
 icalendar==4.0.7
 html2text==2020.1.16
