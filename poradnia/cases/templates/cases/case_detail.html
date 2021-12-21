@@ -165,6 +165,7 @@
                         </form>
                     </div>
                 {% endfor %}
+                <p>{% blocktrans with email=object.get_email %}The letter can also be sent via <a href="mailto:{{email}}">e-mail address</a>.{% endblocktrans %}</p>
             </div>
         </div>
     {% endif %}
