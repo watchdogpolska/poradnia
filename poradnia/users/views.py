@@ -1,4 +1,5 @@
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin, UserFormKwargsMixin
+from atom.views import ActionMessageMixin, ActionView
 from dal import autocomplete
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.utils.translation import ugettext_lazy as _
@@ -6,7 +7,7 @@ from django.views.generic import DetailView, RedirectView, UpdateView
 from django_filters.views import FilterView
 
 from poradnia.utils.mixins import ExprAutocompleteMixin
-
+from poradnia.cases.models import Case, CaseUserObjectPermission
 from .filters import UserFilter
 from .forms import ProfileForm, UserForm
 from .models import Profile, User
@@ -109,3 +110,37 @@ class UserAutocomplete(
         "last_name__icontains",
         "username__icontains",
     ]
+
+
+class UserDeassignView(
+    LoginRequiredMixin,
+    PermissionRequiredMixin,
+    ActionMessageMixin,
+    ActionView,
+):
+    model = User
+    slug_field = "username"
+    slug_url_kwarg = "username"
+    permission_required = "cases.can_assign"
+    success_message = _("{subject} deassigned")
+    template_name_suffix = "_deassign"
+    raise_exception = True
+
+    def get_success_url(self):
+        return self.object.get_absolute_url()
+
+    def action(self):
+        self.count = int(
+            Case.objects.filter(caseuserobjectpermission__user=self.object)
+            .exclude(client=self.object)
+            .distinct()
+            .count()
+        )
+        CaseUserObjectPermission.objects.filter(user=self.object).exclude(
+            content_object__client=self.object
+        ).delete()
+
+    def get_success_message(self):
+        return _("{object} deassigned from {count} cases").format(
+            object=self.object, count=self.count
+        )
