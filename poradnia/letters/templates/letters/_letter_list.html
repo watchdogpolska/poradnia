@@ -30,7 +30,7 @@
         <ul class="list-group">
             {% for att in object.attachment_set.all %}
             <li class="list-group-item"><i class="{{ att.attachment.name | file2css }}"></i> <a
-                    href="{{att.attachment.url}}">{{att.filename}}</a></li>
+                    href="{{att.get_absolute_url}}">{{att.filename}}</a></li>
             {% endfor%}
         </ul>
         {% endif %}

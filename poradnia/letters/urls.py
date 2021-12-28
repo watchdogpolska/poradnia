@@ -12,6 +12,11 @@ urlpatterns = [
         views.StreamAttachmentView.as_view(),
         name="attachments_zip",
     ),
+    path(
+        "sprawa-<int:case_pk>/list-<int:letter_pk>/zalacznik/<int:pk>",
+        views.DownloadAttachmentView.as_view(),
+        name="attachment_download",
+    ),
     path("<int:pk>/wyslij/", views.send, name="send"),
     path("<int:pk>/edytuj/", views.LetterUpdateView.as_view(), name="edit"),
     path("<int:pk>/", views.send, name="detail"),

@@ -5,4 +5,4 @@ from .cbv import (  # noqa
     ReceiveEmailView,
 )
 from .fbv import add, send, detail  # noqa
-from .attachments import StreamAttachmentView  # noqa
+from .attachments import StreamAttachmentView, DownloadAttachmentView  # noqa

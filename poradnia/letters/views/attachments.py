@@ -2,10 +2,10 @@ from os.path import basename
 
 import zipstream
 from django.http import StreamingHttpResponse
-from django.views.generic import ListView
-
+from django.views.generic import ListView, RedirectView
 from poradnia.letters.models import Attachment
 from poradnia.users.utils import PermissionMixin
+from django.shortcuts import get_object_or_404
 
 
 class StreamAttachmentView(PermissionMixin, ListView):
@@ -13,7 +13,9 @@ class StreamAttachmentView(PermissionMixin, ListView):
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
-        return qs.filter(letter__case=self.kwargs["case_pk"])
+        return qs.filter(letter__case=self.kwargs["case_pk"]).filter(
+            letter=self.kwargs["letter_pk"]
+        )
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data()
@@ -33,3 +35,14 @@ class StreamAttachmentView(PermissionMixin, ListView):
             **self.kwargs
         )
         return response
+
+
+class DownloadAttachmentView(PermissionMixin, RedirectView):
+    model = Attachment
+
+    def get_redirect_url(self, case_pk, letter_pk, pk):
+        object = get_object_or_404(
+            self.model.objects.filter(letter__case=case_pk).filter(letter=letter_pk),
+            pk=pk,
+        )
+        return object.attachment.url
