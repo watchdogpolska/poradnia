@@ -47,6 +47,10 @@
                         <a class="btn btn-primary" href="{{ object.get_close_url }}"><i
                                 class="fa fa-close"></i> {% trans 'Close' %}</a>
                     {% endif %}
+                    {% if 'delete_case' in case_perms and user.is_staff %}
+                        <a class="btn btn-primary" href="{% url 'admin:cases_case_delete' object_id=object.pk %}"><i
+                                class="fa fa-trash"></i> {% trans 'Delete' %}</a>
+                    {% endif %}
                 </div>
                 <h1 class="case-header-title{% if user.is_staff and object.handled %} success{% endif %}">{{ object.name }}
                     <span class="case-header-number">#{{ object.pk }}</span></h1>
@@ -165,6 +169,7 @@
                         </form>
                     </div>
                 {% endfor %}
+                <p>{% blocktrans with email=object.get_email %}The letter can also be sent via <a href="mailto:{{email}}">e-mail address</a>.{% endblocktrans %}</p>
             </div>
         </div>
     {% endif %}

@@ -12,7 +12,7 @@ urlpatterns = [
         name="permission_add",
     ),
     path(
-        "sprawa-<int:pk>/uprawnienia-<username>)/",
+        "sprawa-<int:pk>/uprawnienia-<username>/",
         views.UserPermissionUpdateView.as_view(),
         name="permission_update",
     ),
