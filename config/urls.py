@@ -24,7 +24,6 @@ urlpatterns = [
     path("listy/", include("poradnia.letters.urls", namespace="letters")),
     path("wydarzenia/", include("poradnia.events.urls", namespace="events")),
     path("porady/", include("poradnia.advicer.urls", namespace="advicer")),
-    path("statystyki/", include("poradnia.stats.urls", namespace="stats")),
     path("uwagi/", include("poradnia.tasty_feedback.urls", namespace="tasty_feedback")),
     path("sprawy_sadowe/", include("poradnia.judgements.urls", namespace="judgements")),
     path("teryt/", include("poradnia.teryt.urls", namespace="teryt")),
