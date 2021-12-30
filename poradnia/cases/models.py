@@ -19,7 +19,6 @@ from django.db.models import (
 
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save, pre_delete
-from django.conf import settings
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
