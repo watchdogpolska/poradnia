@@ -79,9 +79,8 @@ class Letter(AbstractRecord):
         on_delete=models.CASCADE,
     )
     created_by_staff = models.BooleanField(
-        default=False,
-        verbose_name="Created by staff member"
-    ) # redundant to preserve status after member exit
+        default=False, verbose_name="Created by staff member"
+    )  # redundant to preserve status after member exit
     created_on = models.DateTimeField(auto_now_add=True, verbose_name=_("Created on"))
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
