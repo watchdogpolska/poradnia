@@ -151,9 +151,7 @@ class UserPermissionRemoveView(
     model = Case
     permission_required = "cases.can_manage_permission"
     template_name_suffix = "_permission_remove_confirm"
-
-    def get_permission_object(self):
-        return None
+    accept_global_perms = True
 
     @cached_property
     def user(self):

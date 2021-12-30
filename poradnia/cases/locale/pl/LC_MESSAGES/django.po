@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-30 11:06+0100\n"
+"POT-Creation-Date: 2021-12-30 20:11+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: \n"
@@ -15,7 +15,7 @@ msgstr ""
 #: apps.py:7 models.py:210 templates/cases/_case_form_permission.html:8
 #: templates/cases/_sidebar.html:3 templates/cases/base.html:3
 #: templates/cases/case_close.html:7 templates/cases/case_detail.html:30
-#: templates/cases/case_form.html:8
+#: templates/cases/case_form.html:8 templates/cases/case_merge.html:7
 #: templates/cases/case_permission_remove_confirm.html:6
 msgid "Cases"
 msgstr "Sprawy"
@@ -50,7 +50,7 @@ msgstr "Status"
 msgid "Advice registered"
 msgstr "Zarejestrowana porada"
 
-#: filters.py:59 models.py:157 templates/cases/case_detail.html:97
+#: filters.py:59 models.py:157 templates/cases/case_detail.html:101
 #: templates/cases/case_filter.html:40
 msgid "Dead-line"
 msgstr "Termin"
@@ -75,67 +75,47 @@ msgstr "Domyślne"
 msgid "Last received"
 msgstr "Ostatnio otrzymano"
 
-#: forms.py:54 forms.py:71
+#: forms.py:55 forms.py:72
 msgid "Grant"
 msgstr "Przyznaj"
 
-#: forms.py:59
+#: forms.py:60
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: forms.py:62
+#: forms.py:63
 msgid "Permissions group"
 msgstr "Grupa uprawnień"
 
-#: forms.py:91
+#: forms.py:92
 msgid "Notify user"
 msgstr "Powiadom użytkownika"
 
-#: forms.py:95 templates/cases/case_close.html:9
+#: forms.py:96 templates/cases/case_close.html:9
 #: templates/cases/case_detail.html:48
 msgid "Close"
 msgstr "Zamknij"
 
-#: metric.py:11
-msgid "Cases count"
-msgstr "Liczba spraw"
+#: forms.py:115
+msgid "Destination case"
+msgstr "Docelowa sprawa"
 
-#: metric.py:12
-msgid "Total cases registered"
-msgstr "Łączna liczba zarejestrowanych spraw"
-
-#: metric.py:23
-msgid "Cases free"
-msgstr "Sprawy wolne"
-
-#: metric.py:24
-msgid "Count of cases status free"
+#: forms.py:120
+msgid ""
+"The selected case will receive all letters, events, etc. from the current "
+"case."
 msgstr ""
-"Łączna liczba spraw wolnych (nieprzypisanych do żadnego członka zespołu)"
+"Wybrana sprawa otrzyma wszystkie listy, wydarzenia itd. z obecnej sprawy."
 
-#: metric.py:27
-msgid "Cases assigned"
-msgstr "Sprawy przypisane"
+#: forms.py:127 templates/cases/case_detail.html:56
+#: templates/cases/case_merge.html:9
+msgid "Merge"
+msgstr "Połącz"
 
-#: metric.py:28
-msgid "Count of cases status assigned"
-msgstr "Liczba spraw, które zostały przypisanych do członka zespołu"
-
-#: metric.py:31
-msgid "Cases closed"
-msgstr "Sprawy zamknięte"
-
-#: metric.py:32
-msgid "Count of cases status closed"
-msgstr "Liczba spraw zamkniętych"
-
-#: metric.py:39
-msgid "Cases monthly"
-msgstr "Liczba spraw miesięcznie"
-
-#: metric.py:40
-msgid "Number of cases registered in month"
-msgstr "Liczba spraw zarejestrowanych w miesiącu"
+#: forms.py:142
+#, python-brace-format
+msgid "Case #{source} have been merged with case #{target}"
+msgstr "Sprawa #{source} została połączona ze sprawą #{target} ."
 
 #: models.py:128
 msgid "free"
@@ -221,20 +201,24 @@ msgstr "Może zmieniać wszystkie wpisy"
 msgid "Can close case"
 msgstr "Może zamknąć sprawę"
 
-#: models.py:221
+#: models.py:220
+msgid "Can merge case"
+msgstr "Może połączyć sprawy"
+
+#: models.py:222
 msgid "Can select client"
 msgstr "Może wybierać klienta"
 
-#: models.py:385
+#: models.py:394
 msgid "Name"
 msgstr "Nazwa"
 
-#: models.py:387 templates/cases/_case_form_permission.html:10
+#: models.py:396 templates/cases/_case_form_permission.html:10
 msgid "Permissions"
 msgstr "Uprawnienia"
 
 #: templates/cases/_case_form_permission.html:29
-#: templates/cases/case_detail.html:83
+#: templates/cases/case_detail.html:87
 msgid "Involved in"
 msgstr "Zaangażowani"
 
@@ -287,7 +271,7 @@ msgstr "Edytuj"
 msgid "Delete"
 msgstr "Usuń"
 
-#: templates/cases/case_detail.html:69
+#: templates/cases/case_detail.html:73
 #, python-format
 msgid ""
 "\n"
@@ -302,15 +286,15 @@ msgstr ""
 "                        %(created_on)s dla <a href=\"%(client_url)s\">"
 "%(client_user)s</a>"
 
-#: templates/cases/case_detail.html:80
+#: templates/cases/case_detail.html:84
 msgid "Workflow"
 msgstr "Przepływ pracy"
 
-#: templates/cases/case_detail.html:88
+#: templates/cases/case_detail.html:92
 msgid "Last update"
 msgstr "Ostatnia aktualizacja"
 
-#: templates/cases/case_detail.html:99
+#: templates/cases/case_detail.html:103
 #, python-format
 msgid ""
 "\n"
@@ -319,31 +303,31 @@ msgstr ""
 "\n"
 "                                    %(deadline)s o %(naturaltime)s"
 
-#: templates/cases/case_detail.html:110
+#: templates/cases/case_detail.html:114
 msgid "Metrical data"
 msgstr "Dane metrykalne"
 
-#: templates/cases/case_detail.html:113
+#: templates/cases/case_detail.html:117
 msgid "Advice"
 msgstr "Porada"
 
-#: templates/cases/case_detail.html:119
+#: templates/cases/case_detail.html:123
 msgid "Create new advice"
 msgstr "Utwórz nową porade"
 
-#: templates/cases/case_detail.html:128
+#: templates/cases/case_detail.html:132
 msgid "Assign permissions"
 msgstr "Przyznaj uprawnienia"
 
-#: templates/cases/case_detail.html:130
+#: templates/cases/case_detail.html:134
 msgid "..."
 msgstr "..."
 
-#: templates/cases/case_detail.html:147
+#: templates/cases/case_detail.html:151
 msgid "No records"
 msgstr "Brak wpisów"
 
-#: templates/cases/case_detail.html:172
+#: templates/cases/case_detail.html:176
 #, python-format
 msgid ""
 "The letter can also be sent via <a href=\"mailto:%(email)s\">e-mail address</"
@@ -426,27 +410,32 @@ msgstr ""
 "Czy jesteś pewien, że chcesz usunąć uprawnienia do sprawy \"%(case)s\" dlla "
 "użytkownika %(user)s?"
 
-#: views/cases.py:67
+#: views/cases.py:72
 msgid "Letter"
 msgstr "List"
 
-#: views/cases.py:73
+#: views/cases.py:78
 msgid "Event"
 msgstr "Wydarzenie"
 
-#: views/cases.py:77
+#: views/cases.py:82
 msgid "Court Case"
 msgstr "Sprawa sądowa"
 
-#: views/cases.py:144
+#: views/cases.py:149
 #, python-format
 msgid "Successful updated \"%(object)s\"."
 msgstr "Pomyślnie zaktualizowano \"%(object)s”."
 
-#: views/cases.py:158
+#: views/cases.py:163
 #, python-format
 msgid "Successfully closed \"%(object)s\"."
 msgstr "Pomyślnie zamknięto \"%(object)s”."
+
+#: views/cases.py:177
+#, python-format
+msgid "Successfully merged \"%(object)s\"."
+msgstr "Pomyślnie połączono \"%(object)s”."
 
 #: views/permissions.py:60
 #, python-format
@@ -463,10 +452,41 @@ msgstr "Zaktualizowano uprawniania %(user)s do sprawy %(case)s!"
 msgid "{user} granted permissions from {group}!"
 msgstr "{user} przyznano uprawnienia grupy {group}!"
 
-#: views/permissions.py:169
+#: views/permissions.py:167
 #, python-brace-format
 msgid "Removed all permission of \"{user}\" in case \"{case}\""
 msgstr "Usunięto wszystkie uprawnienia \"{user}\" w sprawie \"{case}\""
+
+#~ msgid "Cases count"
+#~ msgstr "Liczba spraw"
+
+#~ msgid "Total cases registered"
+#~ msgstr "Łączna liczba zarejestrowanych spraw"
+
+#~ msgid "Cases free"
+#~ msgstr "Sprawy wolne"
+
+#~ msgid "Count of cases status free"
+#~ msgstr ""
+#~ "Łączna liczba spraw wolnych (nieprzypisanych do żadnego członka zespołu)"
+
+#~ msgid "Cases assigned"
+#~ msgstr "Sprawy przypisane"
+
+#~ msgid "Count of cases status assigned"
+#~ msgstr "Liczba spraw, które zostały przypisanych do członka zespołu"
+
+#~ msgid "Cases closed"
+#~ msgstr "Sprawy zamknięte"
+
+#~ msgid "Count of cases status closed"
+#~ msgstr "Liczba spraw zamkniętych"
+
+#~ msgid "Cases monthly"
+#~ msgstr "Liczba spraw miesięcznie"
+
+#~ msgid "Number of cases registered in month"
+#~ msgstr "Liczba spraw zarejestrowanych w miesiącu"
 
 #~ msgid "Can add Case"
 #~ msgstr "Może dodać sprawę"

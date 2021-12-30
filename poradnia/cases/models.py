@@ -217,6 +217,7 @@ class Case(models.Model):
             ("can_change_own_record", _("Can change own records")),
             ("can_change_all_record", _("Can change all records")),
             ("can_close_case", _("Can close case")),
+            ("can_merge_case", _("Can merge case")),
             # Global permission
             ("can_select_client", _("Can select client")),
         )
@@ -325,6 +326,14 @@ class Case(models.Model):
         for user in user_qs.exclude(pk=actor.pk):
             user.notify(
                 actor=actor, target=target, from_email=self.get_email(), **context
+            )
+
+    def close(self, actor, notify=True):
+        self.modified_by = actor
+        self.status = self.STATUS.closed
+        if notify:
+            self.send_notification(
+                actor=actor, user_qs=self.get_users_with_perms(), verb="closed"
             )
 
     def get_next_for_user(self, user, **kwargs):

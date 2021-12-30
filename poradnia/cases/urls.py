@@ -6,6 +6,7 @@ urlpatterns = [
     path("", views.CaseListView.as_view(), name="list"),
     path("sprawa-<int:pk>/edytuj/", views.CaseUpdateView.as_view(), name="edit"),
     path("sprawa-<int:pk>/zamknij/", views.CaseCloseView.as_view(), name="close"),
+    path("sprawa-<int:pk>/scal/", views.CaseMergeView.as_view(), name="merge"),
     path(
         "sprawa-<int:pk>/uprawnienia/",
         views.UserPermissionCreateView.as_view(),

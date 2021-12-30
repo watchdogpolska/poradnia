@@ -13,7 +13,12 @@ from django.views.generic.detail import DetailView
 from django_filters.views import FilterView
 
 from poradnia.cases.filters import StaffCaseFilter, UserCaseFilter
-from poradnia.cases.forms import CaseCloseForm, CaseForm, CaseGroupPermissionForm
+from poradnia.cases.forms import (
+    CaseCloseForm,
+    CaseForm,
+    CaseGroupPermissionForm,
+    CaseMergeForm,
+)
 from poradnia.cases.models import Case
 from poradnia.events.forms import EventForm
 from poradnia.judgements.views import CourtCaseForm
@@ -156,6 +161,20 @@ class CaseCloseView(RaisePermissionRequiredMixin, UserFormKwargsMixin, UpdateVie
         obj = form.save()
         messages.success(
             self.request, _('Successfully closed "%(object)s".') % {"object": obj}
+        )
+        return redirect(obj)
+
+
+class CaseMergeView(RaisePermissionRequiredMixin, UserFormKwargsMixin, UpdateView):
+    form_class = CaseMergeForm
+    permission_required = ["cases.can_merge_case"]
+    template_name = "cases/case_merge.html"
+    model = Case
+
+    def form_valid(self, form):
+        obj = form.save()
+        messages.success(
+            self.request, _('Successfully merged "%(object)s".') % {"object": obj}
         )
         return redirect(obj)
 
