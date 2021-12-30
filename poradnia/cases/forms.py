@@ -117,7 +117,8 @@ class CaseMergeForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
         required=True,
         widget=autocomplete.ModelSelect2(url="cases:autocomplete"),
         help_text=_(
-            "The selected case will receive all letters, events, etc. from the current case."
+            "The selected case will receive all letters, "
+            + "events, etc. from the current case."
         ),
     )
 
