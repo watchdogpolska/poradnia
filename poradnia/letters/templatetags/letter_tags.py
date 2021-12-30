@@ -7,7 +7,6 @@ register = template.Library()
 
 
 @register.filter
-@stringfilter
 def letter2panel(obj):
     if obj.genre == obj.GENRE.comment:
         return "panel-info"
