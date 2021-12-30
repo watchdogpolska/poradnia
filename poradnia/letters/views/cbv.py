@@ -172,7 +172,7 @@ class ReceiveEmailView(View):
             Attachment.objects.create(letter=letter, attachment=File(attachment))
 
         if case.status == Case.STATUS.closed and letter.status == Letter.STATUS.done:
-            case.status_update(reopen=True, save=False)
+            case.update_status(reopen=True, save=False)
         case.handled = actor.is_staff is True and letter.status == Letter.STATUS.done
         case.update_counters()
         case.save()

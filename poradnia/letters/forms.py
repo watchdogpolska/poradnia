@@ -280,7 +280,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         else:
             self.case.handled = False
             if self.case.status == Case.STATUS.closed:
-                self.case.status_update(reopen=True, save=False)
+                self.case.update_status(reopen=True, save=False)
         self.case.save()
         if commit:
             obj.save()

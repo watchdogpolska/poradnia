@@ -283,7 +283,7 @@ class Case(models.Model):
         if save:
             self.save()
 
-    def status_update(self, reopen=False, save=True):
+    def update_status(self, reopen=False, save=True):
         if reopen or (self.status != self.STATUS.closed):
             if self.has_assignees():
                 self.status = self.STATUS.assigned
@@ -385,14 +385,14 @@ class CaseUserObjectPermission(UserObjectPermissionBase):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.permission.codename == "can_send_to_client":
-            self.content_object.status_update()
+            self.content_object.update_status()
 
     def delete(self, *args, **kwargs):
         """
         Note: this method is not invoked in usual circumstances (`remove_perm` call).
         """
         super().delete(*args, **kwargs)
-        self.content_object.status_update()
+        self.content_object.update_status()
 
 
 class CaseGroupObjectPermission(GroupObjectPermissionBase):
