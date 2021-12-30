@@ -373,8 +373,8 @@ def process_django_view(app, what, name, obj, options, lines):
             else:
                 urlname = (
                     "{}:{}".format(namespace, pattern.name)
-                    if namespace else
-                    pattern.name
+                    if namespace
+                    else pattern.name
                 )
                 flat_patterns.append([urlname, pattern.callback])
 
