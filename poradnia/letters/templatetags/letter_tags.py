@@ -7,6 +7,13 @@ register = template.Library()
 
 
 @register.filter
+def letter2panel(obj):
+    if obj.genre == obj.GENRE.comment:
+        return "panel-info"
+    return "panel-primary" if obj.created_by_is_staff else "panel-default"
+
+
+@register.filter
 @stringfilter
 def file2css(path):
     """Converts a file into class name"""
