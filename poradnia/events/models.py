@@ -35,7 +35,7 @@ class EventQuerySet(AbstractRecordQuerySet):
 
 class Event(AbstractRecord):
     deadline = models.BooleanField(
-        default=False,
+        default=True,
         verbose_name=_("Dead-line"),
         help_text=_(
             "A significant event, especially highlighted, "
