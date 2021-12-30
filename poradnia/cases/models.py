@@ -373,6 +373,18 @@ class Case(models.Model):
 class CaseUserObjectPermission(UserObjectPermissionBase):
     content_object = models.ForeignKey(Case, on_delete=models.CASCADE)
 
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.permission.codename == "can_send_to_client":
+            self.content_object.status_update()
+
+    def delete(self, *args, **kwargs):
+        """
+        Note: this method is not invoked in usual circumstances (`remove_perm` call).
+        """
+        super().delete(*args, **kwargs)
+        self.content_object.status_update()
+
 
 class CaseGroupObjectPermission(GroupObjectPermissionBase):
     content_object = models.ForeignKey(Case, on_delete=models.CASCADE)
