@@ -6,14 +6,19 @@ from poradnia.cases.models import Case
 
 register = template.Library()
 
+STATUS_STYLE = {
+    "0": "fa fa-circle-o ",
+    "1": "fa fa-plus-square-o",
+    "3": "fa fa-dot-circle-o",
+    "2": "fa fa-circle",
+}
+
 
 @register.filter
 @stringfilter
 def status2css(status):
     """Converts a status into css style"""
-    return {"0": "fa fa-circle-o ", "1": "fa fa-dot-circle-o", "2": "fa fa-circle"}[
-        status
-    ]
+    return STATUS_STYLE[status]
 
 
 @register.filter
