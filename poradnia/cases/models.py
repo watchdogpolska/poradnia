@@ -18,19 +18,31 @@ from django.db.models import (
 )
 
 from django.db.models.query import QuerySet
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_delete
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import assign_perm, get_objects_for_user, get_users_with_perms
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
-
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 
 from django.urls import reverse
 
 CASE_PK_RE = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
+
+
+def delete_files_for_cases(cases):
+    from poradnia.letters.models import Attachment, Letter
+
+    def delete_qs(qs, field):
+        for x in qs:
+            if not getattr(x, field):
+                continue
+            getattr(x, field).delete()
+
+    delete_qs(Attachment.objects.filter(letter__case__in=cases), "attachment")
+    delete_qs(Letter.objects.filter(case__in=cases), "eml")
 
 
 class CaseQuerySet(QuerySet):
@@ -422,4 +434,13 @@ def assign_perm_new_case(sender, instance, created, **kwargs):
 
 post_save.connect(
     receiver=assign_perm_new_case, sender=Case, dispatch_uid="assign_perm_new_case"
+)
+
+
+def delete_files(sender, instance, **kwargs):
+    delete_files_for_cases([instance])
+
+
+pre_delete.connect(
+    receiver=delete_files, sender=Case, dispatch_uid="delete_files_for_case"
 )

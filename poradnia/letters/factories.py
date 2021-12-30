@@ -14,7 +14,7 @@ class LetterFactory(factory.django.DjangoModelFactory):
     genre = "mail"
     status = "done"
     created_by_is_staff = factory.LazyAttribute(lambda obj: obj.created_by.is_staff)
-
+    eml = ImageField()
     case = factory.SubFactory(CaseFactory)
 
     class Meta:
