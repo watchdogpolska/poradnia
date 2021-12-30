@@ -195,6 +195,11 @@ class CaseTestCase(TestCase):
         self.object.status_update(reopen=True)
         self.assertEqual(self.object.status, Case.STATUS.assigned)
 
+    def test_status_for_moderated(self):
+        assign_perm("cases.can_view", UserFactory(is_staff=True), self.object)
+        self.object.status_update()
+        self.assertEqual(self.object.status, Case.STATUS.moderated)
+
     def test_update_counters_last_received_default(self):
         self.object.update_counters()
         self.assertEqual(self.object.last_received, None)
