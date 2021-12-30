@@ -11,7 +11,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from guardian.shortcuts import assign_perm
 
-from .models import Case, PermissionGroup, CaseUserObjectPermission
+from .models import Case, PermissionGroup
 
 from django.urls import reverse
 
