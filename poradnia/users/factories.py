@@ -32,8 +32,8 @@ class StaffFactory(UserFactory):
 
 class ProfileFactory(factory.django.DjangoModelFactory):
     user = factory.SubFactory(UserFactory)
-    description = factory.fuzzy.FuzzyText()
-    www = factory.fuzzy.FuzzyText()
+    description = factory.Sequence("profile-description-{}".format)
+    www = factory.Sequence("profile-www-{}".format)
 
     class Meta:
         model = "users.Profile"

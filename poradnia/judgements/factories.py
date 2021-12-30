@@ -11,7 +11,7 @@ from poradnia.users.factories import UserFactory
 
 
 class CourtFactory(factory.django.DjangoModelFactory):
-    name = factory.fuzzy.FuzzyText()
+    name = factory.Sequence("court-name-{}".format)
     parser_key = factory.Iterator(get_parser_keys())
 
     class Meta:
