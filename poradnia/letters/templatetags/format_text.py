@@ -1,9 +1,9 @@
-from django import template
-from django.template.defaultfilters import stringfilter, linebreaks_filter
-from django.utils.safestring import mark_safe
-from django.conf import settings
-from bleach.sanitizer import Cleaner
 import mistune
+from bleach.sanitizer import Cleaner
+from django import template
+from django.conf import settings
+from django.template.defaultfilters import linebreaks_filter, stringfilter
+from django.utils.safestring import mark_safe
 
 register = template.Library()
 cleaner = Cleaner(

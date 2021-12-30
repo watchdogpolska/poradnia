@@ -5,6 +5,8 @@ try:
 except ImportError:
     from io import StringIO
 
+from unittest import mock
+
 from django.core import mail
 from django.test import TestCase
 
@@ -13,14 +15,12 @@ from poradnia.events.models import Event
 from poradnia.judgements import settings
 from poradnia.judgements.factories import (
     CourtCaseFactory,
-    SessionRowFactory,
-    CourtSessionFactory,
     CourtFactory,
+    CourtSessionFactory,
+    SessionRowFactory,
 )
 from poradnia.judgements.utils import Manager
 from poradnia.users.factories import UserFactory
-
-from unittest import mock
 
 
 class ManagerTestCase(TestCase):

@@ -9,9 +9,7 @@ from test_plus.test import TestCase
 from poradnia.advicer.models import Advice
 from poradnia.users.factories import StaffFactory, UserFactory
 
-from .factories import AdviceFactory, IssueFactory, AreaFactory
-
-from django.urls import reverse
+from .factories import AdviceFactory, AreaFactory, IssueFactory
 
 
 class PermissionMixin:

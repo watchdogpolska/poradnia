@@ -1,19 +1,19 @@
-from braces.views import LoginRequiredMixin, StaffuserRequiredMixin, UserFormKwargsMixin
 from atom.views import ActionMessageMixin, ActionView
+from braces.views import LoginRequiredMixin, StaffuserRequiredMixin, UserFormKwargsMixin
 from dal import autocomplete
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
 from django_filters.views import FilterView
 
-from poradnia.utils.mixins import ExprAutocompleteMixin
 from poradnia.cases.models import Case, CaseUserObjectPermission
+from poradnia.utils.mixins import ExprAutocompleteMixin
+
 from .filters import UserFilter
 from .forms import ProfileForm, UserForm
 from .models import Profile, User
 from .utils import PermissionMixin
-
-from django.urls import reverse
 
 
 class UserDetailView(PermissionRequiredMixin, DetailView):

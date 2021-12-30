@@ -1,12 +1,11 @@
 from django.db import models
 from django.db.models.query import QuerySet
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 
 from poradnia.users.models import User
 
 from .utils import make_random_password
-
-from django.urls import reverse
 
 
 class KeyQuerySet(QuerySet):

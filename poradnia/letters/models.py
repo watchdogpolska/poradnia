@@ -1,11 +1,12 @@
 import logging
+from os.path import basename
 
+from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
-from os.path import basename
-from django.conf import settings
 from django.db import models
 from django.db.models import F, Func, IntegerField, Q
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django_mailbox.models import Message
 from model_utils import Choices
@@ -16,10 +17,8 @@ from poradnia.cases.utils import get_users_with_perm
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from poradnia.users.models import User
 
-from .utils import date_random_path
 from .templatetags.format_text import format_text
-
-from django.urls import reverse
+from .utils import date_random_path
 
 logger = logging.getLogger(__name__)
 

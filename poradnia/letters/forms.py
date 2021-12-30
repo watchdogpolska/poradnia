@@ -4,17 +4,16 @@ from atom.forms import PartialMixin
 from crispy_forms.layout import BaseInput, Submit
 from dal import autocomplete
 from django import forms
+from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
-from django.conf import settings
 
 from poradnia.cases.models import Case
 
 from .models import Attachment, Letter
-
-from django.urls import reverse
 
 CLIENT_FIELD_TEXT = _("Leave empty to use email field and create a new one user.")
 

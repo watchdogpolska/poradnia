@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.utils import timezone
 
 from poradnia.cases.models import Case
-from poradnia.events.models import Reminder, Event
+from poradnia.events.models import Event, Reminder
 from poradnia.users.models import User
 
 

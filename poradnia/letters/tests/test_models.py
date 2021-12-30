@@ -1,11 +1,11 @@
 from datetime import timedelta
 
+from django.conf import settings
 from django.test import TestCase
 from django.utils.timezone import now
-from django.conf import settings
 
 from poradnia.cases.factories import CaseFactory
-from poradnia.letters.factories import LetterFactory, AttachmentFactory
+from poradnia.letters.factories import AttachmentFactory, LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
 

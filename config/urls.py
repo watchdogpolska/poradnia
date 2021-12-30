@@ -1,10 +1,10 @@
 from django.conf import settings
-from django.urls import include, path
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.views.generic import TemplateView
 from django.http import HttpResponseServerError
 from django.template import loader
+from django.urls import include, path
+from django.views.generic import TemplateView
 
 admin.autodiscover()
 

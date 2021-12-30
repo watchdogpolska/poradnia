@@ -2,8 +2,8 @@
 """
 Production Configurations
 """
-from dealer.auto import auto
 import sentry_sdk
+from dealer.auto import auto
 from sentry_sdk.integrations.django import DjangoIntegration
 
 from .common import *  # noqa

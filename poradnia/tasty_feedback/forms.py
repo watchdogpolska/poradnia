@@ -1,13 +1,12 @@
+from antispam.honeypot.forms import HoneypotField
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-from django.forms import ModelForm, HiddenInput
+from django.forms import HiddenInput, ModelForm
+from django.urls import reverse
 from django.utils.translation import ugettext as _
-from antispam.honeypot.forms import HoneypotField
 
 from .models import Feedback
-
-from django.urls import reverse
 
 
 class FeedbackForm(UserKwargModelFormMixin, ModelForm):

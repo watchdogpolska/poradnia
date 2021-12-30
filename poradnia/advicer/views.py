@@ -9,6 +9,7 @@ from braces.views import (
 )
 from dal import autocomplete
 from django.shortcuts import get_object_or_404
+from django.urls import reverse_lazy
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import CreateView, DetailView, UpdateView
 from django_filters.views import FilterView
@@ -19,10 +20,7 @@ from poradnia.utils.mixins import ExprAutocompleteMixin
 
 from .filters import AdviceFilter
 from .forms import AdviceForm, AttachmentForm
-from .models import Advice, Attachment, Issue, Area
-
-from django.urls import reverse_lazy
-
+from .models import Advice, Area, Attachment, Issue
 
 ORDERING_TEXT = _("Ordering")
 

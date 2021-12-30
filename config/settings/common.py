@@ -8,8 +8,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
-from django.utils.translation import ugettext_lazy as _
 import environ
+from django.utils.translation import ugettext_lazy as _
 
 ROOT_DIR = environ.Path(__file__) - 3
 

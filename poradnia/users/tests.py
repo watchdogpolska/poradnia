@@ -3,11 +3,10 @@ import json
 from atom.mixins import AdminTestCaseMixin
 from django.core import mail
 from django.test import RequestFactory
+from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from guardian.shortcuts import assign_perm, get_perms
 from test_plus.test import TestCase
-from .factories import UserFactory
-from django.urls import reverse
 
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
@@ -20,7 +19,7 @@ from poradnia.users.forms import (
 from poradnia.users.models import User
 from poradnia.users.views import UserAutocomplete
 
-from django.urls import reverse, reverse_lazy
+from .factories import UserFactory
 
 
 class UserTestCase(TestCase):

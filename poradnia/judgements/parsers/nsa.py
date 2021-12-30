@@ -2,8 +2,8 @@ import requests
 from lxml import html
 
 from ..models import SessionRow
-from .base import BaseParser
 from ..registry import register_parser
+from .base import BaseParser
 
 
 class NSAETRParser(BaseParser):

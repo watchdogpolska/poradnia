@@ -3,14 +3,13 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Q
 from django.db.models.query import QuerySet
+from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
+from teryt_tree.dal_ext.filters import AreaMultipleFilter
 
 from poradnia.cases.models import Case
 from poradnia.teryt.models import JST
-
-from django.urls import reverse
-from teryt_tree.dal_ext.filters import AreaMultipleFilter
 
 
 class AbstractCategory(models.Model):
