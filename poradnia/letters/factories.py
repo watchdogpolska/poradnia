@@ -12,6 +12,7 @@ class LetterFactory(factory.django.DjangoModelFactory):
     signature = factory.fuzzy.FuzzyText()
     created_by = factory.SubFactory(UserFactory)
     status = "done"
+    created_by_is_staff = factory.LazyAttribute(lambda obj: obj.created_by.is_staff)
 
     case = factory.SubFactory(CaseFactory)
 

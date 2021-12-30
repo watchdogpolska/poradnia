@@ -3,11 +3,11 @@
 from django.db import migrations, models
 
 
-def migrate_created_by_staff(apps, schema_editor):
+def migrate_created_by_is_staff(apps, schema_editor):
     User = apps.get_model("users", "User")
     Letter = apps.get_model("letters", "Letter")
     Letter.objects.filter(created_by__in=User.objects.filter(is_staff=True)).update(
-        created_by_staff=True
+        created_by_is_staff=True
     )
 
 
@@ -20,10 +20,10 @@ class Migration(migrations.Migration):
     operations = [
         migrations.AddField(
             model_name="letter",
-            name="created_by_staff",
+            name="created_by_is_staff",
             field=models.BooleanField(
                 default=False, verbose_name="Created by staff member"
             ),
         ),
-        migrations.RunPython(migrate_created_by_staff),
+        migrations.RunPython(migrate_created_by_is_staff),
     ]

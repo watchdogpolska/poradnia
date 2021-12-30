@@ -157,6 +157,7 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
         obj = super().save(commit=False, *args, **kwargs)
         obj.status = obj.STATUS.done
         obj.created_by = user
+        obj.created_by_is_staff = user.is_staff
         obj.client = self.get_client(user)
         if not obj.case_id:
             obj.case = self.get_case(client=obj.client, user=user)
@@ -255,6 +256,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         obj = super().save(commit=False, *args, **kwargs)
         obj.status = self.get_status()
         obj.created_by = self.user
+        obj.created_by_is_staff = self.user.is_staff
         obj.case = self.case
         if self.user.is_staff:
             if "project" in self.data:
@@ -302,6 +304,7 @@ class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
             msg = Letter(
                 case=obj.case,
                 created_by=self.user,
+                created_by_is_staff=self.user.is_staff,
                 text=self.cleaned_data["comment"],
                 status=obj.STATUS.staff,
             )
