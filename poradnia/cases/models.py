@@ -126,6 +126,7 @@ class Case(models.Model):
     USER_ORDER_DEFAULT_FIELD = "last_send"
     STATUS = Choices(
         ("0", "free", _("free")),
+        ("3", "moderated", _("moderated")),
         ("1", "assigned", _("assigned")),
         ("2", "closed", _("closed")),
     )
@@ -271,11 +272,27 @@ class Case(models.Model):
 
     def status_update(self, reopen=False, save=True):
         if reopen or (self.status != self.STATUS.closed):
-            self.status = (
-                self.STATUS.assigned if self.has_assignees() else self.STATUS.free
-            )
+            if self.has_assignees():
+                self.status = self.STATUS.assigned
+            elif self.has_team():
+                self.status = self.STATUS.moderated
+            else:
+                self.status = self.STATUS.free
         if save:
             self.save()
+
+    def has_team(self):
+        """
+        Checks if there exists a staff member who has a permission to handle
+        the case.
+        """
+        content_type = ContentType.objects.get_for_model(Case)
+        qs = CaseUserObjectPermission.objects.filter(
+            permission__content_type=content_type,
+            content_object=self,
+            user__is_staff=True,
+        )
+        return qs.exists()
 
     def has_assignees(self):
         """

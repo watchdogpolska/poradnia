@@ -1,9 +1,13 @@
 {% load guardian_tags crispy_forms_tags humanize users_tags i18n %}
 <div class="timeline-messange">
     <a href="#"><img src="{% get_avatar_url object.created_by %}" class="timeline-avatar"></a>
-    <div class="panel {{ object.created_by_is_staff|yesno:'panel-default,panel-primary' }}  timeline-comment">
+    <div class="panel {{ object.created_by_is_staff|yesno:'panel-default,panel-primary' }}  timeline-comment" id="event-{{object.pk}}">
         <div class="panel-heading">
-            <i class="fa fa-{{ object.deadline|yesno:'fire,calendar' }}"></i> {{ object }}
+            <h2 class="panel-title">
+                <a href="#event-{{object.pk}}">
+                    <i class="fa fa-{{ object.deadline|yesno:'fire,calendar' }}"></i> {{ object }}
+                </a>
+            </h2>
         </div>
         <table class="table">
             <tr>

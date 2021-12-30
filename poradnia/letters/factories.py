@@ -11,6 +11,7 @@ class LetterFactory(factory.django.DjangoModelFactory):
     text = factory.fuzzy.FuzzyText()
     signature = factory.fuzzy.FuzzyText()
     created_by = factory.SubFactory(UserFactory)
+    genre = "mail"
     status = "done"
     created_by_is_staff = factory.LazyAttribute(lambda obj: obj.created_by.is_staff)
 

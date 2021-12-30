@@ -120,7 +120,11 @@ class Letter(AbstractRecord):
         return "{}#letter-{}".format(case_url, self.pk)
 
     def is_done(self):
-        return True if self.status == self.STATUS.done else False
+        return (
+            True
+            if self.status == self.STATUS.done or self.genre == self.GENRE.comment
+            else False
+        )
 
     def is_html(self):
         return bool(self.html)
