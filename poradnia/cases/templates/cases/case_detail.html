@@ -44,12 +44,16 @@
                                 class="fa fa-pencil-square-o"></i> {% trans 'Edit' %}</a>
                     {% endif %}
                     {% if 'can_close_case' in case_perms and object.status != object.STATUS.closed %}
-                        <a class="btn btn-primary" href="{{ object.get_close_url }}"><i
+                        <a class="btn btn-default" href="{{ object.get_close_url }}"><i
                                 class="fa fa-close"></i> {% trans 'Close' %}</a>
                     {% endif %}
                     {% if 'delete_case' in case_perms and user.is_staff %}
-                        <a class="btn btn-primary" href="{% url 'admin:cases_case_delete' object_id=object.pk %}"><i
+                        <a class="btn btn-default" href="{% url 'admin:cases_case_delete' object_id=object.pk %}"><i
                                 class="fa fa-trash"></i> {% trans 'Delete' %}</a>
+                    {% endif %}
+                    {% if 'can_merge_case' in case_perms %}
+                        <a class="btn btn-default" href="{% url 'cases:merge' pk=object.pk %}"><i
+                                class="fa fa-code-fork"></i> {% trans 'Merge' %}</a>
                     {% endif %}
                 </div>
                 <h1 class="case-header-title{% if user.is_staff and object.handled %} success{% endif %}">{{ object.name }}

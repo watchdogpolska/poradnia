@@ -10,7 +10,8 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from guardian.shortcuts import assign_perm
-
+from ..records.models import Record
+from ..letters.models import Letter
 from .models import Case, PermissionGroup
 
 from django.urls import reverse
@@ -99,15 +100,59 @@ class CaseCloseForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
 
     def save(self, commit=True, *args, **kwargs):
         obj = super().save(commit=False, *args, **kwargs)
-        obj.modified_by = self.user
-        obj.status = Case.STATUS.closed
-        if self.cleaned_data["notify"]:
-            obj.send_notification(
-                actor=self.user, user_qs=obj.get_users_with_perms(), verb="closed"
-            )
+        obj.close(actor=self.user, notify=self.cleaned_data["notify"])
         if commit:
             obj.save()
         return obj
+
+    class Meta:
+        model = Case
+        fields = ()
+
+
+class CaseMergeForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
+    target = forms.ModelChoiceField(
+        label=_("Destination case"),
+        queryset=Case.objects.none(),
+        required=True,
+        widget=autocomplete.ModelSelect2(url="cases:autocomplete"),
+        help_text=_(
+            "The selected case will receive all letters, events, etc. from the current case."
+        ),
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper.add_input(Submit("action", _("Merge"), css_class="btn-primary"))
+        self.fields["target"].queryset = Case.objects.for_user(self.user).all()
+
+        self.helper.form_action = reverse(
+            "cases:merge", kwargs={"pk": kwargs["instance"].pk}
+        )
+
+    def create_letter(self, case):
+        target = self.cleaned_data["target"]
+        source = self.instance
+        msg = Letter.objects.create(
+            case=case,
+            genre=Letter.GENRE.comment,
+            created_by=self.user,
+            created_by_is_staff=self.user.is_staff,
+            text=_("Case #{source} have been merged with case #{target}").format(
+                source=source.pk, target=target.pk
+            ),
+            status=Letter.STATUS.staff,
+        )
+        msg.send_notification(actor=self.user, verb="drop_a_note")
+
+    def save(self, *args, **kwargs):
+        target = self.cleaned_data["target"]
+        source = self.instance
+        Record.objects.filter(case=source).move(target)
+        self.create_letter(target)
+        self.create_letter(source)
+        source.close(actor=self.user, notify=False)
+        return target
 
     class Meta:
         model = Case

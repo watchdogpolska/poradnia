@@ -25,6 +25,14 @@ class RecordQuerySet(QuerySet):
             return qs
         return qs.filter(Q(event=None) & Q(letter__status="done"))
 
+    def move(self, target):
+        for field in Record.STATIC_RELATION + ["courtcase"]:
+            qs = self.filter(**{f"{field}__isnull": False}).all()
+            Record._meta.get_field(field).related_model.objects.filter(
+                pk__in=qs
+            ).update(case=target)
+        return self.update(case=target)
+
 
 class Record(models.Model):
     STATIC_RELATION = ["letter", "event"]

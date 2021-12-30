@@ -597,7 +597,7 @@ class PermissionGroupAdminTestCase(AdminTestCaseMixin, TestCase):
 
 
 class UserPermissionRemoveViewTestCase(PermissionStatusMixin, TestCase):
-    permission = ["cases.can_manage_permission", "cases.can_assign"]
+    permission = ["cases.can_manage_permission"]
 
     def setUp(self):
         self.subject_user = UserFactory()
@@ -609,3 +609,28 @@ class UserPermissionRemoveViewTestCase(PermissionStatusMixin, TestCase):
             "cases:permission_remove",
             kwargs={"pk": self.object.pk, "username": self.subject_user.username},
         )
+
+
+class CaseMergeViewTestCase(PermissionStatusMixin, TestCase):
+    permission = ["cases.can_merge_case", "cases.can_view"]
+
+    def setUp(self):
+        self.user = UserFactory(username="john")
+        self.permission_object = self.object = CaseFactory()
+
+    def get_url(self):
+        return reverse(
+            "cases:merge",
+            kwargs={"pk": self.object.pk},
+        )
+
+    def merge_move_letter(self):
+        self.login_permitted_user()
+        import pdb
+
+        pdb.set_trace()
+        letter = LetterFactory(case=self.object)
+        target = CaseFactory()
+        self.client.post(self.get_url(), {"target": target.pk}, follow=True)
+        self.assertEqual(Letter.objects.get(pk=letter.pk).case, target)
+        self.assertContains(self.client.get(letter.get_absolute_url()), target.name)
