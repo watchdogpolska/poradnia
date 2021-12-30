@@ -5,6 +5,12 @@ from django.template.defaultfilters import stringfilter
 
 register = template.Library()
 
+@register.filter
+@stringfilter
+def letter2panel(obj):
+    if obj.genre == obj.GENRE.comment:
+        return 'panel-info'
+    return 'panel-primary' if obj.created_by_is_staff else 'panel-default'
 
 @register.filter
 @stringfilter
