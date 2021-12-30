@@ -21,13 +21,13 @@ from poradnia.cases.factories import (
 )
 from poradnia.cases.filters import StaffCaseFilter
 from poradnia.cases.forms import CaseCloseForm
-from poradnia.cases.models import Case, PermissionGroup, CaseUserObjectPermission
+from poradnia.cases.models import Case, PermissionGroup
 from poradnia.cases.views import CaseListView
 from poradnia.events.factories import EventFactory
-from poradnia.letters.factories import LetterFactory
+from poradnia.letters.factories import LetterFactory, AttachmentFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
-
+from pathlib import Path
 from django.urls import reverse
 
 
@@ -221,7 +221,7 @@ class CaseTestCase(TestCase):
         self.assertEqual(new.created_on, self.object.last_received)
 
     def test_update_counters_hide_past_deadline(self):
-        event = EventFactory(
+        EventFactory(
             time=timezone.now() - timedelta(days=5), deadline=True, case=self.object
         )
         self.object.update_counters()
@@ -233,6 +233,38 @@ class CaseTestCase(TestCase):
         )
         self.object.update_counters()
         self.assertEqual(self.object.deadline, event)
+
+    def _check_file_delete(self, attachment, expected):
+        p = Path(attachment.attachment.file.name)
+        p2 = Path(attachment.letter.eml.file.name)
+        self.assertEqual(
+            p.exists(), expected, "File for attachment does not match expected state"
+        )
+        self.assertEqual(
+            p2.exists(),
+            expected,
+            "File for eml of letter does not match expected state",
+        )
+
+    def test_delete_file_for_related_attachment(self):
+        # Given
+        attachment = AttachmentFactory()
+        case = attachment.letter.case
+        self._check_file_delete(attachment, True)
+        # When
+        case.delete()
+        # Then
+        self._check_file_delete(attachment, False)
+
+    def test_bulk_delete_file_for_related_attachment(self):
+        # Given
+        attachment = AttachmentFactory()
+        case = attachment.letter.case
+        self._check_file_delete(attachment, True)
+        # When
+        Case.objects.filter(pk__in=[case.pk]).delete()
+        # Then
+        self._check_file_delete(attachment, False)
 
 
 class CaseUserObjectPermissionTestCase(TestCase):
