@@ -340,9 +340,7 @@ class LetterForm(SingleButtonMixin, PartialMixin, ModelForm):  # eg. edit form
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
         super().__init__(*args, **kwargs)
-        self.helper.form_action = reverse(
-            "letters:edit", kwargs={"pk": str(kwargs["instance"].pk)}
-        )
+        self.helper.form_action = kwargs["instance"].get_edit_url()
         self.helper.form_method = "post"
 
     def save(self, commit=True, *args, **kwargs):
