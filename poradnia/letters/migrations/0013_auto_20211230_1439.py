@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('letters', '0012_letter_created_by_staff'),
+        ("letters", "0012_letter_created_by_staff"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='letter',
-            name='created_by_is_staff',
-            field=models.BooleanField(verbose_name='Created by staff member'),
+            model_name="letter",
+            name="created_by_is_staff",
+            field=models.BooleanField(verbose_name="Created by staff member"),
         ),
     ]
