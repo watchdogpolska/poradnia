@@ -159,6 +159,7 @@ class ReceiveEmailView(View):
         letter = Letter.objects.create(
             name=manifest["headers"]["subject"],
             created_by=actor,
+            created_by_is_staff=actor.is_staff,
             case=case,
             genre=Letter.GENRE.mail,
             status=self.get_letter_status(actor=actor, case=case),

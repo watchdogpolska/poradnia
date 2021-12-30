@@ -13,6 +13,7 @@ class LetterFactory(factory.django.DjangoModelFactory):
     created_by = factory.SubFactory(UserFactory)
     genre = "mail"
     status = "done"
+    created_by_is_staff = factory.LazyAttribute(lambda obj: obj.created_by.is_staff)
 
     case = factory.SubFactory(CaseFactory)
 
