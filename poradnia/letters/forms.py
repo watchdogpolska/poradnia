@@ -156,6 +156,7 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
         user = self.get_user()
         obj = super().save(commit=False, *args, **kwargs)
         obj.status = obj.STATUS.done
+        obj.genre = obj.GENRE.mail
         obj.created_by = user
         obj.client = self.get_client(user)
         if not obj.case_id:
@@ -170,6 +171,10 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
 
 
 class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
+    SEND_STAFF = "send_staff"
+    PROJECT = "project"
+    SEND = "send"
+
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
         self.case = kwargs.pop("case")
@@ -190,7 +195,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         if self.user_can_send:
             self.helper.add_input(
                 Submit(
-                    name="send",
+                    name=self.SEND,
                     value=_("Reply to all"),
                     title=REPLY_ALL_TITLE,
                     css_class="btn-primary",
@@ -198,7 +203,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
             )
             self.helper.add_input(
                 Submit(
-                    name="project",
+                    name=self.PROJECT,
                     value=_("Save to review"),
                     title=SAVE_TO_REVIEW_TITLE,
                     css_class="btn-primary",
@@ -206,7 +211,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
             )
             self.helper.add_input(
                 SimpleSubmit(
-                    name="send_staff",
+                    name=self.SEND_STAFF,
                     input_type="submit",
                     value=_("Write to staff"),
                     title=REPLY_TO_TEAM_TITLE,
@@ -217,7 +222,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
             if self.user.is_staff:
                 self.helper.add_input(
                     Submit(
-                        name="send",
+                        name=self.SEND,
                         value=_("Write to staff"),
                         title=REPLY_TO_TEAM_TITLE,
                         css_class="btn-primary",
@@ -225,7 +230,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
                 )
                 self.helper.add_input(
                     Submit(
-                        name="project",
+                        name=self.PROJECT,
                         value=_("Save to review"),
                         title=SAVE_TO_REVIEW_TITLE,
                         css_class="btn-primary",
@@ -247,17 +252,25 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
             return Letter.STATUS.done
         if not self.user_can_send:
             return Letter.STATUS.staff
-        if "send_staff" in self.data or "project" in self.data:
+        if self.SEND_STAFF in self.data or self.PROJECT in self.data:
             return Letter.STATUS.staff
         return Letter.STATUS.done
+
+    def get_genre(self):
+        if not self.user.is_staff:
+            return Letter.GENRE.mail
+        if self.SEND_STAFF in self.data:
+            return Letter.GENRE.comment
+        return Letter.GENRE.mail
 
     def save(self, commit=True, *args, **kwargs):
         obj = super().save(commit=False, *args, **kwargs)
         obj.status = self.get_status()
+        obj.genre = self.get_genre()
         obj.created_by = self.user
         obj.case = self.case
         if self.user.is_staff:
-            if "project" in self.data:
+            if self.PROJECT in self.data:
                 self.case.has_project = True
             elif obj.status == Letter.STATUS.done:
                 self.case.has_project = False
@@ -299,13 +312,13 @@ class SendLetterForm(SingleButtonMixin, PartialMixin, ModelForm):
 
         obj.send_notification(actor=self.user, verb="send_to_client")
         if self.cleaned_data["comment"]:
-            msg = Letter(
+            msg = Letter.objects.create(
                 case=obj.case,
+                genre=Letter.GENRE.comment,
                 created_by=self.user,
                 text=self.cleaned_data["comment"],
                 status=obj.STATUS.staff,
             )
-            msg.save()
             msg.send_notification(actor=self.user, verb="drop_a_note")
         return obj
 
