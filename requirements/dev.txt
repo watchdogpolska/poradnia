@@ -11,3 +11,6 @@ django-coverage-plugin==1.8.0
 django-test-plus==2.2.0
 vcrpy==4.1.1
 ipdb==0.13.9
+
+pre-commit==2.15.0
+

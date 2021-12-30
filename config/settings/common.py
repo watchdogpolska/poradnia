@@ -193,10 +193,12 @@ STATIC_ROOT = str(ROOT_DIR.path("staticfiles"))
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#static-url
 STATIC_URL = "/static/"
 
-# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#std:setting-STATICFILES_DIRS
+# See: https://docs.djangoproject.com/en/dev/ref/
+#      contrib/staticfiles/#std:setting-STATICFILES_DIRS
 STATICFILES_DIRS = (str(APPS_DIR.path("static")),)
 
-# See: https://docs.djangoproject.com/en/dev/ref/contrib/staticfiles/#staticfiles-finders
+# See: https://docs.djangoproject.com/en/dev/ref/
+#      contrib/staticfiles/#staticfiles-finders
 STATICFILES_FINDERS = (
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
@@ -329,25 +331,6 @@ TEMPLATES = [
     }
 ]
 FILTERS_HELP_TEXT_FILTER = False
-
-STAT_METRICS = {
-    "cases.count": "poradnia.cases.metric.cases_count",
-    "cases.free": "poradnia.cases.metric.cases_free",
-    "cases.assigned": "poradnia.cases.metric.cases_assigned",
-    "cases.closed": "poradnia.cases.metric.cases_closed",
-    "cases.monthly": "poradnia.cases.metric.cases_monthly",
-    "users.total": "poradnia.users.metric.users_total",
-    "users.monthly": "poradnia.users.metric.users_monthly",
-    "users.active": "poradnia.users.metric.users_active",
-    "users.active.staff": "poradnia.users.metric.users_active_staff",
-    "letters.documents_written_for_clients": "poradnia.letters.metric.documents_written_for_clients",
-    "letters.letter.month": "poradnia.letters.metric.letter_month",
-    "letters.letter.staff.email": "poradnia.letters.metric.letter_staff_email",
-    "letters.letter.staff.www": "poradnia.letters.metric.letter_staff_www",
-    "letters.letter.total": "poradnia.letters.metric.letter_total",
-    "letters.letter.user.email": "poradnia.letters.metric.letter_user_email",
-    "letters.letter.user.www": "poradnia.letters.metric.letter_user_www",
-}
 
 FILE_UPLOAD_PERMISSIONS = 0o644
 

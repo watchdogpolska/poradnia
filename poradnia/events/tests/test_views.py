@@ -25,12 +25,12 @@ class EventCreateViewTestCase(PermissionStatusMixin, TestCase):
         )
         self.assertEqual(response.status_code, 302)
         event = Event.objects.get()
-        self.assertEquals(event.text, "Skarga")
+        self.assertEqual(event.text, "Skarga")
         valid_time = timezone.now().replace(2017, 1, 20, 10, 00)
-        self.assertEquals(event.time.date(), valid_time.date())
-        self.assertEquals(event.time.hour, valid_time.hour)
-        self.assertEquals(event.time.minute, valid_time.minute)
-        self.assertEquals(event.deadline, True)
+        self.assertEqual(event.time.date(), valid_time.date())
+        self.assertEqual(event.time.hour, valid_time.hour)
+        self.assertEqual(event.time.minute, valid_time.minute)
+        self.assertEqual(event.deadline, True)
 
 
 class EventUpdateViewTestCase(PermissionStatusMixin, TestCase):
@@ -53,9 +53,9 @@ class EventUpdateViewTestCase(PermissionStatusMixin, TestCase):
         self.assertEqual(response.status_code, 302)
 
         event = Event.objects.get()
-        self.assertEquals(event.text, "Skarga")
+        self.assertEqual(event.text, "Skarga")
         valid_time = timezone.now().replace(2017, 1, 20, 10, 00)
-        self.assertEquals(event.time.date(), valid_time.date())
-        self.assertEquals(event.time.hour, valid_time.hour)
-        self.assertEquals(event.time.minute, valid_time.minute)
-        self.assertEquals(event.deadline, False)
+        self.assertEqual(event.time.date(), valid_time.date())
+        self.assertEqual(event.time.hour, valid_time.hour)
+        self.assertEqual(event.time.minute, valid_time.minute)
+        self.assertEqual(event.deadline, False)
