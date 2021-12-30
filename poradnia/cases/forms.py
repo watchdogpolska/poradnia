@@ -82,7 +82,7 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
 
         for perm in perms:
             assign_perm(perm, self.cleaned_data["user"], self.case)
-
+        self.case.status_update()
         self.case.send_notification(
             actor=self.user,
             verb="grant_group",
