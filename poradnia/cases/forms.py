@@ -11,7 +11,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from guardian.shortcuts import assign_perm
 
-from .models import Case, PermissionGroup
+from .models import Case, PermissionGroup, CaseUserObjectPermission
 
 from django.urls import reverse
 
@@ -75,7 +75,12 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
         )
 
     def assign(self):
-        for perm in self.cleaned_data["group"].permissions.all():
+        perms = list(self.cleaned_data["group"].permissions.all())
+        self.cleaned_data["user"].caseuserobjectpermission_set.filter(
+            content_object=self.case
+        ).exclude(permission__in=perms).delete()
+
+        for perm in perms:
             assign_perm(perm, self.cleaned_data["user"], self.case)
 
         self.case.send_notification(

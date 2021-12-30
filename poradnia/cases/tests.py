@@ -21,7 +21,7 @@ from poradnia.cases.factories import (
 )
 from poradnia.cases.filters import StaffCaseFilter
 from poradnia.cases.forms import CaseCloseForm
-from poradnia.cases.models import Case, PermissionGroup, CaseUserObjectPermission
+from poradnia.cases.models import Case, PermissionGroup
 from poradnia.cases.views import CaseListView
 from poradnia.events.factories import EventFactory
 from poradnia.letters.factories import LetterFactory
@@ -587,6 +587,22 @@ class CaseGroupPermissionViewTestCase(PermissionStatusMixin, TestCase):
 
         self.assertTrue(
             self.user_with_permission.has_perm("cases.can_send_to_client", self.object)
+        )
+
+    def test_remove_existing_perm(self):
+        self.login_permitted_user()
+        assign_perm("cases.can_view", self.user_with_permission, self.object)
+        pg = PermissionGroupFactory(permissions=("can_send_to_client",))
+        resp = self.client.post(
+            self.url, data={"user": self.user_with_permission.pk, "group": pg.pk}
+        )
+        self.assertEqual(resp.status_code, 302)
+
+        self.assertTrue(
+            self.user_with_permission.has_perm("cases.can_send_to_client", self.object)
+        )
+        self.assertFalse(
+            self.user_with_permission.has_perm("cases.can_view", self.object)
         )
 
 
