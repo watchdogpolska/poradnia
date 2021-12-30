@@ -75,9 +75,14 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
         )
 
     def assign(self):
-        for perm in self.cleaned_data["group"].permissions.all():
-            assign_perm(perm, self.cleaned_data["user"], self.case)
+        perms = list(self.cleaned_data["group"].permissions.all())
+        self.cleaned_data["user"].caseuserobjectpermission_set.filter(
+            content_object=self.case
+        ).exclude(permission__in=perms).delete()
 
+        for perm in perms:
+            assign_perm(perm, self.cleaned_data["user"], self.case)
+        self.case.status_update()
         self.case.send_notification(
             actor=self.user,
             verb="grant_group",
