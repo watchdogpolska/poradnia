@@ -8,7 +8,7 @@ from poradnia.users.factories import UserFactory
 
 
 class CaseFactory(factory.django.DjangoModelFactory):
-    name = factory.fuzzy.FuzzyText()
+    name = factory.Sequence("case-name-{}".format)
     client = factory.SubFactory(UserFactory)
     created_by = factory.LazyAttribute(lambda obj: obj.client)
 
@@ -17,7 +17,7 @@ class CaseFactory(factory.django.DjangoModelFactory):
 
 
 class PermissionGroupFactory(factory.DjangoModelFactory):
-    name = factory.fuzzy.FuzzyText()
+    name = factory.Sequence("permissiongroup-name-{}".format)
 
     @factory.post_generation
     def permissions(self, create, extracted, **kwargs):

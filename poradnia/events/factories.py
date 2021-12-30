@@ -8,7 +8,7 @@ from poradnia.users.factories import UserFactory
 
 
 class EventFactory(factory.django.DjangoModelFactory):
-    text = factory.fuzzy.FuzzyText()
+    text = factory.Sequence("event-text-{}".format)
     deadline = True
     time = factory.fuzzy.FuzzyDateTime(timezone.now())
     created_by = factory.SubFactory(UserFactory)

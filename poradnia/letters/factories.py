@@ -7,9 +7,9 @@ from poradnia.users.factories import UserFactory
 
 
 class LetterFactory(factory.django.DjangoModelFactory):
-    name = factory.fuzzy.FuzzyText()
-    text = factory.fuzzy.FuzzyText()
-    signature = factory.fuzzy.FuzzyText()
+    name = factory.Sequence("letter-name-{}".format)
+    text = factory.Sequence("letter-text-{}".format)
+    signature = factory.Sequence("letter-signature-{}".format)
     created_by = factory.SubFactory(UserFactory)
     genre = "mail"
     status = "done"

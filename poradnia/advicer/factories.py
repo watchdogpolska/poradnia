@@ -37,8 +37,8 @@ class AdviceFactory(factory.django.DjangoModelFactory):
     advicer = factory.SubFactory("poradnia.users.factories.UserFactory")
     grant_on = factory.fuzzy.FuzzyDateTime(datetime.datetime(2008, 1, 1, tzinfo=utc))
     created_by = factory.SubFactory("poradnia.users.factories.UserFactory")
-    comment = factory.fuzzy.FuzzyText()
-    subject = factory.fuzzy.FuzzyText()
+    comment = factory.Sequence("advice-comment-{}".format)
+    subject = factory.Sequence("advice-subject-{}".format)
     visible = True
 
     class Meta:
