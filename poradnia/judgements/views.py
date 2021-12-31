@@ -3,10 +3,10 @@ from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from atom.views import DeleteMessageMixin
 from braces.forms import UserKwargModelFormMixin
 from braces.views import FormValidMessageMixin, UserFormKwargsMixin
-from cached_property import cached_property
 from django import forms
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 from django.views.generic import CreateView, DeleteView, UpdateView
 
