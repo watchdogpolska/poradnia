@@ -29,9 +29,8 @@ jobs:
       # Ignore the failure of a step and avoid terminating the job.
       continue-on-error: true
       with:
-        key: python-${{ matrix.python }}-${{ matrix.django }}-{hash}
-        restore-keys: |
-          python-${{ matrix.python }}-${{ matrix.django }}-
+        key: python-${{ matrix.python }}-{hash}
+        restore-keys: python-${{ matrix.python }}-
     - name: Start database early
       run: docker-compose up -d db
     - name: Build application
@@ -59,9 +58,8 @@ jobs:
     - uses: satackey/action-docker-layer-caching@v0.0.11
       continue-on-error: true
       with:
-        key: python-${{ matrix.python }}-${{ matrix.django }}-{hash}
-        restore-keys: |
-          python-${{ matrix.python }}-${{ matrix.django }}-
+        key: python-${{ matrix.python }}-{hash}
+        restore-keys: python-${{ matrix.python }}-
         skip-save: true
     - name: Run unit tests
       run: make test
@@ -83,9 +81,8 @@ jobs:
     - uses: satackey/action-docker-layer-caching@v0.0.11
       continue-on-error: true
       with:
-        key: python-${{ matrix.python }}-${{ matrix.django }}-{hash}
-        restore-keys: |
-          python-${{ matrix.python }}-${{ matrix.django }}-
+        key: python-${{ matrix.python }}-{hash}
+        restore-keys: python-${{ matrix.python }}-
         skip-save: true
     - name: Run unit tests
       run: make test
