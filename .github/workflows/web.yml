@@ -31,8 +31,6 @@ jobs:
       with:
         key: python-${{ matrix.python }}-{hash}
         restore-keys: python-${{ matrix.python }}-
-    - name: Start database early
-      run: docker-compose up -d db
     - name: Build application
       run: make build
     - name: Migration check
@@ -55,6 +53,8 @@ jobs:
     - run: |
         docker-compose --file docker-compose.yml --file docker-compose.test.yml pull
         docker pull python:${{matrix.python}}-slim
+    - name: Start database early
+      run: docker-compose up -d db
     - uses: satackey/action-docker-layer-caching@v0.0.11
       continue-on-error: true
       with:
@@ -78,6 +78,8 @@ jobs:
     - run: |
         docker-compose --file docker-compose.yml --file docker-compose.test.yml pull
         docker pull python:${{matrix.python}}-slim
+    - name: Start database early
+      run: docker-compose up -d db
     - uses: satackey/action-docker-layer-caching@v0.0.11
       continue-on-error: true
       with:
