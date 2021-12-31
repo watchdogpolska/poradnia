@@ -33,10 +33,6 @@ jobs:
         restore-keys: python-${{ matrix.python }}-
     - name: Build application
       run: make build
-    - name: Migration check
-      run: make check
-    - name: Show settings
-      run: make settings
   test-django:
     runs-on: ubuntu-latest
     needs:
@@ -61,6 +57,10 @@ jobs:
         key: python-${{ matrix.python }}-{hash}
         restore-keys: python-${{ matrix.python }}-
         skip-save: true
+    - name: Migration check
+      run: make check
+    - name: Show settings
+      run: make settings
     - name: Run unit tests
       run: make test
   test-cypress:
