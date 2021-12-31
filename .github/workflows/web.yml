@@ -7,13 +7,15 @@ on:
   pull_request:
 
 jobs:
-  django:
+  build:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python: 
           - 3.6
           - 3.7
+    env:
+      PYTHON_VERSION: ${{ matrix.python }}
     steps:
     - uses: actions/checkout@v1
     # Pull the latest image to build, and avoid caching pull-only images.
@@ -34,17 +36,59 @@ jobs:
       run: docker-compose up -d db
     - name: Build application
       run: make build
-      env:
-        PYTHON_VERSION: ${{ matrix.python }}
     - name: Migration check
       run: make check
     - name: Show settings
       run: make settings
+  test-django:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    strategy:
+      matrix:
+        python: 
+          - 3.6
+          - 3.7
+    env:
+      PYTHON_VERSION: ${{ matrix.python }}
+    steps:
+    - uses: actions/checkout@v1
+    - run: |
+        docker-compose --file docker-compose.yml --file docker-compose.test.yml pull
+        docker pull python:${{matrix.python}}-slim
+    - uses: satackey/action-docker-layer-caching@v0.0.11
+      continue-on-error: true
+      with:
+        key: python-${{ matrix.python }}-${{ matrix.django }}-{hash}
+        restore-keys: |
+          python-${{ matrix.python }}-${{ matrix.django }}-
+        skip-save: true
     - name: Run unit tests
       run: make test
-    - name: Run e2e tests
-      run: make e2e
-
+  test-cypress:
+    runs-on: ubuntu-latest
+    needs:
+      - build
+    strategy:
+      matrix:
+        python: 
+          - 3.6
+    env:
+      PYTHON_VERSION: ${{ matrix.python }}
+    steps:
+    - uses: actions/checkout@v1
+    - run: |
+        docker-compose --file docker-compose.yml --file docker-compose.test.yml pull
+        docker pull python:${{matrix.python}}-slim
+    - uses: satackey/action-docker-layer-caching@v0.0.11
+      continue-on-error: true
+      with:
+        key: python-${{ matrix.python }}-${{ matrix.django }}-{hash}
+        restore-keys: |
+          python-${{ matrix.python }}-${{ matrix.django }}-
+        skip-save: true
+    - name: Run unit tests
+      run: make test
   docs:
     runs-on: ubuntu-latest
     steps:
