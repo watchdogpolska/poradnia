@@ -11,8 +11,8 @@ class GliwiceETRParser(BaseParser):
     URL = "http://www.gliwice.wsa.gov.pl/56/49/elektroniczny-terminarz-rozpraw-etr.html"
     POST_DATA = {
         "act": "szukaj",
-        "data_posiedzenia": "2018-04-16",
-        "data_posiedzenia_do": "2018-04-16",
+        "data_posiedzenia": "",
+        "data_posiedzenia_do": "",
         "guzik": "Filtruj / Sortuj",
         "opis": "",
         "sala_rozpraw": "---",
