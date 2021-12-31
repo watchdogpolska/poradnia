@@ -341,3 +341,7 @@ RICH_TEXT_ENABLED = env.bool("DJANGO_RICH_TEXT_ENABLED", True)
 GITHUB_REVISION_REPO_URL = "https://github.com/watchdogpolska/poradnia"
 
 LETTER_RECEIVE_SECRET = "xxxxxxxxx"
+
+LETTER_RECEIVE_WHITELISTED_ADDRESS = [
+    "porady@siecobywatelska.pl",
+]

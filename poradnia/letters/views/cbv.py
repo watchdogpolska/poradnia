@@ -9,6 +9,7 @@ from braces.views import (
     SetHeadlineMixin,
     UserFormKwargsMixin,
 )
+from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.sites.models import Site
@@ -132,12 +133,16 @@ class LetterListView(
 class ReceiveEmailView(View):
     required_content_type = "multipart/form-data"
 
-    def is_target_current_site(self, manifest):
+    def is_allowed_recipient(self, manifest):
         domain = Site.objects.get_current().domain
-        return any(x.endswith(f"@{domain}") for x in manifest["headers"]["to"])
+        return any(
+            addr in x or domain in x
+            for x in manifest["headers"]["to"]
+            for addr in settings.LETTER_RECEIVE_WHITELISTED_ADDRESS
+        )
 
     def is_autoreply(self, manifest):
-        return "auto_reply_type" in manifest["headers"]
+        return manifest["headers"].get("auto_reply_type", False)
 
     def create_user(self, manifest):
         return get_user_model().objects.get_by_email_or_create(
@@ -200,7 +205,7 @@ class ReceiveEmailView(View):
         REFUSE_MESSAGE = (
             "There is no e-mail address for the target system in the recipient field. "
         )
-        if not self.is_target_current_site(manifest):
+        if not self.is_allowed_recipient(manifest):
             if not self.is_autoreply(manifest):
                 self.refuse_letter(manifest)
                 return HttpResponseBadRequest(
