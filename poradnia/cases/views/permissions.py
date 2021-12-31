@@ -60,7 +60,7 @@ class UserPermissionCreateView(CasePermissionTestMixin, FormView):
                     user=user, case=self.case
                 ),
             )
-        self.case.status_update()
+        self.case.update_status()
         return super().form_valid(form)
 
     def get_success_url(self):
@@ -98,7 +98,7 @@ class UserPermissionUpdateView(
 
     def form_valid(self, form):
         form.save_obj_perms()
-        self.case.status_update()
+        self.case.update_status()
         return super().form_valid(form)
 
     def get_form_valid_message(self):
@@ -129,7 +129,7 @@ class CaseGroupPermissionView(CasePermissionTestMixin, FormValidMessageMixin, Fo
     def form_valid(self, form, *args, **kwargs):
         self.form = form
         form.assign()
-        self.case.status_update()
+        self.case.update_status()
         return super().form_valid(form=form, *args, **kwargs)
 
     def get_success_url(self):
@@ -160,7 +160,7 @@ class UserPermissionRemoveView(
         CaseUserObjectPermission.objects.filter(
             user=self.user, content_object=self.object
         ).delete()
-        self.object.status_update()
+        self.object.update_status()
 
     def get_success_message(self):
         return _('Removed all permission of "{user}" in case "{case}"').format(

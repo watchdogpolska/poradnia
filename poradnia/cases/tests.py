@@ -179,24 +179,24 @@ class CaseTestCase(TestCase):
         assign_perm("cases.can_send_to_client", user, other_object)
         self.assertFalse(self.object.has_assignees())
 
-    def test_status_update_reopen(self):
+    def test_update_status_reopen(self):
         self.object.status = Case.STATUS.closed
-        self.object.status_update(reopen=False)
+        self.object.update_status(reopen=False)
         self.assertEqual(self.object.status, Case.STATUS.closed)
-        self.object.status_update(reopen=True)
+        self.object.update_status(reopen=True)
         self.assertEqual(self.object.status, Case.STATUS.free)
 
-    def test_status_update_reopen_with_assignee(self):
+    def test_update_status_reopen_with_assignee(self):
         assign_perm("cases.can_send_to_client", UserFactory(is_staff=True), self.object)
         self.object.status = Case.STATUS.closed
-        self.object.status_update(reopen=False)
+        self.object.update_status(reopen=False)
         self.assertEqual(self.object.status, Case.STATUS.closed)
-        self.object.status_update(reopen=True)
+        self.object.update_status(reopen=True)
         self.assertEqual(self.object.status, Case.STATUS.assigned)
 
     def test_status_for_moderated(self):
         assign_perm("cases.can_view", UserFactory(is_staff=True), self.object)
-        self.object.status_update()
+        self.object.update_status()
         self.assertEqual(self.object.status, Case.STATUS.moderated)
 
     def test_update_counters_last_received_default(self):
@@ -273,7 +273,7 @@ class CaseUserObjectPermissionTestCase(TestCase):
         """
         Build a case with a given set of assignees and set its status afterwards.
 
-        Will throw if provided params result in a volatile case, i.e. one that might change its status on the first `status_update` call. Such cases are not feasible for testing status restoration.
+        Will throw if provided params result in a volatile case, i.e. one that might change its status on the first `update_status` call. Such cases are not feasible for testing status restoration.
         """
         perm_id = "cases.can_send_to_client"
         case = CaseFactory()
@@ -287,7 +287,7 @@ class CaseUserObjectPermissionTestCase(TestCase):
         case.save()
 
         # Check if the status is valid, i.e. didn't change on the status update after making no changes.
-        case.status_update()
+        case.update_status()
         if case.status != case_status:
             raise Exception(
                 f"Invalid case specified. Status changed to {case.status} after first update. Expected {case_status}."
@@ -363,7 +363,7 @@ class CaseUserObjectPermissionTestCase(TestCase):
                 remove_perm("cases.can_send_to_client", user, case)
 
                 # Manually update status, as `remove_perm` doesn't trigger the `delete` logic.
-                case.status_update(save=True)
+                case.update_status(save=True)
                 case.refresh_from_db()
 
                 self.assertEqual(case.status, status_before, "Status not restored.")

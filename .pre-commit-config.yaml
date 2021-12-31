@@ -30,3 +30,12 @@ repos:
       - id: isort
         name: isort (python)
         args: ["--profile", "black", "--filter-files"]
+  - repo: https://github.com/sirosen/check-jsonschema
+    rev: 0.9.1
+    hooks:
+      - id: check-github-workflows
+      - id: check-readthedocs
+  - repo:  https://github.com/adrienverge/yamllint
+    rev: v1.26.3
+    hooks: 
+      - id: yamllint
