@@ -7,12 +7,12 @@ from braces.views import (
     SelectRelatedMixin,
     UserFormKwargsMixin,
 )
-from cached_property import cached_property
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import force_text
+from django.utils.functional import cached_property
 from django.utils.html import mark_safe
 from django.utils.timezone import now
 from django.utils.translation import ugettext as _
