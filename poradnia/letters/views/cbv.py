@@ -197,14 +197,17 @@ class ReceiveEmailView(View):
             )
         manifest = json.load(request.FILES["manifest"])
 
+        REFUSE_MESSAGE = (
+            "There is no e-mail address for the target system in the recipient field. "
+        )
         if not self.is_target_current_site(manifest):
             if not self.is_autoreply(manifest):
                 self.refuse_letter(manifest)
                 return HttpResponseBadRequest(
-                    "There is no e-mail address for the target system in the recipient field. Notification have been send."
+                    REFUSE_MESSAGE + "Notification have been send."
                 )
             return HttpResponseBadRequest(
-                "There is no e-mail address for the target system in the recipient field. Notification have been skipped."
+                REFUSE_MESSAGE + "Notification have been skipped."
             )
         actor = self.create_user(manifest)
         case = self.create_case(manifest, actor)
