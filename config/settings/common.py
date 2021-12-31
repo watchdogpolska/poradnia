@@ -46,7 +46,6 @@ THIRD_PARTY_APPS = (
     "tinycontent",
     "sorl.thumbnail",
     "atom",
-    "import_export",
     "django_filters",
     "bootstrap_pagination",
     "github_revision",
