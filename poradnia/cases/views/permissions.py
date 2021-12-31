@@ -1,11 +1,11 @@
 from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from atom.views import ActionMessageMixin, ActionView
 from braces.views import FormValidMessageMixin
-from cached_property import cached_property
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 from django.views.generic import FormView
 from guardian.shortcuts import get_perms

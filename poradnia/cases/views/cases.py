@@ -2,11 +2,11 @@ from collections import OrderedDict
 
 from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from braces.views import SelectRelatedMixin, UserFormKwargsMixin
-from cached_property import cached_property
 from dal import autocomplete
 from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import redirect
+from django.utils.functional import cached_property
 from django.utils.translation import ugettext as _
 from django.views.generic import UpdateView
 from django.views.generic.detail import DetailView

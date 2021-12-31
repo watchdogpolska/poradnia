@@ -32,7 +32,6 @@ cssselect==1.1.0
 # Your custom requirements go here
 django-guardian==2.4.0
 django-mailbox==4.8.2
-talon==1.4.4
 django-filter==21.1
 django-autocomplete-light==3.5.0
 # version from PR: https://github.com/mjr27/django-flatpages-tinymce/pull/19/files
@@ -47,7 +46,6 @@ django-bootstrap-pagination==1.7.1
 sentry-sdk==1.5.1
 django-import-export==2.7.1
 python-dateutil==2.8.2
-cached-property==1.5.2
 django-github-revision==0.0.3
 unicodecsv==0.14.1
 zipstream-new==1.1.8
