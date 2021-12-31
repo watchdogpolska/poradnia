@@ -7,14 +7,13 @@ from braces.views import (
 )
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.urls import reverse_lazy
 from django.utils.translation import ugettext as _
 from django.views.generic import CreateView, DeleteView, DetailView
 from django_filters.views import FilterView
 
 from .models import Feedback
 from .utils import get_filter, get_form
-
-from django.urls import reverse_lazy
 
 
 class FeedbackListView(

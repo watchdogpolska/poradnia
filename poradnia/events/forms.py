@@ -1,12 +1,11 @@
 from atom.ext.crispy_forms.forms import FormHorizontalMixin, SingleButtonMixin
 from atom.forms import AuthorMixin
 from django import forms
+from django.urls import reverse
 
 from poradnia.letters.forms import PartialMixin
 
 from .models import Event
-
-from django.urls import reverse
 
 
 class EventForm(

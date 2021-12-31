@@ -2,10 +2,11 @@ from os.path import basename
 
 import zipstream
 from django.http import StreamingHttpResponse
+from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, RedirectView
+
 from poradnia.letters.models import Attachment
 from poradnia.users.utils import PermissionMixin
-from django.shortcuts import get_object_or_404
 
 
 class StreamAttachmentView(PermissionMixin, ListView):

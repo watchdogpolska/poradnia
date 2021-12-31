@@ -24,6 +24,12 @@ repos:
     - id: pyupgrade
       args:
       - --py3-only
+  - repo: https://github.com/pycqa/isort
+    rev: 5.10.1
+    hooks:
+      - id: isort
+        name: isort (python)
+        args: ["--profile", "black", "--filter-files"]
   - repo: https://github.com/sirosen/check-jsonschema
     rev: 0.9.1
     hooks:

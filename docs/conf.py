@@ -15,12 +15,12 @@ import inspect
 import os
 import sys
 
+# Py3 compatible, TODO: rebuild config
+from builtins import str as unicode
+
 import django
 from django.urls.resolvers import get_resolver
 from django.utils.html import strip_tags
-
-# Py3 compatible, TODO: rebuild config
-from builtins import str as unicode
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the

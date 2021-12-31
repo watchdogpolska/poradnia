@@ -1,7 +1,7 @@
+import logging
 import sys
 from enum import Enum
 
-import logging
 from django.conf import settings
 from django.core.mail import get_connection
 from django.core.mail.message import EmailMultiAlternatives

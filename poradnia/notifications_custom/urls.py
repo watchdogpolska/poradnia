@@ -1,6 +1,5 @@
-from django.urls import path
-
 import notifications
+from django.urls import path
 
 from . import views
 

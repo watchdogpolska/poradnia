@@ -7,6 +7,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from django.db import models
 from django.db.models import (
+    BooleanField,
     Count,
     F,
     Func,
@@ -14,20 +15,18 @@ from django.db.models import (
     Prefetch,
     Q,
     expressions,
-    BooleanField,
 )
-
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save, pre_delete
+from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import assign_perm, get_objects_for_user, get_users_with_perms
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
-from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 
-from django.urls import reverse
+from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 
 CASE_PK_RE = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
 

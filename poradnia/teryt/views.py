@@ -2,6 +2,7 @@ from django.views.generic import DetailView, ListView
 
 from poradnia.advicer.models import Advice
 from poradnia.cases.models import Case
+
 from .models import JST
 
 

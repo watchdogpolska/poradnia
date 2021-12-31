@@ -1,9 +1,9 @@
-from django.contrib.auth.models import Permission
-from django.contrib.contenttypes.models import ContentType
 import factory
 import factory.fuzzy
+from django.contrib.auth.models import Permission
+from django.contrib.contenttypes.models import ContentType
 
-from poradnia.cases.models import Case, PermissionGroup, CaseUserObjectPermission
+from poradnia.cases.models import Case, CaseUserObjectPermission, PermissionGroup
 from poradnia.users.factories import UserFactory
 
 

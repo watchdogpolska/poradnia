@@ -4,6 +4,7 @@ from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.db.models import Case, Count, F, Func, IntegerField, Q, When
 from django.db.models.query import QuerySet
+from django.urls import reverse
 from django.utils.datetime_safe import datetime
 from django.utils.translation import ugettext_lazy as _
 from guardian.mixins import GuardianUserMixin
@@ -13,8 +14,6 @@ from sorl.thumbnail import ImageField
 
 from poradnia.cases.models import Case as CaseModel
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
-
-from django.urls import reverse
 
 _("Username or e-mail")  # Hack to overwrite django translation
 _("Login")

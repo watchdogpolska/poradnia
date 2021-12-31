@@ -1,25 +1,24 @@
-import json
 import hashlib
+import json
 import zipfile
 from io import BytesIO
 
 from django.conf import settings
 from django.core import mail
-from django.test import TestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
+from django.test import TestCase
+from django.urls import reverse, reverse_lazy
 from guardian.shortcuts import assign_perm
 
 from poradnia.cases.factories import CaseFactory, CaseUserObjectPermissionFactory
 from poradnia.cases.models import Case
-from poradnia.letters.factories import LetterFactory, AttachmentFactory
+from poradnia.letters.factories import AttachmentFactory, LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.letters.settings import LETTER_RECEIVE_SECRET
 from poradnia.users.factories import UserFactory
 from poradnia.utils.tests.mixins import AssertSendMailMixin
 
 from .compat import refresh_from_db
-
-from django.urls import reverse, reverse_lazy
 
 
 class CaseMixin(AssertSendMailMixin):

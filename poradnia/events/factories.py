@@ -1,7 +1,7 @@
 from datetime import timedelta
 
-from django.utils import timezone
 import factory.fuzzy
+from django.utils import timezone
 
 from poradnia.cases.factories import CaseFactory
 from poradnia.users.factories import UserFactory

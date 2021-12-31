@@ -1,6 +1,6 @@
 import locale
-from atom.ext.guardian.views import RaisePermissionRequiredMixin
 
+from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from braces.views import (
     FormValidMessageMixin,
     LoginRequiredMixin,

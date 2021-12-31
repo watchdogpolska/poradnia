@@ -2,14 +2,13 @@ from datetime import timedelta
 
 from django.conf import settings
 from django.db import models
+from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.translation import ugettext_lazy as _
 from model_utils.models import TimeStampedModel
 
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from poradnia.users.models import Profile
-
-from django.urls import reverse
 
 
 class Reminder(TimeStampedModel):

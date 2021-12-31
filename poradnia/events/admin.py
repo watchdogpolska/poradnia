@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Reminder, Event
+from .models import Event, Reminder
 
 
 class ReminderInline(admin.StackedInline):

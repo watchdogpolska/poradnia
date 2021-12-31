@@ -1,14 +1,13 @@
-import unicodecsv as csv
 from datetime import datetime, timedelta
+from io import BytesIO
 
 import requests
+import unicodecsv as csv
 from lxml import html
 
 from poradnia.judgements.models import SessionRow
 from poradnia.judgements.parsers.base import BaseParser
 from poradnia.judgements.registry import register_parser
-
-from io import BytesIO
 
 
 @register_parser("WSA_Warszawa")

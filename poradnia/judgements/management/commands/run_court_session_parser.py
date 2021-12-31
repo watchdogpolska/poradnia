@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
+
 from poradnia.judgements.models import Court
 from poradnia.judgements.registry import get_parser_keys
 from poradnia.judgements.settings import JUDGEMENT_BOT_USERNAME

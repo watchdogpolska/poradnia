@@ -1,8 +1,8 @@
+from .attachments import DownloadAttachmentView, StreamAttachmentView  # noqa
 from .cbv import (  # noqa
-    NewCaseCreateView,
-    LetterUpdateView,
     LetterListView,
+    LetterUpdateView,
+    NewCaseCreateView,
     ReceiveEmailView,
 )
-from .fbv import add, send, detail  # noqa
-from .attachments import StreamAttachmentView, DownloadAttachmentView  # noqa
+from .fbv import add, detail, send  # noqa

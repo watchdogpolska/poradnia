@@ -8,13 +8,13 @@ from crispy_forms.layout import Submit
 from dal import autocomplete
 from django import forms
 from django.contrib.auth import get_user_model
+from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from guardian.shortcuts import assign_perm
-from ..records.models import Record
-from ..letters.models import Letter
-from .models import Case, PermissionGroup
 
-from django.urls import reverse
+from ..letters.models import Letter
+from ..records.models import Record
+from .models import Case, PermissionGroup
 
 
 class CaseForm(

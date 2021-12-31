@@ -1,8 +1,8 @@
 import datetime
 
-from django.utils.timezone import utc
 import factory
 import factory.fuzzy
+from django.utils.timezone import utc
 
 
 class IssueFactory(factory.django.DjangoModelFactory):

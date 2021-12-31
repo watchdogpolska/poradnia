@@ -1,6 +1,7 @@
 import sys
-from pytz import timezone
+
 from django.utils.encoding import force_text
+from pytz import timezone
 
 from poradnia.events.models import Event
 from poradnia.judgements.models import CourtCase, CourtSession

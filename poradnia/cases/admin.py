@@ -3,6 +3,7 @@ from django.utils.translation import ugettext as _
 from guardian.admin import GuardedModelAdmin
 
 from poradnia.records.admin import RecordInline
+
 from .models import Case, PermissionGroup
 
 

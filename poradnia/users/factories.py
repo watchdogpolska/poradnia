@@ -2,7 +2,6 @@ import string
 
 import factory.fuzzy
 
-
 polish_letters = string.ascii_letters
 polish_letters += b"\xc4\x85\xc5\xbc\xc5\xba\xc4\x87\xc5\x84\xc3\xb3".decode("utf-8")
 

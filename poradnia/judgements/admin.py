@@ -1,10 +1,10 @@
 from django import forms
 from django.contrib import admin
+from django.utils.translation import ugettext_lazy as _
 
 # Register your models here.
 from poradnia.judgements.models import Court
 from poradnia.judgements.registry import get_parser_keys
-from django.utils.translation import ugettext_lazy as _
 
 
 class CourtAdminForm(forms.ModelForm):
