@@ -11,6 +11,7 @@ from braces.views import (
 )
 from django.contrib import messages
 from django.contrib.auth import get_user_model
+from django.contrib.sites.models import Site
 from django.core.exceptions import PermissionDenied
 from django.core.files.base import File
 from django.http import HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
@@ -21,6 +22,7 @@ from django_filters.views import FilterView
 
 from poradnia.cases.models import Case
 from poradnia.letters.settings import LETTER_RECEIVE_SECRET
+from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 from poradnia.users.utils import PermissionMixin
 
 from ..forms import AttachmentForm, LetterForm, NewCaseForm
@@ -130,6 +132,53 @@ class LetterListView(
 class ReceiveEmailView(View):
     required_content_type = "multipart/form-data"
 
+    def is_target_current_site(self, manifest):
+        domain = Site.objects.get_current().domain
+        return any(x.endswith(f"@{domain}") for x in manifest["headers"]["to"])
+
+    def is_autoreply(self, manifest):
+        return "auto_reply_type" in manifest["headers"]
+
+    def create_user(self, manifest):
+        return get_user_model().objects.get_by_email_or_create(
+            manifest["headers"]["from"][0]
+        )
+
+    def create_case(self, manifest, actor):
+        return self.get_case(
+            subject=manifest["headers"]["subject"],
+            addresses=manifest["headers"]["to+"],
+            actor=actor,
+        )
+
+    def refuse_letter(self, manifest):
+        context = {
+            "to": manifest["headers"]["to"],
+            "subject": manifest["headers"]["subject"],
+        }
+        TemplateMailManager.send(
+            TemplateKey.LETTER_REFUSED,
+            recipient_list=manifest["headers"]["from"],
+            context=context,
+        )
+
+    def create_letter(self, request, actor, case, manifest):
+        letter = Letter.objects.create(
+            name=manifest["headers"]["subject"],
+            created_by=actor,
+            created_by_is_staff=actor.is_staff,
+            case=case,
+            genre=Letter.GENRE.mail,
+            status=self.get_letter_status(actor=actor, case=case),
+            text=manifest["text"]["content"],
+            html="",
+            signature=manifest["text"]["quote"],
+            eml=File(self.request.FILES["eml"]),
+        )
+        for attachment in request.FILES.getlist("attachment"):
+            Attachment.objects.create(letter=letter, attachment=File(attachment))
+        return letter
+
     def post(self, request):
         if request.GET.get("secret") != LETTER_RECEIVE_SECRET:
             raise PermissionDenied
@@ -148,29 +197,21 @@ class ReceiveEmailView(View):
             )
         manifest = json.load(request.FILES["manifest"])
 
-        actor = get_user_model().objects.get_by_email_or_create(
-            manifest["headers"]["from"][0]
+        REFUSE_MESSAGE = (
+            "There is no e-mail address for the target system in the recipient field. "
         )
-        case = self.get_case(
-            subject=manifest["headers"]["subject"],
-            addresses=manifest["headers"]["to+"],
-            actor=actor,
-        )
-        letter = Letter.objects.create(
-            name=manifest["headers"]["subject"],
-            created_by=actor,
-            created_by_is_staff=actor.is_staff,
-            case=case,
-            genre=Letter.GENRE.mail,
-            status=self.get_letter_status(actor=actor, case=case),
-            text=manifest["text"]["content"],
-            html="",
-            signature=manifest["text"]["quote"],
-            eml=File(self.request.FILES["eml"]),
-        )
-        for attachment in request.FILES.getlist("attachment"):
-            Attachment.objects.create(letter=letter, attachment=File(attachment))
-
+        if not self.is_target_current_site(manifest):
+            if not self.is_autoreply(manifest):
+                self.refuse_letter(manifest)
+                return HttpResponseBadRequest(
+                    REFUSE_MESSAGE + "Notification have been send."
+                )
+            return HttpResponseBadRequest(
+                REFUSE_MESSAGE + "Notification have been skipped."
+            )
+        actor = self.create_user(manifest)
+        case = self.create_case(manifest, actor)
+        letter = self.create_letter(request, actor, case, manifest)
         if case.status == Case.STATUS.closed and letter.status == Letter.STATUS.done:
             case.update_status(reopen=True, save=False)
         case.handled = actor.is_staff is True and letter.status == Letter.STATUS.done

@@ -39,6 +39,7 @@ class TemplateKey(Enum):
     EVENT_REMINDER = auto()
 
     LETTER_ACCEPTED = auto()
+    LETTER_REFUSED = auto()
     LETTER_CREATED = auto()
     LETTER_DROP_A_NOTE = auto()
     LETTER_SEND_TO_CLIENT = auto()
@@ -97,6 +98,9 @@ class TemplateMailManager:
         ),
         TemplateKey.LETTER_ACCEPTED: MailTemplate.from_prefix(
             "letters/email/letter_accepted"
+        ),
+        TemplateKey.LETTER_REFUSED: MailTemplate.from_prefix(
+            "letters/email/letter_refused"
         ),
         TemplateKey.LETTER_CREATED: MailTemplate.from_prefix(
             "letters/email/letter_created"

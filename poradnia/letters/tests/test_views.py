@@ -4,6 +4,7 @@ import zipfile
 from io import BytesIO
 
 from django.conf import settings
+from django.contrib.sites.models import Site
 from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase
@@ -634,21 +635,35 @@ class ReceiveEmailTestCase(TestCase):
             case.get_users_with_perms().filter(pk=case.created_by.pk).exists()
         )
 
-    def _get_body(self, case=None, from_=None):
+    def test_refuse_misaddressed_letter(self):
+        user = UserFactory()
+        response = self.client.post(
+            path=self.authenticated_url,
+            data=self._get_body(
+                from_=user.email, headers={"to": ["some-other-mail@example.com"]}
+            ),
+        )
+        self.assertEqual(response.status_code, 400)
+        emails = [x.to[0] for x in mail.outbox]
+        self.assertEqual(len(emails), 1)
+        self.assertIn(user.email, emails)
+
+    def _get_body(self, case=None, from_=None, headers=None):
+        domain = Site.objects.get_current().domain
         manifest = {
             "headers": {
-                "auto_reply_type": "vacation-reply",
                 "cc": [],
                 "date": "2018-07-30T11:33:22",
                 "from": [from_ or "new-user@example.com"],
                 "message_id": "<E1fk6QU-00CPTw-Ey@s50.hekko.net.pl>",
                 "subject": "Nowa wiadomość",
-                "to": [case.get_email() if case else "user-b@example.com"],
+                "to": [case.get_email() if case else f"user-b@{domain}"],
                 "to+": [
                     "user-b@siecobywatelska.pl",
                     "user-c@siecobywatelska.pl",
-                    case.get_email() if case else "user-b@example.com",
+                    case.get_email() if case else f"user-b@{domain}",
                 ],
+                **(headers or {}),
             },
             "text": {
                 "content": "W dniach 3.07-17.08.2018 r. przebywam na urlopie.",
