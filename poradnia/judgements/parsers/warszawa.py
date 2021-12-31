@@ -1,8 +1,8 @@
+import csv
 from datetime import datetime, timedelta
-from io import BytesIO
+from io import StringIO
 
 import requests
-import unicodecsv as csv
 from lxml import html
 
 from poradnia.judgements.models import SessionRow
@@ -12,7 +12,7 @@ from poradnia.judgements.registry import register_parser
 
 @register_parser("WSA_Warszawa")
 class WarsawETRParser(BaseParser):
-    URL = "http://www.warszawa.wsa.gov.pl/183/elektroniczny-terminarz-rozpraw.html"
+    URL = "https://bip.warszawa.wsa.gov.pl/183/elektroniczny-terminarz-rozpraw.html"
     # Also http://www.nsa.gov.pl/ewokanda/wsa/warszawa/
     POST_DATA = {
         "act": "szukaj",
@@ -38,10 +38,9 @@ class WarsawETRParser(BaseParser):
         content = self.get_content()
         tree = html.document_fromstring(content)
         csv_text = tree.cssselect("#csv_text")[0].text_content()
-        csv_text = csv_text.encode("utf-8")
 
         csv_data = csv.DictReader(
-            csvfile=BytesIO(csv_text),
+            f=StringIO(csv_text),
             delimiter=" ",
             quotechar="'",
             quoting=csv.QUOTE_ALL,

@@ -32,13 +32,12 @@ my_vcr = VCR(
 
 
 class ParserTestCaseMixin(TestCase):
-    @my_vcr.use_cassette()
     def test_return_valid_signaturerow(self):
         for parser_key in get_parser_keys():
             court = CourtFactory(parser_key=parser_key)
             with my_vcr.use_cassette(
                 generator(f=self.test_return_valid_signaturerow, suffix=parser_key)
-            ):
+            ), self.subTest(parser_key=parser_key):
                 for i, session_row in enumerate(court.get_parser().get_session_rows()):
                     msg = "Failed for {} in {}.".format(i, parser_key)
                     self.assertTrue(
@@ -81,7 +80,7 @@ class ParserTestCaseMixin(TestCase):
     @my_vcr.use_cassette()
     def test_parse_date_and_hours(self):
         expected_time = datetime.datetime(
-            2018, 4, 24, 9, 0, tzinfo=timezone("Europe/Warsaw")
+            2021, 11, 30, 8, 45, tzinfo=timezone("Europe/Warsaw")
         )
         parser = CourtFactory(parser_key="WSA_Bialystok").get_parser()
         session_row = next(parser.get_session_rows())

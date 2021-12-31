@@ -110,7 +110,7 @@ class ManagerTestCase(TestCase):
     @my_vcr.use_cassette()
     def test_against_unnecessary_changes(self):
         courtcase = CourtCaseFactory(
-            court__parser_key="WSA_Gdansk", signature="II SA/Gd 243/18"
+            court__parser_key="WSA_Gdansk", signature="II SA/Gd 486/21"
         )
         CaseUserObjectPermissionFactory(
             content_object=courtcase.case,

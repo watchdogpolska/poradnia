@@ -2,29 +2,36 @@ interactions:
 - request:
     body: data=&do=&kierunek=rosnaco&porzadek=termin&przedmiot=&sala=&sedzia=&sygnatura=&symbol=&wydzial=
     headers:
-      Accept: ['*/*']
-      Accept-Encoding: ['gzip, deflate']
-      Connection: [keep-alive]
-      Content-Length: ['95']
-      Content-Type: [application/x-www-form-urlencoded]
-      User-Agent: [python-requests/2.18.4]
+      Accept:
+      - '*/*'
+      Accept-Encoding:
+      - gzip, deflate
+      Connection:
+      - keep-alive
+      Content-Length:
+      - '95'
+      Content-Type:
+      - application/x-www-form-urlencoded
+      User-Agent:
+      - python-requests/2.26.0
     method: POST
-    uri: http://www.nsa.gov.pl/ewokanda/wsa/gorzow/
+    uri: https://www.nsa.gov.pl/ewokanda/wsa/gorzow/
   response:
-    body: {string: "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Transitional//EN\"
-        \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd\">\n<html xmlns=\"http://www.w3.org/1999/xhtml\">\n\n<head>\n<meta
-        NAME=\"ROBOTS\" CONTENT=\"NOARCHIVE\"/>\n<meta http-equiv=\"Content-Language\"
-        content=\"pl\" />\n<meta http-equiv=\"Content-Type\" content=\"text/html;
-        charset=utf-8\" />\n<title>eWokanda - WSAGo</title>\n<style type=\"text/css\">\n\nbody
+    body:
+      string: "<!DOCTYPE html>\n<html lang=\"pl\" xmlns=\"http://www.w3.org/1999/xhtml\">\n\n<head>\n<meta
+        name=\"robots\" content=\"noarchive\"/>\n\n<meta http-equiv=\"Content-Type\"
+        content=\"text/html; charset=utf-8\" />\n<meta name=\"Description\" content=\"eWokanda
+        WSA\"/>\n<title>eWokanda - WSAGo</title>\n<style type=\"text/css\">\n\nbody
         {\n\tfont-family: Arial, Helvetica, sans-serif;\n\tfont-size:14px;\n}\n\nfieldset{\n\tborder-radius:
-        15px;\n\tbox-shadow: 10px 10px 5px #888888;\n\tbackground-color:#F0F4FA;\n}\n\n#tabela
-        {\n\tfont-family: Arial, Helvetica, sans-serif;\n\twidth:100%;\n\tborder-collapse:collapse;\n}\n\n#tabela
-        td, #tabela th {\n\tfont-size:1em;\n\tborder:1px solid #4169E1;\n\tpadding:3px
-        7px 2px 7px;\n}\n#tabela th {\n\tfont-size:1.1em;\n\ttext-align:left;\n\tpadding-top:5px;\n\tpadding-bottom:4px;\n\tbackground-color:#82A1DA;\n\tcolor:#ffffff;\n}\n\n#tabela
+        11px;\n\tbox-shadow: 10px 10px 5px #888888;\n\tbackground-color:#F0F4FA;\n\tcolor:#000000;\n}\n\nh1
+        {\n\tmargin-top:0;\n\tmargin-bottom:0;\n\t}\n\n#tabela {\n\tfont-family: Arial,
+        Helvetica, sans-serif;\n\twidth:100%;\n\tborder-collapse:collapse;\n}\n\n#tabela
+        td, #tabela th {\n\tfont-size:11pt;\n\tborder:1px solid #4169E1;\n\tpadding:3px
+        7px 2px 7px;\n}\n#tabela th {\n\tfont-size:12pt;\n\tfont-weight: bold;\n\ttext-align:left;\n\tpadding-top:5px;\n\tpadding-bottom:4px;\n\tbackground-color:#3D5A85;\n\tcolor:#ffffff;\n}\n\n#tabela
         tr.alt td {\n\tcolor:#000000;\n\tbackground-color:#F0F4FA;\n}\n\n.styleOp1
-        {\n\twidth: 180px;\n\ttext-align: right;\n}\n\n.styleOp2 {\n\twidth: 110px;\n}\n\n.styleOp3
-        {\n\twidth: 50px;\n\ttext-align: right;\t\n}\n\n.styleOp4 {\n\twidth: 110px;\n}\n\n.styleOp5
-        {\n\twidth: 50px;\n}\n.styleOp6 {\n\twidth: 200px;\n\ttext-align: right;\t\n}\n.styleOp7
+        {\n\twidth: 180px;\n\ttext-align: right;\n}\n\n.styleOp2 {\n\twidth: 140px;\n}\n\n.styleOp3
+        {\n\twidth: 55px;\n\ttext-align: right;\t\n}\n\n.styleOp4 {\n\twidth: 140px;\n}\n\n.styleOp5
+        {\n\twidth: 50px;\n}\n.styleOp6 {\n\twidth: 150px;\n\ttext-align: right;\t\n}\n.styleOp7
         {\n\twidth: 250px;\n\ttext-align: left;\t\t\n}\n\n@media print {\n\t/* Arkusz
         dla wydruku */\n\t\nbody {\n\tfont-family: Georgia, 'Times New Roman', serif;\n\tfont-size:12px;\n}\t\nfieldset{\n\tborder-radius:10px;\n\tbox-shadow:
         10px 10px 5px #888888;\n\tbackground-color:#000000;\n\tfont-family: sans-serif;\n\tfont-size:12px;\n}\n#tabela
@@ -32,599 +39,1099 @@ interactions:
         td, #tabela th {\n\tfont-size:12px;\n\tborder:1px solid #4169E1;\n\tpadding:2px
         2px 2px 2px;\n\tpage-break-inside: avoid;\n}\n#tabela th {\n\tfont-size:12px;\n\ttext-align:left;\n\tpadding-top:5px;\n\tpadding-bottom:4px;\n\tbackground-color:#82A1DA;\n\tcolor:#ffffff;\n}\n\n#tabela
         tr.alt td {\n\tcolor:#000000;\n\tbackground-color:#F0F4FA;\n\tpage-break-inside:
-        avoid;\n}\n\n\t\n}\n</style>\n</head>\n\n<body>\n<TABLE id=\"header\">\n    <TBODY>\n
-        \   <TR>\n\t\t<TD id=\"logo\">\n\t\t\t<a href=\"http://www.gorzow.wsa.gov.pl/\"
-        target=\"_blank\"><IMG src=\"/ewokanda/pic/baner-wsago.jpg\" alt=\"WSA w Gorzowie
+        avoid;\n}\n\n\t\n}\n</style>\n</head>\n\n<body>\n\n<table id=\"header\" role=\"presentation\">\n\n
+        \   <tr>\n\t\t<td id=\"logo\">\n\t\t\t<h1><a href=\"http://www.gorzow.wsa.gov.pl/\"
+        target=\"_blank\"><img src=\"/ewokanda/pic/baner-wsago.jpg\" alt=\"WSA w Gorzowie
         Wielkopolskim, eWokanda, Wojew\xF3dzki S\u0105d Administracyjny w Gorzowie
         Wielkopolskim\" title=\"Wojew\xF3dzki S\u0105d Administracyjny w Gorzowie
-        Wielkopolskim\" border=\"0\"></a>\n\t\t</TD>\n\t</TR>\n\t\n\t</TBODY>\n</TABLE>\n\n\n\n<form
+        Wielkopolskim\" width=\"960\" height=\"138\" /></a></h1>\n\t\t</td>\n\t\t\n\t</tr>\n\t\n\n</table>\n\n\n<form
         method=\"post\">\n\t<fieldset name=\"opcje\">\n\t<legend><strong> Opcje wyszukania
-        </strong></legend>\n\t<div>\n\t\t\n\t<TABLE id=\"ow\" border=\"0\" cellspacing=\"5\"
-        cellpadding=\"0\" style=\"width: 950px\">\n\t<TBODY>\n\t<TR> \n\t\t<TD class=\"styleOp1\">\n\t\t\t<label
-        for=\"sygnatura\" title=\"Sygnatura lub jej fragment\">Sygnatura sprawy: </label>\n\t\t</TD>\n\t\t<TD
+        </strong></legend>\n\t<div>\n\t\t\n\t<table id=\"ow\" style=\"width: 1000px\"
+        role=\"presentation\">\n\t<tbody>\n\t<tr> \n\t\t<td class=\"styleOp1\">\n\t\t\t<label
+        for=\"sygnatura\" title=\"Sygnatura lub jej fragment\">Sygnatura sprawy: </label>\n\t\t</td>\n\t\t<td
         colspan=\"3\">\n\t\t\t<input type='text' name=\"sygnatura\" id=\"sygnatura\"
-        tabindex=\"1\" style=\"width: 255px\" value=\"\" maxlength=\"20\" />\n\t\t</TD>\n\t\t<TD
-        class=\"styleOp5\"></TD>\n\t\t<TD class=\"styleOp6\">\n\t\t\t<label for=\"porzadek\">Porz\u0105dek
-        sortowania:</label>\n\t\t</TD>\n\t\t<TD class=\"styleOp7\">\n\t\t\t<select
+        tabindex=\"1\" style=\"width: 335px\" value=\"\" maxlength=\"20\" />\n\t\t</td>\n\t\t<td
+        class=\"styleOp5\"></td>\n\t\t<td class=\"styleOp6\">\n\t\t\t<label for=\"porzadek\">Porz\u0105dek
+        sortowania:</label>\n\t\t</td>\n\t\t<td class=\"styleOp7\">\n\t\t\t<select
         name=\"porzadek\" id=\"porzadek\" tabindex=\"8\" style=\"width: 180px\">\n\t\t\t\t<option
         value=\"sygnatura\"   >wg sygnatury sprawy</option>\n\t\t\t\t<option value=\"termin\"
-        selected=\"selected\" >wg terminu rozprawy</option>\n\t\t\t\t<option value=\"sala\"
-        \  >wg sali</option>\n\t\t\t</select></TD>\n\t</TR>\n\n\t<TR>\n\t\t<TD class=\"styleOp1\">\n\t\t\t<label
-        for=\"data\">Data rozprawy: </label>\n\t\t</TD>\n\t\t<TD class=\"styleOp2\">\n\t\t\t<input
-        type=\"text\" name=\"data\" id=\"data\" tabindex=\"1\" style=\"width: 80px\"
-        value=\"\" \tmaxlength=\"10\" />\n\t\t</TD>\n\t\t\n\t\t<TD class=\"styleOp3\">\n\t\t\t<label
-        for=\"do\">do: </label>\n\t\t</TD>\n\t\t<TD class=\"styleOp4\">\n\t\t\t<input
-        type=\"text\" name=\"do\" id=\"do\" tabindex=\"2\" style=\"width: 85px\"\n\t\t\tvalue=\"\"
-        \tmaxlength=\"10\" />\t\n\t\t</TD>\n\t\t<TD></TD>\n\t\t<TD class=\"styleOp6\">\n\n\t\t\t\n\t\t</TD>\n\t\t<TD
+        selected=\"selected\" >wg terminu posiedzenia</option>\n\t\t\t\t<option value=\"sala\"
+        \  >wg sali</option>\n\t\t\t</select></td>\n\t</tr>\n\n\t<tr>\n\t\t<td class=\"styleOp1\">\n\t\t\t<label
+        for=\"data\">Data posiedzenia: </label>\n\t\t</td>\n\t\t<td class=\"styleOp2\">\n\t\t\t<input
+        type=\"date\" name=\"data\" id=\"data\" tabindex=\"1\" style=\"width: 130px\"
+        value=\"\" />\n\t\t</td>\t\n\t\t\n\t\t<td class=\"styleOp3\">\n\t\t\t<label
+        for=\"do\">do: </label>\n\t\t</td>\n\t\t<td class=\"styleOp4\">\n\t\t\t<input
+        type=\"date\" name=\"do\" id=\"do\" tabindex=\"2\" style=\"width: 130px\"\n\t\t\tvalue=\"\"
+        />\t\n\t\t</td>\n\t\t<td></td>\n\t\t<td class=\"styleOp6\">\n\n\t\t\t\n\t\t</td>\n\t\t<td
         class=\"styleOp7\">\n\t\t\t<label for=\"rosnaco\">rosn\u0105co</label>\n\t\t\t<input
         type=\"radio\" name=\"kierunek\" id=\"rosnaco\" tabindex=\"8\" value=\"rosnaco\"
         checked=\"checked\" >\n\t\t\t\n\t\t\t<label for=\"malejaco\">malej\u0105co</label>\n\t\t\t<input
         type=\"radio\" name=\"kierunek\" id=\"malejaco\" tabindex=\"8\" value=\"malejaco\"
-        \ >\n\t\t</TD>\n\t</TR>\n\t\n\t<TR>\n\t\t<TD class=\"styleOp1\">\n\t\t\t<label
-        for=\"wydzial\">Wydzia\u0142 orzeczniczy:</label>\n\t\t</TD>\n\t\t<TD colspan=\"3\">\n\t\t<select
-        name=\"wydzial\" id=\"wydzial\" tabindex=\"3\" style=\"width: 260px\">\n\t\t\t<option></option>\n\t\t\t<option
-        value='I'>Wydzia\u0142 I</option><option value='II'>Wydzia\u0142 II</option>\n\t\t</select>
-        \t\t\n\t\t</TD>\n\t\t<TD></TD>\n\t\t<TD></TD>\n\t\t<TD></TD>\n\t</TR>\n\t\n\t<TR>\n\t\t<TD
-        class=\"styleOp1\">\n\t\t\t<label for=\"sala\">Sala rozpraw:</label>\n\t\t</TD>\n\t\t<TD
+        \ />\n\t\t</td>\n\t</tr>\n\t\n\t<tr>\n\t\t<td class=\"styleOp1\">\n\t\t\t<label
+        for=\"wydzial\">Wydzia\u0142 orzeczniczy:</label>\n\t\t</td>\n\t\t<td colspan=\"3\">\n\t\t<select
+        name=\"wydzial\" id=\"wydzial\" tabindex=\"3\" style=\"width: 342px\">\n\t\t\t<option
+        value=''> </option>\n\t\t\t<option value='I'>Wydzia\u0142 I</option><option
+        value='II'>Wydzia\u0142 II</option>\n\t\t</select> \t\t\n\t\t</td>\n\t\t<td></td>\n\t\t<td></td>\n\t\t<td></td>\n\t</tr>\n\t\n\t<tr>\n\t\t<td
+        class=\"styleOp1\">\n\t\t\t<label for=\"sala\">Sala rozpraw:</label>\n\t\t</td>\n\t\t<td
         class=\"styleOp2\">\n\t\t\n\t\t\t<select name=\"sala\" id=\"sala\" tabindex=\"4\"
-        style=\"width: 90px\">\n\t\t\t<option></option>\n\t\t\t<option value='sala
-        A'>sala A</option><option value='sala B'>sala B</option>\t\t\n\t\t</select>
-        \n\t\t\t\n\t\t\t\n\t\t\t\n\t\t</TD>\n\n\t\t<TD class=\"styleOp3\">\n\t\t\t<label
-        for=\"symbol\">Symbol:</label>\n\t\t</TD>\n\t\t<TD class=\"styleOp4\">\n\t\t\t<input
+        style=\"width: 125px\">\n\t\t\t<option value=\"\"> </option>\n\t\t\t<option
+        value='sala A'>sala A</option><option value='sala B'>sala B</option>\t\t\n\t\t</select>
+        \n\t\t\t\n\t\t\t\n\t\t\t\n\t\t</td>\n\n\t\t<td class=\"styleOp3\">\n\t\t\t<label
+        for=\"symbol\">Symbol:</label>\n\t\t</td>\n\t\t<td class=\"styleOp4\">\n\t\t\t<input
         type=\"text\" name=\"symbol\" id=\"symbol\" tabindex=\"5\" style=\"width:
-        85px\" value=\"\" maxlength=\"9\" /> \t\t\n\t\t</TD>\n\t\t\n\t\t<TD></TD>\n\t\t<TD></TD>\n\t\t<TD></TD>\n\t</TR>\t\n\n\t\n\t<TR>
-        \n\t\t<TD class=\"styleOp1\">\n\t\t\t<label for=\"sedzia\">S\u0119dzia: </label>\n\t\t</TD>\n\t\t<TD
+        130px\" value=\"\" maxlength=\"9\" /> \t\t\n\t\t</td>\n\t\t\n\t\t<td></td>\n\t\t<td></td>\n\t\t<td></td>\n\t</tr>\t\n\n\t\n\t<tr>
+        \n\t\t<td class=\"styleOp1\">\n\t\t\t<label for=\"sedzia\">S\u0119dzia: </label>\n\t\t</td>\n\t\t<td
         colspan=\"3\">\n\t\t\t<input type='text' name=\"sedzia\" id=\"sedzia\" tabindex=\"6\"
-        style=\"width: 255px\" value=\"\" maxlength=\"20\" />\n\t\t</TD>\n\t\t<TD></TD>\n\t\t<TD></TD>\n\t\t<TD></TD>\n\t</TR>\n\n\t<TR>
-        \n\t\t<TD class=\"styleOp1\">\n\t\t\t<label for=\"przedmiot\">Przedmiot rozprawy:
-        </label>\n\t\t</TD>\n\t\t<TD colspan=\"3\">\n\t\t\t<input type='text' name=\"przedmiot\"
-        id=\"przedmiot\" tabindex=\"7\" style=\"width: 255px\" value=\"\" maxlength=\"30\"
-        />\n\t\t</TD>\n\t\t<TD></TD>\n\t\t<TD></TD>\n\t\t<TD align=\"center\"><input
-        type='submit' tabindex=\"10\" value='Szukaj' style=\"font-weight: bold; font-size:
-        12pt\"></TD>\n\t</TR>\t\n\t\n\t</TBODY> \n\t</TABLE>\n\t\t\n</div>\n\t</fieldset></form>\n\n\n<br>\nWyszukane
-        rozprawy: 124\n<table id='tabela'><tr>\n\t<th style='width: 120px'><strong>Sygnatura</strong></th>\n\t<th
+        style=\"width: 335px\" value=\"\" maxlength=\"20\" />\n\t\t</td>\n\t\t<td></td>\n\t\t<td></td>\n\t\t<td></td>\n\t</tr>\n\n\t<tr>
+        \n\t\t<td class=\"styleOp1\">\n\t\t\t<label for=\"przedmiot\">Przedmiot posiedzenia:
+        </label>\n\t\t</td>\n\t\t<td colspan=\"3\">\n\t\t\t<input type='text' name=\"przedmiot\"
+        id=\"przedmiot\" tabindex=\"7\" style=\"width: 335px\" value=\"\" maxlength=\"30\"
+        />\n\t\t</td>\n\t\t<td></td>\n\t\t<td></td>\n\t\t<td><input type='submit'
+        tabindex=\"10\" value='Szukaj' style=\"font-weight: bold; font-size: 12pt\"></td>\n\t</tr>\t\n\n\t<tr>\n\t\t<td
+        class=\"styleOp1\">\n\t\t\t<label for=\"typ\">Typ posiedzenia: </label>\n\t\t</td>\n\t\t<td
+        colspan=\"3\">\n\t\t<select name=\"typ\" id=\"typ\" tabindex=\"8\" style=\"width:
+        342px\">\n\t\t\t<option value=\"\"> </option>\n\t\t\t<option value=\"J\"  >posiedzenie
+        jawne</option>\n\t\t\t<option value=\"P\"  >publikacja</option>\n\t\t\t<option
+        value=\"N\"  >posiedzenie niejawne</option>\n\t\t</select> \t\t\n\t\t</td>\n\t\t<td></td>\n\t\t<td></td>\n\t\t<td></td>\n\t</tr>\n\t\n\t</tbody>
+        \n\t</table>\n\t\t\n</div>\n\t</fieldset></form>\n\n\n<br>\nWyszukane posiedzenia:
+        169\n<table id='tabela'><tr>\n\t<th style='width: 120px'><strong>Sygnatura</strong></th>\n\t<th
         style='width: 80px'><strong>Data</strong></th>\t\n\t<th style='width: 40px'><strong>Godz.</strong></th>\n\t<th
-        style='width: 50px'><strong>Sala</strong></th>\n\t<th style='width: 55px'><strong>Wydzia\u0142</strong></th>\t\n\t<th
+        style='width: 50px'><strong>Sala</strong></th>\n\t<th style='width: 55px'><strong>Typ</strong></th>\t\n\t<th
         style='width: 65px'><strong>Symbol</strong></th>\n\t<th style='width: 200px'><strong>Sk\u0142ad
-        s\u0119dziowski</strong></th>\t\n\t<th><strong>Przedmiot</strong></th>\n</tr>\n<tr><td>II
-        SA/Go 635/17</td>\n\t<td>2018-04-18</td>\t\n\t<td>08:30</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6192 - Funkcjonariusze Policji'>6192</td>\n\t\n\t<td>G. Staniszewska
-        (spr.)<BR> J. Ja\u015Bkiewicz<BR> M. Ruszy\u0144ski</td>\t\n\t<td>zwolnienie
-        ze s\u0142u\u017Cby</td>\n</tr>\n<tr class='alt'><td>II SA/Go 105/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>08:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6123 - Zas\xF3b geodezyjny i kartograficzny'>6123</td>\n\t\n\t<td>G.
-        Staniszewska<BR> J. Ja\u015Bkiewicz<BR> M. Ruszy\u0144ski (spr.)</td>\t\n\t<td>odmowa
-        przyj\u0119cia do pa\u0144stwowego zasobu geodezyjnego i kartograficznego
-        zbior\xF3w danych i innych materia\u0142\xF3w</td>\n</tr>\n<tr><td>I SA/Go
-        50/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>09:00</td>\n\t<td>sala A</td>\n\t<td>I</td>\t\n\t<td
-        title='6560 -   / 6110 - Podatek\_od towar\xF3w i us\u0142ug'>6560/6110</td>\n\t\n\t<td>D.
-        Skupie\u0144 (spr.)<BR> Z. Kruszewski<BR> J. Niedzielski</td>\t\n\t<td>Podatek
-        od towar\xF3w i us\u0142ug</td>\n</tr>\n<tr class='alt'><td>II SA/Go 120/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>09:10</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6014 - Rozbi\xF3rka budowli lub innego
-        obiektu budowlanego, dokonanie oceny stanu technicznego obiektu, doprowadzenie
-        obiektu do s'>6014</td>\n\t\n\t<td>G. Staniszewska<BR> J. Ja\u015Bkiewicz<BR>
-        M. Ruszy\u0144ski (spr.)</td>\t\n\t<td>Nakaz rozbi\xF3rki obiektu letniskowego</td>\n</tr>\n<tr><td>I
-        SA/Go 57/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>09:20</td>\n\t<td>sala A</td>\n\t<td>I</td>\t\n\t<td
-        title='6119 - Inne o symbolu podatwowym 611'>6119</td>\n\t\n\t<td>D. Skupie\u0144<BR>
-        Z. Kruszewski (spr.)<BR> J. Niedzielski</td>\t\n\t<td>uchybienie terminowi
-        do wniesienia odwo\u0142ania</td>\n</tr>\n<tr class='alt'><td>II SA/Go 79/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>09:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6031 - Uprawnienia do kierowania pojazdami'>6031</td>\n\t\n\t<td>G.
-        Staniszewska<BR> J. Ja\u015Bkiewicz (spr.)<BR> M. Ruszy\u0144ski</td>\t\n\t<td>skierowanie
-        na badania lekarskie</td>\n</tr>\n<tr><td>I SA/Go 439/17</td>\n\t<td>2018-04-18</td>\t\n\t<td>09:40</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6559 -  '>6559</td>\n\t\n\t<td>D. Skupie\u0144<BR>
-        Z. Kruszewski<BR> J. Niedzielski (spr.)</td>\t\n\t<td>zwrot dofinansowania</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Go 162/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>09:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>G.
-        Staniszewska<BR> J. Ja\u015Bkiewicz<BR> M. Ruszy\u0144ski (spr.)</td>\t\n\t<td>odmowa
-        przyznania pomocy finansowej</td>\n</tr>\n<tr><td>I SA/Go 37/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>10:00</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D.
-        Skupie\u0144<BR> Z. Kruszewski (spr.)<BR> J. Niedzielski</td>\t\n\t<td>Podatek
-        od nieruchomo\u015Bci za 2017 r.</td>\n</tr>\n<tr class='alt'><td>II SA/Go
-        159/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>10:10</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>G. Staniszewska<BR>
-        J. Ja\u015Bkiewicz (spr.)<BR> M. Ruszy\u0144ski</td>\t\n\t<td>ustalenie wysoko\u015Bci
-        nienale\u017Cnie pobranego \u015Bwiadczenia wychowawczego i orzeczenie o jego
-        zwrocie</td>\n</tr>\n<tr><td>I SA/Go 40/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>10:20</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6112 - Podatek dochodowy od os\xF3b fizycznych,
-        w tym zrycza\u0142towane formy opodatkowania'>6112</td>\n\t\n\t<td>D. Skupie\u0144<BR>
-        Z. Kruszewski<BR> J. Niedzielski (spr.)</td>\t\n\t<td>zrycza\u0142towany podatek
-        dochodowy od os\xF3b fizycznych za 2008 r. z tytu\u0142u dochod\xF3w nieznajduj\u0105cych
-        pokrycia w ujawnionych \u017Ar\xF3d\u0142ach przychod\xF3w</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Go 144/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>10:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie
-        obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych
-        ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>G. Staniszewska (spr.)<BR>
-        J. Ja\u015Bkiewicz<BR> M. Ruszy\u0144ski</td>\t\n\t<td>Stwierdzenie niedopuszczalno\u015Bci
-        odwo\u0142ania</td>\n</tr>\n<tr><td>I SA/Go 42/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>10:40</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6112 - Podatek dochodowy od os\xF3b fizycznych,
-        w tym zrycza\u0142towane formy opodatkowania'>6112</td>\n\t\n\t<td>D. Skupie\u0144<BR>
-        Z. Kruszewski (spr.)<BR> J. Niedzielski</td>\t\n\t<td>Zrycza\u0142towany podatek
-        dochodowy od os\xF3b fizycznych za 2008 r. z tytu\u0142u dochod\xF3w nieznajduj\u0105cych
-        pokrycia w ujawnionych \u017Ar\xF3d\u0142ach przychod\xF3w</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Go 150/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>10:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie
-        obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych
-        ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>G. Staniszewska (spr.)<BR>
-        J. Ja\u015Bkiewicz<BR> M. Ruszy\u0144ski</td>\t\n\t<td>Stwierdzenie niedopuszczalno\u015Bci
-        odwo\u0142ania</td>\n</tr>\n<tr><td>I SA/Go 62/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>12:00</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6119 - Inne o symbolu podatwowym 611'>6119</td>\n\t\n\t<td>D.
-        Skupie\u0144 (spr.)<BR> Z. Kruszewski<BR> J. Niedzielski</td>\t\n\t<td>niedopuszczalno\u015B\u0107
-        odwo\u0142ania</td>\n</tr>\n<tr class='alt'><td>I SA/Go 63/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>12:10</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6119 - Inne o symbolu podatwowym 611'>6119</td>\n\t\n\t<td>D.
-        Skupie\u0144 (spr.)<BR> Z. Kruszewski<BR> J. Niedzielski</td>\t\n\t<td>niedopuszczalno\u015B\u0107
-        odwo\u0142ania</td>\n</tr>\n<tr><td>I SA/Go 64/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>12:20</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6119 - Inne o symbolu podatwowym 611'>6119</td>\n\t\n\t<td>D.
-        Skupie\u0144<BR> Z. Kruszewski<BR> J. Niedzielski (spr.)</td>\t\n\t<td>niedopuszczalno\u015B\u0107
-        odwo\u0142ania</td>\n</tr>\n<tr class='alt'><td>II SAB/Go 4/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>12:20</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='658 -   / 6480 - sprawy z zakresu informacji
-        publicznej i prawa prasowego'>658/6480</td>\n\t\n\t<td>G. Staniszewska<BR>
-        J. Ja\u015Bkiewicz<BR> M. Ruszy\u0144ski (spr.)</td>\t\n\t<td>udost\u0119pnienie
-        informacji publicznej</td>\n</tr>\n<tr><td>I SA/Go 27/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>12:40</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6560 -   / 6112 - Podatek dochodowy od
-        os\xF3b fizycznych, w tym zrycza\u0142towane formy opodatkowania'>6560/6112</td>\n\t\n\t<td>D.
-        Skupie\u0144<BR> Z. Kruszewski (spr.)<BR> J. Niedzielski</td>\t\n\t<td>Podatek
-        dochodowy od os\xF3b fizycznych</td>\n</tr>\n<tr class='alt'><td>II SA/Go
-        116/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>12:40</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6014 - Rozbi\xF3rka budowli lub innego obiektu budowlanego, dokonanie
-        oceny stanu technicznego obiektu, doprowadzenie obiektu do s'>6014</td>\n\t\n\t<td>G.
-        Staniszewska<BR> J. Ja\u015Bkiewicz (spr.)<BR> M. Ruszy\u0144ski</td>\t\n\t<td>Nakaz
-        rozbi\xF3rki obiektu letniskowego</td>\n</tr>\n<tr><td>II SA/Go 123/18</td>\n\t<td>2018-04-18</td>\t\n\t<td>13:00</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6393 - Skargi na uchwa\u0142y sejmiku
-        wojew\xF3dztwa, zawieraj\u0105cej przepisy prawa miejscowego w przedmiocie
-        ... (art. 90 i 91 ustawy o / 6166 - \_\u0141owiectwo'>6393/6166</td>\n\t\n\t<td>G.
-        Staniszewska<BR> J. Ja\u015Bkiewicz (spr.)<BR> M. Ruszy\u0144ski</td>\t\n\t<td>podzia\u0142
-        Wojew\xF3dztwa Lubuskiego na obwody \u0142owieckie</td>\n</tr>\n<tr class='alt'><td>II
-        SA/Go 1179/17</td>\n\t<td>2018-04-18</td>\t\n\t<td>13:20</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='638 - Sprawy egzekucji administracyjnej.\_
-        egzekucja obowi\u0105zk\xF3w o charakterze niepieni\u0119\u017Cnym / 6014
-        - Rozbi\xF3rka budowli lub innego obiektu budowlanego, dokonanie oceny stanu
-        technicznego obiektu, doprowadzenie obiektu do s'>638/6014</td>\n\t\n\t<td>G.
-        Staniszewska (spr.)<BR> J. Ja\u015Bkiewicz<BR> M. Ruszy\u0144ski</td>\t\n\t<td>Na\u0142o\u017Cenie
-        grzywny w celu przymuszenia</td>\n</tr>\n<tr><td>II SAB/Go 21/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>08:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='658 -   / 6480 - sprawy z zakresu informacji
-        publicznej i prawa prasowego'>658/6480</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski
-        (spr.)<BR> S. Pauter<BR> J. Pi\u0105tek</td>\t\n\t<td>udost\u0119pnienie informacji
-        publicznej</td>\n</tr>\n<tr class='alt'><td>II SA/Go 1067/17</td>\n\t<td>2018-04-19</td>\t\n\t<td>08:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6198 - Inspekcja pracy'>6198</td>\n\t\n\t<td>A.
-        Jutrzenka-Trzebiatowski<BR> S. Pauter<BR> J. Pi\u0105tek (spr.)</td>\t\n\t<td>nakaz
-        wykonania okreslonych obowi\u0105zk\xF3w</td>\n</tr>\n<tr><td>II SA/Go 1199/17</td>\n\t<td>2018-04-19</td>\t\n\t<td>09:10</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6143 - Sprawy kandydat\xF3w na studia
-        i student\xF3w'>6143</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski<BR> S. Pauter<BR>
-        J. Pi\u0105tek (spr.)</td>\t\n\t<td>Skre\u015Blenie z listy student\xF3w</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Go 141/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>09:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie
-        obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych
-        ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski<BR>
-        S. Pauter (spr.)<BR> J. Pi\u0105tek</td>\t\n\t<td>Stwierdzenie niedopuszczalno\u015Bci
-        odwo\u0142ania</td>\n</tr>\n<tr><td>II SA/Go 142/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>09:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie
-        obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych
-        ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski<BR>
-        S. Pauter<BR> J. Pi\u0105tek (spr.)</td>\t\n\t<td>Stwierdzenie niedopuszczalno\u015Bci
-        odwo\u0142ania</td>\n</tr>\n<tr class='alt'><td>II SA/Go 68/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>10:10</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6391 - Skargi na uchwa\u0142y rady gminy
-        w przedmiocie ... (art. 100 i 101a ustawy o samorz\u0105dzie gminnym) / 6168
-        - Weterynaria i ochrona zwierz\u0105t'>6391/6168</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski<BR>
-        S. Pauter (spr.)<BR> J. Pi\u0105tek</td>\t\n\t<td>przyj\u0119cie programu
-        opieki nad zwierz\u0119tami bezdomnymi oraz zapobieganie bezdomno\u015Bci
-        zwierz\u0105t</td>\n</tr>\n<tr><td>II SA/Go 149/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>10:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie
-        obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych
-        ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski
-        (spr.)<BR> S. Pauter<BR> J. Pi\u0105tek</td>\t\n\t<td>Stwierdzenie niedopuszczalno\u015Bci
-        odwo\u0142ania</td>\n</tr>\n<tr class='alt'><td>II SA/Go 199/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>10:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6320 - Zasi\u0142ki celowe i okresowe'>6320</td>\n\t\n\t<td>A.
-        Jutrzenka-Trzebiatowski (spr.)<BR> S. Pauter<BR> J. Pi\u0105tek</td>\t\n\t<td>zmiana
-        decyzji w sprawie zasi\u0142ku celowego</td>\n</tr>\n<tr><td>II SA/Go 193/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>12:20</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>A.
-        Jutrzenka-Trzebiatowski<BR> S. Pauter<BR> J. Pi\u0105tek (spr.)</td>\t\n\t<td>odmowa
-        przyznania prawa do zasi\u0142ku rodzinnego oraz dodatk\xF3w do tego zasi\u0142ku</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Go 192/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>12:40</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>A.
-        Jutrzenka-Trzebiatowski<BR> S. Pauter (spr.)<BR> J. Pi\u0105tek</td>\t\n\t<td>odmowa
-        przyznania prawa do \u015Bwiadczenia wychowawczego</td>\n</tr>\n<tr><td>II
-        SA/Go 155/18</td>\n\t<td>2018-04-19</td>\t\n\t<td>13:00</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6391 - Skargi na uchwa\u0142y rady gminy w przedmiocie ... (art. 100
-        i 101a ustawy o samorz\u0105dzie gminnym) / 6099 - Inne o symbolu podstawowym
-        609'>6391/6099</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski<BR> S. Pauter (spr.)<BR>
-        J. Pi\u0105tek</td>\t\n\t<td>zatwierdzenie regulaminu dostarczania wody i
-        odprowadzania \u015Bciek\xF3w</td>\n</tr>\n<tr class='alt'><td>I SA/Go 428/17</td>\n\t<td>2018-04-24</td>\t\n\t<td>14:00</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6110 - Podatek\_od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>J.
-        Niedzielski (spr.)<BR> Z. Kruszewski<BR> D. Skupie\u0144</td>\t\n\t<td>Podatek
-        od towar\xF3w i us\u0142ug za pa\u017Adziernik, listopad i grudzie\u0144 2013
-        r.\r\nPublikacja orzeczenia odroczona z dnia 11 kwietnia 2018 r.</td>\n</tr>\n<tr><td>I
-        SA/Go 429/17</td>\n\t<td>2018-04-24</td>\t\n\t<td>14:10</td>\n\t<td>sala A</td>\n\t<td>I</td>\t\n\t<td
-        title='6110 - Podatek\_od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>J.
-        Niedzielski<BR> Z. Kruszewski<BR> D. Skupie\u0144 (spr.)</td>\t\n\t<td>Podatek
-        od towar\xF3w i us\u0142ug od stycznia do czerwca 2014 r.\r\nPublikacja orzeczenia
-        odroczona z dnia 11 kwietnia 2018 r.</td>\n</tr>\n<tr class='alt'><td>II SA/Go
-        145/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>08:30</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
+        s\u0119dziowski</strong></th>\t\n\t<th><strong>Przedmiot / Wynik</strong></th>\n</tr>\n<tr><td>II
+        SA/Go 612/21</td>\n\t<td>2021-11-30</td>\t\n\t<td>09:00</td>\n\t<td>Sala 103</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6320 - Zasi\u0142ki celowe i okresowe'>6320</td>\n\t\n\t<td>K. Rogalski
+        (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>Zasi\u0142ek
+        okresowy<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/27522B264E
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 908/21</td>\n\t<td>2021-11-30</td>\t\n\t<td>11:00</td>\n\t<td>Sala
+        102</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>J.
+        Pi\u0105tek (spr.)<br /> K. Karwatowicz<br /> K. Rogalski</td>\t\n\t<td>odmowa
+        prawa do zwolnienia z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br
+        /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/15BC0CE4F8
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr><td>I
+        SA/Go 353/21</td>\n\t<td>2021-12-01</td>\t\n\t<td>09:00</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>A. Juszczyk
+        - Wi\u015Bniewska<br /> D. Bronowicki<br /> J. Niedzielski (spr.)</td>\t\n\t<td>Podatek
+        od nieruchomo\u015Bci  za 2017r.<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/09E869A038
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 348/21</td>\n\t<td>2021-12-01</td>\t\n\t<td>09:15</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6550 -  '>6550</td>\n\t\n\t<td>A.
+        Juszczyk - Wi\u015Bniewska<br /> D. Bronowicki (spr.)<br /> J. Niedzielski</td>\t\n\t<td>p\u0142atno\u015B\u0107
+        ekologiczna   na 2019 rok<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/3F1F5207B0
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>I
+        SA/Go 334/21</td>\n\t<td>2021-12-01</td>\t\n\t<td>09:30</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6550 -  '>6550</td>\n\t\n\t<td>A. Juszczyk - Wi\u015Bniewska<br />
+        D. Bronowicki (spr.)<br /> J. Niedzielski</td>\t\n\t<td>p\u0142atno\u015Bci
+        w ramach system\xF3w  wsparcia bezpo\u015Bredniego na rok 2018<br /><br /><b>Uchylono
+        zaskar\u017Con\u0105 decyzj\u0119<BR>Zas\u0105dzono zwrot koszt\xF3w post\u0119powania
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/F37D7B9BCF target=_blank><IMG src=/ewokanda/pic/U.jpg
+        title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>I SA/Go 337/21</td>\n\t<td>2021-12-01</td>\t\n\t<td>09:45</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6550 -  '>6550</td>\n\t\n\t<td>A.
+        Juszczyk - Wi\u015Bniewska<br /> D. Bronowicki<br /> J. Niedzielski (spr.)</td>\t\n\t<td>p\u0142atno\u015Bci
+        w ramach system\xF3w  wsparcia bezpo\u015Bredniego na rok 2019<br /><br /><b>Uchylono
+        zaskar\u017Con\u0105 decyzj\u0119<BR>Zas\u0105dzono zwrot koszt\xF3w post\u0119powania
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/F8FAC726A1 target=_blank><IMG src=/ewokanda/pic/U.jpg
+        title=uzasadnienie></a></td>\n</tr>\n<tr><td>I SA/Go 338/21</td>\n\t<td>2021-12-01</td>\t\n\t<td>10:00</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6550 -  '>6550</td>\n\t\n\t<td>A.
+        Juszczyk - Wi\u015Bniewska<br /> D. Bronowicki (spr.)<br /> J. Niedzielski</td>\t\n\t<td>p\u0142atno\u015B\u0107
+        dla obszar\xF3w z ograniczeniami naturalnymi lub innymi szczeg\xF3lnymi oraniczeniami
+        (ONW) na rok 2019<br /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119<BR>Zas\u0105dzono
+        zwrot koszt\xF3w post\u0119powania  <a href=http://orzeczenia.nsa.gov.pl/doc/F8AC3A26FF
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 339/21</td>\n\t<td>2021-12-01</td>\t\n\t<td>10:15</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6550 -  '>6550</td>\n\t\n\t<td>A.
+        Juszczyk - Wi\u015Bniewska (spr.)<br /> D. Bronowicki<br /> J. Niedzielski</td>\t\n\t<td>p\u0142atno\u015B\u0107
+        rolno- \u015Brodowiskowo- klimatyczna na rok 2019<br /><br /><b>Uchylono zaskar\u017Con\u0105
+        decyzj\u0119<BR>Zas\u0105dzono zwrot koszt\xF3w post\u0119powania  <a href=http://orzeczenia.nsa.gov.pl/doc/D7D2A8F904
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr><td>I
+        SA/Go 341/21</td>\n\t<td>2021-12-01</td>\t\n\t<td>10:30</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6550 -  '>6550</td>\n\t\n\t<td>A. Juszczyk - Wi\u015Bniewska<br />
+        D. Bronowicki<br /> J. Niedzielski (spr.)</td>\t\n\t<td>p\u0142atno\u015B\u0107
+        dla obszar\xF3w z ograniczeniami naturalnymi lub innymi szczeg\xF3lnymi oraniczeniami
+        (ONW) na rok 2020<br /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119<BR>Zas\u0105dzono
+        zwrot koszt\xF3w post\u0119powania  <a href=http://orzeczenia.nsa.gov.pl/doc/DF059C4A02
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 335/21</td>\n\t<td>2021-12-01</td>\t\n\t<td>11:00</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6550 -  '>6550</td>\n\t\n\t<td>A.
+        Juszczyk - Wi\u015Bniewska (spr.)<br /> Z. Kruszewski<br /> D. Skupie\u0144</td>\t\n\t<td>p\u0142atno\u015B\u0107
+        dla obszar\xF3w z ograniczeniami naturalnymi lub innymi szczeg\xF3lnymi ograniczeniami
+        (ONW) na rok 2018<br /><br /><b>Uchylono decyzj\u0119 I i II instancji w cz\u0119\u015Bci<BR>Zas\u0105dzono
+        zwrot koszt\xF3w post\u0119powania  <a href=http://orzeczenia.nsa.gov.pl/doc/47FF11406D
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr><td>I
+        SA/Go 336/21</td>\n\t<td>2021-12-01</td>\t\n\t<td>11:15</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6550 -  '>6550</td>\n\t\n\t<td>A. Juszczyk - Wi\u015Bniewska<br />
+        Z. Kruszewski (spr.)<br /> D. Skupie\u0144</td>\t\n\t<td>p\u0142atno\u015B\u0107
+        rolno- \u015Brodowiskowo- klimatyczna na rok 2018<br /><br /><b>Uchylono decyzj\u0119
+        I i II instancji<BR>Zas\u0105dzono zwrot koszt\xF3w post\u0119powania  <a
+        href=http://orzeczenia.nsa.gov.pl/doc/CF221532FC target=_blank><IMG src=/ewokanda/pic/U.jpg
+        title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>I SA/Go 340/21</td>\n\t<td>2021-12-01</td>\t\n\t<td>11:30</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6550 -  '>6550</td>\n\t\n\t<td>A.
+        Juszczyk - Wi\u015Bniewska<br /> Z. Kruszewski (spr.)<br /> D. Skupie\u0144</td>\t\n\t<td>p\u0142atno\u015Bci
+        w ramach system\xF3w  wsparcia bezpo\u015Bredniego na rok 2020<br /><br /><b>Uchylono
+        decyzj\u0119 I i II instancji<BR>Zas\u0105dzono zwrot koszt\xF3w post\u0119powania
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/59A8E27BA8 target=_blank><IMG src=/ewokanda/pic/U.jpg
+        title=uzasadnienie></a></td>\n</tr>\n<tr><td>I SA/Go 342/21</td>\n\t<td>2021-12-01</td>\t\n\t<td>11:45</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6550 -  '>6550</td>\n\t\n\t<td>A.
+        Juszczyk - Wi\u015Bniewska<br /> Z. Kruszewski<br /> D. Skupie\u0144 (spr.)</td>\t\n\t<td>p\u0142atno\u015B\u0107
+        rolno- \u015Brodowiskowo- klimatyczna na rok 2020<br /><br /><b>Uchylono decyzj\u0119
+        I i II instancji<BR>Zas\u0105dzono zwrot koszt\xF3w post\u0119powania  <a
+        href=http://orzeczenia.nsa.gov.pl/doc/7692374F18 target=_blank><IMG src=/ewokanda/pic/U.jpg
+        title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>I SA/Go 320/21</td>\n\t<td>2021-12-01</td>\t\n\t<td>12:00</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6550 -  '>6550</td>\n\t\n\t<td>A.
+        Juszczyk - Wi\u015Bniewska (spr.)<br /> Z. Kruszewski<br /> D. Skupie\u0144</td>\t\n\t<td>P\u0142atno\u015B\u0107
+        rolno- \u015Brodowiskowo-klimatyczna na 2020<br /><br /><b>Oddalono skarg\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/2831823967 target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr><td>I SA/Go 347/21</td>\n\t<td>2021-12-01</td>\t\n\t<td>12:15</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6110 - Podatek\_od towar\xF3w
+        i us\u0142ug'>6110</td>\n\t\n\t<td>A. Juszczyk - Wi\u015Bniewska<br /> Z.
+        Kruszewski<br /> D. Skupie\u0144 (spr.)</td>\t\n\t<td>Podatek od towar\xF3w
+        i us\u0142ug za miesi\u0105ce od stycznia do pa\u017Adziernika 2018 roku<br
+        /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119 w cz\u0119\u015Bci<BR>Zas\u0105dzono
+        zwrot koszt\xF3w post\u0119powania<BR>Zwr\xF3cono nadp\u0142acony wpis  <a
+        href=http://orzeczenia.nsa.gov.pl/doc/FE9A1112C1 target=_blank><IMG src=/ewokanda/pic/U.jpg
+        title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>II SA/Go 683/21</td>\n\t<td>2021-12-02</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>M.
+        Ruszy\u0144ski (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>odmowa
+        prawa do zwolnienia z obowi\u0105zku op\u0142acenia nale\u017Cno\u015Bci z
+        tytu\u0142u sk\u0142adek<br /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/26BFA87090 target=_blank><IMG src=/ewokanda/pic/U.jpg
+        title=uzasadnienie></a></td>\n</tr>\n<tr><td>II SA/Go 758/21</td>\n\t<td>2021-12-02</td>\t\n\t<td>09:30</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='6320 - Zasi\u0142ki celowe i
+        okresowe'>6320</td>\n\t\n\t<td>M. Ruszy\u0144ski (spr.)<br /> K. Karwatowicz<br
+        /> J. Pi\u0105tek</td>\t\n\t<td>zasi\u0142ek celowy<br /><br /><b>Oddalono
+        skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/0AF8F96AE3 target=_blank><IMG
+        src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>II
+        SA/Go 749/21</td>\n\t<td>2021-12-02</td>\t\n\t<td>10:00</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6210 - Dodatek mieszkaniowy'>6210</td>\n\t\n\t<td>M. Ruszy\u0144ski<br
+        /> K. Karwatowicz (spr.)<br /> J. Pi\u0105tek</td>\t\n\t<td>odmowa przywr\xF3cenia
+        terminu do wniesienia odwo\u0142ania<br /><br /><b>Uchylono zaskar\u017Con\u0105
+        decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/2CA51EDD34 target=_blank><IMG
+        src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II SA/Go
+        752/21</td>\n\t<td>2021-12-02</td>\t\n\t<td>10:30</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6037 - Transport drogowy i przewozy'>6037</td>\n\t\n\t<td>M. Ruszy\u0144ski
+        (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>na\u0142o\u017Cenie
+        kary pieni\u0119\u017Cnej<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/12069B3B2E
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 407/21</td>\n\t<td>2021-12-02</td>\t\n\t<td>11:00</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='6393 - Skargi na uchwa\u0142y
+        sejmiku wojew\xF3dztwa, zawieraj\u0105cej przepisy prawa miejscowego w przedmiocie
+        ... (art. 90 i 91 ustawy o / 6166 - \_\u0141owiectwo'>6393/6166</td>\n\t\n\t<td>M.
+        Ruszy\u0144ski (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>podzia\u0142
+        wojew\xF3dztwa lubuskiego na obwody \u0142owieckie oraz zaliczenia obwod\xF3w
+        \u0142owieckich do kategorii<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/C1FF573E9D
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr><td>II
+        SA/Go 820/21</td>\n\t<td>2021-12-02</td>\t\n\t<td>11:30</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6205 - Nadz\xF3r sanitarny'>6205</td>\n\t\n\t<td>M. Ruszy\u0144ski<br
+        /> K. Karwatowicz (spr.)<br /> J. Pi\u0105tek</td>\t\n\t<td>wymierzenie kary
+        pieni\u0119\u017Cnej<br /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/58F6C2FD37 target=_blank><IMG src=/ewokanda/pic/U.jpg
+        title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>II SA/Go 670/21</td>\n\t<td>2021-12-02</td>\t\n\t<td>12:00</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='6099 - Inne o symbolu podstawowym
+        609'>6099</td>\n\t\n\t<td>J. Pi\u0105tek (spr.)<br /> K. Karwatowicz<br />
+        M. Ruszy\u0144ski</td>\t\n\t<td>umorzenie w ca\u0142o\u015Bci post\u0119powania
+        administracyjnego<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/B72134C37B
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr><td>II
+        SA/Go 834/21</td>\n\t<td>2021-12-02</td>\t\n\t<td>12:00</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6210 - Dodatek mieszkaniowy'>6210</td>\n\t\n\t<td>M. Ruszy\u0144ski<br
+        /> K. Karwatowicz (spr.)<br /> J. Pi\u0105tek</td>\t\n\t<td>stwierdzenie uchybienia
+        terminowi do wniesienia odwo\u0142ania<br /><br /><b>Uchylono zaskar\u017Cone
+        postanowienie  <a href=http://orzeczenia.nsa.gov.pl/doc/DDE38E37B0 target=_blank><IMG
+        src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>II
+        SA/Go 835/21</td>\n\t<td>2021-12-02</td>\t\n\t<td>12:30</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6037 - Transport drogowy i przewozy'>6037</td>\n\t\n\t<td>J. Pi\u0105tek
+        (spr.)<br /> K. Karwatowicz<br /> M. Ruszy\u0144ski</td>\t\n\t<td>Na\u0142o\u017Cenie
+        kary pieni\u0119\u017Cnej<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/8A57146FAA
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr><td>II
+        SA/Go 907/21</td>\n\t<td>2021-12-02</td>\t\n\t<td>12:30</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>M. Ruszy\u0144ski<br /> K. Karwatowicz
+        (spr.)<br /> J. Pi\u0105tek</td>\t\n\t<td>odmowa prawa do zwolnienia z op\u0142acenia
+        nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br /><br /><b>Uchylono zaskar\u017Con\u0105
+        decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/7328490593 target=_blank><IMG
+        src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>II
+        SAB/Go 186/21</td>\n\t<td>2021-12-02</td>\t\n\t<td>13:00</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='658 -   / 6480 - sprawy z zakresu
+        informacji publicznej i prawa prasowego'>658/6480</td>\n\t\n\t<td>J. Pi\u0105tek
+        (spr.)<br /> K. Karwatowicz<br /> M. Ruszy\u0144ski</td>\t\n\t<td>udost\u0119pnienie
+        informacji publicznej<br /><br /><b>Stwierdzono, \u017Ce bezczynno\u015B\u0107
+        organu nie mia\u0142a miejsca z ra\u017C\u0105cym naruszeniem prawa  <a href=http://orzeczenia.nsa.gov.pl/doc/BDAF6B22AA
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr><td>II
+        SA/Go 823/21</td>\n\t<td>2021-12-08</td>\t\n\t<td>09:30</td>\n\t<td>sala B</td>\n\t<td>jawne</td>\t\n\t<td
         title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie obiektu lub jego
         cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych ni\u017C budowa
-        obiektu, prz'>6010</td>\n\t\n\t<td>K. Dziedzic (spr.)<BR> A. Jutrzenka-Trzebiatowski<BR>
-        J. Pi\u0105tek</td>\t\n\t<td>Stwierdzenie niedopuszczalno\u015Bci odwo\u0142ania</td>\n</tr>\n<tr><td>II
-        SA/Go 91/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>08:50</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>K. Dziedzic<BR>
-        A. Jutrzenka-Trzebiatowski<BR> J. Pi\u0105tek (spr.)</td>\t\n\t<td>uznanie
-        \u015Bwiadczenia wychowaczego za nienale\u017Cnie pobrane i zwrot \u015Bwiadcze\u0144
-        nienale\u017Cnie pobranych</td>\n</tr>\n<tr class='alt'><td>I SA/Go 104/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:00</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6561 - indywidualna interpretacja przepis\xF3w
-        prawa podatkowego / 6116 - Podatek od czynno\u015Bci cywilnoprawnych, op\u0142ata
-        skarbowa oraz inne podatki i op\u0142aty'>6561/6116</td>\n\t\n\t<td>D. Skupie\u0144<BR>
-        Z. Kruszewski<BR> J. Niedzielski (spr.)</td>\t\n\t<td>op\u0142ata za gospodarowanie
-        odpadami komunalnymi</td>\n</tr>\n<tr><td>II SA/Go 200/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:10</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6320 - Zasi\u0142ki celowe i okresowe'>6320</td>\n\t\n\t<td>K.
-        Dziedzic<BR> A. Jutrzenka-Trzebiatowski<BR> J. Pi\u0105tek (spr.)</td>\t\n\t<td>zmiana
-        decyzji w sprawie zasi\u0142ku celowego</td>\n</tr>\n<tr class='alt'><td>I
-        SA/Go 78/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:20</td>\n\t<td>sala A</td>\n\t<td>I</td>\t\n\t<td
-        title='6119 - Inne o symbolu podatwowym 611'>6119</td>\n\t\n\t<td>D. Skupie\u0144
-        (spr.)<BR> Z. Kruszewski<BR> J. Niedzielski</td>\t\n\t<td>niedopuszczalno\u015B\u0107
-        odwo\u0142ania</td>\n</tr>\n<tr><td>I SA/Go 77/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:25</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6119 - Inne o symbolu podatwowym 611'>6119</td>\n\t\n\t<td>D.
-        Skupie\u0144<BR> Z. Kruszewski (spr.)<BR> J. Niedzielski</td>\t\n\t<td>niedopuszczalno\u015B\u0107
-        odwo\u0142ania</td>\n</tr>\n<tr class='alt'><td>I SA/Go 76/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:30</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6119 - Inne o symbolu podatwowym 611'>6119</td>\n\t\n\t<td>D.
-        Skupie\u0144<BR> Z. Kruszewski (spr.)<BR> J. Niedzielski</td>\t\n\t<td>niedopuszczalno\u015B\u0107
-        odwo\u0142ania</td>\n</tr>\n<tr><td>II SA/Go 197/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6014 - Rozbi\xF3rka budowli lub innego
-        obiektu budowlanego, dokonanie oceny stanu technicznego obiektu, doprowadzenie
-        obiektu do s'>6014</td>\n\t\n\t<td>K. Dziedzic (spr.)<BR> A. Jutrzenka-Trzebiatowski<BR>
-        J. Pi\u0105tek</td>\t\n\t<td>na\u0142o\u017Cenie obowi\u0105zku wykonania
-        rob\xF3t budowlanych</td>\n</tr>\n<tr class='alt'><td>I SA/Go 80/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:50</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6110 - Podatek\_od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>D.
-        Skupie\u0144 (spr.)<BR> Z. Kruszewski<BR> J. Niedzielski</td>\t\n\t<td>Podatek
-        od towar\xF3w i us\u0142ug za miesi\u0105ce od stycznia do grudnia 2012 rok</td>\n</tr>\n<tr><td>II
-        SAB/Go 15/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>09:50</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='658 -   / 6480 - sprawy z zakresu informacji publicznej i prawa prasowego'>658/6480</td>\n\t\n\t<td>K.
-        Dziedzic<BR> A. Jutrzenka-Trzebiatowski (spr.)<BR> J. Pi\u0105tek</td>\t\n\t<td>udost\u0119pnienie
-        informacji publicznej</td>\n</tr>\n<tr class='alt'><td>I SA/Go 130/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:10</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6560 -   / 6110 - Podatek\_od towar\xF3w
-        i us\u0142ug'>6560/6110</td>\n\t\n\t<td>D. Skupie\u0144<BR> Z. Kruszewski<BR>
-        J. Niedzielski (spr.)</td>\t\n\t<td>Podatek od towar\xF3w i us\u0142ug</td>\n</tr>\n<tr><td>II
-        SA/Go 191/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:10</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6200 - Choroby zawodowe'>6200</td>\n\t\n\t<td>K. Dziedzic<BR> A. Jutrzenka-Trzebiatowski
-        (spr.)<BR> J. Pi\u0105tek</td>\t\n\t<td>brak podstaw do stwierdzenia choroby
-        zawodowej</td>\n</tr>\n<tr class='alt'><td>I SA/Go 94/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:30</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D.
-        Skupie\u0144 (spr.)<BR> Z. Kruszewski<BR> J. Niedzielski</td>\t\n\t<td>Podatek
-        od nieruchomo\u015Bci za 2012 r.</td>\n</tr>\n<tr><td>I SA/Go 88/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:50</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D.
-        Skupie\u0144<BR> Z. Kruszewski<BR> J. Niedzielski (spr.)</td>\t\n\t<td>Podatek
-        od nieruchomo\u015Bci za 2012 r.</td>\n</tr>\n<tr class='alt'><td>II SA/Go
-        205/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>10:50</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6412 - Rozstrzygni\u0119cia nadzorcze dotycz\u0105ce powiatu. skargi
-        organ\xF3w powiatu na czynno\u015Bci nadzorcze / 6202 - Zak\u0142ady opieki
-        zdrowotnej'>6412/6202</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski (spr.)<BR>
-        J. Pi\u0105tek<BR> G. Staniszewska</td>\t\n\t<td>stwierdzenie niewa\u017Cno\u015Bci
-        uchwa\u0142y Nr 152/XXVII/2017 Rady Powiatu Gorzowskiego z dnia 13 wrze\u015Bnia
-        2017 r. w sprawie zmiany uchwa\u0142y nr 59/IX/2007 Rady Powiatu Gorzowskiego
-        z dnia 25 lipca 2007 r. w sprawie postawienia w stan likwidacji Samodzielny
-        Publi</td>\n</tr>\n<tr><td>I SA/Go 53/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>12:10</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D.
-        Skupie\u0144<BR> Z. Kruszewski (spr.)<BR> J. Niedzielski</td>\t\n\t<td>Podatek
-        od nieruchomo\u015Bci za 2012 rok</td>\n</tr>\n<tr class='alt'><td>II SA/Go
-        6/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>12:10</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6324 - Rodzina\_\_ zast\u0119pcza,\_ pomoc na usamodzielnienie dla
-        wychowanka rodziny zast\u0119pczej'>6324</td>\n\t\n\t<td>K. Dziedzic (spr.)<BR>
-        J. Ja\u015Bkiewicz<BR> J. Pi\u0105tek</td>\t\n\t<td>odmowa odst\u0105pienia
-        od ustalenia op\u0142aty za pobyt dziecka w rodzinie zast\u0119pczej</td>\n</tr>\n<tr><td>I
-        SA/Go 39/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>12:15</td>\n\t<td>sala A</td>\n\t<td>I</td>\t\n\t<td
-        title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D. Skupie\u0144
-        (spr.)<BR> Z. Kruszewski<BR> J. Niedzielski</td>\t\n\t<td>Podatek od nieruchomo\u015Bci
-        za 2013 r.</td>\n</tr>\n<tr class='alt'><td>I SA/Go 59/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>12:20</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D.
-        Skupie\u0144<BR> Z. Kruszewski<BR> J. Niedzielski (spr.)</td>\t\n\t<td>Podatek
-        od nieruchomo\u015Bci za 2013 rok</td>\n</tr>\n<tr><td>II SA/Go 7/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>12:20</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6324 - Rodzina\_\_ zast\u0119pcza,\_
-        pomoc na usamodzielnienie dla wychowanka rodziny zast\u0119pczej'>6324</td>\n\t\n\t<td>K.
-        Dziedzic<BR> J. Ja\u015Bkiewicz (spr.)<BR> J. Pi\u0105tek</td>\t\n\t<td>odmowa
-        odst\u0105pienia od ustalenia op\u0142aty za pobyt dziecka w rodzinie zast\u0119pczej</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Go 65/18</td>\n\t<td>2018-04-25</td>\t\n\t<td>12:25</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D.
-        Skupie\u0144<BR> Z. Kruszewski (spr.)<BR> J. Niedzielski</td>\t\n\t<td>Podatek
-        od nieruchomo\u015Bci za 2013 rok</td>\n</tr>\n<tr><td>II SA/Go 137/18</td>\n\t<td>2018-04-26</td>\t\n\t<td>08:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6037 - Transport drogowy i przewozy'>6037</td>\n\t\n\t<td>J.
-        Ja\u015Bkiewicz (spr.)<BR> J. Pi\u0105tek<BR> G. Staniszewska</td>\t\n\t<td>Odmowa
-        stwierdzenia niewa\u017Cno\u015Bci decyzji</td>\n</tr>\n<tr class='alt'><td>II
-        SA/Go 165/18</td>\n\t<td>2018-04-26</td>\t\n\t<td>08:50</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6180 - Wyw\u0142aszczenie nieruchomo\u015Bci i odszkodowanie, w tym
-        wyw\u0142aszczenie grunt\xF3w pod autostrad\u0119'>6180</td>\n\t\n\t<td>J.
-        Ja\u015Bkiewicz (spr.)<BR> J. Pi\u0105tek<BR> G. Staniszewska</td>\t\n\t<td>ustalenie
-        odszkodowania za nieruchomo\u015B\u0107</td>\n</tr>\n<tr><td>II SA/Go 157/18</td>\n\t<td>2018-04-26</td>\t\n\t<td>09:10</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6038 - Inne uprawnienia\_ do\_ wykonywania
-        czynno\u015Bci\_ i zaj\u0119\u0107 w sprawach obj\u0119tych symbolem 603'>6038</td>\n\t\n\t<td>J.
-        Ja\u015Bkiewicz<BR> J. Pi\u0105tek<BR> G. Staniszewska (spr.)</td>\t\n\t<td>zakaz
-        wykonywania dzia\u0142alno\u015Bci gospodarczej w zakresie prowadzenia o\u015Brodka
-        szkolenia kierowc\xF3w oraz skre\u015Blenie z rejestru przedsi\u0119biorc\xF3w
-        prowadz\u0105cych o\u015Brodek szkolenia kierowc\xF3w</td>\n</tr>\n<tr class='alt'><td>II
-        SA/Go 203/18</td>\n\t<td>2018-04-26</td>\t\n\t<td>09:30</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6322 - Us\u0142ugi opieku\u0144cze, w tym skierowanie do domu pomocy
-        spo\u0142ecznej'>6322</td>\n\t\n\t<td>J. Ja\u015Bkiewicz (spr.)<BR> J. Pi\u0105tek<BR>
-        G. Staniszewska</td>\t\n\t<td>odmowa zwolnienia z obowi\u0105zku op\u0142aty
-        za pobyt w domu pomocy spo\u0142ecznej</td>\n</tr>\n<tr><td>II SA/Go 208/18</td>\n\t<td>2018-04-26</td>\t\n\t<td>09:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>J.
-        Ja\u015Bkiewicz<BR> J. Pi\u0105tek<BR> G. Staniszewska (spr.)</td>\t\n\t<td>uchylenie
-        decyzji oraz odmowa przyznania specjalnego zasi\u0142ku opieku\u0144czego</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Go 168/18</td>\n\t<td>2018-04-26</td>\t\n\t<td>10:10</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6391 - Skargi na uchwa\u0142y rady gminy
-        w przedmiocie ... (art. 100 i 101a ustawy o samorz\u0105dzie gminnym) / 6146
-        - Sprawy uczni\xF3w'>6391/6146</td>\n\t\n\t<td>J. Ja\u015Bkiewicz<BR> J. Pi\u0105tek
-        (spr.)<BR> G. Staniszewska</td>\t\n\t<td>uchwalenie \"Regulaminu udzielania
-        pomocy materialnej o charakterze socjalnym uczniom b\u0119d\u0105cymi mieszka\u0144cami
-        gminy Ma\u0142omice\"</td>\n</tr>\n<tr><td>II SA/Go 220/18</td>\n\t<td>2018-04-26</td>\t\n\t<td>10:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6401 - Skargi organ\xF3w nadzorczych
-        na uchwa\u0142y rady gminy w przedmiocie ... (art. 93 ust. 1 ustawy o samorz\u0105dzie
-        gminnym) / 6079 - Inne o symbolu podstawowym 607'>6401/6079</td>\n\t\n\t<td>J.
-        Ja\u015Bkiewicz<BR> J. Pi\u0105tek<BR> G. Staniszewska (spr.)</td>\t\n\t<td>zasady
-        wynajmowania lokali wchodz\u0105cych w sk\u0142ad mieszkaniowego zasobu Gminy
-        Wschowa</td>\n</tr>\n<tr class='alt'><td>II SA/Go 174/18</td>\n\t<td>2018-04-26</td>\t\n\t<td>10:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie
-        obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych
-        ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>J. Ja\u015Bkiewicz<BR>
-        J. Pi\u0105tek (spr.)<BR> G. Staniszewska</td>\t\n\t<td>odmowa zatwierdzenia
-        projektu budowlanego i udzielenie pozwolenia na budow\u0119</td>\n</tr>\n<tr><td>II
-        SA/Go 1174/17</td>\n\t<td>2018-05-09</td>\t\n\t<td>08:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6480 - sprawy z zakresu informacji publicznej
-        i prawa prasowego'>6480</td>\n\t\n\t<td>S. Pauter<BR> J. Ja\u015Bkiewicz (spr.)<BR>
-        G. Staniszewska</td>\t\n\t<td>odmowa udost\u0119pnienia informacji publicznej</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Go 147/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>08:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie
-        obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych
-        ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>S. Pauter (spr.)<BR> J.
-        Ja\u015Bkiewicz<BR> G. Staniszewska</td>\t\n\t<td>Stwierdzenie niedopuszczalno\u015Bci
-        odwo\u0142ania</td>\n</tr>\n<tr><td>II SA/Go 140/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>09:10</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie
-        obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych
-        ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>S. Pauter<BR> J. Ja\u015Bkiewicz
-        (spr.)<BR> G. Staniszewska</td>\t\n\t<td>Stwierdzenie niedopuszczalno\u015Bci
-        odwo\u0142ania</td>\n</tr>\n<tr class='alt'><td>II SA/Go 210/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>09:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6401 - Skargi organ\xF3w nadzorczych
-        na uchwa\u0142y rady gminy w przedmiocie ... (art. 93 ust. 1 ustawy o samorz\u0105dzie
-        gminnym) / 6262 - Radni'>6401/6262</td>\n\t\n\t<td>S. Pauter<BR> J. Ja\u015Bkiewicz
-        (spr.)<BR> G. Staniszewska</td>\t\n\t<td>ustalenie diet dla radnych Rady Miejskiej
-        w Lubsku</td>\n</tr>\n<tr><td>II SA/Go 170/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>09:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6037 - Transport drogowy i przewozy'>6037</td>\n\t\n\t<td>S.
-        Pauter<BR> J. Ja\u015Bkiewicz<BR> G. Staniszewska (spr.)</td>\t\n\t<td>na\u0142o\u017Cenie
-        kary pieni\u0119\u017Cnej</td>\n</tr>\n<tr class='alt'><td>II SA/Go 24/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>10:10</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6531 - Dotacje oraz subwencje z bud\u017Cetu
-        pa\u0144stwa, w tym dla jednostek samorz\u0105du terytorialnego'>6531</td>\n\t\n\t<td>S.
-        Pauter (spr.)<BR> J. Ja\u015Bkiewicz<BR> G. Staniszewska</td>\t\n\t<td>zwrot
-        cz\u0119\u015Bci dotacji</td>\n</tr>\n<tr><td>II SA/Go 106/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>10:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6031 - Uprawnienia do kierowania pojazdami'>6031</td>\n\t\n\t<td>S.
-        Pauter<BR> J. Ja\u015Bkiewicz<BR> G. Staniszewska (spr.)</td>\t\n\t<td>odmowa
-        zwrotu prawa jazdy</td>\n</tr>\n<tr class='alt'><td>II SA/Go 221/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>10:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6322 - Us\u0142ugi opieku\u0144cze,
-        w tym skierowanie do domu pomocy spo\u0142ecznej'>6322</td>\n\t\n\t<td>S.
-        Pauter (spr.)<BR> J. Ja\u015Bkiewicz<BR> G. Staniszewska</td>\t\n\t<td>zmiana
-        decyzji w sprawie odp\u0142atno\u015Bci za pobyt w domu pomocy spo\u0142ecznej</td>\n</tr>\n<tr><td>II
-        SAB/Go 22/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>12:20</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='658 -   / 6480 - sprawy z zakresu informacji publicznej i prawa prasowego'>658/6480</td>\n\t\n\t<td>J.
-        Ja\u015Bkiewicz (spr.)<BR> S. Pauter<BR> J. Pi\u0105tek</td>\t\n\t<td>udost\u0119pnienie
-        informacji publicznej</td>\n</tr>\n<tr class='alt'><td>II SA/Go 167/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>12:40</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6031 - Uprawnienia do kierowania pojazdami'>6031</td>\n\t\n\t<td>S.
-        Pauter (spr.)<BR> J. Ja\u015Bkiewicz<BR> G. Staniszewska</td>\t\n\t<td>cofni\u0119cie
-        uprawnie\u0144 do kierowania pojazdami</td>\n</tr>\n<tr><td>II SA/Go 213/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>13:00</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6320 - Zasi\u0142ki celowe i okresowe'>6320</td>\n\t\n\t<td>S.
-        Pauter<BR> J. Ja\u015Bkiewicz<BR> G. Staniszewska (spr.)</td>\t\n\t<td>odmowa
-        przyznania zasi\u0142ku celowego oraz specjalnego zasi\u0142ku celowego</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Go 238/18</td>\n\t<td>2018-05-09</td>\t\n\t<td>13:20</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6320 - Zasi\u0142ki celowe i okresowe'>6320</td>\n\t\n\t<td>S.
-        Pauter<BR> J. Ja\u015Bkiewicz<BR> G. Staniszewska (spr.)</td>\t\n\t<td>odmowa
-        przyznania zasi\u0142ku celowego oraz specjalnego zasi\u0142ku celowego</td>\n</tr>\n<tr><td>II
-        SA/Go 113/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>08:30</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6391 - Skargi na uchwa\u0142y rady gminy w przedmiocie ... (art. 100
-        i 101a ustawy o samorz\u0105dzie gminnym) / 6079 - Inne o symbolu podstawowym
-        607'>6391/6079</td>\n\t\n\t<td>M. Ruszy\u0144ski (spr.)<BR> J. Ja\u015Bkiewicz<BR>
-        A. Jutrzenka-Trzebiatowski</td>\t\n\t<td>wyra\u017Cenie zgody na udzielenie
-        bonifikaty przy sprzeda\u017Cy lokalu mieszkalnego nr 1 na odr\u0119bn\u0105
-        w\u0142asno\u015B\u0107 po\u0142o\u017Conego w S\u0142awie przy ul. Chopina
-        12</td>\n</tr>\n<tr class='alt'><td>II SA/Go 92/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>08:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>A.
-        Jutrzenka-Trzebiatowski<BR> J. Pi\u0105tek<BR> M. Ruszy\u0144ski (spr.)</td>\t\n\t<td>odmowa
-        przyznania specjalnego zasi\u0142ku opieku\u0144czego</td>\n</tr>\n<tr><td>I
-        SA/Go 102/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>09:00</td>\n\t<td>sala A</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 -  '>6550</td>\n\t\n\t<td>D. Skupie\u0144 (spr.)<BR> Z. Kruszewski<BR>
-        J. Niedzielski</td>\t\n\t<td>odmowa przyznania p\u0142atno\u015Bci rolno\u015Brodowiskowej
-        na rok 2008</td>\n</tr>\n<tr class='alt'><td>II SA/Go 211/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>09:10</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6032 - Inne z zakresu prawa o ruchu
-        drogowym'>6032</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski<BR> J. Pi\u0105tek
-        (spr.)<BR> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa przyznania wynagrodzenia
-        za usuniecie i przechowywanie pojazdu</td>\n</tr>\n<tr><td>I SA/Go 68/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>09:20</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6112 - Podatek dochodowy od os\xF3b fizycznych,
-        w tym zrycza\u0142towane formy opodatkowania'>6112</td>\n\t\n\t<td>D. Skupie\u0144<BR>
-        Z. Kruszewski<BR> J. Niedzielski (spr.)</td>\t\n\t<td>Podatek dochodowy od
-        os\xF3b fizycznych za 2011 rok</td>\n</tr>\n<tr class='alt'><td>II SA/Go 89/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>09:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie
-        obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych
-        ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski
-        (spr.)<BR> J. Pi\u0105tek<BR> M. Ruszy\u0144ski</td>\t\n\t<td>Umorzenie post\u0119powania
-        odwo\u0142awczego</td>\n</tr>\n<tr><td>I SA/Go 51/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>09:40</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6112 - Podatek dochodowy od os\xF3b fizycznych,
-        w tym zrycza\u0142towane formy opodatkowania'>6112</td>\n\t\n\t<td>D. Skupie\u0144<BR>
-        Z. Kruszewski (spr.)<BR> J. Niedzielski</td>\t\n\t<td>odpowiedzialno\u015B\u0107
-        spadkobiercy za niezap\u0142acone przez spadkodawc\u0119 zobowi\u0105zanie
-        podatkowe w zrycza\u0142towanym podatku dochodowym za 2001 r. wraz z odsetkami
-        za zw\u0142ok\u0119</td>\n</tr>\n<tr class='alt'><td>II SA/Go 169/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>09:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6152 - Lokalizacja innej inwestycji
-        celu publicznego'>6152</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski<BR> J. Pi\u0105tek<BR>
-        M. Ruszy\u0144ski (spr.)</td>\t\n\t<td>ustalenie lokalizacji inwestycji celu
-        publicznego</td>\n</tr>\n<tr><td>I SA/Go 450/17</td>\n\t<td>2018-05-10</td>\t\n\t<td>10:00</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6112 - Podatek dochodowy od os\xF3b fizycznych,
-        w tym zrycza\u0142towane formy opodatkowania'>6112</td>\n\t\n\t<td>D. Skupie\u0144
-        (spr.)<BR> Z. Kruszewski<BR> J. Niedzielski</td>\t\n\t<td>Podatek dochodowy
-        od os\xF3b fizycznych za 2011 r. z tytu\u0142u odp\u0142atnego zbycia nieruchomo\u015Bci</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Go 160/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>10:10</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6391 - Skargi na uchwa\u0142y rady gminy
-        w przedmiocie ... (art. 100 i 101a ustawy o samorz\u0105dzie gminnym) / 6099
-        - Inne o symbolu podstawowym 609'>6391/6099</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski
-        (spr.)<BR> J. Pi\u0105tek<BR> M. Ruszy\u0144ski</td>\t\n\t<td>regulamin dostarczania
-        wody i odprowadzania \u015Bciek\xF3w na terenie Gminy Zwierzyn</td>\n</tr>\n<tr><td>I
-        SA/Go 15/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>10:20</td>\n\t<td>sala A</td>\n\t<td>I</td>\t\n\t<td
+        obiektu, prz'>6010</td>\n\t\n\t<td>J. Ja\u015Bkiewicz<br /> J. Pi\u0105tek<br
+        /> G. Staniszewska (spr.)</td>\t\n\t<td>odmowa uchylenia decyzji<br /><br
+        /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/9442F49744
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 864/21</td>\n\t<td>2021-12-08</td>\t\n\t<td>11:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='6042 - Gry losowe i zak\u0142ady
+        wzajemne'>6042</td>\n\t\n\t<td>J. Ja\u015Bkiewicz<br /> J. Pi\u0105tek (spr.)<br
+        /> G. Staniszewska</td>\t\n\t<td>wymierzenie kary pieni\u0119\u017Cnej<br
+        /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/24B2DB2803
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr><td>II
+        SA/Go 779/21</td>\n\t<td>2021-12-08</td>\t\n\t<td>09:00</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6168 - Weterynaria i ochrona zwierz\u0105t'>6168</td>\n\t\n\t<td>J.
+        Ja\u015Bkiewicz (spr.)<br /> J. Pi\u0105tek<br /> G. Staniszewska</td>\t\n\t<td>na\u0142o\u017Cenie
+        kary pieni\u0119\u017Cnej<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/E34A4C3511
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 969/21</td>\n\t<td>2021-12-08</td>\t\n\t<td>10:30</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym
+        632'>6329</td>\n\t\n\t<td>J. Ja\u015Bkiewicz (spr.)<br /> J. Pi\u0105tek<br
+        /> G. Staniszewska</td>\t\n\t<td>odmowa przyznania prawa do \u015Bwiadczenia
+        piel\u0119gnacyjnego<br /><br /><b>Uchylono decyzj\u0119 I i II instancji
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/ECB25874C4 target=_blank><IMG src=/ewokanda/pic/U.jpg
+        title=uzasadnienie></a></td>\n</tr>\n<tr><td>II SA/Go 818/21</td>\n\t<td>2021-12-08</td>\t\n\t<td>11:00</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='6322 - Us\u0142ugi opieku\u0144cze,
+        w tym skierowanie do domu pomocy spo\u0142ecznej'>6322</td>\n\t\n\t<td>J.
+        Ja\u015Bkiewicz (spr.)<br /> J. Pi\u0105tek<br /> G. Staniszewska</td>\t\n\t<td>ustalenie
+        odp\u0142atno\u015Bci za pobyt w domu pomocy spo\u0142ecznej<br /><br /><b>Uchylono
+        zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/37B02BC097
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 831/21</td>\n\t<td>2021-12-08</td>\t\n\t<td>12:00</td>\n\t<td>Sala
+        102</td>\n\t<td>niejawne</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym
+        632'>6329</td>\n\t\n\t<td>G. Staniszewska (spr.)<br /> J. Ja\u015Bkiewicz<br
+        /> J. Pi\u0105tek</td>\t\n\t<td>odmowa przyznania prawa do \u015Bwiadczenia
+        piel\u0119gnacyjnego<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/BFEFB51334
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 918/21</td>\n\t<td>2021-12-08</td>\t\n\t<td>12:30</td>\n\t<td>Sala 102</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6122 - Rozgraniczenia nieruchomo\u015Bci'>6122</td>\n\t\n\t<td>G. Staniszewska
+        (spr.)<br /> J. Ja\u015Bkiewicz<br /> J. Pi\u0105tek</td>\t\n\t<td>koszty
+        post\u0119powania rozgraniczeniowego<br /><br /><b>Uchylono postanowienie
+        I i II instancji  <a href=http://orzeczenia.nsa.gov.pl/doc/98F8098E98 target=_blank><IMG
+        src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>II
+        SA/Go 926/21</td>\n\t<td>2021-12-08</td>\t\n\t<td>13:00</td>\n\t<td>Sala 102</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6012 - Wstrzymanie rob\xF3t budowlanych, wznowienie tych rob\xF3t,
+        zaniechanie dalszych rob\xF3t budowlanych'>6012</td>\n\t\n\t<td>G. Staniszewska
+        (spr.)<br /> J. Ja\u015Bkiewicz<br /> J. Pi\u0105tek</td>\t\n\t<td>Wstrzymanie
+        rob\xF3t budowlanych<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/65C2631726
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 845/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>08:30</td>\n\t<td>sala B</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski<br /> K.
+        Karwatowicz<br /> M. Ruszy\u0144ski (spr.)</td>\t\n\t<td>odmowa prawa do zwolnienia
+        z obowi\u0105zku op\u0142acania nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br
+        /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/C6D9C3F017
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 922/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        102</td>\n\t<td>niejawne</td>\t\n\t<td title='6012 - Wstrzymanie rob\xF3t
+        budowlanych, wznowienie tych rob\xF3t, zaniechanie dalszych rob\xF3t budowlanych'>6012</td>\n\t\n\t<td>M.
+        Ruszy\u0144ski<br /> K. Karwatowicz (spr.)<br /> J. Pi\u0105tek</td>\t\n\t<td>Wstrzymanie
+        rob\xF3t budowlanych<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/825C6AC1C1
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>I
+        SA/Go 366/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>09:00</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6550 -  '>6550</td>\n\t\n\t<td>D. Skupie\u0144 (spr.)<br /> Z. Kruszewski<br
+        /> J. Niedzielski</td>\t\n\t<td>p\u0142atno\u015Bci wramach system\xF3w wsparcia
+        bezpo\u015Bredniego na rok 2020<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/775DF034AD
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 356/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>09:15</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D.
+        Skupie\u0144<br /> Z. Kruszewski<br /> J. Niedzielski (spr.)</td>\t\n\t<td>Podatek
+        od nieruchomo\u015Bci  za 2016 r.<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/4752043B3A
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>I
+        SA/Go 169/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>09:30</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6118 - Egzekucja \u015Bwiadcze\u0144 pieni\u0119\u017Cnych'>6118</td>\n\t\n\t<td>D.
+        Skupie\u0144<br /> Z. Kruszewski (spr.)<br /> J. Niedzielski</td>\t\n\t<td>okre\u015Blenie
+        wysoko\u015Bci nieprzekazanej organowi egzekucyjnemu wierzytelno\u015Bci<br
+        /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/386B1D44FA
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 255/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>09:45</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6112 - Podatek dochodowy od os\xF3b
+        fizycznych, w tym zrycza\u0142towane formy opodatkowania'>6112</td>\n\t\n\t<td>D.
+        Skupie\u0144<br /> Z. Kruszewski (spr.)<br /> J. Niedzielski</td>\t\n\t<td>podatek
+        dochodowy od os\xF3b fizycznych za 2015 r.  od dochod\xF3w nieznajduj\u0105cych
+        pokrycia w ujawnionych \u017Ar\xF3d\u0142ach przychod\xF3w<br /><br /><b>Oddalono
+        skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/EC481011B4 target=_blank><IMG
+        src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II SA/Go
+        906/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>10:00</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski (spr.)<br
+        /> K. Karwatowicz<br /> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa prawa do zwolnienia
+        z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br /><br
+        /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/DED1CF2209
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 385/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>10:00</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6112 - Podatek dochodowy od os\xF3b
+        fizycznych, w tym zrycza\u0142towane formy opodatkowania'>6112</td>\n\t\n\t<td>D.
+        Skupie\u0144 (spr.)<br /> D. Bronowicki<br /> A. Juszczyk - Wi\u015Bniewska</td>\t\n\t<td>zrycza\u0142towany
+        podatek dochodowy od niekt\xF3rych przychod\xF3w osi\u0105ganych przez osoby
+        fizyczne za 2018 rok<br /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119<BR>Zas\u0105dzono
+        zwrot koszt\xF3w post\u0119powania  <a href=http://orzeczenia.nsa.gov.pl/doc/F85681D0EF
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>I
+        SA/Go 357/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>10:15</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D. Skupie\u0144<br
+        /> D. Bronowicki (spr.)<br /> A. Juszczyk - Wi\u015Bniewska</td>\t\n\t<td>Podatek
+        od nieruchomo\u015Bci za 2016 r.<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/C15C042455
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 724/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>10:30</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='6531 - Dotacje oraz subwencje
+        z bud\u017Cetu pa\u0144stwa, w tym dla jednostek samorz\u0105du terytorialnego'>6531</td>\n\t\n\t<td>A.
+        Jutrzenka-Trzebiatowski<br /> K. Karwatowicz (spr.)<br /> M. Ruszy\u0144ski</td>\t\n\t<td>b\u0142\u0119dne
+        ustalenie wysoko\u015Bci nale\u017Cnej dotacji o\u015Bwiatowej<br /><br /><b>Oddalono
+        skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/9694CAD119 target=_blank><IMG
+        src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>I SA/Go
+        367/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>10:30</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6112 - Podatek dochodowy od os\xF3b fizycznych, w tym zrycza\u0142towane
+        formy opodatkowania'>6112</td>\n\t\n\t<td>D. Skupie\u0144<br /> D. Bronowicki
+        (spr.)<br /> A. Juszczyk - Wi\u015Bniewska</td>\t\n\t<td>zrycza\u0142towany
+        podatek dochodowy od os\xF3b fizycznych op\u0142acany w formie karty podatkowej
+        za 2021 r.<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/2B6B55FD62
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 354/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>10:45</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6116 - Podatek od czynno\u015Bci
+        cywilnoprawnych, op\u0142ata skarbowa oraz inne podatki i op\u0142aty'>6116</td>\n\t\n\t<td>D.
+        Skupie\u0144<br /> D. Bronowicki<br /> A. Juszczyk - Wi\u015Bniewska (spr.)</td>\t\n\t<td>Op\u0142ata
+        za gospodarowanie odpadami komunalnymi za okres od 1 stycznia 2017 r. do 31
+        grudnia 2018 r., od 1 stycznia 2019 r. do 31 marca 2020<br /><br /><b>Uchylono
+        zaskar\u017Con\u0105 decyzj\u0119<BR>Zas\u0105dzono zwrot koszt\xF3w post\u0119powania
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/D7173C3396 target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr><td>II SA/Go 863/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>11:00</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='6039 - Inne, o symbolu podstawowym
+        603'>6039</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski<br /> K. Karwatowicz
+        (spr.)<br /> M. Ruszy\u0144ski</td>\t\n\t<td>negatywna opinia w sprawie wyra\u017Cenia
+        zgody na umiejscowienie l\u0105dowiska<br /><br /><b>Uchylono zaskar\u017Con\u0105
+        opini\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/A142742714 target=_blank><IMG
+        src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>I
+        SA/Go 325/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>11:00</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
         title='6110 - Podatek\_od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>D.
-        Skupie\u0144<BR> Z. Kruszewski (spr.)<BR> J. Niedzielski</td>\t\n\t<td>Podatek
-        od towar\xF3w i us\u0142ug za stycze\u0144 i luty 2015 r.</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Go 166/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>10:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6321 - Zasi\u0142ki sta\u0142e'>6321</td>\n\t\n\t<td>A.
-        Jutrzenka-Trzebiatowski (spr.)<BR> J. Pi\u0105tek<BR> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa
-        wyr\xF3wnania zasi\u0142ku sta\u0142ego</td>\n</tr>\n<tr><td>II SA/Go 236/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>10:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6320 - Zasi\u0142ki celowe i okresowe'>6320</td>\n\t\n\t<td>A.
-        Jutrzenka-Trzebiatowski<BR> J. Pi\u0105tek (spr.)<BR> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa
-        przyznania zasi\u0142ku okresowego</td>\n</tr>\n<tr class='alt'><td>I SA/Go
-        90/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>11:40</td>\n\t<td>sala A</td>\n\t<td>I</td>\t\n\t<td
-        title='6111 - Podatek akcyzowy'>6111</td>\n\t\n\t<td>D. Skupie\u0144 (spr.)<BR>
-        Z. Kruszewski<BR> J. Niedzielski</td>\t\n\t<td>Podatek akcyzowy z tyty\u0142u
-        nabycia wewn\u0105trzwsp\xF3lnotowego  samochodu osobowego</td>\n</tr>\n<tr><td>I
-        SA/Go 67/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>12:00</td>\n\t<td>sala A</td>\n\t<td>I</td>\t\n\t<td
-        title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D. Skupie\u0144<BR>
-        Z. Kruszewski<BR> J. Niedzielski (spr.)</td>\t\n\t<td>Podatek od nieruchomo\u015Bci
-        za 2013 rok</td>\n</tr>\n<tr class='alt'><td>I SA/Go 35/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>12:10</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D.
-        Skupie\u0144 (spr.)<BR> Z. Kruszewski<BR> J. Niedzielski</td>\t\n\t<td>Podatek
-        od nieruchomo\u015Bci za 201 2r.</td>\n</tr>\n<tr><td>I SA/Go 93/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>12:20</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D.
-        Skupie\u0144<BR> Z. Kruszewski (spr.)<BR> J. Niedzielski</td>\t\n\t<td>Podatek
-        od nieruchomo\u015Bci za 2012 r.</td>\n</tr>\n<tr class='alt'><td>II SA/Go
-        190/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>12:20</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6014 - Rozbi\xF3rka budowli lub innego obiektu budowlanego, dokonanie
-        oceny stanu technicznego obiektu, doprowadzenie obiektu do s'>6014</td>\n\t\n\t<td>A.
-        Jutrzenka-Trzebiatowski<BR> J. Pi\u0105tek<BR> M. Ruszy\u0144ski (spr.)</td>\t\n\t<td>nakaz
-        rozbi\xF3rki obiektu letniskowego</td>\n</tr>\n<tr><td>I SA/Go 92/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>12:30</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D.
-        Skupie\u0144<BR> Z. Kruszewski<BR> J. Niedzielski (spr.)</td>\t\n\t<td>Podatek
-        od nieruchomo\u015Bci za 2013 r.</td>\n</tr>\n<tr class='alt'><td>I SA/Go
-        33/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>12:40</td>\n\t<td>sala A</td>\n\t<td>I</td>\t\n\t<td
-        title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D. Skupie\u0144<BR>
-        Z. Kruszewski (spr.)<BR> J. Niedzielski</td>\t\n\t<td>Podatek od nieruchomo\u015Bci
-        za 2012 r.</td>\n</tr>\n<tr><td>II SA/Go 1181/17</td>\n\t<td>2018-05-10</td>\t\n\t<td>12:40</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6480 - sprawy z zakresu informacji publicznej
-        i prawa prasowego'>6480</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski<BR> J.
-        Pi\u0105tek (spr.)<BR> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa udost\u0119pnienia
-        informacji publicznej</td>\n</tr>\n<tr class='alt'><td>II SA/Go 108/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>13:00</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6152 - Lokalizacja innej inwestycji
-        celu publicznego'>6152</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski<BR> J. Pi\u0105tek
-        (spr.)<BR> M. Ruszy\u0144ski</td>\t\n\t<td>Umorzenie post\u0119powania odwo\u0142awczego</td>\n</tr>\n<tr><td>II
-        SA/Go 254/18</td>\n\t<td>2018-05-10</td>\t\n\t<td>13:20</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6033 - Zaj\u0119cie pasa drogowego (zezwolenia, op\u0142aty, kary z
-        tym zwi\u0105zane)'>6033</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski (spr.)<BR>
-        J. Pi\u0105tek<BR> M. Ruszy\u0144ski</td>\t\n\t<td>sprostowanie oczywistej
-        omy\u0142ki pisarskiej</td>\n</tr>\n<tr class='alt'><td>II SA/Go 222/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>08:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>J.
-        Ja\u015Bkiewicz (spr.)<BR> A. Jutrzenka-Trzebiatowski<BR> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa
-        przyznania \u015Bwiadczenia wychowawczego</td>\n</tr>\n<tr><td>II SA/Go 88/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>08:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6393 - Skargi na uchwa\u0142y sejmiku
-        wojew\xF3dztwa, zawieraj\u0105cej przepisy prawa miejscowego w przedmiocie
-        ... (art. 90 i 91 ustawy o / 6166 - \_\u0141owiectwo'>6393/6166</td>\n\t\n\t<td>J.
-        Ja\u015Bkiewicz (spr.)<BR> A. Jutrzenka-Trzebiatowski<BR> M. Ruszy\u0144ski</td>\t\n\t<td>podzia\u0142
-        Wojew\xF3dztwa lubuskiego na obwody \u0142owieckie</td>\n</tr>\n<tr class='alt'><td>I
-        SA/Go 139/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:00</td>\n\t<td>sala A</td>\n\t<td>I</td>\t\n\t<td
-        title='6550 -  '>6550</td>\n\t\n\t<td>J. Niedzielski (spr.)<BR> Z. Kruszewski<BR>
-        D. Skupie\u0144</td>\t\n\t<td>p\u0142atno\u015Bci w ramach system\xF3w wsparcia
-        bezpo\u015Bredniego na rok 2016</td>\n</tr>\n<tr><td>II SA/Go 66/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:10</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci
-        pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji
-        podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>J. Ja\u015Bkiewicz<BR>
-        A. Jutrzenka-Trzebiatowski (spr.)<BR> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa
-        umorzenia nale\u017Cno\u015Bci z tytu\u0142u  sk\u0142adek</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Go 502/17</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:20</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6550 -  '>6550</td>\n\t\n\t<td>J. Niedzielski<BR>
-        Z. Kruszewski<BR> D. Skupie\u0144 (spr.)</td>\t\n\t<td>odmowa przyznania p\u0142atno\u015Bci
-        dla obszar\xF3w z ograniczeniami naturalnymi lub innymi szczeg\xF3lnymi ograniczeniami
-        (ONW) na rok 2016</td>\n</tr>\n<tr><td>I SA/Go 503/17</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:30</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6550 -  '>6550</td>\n\t\n\t<td>J. Niedzielski<BR>
-        Z. Kruszewski (spr.)<BR> D. Skupie\u0144</td>\t\n\t<td>odmowa przyznania p\u0142atno\u015Bci
-        \ rolno\u015Brodowiskowej PROW 2007-2013  na rok 2016</td>\n</tr>\n<tr class='alt'><td>II
-        SA/Go 1159/17</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>J.
-        Ja\u015Bkiewicz (spr.)<BR> A. Jutrzenka-Trzebiatowski<BR> M. Ruszy\u0144ski</td>\t\n\t<td>Stwierdzenie
-        niewa\u017Cno\u015Bci decyzji</td>\n</tr>\n<tr><td>I SA/Go 87/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>09:40</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>J.
-        Niedzielski (spr.)<BR> Z. Kruszewski<BR> D. Skupie\u0144</td>\t\n\t<td>Podatek
-        od nieruchomo\u015Bci za 2012 r.</td>\n</tr>\n<tr class='alt'><td>I SA/Go
-        95/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>10:00</td>\n\t<td>sala A</td>\n\t<td>I</td>\t\n\t<td
-        title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>J. Niedzielski<BR>
-        Z. Kruszewski<BR> D. Skupie\u0144 (spr.)</td>\t\n\t<td>Podatek od nieruchomo\u015Bci
-        za 2014 r.</td>\n</tr>\n<tr><td>I SA/Go 79/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>10:20</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6113 - Podatek dochodowy od os\xF3b prawnych'>6113</td>\n\t\n\t<td>J.
-        Niedzielski<BR> Z. Kruszewski (spr.)<BR> D. Skupie\u0144</td>\t\n\t<td>okre\u015Blenie
-        wysoko\u015Bci straty w podatku dochodowym od os\xF3b prawnych  za 2011 rok</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Go 237/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>10:50</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6320 - Zasi\u0142ki celowe i okresowe'>6320</td>\n\t\n\t<td>J.
-        Ja\u015Bkiewicz<BR> A. Jutrzenka-Trzebiatowski<BR> M. Ruszy\u0144ski (spr.)</td>\t\n\t<td>odmowa
-        przyznania zasi\u0142ku celowego oraz specjalnego zasi\u0142ku celowego</td>\n</tr>\n<tr><td>II
-        SAB/Go 11/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:00</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='658 -   / 6122 - Rozgraniczenia nieruchomo\u015Bci'>658/6122</td>\n\t\n\t<td>J.
-        Ja\u015Bkiewicz<BR> M. Ruszy\u0144ski (spr.)<BR> G. Staniszewska</td>\t\n\t<td>przeprowadzenie
-        post\u0119powania rozgraniczeniowego</td>\n</tr>\n<tr class='alt'><td>II SAB/Go
-        12/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>11:20</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='658 -   / 6122 - Rozgraniczenia nieruchomo\u015Bci'>658/6122</td>\n\t\n\t<td>J.
-        Ja\u015Bkiewicz<BR> M. Ruszy\u0144ski<BR> G. Staniszewska (spr.)</td>\t\n\t<td>rozgraniczenie
-        grunt\xF3w pokrytych wodami</td>\n</tr>\n<tr><td>I SA/Go 133/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>12:00</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6560 -   / 6110 - Podatek\_od towar\xF3w
-        i us\u0142ug'>6560/6110</td>\n\t\n\t<td>J. Niedzielski (spr.)<BR> Z. Kruszewski<BR>
-        D. Skupie\u0144</td>\t\n\t<td>Podatek od towar\xF3w i us\u0142ug</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Go 89/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>12:20</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6112 - Podatek dochodowy od os\xF3b fizycznych,
-        w tym zrycza\u0142towane formy opodatkowania'>6112</td>\n\t\n\t<td>J. Niedzielski<BR>
-        Z. Kruszewski (spr.)<BR> D. Skupie\u0144</td>\t\n\t<td>zrycza\u0142towany
-        podatek dochodowy od os\xF3b fizycznych  za 2008 r. od dochod\xF3w nieznajduj\u0105cych
-        pokrycia w ujawnionych \u017Ar\xF3d\u0142ach przychod\xF3w</td>\n</tr>\n<tr><td>II
-        SA/Go 194/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>12:20</td>\n\t<td>sala B</td>\n\t<td>II</td>\t\n\t<td
-        title='6042 - Gry losowe i zak\u0142ady wzajemne'>6042</td>\n\t\n\t<td>M.
-        Ruszy\u0144ski (spr.)<BR> A. Jutrzenka-Trzebiatowski<BR> G. Staniszewska</td>\t\n\t<td>wymierzenie
-        kary pieni\u0119\u017Cnej za urz\u0105dzanie gier poza kasynem gry</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Go 98/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>12:40</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6112 - Podatek dochodowy od os\xF3b fizycznych,
-        w tym zrycza\u0142towane formy opodatkowania'>6112</td>\n\t\n\t<td>J. Niedzielski<BR>
-        Z. Kruszewski<BR> D. Skupie\u0144 (spr.)</td>\t\n\t<td>Podatek dochodowy od
-        os\xF3b fizycznych za 2012 r.</td>\n</tr>\n<tr><td>II SA/Go 240/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>12:40</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6412 - Rozstrzygni\u0119cia nadzorcze
-        dotycz\u0105ce powiatu. skargi organ\xF3w powiatu na czynno\u015Bci nadzorcze
-        / 6262 - Radni'>6412/6262</td>\n\t\n\t<td>J. Ja\u015Bkiewicz (spr.)<BR> A.
-        Jutrzenka-Trzebiatowski<BR> G. Staniszewska</td>\t\n\t<td>stwierdzenie niewa\u017Cno\u015Bci
-        uchwa\u0142y Rady Powiatu S\u0142ubickiego nr XLVI/217/17 z dnia 28 grudnia
-        2017 r. w sprawie stwierdzenia wyga\u015Bni\u0119cia mandatu radnego</td>\n</tr>\n<tr
-        class='alt'><td>I SA/Go 99/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>13:00</td>\n\t<td>sala
-        A</td>\n\t<td>I</td>\t\n\t<td title='6112 - Podatek dochodowy od os\xF3b fizycznych,
-        w tym zrycza\u0142towane formy opodatkowania'>6112</td>\n\t\n\t<td>J. Niedzielski<BR>
-        Z. Kruszewski (spr.)<BR> D. Skupie\u0144</td>\t\n\t<td>Podatek dochodowy od
-        os\xF3b fizycznych za 2012 r.</td>\n</tr>\n<tr><td>II SA/Go 128/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>13:00</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6014 - Rozbi\xF3rka budowli lub innego
+        Skupie\u0144<br /> D. Bronowicki<br /> A. Juszczyk - Wi\u015Bniewska (spr.)</td>\t\n\t<td>odmowa
+        uchylenia, po wznowieniu post\u0119powania, decyzji ostatecznej w podatku
+        od towar\xF3w i us\u0142ug za grudzie\u0144 2013 r., za miesi\u0105ce od stycznia
+        2014 r. do sierpnia 2014 r. oraz za pa\u017Adziernik i listopad 2014 r.<br
+        /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/669644AB5A
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>I
+        SA/Go 330/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>11:15</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6118 - Egzekucja \u015Bwiadcze\u0144 pieni\u0119\u017Cnych'>6118</td>\n\t\n\t<td>D.
+        Skupie\u0144<br /> D. Bronowicki<br /> A. Juszczyk - Wi\u015Bniewska (spr.)</td>\t\n\t<td>obci\u0105\u017Cenie
+        wierzyciela kosztami post\u0119powania egzekucyjnego<br /><br /><b>Uchylono
+        zaskar\u017Cone postanowienie<BR>Zas\u0105dzono zwrot koszt\xF3w post\u0119powania
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/0E71506D04 target=_blank><IMG src=/ewokanda/pic/U.jpg
+        title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>II SA/Go 640/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>11:30</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='6139 - Inne o symbolu podstawowym
+        613'>6139</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski<br /> K. Karwatowicz<br
+        /> M. Ruszy\u0144ski (spr.)</td>\t\n\t<td>ustalenie \u015Brodowiskowych uwarunkowa\u0144
+        na realizacj\u0119 przedsi\u0119wzi\u0119cia<br /><br /><b>Oddalono skarg\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/A59263E5BD target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr><td>II SA/Go 702/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>12:00</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>A.
+        Jutrzenka-Trzebiatowski<br /> K. Karwatowicz<br /> M. Ruszy\u0144ski (spr.)</td>\t\n\t<td>odmowa
+        prawa do zwolnienia z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br
+        /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/09B082DCE2
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 886/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>12:00</td>\n\t<td>Sala
+        103</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>J.
+        Pi\u0105tek (spr.)<br /> K. Karwatowicz<br /> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa
+        prawa do zwolnienia z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br
+        /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/EBD91C13B4
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr><td>II
+        SA/Go 921/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>12:30</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski
+        (spr.)<br /> K. Karwatowicz<br /> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa przyznania
+        prawa do \u015Bwiadczenia piel\u0119gnacyjnego<br /><br /><b>Uchylono decyzj\u0119
+        I i II instancji  <a href=http://orzeczenia.nsa.gov.pl/doc/5D81401A26 target=_blank><IMG
+        src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>II
+        SA/Go 923/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>12:30</td>\n\t<td>Sala 103</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6012 - Wstrzymanie rob\xF3t budowlanych, wznowienie tych rob\xF3t,
+        zaniechanie dalszych rob\xF3t budowlanych'>6012</td>\n\t\n\t<td>J. Pi\u0105tek
+        (spr.)<br /> K. Karwatowicz<br /> M. Ruszy\u0144ski</td>\t\n\t<td>Wstrzymanie
+        rob\xF3t budowlanych<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/73767E8E3D
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 578/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>13:00</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6480 - sprawy z zakresu informacji publicznej i prawa prasowego'>6480</td>\n\t\n\t<td>A.
+        Jutrzenka-Trzebiatowski (spr.)<br /> K. Karwatowicz<br /> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa
+        udost\u0119pnienia informacji publicznej<br /><br /><b>Oddalono skarg\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/0AA0A5B7BC target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>II SA/Go 807/21</td>\n\t<td>2021-12-09</td>\t\n\t<td>13:00</td>\n\t<td>Sala
+        103</td>\n\t<td>niejawne</td>\t\n\t<td title='6037 - Transport drogowy i przewozy'>6037</td>\n\t\n\t<td>J.
+        Pi\u0105tek (spr.)<br /> K. Karwatowicz<br /> M. Ruszy\u0144ski</td>\t\n\t<td>na\u0142o\u017Cenie
+        kary pieni\u0119\u017Cnej<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/4341E8EE2B
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 827/21</td>\n\t<td>2021-12-15</td>\t\n\t<td>08:30</td>\n\t<td>sala B</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6192 - Funkcjonariusze Policji'>6192</td>\n\t\n\t<td>S. Pauter (spr.)<br
+        /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>odmowa wyp\u0142aty odprawy
+        wraz z nale\u017Cnymi odsetkami<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/CCAA33DE15
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 763/21</td>\n\t<td>2021-12-15</td>\t\n\t<td>09:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='6037 - Transport drogowy i przewozy'>6037</td>\n\t\n\t<td>S.
+        Pauter (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>na\u0142o\u017Cenie
+        kary pieni\u0119\u017Cnej<br /><br /><b>Uchylono decyzj\u0119 I i II instancji
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/6F45B88FCE target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr><td>II SA/Go 950/21</td>\n\t<td>2021-12-15</td>\t\n\t<td>10:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='6361 - Rejestr\_ zabytk\xF3w'>6361</td>\n\t\n\t<td>S.
+        Pauter<br /> K. Karwatowicz (spr.)<br /> J. Pi\u0105tek</td>\t\n\t<td>w\u0142\u0105czenie
+        do wojew\xF3dzkiej ewidencji zabytk\xF3w kart ewidencyjnych zabytk\xF3w archeologicznych
+        l\u0105dowych z terenu wojew\xF3dztwa lubuskiego<br /><br /><b>Oddalono skarg\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/EE40C31286 target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>II SA/Go 881/21</td>\n\t<td>2021-12-15</td>\t\n\t<td>08:00</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>G.
+        Staniszewska (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>odmowa
+        prawa do zwolnienia z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br
+        /><br /><b>Uchylono decyzj\u0119 I i II instancji  <a href=http://orzeczenia.nsa.gov.pl/doc/4116DBDAC1
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr><td>II
+        SA/Go 904/21</td>\n\t<td>2021-12-15</td>\t\n\t<td>08:30</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>G. Staniszewska (spr.)<br /> K. Karwatowicz<br
+        /> J. Pi\u0105tek</td>\t\n\t<td>odmowa prawa do zwolnienia z op\u0142acenia
+        nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br /><br /><b>Uchylono decyzj\u0119
+        I i II instancji  <a href=http://orzeczenia.nsa.gov.pl/doc/728D0B0C40 target=_blank><IMG
+        src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>II
+        SA/Go 889/21</td>\n\t<td>2021-12-15</td>\t\n\t<td>09:00</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>G. Staniszewska (spr.)<br /> K. Karwatowicz<br
+        /> J. Pi\u0105tek</td>\t\n\t<td>odmowa prawa do zwolnienia z op\u0142acenia
+        nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br /><br /><b>Uchylono decyzj\u0119
+        I i II instancji  <a href=http://orzeczenia.nsa.gov.pl/doc/E7E73D403B target=_blank><IMG
+        src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr><td>II SA/Go
+        875/21</td>\n\t<td>2021-12-15</td>\t\n\t<td>09:30</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>G. Staniszewska (spr.)<br /> K. Karwatowicz<br
+        /> J. Pi\u0105tek</td>\t\n\t<td>odmowa prawa do zwolnienia z op\u0142acenia
+        nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br /><br /><b>Uchylono decyzj\u0119
+        I i II instancji  <a href=http://orzeczenia.nsa.gov.pl/doc/5C4B552858 target=_blank><IMG
+        src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>II
+        SA/Go 988/09</td>\n\t<td>2021-12-15</td>\t\n\t<td>11:00</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6550 -  '>6550</td>\n\t\n\t<td>G. Staniszewska (spr.)<br /> J. Ja\u015Bkiewicz<br
+        /> S. Pauter</td>\t\n\t<td>odmowa przyznania p\u0142atno\u015Bci z tytu\u0142u
+        wspierania dzia\u0142alno\u015Bci rolniczej na obszarach o niekorzystnych
+        warunkach gospodarowania za rok 2005<br /><br /><b>Odm\xF3wi\u0107 rozstrzygni\u0119cia
+        w\u0105tpliwo\u015Bci co do tre\u015Bci wyroku  <a href=http://orzeczenia.nsa.gov.pl/doc/2E84FB4A45
+        target=_blank><IMG src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr><td>II
+        SAB/Go 221/21</td>\n\t<td>2021-12-15</td>\t\n\t<td>13:00</td>\n\t<td>Sala
+        102</td>\n\t<td>niejawne</td>\t\n\t<td title='658 -   / 6014 - Rozbi\xF3rka
+        budowli lub innego obiektu budowlanego, dokonanie oceny stanu technicznego
+        obiektu, doprowadzenie obiektu do s'>658/6014</td>\n\t\n\t<td>S. Pauter (spr.)<br
+        /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>zbadanie zgodno\u015Bci
+        z prawem wykonanych przewod\xF3w kominowych<br /><br /><b>Oddalono skarg\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/1460C5CA74 target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>II SA/Go 885/21</td>\n\t<td>2021-12-15</td>\t\n\t<td>13:30</td>\n\t<td>Sala
+        102</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>S.
+        Pauter (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>odmowa
+        prawa do zwolnienia z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br
+        /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/66A08CC8CD
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 760/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>08:30</td>\n\t<td>sala B</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>J. Ja\u015Bkiewicz
+        (spr.)<br /> J. Pi\u0105tek<br /> M. Ruszy\u0144ski</td>\t\n\t<td>uznanie
+        d\u0142u\u017Cnika alimentacyjnego za uchylaj\u0105cego si\u0119 od zobowi\u0105za\u0144
+        alimentacyjnych<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/F1FBDAB60D
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 350/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>09:00</td>\n\t<td>sala
+        A</td>\n\t<td>jawne</td>\t\n\t<td title='6561 - indywidualna interpretacja
+        przepis\xF3w prawa podatkowego / 6116 - Podatek od czynno\u015Bci cywilnoprawnych,
+        op\u0142ata skarbowa oraz inne podatki i op\u0142aty'>6561/6116</td>\n\t\n\t<td>A.
+        Juszczyk - Wi\u015Bniewska<br /> D. Bronowicki (spr.)<br /> K. Rogalski</td>\t\n\t<td>Op\u0142ata
+        za gospodarowanie odpadami komunalnymi<br /><br /><b>Oddalono skarg\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/455F73A6AD target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr><td>II SA/Go 876/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>09:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119,
+        u\u017Cytkowanie obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t
+        budowlanych innych ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>G. Staniszewska<br
+        /> J. Ja\u015Bkiewicz (spr.)<br /> A. Jutrzenka-Trzebiatowski</td>\t\n\t<td>stwierdzenie
+        wyga\u015Bni\u0119cia decyzji<br /><br /><b>Zawieszono post\u0119powanie z
+        urz\u0119du  <a href=http://orzeczenia.nsa.gov.pl/doc/4D1F99C5CE target=_blank><IMG
+        src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>I
+        SA/Go 393/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>09:45</td>\n\t<td>sala A</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6559 -  '>6559</td>\n\t\n\t<td>Z. Kruszewski (spr.)<br /> A. Juszczyk
+        - Wi\u015Bniewska<br /> J. Niedzielski</td>\t\n\t<td>nieuwzgl\u0119dnienie
+        protestu<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/F800064CE5
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>I
+        SA/Go 346/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>10:30</td>\n\t<td>sala A</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6110 - Podatek\_od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>Z.
+        Kruszewski<br /> A. Juszczyk - Wi\u015Bniewska<br /> J. Niedzielski (spr.)</td>\t\n\t<td>odsetki
+        od zwrot\xF3w podatku od towar\xF3w i us\u0142ug za luty i marzec 2012 roku
+        wyp\u0142aconych po up\u0142ywie ustawowych termin\xF3w<br /><br /><b>Oddalono
+        skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/247648E993 target=_blank><IMG
+        src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>II
+        SA/Go 968/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>10:30</td>\n\t<td>sala B</td>\n\t<td>jawne</td>\t\n\t<td
+        title='652 - Sprawy ubezpiecze\u0144 zdrowotnych'>652</td>\n\t\n\t<td>G. Staniszewska
+        (spr.)<br /> J. Ja\u015Bkiewicz<br /> A. Jutrzenka-Trzebiatowski</td>\t\n\t<td>ustalenie
+        prawa do zwrotu koszt\xF3w za \u015Bwiadczenia zdrowotne<br /><br /><b>Oddalono
+        skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/CDF8043B93 target=_blank><IMG
+        src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II SA/Go
+        948/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>11:30</td>\n\t<td>sala B</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6037 - Transport drogowy i przewozy'>6037</td>\n\t\n\t<td>G. Staniszewska<br
+        /> J. Ja\u015Bkiewicz (spr.)<br /> A. Jutrzenka-Trzebiatowski</td>\t\n\t<td>na\u0142o\u017Cenie
+        kary pieni\u0119\u017Cnej<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/0700BD5216
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 352/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>12:15</td>\n\t<td>sala
+        A</td>\n\t<td>jawne</td>\t\n\t<td title='6559 -  '>6559</td>\n\t\n\t<td>Z.
+        Kruszewski (spr.)<br /> J. Niedzielski<br /> D. Skupie\u0144</td>\t\n\t<td>nieuwzgl\u0119dnienie
+        protestu<br /><br /><b>Stwierdzono, \u017Ce ocena projektu zosta\u0142a przeprowadzona
+        w spos\xF3b naruszaj\u0105cy prawo i przekazano spraw\u0119 do ponownego rozpatrzenia<BR>Zas\u0105dzono
+        zwrot koszt\xF3w post\u0119powania  <a href=http://orzeczenia.nsa.gov.pl/doc/481E5A7E93
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 858/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>12:30</td>\n\t<td>sala B</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6042 - Gry losowe i zak\u0142ady wzajemne'>6042</td>\n\t\n\t<td>G.
+        Staniszewska<br /> J. Ja\u015Bkiewicz<br /> K. Rogalski (spr.)</td>\t\n\t<td>wymierzenie
+        kary pieni\u0119\u017Cnej<br /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/488288BF24 target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>I SA/Go 380/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>13:00</td>\n\t<td>sala
+        A</td>\n\t<td>jawne</td>\t\n\t<td title='6559 -  '>6559</td>\n\t\n\t<td>Z.
+        Kruszewski<br /> J. Niedzielski<br /> D. Skupie\u0144 (spr.)</td>\t\n\t<td>nieuwzgl\u0119dnienie
+        protestu<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/A64F190783
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 722/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>13:00</td>\n\t<td>sala B</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6480 - sprawy z zakresu informacji publicznej i prawa prasowego'>6480</td>\n\t\n\t<td>G.
+        Staniszewska<br /> J. Ja\u015Bkiewicz (spr.)<br /> K. Rogalski</td>\t\n\t<td>odmowa
+        udost\u0119pnienia informacji publicznej<br /><br /><b>Oddalono skarg\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/825C0DEC16 target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>I SA/Go 282/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>13:45</td>\n\t<td>sala
+        A</td>\n\t<td>jawne</td>\t\n\t<td title='6110 - Podatek\_od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>Z.
+        Kruszewski<br /> A. Juszczyk - Wi\u015Bniewska (spr.)<br /> J. Niedzielski</td>\t\n\t<td>Podatek
+        od towar\xF3w i us\u0142ug za poszczeg\xF3lne miesi\u0105ce od sierpnia 2015
+        r. do grudnia 2015 r.<br /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119<BR>Zas\u0105dzono
+        zwrot koszt\xF3w post\u0119powania  <a href=http://orzeczenia.nsa.gov.pl/doc/548F0722DD
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>I
+        SA/Go 390/20</td>\n\t<td>2021-12-16</td>\t\n\t<td>14:30</td>\n\t<td>sala A</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6111 - Podatek akcyzowy'>6111</td>\n\t\n\t<td>Z. Kruszewski (spr.)<br
+        /> A. Juszczyk - Wi\u015Bniewska<br /> J. Niedzielski</td>\t\n\t<td>op\u0142ata
+        paliwowa za grudzie\u0144 2013 r. oraz za miesi\u0105ce od stycznia 2014 r.
+        do sierpnia 2014 r.<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/334BCDFB61
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 880/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        102</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>K.
+        Rogalski (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>odmowa
+        prawa do zwolnienia z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br
+        /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/900AE05384
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 947/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>09:00</td>\n\t<td>Sala 102</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>G. Staniszewska
+        (spr.)<br /> J. Ja\u015Bkiewicz<br /> K. Rogalski</td>\t\n\t<td>odmowa przyznania
+        \u015Bwiadczenia piel\u0119gnacyjnego<br /><br /><b>Uchylono decyzj\u0119
+        I i II instancji  <a href=http://orzeczenia.nsa.gov.pl/doc/684767006C target=_blank><IMG
+        src=/ewokanda/pic/U.jpg title=uzasadnienie></a></td>\n</tr>\n<tr class='alt'><td>II
+        SA/Go 575/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>09:00</td>\n\t<td>Sala 103</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6537 - Egzekucja nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych\_
+        nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art. 34 ust. 3\_ ustawy
+        o f'>6537</td>\n\t\n\t<td>M. Ruszy\u0144ski (spr.)<br /> A. Jutrzenka-Trzebiatowski<br
+        /> K. Karwatowicz</td>\t\n\t<td>zarzuty zg\u0142oszone w post\u0119powaniu
+        egzekucyjnym<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/55406F9D6A
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 924/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>09:30</td>\n\t<td>Sala 102</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6012 - Wstrzymanie rob\xF3t budowlanych, wznowienie tych rob\xF3t,
+        zaniechanie dalszych rob\xF3t budowlanych'>6012</td>\n\t\n\t<td>K. Rogalski
+        (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>Wstrzymanie
+        rob\xF3t budowlanych<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/EA11A81766
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 954/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>09:30</td>\n\t<td>Sala
+        102</td>\n\t<td>niejawne</td>\t\n\t<td title='6037 - Transport drogowy i przewozy'>6037</td>\n\t\n\t<td>G.
+        Staniszewska (spr.)<br /> J. Ja\u015Bkiewicz<br /> K. Rogalski</td>\t\n\t<td>na\u0142o\u017Cenie
+        kary pieni\u0119\u017Cnej<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/6D2CEABE92
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 883/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>11:00</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski (spr.)<br
+        /> J. Ja\u015Bkiewicz<br /> G. Staniszewska</td>\t\n\t<td>odmowa prawa do
+        zwolnienia z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br
+        /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/868FDC3340
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 890/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>11:00</td>\n\t<td>Sala
+        103</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>J.
+        Ja\u015Bkiewicz (spr.)<br /> A. Jutrzenka-Trzebiatowski<br /> G. Staniszewska</td>\t\n\t<td>odmowa
+        prawa do zwolnienia z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br
+        /><br /><b>Uchylono decyzj\u0119 I i II instancji  <a href=http://orzeczenia.nsa.gov.pl/doc/1978FB03AD
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 993/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>11:30</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6073 - Op\u0142aty adiacenckie oraz op\u0142aty za niezagospodarowanie
+        nieruchomo\u015Bci w zakre\u015Blonym terminie'>6073</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski
+        (spr.)<br /> J. Ja\u015Bkiewicz<br /> G. Staniszewska</td>\t\n\t<td>ustalenie
+        op\u0142aty adiacenckiej<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/7D44CD3873
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 653/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>12:00</td>\n\t<td>Sala
+        104</td>\n\t<td>niejawne</td>\t\n\t<td title='6537 - Egzekucja nale\u017Cno\u015Bci
+        pieni\u0119\u017Cnych, do kt\xF3rych\_ nie stosuje si\u0119 przepis\xF3w Ordynacji
+        podatkowej (art. 34 ust. 3\_ ustawy o f'>6537</td>\n\t\n\t<td>K. Rogalski
+        (spr.)<br /> J. Pi\u0105tek<br /> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa umorzenia
+        post\u0119powania egzekucyjnego<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/0CAE144CCE
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 789/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>13:00</td>\n\t<td>Sala 103</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>J. Pi\u0105tek (spr.)<br /> K. Karwatowicz<br
+        /> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa zwolnienia z obowi\u0105zku op\u0142acenia
+        nalezno\u015Bci z tytu\u0142u sk\u0142adek<br /><br /><b>Uchylono decyzj\u0119
+        I i II instancji  <a href=http://orzeczenia.nsa.gov.pl/doc/4C46821ACD target=_blank><IMG
+        src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>II
+        SA/Go 878/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>13:30</td>\n\t<td>Sala 103</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>J. Pi\u0105tek<br /> K. Karwatowicz
+        (spr.)<br /> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa prawa do zwolnienia z
+        op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br /><br /><b>Uchylono
+        zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/B55D4F8F03
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 879/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>14:30</td>\n\t<td>Sala 102</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>J. Pi\u0105tek (spr.)<br /> K. Karwatowicz<br
+        /> K. Rogalski</td>\t\n\t<td>odmowa prawa do zwolnienia z op\u0142acenia nale\u017Cno\u015Bci
+        z tytu\u0142u sk\u0142adek<br /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/D5C012F0D3 target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>II SAB/Go 214/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>14:30</td>\n\t<td>Sala
+        103</td>\n\t<td>niejawne</td>\t\n\t<td title='658 -   / 6480 - sprawy z zakresu
+        informacji publicznej i prawa prasowego'>658/6480</td>\n\t\n\t<td>J. Pi\u0105tek<br
+        /> K. Karwatowicz (spr.)<br /> M. Ruszy\u0144ski</td>\t\n\t<td>udost\u0119pnienie
+        informacji publicznej<br /><br /><b>Zobowi\u0105zano do podj\u0119cia czynno\u015Bci
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/C2BF05A7F6 target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr><td>II SA/Go 915/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>15:00</td>\n\t<td>Sala
+        103</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>J.
+        Pi\u0105tek (spr.)<br /> K. Karwatowicz<br /> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa
+        prawa do zwolnienia z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br
+        /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/4C773DB61A
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 966/21</td>\n\t<td>2021-12-16</td>\t\n\t<td>15:00</td>\n\t<td>Sala
+        103</td>\n\t<td>niejawne</td>\t\n\t<td title='6037 - Transport drogowy i przewozy'>6037</td>\n\t\n\t<td>J.
+        Pi\u0105tek (spr.)<br /> K. Karwatowicz<br /> M. Ruszy\u0144ski</td>\t\n\t<td>Na\u0142o\u017Cenie
+        kary pieni\u0119\u017Cnej<br /><br /><b>Uchylono decyzj\u0119 I i II instancji
+        oraz umorzono post\u0119powanie administracyjne.  <a href=http://orzeczenia.nsa.gov.pl/doc/220ABA3346
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 932/21</td>\n\t<td>2021-12-21</td>\t\n\t<td>08:30</td>\n\t<td>sala B</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6192 - Funkcjonariusze Policji'>6192</td>\n\t\n\t<td>M. Ruszy\u0144ski
+        (spr.)<br /> A. Jutrzenka-Trzebiatowski<br /> K. Karwatowicz</td>\t\n\t<td>zawieszenie
+        w czynno\u015Bciach s\u0142u\u017Cbowych<br /><br /><b>Oddalono skarg\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/CFE53A26A1 target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>II SA/Go 765/21</td>\n\t<td>2021-12-21</td>\t\n\t<td>09:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='6014 - Rozbi\xF3rka budowli lub innego
         obiektu budowlanego, dokonanie oceny stanu technicznego obiektu, doprowadzenie
-        obiektu do s'>6014</td>\n\t\n\t<td>J. Ja\u015Bkiewicz<BR> A. Jutrzenka-Trzebiatowski<BR>
-        G. Staniszewska (spr.)</td>\t\n\t<td>Nakaz rozbi\xF3rki obiektu</td>\n</tr>\n<tr
-        class='alt'><td>II SA/Go 176/18</td>\n\t<td>2018-05-16</td>\t\n\t<td>13:20</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6014 - Rozbi\xF3rka budowli lub innego
-        obiektu budowlanego, dokonanie oceny stanu technicznego obiektu, doprowadzenie
-        obiektu do s'>6014</td>\n\t\n\t<td>J. Ja\u015Bkiewicz<BR> A. Jutrzenka-Trzebiatowski<BR>
-        G. Staniszewska (spr.)</td>\t\n\t<td>na\u0142o\u017Cenie obowi\u0105zku rozbi\xF3rki
-        obiektu</td>\n</tr>\n<tr><td>II SAB/Go 140/17</td>\n\t<td>2018-05-23</td>\t\n\t<td>08:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='658 -   / 6480 - sprawy z zakresu informacji
-        publicznej i prawa prasowego'>658/6480</td>\n\t\n\t<td>K. Dziedzic (spr.)<BR>
-        J. Ja\u015Bkiewicz<BR> J. Pi\u0105tek</td>\t\n\t<td>udost\u0119pnienie informacji
-        publicznej</td>\n</tr>\n<tr class='alt'><td>II SA/Go 110/17</td>\n\t<td>2018-05-23</td>\t\n\t<td>12:20</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6037 - Transport drogowy i przewozy'>6037</td>\n\t\n\t<td>J.
-        Ja\u015Bkiewicz<BR> K. Dziedzic (spr.)<BR> A. Jutrzenka-Trzebiatowski</td>\t\n\t<td>Na\u0142o\u017Cenie
-        kary pieni\u0119\u017Cnej</td>\n</tr>\n<tr><td>II SA/Go 100/18</td>\n\t<td>2018-05-23</td>\t\n\t<td>12:40</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>K.
-        Dziedzic (spr.)<BR> A. Jutrzenka-Trzebiatowski<BR> G. Staniszewska</td>\t\n\t<td>Zasi\u0142ek
-        piel\u0119gnacyjny</td>\n</tr>\n<tr class='alt'><td>II SA/Go 90/18</td>\n\t<td>2018-05-30</td>\t\n\t<td>08:30</td>\n\t<td>sala
-        B</td>\n\t<td>II</td>\t\n\t<td title='6391 - Skargi na uchwa\u0142y rady gminy
-        w przedmiocie ... (art. 100 i 101a ustawy o samorz\u0105dzie gminnym) / 6150
-        - Miejscowy plan zagospodarowania przestrzennego'>6391/6150</td>\n\t\n\t<td>S.
-        Pauter<BR> K. Dziedzic<BR> G. Staniszewska (spr.)</td>\t\n\t<td>uchwalenie
-        miejscowego planu zagospodarowania przestrzennego dla cz\u0119\u015Bci obszaru
-        miasta Skwierzyna</td>\n</tr>\n</TABLE>\n<BR><BR><BR><BR><BR>\n<hr style=\"margin-bottom:1\"/>\n<div
-        style=\"font-size:12px\">Opracowanie strony: Wydzia\u0142&nbsp;Informatyki
-        -&nbsp;Naczelny&nbsp;S\u0105d&nbsp;Administracyjny -&nbsp;2014</div>\n<hr
-        style=\"margin-bottom:1\"/>\n\n</body></html>"}
+        obiektu do s'>6014</td>\n\t\n\t<td>M. Ruszy\u0144ski (spr.)<br /> A. Jutrzenka-Trzebiatowski<br
+        /> K. Karwatowicz</td>\t\n\t<td>nakaz rozbi\xF3rki szczelnego zbiornika na
+        gnoj\xF3wk\u0119 (zbiornik nr 1)<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/1C2D863BEF
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 849/21</td>\n\t<td>2021-12-21</td>\t\n\t<td>11:00</td>\n\t<td>Sala 102</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6046 - Inne koncesje i zezwolenia'>6046</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski
+        (spr.)<br /> K. Karwatowicz<br /> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa udzielenia
+        zezwolenia na prowadzenie sk\u0142adu podatkowego<br /><br /><b>Oddalono skarg\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/9010841E7B target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>II SA/Go 898/21</td>\n\t<td>2021-12-21</td>\t\n\t<td>11:30</td>\n\t<td>Sala
+        102</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>A.
+        Jutrzenka-Trzebiatowski (spr.)<br /> K. Karwatowicz<br /> M. Ruszy\u0144ski</td>\t\n\t<td>odmowa
+        prawa do zwolnienia z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br
+        /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/4DA27DFFF9
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 850/21</td>\n\t<td>2021-12-21</td>\t\n\t<td>12:00</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6046 - Inne koncesje i zezwolenia'>6046</td>\n\t\n\t<td>M. Ruszy\u0144ski<br
+        /> A. Jutrzenka-Trzebiatowski<br /> K. Karwatowicz (spr.)</td>\t\n\t<td>odmowa
+        udzielenia zazwolenia na wysy\u0142anie wyrob\xF3w akcyzowych jako zarejestrowany
+        wysy\u0142aj\u0105cy<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/59FE29A8C7
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 964/21</td>\n\t<td>2021-12-21</td>\t\n\t<td>12:00</td>\n\t<td>Sala
+        102</td>\n\t<td>niejawne</td>\t\n\t<td title='6031 - Uprawnienia do kierowania
+        pojazdami'>6031</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski (spr.)<br /> K.
+        Karwatowicz<br /> M. Ruszy\u0144ski</td>\t\n\t<td>uniewa\u017Cnienie egzaminu
+        pa\u0144stwowego na prawo jazdy<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/E6EDA881E7
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 887/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>08:30</td>\n\t<td>sala B</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>S. Pauter<br /> J. Pi\u0105tek<br />
+        K. Rogalski (spr.)</td>\t\n\t<td>odmowa prawa do zwolnienia z op\u0142acenia
+        nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br /><br /><b>Uchylono zaskar\u017Con\u0105
+        decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/6CE418F225 target=_blank><IMG
+        src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>II
+        SA/Go 783/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>08:00</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>M. Ruszy\u0144ski
+        (spr.)<br /> J. Pi\u0105tek<br /> K. Rogalski</td>\t\n\t<td>odmowa przywr\xF3cenia
+        terminu do wniesienia odwo\u0142ania<br /><br /><b>Oddalono skarg\u0119  <a
+        href=http://orzeczenia.nsa.gov.pl/doc/A6856FAF47 target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr><td>II SA/Go 782/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        104</td>\n\t<td>niejawne</td>\t\n\t<td title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>J.
+        Pi\u0105tek (spr.)<br /> K. Rogalski<br /> M. Ruszy\u0144ski</td>\t\n\t<td>stwierdzenie
+        uchybienia terminu do wniesienia odwo\u0142ania<br /><br /><b>Oddalono skarg\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/7AB69458CA target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>I SA/Go 363/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>09:00</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6110 - Podatek\_od towar\xF3w
+        i us\u0142ug'>6110</td>\n\t\n\t<td>A. Juszczyk - Wi\u015Bniewska (spr.)<br
+        /> D. Bronowicki<br /> D. Skupie\u0144</td>\t\n\t<td>przed\u0142u\u017Cenie
+        terminu dokonania zwrotu nadwy\u017Cki podatku naliczonego nad nale\u017Cnym
+        w podatku od towar\xF3w i us\u0142ug za marzec, kwiecie\u0144 i maj 2019 r.<br
+        /><br /><b>Uchylono zaskar\u017Cone postanowienie<BR>Zas\u0105dzono zwrot
+        koszt\xF3w post\u0119powania  <a href=http://orzeczenia.nsa.gov.pl/doc/44616D4AA7
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>I
+        SA/Go 377/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>09:15</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6112 - Podatek dochodowy od os\xF3b fizycznych, w tym zrycza\u0142towane
+        formy opodatkowania'>6112</td>\n\t\n\t<td>A. Juszczyk - Wi\u015Bniewska (spr.)<br
+        /> D. Bronowicki<br /> D. Skupie\u0144</td>\t\n\t<td>zrycza\u0142towany podatek
+        dochodowy od os\xF3b fizycznych op\u0142acany w formie karty podatkowej na
+        2021 r.<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/6F6FD1D16E
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 372/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>09:30</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6118 - Egzekucja \u015Bwiadcze\u0144
+        pieni\u0119\u017Cnych'>6118</td>\n\t\n\t<td>A. Juszczyk - Wi\u015Bniewska<br
+        /> D. Bronowicki (spr.)<br /> D. Skupie\u0144</td>\t\n\t<td>obci\u0105\u017Cenie
+        wierzyciela kosztami post\u0119powania egzekucyjnego<br /><br /><b>Oddalono
+        skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/1C1698F89C target=_blank><IMG
+        src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>I SA/Go
+        371/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>09:45</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>A. Juszczyk
+        - Wi\u015Bniewska<br /> D. Bronowicki<br /> D. Skupie\u0144 (spr.)</td>\t\n\t<td>Podatek
+        od nieruchomo\u015Bci za 2015 rok<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/E724FD2895
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 358/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>10:00</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>A.
+        Juszczyk - Wi\u015Bniewska (spr.)<br /> Z. Kruszewski<br /> J. Niedzielski</td>\t\n\t<td>Podatek
+        od nieruchomo\u015Bci za 2017 r.<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/7885F4B953
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>I
+        SA/Go 394/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>10:15</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>A. Juszczyk
+        - Wi\u015Bniewska<br /> Z. Kruszewski<br /> J. Niedzielski (spr.)</td>\t\n\t<td>Podatek
+        od nieruchomo\u015Bci za 2016 rok<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/44D5F8F4C4
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 972/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>10:30</td>\n\t<td>Sala
+        102</td>\n\t<td>niejawne</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym
+        632'>6329</td>\n\t\n\t<td>S. Pauter (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>uznanie
+        \u015Bwiadczenia wychowawczego za \u015Bwiadczenie nienale\u017Cnie pobrane
+        i zobowi\u0105znie do jego zwrotu<br /><br /><b>Uchylono decyzj\u0119 I i
+        II instancji  <a href=http://orzeczenia.nsa.gov.pl/doc/26B239566C target=_blank><IMG
+        src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>I SA/Go
+        307/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>10:30</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6112 - Podatek dochodowy od os\xF3b fizycznych, w tym zrycza\u0142towane
+        formy opodatkowania'>6112</td>\n\t\n\t<td>A. Juszczyk - Wi\u015Bniewska<br
+        /> Z. Kruszewski (spr.)<br /> J. Niedzielski</td>\t\n\t<td>umorzenie odsetek
+        za zw\u0142ok\u0119<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/1008E25DFA
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 369/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>10:45</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6550 -  '>6550</td>\n\t\n\t<td>A.
+        Juszczyk - Wi\u015Bniewska<br /> Z. Kruszewski (spr.)<br /> J. Niedzielski</td>\t\n\t<td>P\u0142atno\u015B\u0107
+        rolno- \u015Brodkowiskowo- klimatyczna na rok 2020<br /><br /><b>Oddalono
+        skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/EB8694DD1C target=_blank><IMG
+        src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II SA/Go
+        971/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>11:00</td>\n\t<td>Sala 102</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>S. Pauter<br
+        /> K. Karwatowicz (spr.)<br /> J. Pi\u0105tek</td>\t\n\t<td>uznanie \u015Bwiadczenia
+        wychowawczego za \u015Bwiadczenie nienale\u017Cnie pobrane i zobowi\u0105zanie
+        do jego zwrotu<br /><br /><b>Uchylono decyzj\u0119 I i II instancji  <a href=http://orzeczenia.nsa.gov.pl/doc/4AAE2C482F
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 871/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>11:30</td>\n\t<td>Sala
+        102</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>S.
+        Pauter (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>umorzenie
+        postepowania o zwolnienie z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u
+        sk\u0142adek<br /><br /><b>Uchylono decyzj\u0119 I i II instancji  <a href=http://orzeczenia.nsa.gov.pl/doc/858CCF73F2
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 873/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>12:00</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>K. Rogalski (spr.)<br /> K. Karwatowicz<br
+        /> J. Pi\u0105tek</td>\t\n\t<td>odmowa prawa do zwolnienia z op\u0142acenia
+        nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br /><br /><b>Uchylono zaskar\u017Con\u0105
+        decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/58BBF8D0A3 target=_blank><IMG
+        src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>II
+        SAB/Go 220/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>12:00</td>\n\t<td>Sala
+        102</td>\n\t<td>niejawne</td>\t\n\t<td title='658 -   / 6480 - sprawy z zakresu
+        informacji publicznej i prawa prasowego'>658/6480</td>\n\t\n\t<td>S. Pauter<br
+        /> K. Karwatowicz (spr.)<br /> J. Pi\u0105tek</td>\t\n\t<td>udost\u0119pnienie
+        informacji publicznej<br /><br /><b>Stwierdzono, \u017Ce bezczynno\u015B\u0107
+        organu nie mia\u0142a miejsca z ra\u017C\u0105cym naruszeniem prawa  <a href=http://orzeczenia.nsa.gov.pl/doc/883DD28C68
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 547/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>12:00</td>\n\t<td>Sala 104</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6480 - sprawy z zakresu informacji publicznej i prawa prasowego'>6480</td>\n\t\n\t<td>J.
+        Pi\u0105tek (spr.)<br /> K. Karwatowicz<br /> K. Rogalski</td>\t\n\t<td>odmowa
+        udost\u0119pnienia informacji publicznej<br /><br /><b>Oddalono skarg\u0119
+        \ <a href=http://orzeczenia.nsa.gov.pl/doc/F2BADFE9F6 target=_blank><IMG src=/ewokanda/pic/S.jpg
+        title=sentencja></a></td>\n</tr>\n<tr class='alt'><td>II SA/Go 909/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>12:30</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>K.
+        Rogalski (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>odmowa
+        umorzenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br /><br /><b>Uchylono
+        zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/9163AE9C4A
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SAB/Go 209/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>13:00</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='658 -   / 6480 - sprawy z zakresu
+        informacji publicznej i prawa prasowego'>658/6480</td>\n\t\n\t<td>K. Rogalski
+        (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>udost\u0119pnienie
+        informacji publicznej<br /><br /><b>Stwierdzono, \u017Ce organ dopu\u015Bci\u0142
+        si\u0119 bezczynno\u015Bci  <a href=http://orzeczenia.nsa.gov.pl/doc/A407280D13
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 739/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>14:00</td>\n\t<td>Sala
+        103</td>\n\t<td>niejawne</td>\t\n\t<td title='6322 - Us\u0142ugi opieku\u0144cze,
+        w tym skierowanie do domu pomocy spo\u0142ecznej'>6322</td>\n\t\n\t<td>J.
+        Pi\u0105tek (spr.)<br /> J. Ja\u015Bkiewicz<br /> K. Rogalski</td>\t\n\t<td>ustalenie
+        zwrotu wydatk\xF3w zast\u0119pczo poniesionych przez gmin\u0119<br /><br /><b>Uchylono
+        zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/FFD09AB751
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SA/Go 987/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>14:00</td>\n\t<td>Sala 103</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>S. Pauter
+        (spr.)<br /> J. Pi\u0105tek<br /> K. Rogalski</td>\t\n\t<td>uznanie \u015Bwiadczenia
+        wychowawczego za \u015Bwiadczenie nienale\u017Cnie pobrane i zobowi\u0105zanie
+        do jego zwrotu<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/C5D7A8E9E2
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 872/21</td>\n\t<td>2021-12-22</td>\t\n\t<td>14:00</td>\n\t<td>Sala
+        104</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>J.
+        Pi\u0105tek (spr.)<br /> K. Karwatowicz<br /> K. Rogalski</td>\t\n\t<td>odmowa
+        prawa do zwolnienia z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br
+        /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/47FD905FD8
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr><td>II
+        SAB/Go 184/21</td>\n\t<td>2021-12-29</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='658 -   / 6480 - sprawy z zakresu
+        informacji publicznej i prawa prasowego'>658/6480</td>\n\t\n\t<td>A. Jutrzenka-Trzebiatowski
+        (spr.)<br /> J. Ja\u015Bkiewicz<br /> K. Rogalski</td>\t\n\t<td>udost\u0119pnienie
+        informacji publicznej<br /><br /><b>Stwierdzono, \u017Ce organ dopu\u015Bci\u0142
+        si\u0119 bezczynno\u015Bci  </td>\n</tr>\n<tr class='alt'><td>II SAB/Go 208/21</td>\n\t<td>2021-12-29</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        103</td>\n\t<td>niejawne</td>\t\n\t<td title='658 -   / 6040 - Wyr\xF3b, rozlew
+        i obr\xF3t alkoholami'>658/6040</td>\n\t\n\t<td>J. Pi\u0105tek (spr.)<br />
+        K. Karwatowicz<br /> K. Rogalski</td>\t\n\t<td>wydanie zezwolenia na sprzeda\u017C
+        napoj\xF3w alkoholowych<br /><br /><b>Stwierdzono, \u017Ce organ dopu\u015Bci\u0142
+        si\u0119 bezczynno\u015Bci  </td>\n</tr>\n<tr><td>II SA/Go 577/21</td>\n\t<td>2021-12-29</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        104</td>\n\t<td>niejawne</td>\t\n\t<td title='6480 - sprawy z zakresu informacji
+        publicznej i prawa prasowego'>6480</td>\n\t\n\t<td>J. Ja\u015Bkiewicz (spr.)<br
+        /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>odmowa udost\u0119pnienia
+        informacji publicznej<br /><br /><b>Oddalono skarg\u0119  <a href=http://orzeczenia.nsa.gov.pl/doc/2380845E58
+        target=_blank><IMG src=/ewokanda/pic/S.jpg title=sentencja></a></td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 815/21</td>\n\t<td>2021-12-29</td>\t\n\t<td>09:00</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6037 - Transport drogowy i przewozy'>6037</td>\n\t\n\t<td>K.
+        Rogalski (spr.)<br /> J. Ja\u015Bkiewicz<br /> A. Jutrzenka-Trzebiatowski</td>\t\n\t<td>Na\u0142o\u017Cenie
+        kary pieni\u0119\u017Cnej<br /><br /><b>Uchylono decyzj\u0119 I i II instancji
+        \ </td>\n</tr>\n<tr><td>II SA/Go 941/21</td>\n\t<td>2021-12-29</td>\t\n\t<td>09:30</td>\n\t<td>Sala
+        101</td>\n\t<td>niejawne</td>\t\n\t<td title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>A.
+        Jutrzenka-Trzebiatowski (spr.)<br /> J. Ja\u015Bkiewicz<br /> K. Rogalski</td>\t\n\t<td>ustalenie
+        warunk\xF3w zabudowy<br /><br /><b>Uchylono decyzj\u0119 I i II instancji
+        \ </td>\n</tr>\n<tr class='alt'><td>II SA/Go 843/21</td>\n\t<td>2021-12-29</td>\t\n\t<td>09:30</td>\n\t<td>Sala
+        103</td>\n\t<td>niejawne</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119,
+        u\u017Cytkowanie obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t
+        budowlanych innych ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>J. Pi\u0105tek
+        (spr.)<br /> K. Karwatowicz<br /> K. Rogalski</td>\t\n\t<td>Zatwierdzenie
+        projektu budowlanego oraz udzielenie pozwolenia na rozbudow\u0119<br /><br
+        /><b>Uchylono decyzj\u0119 I i II instancji  </td>\n</tr>\n<tr><td>II SA/Go
+        905/21</td>\n\t<td>2021-12-29</td>\t\n\t<td>09:30</td>\n\t<td>Sala 104</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>J. Ja\u015Bkiewicz (spr.)<br /> K.
+        Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>odmowa prawa do zwolnienia
+        z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br /><br
+        /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  </td>\n</tr>\n<tr class='alt'><td>II
+        SA/Go 902/21</td>\n\t<td>2021-12-29</td>\t\n\t<td>09:30</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>K. Rogalski (spr.)<br /> J. Ja\u015Bkiewicz<br
+        /> A. Jutrzenka-Trzebiatowski</td>\t\n\t<td>odmowa prawa do zwolnienia z op\u0142acenia
+        nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br /><br /><b>Uchylono zaskar\u017Con\u0105
+        decyzj\u0119  </td>\n</tr>\n<tr><td>II SA/Go 973/21</td>\n\t<td>2021-12-29</td>\t\n\t<td>10:00</td>\n\t<td>Sala
+        103</td>\n\t<td>niejawne</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym
+        632'>6329</td>\n\t\n\t<td>J. Pi\u0105tek (spr.)<br /> K. Karwatowicz<br />
+        K. Rogalski</td>\t\n\t<td>Uchylenie decyzji<br /><br /><b>Oddalono skarg\u0119
+        \ </td>\n</tr>\n<tr class='alt'><td>II SA/Go 882/21</td>\n\t<td>2021-12-29</td>\t\n\t<td>10:00</td>\n\t<td>Sala
+        104</td>\n\t<td>niejawne</td>\t\n\t<td title='6536 - Ulgi w sp\u0142acaniu
+        nale\u017Cno\u015Bci pieni\u0119\u017Cnych, do kt\xF3rych nie stosuje si\u0119
+        przepis\xF3w Ordynacji podatkowej (art. 34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>J.
+        Ja\u015Bkiewicz (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>odmowa
+        prawa do zwolnienia z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br
+        /><br /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  </td>\n</tr>\n<tr><td>II
+        SA/Go 897/21</td>\n\t<td>2021-12-29</td>\t\n\t<td>10:30</td>\n\t<td>Sala 104</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6536 - Ulgi w sp\u0142acaniu nale\u017Cno\u015Bci pieni\u0119\u017Cnych,
+        do kt\xF3rych nie stosuje si\u0119 przepis\xF3w Ordynacji podatkowej (art.
+        34 i 34a\_ ustaw'>6536</td>\n\t\n\t<td>J. Ja\u015Bkiewicz (spr.)<br /> K.
+        Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>odmowa prawa do zwolnienia
+        z op\u0142acenia nale\u017Cno\u015Bci z tytu\u0142u sk\u0142adek<br /><br
+        /><b>Uchylono zaskar\u017Con\u0105 decyzj\u0119  </td>\n</tr>\n<tr class='alt'><td>II
+        SA/Go 974/21</td>\n\t<td>2021-12-29</td>\t\n\t<td>14:00</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>K. Rogalski
+        (spr.)<br /> K. Karwatowicz<br /> J. Pi\u0105tek</td>\t\n\t<td>Umorzenie post\u0119powania<br
+        /><br /><b>Oddalono skarg\u0119  </td>\n</tr>\n<tr><td>II SA/Go 1052/21</td>\n\t<td>2021-12-30</td>\t\n\t<td>09:00</td>\n\t<td>Sala
+        102</td>\n\t<td>niejawne</td>\t\n\t<td title='6329 - Inne o symbolu podstawowym
+        632'>6329</td>\n\t\n\t<td>J. Pi\u0105tek<br /> K. Karwatowicz (spr.)<br />
+        K. Rogalski</td>\t\n\t<td>odmowa przyznania prawa do \u015Bwiadczenia piel\u0119gnacyjnego<br
+        /><br /><b>Oddalono skarg\u0119  </td>\n</tr>\n<tr class='alt'><td>II SA/Go
+        1029/21</td>\n\t<td>2021-12-30</td>\t\n\t<td>09:30</td>\n\t<td>Sala 102</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6031 - Uprawnienia do kierowania pojazdami'>6031</td>\n\t\n\t<td>J.
+        Pi\u0105tek<br /> K. Karwatowicz (spr.)<br /> K. Rogalski</td>\t\n\t<td>skierowanie
+        na badania lekarskie<br /><br /><b>Oddalono skarg\u0119  </td>\n</tr>\n<tr><td>II
+        SO/Go 13/21</td>\n\t<td>2021-12-30</td>\t\n\t<td>14:00</td>\n\t<td>Sala 101</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='645 - Sprawy nieobj\u0119te symbolami podstawowymi 601\u2013644 oraz
+        od 646-652'>645</td>\n\t\n\t<td>K. Rogalski (spr.)<br /> K. Karwatowicz<br
+        /> J. Pi\u0105tek</td>\t\n\t<td>Wy\u0142\u0105czenie s\u0119dzi\xF3w i referendarzy
+        WSA w Szczecinie od rozpoznania sprawy II SA/Sz 528/21<br /><br /><b>Oddalono
+        wniosek o wy\u0142\u0105cznie s\u0119dziego oraz referendarza  </td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 302/21</td>\n\t<td>2022-01-13</td>\t\n\t<td>09:00</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6117 - Ulgi p\u0142atnicze (umorzenie,
+        odroczenie, roz\u0142o\u017Cenie na raty itp.)'>6117</td>\n\t\n\t<td>D. Skupie\u0144<br
+        /> A. Juszczyk - Wi\u015Bniewska<br /> Z. Kruszewski (spr.)</td>\t\n\t<td>orzeczenie
+        o solidarnej odpowiedzialno\u015Bci likwidatora sp. z o.o. wraz  ze sp\xF3\u0142k\u0105
+        i drugim likwidatorem za zaleg\u0142o\u015Bci podatkowe tej sp\xF3\u0142ki
+        z tytu\u0142u podatku dochodowego od os\xF3b prawnych za 2018 r. wraz z odsetkami
+        \ i kosztami post\u0119powania egzekucyjnego</td>\n</tr>\n<tr><td>I SA/Go
+        378/21</td>\n\t<td>2022-01-13</td>\t\n\t<td>09:15</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6112 - Podatek dochodowy od os\xF3b fizycznych, w tym zrycza\u0142towane
+        formy opodatkowania'>6112</td>\n\t\n\t<td>D. Skupie\u0144<br /> A. Juszczyk
+        - Wi\u015Bniewska<br /> Z. Kruszewski (spr.)</td>\t\n\t<td>zrycza\u0142towany
+        podatek dochodowy od os\xF3b fizycznych op\u0142acany w formie karty podatkowej
+        na 2021 rok</td>\n</tr>\n<tr class='alt'><td>I SA/Go 382/21</td>\n\t<td>2022-01-13</td>\t\n\t<td>09:30</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6559 -  '>6559</td>\n\t\n\t<td>D.
+        Skupie\u0144<br /> A. Juszczyk - Wi\u015Bniewska (spr.)<br /> Z. Kruszewski</td>\t\n\t<td>stwierdzenie
+        uchybenia terminu do wniesienia odwo\u0142ania oraz odmowa przywr\xF3cenia
+        terminu</td>\n</tr>\n<tr><td>I SA/Go 388/21</td>\n\t<td>2022-01-13</td>\t\n\t<td>09:45</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6110 - Podatek\_od towar\xF3w
+        i us\u0142ug'>6110</td>\n\t\n\t<td>D. Skupie\u0144<br /> A. Juszczyk - Wi\u015Bniewska
+        (spr.)<br /> Z. Kruszewski</td>\t\n\t<td>okre\u015Blenie i zabezpieczenie
+        na maj\u0105tku podatnika przybli\u017Conej kwoty zobowi\u0105zania w podatku
+        od towar\xF3w i us\u0142ug za okres od stycznia do grudnia 2018 r. wraz z
+        odsetkami za zw\u0142ok\u0119</td>\n</tr>\n<tr class='alt'><td>I SA/Go 387/21</td>\n\t<td>2022-01-13</td>\t\n\t<td>10:00</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6110 - Podatek\_od towar\xF3w
+        i us\u0142ug'>6110</td>\n\t\n\t<td>D. Skupie\u0144<br /> D. Bronowicki (spr.)<br
+        /> J. Niedzielski</td>\t\n\t<td>okreslenie i zabezpieczenie na majatku podatnika
+        przybli\u017Conej kwoty zobowi\u0105zania w podatku od towar\xF3w i us\u0142ug
+        za okres od stycznia do grudnia 2017 r. wraz z odsetkami za zw\u0142ok\u0119</td>\n</tr>\n<tr><td>I
+        SA/Go 370/21</td>\n\t<td>2022-01-13</td>\t\n\t<td>10:15</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6111 - Podatek akcyzowy'>6111</td>\n\t\n\t<td>D. Skupie\u0144<br />
+        D. Bronowicki<br /> J. Niedzielski (spr.)</td>\t\n\t<td>Podatek akcyzowy z
+        tyty\u0142u nabycia wewn\u0105trzwsp\xF3lnotowego  samochodu osobowego</td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 381/21</td>\n\t<td>2022-01-13</td>\t\n\t<td>10:30</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6119 - Inne o symbolu podatwowym
+        611'>6119</td>\n\t\n\t<td>D. Skupie\u0144<br /> D. Bronowicki (spr.)<br />
+        J. Niedzielski</td>\t\n\t<td>wynagrodzenie tymczasowego pe\u0142nomocnika
+        szczeg\xF3lnego</td>\n</tr>\n<tr><td>I SA/Go 410/21</td>\n\t<td>2022-01-13</td>\t\n\t<td>10:45</td>\n\t<td>sala
+        A</td>\n\t<td>niejawne</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>D.
+        Skupie\u0144 (spr.)<br /> D. Bronowicki<br /> J. Niedzielski</td>\t\n\t<td>Podatek
+        od nieruchomo\u015Bci  za 2016 r.</td>\n</tr>\n<tr class='alt'><td>I SA/Go
+        416/21</td>\n\t<td>2022-01-13</td>\t\n\t<td>11:00</td>\n\t<td>sala A</td>\n\t<td>niejawne</td>\t\n\t<td
+        title='6550 -  '>6550</td>\n\t\n\t<td>D. Skupie\u0144<br /> A. Juszczyk -
+        Wi\u015Bniewska<br /> Z. Kruszewski (spr.)</td>\t\n\t<td>p\u0142atno\u015Bci
+        w ramach system\xF3w wsparcia bezpo\u015Bredniego na 2020 rok</td>\n</tr>\n<tr><td>II
+        SA/Go 838/21</td>\n\t<td>2022-01-19</td>\t\n\t<td>09:30</td>\n\t<td>sala B</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6531 - Dotacje oraz subwencje z bud\u017Cetu pa\u0144stwa, w tym dla
+        jednostek samorz\u0105du terytorialnego'>6531</td>\n\t\n\t<td>S. Pauter<br
+        /> M. Ruszy\u0144ski<br /> G. Staniszewska (spr.)</td>\t\n\t<td>zwrot dotacji
+        pobranej w nadmiernej wysoko\u015Bci</td>\n</tr>\n<tr class='alt'><td>II SA/Go
+        939/21</td>\n\t<td>2022-01-19</td>\t\n\t<td>10:30</td>\n\t<td>sala B</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6329 - Inne o symbolu podstawowym 632'>6329</td>\n\t\n\t<td>S. Pauter<br
+        /> M. Ruszy\u0144ski<br /> G. Staniszewska (spr.)</td>\t\n\t<td>zmiana wysoko\u015Bci
+        \u015Bwiadczenia piel\u0119gnacyjnego</td>\n</tr>\n<tr><td>II SA/Go 1049/21</td>\n\t<td>2022-01-19</td>\t\n\t<td>11:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='652 - Sprawy ubezpiecze\u0144 zdrowotnych'>652</td>\n\t\n\t<td>S.
+        Pauter<br /> M. Ruszy\u0144ski<br /> G. Staniszewska (spr.)</td>\t\n\t<td>ustalenie
+        prawa do zwrotu koszt\xF3w za \u015Bwiadczenia zdrowotne</td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 1045/21</td>\n\t<td>2022-01-19</td>\t\n\t<td>12:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='652 - Sprawy ubezpiecze\u0144 zdrowotnych'>652</td>\n\t\n\t<td>S.
+        Pauter (spr.)<br /> M. Ruszy\u0144ski<br /> G. Staniszewska</td>\t\n\t<td>ustalenie
+        prawa do zwrotu koszt\xF3w za \u015Bwiadczenia zdrowotne</td>\n</tr>\n<tr><td>II
+        SA/Go 1048/21</td>\n\t<td>2022-01-19</td>\t\n\t<td>13:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='652 - Sprawy ubezpiecze\u0144 zdrowotnych'>652</td>\n\t\n\t<td>S.
+        Pauter<br /> M. Ruszy\u0144ski (spr.)<br /> G. Staniszewska</td>\t\n\t<td>ustalenie
+        prawa do zwrotu koszt\xF3w za \u015Bwiadczenia zdrowotne</td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 613/21</td>\n\t<td>2022-01-20</td>\t\n\t<td>09:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='6320 - Zasi\u0142ki celowe i okresowe'>6320</td>\n\t\n\t<td>A.
+        Jutrzenka-Trzebiatowski<br /> J. Ja\u015Bkiewicz (spr.)<br /> K. Rogalski</td>\t\n\t<td>Zasi\u0142ek
+        celowy</td>\n</tr>\n<tr><td>II SA/Go 977/21</td>\n\t<td>2022-01-20</td>\t\n\t<td>10:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='6320 - Zasi\u0142ki celowe i okresowe'>6320</td>\n\t\n\t<td>A.
+        Jutrzenka-Trzebiatowski<br /> J. Ja\u015Bkiewicz (spr.)<br /> K. Rogalski</td>\t\n\t<td>specjalny
+        zasi\u0142ek celowy</td>\n</tr>\n<tr class='alt'><td>II SA/Go 868/21</td>\n\t<td>2022-01-20</td>\t\n\t<td>11:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>A.
+        Jutrzenka-Trzebiatowski<br /> J. Ja\u015Bkiewicz (spr.)<br /> K. Rogalski</td>\t\n\t<td>ustalenie
+        warunk\xF3w zabudowy</td>\n</tr>\n<tr><td>II SA/Go 1057/21</td>\n\t<td>2022-01-20</td>\t\n\t<td>12:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='652 - Sprawy ubezpiecze\u0144 zdrowotnych'>652</td>\n\t\n\t<td>A.
+        Jutrzenka-Trzebiatowski (spr.)<br /> J. Ja\u015Bkiewicz<br /> K. Rogalski</td>\t\n\t<td>ustalenie
+        prawa do zwrotu koszt\xF3w za \u015Bwiadczenia zdrowotne</td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 1071/21</td>\n\t<td>2022-01-26</td>\t\n\t<td>09:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='652 - Sprawy ubezpiecze\u0144 zdrowotnych'>652</td>\n\t\n\t<td>G.
+        Staniszewska<br /> J. Ja\u015Bkiewicz (spr.)<br /> K. Karwatowicz</td>\t\n\t<td>ustalenie
+        prawa do zwrotu koszt\xF3w za \u015Bwiadczenia zdrowotne</td>\n</tr>\n<tr><td>II
+        SA/Go 391/21</td>\n\t<td>2022-01-26</td>\t\n\t<td>10:30</td>\n\t<td>sala B</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6322 - Us\u0142ugi opieku\u0144cze, w tym skierowanie do domu pomocy
+        spo\u0142ecznej'>6322</td>\n\t\n\t<td>G. Staniszewska (spr.)<br /> J. Ja\u015Bkiewicz<br
+        /> K. Karwatowicz</td>\t\n\t<td>orzeczenie o obowi\u0105zku zwrotu wydatk\xF3w</td>\n</tr>\n<tr
+        class='alt'><td>II SA/Go 1044/21</td>\n\t<td>2022-01-26</td>\t\n\t<td>11:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='6037 - Transport drogowy i przewozy'>6037</td>\n\t\n\t<td>G.
+        Staniszewska<br /> J. Ja\u015Bkiewicz<br /> K. Karwatowicz (spr.)</td>\t\n\t<td>na\u0142o\u017Cenie
+        kary pieni\u0119\u017Cnej</td>\n</tr>\n<tr><td>II SA/Go 1019/21</td>\n\t<td>2022-01-27</td>\t\n\t<td>08:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='6030 - Dopuszczenie pojazdu do ruchu'>6030</td>\n\t\n\t<td>M.
+        Ruszy\u0144ski (spr.)<br /> A. Jutrzenka-Trzebiatowski<br /> K. Rogalski</td>\t\n\t<td>odmowa
+        rejestracji samochodu osobowego</td>\n</tr>\n<tr class='alt'><td>I SA/Go 383/21</td>\n\t<td>2022-01-27</td>\t\n\t<td>09:00</td>\n\t<td>sala
+        A</td>\n\t<td>jawne</td>\t\n\t<td title='6115 - Podatki od nieruchomo\u015Bci'>6115</td>\n\t\n\t<td>Z.
+        Kruszewski (spr.)<br /> A. Juszczyk - Wi\u015Bniewska<br /> D. Skupie\u0144</td>\t\n\t<td>Podatek
+        od nieruchomo\u015Bci  za 2016 r.</td>\n</tr>\n<tr><td>II SA/Go 982/21</td>\n\t<td>2022-01-27</td>\t\n\t<td>09:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='6010 - Pozwolenie na budow\u0119,
+        u\u017Cytkowanie obiektu lub jego cz\u0119\u015Bci,\_ wykonywanie rob\xF3t
+        budowlanych innych ni\u017C budowa obiektu, prz'>6010</td>\n\t\n\t<td>M. Ruszy\u0144ski
+        (spr.)<br /> A. Jutrzenka-Trzebiatowski<br /> K. Rogalski</td>\t\n\t<td>Zatwierdzenie
+        projektu budowlanego i udzielenie pozwolenia na budow\u0119</td>\n</tr>\n<tr
+        class='alt'><td>I SA/Go 404/21</td>\n\t<td>2022-01-27</td>\t\n\t<td>09:45</td>\n\t<td>sala
+        A</td>\n\t<td>jawne</td>\t\n\t<td title='6560 -   / 6113 - Podatek dochodowy
+        od os\xF3b prawnych'>6560/6113</td>\n\t\n\t<td>Z. Kruszewski<br /> A. Juszczyk
+        - Wi\u015Bniewska<br /> D. Skupie\u0144 (spr.)</td>\t\n\t<td>Podatek dochodowy
+        od os\xF3b prawnych</td>\n</tr>\n<tr><td>I SA/Go 412/21</td>\n\t<td>2022-01-27</td>\t\n\t<td>10:05</td>\n\t<td>sala
+        A</td>\n\t<td>jawne</td>\t\n\t<td title='6560 -   / 6113 - Podatek dochodowy
+        od os\xF3b prawnych'>6560/6113</td>\n\t\n\t<td>Z. Kruszewski<br /> A. Juszczyk
+        - Wi\u015Bniewska (spr.)<br /> D. Skupie\u0144</td>\t\n\t<td>Podatek dochodowy
+        od os\xF3b prawnych</td>\n</tr>\n<tr class='alt'><td>II SA/Go 1090/21</td>\n\t<td>2022-01-27</td>\t\n\t<td>10:30</td>\n\t<td>sala
+        B</td>\n\t<td>jawne</td>\t\n\t<td title='652 - Sprawy ubezpiecze\u0144 zdrowotnych'>652</td>\n\t\n\t<td>M.
+        Ruszy\u0144ski<br /> A. Jutrzenka-Trzebiatowski<br /> K. Rogalski (spr.)</td>\t\n\t<td>Odmowa
+        stwierdzenia niewa\u017Cno\u015Bci decyzji</td>\n</tr>\n<tr><td>I SA/Go 406/21</td>\n\t<td>2022-01-27</td>\t\n\t<td>10:50</td>\n\t<td>sala
+        A</td>\n\t<td>jawne</td>\t\n\t<td title='6560 -   / 6110 - Podatek\_od towar\xF3w
+        i us\u0142ug'>6560/6110</td>\n\t\n\t<td>Z. Kruszewski<br /> A. Juszczyk -
+        Wi\u015Bniewska (spr.)<br /> D. Skupie\u0144</td>\t\n\t<td>Podatek od towar\xF3w
+        i us\u0142ug</td>\n</tr>\n<tr class='alt'><td>I SA/Go 397/21</td>\n\t<td>2022-01-27</td>\t\n\t<td>12:30</td>\n\t<td>sala
+        A</td>\n\t<td>jawne</td>\t\n\t<td title='6560 -   / 6113 - Podatek dochodowy
+        od os\xF3b prawnych'>6560/6113</td>\n\t\n\t<td>Z. Kruszewski (spr.)<br />
+        A. Juszczyk - Wi\u015Bniewska<br /> J. Niedzielski</td>\t\n\t<td>podatek dochodowy
+        od os\xF3b prawnych</td>\n</tr>\n<tr><td>I SA/Go 299/21</td>\n\t<td>2022-01-27</td>\t\n\t<td>13:15</td>\n\t<td>sala
+        A</td>\n\t<td>jawne</td>\t\n\t<td title='6110 - Podatek\_od towar\xF3w i us\u0142ug'>6110</td>\n\t\n\t<td>Z.
+        Kruszewski<br /> A. Juszczyk - Wi\u015Bniewska<br /> J. Niedzielski (spr.)</td>\t\n\t<td>Podatek
+        od towar\xF3w i us\u0142ug za sierpie\u0144 2015 roku</td>\n</tr>\n<tr class='alt'><td>II
+        SA/Go 957/21</td>\n\t<td>2022-02-02</td>\t\n\t<td>08:30</td>\n\t<td>Sala 102</td>\n\t<td>jawne</td>\t\n\t<td
+        title='6010 - Pozwolenie na budow\u0119, u\u017Cytkowanie obiektu lub jego
+        cz\u0119\u015Bci,\_ wykonywanie rob\xF3t budowlanych innych ni\u017C budowa
+        obiektu, prz'>6010</td>\n\t\n\t<td>S. Pauter<br /> K. Karwatowicz (spr.)<br
+        /> M. Ruszy\u0144ski</td>\t\n\t<td>wniesienie sprzeciwu do zamiaru przyst\u0105pienia
+        do wykonania rob\xF3t budowlanych</td>\n</tr>\n<tr><td>II SA/Go 757/21</td>\n\t<td>2022-02-03</td>\t\n\t<td>12:00</td>\n\t<td>Sala
+        102</td>\n\t<td>jawne</td>\t\n\t<td title='6153 - Warunki zabudowy\_ terenu'>6153</td>\n\t\n\t<td>S.
+        Pauter<br /> J. Pi\u0105tek (spr.)<br /> G. Staniszewska</td>\t\n\t<td>ustalenie
+        warunk\xF3w zabudowy</td>\n</tr>\n</table>\n<br />\n<br />\n<br />\n<br />\n<br
+        />\n<hr style=\"margin-bottom:1px\"/>\n<div style=\"font-size:14px\">Opracowanie
+        strony: Wydzia\u0142&nbsp;Informatyki -&nbsp;Naczelny&nbsp;S\u0105d&nbsp;Administracyjny
+        -&nbsp;2014-2021</div>\n<hr style=\"margin-bottom:1px\"/>\n\n</body></html>"
     headers:
-      Cache-Control: ['no-store, no-cache, must-revalidate, post-check=0, pre-check=0']
-      Connection: [close]
-      Content-Type: [text/html; charset=UTF-8]
-      Date: ['Mon, 16 Apr 2018 13:03:13 GMT']
-      Expires: ['Thu, 19 Nov 1981 08:52:00 GMT']
-      Pragma: [no-cache]
-      Server: [Apache]
-      Set-Cookie: [PHPSESSID=0hqv2hp5f24dhafilo66b467r2; path=/]
-      Transfer-Encoding: [chunked]
-    status: {code: 200, message: OK}
+      Cache-Control:
+      - no-store, no-cache, must-revalidate, post-check=0, pre-check=0
+      Connection:
+      - close
+      Content-Type:
+      - text/html; charset=UTF-8
+      Date:
+      - Fri, 31 Dec 2021 03:28:48 GMT
+      Expires:
+      - Thu, 19 Nov 1981 08:52:00 GMT
+      Pragma:
+      - no-cache
+      Server:
+      - Apache
+      Set-Cookie:
+      - PHPSESSID=ht35kvg9ro3fi6duqm4ksqbqe4; path=/;Max-Age=3600; Secure
+      - cookiesession1=678B2867ZABCDEFGHIJLMNOPQRST41BA;Expires=Sat, 31 Dec 2022 03:28:48
+        GMT;Path=/;HttpOnly
+      X-XSS-Protection:
+      - 1; mode=block
+      content-length:
+      - '87891'
+    status:
+      code: 200
+      message: OK
 version: 1
