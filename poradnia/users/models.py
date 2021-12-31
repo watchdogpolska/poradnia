@@ -102,7 +102,10 @@ class UserQuerySet(QuerySet):
         )
 
     def by_email(self, email):
-        return self.filter(Q(email=email) | Q(emailaddress__email=email, emailaddress__verified=True))
+        return self.filter(
+            Q(email=email) | Q(emailaddress__email=email, emailaddress__verified=True)
+        )
+
 
 class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
     def get_by_email_or_create(self, email, notify=True):
