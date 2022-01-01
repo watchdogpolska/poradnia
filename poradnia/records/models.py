@@ -27,7 +27,9 @@ class RecordQuerySet(QuerySet):
 
     def move(self, target):
         for field in Record.STATIC_RELATION + ["courtcase"]:
-            qs = self.filter(**{f"{field}__isnull": False}).all()
+            qs = self.filter(**{f"{field}__isnull": False}).values_list(
+                field, flat=True
+            )
             Record._meta.get_field(field).related_model.objects.filter(
                 pk__in=qs
             ).update(case=target)

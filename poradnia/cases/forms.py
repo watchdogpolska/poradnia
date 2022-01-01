@@ -158,7 +158,8 @@ class CaseMergeForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
         self.create_letter(target)
         self.create_letter(source)
         source.close(actor=self.user, notify=False)
-        return target
+        source.save()
+        return source
 
     class Meta:
         model = Case
