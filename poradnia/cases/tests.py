@@ -666,18 +666,15 @@ class CaseMergeViewTestCase(PermissionStatusMixin, TestCase):
         self.permission_object = self.object = CaseFactory()
 
     def get_url(self):
-        return reverse(
-            "cases:merge",
-            kwargs={"pk": self.object.pk},
-        )
+        return reverse("cases:merge", kwargs={"pk": self.object.pk})
 
-    def merge_move_letter(self):
+    def test_merge_move_letter(self):
         self.login_permitted_user()
-        import pdb
-
-        pdb.set_trace()
         letter = LetterFactory(case=self.object)
         target = CaseFactory()
-        self.client.post(self.get_url(), {"target": target.pk}, follow=True)
+        assign_perm("cases.can_view", self.user, target)
+        resp = self.client.post(self.get_url(), {"target": target.pk})
+        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(Case.objects.get(pk=self.object.pk).status, Case.STATUS.closed)
         self.assertEqual(Letter.objects.get(pk=letter.pk).case, target)
         self.assertContains(self.client.get(letter.get_absolute_url()), target.name)
