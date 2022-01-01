@@ -1,5 +1,4 @@
 from django.contrib import admin
-from import_export.admin import ImportExportMixin
 
 from .models import Advice, Area, InstitutionKind, Issue, PersonKind
 
@@ -24,5 +23,5 @@ class AdviceAdmin(admin.ModelAdmin):
 
 
 @admin.register(Issue, InstitutionKind, PersonKind, Area)
-class CategoryAdmin(ImportExportMixin, admin.ModelAdmin):
+class CategoryAdmin(admin.ModelAdmin):
     pass
