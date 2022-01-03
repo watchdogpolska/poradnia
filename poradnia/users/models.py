@@ -159,8 +159,11 @@ class User(GuardianUserMixin, AbstractUser):
     )
     notify_unassigned_letter = models.BooleanField(
         default=False,
-        verbose_name=_("Notify about letter in free cases"),
-        help_text=_("Whether or not to notify user about any letter " "in free cases"),
+        verbose_name=_("Defaults to reply in cases"),
+        help_text=_(
+            "Whether or not to notify user about any letter "
+            + "in case without anybody who can reply to client"
+        ),
     )
     created_on = models.DateTimeField(
         auto_now_add=True, null=True, blank=True, verbose_name=_("Created on")

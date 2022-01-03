@@ -21,7 +21,7 @@ class AssertSendMailMixin:
         self.assertEqual(
             len(emails),
             expected_count,
-            "No mail with template {template_name} and subject {subject} was send to {to}".format(
+            "Invalid number of mail with template {template_name} and subject {subject} was send to {to}.".format(
                 template_name=template, subject=subject, to=to
             ),
         )

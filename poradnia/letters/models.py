@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
 from django.db import models
-from django.db.models import F, Func, IntegerField, Q
+from django.db.models import F, Func, IntegerField
 from django.urls import reverse
 from django.utils.translation import ugettext_lazy as _
 from django_mailbox.models import Message
@@ -146,23 +146,21 @@ class Letter(AbstractRecord):
         )
 
     def send_notification(self, *args, **kwargs):
-        staff_users = get_users_with_perm(self.case, "can_send_to_client")
+        senders = get_users_with_perm(self.case, "can_send_to_client")
         management = User.objects.filter(notify_unassigned_letter=True).all()
-        if self.status is Letter.STATUS.done:
-            if len(list(staff_users)) > 0:
-                kwargs["user_qs"] = self.get_users_with_perms()
-            else:
-                kwargs["user_qs"] = User.objects.filter(
-                    Q(pk__in=self.get_users_with_perms()) | Q(pk__in=management)
-                )
-        else:
-            if len(list(staff_users)) > 0:
-                kwargs["user_qs"] = self.get_users_with_perms().filter(is_staff=True)
-            else:
-                kwargs["user_qs"] = User.objects.filter(
-                    Q(pk__in=self.get_users_with_perms().filter(is_staff=True))
-                    | Q(pk__in=management)
-                )
+
+        user_qs = self.get_users_with_perms()
+
+        if self.status is not Letter.STATUS.done:
+            user_qs = user_qs.filter(is_staff=True)
+
+        if senders.count() == 0:
+            # union have to be used after filter
+            # see https://docs.djangoproject.com/en/3.2/ref/models/querysets/#union
+            user_qs = user_qs.union(management)
+
+        kwargs["user_qs"] = user_qs
+
         return super().send_notification(*args, **kwargs)
 
     class Meta:
