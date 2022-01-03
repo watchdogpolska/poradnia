@@ -222,18 +222,18 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
             if self.user.is_staff:
                 self.helper.add_input(
                     Submit(
-                        name=self.SEND,
-                        value=_("Write to staff"),
-                        title=REPLY_TO_TEAM_TITLE,
+                        name=self.PROJECT,
+                        value=_("Save to review"),
+                        title=SAVE_TO_REVIEW_TITLE,
                         css_class="btn-primary",
                     )
                 )
                 self.helper.add_input(
                     Submit(
-                        name=self.PROJECT,
-                        value=_("Save to review"),
-                        title=SAVE_TO_REVIEW_TITLE,
-                        css_class="btn-primary",
+                        name=self.SEND_STAFF,
+                        value=_("Write to staff"),
+                        title=REPLY_TO_TEAM_TITLE,
+                        css_class="btn-default",
                     )
                 )
             else:
