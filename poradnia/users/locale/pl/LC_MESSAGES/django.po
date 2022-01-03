@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-19 04:19+0100\n"
-"PO-Revision-Date: 2021-12-19 04:20+0100\n"
+"POT-Creation-Date: 2022-01-03 12:44+0100\n"
+"PO-Revision-Date: 2022-01-03 12:44+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -17,191 +17,147 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /users/locale/en/LC_MESSAGES/django.po\n"
 
-#: poradnia/users/admin.py:35
+#: admin.py:35
 msgid "Notifications"
 msgstr "Powiadomienia"
 
-#: poradnia/users/apps.py:7 poradnia/users/forms/permissions.py:31
-#: poradnia/users/models.py:211
-#: poradnia/users/templates/users/user_filter.html:25
+#: apps.py:7 forms/permissions.py:31 models.py:220
+#: templates/users/user_filter.html:25
 msgid "Users"
 msgstr "Użytkownicy / użytkowniczki"
 
-#: poradnia/users/filters.py:35
-#: poradnia/users/templates/users/user_filter.html:49
+#: filters.py:35 templates/users/user_filter.html:49
 msgid "Free"
 msgstr "Wolne"
 
-#: poradnia/users/filters.py:36
-#: poradnia/users/templates/users/user_filter.html:50
+#: filters.py:36 templates/users/user_filter.html:50
 msgid "Active"
 msgstr "Aktywne"
 
-#: poradnia/users/filters.py:37
-#: poradnia/users/templates/users/user_filter.html:51
+#: filters.py:37 templates/users/user_filter.html:51
 msgid "Closed"
 msgstr "Zamknięte"
 
-#: poradnia/users/forms/account.py:24
+#: forms/account.py:24
 msgid "Signup"
 msgstr "Rejestracja"
 
-#: poradnia/users/login_form.py:14 poradnia/users/models.py:20
+#: login_form.py:14 models.py:19
 msgid "Login"
 msgstr "Nazwa użytkownika / użytkowniczki"
 
-#: poradnia/users/metric.py:11
-msgid "Users total"
-msgstr "Liczba użytkowników"
-
-#: poradnia/users/metric.py:12
-msgid "Number of users registered total"
-msgstr "Łączna liczba użytkowników zarejestrowanych"
-
-#: poradnia/users/metric.py:20
-msgid "Users monthly"
-msgstr "Użytkowników miesięcznie"
-
-#: poradnia/users/metric.py:21
-msgid "Number of users registered in month"
-msgstr "Liczba użytkowników dokonujących rejestracji w miesiącu"
-
-#: poradnia/users/metric.py:28
-msgid "Active users"
-msgstr "Aktywnych użytkowników"
-
-#: poradnia/users/metric.py:29
-msgid "Number of active users in month"
-msgstr "Liczba aktywnych użytkowników w miesiącu"
-
-#: poradnia/users/metric.py:36
-msgid "Active staff member"
-msgstr "Liczba aktywnych członków zespołu"
-
-#: poradnia/users/metric.py:38
-msgid ""
-"Number of team members who have made at least one message in the current "
-"month."
-msgstr ""
-"Liczba członków zespołu którzy nadesłali co najmniej jedną wiadomość w "
-"miesiącu"
-
-#: poradnia/users/models.py:19
+#: models.py:18
 msgid "Username or e-mail"
 msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
 
-#: poradnia/users/models.py:142
+#: models.py:150
 msgid "Avatar"
 msgstr "Avatar"
 
-#: poradnia/users/models.py:145
+#: models.py:153
 msgid "Codename"
 msgstr "Kryptonim"
 
-#: poradnia/users/models.py:149
+#: models.py:157
 msgid "Notify about new case"
 msgstr "Powiadamiaj o nowych sprawach"
 
-#: poradnia/users/models.py:150
+#: models.py:158
 msgid "Whether or not to notify user about all new cases"
 msgstr "Czy powiadomić o wszystkich nowych sprawach?"
 
-#: poradnia/users/models.py:154
-msgid "Notify about letter in free cases"
-msgstr "Powiadamiaj o pismach w wolnych sprawach"
+#: models.py:162
+msgid "Defaults to reply in cases"
+msgstr "Domyślnie odpowiada w sprawach"
 
-#: poradnia/users/models.py:155
-msgid "Whether or not to notify user about any letter in free cases"
-msgstr "Czy powiadamiać o dowolnych listach w wolnych sprawach?"
+#: models.py:163
+msgid ""
+"Whether or not to notify user about any letter in case without anybody who "
+"can reply to client"
+msgstr "Czy powiadamiać w sprawach bez kogokolwiek kto może odpowiedzieć"
 
-#: poradnia/users/models.py:158
+#: models.py:167
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: poradnia/users/models.py:210 poradnia/users/templates/users/_sidebar.html:3
-#: poradnia/users/templates/users/user_detail.html:3
-#: poradnia/users/templates/users/user_filter.html:45
-#: poradnia/users/templates/users/user_form.html:4
-#: poradnia/users/templates/users/user_form.html:15
+#: models.py:219 templates/users/_sidebar.html:3
+#: templates/users/user_detail.html:3 templates/users/user_filter.html:45
+#: templates/users/user_form.html:4 templates/users/user_form.html:15
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: poradnia/users/models.py:216
+#: models.py:225
 msgid "No reminder"
 msgstr "Nie przypominaj"
 
-#: poradnia/users/models.py:217
+#: models.py:226
 msgid "1 day"
 msgstr "1 dzień"
 
-#: poradnia/users/models.py:218
+#: models.py:227
 msgid "3 days"
 msgstr "3 dni"
 
-#: poradnia/users/models.py:219
+#: models.py:228
 msgid "7 days"
 msgstr "7 dni"
 
-#: poradnia/users/models.py:222
-#: poradnia/users/templates/users/user_detail.html:16
+#: models.py:231 templates/users/user_detail.html:16
 msgid "Description"
 msgstr "Opis"
 
-#: poradnia/users/models.py:223
+#: models.py:232
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: poradnia/users/models.py:225
+#: models.py:234
 msgid "Email footer"
 msgstr "Podpis dla wiadomości e-mail"
 
-#: poradnia/users/models.py:230
+#: models.py:239
 msgid "Event Reminder Time"
 msgstr "Przypominaj o wydarzeniach"
 
-#: poradnia/users/models.py:234
-#: poradnia/users/templates/users/profile_form.html:7
-#: poradnia/users/templates/users/profile_form.html:10
-#: poradnia/users/templates/users/user_detail.html:26
+#: models.py:243 templates/users/profile_form.html:7
+#: templates/users/profile_form.html:10 templates/users/user_detail.html:26
 msgid "Profile"
 msgstr "Profil"
 
-#: poradnia/users/models.py:235
+#: models.py:244
 msgid "Profiles"
 msgstr "Profile"
 
-#: poradnia/users/templates/users/_sidebar.html:9
+#: templates/users/_sidebar.html:9
 #, python-format
 msgid "%(user)s"
 msgstr "%(user)s"
 
-#: poradnia/users/templates/users/_sidebar.html:13
+#: templates/users/_sidebar.html:13
 msgid "Users list"
 msgstr "Wykaz użytkowników"
 
-#: poradnia/users/templates/users/_sidebar.html:17
+#: templates/users/_sidebar.html:17
 msgid "Logout"
 msgstr "Wyloguj"
 
-#: poradnia/users/templates/users/_sidebar.html:21
+#: templates/users/_sidebar.html:21
 msgid "Sign Up"
 msgstr "Rejestracja"
 
-#: poradnia/users/templates/users/_sidebar.html:24
+#: templates/users/_sidebar.html:24
 msgid "Log In"
 msgstr "Zaloguj"
 
-#: poradnia/users/templates/users/base.html:5
-#: poradnia/users/templates/users/user_filter.html:4
-#: poradnia/users/templates/users/user_filter.html:7
+#: templates/users/base.html:5 templates/users/user_filter.html:4
+#: templates/users/user_filter.html:7
 msgid "Users index"
 msgstr "Wykaz użytkowników / użytkowniczek"
 
-#: poradnia/users/templates/users/user_deassign.html:5
+#: templates/users/user_deassign.html:5
 msgid "Confirm deassign"
 msgstr "Potwierdź odpisanie"
 
-#: poradnia/users/templates/users/user_deassign.html:8
+#: templates/users/user_deassign.html:8
 msgid ""
 "The operation will remove all permissions on cases for the user where they "
 "is not a client. This is an irreversible operation. Are you sure you want to "
@@ -211,49 +167,48 @@ msgstr ""
 "klientem. Ta operacja jest nieodwracalna. Czy jesteś pewien/pewna, że chcesz "
 "to wykonać?"
 
-#: poradnia/users/templates/users/user_deassign.html:14
+#: templates/users/user_deassign.html:14
 #, python-format
 msgid "Deassign %(object)s"
 msgstr "Odpisz %(object)s"
 
-#: poradnia/users/templates/users/user_deassign.html:16
+#: templates/users/user_deassign.html:16
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: poradnia/users/templates/users/user_detail.html:13
+#: templates/users/user_detail.html:13
 msgid "Users are member of staff."
 msgstr "Użytkownik jest członkiem zespołu"
 
-#: poradnia/users/templates/users/user_detail.html:23
+#: templates/users/user_detail.html:23
 msgid "About me"
 msgstr "O mnie"
 
-#: poradnia/users/templates/users/user_detail.html:30
+#: templates/users/user_detail.html:30
 msgid "Password change"
 msgstr "Zmiana hasła"
 
-#: poradnia/users/templates/users/user_detail.html:34
+#: templates/users/user_detail.html:34
 msgid "Keys"
 msgstr "Klucze"
 
-#: poradnia/users/templates/users/user_detail.html:38
+#: templates/users/user_detail.html:38
 msgid "My cases"
 msgstr "Moje sprawy"
 
-#: poradnia/users/templates/users/user_detail.html:44
-#: poradnia/users/templates/users/user_filter.html:46
+#: templates/users/user_detail.html:44 templates/users/user_filter.html:46
 msgid "Client cases"
 msgstr "Sprawy klienta"
 
-#: poradnia/users/templates/users/user_detail.html:48
+#: templates/users/user_detail.html:48
 msgid "Assigned cases"
 msgstr "Przypisane sprawy"
 
-#: poradnia/users/templates/users/user_detail.html:52
+#: templates/users/user_detail.html:52
 msgid "Deassign cases"
 msgstr "Odpisz sprawy"
 
-#: poradnia/users/templates/users/user_filter.html:28
+#: templates/users/user_filter.html:28
 msgid ""
 "You don't have access to data of all our users. Mostly you have access to "
 "staff and own profile."
@@ -261,32 +216,63 @@ msgstr ""
 "Nie masz dostepu do danych wszystkich użytkowników. W większości tylko do "
 "profilu członków zespołu i swojego."
 
-#: poradnia/users/templates/users/user_filter.html:48
+#: templates/users/user_filter.html:48
 msgid "Assigned cases sum"
 msgstr "Przypisane sprawy"
 
-#: poradnia/users/templates/users/user_form.html:8
+#: templates/users/user_form.html:8
 msgid "Account"
 msgstr "Konto"
 
-#: poradnia/users/views.py:73
+#: views.py:73
 msgid "All users"
 msgstr "Wszyscy użytkownicy"
 
-#: poradnia/users/views.py:74
+#: views.py:74
 msgid "Staff"
 msgstr "Zespoł"
 
-#: poradnia/users/views.py:75
+#: views.py:75
 msgid "Clients"
 msgstr "Klienci"
 
-#: poradnia/users/views.py:125
+#: views.py:125
 #, python-brace-format
 msgid "{subject} deassigned"
 msgstr "{subject} odpisany"
 
-#: poradnia/users/views.py:144
+#: views.py:144
 #, python-brace-format
 msgid "{object} deassigned from {count} cases"
 msgstr "{object} odpisany z {count} spraw"
+
+#~ msgid "Users total"
+#~ msgstr "Liczba użytkowników"
+
+#~ msgid "Number of users registered total"
+#~ msgstr "Łączna liczba użytkowników zarejestrowanych"
+
+#~ msgid "Users monthly"
+#~ msgstr "Użytkowników miesięcznie"
+
+#~ msgid "Number of users registered in month"
+#~ msgstr "Liczba użytkowników dokonujących rejestracji w miesiącu"
+
+#~ msgid "Active users"
+#~ msgstr "Aktywnych użytkowników"
+
+#~ msgid "Number of active users in month"
+#~ msgstr "Liczba aktywnych użytkowników w miesiącu"
+
+#~ msgid "Active staff member"
+#~ msgstr "Liczba aktywnych członków zespołu"
+
+#~ msgid ""
+#~ "Number of team members who have made at least one message in the current "
+#~ "month."
+#~ msgstr ""
+#~ "Liczba członków zespołu którzy nadesłali co najmniej jedną wiadomość w "
+#~ "miesiącu"
+
+#~ msgid "Notify about letter in free cases"
+#~ msgstr "Powiadamiaj o pismach w wolnych sprawach"
