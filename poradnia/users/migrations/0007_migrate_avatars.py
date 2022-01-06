@@ -15,7 +15,6 @@ if "avatar" in settings.INSTALLED_APPS:
 
         operations = [migrations.RunPython(migrate_avatar)]
 
-
 else:
 
     class Migration(migrations.Migration):
