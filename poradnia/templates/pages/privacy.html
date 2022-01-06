@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load tinycontent_tags %}
+{% block title %}Polityka prywatności - {{ block.super }}{% endblock %}
+{% block content %}
+    <h1>Polityka prywatności</h1>
+    {% tinycontent 'privacy' %}
+    TODO
+    {% endtinycontent %}
+{% endblock %}

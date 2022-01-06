@@ -2,7 +2,6 @@ User-agent: *
 Disallow: /admin/
 Disallow: /navsearch/
 Disallow: /uzytkownik/
-Disallow: /tinymce/
 Disallow: /sprawy/
 Disallow: /listy/
 Disallow: /wydarzenia/

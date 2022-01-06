@@ -16,9 +16,6 @@ urlpatterns = [
     path("uzytkownik/klucze", include("poradnia.keys.urls", namespace="keys")),
     path("uzytkownik/", include("poradnia.users.urls", namespace="users")),
     path("konta/", include("allauth.urls")),
-    # Flatpages
-    path("strony/", include("django.contrib.flatpages.urls")),
-    path("tinymce/", include("tinymce.urls")),
     # Poradnia
     path("sprawy/", include("poradnia.cases.urls", namespace="cases")),
     path("listy/", include("poradnia.letters.urls", namespace="letters")),
@@ -28,6 +25,16 @@ urlpatterns = [
     path("sprawy_sadowe/", include("poradnia.judgements.urls", namespace="judgements")),
     path("teryt/", include("poradnia.teryt.urls", namespace="teryt")),
     path("robots.txt", TemplateView.as_view(template_name="robots.txt")),
+    path(
+        "strony//polityka-prywatnosci/",
+        TemplateView.as_view(template_name="pages/terms.html"),
+        name="terms",
+    ),
+    path(
+        "strony/regulamin-poradnictwa/",
+        TemplateView.as_view(template_name="pages/privacy.html"),
+        name="privacy",
+    ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 if settings.DEBUG:
