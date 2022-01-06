@@ -23,7 +23,7 @@ class Court(TimeStampedModel):
     )
 
     def get_parser(self):
-        return parser_registry.get(self.parser_key, None)(self)
+        return parser_registry.get(self.parser_key, None)()
 
     @property
     def parser_status(self):

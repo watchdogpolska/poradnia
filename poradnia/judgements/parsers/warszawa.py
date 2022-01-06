@@ -19,11 +19,14 @@ class WarsawETRParser(BaseParser):
         "data_posiedzenia": (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d"),
         "data_posiedzenia_do": "",
         "get_csv": "1",
-        "guzik": "Filtruj / Sortuj",
-        "sala_rozpraw": "---",
+        "sygnatura": "",
+        "sala_rozpraw": "Wszystkie",
         "sortowanie": "3",
         "typ_posiedzenia": "'N', 'J', 'P'",
-        "wydzial_orzeczniczy": "---",
+        "wydzial_orzeczniczy": "Wszystkie",
+        "symbol": "",
+        "opis": "",
+        "wynik": "",
     }
 
     def get_content(self):
