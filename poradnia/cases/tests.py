@@ -678,3 +678,37 @@ class CaseMergeViewTestCase(PermissionStatusMixin, TestCase):
         self.assertEqual(Case.objects.get(pk=self.object.pk).status, Case.STATUS.closed)
         self.assertEqual(Letter.objects.get(pk=letter.pk).case, target)
         self.assertContains(self.client.get(letter.get_absolute_url()), target.name)
+
+
+class CaseAutocompleteViewTestCase(PermissionStatusMixin, TestCase):
+    status_anonymous = 200
+    status_no_permission = 200
+    permission = ["cases.can_view"]
+
+    def setUp(self):
+        self.user = UserFactory(username="john")
+        self.permission_object = self.object = CaseFactory()
+
+    def get_url(self):
+        return reverse("cases:autocomplete")
+
+    def test_staff_user_with_permission_can_search_by_pk(self):
+        self.login_permitted_user()
+        resp = self.get_check_200(self.get_url(), data={"q": self.object.pk})
+        results = resp.json()["results"]
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]["text"], str(self.object))
+
+    def test_staff_user_with_permission_can_search_by_pk_like(self):
+        self.login_permitted_user()
+        resp = self.get_check_200(self.get_url(), data={"q": f"#{self.object.pk}"})
+        results = resp.json()["results"]
+        self.assertEqual(len(results), 0)
+
+    def test_staff_user_with_permission_can_search_by_name(self):
+        self.object = self.permission_object = CaseFactory(name="abcd")
+        self.login_permitted_user()
+        resp = self.get_check_200(self.get_url(), data={"q": "abcd"})
+        results = resp.json()["results"]
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0]["text"], str(self.object))

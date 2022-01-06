@@ -184,5 +184,8 @@ class CaseAutocomplete(autocomplete.Select2QuerySetView):
         qs = Case.objects.for_user(self.request.user).all()
 
         if self.q:
-            qs = qs.filter(Q(name__icontains=self.q) | Q(pk=self.q))
+            q = Q(name__icontains=self.q)
+            if self.q.isnumeric():
+                q = q | Q(pk=self.q)
+            qs = qs.filter(q)
         return qs
