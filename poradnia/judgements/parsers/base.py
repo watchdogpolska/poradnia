@@ -18,8 +18,8 @@ class BaseParser:
     DATE_FIELD = "Data"
     HOUR_FIELD = "Godzina"
 
-    def __init__(self, court):
-        self.court = court
+    def __init__(self):
+        pass
 
     def get_session_rows(self):
         return []

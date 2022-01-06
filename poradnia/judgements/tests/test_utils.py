@@ -118,6 +118,6 @@ class ManagerTestCase(TestCase):
             user__is_staff=True,
         )
         self.manager.handle_court(courtcase.court)
-        self.assertTrue(len(mail.outbox) == 1)
+        self.assertTrue(len(mail.outbox) == 1, "Missing creation notification send")
         self.manager.handle_court(courtcase.court)
-        self.assertTrue(len(mail.outbox) == 1, mail)
+        self.assertTrue(len(mail.outbox) == 1, "Abused update notification send")
