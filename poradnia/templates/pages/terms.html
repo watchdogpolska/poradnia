@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load tinycontent_tags %}
+{% block title %}Regulamin poradnictwa - {{ block.super }}{% endblock %}
+{% block content %}
+<h1>Regulamin poradnictwa</h1>
+{% tinycontent 'terms' %}
+TODO
+{% endtinycontent %}
+{% endblock %}

@@ -7426,29 +7426,6 @@ ul li.select2-search {
     border-left: 0.4em solid white;
     padding-left: 0.6em; }
 
-.stats > ul {
-  display: flex;
-  padding: 0;
-  margin: 0; }
-  .stats > ul > li {
-    flex: 1;
-    color: white;
-    list-style: none; }
-  .stats > ul:last-child {
-    border-right: none; }
-
-.stats a {
-  height: 100%;
-  text-align: center;
-  display: block;
-  padding: 0.5em 0.5em;
-  transition: .4s background-color; }
-  .stats a, .stats a:hover, .stats a:focus {
-    color: white;
-    text-decoration: none; }
-  .stats a:hover {
-    background: #666666; }
-
 .sidebar {
   position: fixed;
   top: 50px;

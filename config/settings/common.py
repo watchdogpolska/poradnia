@@ -41,8 +41,6 @@ THIRD_PARTY_APPS = (
     "django_mailbox",
     "dal",
     "dal_select2",
-    "tinymce",
-    "flatpages_tinymce",
     "tinycontent",
     "sorl.thumbnail",
     "atom",
@@ -286,8 +284,6 @@ LOCALE_PATHS = (str(APPS_DIR.path("templates/locale")),)
 PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
 PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
 ATOMIC_REQUESTS = True
-
-TINYMCE_DEFAULT_CONFIG = {"theme": "advanced"}
 
 AVATAR_GRAVATAR_DEFAULT = "retro"
 FEEDBACK_FILTER = "poradnia.feedback_custom.filters.AtomFeedbackFilter"
