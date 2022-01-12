@@ -26,12 +26,12 @@ urlpatterns = [
     path("teryt/", include("poradnia.teryt.urls", namespace="teryt")),
     path("robots.txt", TemplateView.as_view(template_name="robots.txt")),
     path(
-        "strony//polityka-prywatnosci/",
+        "strony/regulamin-poradnictwa/",
         TemplateView.as_view(template_name="pages/terms.html"),
         name="terms",
     ),
     path(
-        "strony/regulamin-poradnictwa/",
+        "strony/polityka-prywatnosci/",
         TemplateView.as_view(template_name="pages/privacy.html"),
         name="privacy",
     ),
