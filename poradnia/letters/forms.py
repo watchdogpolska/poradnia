@@ -215,7 +215,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
                     input_type="submit",
                     value=_("Write to staff"),
                     title=REPLY_TO_TEAM_TITLE,
-                    css_class="btn-default",
+                    css_class="btn-info",
                 )
             )
         else:
@@ -233,7 +233,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
                         name=self.SEND_STAFF,
                         value=_("Write to staff"),
                         title=REPLY_TO_TEAM_TITLE,
-                        css_class="btn-default",
+                        css_class="btn-info",
                     )
                 )
             else:
