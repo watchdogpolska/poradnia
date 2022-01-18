@@ -109,3 +109,8 @@ class WSARzeszowParser(NSAETRParser):
 @register_parser("WSA_Szczecin")
 class WSASzczecinParser(NSAETRParser):
     URL = "https://www.nsa.gov.pl/ewokanda/wsa/szczecin/"
+
+
+@register_parser("WSA_Wroclaw")
+class WSAWroclawParser(NSAETRParser):
+    URL = "https://www.nsa.gov.pl/ewokanda/wsa/wroclaw/"
