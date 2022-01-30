@@ -29,10 +29,12 @@ class Manager:
 
     def handle_session_row(self, court, session_row, courtcase):
         dates = {
-            courtsession.event.time.date(): courtsession
+            courtsession.event.time.astimezone(timezone("UTC")).date(): courtsession
             for courtsession in courtcase.courtsession_set.all()
         }
-        courtsession = dates.get(session_row.datetime.date(), None)
+        courtsession = dates.get(
+            session_row.datetime.astimezone(timezone("UTC")).date(), None
+        )
 
         if courtsession:
             self.handle_update_courtsession(courtsession, session_row)
