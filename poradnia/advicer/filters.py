@@ -48,6 +48,7 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
     )
     issues = AdviceIssueFilter()
     area = AdviceAreaFilter()
+    comment = django_filters.CharFilter(label=_("Comment"), lookup_expr="icontains")
 
     class Meta:
         model = Advice
@@ -94,7 +95,14 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
                     css_class="row",
                 ),
             ),
-            Fieldset(_("Details"), "advicer", "created_by", "created_on", "subject"),
+            Fieldset(
+                _("Details"),
+                "advicer",
+                "created_by",
+                "created_on",
+                "subject",
+                "comment",
+            ),
         )
         self._form.helper.add_input(Submit("filter", _("Filter")))
         return self._form
