@@ -274,7 +274,6 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
             if self.PROJECT in self.data:
                 self.case.has_project = True
             elif obj.status == Letter.STATUS.done:
-                self.case.has_project = False
                 self.case.handled = True
         else:
             self.case.handled = False
