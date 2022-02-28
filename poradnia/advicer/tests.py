@@ -77,6 +77,12 @@ class AdviceListTestCase(PermissionMixin, TemplateUsedMixin, TestCase):
         self.login()
         self._show_visible_for(created_by=self.user)
 
+    def test_show_comment_in_list(self):
+        self.login()
+        obj = AdviceFactory(advicer=self.user)
+        resp = self.client.get(self.url)
+        self.assertContains(resp, obj.comment)
+
 
 class AdviceUpdateTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, TestCase):
     template_name = "advicer/advice_form.html"
