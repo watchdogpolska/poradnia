@@ -10,10 +10,7 @@ from vcr import VCR
 from poradnia.judgements.factories import CourtFactory
 from poradnia.judgements.registry import get_parser_keys
 
-try:
-    pass
-except ImportError:
-    pass
+from ..registry import parser_registry
 
 
 def generator(f, suffix=None):
@@ -71,7 +68,7 @@ class ParserTestCaseMixin(TestCase):
             "WSA_Rzeszow",
             "WSA_Szczecin",
             "WSA_Warszawa",
-            # 'WSA_Wroclaw'  # missing
+            "WSA_Wroclaw",
         ]
         supported = set(get_parser_keys())
         for requirement in required_parsers:
@@ -86,4 +83,11 @@ class ParserTestCaseMixin(TestCase):
         session_row = next(parser.get_session_rows())
         self.assertAlmostEqual(
             expected_time, session_row.datetime, delta=datetime.timedelta(seconds=1)
+        )
+
+    @my_vcr.use_cassette()
+    def test_parse_wroclaw_successfuly(self):
+        parser = parser_registry["WSA_Wroclaw"]()
+        self.assertTrue(
+            any(x.signature == "IV SAB/Wr 350/21" for x in parser.get_session_rows())
         )
