@@ -6,7 +6,7 @@ default_language_version:
 minimum_pre_commit_version: "1.20.0"
 repos:
   - repo: https://github.com/psf/black
-    rev: 21.12b0
+    rev: 22.1.0
     hooks:
     - id: black
       args:
@@ -31,7 +31,7 @@ repos:
         name: isort (python)
         args: ["--profile", "black", "--filter-files"]
   - repo: https://github.com/sirosen/check-jsonschema
-    rev: 0.9.1
+    rev: 0.14.0
     hooks:
       - id: check-github-workflows
       - id: check-readthedocs
