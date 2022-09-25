@@ -46,7 +46,7 @@ django-github-revision==0.0.3
 zipstream-new==1.1.8
 django-teryt-tree==0.17.0
 django-mptt==0.13.4
-mistune==2.0.1
+mistune==2.0.3
 
 # Additional sanitizer until a completely safe markdown package is found.
 bleach==4.1.0
