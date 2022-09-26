@@ -51,4 +51,4 @@ mistune==2.0.1
 # Additional sanitizer until a completely safe markdown package is found.
 bleach==4.1.0
 django-antispam==1.0.3
-Django==2.2.26
+Django==2.2.28
