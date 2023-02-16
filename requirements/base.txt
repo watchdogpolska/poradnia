@@ -1,24 +1,25 @@
 # Configuration
-django-environ==0.8.1
+django-environ==0.9.0
 
 # Forms
 django-braces==1.15.0
-django-crispy-forms==1.13.0
+django-crispy-forms==1.14.0
+# TOD0 django-floppyforms are not maintained since 2020 (last django 2.1...)
 django-floppyforms==1.9.0
 
 # Models
-django-model-utils==4.2.0
+django-model-utils==4.3.1
 
 # images
-Pillow==8.4.0
-sorl-thumbnail==12.7.0
+Pillow==9.4.0
+sorl-thumbnail==12.9.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==0.44.0
+django-allauth==0.52.0
 
 # For the persistance stores
-mysqlclient==2.1.0
+mysqlclient==2.1.1
 
 # Unicode slugification
 unicode-slugify==0.1.5
@@ -26,29 +27,29 @@ django-autoslug==1.9.8
 
 # Useful things
 # Time zones support
-pytz==2021.3
-lxml==4.9.1
-cssselect==1.1.0
+pytz==2022.7.1 
+lxml==4.9.2
+cssselect==1.2.0
 # Your custom requirements go here
 django-guardian==2.4.0
 django-mailbox==4.8.2
-django-filter==21.1
-django-autocomplete-light==3.5.0
+django-filter==22.1
+django-autocomplete-light==3.9.4
 django-atom==0.16.3
 django-tinycontent==0.8.0
-icalendar==4.0.9
+icalendar==5.0.4
 html2text==2020.1.16
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.7.1
-sentry-sdk==1.5.2
+sentry-sdk==1.15.0
 python-dateutil==2.8.2
 django-github-revision==0.0.3
 zipstream-new==1.1.8
 django-teryt-tree==0.17.0
-django-mptt==0.13.4
-mistune==2.0.1
+django-mptt==0.14.0
+mistune==2.0.5
 
 # Additional sanitizer until a completely safe markdown package is found.
-bleach==4.1.0
+bleach==6.0.0
 django-antispam==1.0.3
-Django==2.2.26
+Django==3.2.18
