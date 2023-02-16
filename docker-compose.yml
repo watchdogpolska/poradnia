@@ -5,7 +5,7 @@ services:
   db:
     image: mysql:5.7
     ports:
-      - "3306"
+      - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: "password"
     volumes:
@@ -26,8 +26,8 @@ services:
     build:
       context: .
       dockerfile: .contrib/docker/Dockerfile.web
-      args:
-        PYTHON_VERSION: '${PYTHON_VERSION:-3.7}'
+      # args:
+      #   PYTHON_VERSION: '${PYTHON_VERSION:-3.7}'
 
     volumes:
       - .:/code

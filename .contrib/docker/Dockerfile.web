@@ -1,5 +1,5 @@
 # This is Dockerfile for development purposes only.
-ARG PYTHON_VERSION='3.7'
+ARG PYTHON_VERSION='3.10'
 FROM python:${PYTHON_VERSION}-slim
 RUN mkdir /code /code/production
 WORKDIR /code
@@ -16,5 +16,7 @@ RUN apt-get update \
    gettext libgettextpo-dev wait-for-it \
 && rm -rf /var/lib/apt/lists/*
 COPY requirements/*.txt ./requirements/
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements/dev.txt
-CMD ["bash", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+# CMD ["bash", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+CMD ["bash", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && sleep infinity "]
