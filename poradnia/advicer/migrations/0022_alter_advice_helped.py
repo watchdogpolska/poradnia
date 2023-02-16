@@ -4,15 +4,14 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('advicer', '0021_auto_20191015_0510'),
+        ("advicer", "0021_auto_20191015_0510"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='advice',
-            name='helped',
-            field=models.BooleanField(blank=True, null=True, verbose_name='We helped?'),
+            model_name="advice",
+            name="helped",
+            field=models.BooleanField(blank=True, null=True, verbose_name="We helped?"),
         ),
     ]
