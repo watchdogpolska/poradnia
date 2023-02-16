@@ -3,7 +3,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("cases", "0021_initial_permission_group")]
 
     operations = [

@@ -11,11 +11,11 @@ from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from django.utils.functional import cached_property
 from django.utils.html import mark_safe
 from django.utils.timezone import now
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.generic import (
     ArchiveIndexView,
     CreateView,
@@ -135,7 +135,7 @@ class ICalendarView(KeyAuthMixin, PermissionMixin, BaseListView):
         event = Event()
         event["uid"] = obj.pk
         event["dtstart"] = obj.time
-        event["summary"] = force_text(obj)
+        event["summary"] = force_str(obj)
         event["description"] = obj.text
         return event
 

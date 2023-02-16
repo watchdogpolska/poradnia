@@ -6,7 +6,7 @@ from django.db.models import Case, Count, F, Func, IntegerField, Q, When
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.datetime_safe import datetime
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from guardian.mixins import GuardianUserMixin
 from guardian.utils import get_anonymous_user
 from model_utils.choices import Choices

@@ -5,7 +5,7 @@ from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.timezone import now
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from teryt_tree.dal_ext.filters import AreaMultipleFilter
 
 from poradnia.cases.models import Case
@@ -112,7 +112,7 @@ class Advice(models.Model):
     created_on = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Creation date")
     )
-    helped = models.NullBooleanField(verbose_name=_("We helped?"), blank=True)
+    helped = models.BooleanField(verbose_name=_("We helped?"), null=True, blank=True)
     modified_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         null=True,

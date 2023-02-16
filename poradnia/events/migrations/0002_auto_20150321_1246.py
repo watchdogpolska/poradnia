@@ -2,7 +2,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("cases", "0001_initial"), ("events", "0001_initial")]
 
     operations = [

@@ -1,5 +1,5 @@
-from django.conf.urls import url
-from django.utils.translation import ugettext_lazy as _
+from django.urls import re_path
+from django.utils.translation import gettext_lazy as _
 from teryt_tree.dal_ext.views import (
     CommunityAutocomplete,
     CountyAutocomplete,
@@ -9,20 +9,20 @@ from teryt_tree.dal_ext.views import (
 from . import views
 
 urlpatterns = [
-    url(_(r"^(?P<slug>[\w-]+)$"), views.JSTDetailView.as_view(), name="details"),
-    url(_(r"^$"), views.JSTListView.as_view(), name="list"),
-    url(_(r"^$"), views.JSTListView.as_view(), name="voivodeship"),
-    url(
+    re_path(_(r"^(?P<slug>[\w-]+)$"), views.JSTDetailView.as_view(), name="details"),
+    re_path(_(r"^$"), views.JSTListView.as_view(), name="list"),
+    re_path(_(r"^$"), views.JSTListView.as_view(), name="voivodeship"),
+    re_path(
         _(r"^voivodeship-autocomplete/$"),
         VoivodeshipAutocomplete.as_view(),
         name="voivodeship-autocomplete",
     ),
-    url(
+    re_path(
         _(r"^county-autocomplete/$"),
         CountyAutocomplete.as_view(),
         name="county-autocomplete",
     ),
-    url(
+    re_path(
         _(r"^community-autocomplete/$"),
         CommunityAutocomplete.as_view(),
         name="community-autocomplete",

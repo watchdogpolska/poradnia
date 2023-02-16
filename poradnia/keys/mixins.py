@@ -8,8 +8,8 @@ from .models import Key
 
 class KeyAuthMixin:
     def get_user_data(self, request):
-        if "HTTP_AUTHORIZATION" in request.META:
-            auth = request.META["HTTP_AUTHORIZATION"].split()
+        if "authorization" in request.headers:
+            auth = request.headers["authorization"].split()
             if len(auth) == 2 and auth[0].lower() == "basic":
                 return base64.b64decode(auth[1]).split(":")
         if "user" in request.GET and "password" in request.GET:

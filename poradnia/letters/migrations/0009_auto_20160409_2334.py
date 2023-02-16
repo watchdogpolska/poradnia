@@ -5,7 +5,6 @@ import poradnia.letters.utils
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("letters", "0008_letter_eml")]
 
     operations = [

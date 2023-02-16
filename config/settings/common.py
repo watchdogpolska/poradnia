@@ -9,7 +9,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
 import environ
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 ROOT_DIR = environ.Path(__file__) - 3
 
@@ -340,3 +340,5 @@ LETTER_RECEIVE_SECRET = "xxxxxxxxx"
 LETTER_RECEIVE_WHITELISTED_ADDRESS = [
     "porady@siecobywatelska.pl",
 ]
+
+DEFAULT_AUTO_FIELD = "django.db.models.AutoField"

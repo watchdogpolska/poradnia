@@ -6,7 +6,6 @@ import poradnia.users.models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("users", "0009_user_codename")]
     if django.VERSION[:2] >= (1, 8):
         operations = [

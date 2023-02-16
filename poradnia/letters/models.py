@@ -7,7 +7,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.db import models
 from django.db.models import F, Func, IntegerField
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django_mailbox.models import Message
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField

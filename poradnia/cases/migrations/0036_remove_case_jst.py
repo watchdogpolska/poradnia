@@ -3,7 +3,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("cases", "0035_case_jst")]
 
     operations = [migrations.RemoveField(model_name="case", name="jst")]

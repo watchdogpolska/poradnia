@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from poradnia.cases.models import Case
 

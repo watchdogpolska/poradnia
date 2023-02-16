@@ -20,7 +20,7 @@ from django.db.models.query import QuerySet
 from django.db.models.signals import post_save, pre_delete
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import assign_perm, get_objects_for_user, get_users_with_perms
 from model_utils import Choices
