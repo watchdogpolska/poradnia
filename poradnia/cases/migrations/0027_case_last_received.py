@@ -21,7 +21,6 @@ def migrate_last_received(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("cases", "0026_case_handled")]
 
     operations = [

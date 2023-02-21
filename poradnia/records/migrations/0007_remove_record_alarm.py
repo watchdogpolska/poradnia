@@ -3,7 +3,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("records", "0006_auto_20150503_1741")]
 
     operations = [migrations.RemoveField(model_name="record", name="alarm")]

@@ -2,7 +2,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("cases", "0016_auto_20150316_0931"),
         ("contenttypes", "0001_initial"),

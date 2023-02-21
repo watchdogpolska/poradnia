@@ -16,7 +16,6 @@ def delete_empty(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("cases", "0023_auto_20150809_2131"),
         ("records", "0006_auto_20150503_1741"),
