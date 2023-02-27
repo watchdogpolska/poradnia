@@ -152,12 +152,10 @@ class Letter(AbstractRecord):
         user_qs = self.get_users_with_perms()
 
         if self.status is not Letter.STATUS.done:
-            user_qs = user_qs.filter(is_staff=True)
+            user_qs = User.objects.filter(is_staff=True).distinct() & user_qs
 
         if senders.count() == 0:
-            # union have to be used after filter
-            # see https://docs.djangoproject.com/en/3.2/ref/models/querysets/#union
-            user_qs = user_qs.union(management)
+            user_qs = user_qs | management.distinct()
 
         kwargs["user_qs"] = user_qs
 

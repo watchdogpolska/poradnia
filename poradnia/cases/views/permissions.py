@@ -51,7 +51,10 @@ class UserPermissionCreateView(CasePermissionTestMixin, FormView):
         for user in form.cleaned_data["users"]:
             self.case.send_notification(
                 actor=self.request.user,
-                user_qs=self.case.get_users_with_perms().filter(is_staff=True),
+                user_qs=(
+                    User.objects.filter(is_staff=True).distinct()
+                    & self.case.get_users_with_perms()
+                ),
                 verb="granted",
             )
             messages.success(
