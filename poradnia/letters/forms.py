@@ -90,6 +90,8 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
         super().__init__(*args, **kwargs)
+        # TODO refactor form to avoid crispy forms warnings like:
+        # KeyError: "Key 'giodo' not found in 'NewCaseForm'. Choices are: name, text."
         self.helper.form_tag = False
         self.helper.form_method = "post"
         self.fields["name"].help_text = CASE_NAME_TEXT
