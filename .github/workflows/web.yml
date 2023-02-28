@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - master
+      - dev
   pull_request:
 
 jobs:
@@ -12,8 +13,11 @@ jobs:
     strategy:
       matrix:
         python: 
-          - 3.6
-          - 3.7
+#           - 3.6
+          - "3.10"
+        django:
+#           - "==2.2.*"
+          - "==3.2.*"
     steps:
     - uses: actions/checkout@v1
     # Pull the latest image to build, and avoid caching pull-only images.
