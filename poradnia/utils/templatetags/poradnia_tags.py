@@ -1,4 +1,5 @@
 from django import template
+
 from poradnia import get_version
 
 register = template.Library()
