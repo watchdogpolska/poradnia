@@ -3,10 +3,10 @@ var fs = require('fs'),
     gulp = require('gulp'),
     concat = require('gulp-concat'),
     livereload = require('gulp-livereload'),
-    minifycss = require('gulp-minify-css'),
+    cleanCSS = require('gulp-clean-css'),
     prefix = require('gulp-autoprefixer'),
     rename = require('gulp-rename'),
-    sass = require('gulp-sass'),
+    sass = require('gulp-sass')(require('sass')),
     uglify = require('gulp-uglify'),
     watch = require('gulp-watch'),
     json = JSON.parse(fs.readFileSync('./package.json'));
@@ -104,7 +104,7 @@ gulp.task('scss', function () {
         .pipe(gulp.dest(config.scss.output))
         .pipe(livereload())
         .pipe(rename({extname: '.min.css'}))
-        .pipe(minifycss())
+        .pipe(cleanCSS({compatibility: 'ie8'}))
         .pipe(gulp.dest(config.scss.output))
         .pipe(livereload());
 });
@@ -120,6 +120,6 @@ gulp.task('watch', function () {
     });
 });
 
-gulp.task('build', ['icons', 'js', 'scss']);
+gulp.task('build', gulp.series('icons', 'js', 'scss'));
 
-gulp.task('default', ['build', 'watch']);
+gulp.task('default', gulp.series('build', 'watch'));

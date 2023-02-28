@@ -10,3 +10,6 @@ VERSION = tuple(
 
 def get_version():
     return __version__
+
+
+# TODO find chart.js usage and updated to v.4
