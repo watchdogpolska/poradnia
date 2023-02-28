@@ -66,7 +66,8 @@ LOCAL_APPS = (
     "poradnia.tasty_feedback",
     "poradnia.navsearch",
     "poradnia.judgements",
-    "poradnia.teryt"
+    "poradnia.teryt",
+    "poradnia.utils"
     # Your stuff: custom apps go here
 )
 
