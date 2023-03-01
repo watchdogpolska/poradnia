@@ -18,5 +18,5 @@ RUN apt-get update \
 COPY requirements/*.txt ./requirements/
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements/dev.txt
-# CMD ["bash", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
-CMD ["bash", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && sleep infinity "]
+CMD ["bash", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+# CMD ["bash", "-c", "python manage.py collectstatic --no-input ; python manage.py migrate ; sleep infinity "]
