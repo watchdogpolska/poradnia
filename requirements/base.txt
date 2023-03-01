@@ -36,7 +36,7 @@ django-filter==21.1
 django-autocomplete-light==3.5.0
 django-atom==0.16.3
 django-tinycontent==0.8.0
-icalendar==4.0.9
+icalendar==4.1.0
 html2text==2020.1.16
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.7.1
