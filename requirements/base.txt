@@ -37,6 +37,7 @@ django-guardian==2.4.0
 django-mailbox==4.8.2
 django-filter==22.1
 django-autocomplete-light==3.9.4
+django-tinymce==3.5.0
 django-atom==0.16.3
 django-tinycontent==0.8.0
 icalendar==5.0.4

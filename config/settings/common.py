@@ -51,6 +51,7 @@ THIRD_PARTY_APPS = (
     "teryt_tree",
     "antispam",
     "antispam.honeypot",
+    "tinymce",
 )
 
 # Apps specific for this project go here.
@@ -343,3 +344,17 @@ LETTER_RECEIVE_WHITELISTED_ADDRESS = [
 ]
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "silver",
+    "height": 500,
+    "menubar": True,
+    "lineheight": 1,
+    "plugins": "advlist,autolink,lists,link,image,charmap,print,preview,anchor,"
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,paste,"
+    "code,help,wordcount",
+    "toolbar": "undo redo | formatselect | lineheight | fontsizeselect |"
+    "bold italic backcolor | alignleft aligncenter "
+    "alignright alignjustify | bullist numlist outdent indent | "
+    "charmap | removeformat | help",
+}

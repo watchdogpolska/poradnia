@@ -10,6 +10,8 @@ from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
+from tinymce.widgets import TinyMCE
+from .utils import HTMLFilter
 
 from poradnia.cases.models import Case
 
@@ -189,9 +191,9 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         self._fill_footer()
         self._add_buttons()
         self.fields["name"].initial = "Odp: {}".format(self.case)
-
-        if settings.RICH_TEXT_ENABLED:
-            self.fields["text"].help_text = INFO_ABOUT_MARKDOWN
+        self.fields['html'].widget = TinyMCE(attrs={'cols': 80, 'rows': 30})
+        # if settings.RICH_TEXT_ENABLED:
+        #     self.fields["text"].help_text = INFO_ABOUT_MARKDOWN
 
     def _add_buttons(self):
         if self.user_can_send:
@@ -246,8 +248,8 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
     def _fill_footer(self):
         if self.user.is_staff and hasattr(self.user, "profile"):
             footer = self.user.profile.email_footer
-            if footer:
-                self.fields["text"].initial = "\n\n%s" % footer
+            # if footer:
+            #     self.fields["text"].initial = "\n\n%s" % footer
 
     def get_status(self):
         if not self.user.is_staff:
@@ -267,6 +269,9 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
 
     def save(self, commit=True, *args, **kwargs):
         obj = super().save(commit=False, *args, **kwargs)
+        f = HTMLFilter()
+        f.feed(obj.html)
+        obj.text = f.text
         obj.status = self.get_status()
         obj.genre = self.get_genre()
         obj.created_by = self.user
@@ -287,7 +292,8 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         return obj
 
     class Meta:
-        fields = ["name", "text"]
+        # fields = ["name", "text", "html"]
+        fields = ["name", "html"]
         model = Letter
 
 

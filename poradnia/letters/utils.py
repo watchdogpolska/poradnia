@@ -1,7 +1,13 @@
 import random
 import string
-
+from html.parser import HTMLParser
 from django.utils.timezone import now
+
+
+class HTMLFilter(HTMLParser):
+    text = ""
+    def handle_data(self, data):
+        self.text += data
 
 
 def prefix_gen(
