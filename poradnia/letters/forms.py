@@ -248,8 +248,9 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
     def _fill_footer(self):
         if self.user.is_staff and hasattr(self.user, "profile"):
             footer = self.user.profile.email_footer
-            # if footer:
-            #     self.fields["text"].initial = "\n\n%s" % footer
+            if footer:
+                footer = footer.replace("\n", "<br>")
+                self.fields["html"].initial = f"<p><br>{footer}<br></p>"
 
     def get_status(self):
         if not self.user.is_staff:
