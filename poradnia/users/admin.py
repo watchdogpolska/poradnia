@@ -5,7 +5,7 @@ from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.utils.translation import gettext_lazy as _
 from sorl.thumbnail.admin import AdminImageMixin
 
-from .models import User, Profile
+from .models import Profile, User
 
 
 class MyUserChangeForm(UserChangeForm):
@@ -53,14 +53,16 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         "is_active",
         "codename",
         "notify_new_case",
-        "notify_unassigned_letter",        
-    )    
+        "notify_unassigned_letter",
+    )
+
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     """
     Admin for User Profiles
     """
+
     list_display = (
         "pk",
         "user",
@@ -68,9 +70,7 @@ class ProfileAdmin(admin.ModelAdmin):
         "www",
         "event_reminder_time",
     )
-    list_filter = (
-        "event_reminder_time",
-    )
+    list_filter = ("event_reminder_time",)
     search_fields = (
         "user__username",
         "user__first_name",
