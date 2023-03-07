@@ -1,4 +1,4 @@
-from django.urls import path, include
+from django.urls import include, path
 from django.views.decorators.csrf import csrf_exempt
 
 from . import views
@@ -22,7 +22,7 @@ urlpatterns = [
     path("<int:pk>/", views.send, name="detail"),
     path("", views.NewCaseCreateView.as_view(), name="home"),
     path("", views.NewCaseCreateView.as_view(), name="add"),
-    path('tinymce/', include('tinymce.urls')),
+    path("tinymce/", include("tinymce.urls")),
 ]
 
 app_name = "poradnia.letters"

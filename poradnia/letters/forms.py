@@ -11,11 +11,11 @@ from django.forms import ModelForm
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from tinymce.widgets import TinyMCE
-from .utils import HTMLFilter
 
 from poradnia.cases.models import Case
 
 from .models import Attachment, Letter
+from .utils import HTMLFilter
 
 CLIENT_FIELD_TEXT = _("Leave empty to use email field and create a new one user.")
 
@@ -191,7 +191,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         self._fill_footer()
         self._add_buttons()
         self.fields["name"].initial = "Odp: {}".format(self.case)
-        self.fields['html'].widget = TinyMCE(attrs={'cols': 80, 'rows': 30})
+        self.fields["html"].widget = TinyMCE(attrs={"cols": 80, "rows": 30})
         # if settings.RICH_TEXT_ENABLED:
         #     self.fields["text"].help_text = INFO_ABOUT_MARKDOWN
 
