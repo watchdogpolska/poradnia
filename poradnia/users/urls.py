@@ -1,23 +1,23 @@
-from django.conf.urls import url
+from django.urls import path, re_path
 
 from poradnia.users import views
 
 urlpatterns = [
-    url(r"^$", views.UserListView.as_view(), name="list"),
-    url(r"^~przekieruj/$", views.UserRedirectView.as_view(), name="redirect"),
-    url(
+    path("", views.UserListView.as_view(), name="list"),
+    re_path(r"^~przekieruj/$", views.UserRedirectView.as_view(), name="redirect"),
+    re_path(
         r"^(?P<username>[\w.@+-]+)/$",
         views.UserDetailView.as_view(),
         name="detail",
     ),
-    url(
+    re_path(
         r"^(?P<username>[\w.@+-]+)/~deassign/$",
         views.UserDeassignView.as_view(),
         name="deassign",
     ),
-    url(r"^~aktualizuj/$", views.UserUpdateView.as_view(), name="update"),
-    url(r"^~profil/$", views.ProfileUpdateView.as_view(), name="profile"),
-    url(
+    re_path(r"^~aktualizuj/$", views.UserUpdateView.as_view(), name="update"),
+    re_path(r"^~profil/$", views.ProfileUpdateView.as_view(), name="profile"),
+    re_path(
         r"^~autocomplete/$",
         views.UserAutocomplete.as_view(),
         name="autocomplete",

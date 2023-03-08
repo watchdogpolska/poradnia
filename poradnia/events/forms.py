@@ -4,6 +4,7 @@ from django import forms
 from django.urls import reverse
 
 from poradnia.letters.forms import PartialMixin
+from poradnia.users.models import User
 
 from .models import Event
 
@@ -29,7 +30,10 @@ class EventForm(
         verb = "created" if created else "updated"
         obj.send_notification(
             actor=self.user,
-            user_qs=self.case.get_users_with_perms().filter(is_staff=True),
+            user_qs=(
+                User.objects.filter(is_staff=True).distinct()
+                & self.case.get_users_with_perms()
+            ),
             verb=verb,
         )
         return obj

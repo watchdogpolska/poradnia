@@ -4,7 +4,6 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("letters", "0012_update_letter_genre"),
         ("letters", "0013_auto_20211230_1439"),

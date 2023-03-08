@@ -6,7 +6,7 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
 from django.urls import reverse
 from django.utils.functional import cached_property
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.generic import FormView
 from guardian.shortcuts import get_perms
 
@@ -51,7 +51,10 @@ class UserPermissionCreateView(CasePermissionTestMixin, FormView):
         for user in form.cleaned_data["users"]:
             self.case.send_notification(
                 actor=self.request.user,
-                user_qs=self.case.get_users_with_perms().filter(is_staff=True),
+                user_qs=(
+                    User.objects.filter(is_staff=True).distinct()
+                    & self.case.get_users_with_perms()
+                ),
                 verb="granted",
             )
             messages.success(

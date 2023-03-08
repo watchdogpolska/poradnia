@@ -9,7 +9,7 @@ from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from poradnia.cases.models import Case
 
@@ -90,6 +90,8 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
         super().__init__(*args, **kwargs)
+        # TODO refactor form to avoid crispy forms warnings like:
+        # KeyError: "Key 'giodo' not found in 'NewCaseForm'. Choices are: name, text."
         self.helper.form_tag = False
         self.helper.form_method = "post"
         self.fields["name"].help_text = CASE_NAME_TEXT

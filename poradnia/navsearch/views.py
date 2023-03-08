@@ -1,7 +1,7 @@
 from django.db.models import Q
 from django.http import JsonResponse
-from django.utils.encoding import force_text
-from django.utils.translation import ugettext_lazy as _
+from django.utils.encoding import force_str
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 
 from poradnia.cases.models import Case
@@ -22,7 +22,7 @@ class AutocompleteView(View):
         )
 
     def get_item(self, row):
-        return {"url": row.get_absolute_url(), "text": force_text(row)}
+        return {"url": row.get_absolute_url(), "text": force_str(row)}
 
     def get_case_id_queryset(self, q):
         if q.replace("#", "").isdigit():

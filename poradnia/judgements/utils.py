@@ -1,6 +1,6 @@
 import sys
 
-from django.utils.encoding import force_text
+from django.utils.encoding import force_str
 from pytz import timezone
 
 from poradnia.events.models import Event
@@ -14,7 +14,7 @@ class Manager:
         self.stderr = stderr
 
     def handle_court(self, court, parser=None):
-        self.stdout.write("=" * 6 + force_text(court))
+        self.stdout.write("=" * 6 + force_str(court))
         signatures = {
             x.signature: x
             for x in CourtCase.objects.filter(court=court).with_events().all()

@@ -7,7 +7,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.db import models
 from django.db.models import F, Func, IntegerField
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django_mailbox.models import Message
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
@@ -152,12 +152,10 @@ class Letter(AbstractRecord):
         user_qs = self.get_users_with_perms()
 
         if self.status is not Letter.STATUS.done:
-            user_qs = user_qs.filter(is_staff=True)
+            user_qs = User.objects.filter(is_staff=True).distinct() & user_qs
 
         if senders.count() == 0:
-            # union have to be used after filter
-            # see https://docs.djangoproject.com/en/3.2/ref/models/querysets/#union
-            user_qs = user_qs.union(management)
+            user_qs = user_qs | management.distinct()
 
         kwargs["user_qs"] = user_qs
 

@@ -504,10 +504,7 @@ class CaseAdminTestCase(AdminTestCaseMixin, TestCase):
         self, model_admin, model
     ):  # See django/tests/modeladmin/tests.py#L602
         admin_obj = model_admin(model, self.site)
-        if django.VERSION > (1, 9):
-            errors = admin_obj.check()
-        else:
-            errors = admin_obj.check(model)
+        errors = admin_obj.check()
         expected = []
         self.assertEqual(errors, expected)
 

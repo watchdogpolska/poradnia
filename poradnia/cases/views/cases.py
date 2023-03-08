@@ -7,7 +7,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.utils.functional import cached_property
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 from django.views.generic import UpdateView
 from django.views.generic.detail import DetailView
 from django_filters.views import FilterView
