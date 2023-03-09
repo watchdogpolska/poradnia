@@ -1,0 +1,12 @@
+# This is Dockerfile for development purposes only.
+ARG PYTHON_VERSION='3.10'
+FROM python:${PYTHON_VERSION}-slim
+RUN mkdir /data
+WORKDIR /data
+
+# Install python dependencies
+ENV PYTHONUNBUFFERED 1
+RUN apt-get update && apt-get -y --no-install-recommends install curl mc
+RUN pip install --upgrade pip
+RUN pip install --no-cache-dir maildump
+CMD ["bash", "-c", "maildump --http-ip 0.0.0.0 --smtp-ip 0.0.0.0 --db porady_sent_mail.sqlite"]

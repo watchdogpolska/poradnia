@@ -132,10 +132,7 @@ SERVER_EMAIL = EMAIL_HOST_USER
 
 # MANAGER CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = (
-    ("Adam Dobrawy", "adam.dobrawy@siecobywatelska.pl"),
-    ("Marcin Bójko", "marcin.bojko@siecobywatelska.pl"),
-)
+ADMINS = env.str("DJANGO_ADMINS", "App Admins <app.admins@siecobywatelska.pl>,").split(",")
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
