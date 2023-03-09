@@ -42,7 +42,7 @@ services:
       DJANGO_EMAIL_SUBJECT_PREFIX: "[poradnia_dev] "
       DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
       LETTER_RECEIVE_SECRET: "dev_letter_receive_very_secret"
-      LETTER_RECEIVE_WHITELISTED_ADDRESS: ""
+      LETTER_RECEIVE_WHITELISTED_ADDRESS: "porady@siecobywatelska.pl,"
       DJANGO_ADMINS: "piotr.iwanski@siecobywatelska.pl,"
     ports:
       - "8000:8000"

@@ -335,10 +335,10 @@ RICH_TEXT_ENABLED = env.bool("DJANGO_RICH_TEXT_ENABLED", True)
 # Django-GitHub-Revision
 GITHUB_REVISION_REPO_URL = "https://github.com/watchdogpolska/poradnia"
 
-LETTER_RECEIVE_SECRET = "xxxxxxxxx"
+LETTER_RECEIVE_SECRET = env.str("LETTER_RECEIVE_SECRET", "")
 
-LETTER_RECEIVE_WHITELISTED_ADDRESS = [
-    "porady@siecobywatelska.pl",
-]
+LETTER_RECEIVE_WHITELISTED_ADDRESS = env.str(
+    "LETTER_RECEIVE_WHITELISTED_ADDRESS", "porady@siecobywatelska.pl,"
+).split(",")
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
