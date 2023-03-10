@@ -250,23 +250,44 @@ AUTOSLUG_SLUGIFY_FUNCTION = "slugify.slugify"
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+# 
+# TODO add proper file logging configuration when loggers added to code
+#   as for now all stdout and stderr captured by gunicorn logs
+LOG_FILE_ENV = env("LOG_FILE_ENV", default="logs/feder.log")
+LOG_FILE = str(ROOT_DIR(LOG_FILE_ENV))
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
+    # "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
     "handlers": {
-        "mail_admins": {
-            "level": "ERROR",
-            "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler",
-        }
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "app",
+        },
+        "file": {
+            # "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": LOG_FILE,
+            "formatter": "app",
+        },
     },
     "loggers": {
-        "django.request": {
-            "handlers": ["mail_admins"],
-            "level": "ERROR",
-            "propagate": True,
-        }
+        # "django.request": {"handlers": [], "level": "ERROR", "propagate": True},
+        "": {"handlers": ["file", "console"], "level": "INFO", "propagate": True},
+        "feder.letters.models": {
+            "handlers": ["console"] if "test" not in environ.sys.argv else [],
+            "level": "INFO",
+        },
+    },
+    "formatters": {
+        "app": {
+            "format": (
+                "%(asctime)s [%(levelname)-7s] "
+                # "(%(module)s.%(funcName)s) %(message)s"
+                "(%(pathname)s:%(lineno)s) %(message)s"
+            ),
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
     },
 }
 # END LOGGING CONFIGURATION
