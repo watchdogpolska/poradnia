@@ -16,7 +16,7 @@ from django.contrib.sites.models import Site
 from django.core.exceptions import PermissionDenied
 from django.core.files.base import File
 from django.http import HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.views import View
 from django.views.generic import CreateView, UpdateView
 from django_filters.views import FilterView

@@ -1,4 +1,4 @@
-{% load staticfiles i18n tinycontent_tags github_revision_tags %}
+{% load staticfiles i18n tinycontent_tags github_revision_tags poradnia_tags%}
 <!DOCTYPE html>
 <html lang="pl  ">
 <head>
@@ -95,9 +95,9 @@
                 </div>
                 <div class="footer-left">
                     silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
+                    v{% poradnia_version %} |
                     <a href="https://github.com/watchdogpolska/poradnia">
-                        <i class="fa fa-github"></i> GitHub - {% github_link %}
-                    </a>
+                        <i class="fa fa-github"></i> GitHub</a> - {% github_link %}
                 </div>
                 <div class="footer-center">Strona wykorzystuje cookies</div>
             </div>

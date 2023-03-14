@@ -42,3 +42,6 @@ bower_components/
 poradnia/media/
 docs/_build/
 htmlcov
+
+# VScode
+.vscode

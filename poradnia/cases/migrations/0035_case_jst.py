@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("teryt", "0001_initial"), ("cases", "0034_auto_20180104_0436")]
 
     operations = [

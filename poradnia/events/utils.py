@@ -3,7 +3,7 @@ from datetime import date
 from itertools import groupby
 
 from django.utils.html import conditional_escape as esc
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 day_name = [
     _("Monday"),

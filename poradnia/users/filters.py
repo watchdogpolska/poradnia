@@ -2,7 +2,7 @@ import django_filters
 from atom.ext.django_filters.filters import CrispyFilterMixin
 from dal import autocomplete
 from django.contrib.auth import get_user_model
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 
 from poradnia.users.models import User
 

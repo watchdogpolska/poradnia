@@ -10,7 +10,7 @@ from braces.views import (
 from dal import autocomplete
 from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DetailView, UpdateView
 from django_filters.views import FilterView
 

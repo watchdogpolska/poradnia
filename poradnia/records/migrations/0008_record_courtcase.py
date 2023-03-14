@@ -4,7 +4,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("judgements", "0001_initial"),
         ("records", "0007_remove_record_alarm"),

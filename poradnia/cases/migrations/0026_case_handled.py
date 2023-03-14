@@ -24,7 +24,6 @@ def migrate_handled(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("cases", "0025_auto_20150810_1440"),
         ("letters", "0008_letter_eml"),

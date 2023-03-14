@@ -16,7 +16,7 @@ class CaseFactory(factory.django.DjangoModelFactory):
         model = Case
 
 
-class PermissionGroupFactory(factory.DjangoModelFactory):
+class PermissionGroupFactory(factory.django.DjangoModelFactory):
     name = factory.Sequence("permissiongroup-name-{}".format)
 
     @factory.post_generation
@@ -36,7 +36,7 @@ class PermissionGroupFactory(factory.DjangoModelFactory):
         model = PermissionGroup
 
 
-class CaseUserObjectPermissionFactory(factory.DjangoModelFactory):
+class CaseUserObjectPermissionFactory(factory.django.DjangoModelFactory):
     content_object = factory.SubFactory(CaseFactory)
     user = factory.SubFactory(UserFactory)
 
