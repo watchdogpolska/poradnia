@@ -49,6 +49,7 @@ services:
 
   maildump:
     build:
+      context: .
       dockerfile: .contrib/docker/Dockerfile.maildump
 
     volumes:
