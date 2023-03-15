@@ -11,7 +11,7 @@ class Command(BaseCommand):
         message_text += "\nFollowing local apps are registered:\n"
         for app in settings.LOCAL_APPS:
             message_text += f"  - {app}\n"
-        message_text += f"Test email to app admins sent using {settings.EMAIL_BACKEND}"         
+        message_text += f"Test email to app admins sent using {settings.EMAIL_BACKEND}"
         send_mail(
             subject="Test email from to app admins",
             message=message_text,

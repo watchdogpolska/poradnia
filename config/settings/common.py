@@ -132,7 +132,9 @@ SERVER_EMAIL = EMAIL_HOST_USER
 
 # MANAGER CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = [('Admninistratorzy', 'admins@siecobywatelska.pl'), ]
+ADMINS = [
+    ("Admninistratorzy", "admins@siecobywatelska.pl"),
+]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
@@ -248,7 +250,7 @@ AUTOSLUG_SLUGIFY_FUNCTION = "slugify.slugify"
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
-# 
+#
 # TODO add proper file logging configuration when loggers added to code
 #   as for now all stdout and stderr captured by gunicorn logs
 LOG_FILE_ENV = env("LOG_FILE_ENV", default="logs/feder.log")
