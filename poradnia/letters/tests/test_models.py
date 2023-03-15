@@ -121,5 +121,5 @@ class ModelTestCase(TestCase):
         if settings.RICH_TEXT_ENABLED:
             expected = '<pre><p><em>italic</em> <strong>bolded</strong></p>\n<h1>header1</h1>\n<p><a href="www.google.pl">link</a></p>\n</pre>'
         else:
-            expected = "<{tag}><p>{text}</p>\n</{tag}>".format(tag="pre", text=text)
+            expected = "<{tag}><p>{text}</p></{tag}>".format(tag="pre", text=text.replace("\n", "<br>"))
         self.assertEqual(letter.render_as_html(), expected)
