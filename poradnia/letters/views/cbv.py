@@ -136,7 +136,7 @@ class ReceiveEmailView(View):
     def is_allowed_recipient(self, manifest):
         domain = Site.objects.get_current().domain
         cond = [
-            (addr in x or domain in x) and addr != '' and domain != ''
+            (addr in x or domain in x) and addr != "" and domain != ""
             for x in manifest["headers"]["to"]
             for addr in settings.LETTER_RECEIVE_WHITELISTED_ADDRESS
         ]
