@@ -42,7 +42,8 @@ services:
       DJANGO_EMAIL_SUBJECT_PREFIX: "[poradnia_dev] "
       DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
       LETTER_RECEIVE_SECRET: "dev_letter_receive_very_secret"
-      LETTER_RECEIVE_WHITELISTED_ADDRESS: "porady@dev.porady.siecobywatelska.pl, dev.porady.siecobywatelska.pl@cdremote.net,"
+      # porady@porady.siecobywatelska.pl must be included in LETTER_RECEIVE_WHITELISTED_ADDRESS for tests
+      LETTER_RECEIVE_WHITELISTED_ADDRESS: "porady@porady.siecobywatelska.pl, porady@dev.porady.siecobywatelska.pl"
       DJANGO_RICH_TEXT_ENABLED: "False"
     ports:
       - "8000:8000"
