@@ -22,7 +22,7 @@ services:
       - .:/app
 
   web:
-    # image: docker-registry.siecobywatelska.pl/poradnia/web
+    image: docker-registry.siecobywatelska.pl/poradnia/web
     build:
       context: .
       dockerfile: .contrib/docker/Dockerfile.web
@@ -32,7 +32,7 @@ services:
     volumes:
       - .:/code
     environment:
-      DATABASE_URL: "mysql://root:password@db/poradnia"
+      DATABASE_URL: mysql://root:password@db/poradnia
       DJANGO_EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
       DJANGO_EMAIL_HOST: "maildump"
       DJANGO_EMAIL_PORT: "1025"
