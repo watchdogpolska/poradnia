@@ -46,3 +46,7 @@ htmlcov
 
 # VScode
 .vscode
+
+# docker development secrets
+imap-to-webhook-url.env
+
