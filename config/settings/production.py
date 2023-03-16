@@ -48,5 +48,3 @@ sentry_sdk.init(
 )
 
 CACHES = {"default": env.cache()}
-
-LETTER_RECEIVE_SECRET = env.str("LETTER_RECEIVE_SECRET")
