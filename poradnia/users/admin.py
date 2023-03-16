@@ -55,6 +55,7 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         "notify_new_case",
         "notify_unassigned_letter",
     )
+    actions = None
 
 
 @admin.register(Profile)
@@ -78,3 +79,4 @@ class ProfileAdmin(admin.ModelAdmin):
         "description",
         "www",
     )
+    actions = None
