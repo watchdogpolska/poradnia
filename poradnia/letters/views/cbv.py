@@ -135,11 +135,12 @@ class ReceiveEmailView(View):
 
     def is_allowed_recipient(self, manifest):
         domain = Site.objects.get_current().domain
-        return any(
-            addr in x or domain in x
+        cond = [
+            (addr in x or domain in x) and addr != "" and domain != ""
             for x in manifest["headers"]["to"]
             for addr in settings.LETTER_RECEIVE_WHITELISTED_ADDRESS
-        )
+        ]
+        return any(cond)
 
     def is_autoreply(self, manifest):
         return manifest["headers"].get("auto_reply_type", False)
