@@ -24,16 +24,13 @@ class LetterAdmin(admin.ModelAdmin):
         "genre",
         "status",
         "name",
-        "get_case",
+        "get_case_name",
         "created_by",
         "created_by_is_staff",
         "created_on",
         "modified_by",
         "modified_on",
-        # "email_from",
-        # "email_to",
         "eml",
-        # "message_id_header",
     )
     list_filter = (
         "genre",
@@ -41,13 +38,9 @@ class LetterAdmin(admin.ModelAdmin):
     )
     inlines = [AttachmentInline]
     search_fields = (
-        "title",
-        # "text",
+        "name",
         "record__case__name",
         "eml",
-        # "message_id_header",
-        # "email_from",
-        # "email_to",
     )
     raw_id_fields = ()
     list_editable = ()
@@ -58,5 +51,10 @@ class LetterAdmin(admin.ModelAdmin):
         description=_("Case name"),
         ordering="record__case",
     )
-    def get_case(self, obj):
-        return obj.record.case
+
+    def get_case_name(self, obj):
+        return obj.record.case.name
+
+    def get_queryset(self, *args, **kwargs):
+        qs = super().get_queryset(*args, **kwargs)
+        return qs.select_related('record__case')
