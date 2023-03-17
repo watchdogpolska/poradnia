@@ -51,6 +51,7 @@ THIRD_PARTY_APPS = (
     "teryt_tree",
     "antispam",
     "antispam.honeypot",
+    "tinymce",
 )
 
 # Apps specific for this project go here.
@@ -73,7 +74,7 @@ LOCAL_APPS = (
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 # END APP CONFIGURATION
-INSTALLED_APPS = LOCAL_APPS + THIRD_PARTY_APPS + DJANGO_APPS
+INSTALLED_APPS = THIRD_PARTY_APPS + LOCAL_APPS + DJANGO_APPS
 
 # MIDDLEWARE CONFIGURATION
 MIDDLEWARE = (
@@ -132,10 +133,9 @@ SERVER_EMAIL = EMAIL_HOST_USER
 
 # MANAGER CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#admins
-ADMINS = (
-    ("Adam Dobrawy", "adam.dobrawy@siecobywatelska.pl"),
-    ("Marcin Bójko", "marcin.bojko@siecobywatelska.pl"),
-)
+ADMINS = [
+    ("Admninistratorzy", "admins@siecobywatelska.pl"),
+]
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#managers
 MANAGERS = ADMINS
@@ -251,23 +251,44 @@ AUTOSLUG_SLUGIFY_FUNCTION = "slugify.slugify"
 # the site admins on every HTTP 500 error when DEBUG=False.
 # See http://docs.djangoproject.com/en/dev/topics/logging for
 # more details on how to customize your logging configuration.
+#
+# TODO add proper file logging configuration when loggers added to code
+#   as for now all stdout and stderr captured by gunicorn logs
+LOG_FILE_ENV = env("LOG_FILE_ENV", default="logs/feder.log")
+LOG_FILE = str(ROOT_DIR(LOG_FILE_ENV))
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
-    "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
+    # "filters": {"require_debug_false": {"()": "django.utils.log.RequireDebugFalse"}},
     "handlers": {
-        "mail_admins": {
-            "level": "ERROR",
-            "filters": ["require_debug_false"],
-            "class": "django.utils.log.AdminEmailHandler",
-        }
+        "console": {
+            "class": "logging.StreamHandler",
+            "formatter": "app",
+        },
+        "file": {
+            # "level": "INFO",
+            "class": "logging.FileHandler",
+            "filename": LOG_FILE,
+            "formatter": "app",
+        },
     },
     "loggers": {
-        "django.request": {
-            "handlers": ["mail_admins"],
-            "level": "ERROR",
-            "propagate": True,
-        }
+        # "django.request": {"handlers": [], "level": "ERROR", "propagate": True},
+        "": {"handlers": ["file", "console"], "level": "INFO", "propagate": True},
+        "feder.letters.models": {
+            "handlers": ["console"] if "test" not in environ.sys.argv else [],
+            "level": "INFO",
+        },
+    },
+    "formatters": {
+        "app": {
+            "format": (
+                "%(asctime)s [%(levelname)-7s] "
+                # "(%(module)s.%(funcName)s) %(message)s"
+                "(%(pathname)s:%(lineno)s) %(message)s"
+            ),
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
     },
 }
 # END LOGGING CONFIGURATION
@@ -336,10 +357,24 @@ RICH_TEXT_ENABLED = env.bool("DJANGO_RICH_TEXT_ENABLED", True)
 # Django-GitHub-Revision
 GITHUB_REVISION_REPO_URL = "https://github.com/watchdogpolska/poradnia"
 
-LETTER_RECEIVE_SECRET = "xxxxxxxxx"
+LETTER_RECEIVE_SECRET = env.str("LETTER_RECEIVE_SECRET", "")
 
-LETTER_RECEIVE_WHITELISTED_ADDRESS = [
-    "porady@siecobywatelska.pl",
-]
+LETTER_RECEIVE_WHITELISTED_ADDRESS = env.str(
+    "LETTER_RECEIVE_WHITELISTED_ADDRESS", "porady@siecobywatelska.pl,"
+).split(",")
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
+
+TINYMCE_DEFAULT_CONFIG = {
+    "theme": "silver",
+    "height": 500,
+    "menubar": True,
+    "lineheight": 1,
+    "plugins": "advlist,autolink,lists,link,image,charmap,print,preview,anchor,"
+    "searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,paste,"
+    "code,help,wordcount",
+    "toolbar": "undo redo | formatselect | lineheight | fontsizeselect |"
+    "bold italic backcolor | alignleft aligncenter "
+    "alignright alignjustify | bullist numlist outdent indent | "
+    "charmap | removeformat | help",
+}

@@ -69,7 +69,7 @@ class Letter(AbstractRecord):
     )
     name = models.CharField(max_length=250, verbose_name=_("Subject"))
     text = models.TextField(verbose_name=_("Text"))
-    html = models.TextField(verbose_name=_("HTML"), blank=True)
+    html = models.TextField(verbose_name=_("Mail formatted HTML"), blank=True)
     signature = models.TextField(verbose_name=_("Signature"), blank=True, null=True)
     created_by = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,

@@ -28,6 +28,19 @@ const submitLetterForm = (cy) => (form, { title, content, attachment }) => {
   cy.contains("input", "Odpowiedz wszystkim").click();
 };
 
+const submitTinymceLetterForm = (cy) => (form, { title, content, attachment }) => {
+  cy.get('input[name="name"]').clear().type(title);
+//  cy.get('body[id="tinymce"]').clear().type(content);
+  cy.get('iframe[id="id_html_ifr"]').type(content);
+  if (attachment) {
+    cy.get('input[type="file"]')
+      .filter(":visible")
+      .first()
+      .attachFile(attachment);
+  }
+  cy.contains("input", "Odpowiedz wszystkim").click();
+};
+
 // Fill a pikaday calendar.
 // Uses class selectors instead of text selectors because labels are non-deterministic (i.e. the month label is
 // displayed as the current month). This may require changing the test if class names change (rather unlikely), but
@@ -246,6 +259,7 @@ const clearAutocompleteField = (selectionElement) => {
 module.exports = {
   submitCaseForm,
   submitLetterForm,
+  submitTinymceLetterForm,
   fillPikaForm,
   submitEventForm,
   submitCourtCaseForm,

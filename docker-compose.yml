@@ -33,8 +33,46 @@ services:
       - .:/code
     environment:
       DATABASE_URL: mysql://root:password@db/poradnia
+      DJANGO_EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
+      DJANGO_EMAIL_HOST: "maildump"
+      DJANGO_EMAIL_PORT: "1025"
+      DJANGO_EMAIL_USE_TLS: "False"
+      DJANGO_EMAIL_HOST_PASSWORD: ""
+      DJANGO_EMAIL_HOST_USER: "porady@dev.porady.siecobywatelska.pl"
+      DJANGO_EMAIL_SUBJECT_PREFIX: "[poradnia_dev] "
+      DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
+      LETTER_RECEIVE_SECRET: "dev_letter_receive_very_secret"
+      # porady@porady.siecobywatelska.pl must be included in LETTER_RECEIVE_WHITELISTED_ADDRESS for tests
+      LETTER_RECEIVE_WHITELISTED_ADDRESS: "porady@porady.siecobywatelska.pl, porady@dev.porady.siecobywatelska.pl"
+      DJANGO_RICH_TEXT_ENABLED: "False"
     ports:
       - "8000:8000"
 
+  maildump:
+    build:
+      context: .
+      dockerfile: .contrib/docker/Dockerfile.maildump
+
+    volumes:
+      - maildump_data:/data
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+
+  #
+  # To use email reception uncomment below section and fill in your dev IMAP 
+  # mailbox secrets in imap-to-webhook-url.env
+  #  
+  # imap-to-webhook-porady:
+  #   image: quay.io/watchdogpolska/imap-to-webhook:latest
+  #   environment:
+  #     WEBHOOK_URL: "http://web:8000/listy/webhook?secret=dev_letter_receive_very_secret"
+  #     SENTRY_DSN: ""
+  #     SENTRY_ENVIRONMENT: "porady-dev"
+  #     COMPRESS_EML: "True"
+  #   env_file:
+  #     - imap-to-webhook-url.env
+
 volumes:
   mysql_db:
+  maildump_data:
