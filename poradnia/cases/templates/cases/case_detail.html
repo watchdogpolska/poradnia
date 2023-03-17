@@ -79,103 +79,117 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-6">
-            <div class="panel panel-default">
-                <div class="panel-heading"><i class="fa fa-newspaper-o"></i> {% trans 'Workflow' %}</div>
-                <table class="table">
-                    <tr>
-                        <td><i class="fa fa-user"></i> {% trans 'Involved in' %}</td>
-                        <td>{% include 'cases/_involved_in.html' %}</td>
-                    </tr>
-                    {% if object.modified_by %}
-                        <tr>
-                            <td>{% trans 'Last update' %}</td>
-                            <td>
-                                <a href="{{ object.modified_by.get_absolute_url }}">{{ object.modified_by }}</a>
-                                on {{ object.modified_on }}
-                            </td>
-                        </tr>
-                    {% endif %}
-                    {% if object.deadline and request.user.is_staff %}
-                        <tr>
-                            <td><i class="fa fa-fire"></i> {% trans 'Dead-line' %}</td>
-                            <td>
-                                {% blocktrans with object.deadline as deadline and object.deadline.time|naturaltime as naturaltime %}
-                                    {{ deadline }} at {{ naturaltime }}{% endblocktrans %}</td>
-                        </tr>
-                    {% endif %}
-                </table>
-            </div>
-        </div>
-
-        {% if request.user.is_staff %}
-            <div class=" col-lg-6">
-                <div class="panel panel-default">
-                    <div class="panel-heading"><i class="fa fa-phone"></i> {% trans 'Metrical data' %}</div>
-                    <table class="table">
-                        <tr>
-                            <td><i class="fa fa-area-chart"></i> {% trans 'Advice' %}</td>
-                            <td>
-                                {% if object.advice %}
-                                    <a href="{{ object.advice.get_absolute_url }}">{{ object.advice }}</a>
-                                {% else %}
-                                    <a href="{% url 'advicer:create' %}?case={{ object.pk }}"><i
-                                            class="fa fa-pencil"></i> {% trans 'Create new advice' %}</a>
-                                {% endif %}
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-                {% if 'can_assign' in case_perms %}
+        <div class="col-lg-6" style="height: 1000px; overflow-y: auto;">
+            <div class="row">
+                <div class="col-md-6">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <i class="fa fa-users"></i> {% trans 'Assign permissions' %}
-                            <a class="btn btn-default btn-xs pull-right"
-                               href="{% url 'cases:permission_add' pk=object.pk %}">{% trans "..." %}</a>
+                        <div class="panel-heading"><i class="fa fa-newspaper-o"></i> {% trans 'Workflow' %}</div>
+                        <table class="table">
+                            <tr>
+                                <td><i class="fa fa-user"></i> {% trans 'Involved in' %}</td>
+                                <td>{% include 'cases/_involved_in.html' %}</td>
+                            </tr>
+                            {% if object.modified_by %}
+                                <tr>
+                                    <td>{% trans 'Last update' %}</td>
+                                    <td>
+                                        <a href="{{ object.modified_by.get_absolute_url }}">{{ object.modified_by }}</a>
+                                        on {{ object.modified_on }}
+                                    </td>
+                                </tr>
+                            {% endif %}
+                            {% if object.deadline and request.user.is_staff %}
+                                <tr>
+                                    <td><i class="fa fa-fire"></i> {% trans 'Dead-line' %}</td>
+                                    <td>
+                                        {% blocktrans with object.deadline as deadline and object.deadline.time|naturaltime as naturaltime %}
+                                            {{ deadline }} at {{ naturaltime }}{% endblocktrans %}</td>
+                                </tr>
+                            {% endif %}
+                        </table>
+                    </div>
+                    {% if request.user.is_staff %}
+                        <div class="panel panel-default">
+                            <div class="panel-heading"><i class="fa fa-phone"></i> {% trans 'Metrical data' %}</div>
+                            <table class="table">
+                                <tr>
+                                    <td><i class="fa fa-area-chart"></i> {% trans 'Advice' %}</td>
+                                    <td>
+                                        {% if object.advice %}
+                                            <a href="{{ object.advice.get_absolute_url }}">{{ object.advice }}</a>
+                                        {% else %}
+                                            <a href="{% url 'advicer:create' %}?case={{ object.pk }}"><i
+                                                    class="fa fa-pencil"></i> {% trans 'Create new advice' %}</a>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            </table>
                         </div>
-                        <div class="panel-body">
-                            {% crispy casegroup_form %}
-                        </div>
+                    {% endif %}
+                </div>
+
+                {% if request.user.is_staff %}
+                    <div class=" col-md-6">
+                        {% if 'can_assign' in case_perms %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <i class="fa fa-users"></i> {% trans 'Assign permissions' %}
+                                    <a class="btn btn-default btn-xs pull-right"
+                                    href="{% url 'cases:permission_add' pk=object.pk %}">{% trans "..." %}</a>
+                                </div>
+                                <div class="panel-body">
+                                    {% crispy casegroup_form %}
+                                </div>
+                            </div>
+                        {% endif %}
                     </div>
                 {% endif %}
             </div>
-        {% endif %}
-    </div>
-    {% if record_list %}
-        <div class="timeline">
-            {% for record in record_list %}
-                {% include record.content_object.get_template_list with object=record.content_object %}
-            {% endfor %}
+            {% if record_list %}
+                <div class="timeline">
+                    {% for record in record_list %}
+                        {% include record.content_object.get_template_list with object=record.content_object %}
+                    {% endfor %}
+                </div>
+            {% else %}
+                <span class="label label-warning">{% trans 'No records' %}</span>
+            {% endif %}        
+        
         </div>
-    {% else %}
-        <span class="label label-warning">{% trans 'No records' %}</span>
-    {% endif %}
-    {% if 'can_add_record' in case_perms %}
-        <div role="tabpanel" class="row">
 
-            <ul class="nav nav-tabs" role="tablist" id="form-tab">
-                {% for label, row in forms.items %}
-                    <li role="presentation" {% if forloop.last %} class="active"{% endif %}><a href="#{{ label }}" aria-controls="{{ label }}" role="tab"
-                                               data-toggle="tab">{{ row.title }}</a></li>
-                {% endfor %}
-            </ul>
+        <div class="col-lg-6" >
+            {% if 'can_add_record' in case_perms %}
+                <div role="tabpanel" class="row" style="padding-left: 15px;">
 
-            <div class="tab-content">
-                {% for key, row in forms.items %}
-                    <div role="tabpanel" class="tab-pane {% if forloop.first %} active{% endif %}" id="{{ key }}">
-                        <h2>{{ row.title }}</h2>
-                        <form method="post" class="{{ row.form.helper.form_class }}" enctype="multipart/form-data"
-                              action="{{ row.form.helper.form_action }}" data-form-save="form-{{ key }}-{{ object.pk }}">
-                            {% crispy row.form %}
-                            {% if row.formset %}
-                                {% crispy row.formset %}
-                            {% endif %}
-                        </form>
+                    <ul class="nav nav-tabs" role="tablist" id="form-tab">
+                        {% for label, row in forms.items %}
+                            <li role="presentation" {% if forloop.last %} class="active"{% endif %}><a href="#{{ label }}" aria-controls="{{ label }}" role="tab"
+                                                    data-toggle="tab">{{ row.title }}</a></li>
+                        {% endfor %}
+                    </ul>
+
+                    <div class="tab-content">
+                        {% for key, row in forms.items %}
+                            <div role="tabpanel" class="tab-pane {% if forloop.first %} active{% endif %}" id="{{ key }}">
+                                <h2>{{ row.title }}</h2>
+                                <form method="post" class="{{ row.form.helper.form_class }}" enctype="multipart/form-data"
+                                    action="{{ row.form.helper.form_action }}" data-form-save="form-{{ key }}-{{ object.pk }}">
+                                    {% crispy row.form %}
+                                    {% if row.formset %}
+                                        {% crispy row.formset %}
+                                    {% endif %}
+                                </form>
+                            </div>
+                        {% endfor %}
+                        <p>{% blocktrans with email=object.get_email %}The letter can also be sent via <a href="mailto:{{email}}">e-mail address</a>.{% endblocktrans %}</p>
                     </div>
-                {% endfor %}
-                <p>{% blocktrans with email=object.get_email %}The letter can also be sent via <a href="mailto:{{email}}">e-mail address</a>.{% endblocktrans %}</p>
-            </div>
+                </div>
+            {% endif %}            
         </div>
-    {% endif %}
+    </div>
+
+
+
+
     {% include 'cases/_case_pager.html' %}
 {% endblock %}

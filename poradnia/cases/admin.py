@@ -10,7 +10,25 @@ from .models import Case, PermissionGroup
 @admin.register(Case)
 class CaseAdmin(GuardedModelAdmin):
     inlines = [RecordInline]
-    list_display = ["name", "client", "record_count"]
+    date_hierarchy = "created_on"
+    list_display = [
+        "id",
+        "name",
+        "created_on",
+        "deadline",
+        "status",
+        "client",
+        "record_count",
+        "handled",
+        "has_project",
+    ]
+    list_filter = [
+        "status",
+        "has_project",
+        "handled",
+    ]
+    search_fields = ["name", "client"]
+    actions = None
 
     def record_count(self, obj):
         return obj.record_count
@@ -28,6 +46,7 @@ class PermissionGroupAdmin(admin.ModelAdmin):
 
     list_display = ["name", "get_permissions"]
     select_related = ["permissions"]
+    actions = None
 
     def get_permissions(self, obj):
         return ", ".join([_(x.name) for x in obj.permissions.all()])
