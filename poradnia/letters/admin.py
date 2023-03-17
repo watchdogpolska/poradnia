@@ -51,10 +51,9 @@ class LetterAdmin(admin.ModelAdmin):
         description=_("Case name"),
         ordering="record__case",
     )
-
     def get_case_name(self, obj):
         return obj.record.case.name
 
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
-        return qs.select_related('record__case')
+        return qs.select_related("record__case")
