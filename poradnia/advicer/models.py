@@ -1,7 +1,9 @@
 from atom.models import AttachmentBase
 from django.conf import settings
 from django.db import models
-from django.db.models import Q
+from django.db.models import Case as djCase
+from django.db.models import CharField, F, Q, Value, When
+from django.db.models.functions import Cast, Concat
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.timezone import now
@@ -66,6 +68,80 @@ class AdviceQuerySet(QuerySet):
             return self
         else:
             return AreaMultipleFilter.filter_area_in(self, jsts, "jst")
+
+    def with_formatted_created_on(self):
+        return self.annotate(
+            created_on_str=Cast("created_on", output_field=CharField())
+        )
+
+    def with_case_name(self):
+        return self.annotate(case_name=Cast("case__name", output_field=CharField()))
+
+    def with_person_kind_name(self):
+        return self.annotate(
+            person_kind_name=Cast("person_kind__name", output_field=CharField())
+        )
+
+    def with_institution_kind_name(self):
+        return self.annotate(
+            institution_kind_name=Cast(
+                "institution_kind__name", output_field=CharField()
+            )
+        )
+
+    def with_advicer_str(self):
+        return self.annotate(
+            full_name=Concat(
+                F("advicer__first_name"), Value(" "), F("advicer__last_name")
+            ),
+            advicer_str=djCase(
+                When(
+                    advicer__is_staff=True,
+                    then=Concat(F("full_name"), Value(" (team)")),
+                ),
+                When(
+                    (
+                        Q(advicer__first_name__isnull=True)
+                        & Q(advicer__last_name__isnull=True)
+                    ),
+                    then=F("advicer__username"),
+                ),
+                default=Concat(F("full_name"), Value(" (ext)")),
+                output_field=CharField(),
+            ),
+        )
+
+    def with_formatted_grant_on(self):
+        return self.annotate(grant_on_str=Cast("grant_on", output_field=CharField()))
+
+    def with_helped_str(self):
+        return self.annotate(
+            helped_str=djCase(
+                When(helped=True, then=Value(_("Yes"))),
+                When(helped=False, then=Value(_("No"))),
+                default=Value("-"),
+                output_field=CharField(),
+            ),
+        )
+
+    def with_visible_str(self):
+        return self.annotate(
+            visible_str=djCase(
+                When(visible=True, then=Value(_("Yes"))),
+                When(visible=False, then=Value(_("No"))),
+                default=Value("-"),
+                output_field=CharField(),
+            ),
+        )
+
+    def with_jst_name_str(self):
+        return self.annotate(
+            jst_name=djCase(
+                When(jst__name__isnull=False, then=F("jst__name")),
+                default=Value("-"),
+                output_field=CharField(),
+            ),
+        )
 
 
 class Advice(models.Model):
@@ -140,6 +216,11 @@ class Advice(models.Model):
 
     def get_absolute_url(self):
         return reverse("advicer:detail", kwargs={"pk": self.pk})
+
+    def render_advice_link(self):
+        url = self.get_absolute_url()
+        label = self.subject
+        return f'<a href="{url}">{label}</a>'
 
     class Meta:
         ordering = ["-created_on"]
