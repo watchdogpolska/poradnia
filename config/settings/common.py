@@ -52,6 +52,7 @@ THIRD_PARTY_APPS = (
     "antispam",
     "antispam.honeypot",
     "tinymce",
+    "ajax_datatable",
 )
 
 # Apps specific for this project go here.

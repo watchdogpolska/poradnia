@@ -36,6 +36,7 @@ cssselect==1.2.0
 django-guardian==2.4.0
 django-mailbox==4.8.2
 django-filter==22.1
+django-ajax-datatable==4.4.5
 # dal 3.9.4 has broken initialisation of jquery on multiselect2 
 django-autocomplete-light==3.5.0
 django-tinymce==3.5.0
