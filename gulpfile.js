@@ -29,6 +29,9 @@ var config = (function () {
             include: [
                 path.npm,
                 path.npm + '/pikaday-time/scss/',
+		        // path.npm + '/bootstrap/scss/',
+                // path.npm + '/datatables.net-bs4/css/dataTables.bootstrap.css',
+                path.npm + '/datatables.net-bs/css/dataTables.bootstrap.css',
                 path.staticfiles,
                 path.assets + '/scss/'
             ],
@@ -49,6 +52,9 @@ var config = (function () {
                 path.npm + '/bootstrap-sass/assets/javascripts/bootstrap/tab.js',
                 path.npm + '/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js',
                 path.npm + '/bootstrap-sass/assets/javascripts/bootstrap/modal.js',
+                // path.npm + '/bootstrap/js/dist/tab.js',
+                // path.npm + '/bootstrap/js/dist/tooltip.js',
+                // path.npm + '/bootstrap/js/dist/modal.js',
                 path.staticfiles + '/autocomplete_light/vendor/select2/dist/js/select2.full.js',
                 path.staticfiles + '/autocomplete_light/jquery.init.js',
                 path.staticfiles + '/autocomplete_light/autocomplete.init.js',
@@ -62,6 +68,12 @@ var config = (function () {
                 path.npm + '/patternomaly/dist/patternomaly.js',
                 path.assets + '/js/*.js',
                 path.app + '/navsearch/static/navsearch/*.js',
+                path.npm + '/datatables.net/js/jquery.dataTables.js',
+                // path.npm + 'datatables.net-bs4/js/dataTables.bootstrap4.js',
+                path.npm + 'datatables.net-bs/js/dataTables.bootstrap.js',
+                path.staticfiles + '/ajax_datatable/js/utils.js',
+                path.app + '/cases/static/cases/case_datatbles.js',
+                path.app + '/advicer/static/advicer/advice_datatbles.js',
             ],
             output: {
                 dir: path.static + "/js",
