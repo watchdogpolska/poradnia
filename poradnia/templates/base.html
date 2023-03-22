@@ -76,7 +76,7 @@
         {% include '_sidebar.html' %}
     </div>
     <div class="main-side">
-        <div class="content">
+        <div class="content" style="width: 97%">
             {% if messages %}
                 {% for message in messages %}
                     <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
