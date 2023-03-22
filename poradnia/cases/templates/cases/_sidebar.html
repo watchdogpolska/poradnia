@@ -9,6 +9,10 @@
                 <a href="{% url 'cases:list' %}?status=0&amp;status=1&amp;status=3"><i
                         class="fa fa-book"></i> {% trans 'Cases index' %}</a>
             </li>
+            <li class="block-list-item">
+                <a href="{% url 'cases:table' %}"><i
+                        class="fa fa-book"></i> {% trans 'Open Case table' %}</a>
+            </li>
         {% endif %}
         {% if request.user.is_staff %}
 

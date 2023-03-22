@@ -1,14 +1,17 @@
 from collections import OrderedDict
 
+from ajax_datatable import AjaxDatatableView
 from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from braces.views import SelectRelatedMixin, UserFormKwargsMixin
 from dal import autocomplete
 from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import redirect
+from django.urls import reverse
 from django.utils.functional import cached_property
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
-from django.views.generic import UpdateView
+from django.views.generic import TemplateView, UpdateView
 from django.views.generic.detail import DetailView
 from django_filters.views import FilterView
 
@@ -135,6 +138,89 @@ class CaseListView(PermissionMixin, SelectRelatedMixin, FilterView):
         context = super().get_context_data(**kwargs)
         context["statuses"] = Case.STATUS
         return context
+
+
+class CaseTableView(PermissionMixin, TemplateView):
+    """
+    View for displaying template with Cases table.
+    """
+
+    template_name = "cases/case_table.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header_label"] = mark_safe(_("Cases search table"))
+        context["ajax_datatable_url"] = reverse("cases:case_table_ajax_data")
+        return context
+
+
+class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
+    """
+    View to provide table list of all Cases with ajax data.
+    """
+
+    model = Case
+    title = "Cases"
+    initial_order = [
+        ["created_on_str", "desc"],
+    ]
+    length_menu = [[20, 50, 100], [20, 50, 100]]
+
+    column_defs = [
+        {
+            "name": "created_on_str",
+            "visible": True,
+            "title": _("Created on"),
+        },
+        {
+            "name": "name",
+            "visible": True,
+            "title": _("Subject"),
+        },
+        {
+            "name": "status",
+            "visible": True,
+            "title": _("Status"),
+        },
+        {
+            "name": "client",
+            "visible": True,
+            "title": _("Client"),
+        },
+        {
+            "name": "letter_count",
+            "visible": True,
+            "title": _("Letter count"),
+        },
+        {
+            "name": "last_send_str",
+            "visible": True,
+            "title": _("Last send"),
+        },
+        {
+            "name": "deadline_str",
+            "visible": True,
+            "title": _("Deadline"),
+        },
+        {
+            "name": "handled",
+            "visible": True,
+            "title": _("Handled"),
+        },
+    ]
+
+    def customize_row(self, row, obj):
+        row["name"] = obj.render_case_link()
+        return
+
+    def get_initial_queryset(self, request=None):
+        qs = super().get_initial_queryset(request).exclude(status=2)
+        return (
+            qs.for_user(user=self.request.user)
+            .with_formatted_deadline()
+            .with_formatted_last_send()
+            .with_formatted_created_on()
+        )
 
 
 class CaseUpdateView(UserFormKwargsMixin, SingleObjectPermissionMixin, UpdateView):

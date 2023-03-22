@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{# {% load bootstrap4 %} #}
+{% load i18n %}
+
+
+{% block content %}
+
+
+<style>
+    /* overriding element style to hide - not working for this model table ajax*/
+    .dataTables_filter {
+        text-align: right;
+        visibility: hidden;
+        /* visibility: collapse; */
+        height: 0px;
+    }
+    /* overriding element style to align properly*/
+    .page-link {
+        padding: 0px 0px;
+    }
+</style>
+
+
+<h3> Open Cases Table </h3>
+
+<div id="modal-popup" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="width:1000px;" ></div>
+    </div>
+</div>
+
+<div id="tableWrapper">
+    <div class="table-responsive">
+        <table id="datatable_cases" width="100%" class="table table-bordered compact">
+            <!-- table-striped  nowrap-->
+        </table>
+    </div>
+</div>
+
+{% endblock %}

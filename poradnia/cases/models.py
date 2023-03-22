@@ -8,6 +8,7 @@ from django.core.exceptions import PermissionDenied
 from django.db import models
 from django.db.models import (
     BooleanField,
+    CharField,
     Count,
     F,
     Func,
@@ -16,6 +17,7 @@ from django.db.models import (
     Q,
     expressions,
 )
+from django.db.models.functions import Cast
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save, pre_delete
 from django.urls import reverse
@@ -125,6 +127,20 @@ class CaseQuerySet(QuerySet):
             )
         )
 
+    def with_formatted_deadline(self):
+        return self.annotate(
+            # TODO add explicit datetime formatting with TZ for MySql
+            deadline_str=Cast("deadline__time", output_field=CharField())
+        )
+
+    def with_formatted_last_send(self):
+        return self.annotate(last_send_str=Cast("last_send", output_field=CharField()))
+
+    def with_formatted_created_on(self):
+        return self.annotate(
+            created_on_str=Cast("created_on", output_field=CharField())
+        )
+
     def area(self, jst):
         return self.filter(
             advice__jst__tree_id=jst.tree_id,
@@ -193,6 +209,11 @@ class Case(models.Model):
 
     def get_absolute_url(self):
         return reverse("cases:detail", kwargs={"pk": str(self.pk)})
+
+    def render_case_link(self):
+        url = self.get_absolute_url()
+        label = self.name
+        return f'<a href="{url}">{label}</a>'
 
     def get_edit_url(self):
         return reverse("cases:edit", kwargs={"pk": str(self.pk)})
