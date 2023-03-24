@@ -24,6 +24,7 @@ const AdministrativeDivisionUnit = require("../testing/administrative-division-u
 describe.only("advices", () => {
   beforeEach(() => {
     cy.task("db:clear");
+    cy.viewport(1920,1080);
   });
 
   it("staff can search for an advice", () => {
