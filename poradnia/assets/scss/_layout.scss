@@ -3,7 +3,7 @@
 }
 .main-side{
 	@media(min-width: $grid-float-breakpoint) {
-		margin-left: 200px;
+		margin-left: 220px;
 	};
 }
 .navbar{
@@ -15,7 +15,7 @@
 	}
 }
 .content{
-	width: 90%;
+	width: 99%;
 	margin: 6em auto;
 	@media(min-width: $screen-sm-min) {
 		margin-top: 1em;
