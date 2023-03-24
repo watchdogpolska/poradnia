@@ -1,5 +1,11 @@
 TEST=
 
+db:
+	docker-compose up db -d --remove-orphans
+
+up:
+	docker-compose up
+
 start:
 	docker-compose up -d
 
@@ -12,13 +18,15 @@ clean:
 build:
 	docker-compose build web
 
-test:
+test: wait_mysql
+	docker-compose exec db mysql --user=root --password=password -e "DROP DATABASE IF EXISTS test_poradnia;"
 	docker-compose run web python manage.py test --keepdb --verbosity=2 ${TEST}
 
-e2e:
+e2e: wait_mysql
 	docker-compose --file docker-compose.yml --file docker-compose.test.yml up --build --exit-code-from tests db web tests
 
 wait_mysql:
+	docker-compose up db -d --remove-orphans
 	docker-compose run web bash -c 'wait-for-it db:3306'
 
 migrate:
