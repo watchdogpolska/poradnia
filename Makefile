@@ -1,7 +1,7 @@
 TEST=
 
 db:
-	docker-compose up -d db --remove-orphans
+	docker-compose up -d --remove-orphans db
 
 up:
 	docker-compose up
@@ -26,7 +26,7 @@ e2e: wait_mysql
 	docker-compose --file docker-compose.yml --file docker-compose.test.yml up --build --exit-code-from tests db web tests
 
 wait_mysql:
-	docker-compose up -d db --remove-orphans
+	docker-compose up -d --remove-orphans db
 	docker-compose run web bash -c 'wait-for-it db:3306'
 
 migrate:
