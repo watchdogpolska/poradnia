@@ -115,8 +115,10 @@
             </div>
         </div>
     </div>
-    {% load tasty_feedback_tags %}
-    {% tasty_feedback_widget %}
+    {% if user.is_authenticated %}
+        {% load tasty_feedback_tags %}
+        {% tasty_feedback_widget %}
+    {% endif %}
 
 </div>
 {% if user.is_authenticated %}
