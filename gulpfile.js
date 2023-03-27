@@ -40,6 +40,12 @@ var config = (function () {
                 path.assets + '/scss/**.scss'
             ]
         },
+        images: {
+            input: [
+                path.npm + '/datatables.net-dt/images/sort*.*'
+            ],
+            output: path.static + "/images"
+        },
         icons: {
             input: [
                 path.npm + '/font-awesome/fonts/**.*'
@@ -71,6 +77,7 @@ var config = (function () {
                 path.npm + '/datatables.net/js/jquery.dataTables.js',
                 // path.npm + 'datatables.net-bs4/js/dataTables.bootstrap4.js',
                 path.npm + 'datatables.net-bs/js/dataTables.bootstrap.js',
+                path.npm + 'datatables.net-buttons/js/dataTables.buttons.js',
                 path.staticfiles + '/ajax_datatable/js/utils.js',
                 path.app + '/cases/static/cases/case_datatbles.js',
                 path.app + '/advicer/static/advicer/advice_datatbles.js',
@@ -91,6 +98,11 @@ console.log(config.script);
 gulp.task('icons', function () {
     return gulp.src(config.icons.input)
         .pipe(gulp.dest(config.icons.output));
+});
+
+gulp.task('images', function () {
+    return gulp.src(config.images.input)
+        .pipe(gulp.dest(config.images.output));
 });
 
 gulp.task('js', function () {
@@ -132,6 +144,6 @@ gulp.task('watch', function () {
     });
 });
 
-gulp.task('build', gulp.series('icons', 'js', 'scss'));
+gulp.task('build', gulp.series('images','icons', 'js', 'scss'));
 
 gulp.task('default', gulp.series('build', 'watch'));
