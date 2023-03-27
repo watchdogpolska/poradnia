@@ -71,7 +71,9 @@
         </div>
     </div>
 </nav>
-<div class="main">
+<!-- app_main_style tag used to differentiate dev, demo and production environments -->
+{% app_main_style %}
+{# <div class="main" style="background-color: #60e20040;"> #}
     <div class="sidebar">
         {% include '_sidebar.html' %}
     </div>

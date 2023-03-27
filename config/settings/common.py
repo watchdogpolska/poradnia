@@ -379,3 +379,7 @@ TINYMCE_DEFAULT_CONFIG = {
     "alignright alignjustify | bullist numlist outdent indent | "
     "charmap | removeformat | help",
 }
+
+# APP_MODE used to differentiate dev, demo and production environments
+# use DEV, DEMO and PROD values in env variable APP_MODE
+APP_MODE = env.str("APP_MODE", "DEMO")
