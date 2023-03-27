@@ -9533,7 +9533,7 @@ ul li.select2-search {
 
 @media (min-width: 768px) {
   .main-side {
-    margin-left: 200px;
+    margin-left: 240px;
   }
 }
 
@@ -9549,7 +9549,7 @@ ul li.select2-search {
 }
 
 .content {
-  width: 90%;
+  width: 99%;
   margin: 6em auto;
 }
 @media (min-width: 768px) {
