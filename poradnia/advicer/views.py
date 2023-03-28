@@ -9,6 +9,7 @@ from braces.views import (
     UserFormKwargsMixin,
 )
 from dal import autocomplete
+from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
 from django.utils.safestring import mark_safe
@@ -19,6 +20,7 @@ from django_filters.views import FilterView
 from poradnia.cases.models import Case
 from poradnia.users.utils import PermissionMixin
 from poradnia.utils.mixins import ExprAutocompleteMixin
+from poradnia.utils.utils import get_numeric_param
 
 from .filters import AdviceFilter
 from .forms import AdviceForm, AttachmentForm
@@ -78,6 +80,7 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         ["created_on_str", "desc"],
     ]
     length_menu = [[20, 50, 100], [20, 50, 100]]
+    search_values_separator = "+"
 
     column_defs = [
         {
@@ -89,6 +92,11 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "name": "subject",
             "visible": True,
             "title": _("Subject"),
+        },
+        {
+            "name": "comment",
+            "visible": True,
+            "title": _("Comment"),
         },
         {
             "name": "case_name",
@@ -116,29 +124,58 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Grant on"),
         },
         {
-            "name": "helped_str",
-            "visible": True,
-            "title": _("We helped?"),
-        },
-        {
-            "name": "visible_str",
-            "visible": True,
-            "title": _("Visible"),
-        },
-        {
             "name": "jst_name",
             "visible": True,
             "title": _("Unit of administrative division"),
+        },
+        {
+            "name": "helped",
+            "visible": True,
+            "searchable": False,
+            "orderable": True,
+            "title": _("We helped?"),
+        },
+        {
+            "name": "visible",
+            "searchable": False,
+            "orderable": True,
+            "visible": True,
+            "title": _("Visible"),
         },
     ]
 
     def customize_row(self, row, obj):
         row["subject"] = obj.render_advice_link()
-        row["case_name"] = obj.case.render_case_link()
+        row["case_name"] = obj.case.render_case_link() if obj.case else ""
         return
 
     def get_initial_queryset(self, request=None):
         qs = super().get_initial_queryset(request).select_related()
+
+        helped_filter = []
+        for helped in [("helped_yes", True), ("helped_no", False)]:
+            if get_numeric_param(self.request, helped[0]):
+                helped_filter.append(helped[1])
+        if len(helped_filter) > 0:
+            helped_query = Q(helped__in=helped_filter)
+            # qs = qs.filter(helped__in=helped_filter)
+        else:
+            helped_query = Q(helped__isnull=True)
+            # qs = qs.filter(helped__isnull=True)
+        if get_numeric_param(self.request, "helped_blank"):
+            qs = qs.filter(helped_query | Q(helped__isnull=True))
+        else:
+            qs = qs.filter(helped_query & Q(helped__isnull=False))
+
+        visble_filter = []
+        for visible in [("visible_yes", True), ("visible_no", False)]:
+            if get_numeric_param(self.request, visible[0]):
+                visble_filter.append(visible[1])
+        if len(visble_filter) > 0:
+            qs = qs.filter(visible__in=visble_filter)
+        else:
+            qs = qs.filter(visible__isnull=True)
+
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_created_on()
@@ -147,8 +184,6 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             .with_institution_kind_name()
             .with_advicer_str()
             .with_formatted_grant_on()
-            .with_helped_str()
-            .with_visible_str()
             .with_jst_name_str()
         )
 
