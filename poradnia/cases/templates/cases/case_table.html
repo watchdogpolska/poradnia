@@ -22,7 +22,7 @@
 </style>
 
 
-<h3> Open Cases Table </h3>
+<h3>{% trans 'Case Table' %}:</h3>
 
 <div id="modal-popup" class="modal fade" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -31,6 +31,38 @@
 </div>
 
 <div id="tableWrapper">
+    <div class="col-sm-1 filters">
+        <br><br><br><br>
+        <h4>{% trans 'Filters' %}:</h4><br>
+        <div class="row">
+            <label>{% trans 'Status' %}:</label><br>
+            <input type="checkbox" id="status_free" name="check_status_free" checked>
+            <label for="status_free" class="small">{% trans 'free' %}</label><br>
+            <input type="checkbox" id="status_assigned" name="check_status_assigned" checked>
+            <label for="status_assigned" class="small">{% trans 'assigned' %}</label><br>
+            <input type="checkbox" id="status_moderated" name="check_status_moderated" checked>
+            <label for="status_moderated" class="small">{% trans 'moderated' %}</label><br>
+            <input type="checkbox" id="status_closed" name="check_status_closed" >
+            <label for="status_closed" class="small">{% trans 'closed' %}</label><br>
+            <br><br>
+        </div>
+        <div class="row">
+            <label>{% trans 'Handled' %}:</label><br>
+            <input type="checkbox" id="handled_yes" name="check_handled_yes" checked>
+            <label for="handled_yes" class="small">{% trans 'Yes' %}</label><br>
+            <input type="checkbox" id="handled_no" name="check_handled_no" checked>
+            <label for="handled_no" class="small">{% trans 'No' %}</label><br>
+            <br><br>
+        </div>
+        <div class="row">
+            <label>{% trans 'Has project' %}:</label><br>
+            <input type="checkbox" id="has_project_yes" name="check_has_project_yes" checked>
+            <label for="has_project_yes" class="small">{% trans 'Yes' %}</label><br>
+            <input type="checkbox" id="has_project_no" name="check_has_project_no" checked>
+            <label for="has_project_no" class="small">{% trans 'No' %}</label><br>
+            <br><br>
+        </div>
+    </div>
     <div class="table-responsive">
         <table id="datatable_cases" width="100%" class="table table-bordered compact">
             <!-- table-striped  nowrap-->

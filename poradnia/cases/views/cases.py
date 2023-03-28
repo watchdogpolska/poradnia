@@ -29,6 +29,7 @@ from poradnia.letters.forms import AddLetterForm
 from poradnia.letters.helpers import AttachmentFormSet
 from poradnia.records.models import Record
 from poradnia.users.views import PermissionMixin
+from poradnia.utils.utils import get_numeric_param
 
 
 class SingleObjectPermissionMixin(RaisePermissionRequiredMixin):
@@ -178,24 +179,9 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Subject"),
         },
         {
-            "name": "status",
-            "visible": True,
-            "title": _("Status"),
-        },
-        {
             "name": "client",
             "visible": True,
             "title": _("Client"),
-        },
-        {
-            "name": "letter_count",
-            "visible": True,
-            "title": _("Letter count"),
-        },
-        {
-            "name": "last_send_str",
-            "visible": True,
-            "title": _("Last send"),
         },
         {
             "name": "deadline_str",
@@ -203,9 +189,37 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Deadline"),
         },
         {
+            "name": "last_send_str",
+            "visible": True,
+            "title": _("Last send"),
+        },
+        {
+            "name": "letter_count",
+            "visible": True,
+            "searchable": False,
+            "orderable": True,
+            "title": _("Letter count"),
+        },
+        {
+            "name": "status",
+            "visible": True,
+            "searchable": False,
+            "orderable": False,
+            "title": _("Status"),
+        },
+        {
             "name": "handled",
             "visible": True,
+            "searchable": False,
+            "orderable": False,
             "title": _("Handled"),
+        },
+        {
+            "name": "has_project",
+            "visible": True,
+            "searchable": False,
+            "orderable": False,
+            "title": _("Has project"),
         },
     ]
 
@@ -214,7 +228,42 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         return
 
     def get_initial_queryset(self, request=None):
-        qs = super().get_initial_queryset(request).exclude(status=2)
+        qs = super().get_initial_queryset(request)
+
+        status_filter = []
+        for status in [
+            "status_free",
+            "status_assigned",
+            "status_moderated",
+            "status_closed",
+        ]:
+            if get_numeric_param(self.request, status):
+                status_filter.append(
+                    getattr(Case.STATUS, status.replace("status_", ""))
+                )
+        if len(status_filter) > 0:
+            qs = qs.filter(status__in=status_filter)
+        else:
+            qs = qs.filter(status__isnull=True)
+
+        handled_filter = []
+        for handled in [("handled_yes", True), ("handled_no", False)]:
+            if get_numeric_param(self.request, handled[0]):
+                handled_filter.append(handled[1])
+        if len(handled_filter) > 0:
+            qs = qs.filter(handled__in=handled_filter)
+        else:
+            qs = qs.filter(handled__isnull=True)
+
+        project_filter = []
+        for project in [("has_project_yes", True), ("has_project_no", False)]:
+            if get_numeric_param(self.request, project[0]):
+                project_filter.append(project[1])
+        if len(project_filter) > 0:
+            qs = qs.filter(has_project__in=project_filter)
+        else:
+            qs = qs.filter(has_project__isnull=True)
+
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_deadline()
