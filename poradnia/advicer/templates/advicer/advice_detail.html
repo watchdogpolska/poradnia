@@ -7,7 +7,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-xs-18">
+        <div class="col-xs-12">
             <h1 class="pull-left">{{ object }}</h1>
             <div class="btn-group pull-right">
                 <a href="{% url 'advicer:update' pk=object.pk %}" class="btn btn-primary">
@@ -25,47 +25,59 @@
             <div class="panel panel-default">
                 <div class="panel-heading">{% trans 'Statistic data' %}</div>
                 <table class="table">
-                    {% if object.case %}
-                        <tr>
-                            <td>{% trans 'Case' %}</td>
-                            <td><a href="{{ object.case.get_absolute_url }}">{{ object.case }}</td>
-                        </tr>
-                    {% endif %}
-                    {% if object.issues.all %}
-                        <tr>
-                            <td>{% trans 'Issues' %}</td>
-                            <td>
-                                {% for obj in object.issues.all %}
-                                    {{ obj }}{% if not forloop.last %},{% endif %}
-                                {% endfor %}
-                            </td>
-                        </tr>
-                    {% endif %}
 
-                    {% if object.area %}
-                        <tr>
-                            <td>{% trans 'Area' %}</td>
-                            <td>{{ object.area }}</td>
-                        </tr>
-                    {% endif %}
+                    <tr>
+                        <td>{% trans 'Case' %}</td>
+                        <td>
+                        {% if object.case %}
+                            <a href="{{ object.case.get_absolute_url }}">{{ object.case }}</a>
+                        {% endif %}
+                        </td>
+                    </tr>
 
-                    {% if object.person_kind %}
-                        <tr>
-                            <td>{% trans 'Kind of person' %}</td>
-                            <td>{{ object.person_kind }}</td>
-                        </tr>
-                    {% endif %}
+                    <tr>
+                        <td>{% trans 'Issues' %}</td>
+                        <td>
+                        {% if object.issues.all %}
+                            {% for obj in object.issues.all %}
+                                {{ obj }}{% if not forloop.last %},{% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        </td>
+                    </tr>
 
-                    {% if object.institution_kind %}
-                        <tr>
-                            <td>{% trans 'Kind of istitution' %}</td>
-                            <td>{{ object.institution_kind }}</td>
-                        </tr>
-                    {% endif %}
+                    <tr>
+                        <td>{% trans 'Area' %}</td>
+                        <td>
+                            {{ object.area_list | linebreaks }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>{% trans 'Kind of person' %}</td>
+                        <td>
+                            {{ object.person_kind | default:"---" }}
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>{% trans 'Kind of istitution' %}</td>
+                        <td>{{ object.institution_kind | default:"---" }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>{% trans 'Unit of administrative division' %}</td>
+                        <td>{{ object.jst | default:"---" }}</td>
+                    </tr>
+
+                    <tr>
+                        <td>{% trans 'Comment' %}</td>
+                        <td>{{ object.comment | linebreaks }}</td>
+                    </tr>
 
                     <tr>
                         <td>{% trans 'We helped?' %}</td>
-                        <td>{{ object.helped }}</td>
+                        <td>{{ object.helped|yesno:_("Yes,No") }}</td>
                     </tr>
 
                 </table>
@@ -75,14 +87,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading">{% trans 'Details' %}</div>
                 <table class="table">
-                    {% if object.grant_on %}
                         <tr>
                             <td>{% trans 'Grant on' %}</td>
                             <td>
+                            {% if object.grant_on %}
                                 <time datetime="{{ object.grant_on|date:'Y-m-d h:m:sT' }}">{{ object.grant_on |naturaltime }}</time>
+                            {% endif %}
                             </td>
                         </tr>
-                    {% endif %}
                     <tr>
                         <td>{% trans 'Created' %}</td>
                         <td><img src="{% get_avatar_url object.created_by %}">
@@ -92,16 +104,17 @@
                         </td>
                     </tr>
 
-                    {% if object.modified_by %}
                         <tr>
                             <td>{% trans 'Modified' %}</td>
-                            <td><img
+                            <td>
+                            {% if object.modified_by %}
+                                <img
                                     src="{% get_avatar_url object.modified_by %}">{% blocktrans with object.modified_by as modified_by and object.modified_on|naturaltime as modified_on_natural and object.modified_on|date:'Y-m-d h:m:sT' as modified_on_date %}
                                 {{ modified_by }} on
                                 <time datetime="{{ modified_on_date }}">{{ modified_on_natural }}</time>{% endblocktrans %}
+                            {% endif %}
                             </td>
                         </tr>
-                    {% endif %}
                     <tr>
                         <td>{% trans 'Advicer' %}</td>
                         <td>{{ object.advicer }}</td>
@@ -112,7 +125,6 @@
     </div>
 
     <div class="row">
-        {{ object.comment | linebreaks }}
         {% if object.attachment_set.all %}
             <h2>{% trans 'Attachments' %}</h2>
             <ul>

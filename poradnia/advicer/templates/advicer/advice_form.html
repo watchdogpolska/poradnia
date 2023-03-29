@@ -25,10 +25,10 @@
     {% endif %}
 {% endblock %}
 {% block content %}
-
-    <div class="row">
-        {% if object %}<h1>{{ object }}</h1>{% endif %}
-        <div class="col-md-12">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-lg-12 col-md-12 col-sm-12">
+            {% if object %}<h1>{{ object }}</h1>{% endif %}
             {% block form %}
                 <form class="{{ form.helper.form_class }}" enctype="multipart/form-data" method="POST">
                     {% crispy form %}
@@ -37,4 +37,6 @@
             {% endblock %}
         </div>
     </div>
+</div>
+
 {% endblock %}
