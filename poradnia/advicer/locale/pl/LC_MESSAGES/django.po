@@ -1,272 +1,306 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-16 22:48+0200\n"
-"PO-Revision-Date: 2020-07-16 22:48+0200\n"
-"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"POT-Creation-Date: 2023-03-29 10:30+0200\n"
+"PO-Revision-Date: 2023-03-29 10:36+0124\n"
+"Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.7.1\n"
-"X-Crowdin-Project: poradnia\n"
-"X-Crowdin-Language: pl\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Crowdin-File: /advicer/locale/en/LC_MESSAGES/django.po\n"
+"X-Crowdin-Language: pl\n"
+"X-Crowdin-Project: poradnia\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Translated-Using: django-rosetta 0.9.8\n"
 
-#: apps.py:7
+#: poradnia/advicer/apps.py:7
 msgid "Advicer system"
 msgstr "Rejestr porad"
 
-#: filters.py:15 models.py:69 templates/advicer/advice_filter.html:30
+#: poradnia/advicer/filters.py:41 poradnia/advicer/models.py:152
+#: poradnia/advicer/templates/advicer/advice_filter.html:30
+#: poradnia/advicer/views.py:94 poradnia/advicer/views.py:104
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: filters.py:16 filters.py:41 models.py:93
-#: templates/advicer/advice_detail.html:103
-#: templates/advicer/advice_filter.html:29
+#: poradnia/advicer/filters.py:42 poradnia/advicer/filters.py:70
+#: poradnia/advicer/models.py:176
+#: poradnia/advicer/templates/advicer/advice_detail.html:103
+#: poradnia/advicer/templates/advicer/advice_filter.html:29
+#: poradnia/advicer/views.py:119
 msgid "Advicer"
 msgstr "Radzący"
 
-#: filters.py:17 models.py:101 templates/advicer/advice_filter.html:28
+#: poradnia/advicer/filters.py:43 poradnia/advicer/models.py:184
+#: poradnia/advicer/templates/advicer/advice_filter.html:28
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: filters.py:18
+#: poradnia/advicer/filters.py:44 poradnia/advicer/views.py:89
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: filters.py:20
+#: poradnia/advicer/filters.py:46
 msgid "Community"
 msgstr "Gmina"
 
-#: filters.py:38 models.py:106 templates/advicer/advice_filter.html:27
-msgid "Creation date"
-msgstr "Data utworzenia"
-
-#: filters.py:39 models.py:117
-msgid "Modification date"
-msgstr "Data modyfikacji"
-
-#: filters.py:40
-msgid "ID"
-msgstr "ID"
-
-#: filters.py:42
-msgid "Person kind"
-msgstr "Rodzaj osoby"
-
-#: filters.py:43 models.py:45
-msgid "Institution kind"
-msgstr "Rodzaj podmiotu zobowiązanego"
-
-#: filters.py:55 forms.py:37 templates/advicer/advice_detail.html:26
-msgid "Statistic data"
-msgstr "Dane statystyczne"
-
-#: filters.py:69 forms.py:46 templates/advicer/advice_detail.html:73
-msgid "Details"
-msgstr "Szczegóły"
-
-#: filters.py:71
-msgid "Filter"
-msgstr "Filtruj"
-
-#: forms.py:33
-msgid "Select from poradnia.cases which do you have a permission"
-msgstr "Wybór spośród spraw do których masz uprawnienia"
-
-#: models.py:16
-msgid "Name"
-msgstr "Nazwa"
-
-#: models.py:27
-msgid "The thematic scope of the request"
-msgstr "Zakres tematyczny zapytania"
-
-#: models.py:28
-msgid "Thematic scopes of requests"
-msgstr "Zakresy tematyczne zapytania"
-
-#: models.py:33
-msgid "Problem regarding the right to information"
-msgstr "Problem z zakresu prawa do informacji"
-
-#: models.py:34
-msgid "Problems regarding the right to information"
-msgstr "Problemy z zakresu prawa do informacji"
-
-#: models.py:39
-msgid "Type of person who reporting the advice"
-msgstr "Rodzaj osoby, która się zgłasza o poradę"
-
-#: models.py:40
-msgid "Types of people who report to for advice"
-msgstr "Rodzaj osobów, które się zgłaszają o poradę:"
-
-#: models.py:46
-msgid "Institution kinds"
-msgstr "Rodzaje podmiotów zobowiązanych"
-
-#: models.py:66 templates/advicer/advice_detail.html:30
-#: templates/advicer/advice_filter.html:32
-msgid "Case"
-msgstr "Sprawa"
-
-#: models.py:94
-msgid "Person who give a advice"
-msgstr "Osoba, która udzieliła porady"
-
-#: models.py:98 templates/advicer/advice_detail.html:77
-msgid "Grant on"
-msgstr "Udzielona o"
-
-#: models.py:108 templates/advicer/advice_detail.html:64
-msgid "We helped?"
-msgstr "Czy pomogliśmy?"
-
-#: models.py:112
-msgid "Modified by"
-msgstr "Zmodyfikowane przez"
-
-#: models.py:119
-msgid "Visible"
-msgstr "Widoczne"
-
-#: models.py:120
+#: poradnia/advicer/filters.py:51 poradnia/advicer/models.py:203
+#: poradnia/advicer/views.py:99
 msgid "Comment"
 msgstr "Komentarz"
 
-#: models.py:126
+#: poradnia/advicer/filters.py:67 poradnia/advicer/models.py:189
+#: poradnia/advicer/templates/advicer/advice_filter.html:27
+msgid "Creation date"
+msgstr "Data utworzenia"
+
+#: poradnia/advicer/filters.py:68 poradnia/advicer/models.py:200
+msgid "Modification date"
+msgstr "Data modyfikacji"
+
+#: poradnia/advicer/filters.py:69
+msgid "ID"
+msgstr "ID"
+
+#: poradnia/advicer/filters.py:71
+msgid "Person kind"
+msgstr "Rodzaj osoby"
+
+#: poradnia/advicer/filters.py:72 poradnia/advicer/models.py:47
+#: poradnia/advicer/views.py:114
+msgid "Institution kind"
+msgstr "Rodzaj podmiotu zobowiązanego"
+
+#: poradnia/advicer/filters.py:84 poradnia/advicer/forms.py:37
+#: poradnia/advicer/templates/advicer/advice_detail.html:26
+msgid "Statistic data"
+msgstr "Dane statystyczne"
+
+#: poradnia/advicer/filters.py:99 poradnia/advicer/forms.py:46
+#: poradnia/advicer/templates/advicer/advice_detail.html:73
+msgid "Details"
+msgstr "Szczegóły"
+
+#: poradnia/advicer/filters.py:107
+msgid "Filter"
+msgstr "Filtruj"
+
+#: poradnia/advicer/forms.py:33
+msgid "Select from poradnia.cases which do you have a permission"
+msgstr "Wybór spośród spraw do których masz uprawnienia"
+
+#: poradnia/advicer/models.py:18
+msgid "Name"
+msgstr "Nazwa"
+
+#: poradnia/advicer/models.py:29
+msgid "The thematic scope of the request"
+msgstr "Zakres tematyczny zapytania"
+
+#: poradnia/advicer/models.py:30
+msgid "Thematic scopes of requests"
+msgstr "Zakresy tematyczne zapytania"
+
+#: poradnia/advicer/models.py:35
+msgid "Problem regarding the right to information"
+msgstr "Problem z zakresu prawa do informacji"
+
+#: poradnia/advicer/models.py:36
+msgid "Problems regarding the right to information"
+msgstr "Problemy z zakresu prawa do informacji"
+
+#: poradnia/advicer/models.py:41 poradnia/advicer/views.py:109
+msgid "Type of person who reporting the advice"
+msgstr "Rodzaj osoby, która się zgłasza o poradę"
+
+#: poradnia/advicer/models.py:42
+msgid "Types of people who report to for advice"
+msgstr "Rodzaj osobów, które się zgłaszają o poradę:"
+
+#: poradnia/advicer/models.py:48
+msgid "Institution kinds"
+msgstr "Rodzaje podmiotów zobowiązanych"
+
+#: poradnia/advicer/models.py:120 poradnia/advicer/models.py:130
+#: poradnia/advicer/templates/advicer/advice_table.html:42
+#: poradnia/advicer/templates/advicer/advice_table.html:52
+msgid "Yes"
+msgstr "Tak"
+
+#: poradnia/advicer/models.py:121 poradnia/advicer/models.py:131
+#: poradnia/advicer/templates/advicer/advice_table.html:44
+#: poradnia/advicer/templates/advicer/advice_table.html:54
+msgid "No"
+msgstr "Nie"
+
+#: poradnia/advicer/models.py:149
+#: poradnia/advicer/templates/advicer/advice_detail.html:30
+#: poradnia/advicer/templates/advicer/advice_filter.html:32
+#: poradnia/advicer/views.py:104
+msgid "Case"
+msgstr "Sprawa"
+
+#: poradnia/advicer/models.py:177
+msgid "Person who give a advice"
+msgstr "Osoba, która udzieliła porady"
+
+#: poradnia/advicer/models.py:181
+#: poradnia/advicer/templates/advicer/advice_detail.html:77
+#: poradnia/advicer/views.py:124
+msgid "Grant on"
+msgstr "Udzielona o"
+
+#: poradnia/advicer/models.py:191
+#: poradnia/advicer/templates/advicer/advice_detail.html:64
+#: poradnia/advicer/views.py:136
+msgid "We helped?"
+msgstr "Czy pomogliśmy?"
+
+#: poradnia/advicer/models.py:195
+msgid "Modified by"
+msgstr "Zmodyfikowane przez"
+
+#: poradnia/advicer/models.py:202
+#: poradnia/advicer/templates/advicer/advice_table.html:50
+#: poradnia/advicer/views.py:143
+msgid "Visible"
+msgstr "Widoczne"
+
+#: poradnia/advicer/models.py:209 poradnia/advicer/views.py:129
 msgid "Unit of administrative division"
 msgstr "Jednostka podziału terytorialnego"
 
-#: models.py:132
+#: poradnia/advicer/models.py:215
 #, python-format
 msgid "Advice #%d"
 msgstr "Porada #%d"
 
-#: models.py:139
+#: poradnia/advicer/models.py:227
 msgid "Can view all advices"
 msgstr "Może oglądać wszystkie porady"
 
-#: models.py:140
+#: poradnia/advicer/models.py:228
 msgid "Advice"
 msgstr "Porada"
 
-#: models.py:141
+#: poradnia/advicer/models.py:229
 msgid "Advices"
 msgstr "Porady"
 
-#: models.py:148
+#: poradnia/advicer/models.py:236
 msgid "Attachment"
 msgstr "Załącznik"
 
-#: models.py:149 templates/advicer/advice_detail.html:114
+#: poradnia/advicer/models.py:237
+#: poradnia/advicer/templates/advicer/advice_detail.html:114
 msgid "Attachments"
 msgstr "Załączniki"
 
-#: templates/advicer/_sidebar.html:4
+#: poradnia/advicer/templates/advicer/_sidebar.html:4
 msgid "Register"
 msgstr "Rejestr"
 
-#: templates/advicer/_sidebar.html:7 templates/advicer/base.html:3
-#: templates/advicer/base.html:7
+#: poradnia/advicer/templates/advicer/_sidebar.html:7
+#: poradnia/advicer/templates/advicer/base.html:3
+#: poradnia/advicer/templates/advicer/base.html:7
 msgid "Advice list"
 msgstr "Rejestr porad"
 
-#: templates/advicer/advice_confirm_delete.html:5
+#: poradnia/advicer/templates/advicer/_sidebar.html:12
+#| msgid "Advice list"
+msgid "Advice table"
+msgstr "Tabela porad"
+
+#: poradnia/advicer/templates/advicer/advice_confirm_delete.html:5
 msgid "Confirm delete"
 msgstr "Potwierdzenie usuwania"
 
-#: templates/advicer/advice_confirm_delete.html:12
+#: poradnia/advicer/templates/advicer/advice_confirm_delete.html:12
 #, python-format
 msgid "Delete%(object)s"
 msgstr "Usunięto %(object)s"
 
-#: templates/advicer/advice_confirm_delete.html:14
+#: poradnia/advicer/templates/advicer/advice_confirm_delete.html:14
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: templates/advicer/advice_detail.html:14
+#: poradnia/advicer/templates/advicer/advice_detail.html:14
 msgid "Edit"
 msgstr "Edytuj"
 
-#: templates/advicer/advice_detail.html:17
+#: poradnia/advicer/templates/advicer/advice_detail.html:17
 msgid "Delete"
 msgstr "Usuń"
 
-#: templates/advicer/advice_detail.html:36
+#: poradnia/advicer/templates/advicer/advice_detail.html:36
 msgid "Issues"
 msgstr "Zagadnienie"
 
-#: templates/advicer/advice_detail.html:44
+#: poradnia/advicer/templates/advicer/advice_detail.html:44
 msgid "Area"
 msgstr "Obszar"
 
-#: templates/advicer/advice_detail.html:51
+#: poradnia/advicer/templates/advicer/advice_detail.html:51
 msgid "Kind of person"
 msgstr "Rodzaj osoby"
 
-#: templates/advicer/advice_detail.html:58
+#: poradnia/advicer/templates/advicer/advice_detail.html:58
 msgid "Kind of istitution"
 msgstr "Rodzaj instytucji"
 
-#: templates/advicer/advice_detail.html:84
+#: poradnia/advicer/templates/advicer/advice_detail.html:84
 msgid "Created"
 msgstr "Utworzone"
 
-#: templates/advicer/advice_detail.html:86
+#: poradnia/advicer/templates/advicer/advice_detail.html:86
 #, python-format
 msgid ""
 "\n"
 "                                %(created)s on\n"
-"                                <time datetime=\"%(created_on_date)s\">"
-"%(created_on_natural)s</time>"
+"                                <time datetime=\"%(created_on_date)s\">%(created_on_natural)s</time>"
 msgstr ""
 "\n"
 "                                %(created)s o \n"
-"                                <time datetime=\"%(created_on_date)s\">"
-"%(created_on_natural)s</time>"
+"                                <time datetime=\"%(created_on_date)s\">%(created_on_natural)s</time>"
 
-#: templates/advicer/advice_detail.html:94
+#: poradnia/advicer/templates/advicer/advice_detail.html:94
 msgid "Modified"
 msgstr "Zmodyfikowane"
 
-#: templates/advicer/advice_detail.html:96
+#: poradnia/advicer/templates/advicer/advice_detail.html:96
 #, python-format
 msgid ""
 "\n"
 "                                %(modified_by)s on\n"
-"                                <time datetime=\"%(modified_on_date)s\">"
-"%(modified_on_natural)s</time>"
+"                                <time datetime=\"%(modified_on_date)s\">%(modified_on_natural)s</time>"
 msgstr ""
 "\n"
 "                                %(modified_by)s o\n"
-"                                <time datetime=\"%(modified_on_date)s\">"
-"%(modified_on_natural)s</time>"
+"                                <time datetime=\"%(modified_on_date)s\">%(modified_on_natural)s</time>"
 
-#: templates/advicer/advice_filter.html:4
+#: poradnia/advicer/templates/advicer/advice_filter.html:4
 msgid "Advice index"
 msgstr "Wykaz porad"
 
-#: templates/advicer/advice_filter.html:11
+#: poradnia/advicer/templates/advicer/advice_filter.html:11
 msgid "Record advices"
 msgstr "Rejestr porad"
 
-#: templates/advicer/advice_filter.html:15
-#: templates/advicer/advice_form.html:22
+#: poradnia/advicer/templates/advicer/advice_filter.html:15
+#: poradnia/advicer/templates/advicer/advice_form.html:24
 msgid "Add"
 msgstr "Dodaj"
 
-#: templates/advicer/advice_filter.html:31
+#: poradnia/advicer/templates/advicer/advice_filter.html:31
 msgid "Client of case"
 msgstr "Klient sprawy"
 
-#: templates/advicer/advice_filter.html:66
+#: poradnia/advicer/templates/advicer/advice_filter.html:69
 #, python-format
 msgid ""
 "There is no any records.\n"
@@ -275,28 +309,47 @@ msgstr ""
 "There is no any records.\n"
 "                    <a href=\"%(create_url)s\">Dodaj nowy!</a>"
 
-#: templates/advicer/advice_form.html:9
+#: poradnia/advicer/templates/advicer/advice_form.html:10
 msgid "remove"
 msgstr "usuń"
 
-#: templates/advicer/advice_form.html:10
+#: poradnia/advicer/templates/advicer/advice_form.html:11
 msgid "add another"
 msgstr "dodaj kolejny"
 
-#: templates/advicer/advice_form.html:20
+#: poradnia/advicer/templates/advicer/advice_form.html:22
 msgid "Update"
 msgstr "Aktualizowanie"
 
-#: views.py:25
+#: poradnia/advicer/templates/advicer/advice_table.html:38
+#| msgid "Filter"
+msgid "Filters"
+msgstr "Filtry"
+
+#: poradnia/advicer/templates/advicer/advice_table.html:40
+#| msgid "We helped?"
+msgid "Helped"
+msgstr "Czy pomogliśmy?"
+
+#: poradnia/advicer/templates/advicer/advice_table.html:46
+msgid "Blank"
+msgstr "Pusty"
+
+#: poradnia/advicer/views.py:29
 msgid "Ordering"
 msgstr "Sortowanie"
 
-#: views.py:70
+#: poradnia/advicer/views.py:67
+#| msgid "Advicer system"
+msgid "Advice search table"
+msgstr "Tabela wyszukiwania porad"
+
+#: poradnia/advicer/views.py:207
 #, python-brace-format
 msgid "{0} updated!"
 msgstr "{0} zaktualizowany!"
 
-#: views.py:110
+#: poradnia/advicer/views.py:247
 #, python-brace-format
 msgid "{subject} deleted!"
 msgstr "{subject} usunięto!"

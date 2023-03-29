@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-16 22:56+0200\n"
+"POT-Creation-Date: 2023-03-29 10:30+0200\n"
 "PO-Revision-Date: 2020-07-16 22:56+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
@@ -17,89 +17,93 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /tasty_feedback/locale/en/LC_MESSAGES/django.po\n"
 
-#: apps.py:7 models.py:52
+#: poradnia/tasty_feedback/apps.py:7 poradnia/tasty_feedback/models.py:52
 msgid "Feedbacks"
 msgstr "Uwagi"
 
-#: filters.py:10 models.py:33 templates/tasty_feedback/feedback_detail.html:34
+#: poradnia/tasty_feedback/filters.py:10 poradnia/tasty_feedback/models.py:33
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_detail.html:34
 msgid "Creation date"
 msgstr "Data utworzenia"
 
-#: filters.py:11 models.py:31
+#: poradnia/tasty_feedback/filters.py:11 poradnia/tasty_feedback/models.py:31
 msgid "Status change date"
 msgstr "Data zmiany stanu"
 
-#: filters.py:19
+#: poradnia/tasty_feedback/filters.py:19
 msgid "Filter"
 msgstr "Filtruj"
 
-#: forms.py:17 templates/tasty_feedback/feedback_form.html:4
-#: templates/tasty_feedback/widget.html:3
+#: poradnia/tasty_feedback/forms.py:19
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_form.html:4
+#: poradnia/tasty_feedback/templates/tasty_feedback/widget.html:3
 msgid "Submit feedback"
 msgstr "Przekaż uwagę"
 
-#: models.py:19 templates/tasty_feedback/feedback_filter.html:27
+#: poradnia/tasty_feedback/models.py:19
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:27
 msgid "Author"
 msgstr "Autor"
 
-#: models.py:23
+#: poradnia/tasty_feedback/models.py:23
 msgid "URL"
 msgstr "URL"
 
-#: models.py:25
+#: poradnia/tasty_feedback/models.py:25
 msgid "Comment"
 msgstr "Komentarz"
 
-#: models.py:25
+#: poradnia/tasty_feedback/models.py:25
 msgid "Text reported by user"
 msgstr "Treść zgłoszona przez użytkownika"
 
-#: models.py:28 templates/tasty_feedback/feedback_detail.html:28
-#: templates/tasty_feedback/feedback_filter.html:29
+#: poradnia/tasty_feedback/models.py:28
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_detail.html:28
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:29
 msgid "Status"
 msgstr "Stan"
 
-#: models.py:28
+#: poradnia/tasty_feedback/models.py:28
 msgid "Feedback has been served"
 msgstr "Uwaga została obsłużona"
 
-#: models.py:36
+#: poradnia/tasty_feedback/models.py:36
 msgid "open"
 msgstr "otwarta"
 
-#: models.py:36
+#: poradnia/tasty_feedback/models.py:36
 msgid "closed"
 msgstr "zamknięta"
 
-#: models.py:51
+#: poradnia/tasty_feedback/models.py:51
 msgid "Feedback"
 msgstr "Uwaga"
 
-#: models.py:56
+#: poradnia/tasty_feedback/models.py:56
 #, python-format
 msgid "New feedback - %(created)s"
 msgstr "Nowa uwaga - %(created)s"
 
-#: templates/tasty_feedback/base.html:5
-#: templates/tasty_feedback/feedback_filter.html:14
+#: poradnia/tasty_feedback/templates/tasty_feedback/base.html:5
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:14
 msgid "Feedback index"
 msgstr "Wykaz uwag"
 
-#: templates/tasty_feedback/feedback_detail.html:12
-#: templates/tasty_feedback/feedback_switch_status.html:5
-#: templates/tasty_feedback/feedback_switch_status.html:11
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_detail.html:12
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_switch_status.html:5
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_switch_status.html:11
 msgid "Switch status"
 msgstr "Zmień status"
 
-#: templates/tasty_feedback/feedback_detail.html:20
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_detail.html:20
 msgid "user"
 msgstr "Użytkownik / użytkowniczka"
 
-#: templates/tasty_feedback/feedback_detail.html:24
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_detail.html:24
 msgid "url"
 msgstr "url"
 
-#: templates/tasty_feedback/feedback_detail.html:30
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_detail.html:30
 #, python-format
 msgid ""
 "since %(date)s\n"
@@ -108,31 +112,31 @@ msgstr ""
 "od %(date)s\n"
 "                    "
 
-#: templates/tasty_feedback/feedback_filter.html:17
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:17
 msgid "Record feedbacks"
 msgstr "Rejestr uwag"
 
-#: templates/tasty_feedback/feedback_filter.html:26
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:26
 msgid "Created date"
 msgstr "Data utworzenia"
 
-#: templates/tasty_feedback/feedback_filter.html:28
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:28
 msgid "Text"
 msgstr "Treść"
 
-#: templates/tasty_feedback/feedback_filter.html:48
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:48
 msgid "There is no any feedbacks."
 msgstr "Tutaj nie ma żadnych uwag. "
 
-#: templates/tasty_feedback/widget.html:5
+#: poradnia/tasty_feedback/templates/tasty_feedback/widget.html:5
 msgid "Please provide feedback about this page:"
 msgstr "Przekaż nam uwagi o tej stronie:"
 
-#: views.py:36
+#: poradnia/tasty_feedback/views.py:35
 msgid "Feedback saved."
 msgstr "Uwaga została zapisana."
 
-#: views.py:51
+#: poradnia/tasty_feedback/views.py:50
 #, python-format
 msgid "%s updated"
 msgstr "%s zaktualizowany"
