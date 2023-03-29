@@ -8,6 +8,7 @@ from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
+from django.utils.safestring import mark_safe
 from teryt_tree.dal_ext.filters import AreaMultipleFilter
 
 from poradnia.cases.models import Case
@@ -57,11 +58,13 @@ class AdviceQuerySet(QuerySet):
     def visible(self):
         return self.filter(visible=True)
 
-    def area(self, jst):
+    # TODO fix overlap with Advice area property
+    def jst_area(self, jst):
         return self.filter(
             jst__tree_id=jst.tree_id, jst__lft__range=(jst.lft, jst.rght)
         )
 
+    # TODO fix overlap with Advice area property
     def area_in(self, jsts):
         if not jsts:
             # Show all results if filter is empty.
@@ -221,6 +224,9 @@ class Advice(models.Model):
         url = self.get_absolute_url()
         label = self.subject
         return f'<a href="{url}">{label}</a>'
+    
+    def area_list(self):
+        return mark_safe(",\n".join([str(area) for area in self.area.all()]))
 
     class Meta:
         ordering = ["-created_on"]
