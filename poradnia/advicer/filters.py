@@ -104,5 +104,5 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
                 "comment",
             ),
         )
-        self._form.helper.add_input(Submit("filter", _("Filter")))
+        self._form.helper.add_input(Submit("filter", _("Apply Filter")))
         return self._form
