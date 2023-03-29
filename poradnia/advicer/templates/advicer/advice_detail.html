@@ -34,8 +34,11 @@
                     {% if object.issues.all %}
                         <tr>
                             <td>{% trans 'Issues' %}</td>
-                            <td>{% for obj in object.issues.all %}{{ obj }}{% if not forloop.last %},
-                            {% endif %}{% endfor %}</td>
+                            <td>
+                                {% for obj in object.issues.all %}
+                                    {{ obj }}{% if not forloop.last %},{% endif %}
+                                {% endfor %}
+                            </td>
                         </tr>
                     {% endif %}
 
