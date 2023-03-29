@@ -53,6 +53,7 @@ THIRD_PARTY_APPS = (
     "antispam.honeypot",
     "tinymce",
     "ajax_datatable",
+    "rosetta",
 )
 
 # Apps specific for this project go here.
@@ -383,3 +384,24 @@ TINYMCE_DEFAULT_CONFIG = {
 # APP_MODE used to differentiate dev, demo and production environments
 # use DEV, DEMO and PROD values in env variable APP_MODE
 APP_MODE = env.str("APP_MODE", "DEMO")
+
+ROSETTA_SHOW_AT_ADMIN_PANEL = True
+
+# Rosetta translation settings
+ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
+ROSETTA_EXCLUDED_APPLICATIONS = (
+    'django.contrib.admin', # for some reason does not exclue admin app
+    'django.contrib.auth',
+    'constance',
+    'allauth',
+    'dal_select2',
+    'django_tables2',
+    'rosetta',
+    'simple_history',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'django_filters',
+    'vies',
+)
+AZURE_CLIENT_SECRET = env.str("ROSETTA_AZURE_CLIENT_SECRET", "")
