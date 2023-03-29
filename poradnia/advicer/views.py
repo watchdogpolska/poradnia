@@ -99,6 +99,11 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Comment"),
         },
         {
+            "name": "area",
+            "visible": True,
+            "title": _("Area"),
+        },
+        {
             "name": "case_name",
             "visible": True,
             "title": (_("Case") + " - " + _("Subject")),
@@ -147,6 +152,7 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
     def customize_row(self, row, obj):
         row["subject"] = obj.render_advice_link()
         row["case_name"] = obj.case.render_case_link() if obj.case else ""
+        row["area"] = obj.area_list()
         return
 
     def get_initial_queryset(self, request=None):
