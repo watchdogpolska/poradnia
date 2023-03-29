@@ -256,6 +256,11 @@ class AdviceDetail(StaffuserRequiredMixin, PermissionMixin, VisibleMixin, Detail
     model = Advice
     raise_exception = True
 
+    # added for easy debugging
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
 
 class IssueAutocomplete(
     StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.Select2QuerySetView
