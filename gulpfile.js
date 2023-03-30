@@ -25,17 +25,25 @@ var config = (function () {
     return {
         path: path,
         scss: {
-            input: path.assets + '/scss/style.scss',
+            input: [
+                path.assets + '/scss/style.scss',
+                path.npm + '/datatables.net-bs/css/dataTables.bootstrap.css',
+                // path.npm + '/datatables.net-bs4/css/dataTables.bootstrap.css',
+                path.npm + '/datatables.net-buttons-bs/css/buttons.bootstrap.css',
+                path.npm + '/datatables.net-dt/css/jquery.dataTables.css',
+            ],
             include: [
                 path.npm,
                 path.npm + '/pikaday-time/scss/',
-		        // path.npm + '/bootstrap/scss/',
-                // path.npm + '/datatables.net-bs4/css/dataTables.bootstrap.css',
-                path.npm + '/datatables.net-bs/css/dataTables.bootstrap.css',
+		        path.npm + '/bootstrap/scss/',
                 path.staticfiles,
                 path.assets + '/scss/'
             ],
-            output: path.static + "/css",
+            // output: path.static + "/css",
+            output: {
+                dir: path.static + "/css",
+                filename: 'style.css'
+            },
             watch: [
                 path.assets + '/scss/**.scss'
             ]
@@ -125,25 +133,28 @@ gulp.task('scss', function () {
             }
         ))
         .pipe(prefix())
-        .pipe(gulp.dest(config.scss.output))
+        .pipe(concat(config.scss.output.filename))
+        .pipe(gulp.dest(config.scss.output.dir))
         .pipe(livereload())
-        .pipe(rename({extname: '.min.css'}))
         .pipe(cleanCSS({compatibility: 'ie8'}))
-        .pipe(gulp.dest(config.scss.output))
+        .pipe(rename({extname: '.min.css'}))
+        .pipe(gulp.dest(config.scss.output.dir))
         .pipe(livereload());
 });
 
 // Rerun the task when a file changes
-gulp.task('watch', function () {
-    livereload.listen();
-    config.scss.watch.forEach(function (path) {
-        gulp.watch(path, ['scss']);
-    });
-    config.script.watch.forEach(function (path) {
-        gulp.watch(path, ['js']);
-    });
-});
+// TODO  - fix watch task - it doesn't work
+// gulp.task('watch', function () {
+//     livereload.listen();
+//     config.scss.watch.forEach(function (path) {
+//         gulp.watch(path, ['scss']);
+//     });
+//     config.script.watch.forEach(function (path) {
+//         gulp.watch(path, ['js']);
+//     });
+// });
 
 gulp.task('build', gulp.series('images','icons', 'js', 'scss'));
 
-gulp.task('default', gulp.series('build', 'watch'));
+// gulp.task('default', gulp.series('build', 'watch'));
+gulp.task('default', gulp.series('build'));
