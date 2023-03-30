@@ -6,9 +6,9 @@ from django.db.models import CharField, F, Q, Value, When
 from django.db.models.functions import Cast, Concat
 from django.db.models.query import QuerySet
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
-from django.utils.safestring import mark_safe
 from teryt_tree.dal_ext.filters import AreaMultipleFilter
 
 from poradnia.cases.models import Case
@@ -224,7 +224,7 @@ class Advice(models.Model):
         url = self.get_absolute_url()
         label = self.subject
         return f'<a href="{url}">{label}</a>'
-    
+
     def area_list(self):
         return mark_safe(",\n".join([str(area) for area in self.area.all()]))
 

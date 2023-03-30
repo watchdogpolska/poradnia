@@ -390,18 +390,18 @@ ROSETTA_SHOW_AT_ADMIN_PANEL = True
 # Rosetta translation settings
 ROSETTA_ENABLE_TRANSLATION_SUGGESTIONS = True
 ROSETTA_EXCLUDED_APPLICATIONS = (
-    'django.contrib.admin', # for some reason does not exclue admin app
-    'django.contrib.auth',
-    'constance',
-    'allauth',
-    'dal_select2',
-    'django_tables2',
-    'rosetta',
-    'simple_history',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'django_filters',
-    'vies',
+    "django.contrib.admin",  # for some reason does not exclue admin app
+    "django.contrib.auth",
+    "constance",
+    "allauth",
+    "dal_select2",
+    "django_tables2",
+    "rosetta",
+    "simple_history",
+    "allauth",
+    "allauth.account",
+    "allauth.socialaccount",
+    "django_filters",
+    "vies",
 )
 AZURE_CLIENT_SECRET = env.str("ROSETTA_AZURE_CLIENT_SECRET", "")
