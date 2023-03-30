@@ -102,7 +102,7 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "name": "area",
             "visible": True,
             "title": _("Problems regarding the right to information"),
-            'm2m_foreign_field': 'area__name'
+            "m2m_foreign_field": "area__name",
         },
         {
             "name": "case_name",
