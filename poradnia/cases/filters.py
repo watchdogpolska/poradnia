@@ -35,7 +35,9 @@ class PermissionChoiceFilter(django_filters.ModelChoiceFilter):
         super().__init__(*args, **kwargs)
 
 
-class StaffCaseFilter(CrispyApplyFilterMixin, CaseFilterMixin, django_filters.FilterSet):
+class StaffCaseFilter(
+    CrispyApplyFilterMixin, CaseFilterMixin, django_filters.FilterSet
+):
     name = django_filters.CharFilter(label=_("Subject"), lookup_expr="icontains")
     client = UserChoiceFilter(label=_("Client"))
     permission = PermissionChoiceFilter()
