@@ -13,7 +13,8 @@
                 "/porady/advice_table_ajax_data/",
                 {
                     // extra_options (example)
-                    processing: false,
+                    processing: true,
+                    serverSide: true,
                     autoWidth: true,
                     full_row_select: false,
                     scrollX: true,
