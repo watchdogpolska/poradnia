@@ -6,7 +6,6 @@ from django.db.models import CharField, F, Q, Value, When
 from django.db.models.functions import Cast, Concat
 from django.db.models.query import QuerySet
 from django.urls import reverse
-from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from teryt_tree.dal_ext.filters import AreaMultipleFilter
