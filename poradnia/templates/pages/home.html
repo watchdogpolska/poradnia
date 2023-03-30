@@ -1,9 +1,8 @@
 {% extends "base.html" %}
 {% load tinycontent_tags %}
 {% block content %}
-<div class="container">
     <div class="row">
-        <div class="col-xs-12 col-md-12 col-lg-push-1 col-lg-10">
+        <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
             {% tinycontent 'home:start' %}
                 <a href="http://siecobywatelska.pl/wlacz-sie-5min/#wspieraj_siec" class="support-button pull-right">Wesprzyj nas
                     finansowo</a>
@@ -82,6 +81,5 @@
             {% endtinycontent %}
         </div>
     </div>
-</div>
 
 {% endblock %}
