@@ -1,9 +1,9 @@
 import django_filters
-from atom.ext.django_filters.filters import CrispyFilterMixin
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from poradnia.users.filters import UserChoiceFilter
+from poradnia.utils.mixins import CrispyApplyFilterMixin
 
 from .models import Case
 
@@ -35,7 +35,7 @@ class PermissionChoiceFilter(django_filters.ModelChoiceFilter):
         super().__init__(*args, **kwargs)
 
 
-class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSet):
+class StaffCaseFilter(CrispyApplyFilterMixin, CaseFilterMixin, django_filters.FilterSet):
     name = django_filters.CharFilter(label=_("Subject"), lookup_expr="icontains")
     client = UserChoiceFilter(label=_("Client"))
     permission = PermissionChoiceFilter()
@@ -83,7 +83,7 @@ class StaffCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterS
         fields = ["id", "status", "client", "name", "has_project"]
 
 
-class UserCaseFilter(CrispyFilterMixin, CaseFilterMixin, django_filters.FilterSet):
+class UserCaseFilter(CrispyApplyFilterMixin, CaseFilterMixin, django_filters.FilterSet):
     def __init__(self, *args, **kwargs):
         kwargs["queryset"] = kwargs.pop("queryset").order_by(
             "-%s" % (Case.USER_ORDER_DEFAULT_FIELD)

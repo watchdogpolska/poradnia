@@ -222,7 +222,7 @@ describe("cases", () => {
       cy.focused().type(user.lastName).wait(500).type("{enter}");
     });
 
-    cy.contains("Filtruj").click();
+    cy.contains("Zastosuj filtr").click();
     cy.contains(caseA.title).click();
     cy.contains(caseA.content);
   });

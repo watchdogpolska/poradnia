@@ -233,7 +233,7 @@ const submitAdviceFilterForm = (cy) => (
     }
   });
 
-  cy.contains("Filtruj").click();
+  cy.contains("Zastosuj filtr").click();
 };
 
 // Credits: https://stackoverflow.com/a/56343368/7742560
