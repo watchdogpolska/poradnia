@@ -101,7 +101,8 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "area",
             "visible": True,
-            "title": _("Area"),
+            "title": _("Problems regarding the right to information"),
+            'm2m_foreign_field': 'area__name'
         },
         {
             "name": "case_name",
@@ -152,11 +153,10 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
     def customize_row(self, row, obj):
         row["subject"] = obj.render_advice_link()
         row["case_name"] = obj.case.render_case_link() if obj.case else ""
-        row["area"] = obj.area_list()
         return
 
     def get_initial_queryset(self, request=None):
-        qs = super().get_initial_queryset(request).select_related()
+        qs = super().get_initial_queryset(request).select_related().prefetch_related()
 
         helped_filter = []
         for helped in [("helped_yes", True), ("helped_no", False)]:

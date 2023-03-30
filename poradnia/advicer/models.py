@@ -225,9 +225,6 @@ class Advice(models.Model):
         label = self.subject
         return f'<a href="{url}">{label}</a>'
 
-    def area_list(self):
-        return mark_safe(",\n".join([str(area) for area in self.area.all()]))
-
     class Meta:
         ordering = ["-created_on"]
         permissions = (("can_view_all_advices", _("Can view all advices")),)
