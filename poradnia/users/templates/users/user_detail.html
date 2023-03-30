@@ -7,51 +7,55 @@
 {% endblock %}
 
 {% block content %}
-    <img src="{% get_avatar_url object %}">
-    <h2>{{ object.username }}</h2>
-    {% if object.is_staff %}
-        <p>{% trans 'Users are member of staff.' %}</p>
-    {% endif %}
-    {% if object.description %}
-        <p><span><b>{% trans 'Description' %}:</b></span>{{ object.description }}</p>
-    {% endif %}
+<div class="row">
+    <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+        <img src="{% get_avatar_url object %}">
+        <h2>{{ object.username }}</h2>
+        {% if object.is_staff %}
+            <p>{% trans 'Users are member of staff.' %}</p>
+        {% endif %}
+        {% if object.description %}
+            <p><span><b>{% trans 'Description' %}:</b></span>{{ object.description }}</p>
+        {% endif %}
 
-    <!-- Start Action buttons -->
+        <!-- Start Action buttons -->
 
-    {% if object == request.user %}
-        <a class="btn btn-primary" href="{% url 'users:update' %}">
-            {% trans 'About me' %}
-        </a>
-        <a class="btn btn-info" href="{% url 'users:profile' %}">
-            {% trans 'Profile' %}
-        </a>
-        <a class="btn btn-info" href="{% url 'account_change_password' %}">
-            <i class="fa fa-key"></i>
-            {% trans 'Password change' %}
-        </a>
-        <a class="btn btn-info" href="{% url 'keys:list' %}">
-            <i class="fa fa-puzzle-piece "></i>
-            {% trans 'Keys' %}
-        </a>
-          <a class="btn btn-info" href="{% url 'cases:list' %}?client={{ object.pk }}">
-              <i class="fa fa-book"></i>
-              {% trans 'My cases' %}
-          </a>
+        {% if object == request.user %}
+            <a class="btn btn-primary" href="{% url 'users:update' %}">
+                {% trans 'About me' %}
+            </a>
+            <a class="btn btn-info" href="{% url 'users:profile' %}">
+                {% trans 'Profile' %}
+            </a>
+            <a class="btn btn-info" href="{% url 'account_change_password' %}">
+                <i class="fa fa-key"></i>
+                {% trans 'Password change' %}
+            </a>
+            <a class="btn btn-info" href="{% url 'keys:list' %}">
+                <i class="fa fa-puzzle-piece "></i>
+                {% trans 'Keys' %}
+            </a>
+            <a class="btn btn-info" href="{% url 'cases:list' %}?client={{ object.pk }}">
+                <i class="fa fa-book"></i>
+                {% trans 'My cases' %}
+            </a>
 
-    {% elif perms.cases.can_assign %}
-        <a class="btn btn-info" href="{% url 'cases:list' %}?client={{ object.pk }}">
-            <i class="fa fa-book"></i>
-            {% trans 'Client cases' %}
-        </a>
-        <a class="btn btn-info" href="{% url 'cases:list' %}?permission={{ object.pk }}">
-            <i class="fa fa-book"></i>
-            {% trans 'Assigned cases' %}
-        </a>
-        <a class="btn btn-info" href="{% url 'users:deassign' username=object.username%}">
-            <i class="fa fa-warning"></i>
-            {% trans 'Deassign cases' %}
-        </a>
-    {% endif %}
-    <!-- End Action buttons -->
+        {% elif perms.cases.can_assign %}
+            <a class="btn btn-info" href="{% url 'cases:list' %}?client={{ object.pk }}">
+                <i class="fa fa-book"></i>
+                {% trans 'Client cases' %}
+            </a>
+            <a class="btn btn-info" href="{% url 'cases:list' %}?permission={{ object.pk }}">
+                <i class="fa fa-book"></i>
+                {% trans 'Assigned cases' %}
+            </a>
+            <a class="btn btn-info" href="{% url 'users:deassign' username=object.username%}">
+                <i class="fa fa-warning"></i>
+                {% trans 'Deassign cases' %}
+            </a>
+        {% endif %}
+        <!-- End Action buttons -->
+    </div>
+</div>
 
 {% endblock content %}

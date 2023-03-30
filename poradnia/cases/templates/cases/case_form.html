@@ -12,7 +12,11 @@
 {% endblock %}
 
 {% block content %}
-    <h1>{% block header %}{{ object }}{% endblock %}</h1>
-    {% csrf_token %}
-    {% crispy form %}
+<div class="row">
+    <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+        <h1>{% block header %}{{ object }}{% endblock %}</h1>
+        {% csrf_token %}
+        {% crispy form %}
+    </div>
+</div>
 {% endblock %}
