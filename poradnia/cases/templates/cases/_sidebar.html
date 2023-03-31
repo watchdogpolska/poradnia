@@ -23,9 +23,15 @@
         <li class="block-list-item">
             <a href="/strony/regulamin-poradnictwa/"><i class="fa fa-gavel"></i> Regulamin poradnictwa</a>
         </li>
+        <!-- TODO - move the below to Letters or generic sidebar for code consistency -->
         {% if request.user.is_authenticated %}
             <li class="block-list-item">
                 <a href="{% url 'letters:list' %}"><i class="fa fa-envelope"></i> {% trans 'Letters' %}</a>
+            </li>
+        {% endif %}
+        {% if request.user.is_authenticated %}
+            <li class="block-list-item">
+                <a href="{% url 'letters:table' %}"><i class="fa fa-envelope"></i> {% trans 'Letters table' %}</a>
             </li>
         {% endif %}
     </ul>

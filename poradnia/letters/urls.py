@@ -6,6 +6,17 @@ from . import views
 urlpatterns = [
     path("webhook", csrf_exempt(views.ReceiveEmailView.as_view()), name="webhook"),
     path("rejestr", views.LetterListView.as_view(), name="list"),
+    path(
+        "table/",
+        views.cbv.LetterTableView.as_view(),
+        name="table",
+    ),
+    path(
+        "letters_table_ajax_data/",
+        views.cbv.LetterAjaxDatatableView.as_view(),
+        name="letters_table_ajax_data",
+    ),
+    
     path("sprawa-<int:case_pk>/", views.add, name="add"),
     path(
         "sprawa-<int:case_pk>/list-<int:letter_pk>/zalaczniki",

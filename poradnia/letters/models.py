@@ -5,7 +5,8 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
 from django.db import models
-from django.db.models import F, Func, IntegerField
+from django.db.models import F, Func, IntegerField, CharField
+from django.db.models.functions import Cast
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django_mailbox.models import Message
@@ -55,6 +56,12 @@ class LetterQuerySet(AbstractRecordQuerySet):
             month=Func(F("created_on"), function="month", output_field=IntegerField())
         ).annotate(
             year=Func(F("created_on"), function="year", output_field=IntegerField())
+        )
+    
+    # TODO - move to Mixin and reuse in Case and Advice
+    def with_formatted_created_on(self):
+        return self.annotate(
+            created_on_str=Cast("created_on", output_field=CharField())
         )
 
 
@@ -128,6 +135,7 @@ class Letter(AbstractRecord):
     def is_html(self):
         return bool(self.html)
 
+    # TOD0 - fix; long lines are not wrapped properly
     def render_as_html(self):
         if self.is_html():
             return self.html

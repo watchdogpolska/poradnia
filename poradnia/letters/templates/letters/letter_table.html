@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{# {% load bootstrap4 %} #}
+{% load i18n %}
+
+
+{% block content %}
+<style>
+    /* overriding element style to hide */
+    /* .dataTables_filter {
+        text-align: right;
+        min-width: 400px;
+        visibility: hidden;
+        visibility: collapse;
+        height: 0px;
+    } */
+    input[type=search] {
+        width: 500px; /* set the desired min-width value */
+    }
+    input[type=text] {
+        width: 100px; /* set the desired min-width value */
+    }
+</style>
+<h3>{% trans 'Case Table' %}:</h3>
+
+<div id="modal-popup" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="width:1000px;" ></div>
+    </div>
+</div>
+
+<div id="tableWrapper">
+    <!-- TODO add colvis button and functionality -->
+    <div class="table-responsive">
+        <table id="datatable_letters" width="100%" class="table table-bordered compact">
+            <!-- table-striped  nowrap-->
+        </table>
+    </div>
+</div>
+
+{% endblock %}
