@@ -63748,6 +63748,18 @@ window.AjaxDatatableViewUtils = (function() {
             $("#tableWrapper").css({
                 maxHeight: maxHeight - 0,
             });
+            // Subscribe "initComplete" event
+            $('#datatable_letters').on('initComplete', function(event, table ) {
+                const tableWrapper = $("#tableWrapper");
+                const headerCells = tableWrapper.find("th");
+                headerCells.each(function() {
+                    const input = $(this).find("input[type=text]");
+                    $(this).css("padding", "0");
+                    input.css("width", "100%");
+                    input.css("box-sizing", "border-box");
+                });
+            });
+            // Initialize table
             AjaxDatatableViewUtils.initialize_table(
                 $('#datatable_letters'),
                 "/listy/letters_table_ajax_data/",
@@ -63789,14 +63801,6 @@ window.AjaxDatatableViewUtils = (function() {
                     },
                 }, {
                     // extra_data
-                    // status_free: function() { return $("input[name='check_status_free']").is(":checked") ? 1 : 0; },
-                    // status_assigned: function() { return $("input[name='check_status_assigned']").is(":checked") ? 1 : 0; },
-                    // status_moderated: function() { return $("input[name='check_status_moderated']").is(":checked") ? 1 : 0; },
-                    // status_closed: function() { return $("input[name='check_status_closed']").is(":checked") ? 1 : 0; },
-                    // handled_yes: function() { return $("input[name='check_handled_yes']").is(":checked") ? 1 : 0; },
-                    // handled_no: function() { return $("input[name='check_handled_no']").is(":checked") ? 1 : 0; },
-                    // has_project_yes: function() { return $("input[name='check_has_project_yes']").is(":checked") ? 1 : 0; },
-                    // has_project_no: function() { return $("input[name='check_has_project_no']").is(":checked") ? 1 : 0; },
                 },
             );
             // $('.filters input').on('change paste keyup', function() {
