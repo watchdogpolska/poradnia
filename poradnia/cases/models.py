@@ -4,7 +4,7 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.db import models
 from django.db.models import (
     BooleanField,
@@ -220,7 +220,7 @@ class Case(models.Model):
             return self.advice.render_advice_link()
         except ObjectDoesNotExist:
             return ""
-    
+
     def get_edit_url(self):
         return reverse("cases:edit", kwargs={"pk": str(self.pk)})
 

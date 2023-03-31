@@ -16,7 +16,6 @@ urlpatterns = [
         views.cbv.LetterAjaxDatatableView.as_view(),
         name="letters_table_ajax_data",
     ),
-    
     path("sprawa-<int:case_pk>/", views.add, name="add"),
     path(
         "sprawa-<int:case_pk>/list-<int:letter_pk>/zalaczniki",

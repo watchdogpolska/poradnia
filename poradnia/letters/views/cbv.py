@@ -18,9 +18,9 @@ from django.contrib.sites.models import Site
 from django.core.exceptions import PermissionDenied
 from django.core.files.base import File
 from django.http import HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
+from django.template.defaultfilters import linebreaksbr
 from django.urls import reverse
 from django.utils import timezone
-from django.template.defaultfilters import linebreaksbr
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.views import View
@@ -164,11 +164,7 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
     column_defs = [
         AjaxDatatableView.render_row_tools_column_def(),
-        {
-            'name': 'id',
-            'visible': True,
-            'title': "Id"
-        },
+        {"name": "id", "visible": True, "title": "Id"},
         {
             "name": "created_on_str",
             "visible": True,
@@ -182,30 +178,30 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "text",
             "visible": True,
-            'max_length': 320,
-            'width': 600,
+            "max_length": 320,
+            "width": 600,
             "title": _("Letter Content"),
         },
         {
             "name": "case_name",
             "visible": True,
-            'foreign_field': 'case__name',
-            'defaultContent': '',
+            "foreign_field": "case__name",
+            "defaultContent": "",
             "title": _("Case Subject"),
         },
         {
             "name": "advice_subject",
             "visible": True,
-            'foreign_field': 'case__advice__subject',
-            'defaultContent': '',
+            "foreign_field": "case__advice__subject",
+            "defaultContent": "",
             "title": _("Advice Subject"),
         },
         {
             "name": "advice_comment",
             "visible": True,
-            'foreign_field': 'case__advice__comment',
-            'width': 300,
-            'defaultContent': '',
+            "foreign_field": "case__advice__comment",
+            "width": 300,
+            "defaultContent": "",
             "title": _("Advice Comment"),
         },
     ]
@@ -219,33 +215,32 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
     def get_initial_queryset(self, request=None):
         qs = super().get_initial_queryset(request).prefetch_related()
-        return (
-            qs.for_user(user=self.request.user)
-            .with_formatted_created_on()
-        )
-    
+        return qs.for_user(user=self.request.user).with_formatted_created_on()
+
     def render_row_details(self, pk, request=None):
         obj = self.model.objects.filter(id=pk).first()
         fields_to_skip = ["case", "genre", "status", "status_changed", "message", "eml"]
         fields = [
-            f.name 
-            for f in obj._meta.get_fields() 
+            f.name
+            for f in obj._meta.get_fields()
             if f.concrete and f.name not in fields_to_skip
         ]
         html = '<table class="table table-bordered compact" style="max-width: 70%;">'
         for field in fields:
             try:
                 value = getattr(obj, field)
-                if field == 'text':
+                if field == "text":
                     # value = obj.render_as_html()
-                    value = mark_safe(linebreaksbr(value.replace('\r', '')))
+                    value = mark_safe(linebreaksbr(value.replace("\r", "")))
                 elif isinstance(value, datetime.datetime):
                     value = timezone.localtime(value).strftime("%Y-%m-%d %H:%M:%S")
                 verbose_n = obj._meta.get_field(field).verbose_name
             except AttributeError:
                 continue
-            html += f'<tr><td style="max-width: 30%;">{verbose_n}</td><td>{value}</td></tr>'
-        html += '</table>'
+            html += (
+                f'<tr><td style="max-width: 30%;">{verbose_n}</td><td>{value}</td></tr>'
+            )
+        html += "</table>"
         return mark_safe(html)
 
 

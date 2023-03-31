@@ -5,7 +5,7 @@ from django.conf import settings
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
 from django.db import models
-from django.db.models import F, Func, IntegerField, CharField
+from django.db.models import CharField, F, Func, IntegerField
 from django.db.models.functions import Cast
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
@@ -57,7 +57,7 @@ class LetterQuerySet(AbstractRecordQuerySet):
         ).annotate(
             year=Func(F("created_on"), function="year", output_field=IntegerField())
         )
-    
+
     # TODO - move to Mixin and reuse in Case and Advice
     def with_formatted_created_on(self):
         return self.annotate(
