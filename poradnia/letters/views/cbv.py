@@ -237,9 +237,7 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
                 verbose_n = obj._meta.get_field(field).verbose_name
             except AttributeError:
                 continue
-            html += (
-                f'<tr><td style="width: 20%;">{verbose_n}</td><td>{value}</td></tr>'
-            )
+            html += f'<tr><td style="width: 20%;">{verbose_n}</td><td>{value}</td></tr>'
         html += "</table>"
         return mark_safe(html)
 
