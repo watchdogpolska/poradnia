@@ -60467,8 +60467,8 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 	return DataTable;
 }));
 
-/*! DataTables Bootstrap 3 integration
- * ©2011-2015 SpryMedia Ltd - datatables.net/license
+/*! DataTables styling integration
+ * ©2018 SpryMedia Ltd - datatables.net/license
  */
 
 (function( factory ){
@@ -60518,151 +60518,6 @@ var DataTable = $.fn.dataTable;
 
 
 
-/**
- * DataTables integration for Bootstrap 3. This requires Bootstrap 3 and
- * DataTables 1.10 or newer.
- *
- * This file sets the defaults and adds options to DataTables to style its
- * controls using Bootstrap. See http://datatables.net/manual/styling/bootstrap
- * for further information.
- */
-
-/* Set the defaults for DataTables initialisation */
-$.extend( true, DataTable.defaults, {
-	dom:
-		"<'row'<'col-sm-6'l><'col-sm-6'f>>" +
-		"<'row'<'col-sm-12'tr>>" +
-		"<'row'<'col-sm-5'i><'col-sm-7'p>>",
-	renderer: 'bootstrap'
-} );
-
-
-/* Default class modification */
-$.extend( DataTable.ext.classes, {
-	sWrapper:      "dataTables_wrapper form-inline dt-bootstrap",
-	sFilterInput:  "form-control input-sm",
-	sLengthSelect: "form-control input-sm",
-	sProcessing:   "dataTables_processing panel panel-default"
-} );
-
-
-/* Bootstrap paging button renderer */
-DataTable.ext.renderer.pageButton.bootstrap = function ( settings, host, idx, buttons, page, pages ) {
-	var api     = new DataTable.Api( settings );
-	var classes = settings.oClasses;
-	var lang    = settings.oLanguage.oPaginate;
-	var aria = settings.oLanguage.oAria.paginate || {};
-	var btnDisplay, btnClass;
-
-	var attach = function( container, buttons ) {
-		var i, ien, node, button;
-		var clickHandler = function ( e ) {
-			e.preventDefault();
-			if ( !$(e.currentTarget).hasClass('disabled') && api.page() != e.data.action ) {
-				api.page( e.data.action ).draw( 'page' );
-			}
-		};
-
-		for ( i=0, ien=buttons.length ; i<ien ; i++ ) {
-			button = buttons[i];
-
-			if ( Array.isArray( button ) ) {
-				attach( container, button );
-			}
-			else {
-				btnDisplay = '';
-				btnClass = '';
-
-				switch ( button ) {
-					case 'ellipsis':
-						btnDisplay = '&#x2026;';
-						btnClass = 'disabled';
-						break;
-
-					case 'first':
-						btnDisplay = lang.sFirst;
-						btnClass = button + (page > 0 ?
-							'' : ' disabled');
-						break;
-
-					case 'previous':
-						btnDisplay = lang.sPrevious;
-						btnClass = button + (page > 0 ?
-							'' : ' disabled');
-						break;
-
-					case 'next':
-						btnDisplay = lang.sNext;
-						btnClass = button + (page < pages-1 ?
-							'' : ' disabled');
-						break;
-
-					case 'last':
-						btnDisplay = lang.sLast;
-						btnClass = button + (page < pages-1 ?
-							'' : ' disabled');
-						break;
-
-					default:
-						btnDisplay = button + 1;
-						btnClass = page === button ?
-							'active' : '';
-						break;
-				}
-
-				if ( btnDisplay ) {
-					var disabled = btnClass.indexOf('disabled') !== -1;
-
-					node = $('<li>', {
-							'class': classes.sPageButton+' '+btnClass,
-							'id': idx === 0 && typeof button === 'string' ?
-								settings.sTableId +'_'+ button :
-								null
-						} )
-						.append( $('<a>', {
-								'href': disabled ? null : '#',
-								'aria-controls': settings.sTableId,
-								'aria-disabled': disabled ? 'true' : null,
-								'aria-label': aria[ button ],
-								'aria-role': 'link',
-								'aria-current': btnClass === 'active' ? 'page' : null,
-								'data-dt-idx': button,
-								'tabindex': settings.iTabIndex
-							} )
-							.html( btnDisplay )
-						)
-						.appendTo( container );
-
-					settings.oApi._fnBindAction(
-						node, {action: button}, clickHandler
-					);
-				}
-			}
-		}
-	};
-
-	// IE9 throws an 'unknown error' if document.activeElement is used
-	// inside an iframe or frame. 
-	var activeEl;
-
-	try {
-		// Because this approach is destroying and recreating the paging
-		// elements, focus is lost on the select button which is bad for
-		// accessibility. So we want to restore focus once the draw has
-		// completed
-		activeEl = $(host).find(document.activeElement).data('dt-idx');
-	}
-	catch (e) {}
-
-	attach(
-		$(host).empty().html('<ul class="pagination"/>').children('ul'),
-		buttons
-	);
-
-	if ( activeEl !== undefined ) {
-		$(host).find( '[data-dt-idx='+activeEl+']' ).trigger('focus');
-	}
-};
 
 
 return DataTable;
@@ -63879,6 +63734,75 @@ window.AjaxDatatableViewUtils = (function() {
                 // redraw the table
                 $('#datatable_advices').DataTable().ajax.reload(null, false);
             });
+        }
+    });
+})(jQuery);
+
+;(function($) {
+    $(function() {
+        const table1 = document.getElementById("datatable_letters");
+        if (table1) {
+            var tableTop = $("#tableWrapper")[0].getBoundingClientRect().top;
+            var viewportHeight = $(window).innerHeight();
+            var maxHeight = viewportHeight - tableTop;
+            $("#tableWrapper").css({
+                maxHeight: maxHeight - 0,
+            });
+            AjaxDatatableViewUtils.initialize_table(
+                $('#datatable_letters'),
+                "/listy/letters_table_ajax_data/",
+                {
+                    // extra_options (example)
+                    processing: true,
+                    serverSide: true,
+                    autoWidth: true,
+                    full_row_select: false,
+                    scrollX: true,
+                    // searching: false,
+                    scrollY: maxHeight - 250,
+                    // TODO make fixedColumns working !!!
+                    // fixedColumns: {
+                    //     left: 1,
+                    //     // right: 1
+                    // },
+                    "language": {
+                        "processing":     "Przetwarzanie...",
+                        "search":         "Szukaj:",
+                        "lengthMenu":     "Pokaż _MENU_ pozycji",
+                        "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+                        "infoEmpty":      "Pozycji 0 z 0 dostępnych",
+                        "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                        "infoPostFix":    "",
+                        "loadingRecords": "Wczytywanie...",
+                        "zeroRecords":    "Nie znaleziono pasujących pozycji",
+                        "emptyTable":     "Brak danych",
+                        "paginate": {
+                            "first":      "Pierwsza",
+                            "previous":   "Poprzednia",
+                            "next":       "Następna",
+                            "last":       "Ostatnia"
+                        },
+                        "aria": {
+                            "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+                            "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                        }
+                    },
+                }, {
+                    // extra_data
+                    // status_free: function() { return $("input[name='check_status_free']").is(":checked") ? 1 : 0; },
+                    // status_assigned: function() { return $("input[name='check_status_assigned']").is(":checked") ? 1 : 0; },
+                    // status_moderated: function() { return $("input[name='check_status_moderated']").is(":checked") ? 1 : 0; },
+                    // status_closed: function() { return $("input[name='check_status_closed']").is(":checked") ? 1 : 0; },
+                    // handled_yes: function() { return $("input[name='check_handled_yes']").is(":checked") ? 1 : 0; },
+                    // handled_no: function() { return $("input[name='check_handled_no']").is(":checked") ? 1 : 0; },
+                    // has_project_yes: function() { return $("input[name='check_has_project_yes']").is(":checked") ? 1 : 0; },
+                    // has_project_no: function() { return $("input[name='check_has_project_no']").is(":checked") ? 1 : 0; },
+                },
+            );
+            // $('.filters input').on('change paste keyup', function() {
+            //     // redraw the table
+            //     $('#datatable_letters').DataTable().ajax.reload(null, false);
+            // });
         }
     });
 })(jQuery);
