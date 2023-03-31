@@ -27,9 +27,9 @@ var config = (function () {
         scss: {
             input: [
                 path.assets + '/scss/style.scss',
-                path.npm + '/datatables.net-bs/css/dataTables.bootstrap.css',
+                // path.npm + '/datatables.net-bs/css/dataTables.bootstrap.css',
                 // path.npm + '/datatables.net-bs4/css/dataTables.bootstrap.css',
-                path.npm + '/datatables.net-buttons-bs/css/buttons.bootstrap.css',
+                path.npm + '/datatables.net-buttons-dt/css/buttons.dataTables.css',
                 path.npm + '/datatables.net-dt/css/jquery.dataTables.css',
             ],
             include: [
@@ -84,11 +84,12 @@ var config = (function () {
                 path.app + '/navsearch/static/navsearch/*.js',
                 path.npm + '/datatables.net/js/jquery.dataTables.js',
                 // path.npm + 'datatables.net-bs4/js/dataTables.bootstrap4.js',
-                path.npm + 'datatables.net-bs/js/dataTables.bootstrap.js',
-                path.npm + 'datatables.net-buttons/js/dataTables.buttons.js',
+                path.npm + '/datatables.net-dt/js/dataTables.dataTables.js',
+                path.npm + '/datatables.net-buttons/js/dataTables.buttons.js',
                 path.staticfiles + '/ajax_datatable/js/utils.js',
                 path.app + '/cases/static/cases/case_datatbles.js',
                 path.app + '/advicer/static/advicer/advice_datatbles.js',
+                path.app + '/letters/static/letters/letters_datatbles.js',
             ],
             output: {
                 dir: path.static + "/js",
