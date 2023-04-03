@@ -180,7 +180,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Subject"),
         },
         {
-            "name": "client",
+            "name": "client_pretty_name",
             "visible": True,
             "title": _("Client"),
         },
@@ -270,6 +270,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             .with_formatted_datetime("created_on", timezone.get_default_timezone())
             .with_formatted_datetime("last_send", timezone.get_default_timezone())
             .with_formatted_deadline()
+            .with_user_pretty_name_str("client")
         )
 
 
