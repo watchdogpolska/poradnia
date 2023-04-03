@@ -1,8 +1,10 @@
 from functools import reduce
 
 from django.core.exceptions import ImproperlyConfigured
-from django.db.models import Q
+from django.db.models import Case as djCase
+from django.db.models import CharField, F, Q, Value, When
 from django.db.models.expressions import RawSQL
+from django.db.models.functions import Concat
 from django.utils.translation import gettext_lazy as _
 
 
@@ -53,3 +55,33 @@ class FormattedDatetimeMixin:
             f"DATE_FORMAT({expr}, '%%Y-%%m-%%d %%H:%%i:%%s')", []
         )
         return self.annotate(**{formatted_field_name: formatted_field_expr})
+
+
+class UserPrettyNameMixin:
+    def with_user_pretty_name_str(self, user_field_name="user"):
+        return self.annotate(
+            full_name=djCase(
+                When(
+                    (
+                        Q(**{f"{user_field_name}__first_name": ""})
+                        & Q(**{f"{user_field_name}__last_name": ""})
+                    ),
+                    then=F(f"{user_field_name}__username"),
+                ),
+                default=Concat(
+                    F(f"{user_field_name}__first_name"),
+                    Value(" "),
+                    F(f"{user_field_name}__last_name"),
+                ),
+            ),
+            **{
+                f"{user_field_name}_pretty_name": djCase(
+                    When(
+                        Q(**{f"{user_field_name}__is_staff": True}),
+                        then=Concat(F("full_name"), Value(" (team)")),
+                    ),
+                    default=Concat(F("full_name"), Value(" (ext)")),
+                    output_field=CharField(),
+                )
+            },
+        )
