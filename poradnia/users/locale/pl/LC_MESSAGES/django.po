@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-29 20:22+0200\n"
+"POT-Creation-Date: 2023-04-03 17:35+0200\n"
 "PO-Revision-Date: 2022-01-03 12:44+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
@@ -23,22 +23,22 @@ msgstr "Powiadomienia"
 
 #: poradnia/users/apps.py:7 poradnia/users/forms/permissions.py:31
 #: poradnia/users/models.py:222
-#: poradnia/users/templates/users/user_filter.html:25
+#: poradnia/users/templates/users/user_filter.html:27
 msgid "Users"
 msgstr "Użytkownicy / użytkowniczki"
 
 #: poradnia/users/filters.py:35
-#: poradnia/users/templates/users/user_filter.html:49
+#: poradnia/users/templates/users/user_filter.html:51
 msgid "Free"
 msgstr "Wolne"
 
 #: poradnia/users/filters.py:36
-#: poradnia/users/templates/users/user_filter.html:50
+#: poradnia/users/templates/users/user_filter.html:52
 msgid "Active"
 msgstr "Aktywne"
 
 #: poradnia/users/filters.py:37
-#: poradnia/users/templates/users/user_filter.html:51
+#: poradnia/users/templates/users/user_filter.html:53
 msgid "Closed"
 msgstr "Zamknięte"
 
@@ -86,7 +86,7 @@ msgstr "Utworzone o"
 
 #: poradnia/users/models.py:221 poradnia/users/templates/users/_sidebar.html:3
 #: poradnia/users/templates/users/user_detail.html:3
-#: poradnia/users/templates/users/user_filter.html:45
+#: poradnia/users/templates/users/user_filter.html:47
 #: poradnia/users/templates/users/user_form.html:4
 #: poradnia/users/templates/users/user_form.html:15
 msgid "User"
@@ -109,7 +109,7 @@ msgid "7 days"
 msgstr "7 dni"
 
 #: poradnia/users/models.py:233
-#: poradnia/users/templates/users/user_detail.html:16
+#: poradnia/users/templates/users/user_detail.html:18
 msgid "Description"
 msgstr "Opis"
 
@@ -128,7 +128,7 @@ msgstr "Przypominaj o wydarzeniach"
 #: poradnia/users/models.py:245
 #: poradnia/users/templates/users/profile_form.html:7
 #: poradnia/users/templates/users/profile_form.html:10
-#: poradnia/users/templates/users/user_detail.html:26
+#: poradnia/users/templates/users/user_detail.html:28
 msgid "Profile"
 msgstr "Profil"
 
@@ -186,40 +186,40 @@ msgstr "Odpisz %(object)s"
 msgid "Cancel"
 msgstr "Anuluj"
 
-#: poradnia/users/templates/users/user_detail.html:13
+#: poradnia/users/templates/users/user_detail.html:15
 msgid "Users are member of staff."
 msgstr "Użytkownik jest członkiem zespołu"
 
-#: poradnia/users/templates/users/user_detail.html:23
+#: poradnia/users/templates/users/user_detail.html:25
 msgid "About me"
 msgstr "O mnie"
 
-#: poradnia/users/templates/users/user_detail.html:30
+#: poradnia/users/templates/users/user_detail.html:32
 msgid "Password change"
 msgstr "Zmiana hasła"
 
-#: poradnia/users/templates/users/user_detail.html:34
+#: poradnia/users/templates/users/user_detail.html:36
 msgid "Keys"
 msgstr "Klucze"
 
-#: poradnia/users/templates/users/user_detail.html:38
+#: poradnia/users/templates/users/user_detail.html:40
 msgid "My cases"
 msgstr "Moje sprawy"
 
-#: poradnia/users/templates/users/user_detail.html:44
-#: poradnia/users/templates/users/user_filter.html:46
+#: poradnia/users/templates/users/user_detail.html:46
+#: poradnia/users/templates/users/user_filter.html:48
 msgid "Client cases"
 msgstr "Sprawy klienta"
 
-#: poradnia/users/templates/users/user_detail.html:48
+#: poradnia/users/templates/users/user_detail.html:50
 msgid "Assigned cases"
 msgstr "Przypisane sprawy"
 
-#: poradnia/users/templates/users/user_detail.html:52
+#: poradnia/users/templates/users/user_detail.html:54
 msgid "Deassign cases"
 msgstr "Odpisz sprawy"
 
-#: poradnia/users/templates/users/user_filter.html:28
+#: poradnia/users/templates/users/user_filter.html:30
 msgid ""
 "You don't have access to data of all our users. Mostly you have access to "
 "staff and own profile."
@@ -227,7 +227,7 @@ msgstr ""
 "Nie masz dostepu do danych wszystkich użytkowników. W większości tylko do "
 "profilu członków zespołu i swojego."
 
-#: poradnia/users/templates/users/user_filter.html:48
+#: poradnia/users/templates/users/user_filter.html:50
 msgid "Assigned cases sum"
 msgstr "Przypisane sprawy"
 

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-29 20:22+0200\n"
+"POT-Creation-Date: 2023-04-03 17:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,26 +21,26 @@ msgstr ""
 msgid "Advicer system"
 msgstr ""
 
-#: poradnia/advicer/filters.py:41 poradnia/advicer/models.py:155
+#: poradnia/advicer/filters.py:41 poradnia/advicer/models.py:132
 #: poradnia/advicer/templates/advicer/advice_filter.html:25
-#: poradnia/advicer/views.py:94 poradnia/advicer/views.py:109
+#: poradnia/advicer/views.py:95 poradnia/advicer/views.py:113
 msgid "Subject"
 msgstr ""
 
 #: poradnia/advicer/filters.py:42 poradnia/advicer/filters.py:70
-#: poradnia/advicer/models.py:179
+#: poradnia/advicer/models.py:156
 #: poradnia/advicer/templates/advicer/advice_detail.html:119
 #: poradnia/advicer/templates/advicer/advice_filter.html:24
-#: poradnia/advicer/views.py:124
+#: poradnia/advicer/views.py:132
 msgid "Advicer"
 msgstr ""
 
-#: poradnia/advicer/filters.py:43 poradnia/advicer/models.py:187
+#: poradnia/advicer/filters.py:43 poradnia/advicer/models.py:164
 #: poradnia/advicer/templates/advicer/advice_filter.html:23
 msgid "Created by"
 msgstr ""
 
-#: poradnia/advicer/filters.py:44 poradnia/advicer/views.py:89
+#: poradnia/advicer/filters.py:44 poradnia/advicer/views.py:90
 msgid "Created on"
 msgstr ""
 
@@ -48,18 +48,18 @@ msgstr ""
 msgid "Community"
 msgstr ""
 
-#: poradnia/advicer/filters.py:51 poradnia/advicer/models.py:206
+#: poradnia/advicer/filters.py:51 poradnia/advicer/models.py:183
 #: poradnia/advicer/templates/advicer/advice_detail.html:74
-#: poradnia/advicer/views.py:99
+#: poradnia/advicer/views.py:100
 msgid "Comment"
 msgstr ""
 
-#: poradnia/advicer/filters.py:67 poradnia/advicer/models.py:192
+#: poradnia/advicer/filters.py:67 poradnia/advicer/models.py:169
 #: poradnia/advicer/templates/advicer/advice_filter.html:22
 msgid "Creation date"
 msgstr ""
 
-#: poradnia/advicer/filters.py:68 poradnia/advicer/models.py:203
+#: poradnia/advicer/filters.py:68 poradnia/advicer/models.py:180
 msgid "Modification date"
 msgstr ""
 
@@ -72,7 +72,7 @@ msgid "Person kind"
 msgstr ""
 
 #: poradnia/advicer/filters.py:72 poradnia/advicer/models.py:48
-#: poradnia/advicer/views.py:119
+#: poradnia/advicer/views.py:127
 msgid "Institution kind"
 msgstr ""
 
@@ -110,11 +110,11 @@ msgstr ""
 msgid "Problem regarding the right to information"
 msgstr ""
 
-#: poradnia/advicer/models.py:37
+#: poradnia/advicer/models.py:37 poradnia/advicer/views.py:105
 msgid "Problems regarding the right to information"
 msgstr ""
 
-#: poradnia/advicer/models.py:42 poradnia/advicer/views.py:114
+#: poradnia/advicer/models.py:42 poradnia/advicer/views.py:120
 msgid "Type of person who reporting the advice"
 msgstr ""
 
@@ -126,79 +126,79 @@ msgstr ""
 msgid "Institution kinds"
 msgstr ""
 
-#: poradnia/advicer/models.py:123 poradnia/advicer/models.py:133
-#: poradnia/advicer/templates/advicer/advice_table.html:42
-#: poradnia/advicer/templates/advicer/advice_table.html:52
+#: poradnia/advicer/models.py:100 poradnia/advicer/models.py:110
+#: poradnia/advicer/templates/advicer/advice_table.html:35
+#: poradnia/advicer/templates/advicer/advice_table.html:45
 msgid "Yes"
 msgstr ""
 
-#: poradnia/advicer/models.py:124 poradnia/advicer/models.py:134
-#: poradnia/advicer/templates/advicer/advice_table.html:44
-#: poradnia/advicer/templates/advicer/advice_table.html:54
+#: poradnia/advicer/models.py:101 poradnia/advicer/models.py:111
+#: poradnia/advicer/templates/advicer/advice_table.html:37
+#: poradnia/advicer/templates/advicer/advice_table.html:47
 msgid "No"
 msgstr ""
 
-#: poradnia/advicer/models.py:152
+#: poradnia/advicer/models.py:129
 #: poradnia/advicer/templates/advicer/advice_detail.html:30
 #: poradnia/advicer/templates/advicer/advice_filter.html:27
-#: poradnia/advicer/views.py:109
+#: poradnia/advicer/views.py:113
 msgid "Case"
 msgstr ""
 
-#: poradnia/advicer/models.py:180
+#: poradnia/advicer/models.py:157
 msgid "Person who give a advice"
 msgstr ""
 
-#: poradnia/advicer/models.py:184
+#: poradnia/advicer/models.py:161
 #: poradnia/advicer/templates/advicer/advice_detail.html:91
-#: poradnia/advicer/views.py:129
+#: poradnia/advicer/views.py:137
 msgid "Grant on"
 msgstr ""
 
-#: poradnia/advicer/models.py:194
+#: poradnia/advicer/models.py:171
 #: poradnia/advicer/templates/advicer/advice_detail.html:79
-#: poradnia/advicer/views.py:141
+#: poradnia/advicer/views.py:149
 msgid "We helped?"
 msgstr ""
 
-#: poradnia/advicer/models.py:198
+#: poradnia/advicer/models.py:175
 msgid "Modified by"
 msgstr ""
 
-#: poradnia/advicer/models.py:205
-#: poradnia/advicer/templates/advicer/advice_table.html:50
-#: poradnia/advicer/views.py:148
+#: poradnia/advicer/models.py:182
+#: poradnia/advicer/templates/advicer/advice_table.html:43
+#: poradnia/advicer/views.py:156
 msgid "Visible"
 msgstr ""
 
-#: poradnia/advicer/models.py:212
+#: poradnia/advicer/models.py:189
 #: poradnia/advicer/templates/advicer/advice_detail.html:69
-#: poradnia/advicer/views.py:134
+#: poradnia/advicer/views.py:142
 msgid "Unit of administrative division"
 msgstr ""
 
-#: poradnia/advicer/models.py:218
+#: poradnia/advicer/models.py:195
 #, python-format
 msgid "Advice #%d"
 msgstr ""
 
-#: poradnia/advicer/models.py:233
+#: poradnia/advicer/models.py:207
 msgid "Can view all advices"
 msgstr ""
 
-#: poradnia/advicer/models.py:234
+#: poradnia/advicer/models.py:208
 msgid "Advice"
 msgstr ""
 
-#: poradnia/advicer/models.py:235
+#: poradnia/advicer/models.py:209
 msgid "Advices"
 msgstr ""
 
-#: poradnia/advicer/models.py:242
+#: poradnia/advicer/models.py:216
 msgid "Attachment"
 msgstr ""
 
-#: poradnia/advicer/models.py:243
+#: poradnia/advicer/models.py:217
 #: poradnia/advicer/templates/advicer/advice_detail.html:129
 msgid "Attachments"
 msgstr ""
@@ -243,7 +243,6 @@ msgid "Issues"
 msgstr ""
 
 #: poradnia/advicer/templates/advicer/advice_detail.html:50
-#: poradnia/advicer/views.py:104
 msgid "Area"
 msgstr ""
 
@@ -318,36 +317,36 @@ msgstr ""
 msgid "Update"
 msgstr ""
 
-#: poradnia/advicer/templates/advicer/advice_table.html:25
+#: poradnia/advicer/templates/advicer/advice_table.html:18
 msgid "Advice Table"
 msgstr ""
 
-#: poradnia/advicer/templates/advicer/advice_table.html:38
+#: poradnia/advicer/templates/advicer/advice_table.html:31
 msgid "Filters"
 msgstr ""
 
-#: poradnia/advicer/templates/advicer/advice_table.html:40
+#: poradnia/advicer/templates/advicer/advice_table.html:33
 msgid "Helped"
 msgstr ""
 
-#: poradnia/advicer/templates/advicer/advice_table.html:46
+#: poradnia/advicer/templates/advicer/advice_table.html:39
 msgid "Blank"
 msgstr ""
 
-#: poradnia/advicer/views.py:29
+#: poradnia/advicer/views.py:30
 msgid "Ordering"
 msgstr ""
 
-#: poradnia/advicer/views.py:67
+#: poradnia/advicer/views.py:68
 msgid "Advice search table"
 msgstr ""
 
-#: poradnia/advicer/views.py:213
+#: poradnia/advicer/views.py:217
 #, python-brace-format
 msgid "{0} updated!"
 msgstr ""
 
-#: poradnia/advicer/views.py:253
+#: poradnia/advicer/views.py:257
 #, python-brace-format
 msgid "{subject} deleted!"
 msgstr ""

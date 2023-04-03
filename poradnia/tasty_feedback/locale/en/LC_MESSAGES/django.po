@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-29 20:22+0200\n"
+"POT-Creation-Date: 2023-04-03 17:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -41,7 +41,7 @@ msgid "Submit feedback"
 msgstr ""
 
 #: poradnia/tasty_feedback/models.py:19
-#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:27
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:26
 msgid "Author"
 msgstr ""
 
@@ -59,7 +59,7 @@ msgstr ""
 
 #: poradnia/tasty_feedback/models.py:28
 #: poradnia/tasty_feedback/templates/tasty_feedback/feedback_detail.html:28
-#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:29
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:28
 msgid "Status"
 msgstr ""
 
@@ -110,19 +110,19 @@ msgid ""
 "                    "
 msgstr ""
 
-#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:17
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:19
 msgid "Record feedbacks"
 msgstr ""
 
-#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:26
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:25
 msgid "Created date"
 msgstr ""
 
-#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:28
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:27
 msgid "Text"
 msgstr ""
 
-#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:48
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:46
 msgid "There is no any feedbacks."
 msgstr ""
 

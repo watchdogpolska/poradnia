@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-29 20:22+0200\n"
+"POT-Creation-Date: 2023-04-03 17:35+0200\n"
 "PO-Revision-Date: 2023-03-29 14:23+0124\n"
 "Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -43,7 +43,7 @@ msgid "Submit feedback"
 msgstr "Przekaż uwagę"
 
 #: poradnia/tasty_feedback/models.py:19
-#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:27
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:26
 msgid "Author"
 msgstr "Autor"
 
@@ -61,7 +61,7 @@ msgstr "Treść zgłoszona przez użytkownika"
 
 #: poradnia/tasty_feedback/models.py:28
 #: poradnia/tasty_feedback/templates/tasty_feedback/feedback_detail.html:28
-#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:29
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:28
 msgid "Status"
 msgstr "Stan"
 
@@ -114,19 +114,19 @@ msgstr ""
 "od %(date)s\n"
 "                    "
 
-#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:17
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:19
 msgid "Record feedbacks"
 msgstr "Rejestr uwag"
 
-#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:26
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:25
 msgid "Created date"
 msgstr "Data utworzenia"
 
-#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:28
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:27
 msgid "Text"
 msgstr "Treść"
 
-#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:48
+#: poradnia/tasty_feedback/templates/tasty_feedback/feedback_filter.html:46
 msgid "There is no any feedbacks."
 msgstr "Tutaj nie ma żadnych uwag. "
 

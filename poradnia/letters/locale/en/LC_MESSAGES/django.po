@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-03-29 20:22+0200\n"
+"POT-Creation-Date: 2023-04-03 17:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,8 @@ msgstr ""
 msgid "Case name"
 msgstr ""
 
-#: poradnia/letters/apps.py:7 poradnia/letters/models.py:166
+#: poradnia/letters/apps.py:7 poradnia/letters/models.py:168
+#: poradnia/letters/views/cbv.py:159
 msgid "Letters"
 msgstr ""
 
@@ -114,72 +115,72 @@ msgstr ""
 msgid "Comment for staff"
 msgstr ""
 
-#: poradnia/letters/models.py:62
+#: poradnia/letters/models.py:63
 #: poradnia/letters/templates/letters/_letter_list.html:20
 msgid "Staff"
 msgstr ""
 
-#: poradnia/letters/models.py:62
+#: poradnia/letters/models.py:63
 msgid "Done"
 msgstr ""
 
-#: poradnia/letters/models.py:68
+#: poradnia/letters/models.py:69
 msgid "Accepted on"
 msgstr ""
 
-#: poradnia/letters/models.py:70
+#: poradnia/letters/models.py:71
 msgid "Subject"
 msgstr ""
 
-#: poradnia/letters/models.py:71
+#: poradnia/letters/models.py:72
 msgid "Text"
 msgstr ""
 
-#: poradnia/letters/models.py:72
+#: poradnia/letters/models.py:73
 msgid "Mail formatted HTML"
 msgstr ""
 
-#: poradnia/letters/models.py:73
+#: poradnia/letters/models.py:74
 msgid "Signature"
 msgstr ""
 
-#: poradnia/letters/models.py:77
+#: poradnia/letters/models.py:78
 msgid "Created by"
 msgstr ""
 
-#: poradnia/letters/models.py:83
+#: poradnia/letters/models.py:84 poradnia/letters/views/cbv.py:171
 msgid "Created on"
 msgstr ""
 
-#: poradnia/letters/models.py:86
+#: poradnia/letters/models.py:87
 msgid "Modified by"
 msgstr ""
 
-#: poradnia/letters/models.py:92
+#: poradnia/letters/models.py:93
 msgid "Modified on"
 msgstr ""
 
-#: poradnia/letters/models.py:98
+#: poradnia/letters/models.py:99
 msgid "Raw message contents"
 msgstr ""
 
-#: poradnia/letters/models.py:101
+#: poradnia/letters/models.py:102
 msgid "Original full content of message"
 msgstr ""
 
-#: poradnia/letters/models.py:165
+#: poradnia/letters/models.py:167
 msgid "Letter"
 msgstr ""
 
-#: poradnia/letters/models.py:192
+#: poradnia/letters/models.py:194
 msgid "File"
 msgstr ""
 
-#: poradnia/letters/models.py:219
+#: poradnia/letters/models.py:221
 msgid "Attachment"
 msgstr ""
 
-#: poradnia/letters/models.py:220
+#: poradnia/letters/models.py:222
 msgid "Attachments"
 msgstr ""
 
@@ -212,7 +213,7 @@ msgstr ""
 
 #: poradnia/letters/templates/letters/_letter_list.html:59
 #: poradnia/letters/templates/letters/form_edit.html:6
-#: poradnia/letters/views/cbv.py:66
+#: poradnia/letters/views/cbv.py:72
 msgid "Edit"
 msgstr ""
 
@@ -221,7 +222,7 @@ msgstr ""
 msgid "Send"
 msgstr ""
 
-#: poradnia/letters/templates/letters/form_add.html:5
+#: poradnia/letters/templates/letters/form_add.html:7
 msgid "Add"
 msgstr ""
 
@@ -233,17 +234,45 @@ msgstr ""
 msgid "Letter list"
 msgstr ""
 
-#: poradnia/letters/views/cbv.py:39
+#: poradnia/letters/templates/letters/letter_table.html:24
+msgid "Letters Table"
+msgstr ""
+
+#: poradnia/letters/views/cbv.py:45
 msgid "Create a new case"
 msgstr ""
 
-#: poradnia/letters/views/cbv.py:48
+#: poradnia/letters/views/cbv.py:54
 #, python-brace-format
 msgid "Case about {object} created!"
 msgstr ""
 
-#: poradnia/letters/views/cbv.py:101
+#: poradnia/letters/views/cbv.py:107
 msgid "Status"
+msgstr ""
+
+#: poradnia/letters/views/cbv.py:148
+msgid "Letter search table"
+msgstr ""
+
+#: poradnia/letters/views/cbv.py:176
+msgid "Letter Subject"
+msgstr ""
+
+#: poradnia/letters/views/cbv.py:183
+msgid "Letter Content"
+msgstr ""
+
+#: poradnia/letters/views/cbv.py:190
+msgid "Case Subject"
+msgstr ""
+
+#: poradnia/letters/views/cbv.py:197
+msgid "Advice Subject"
+msgstr ""
+
+#: poradnia/letters/views/cbv.py:205
+msgid "Advice Comment"
 msgstr ""
 
 #: poradnia/letters/views/fbv.py:15
