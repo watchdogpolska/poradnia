@@ -3,7 +3,7 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Case as djCase
 from django.db.models import CharField, F, Q, Value, When
-from django.db.models.functions import Cast, Concat
+from django.db.models.functions import Concat
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.timezone import now
@@ -71,18 +71,6 @@ class AdviceQuerySet(FormattedDatetimeMixin, QuerySet):
             return self
         else:
             return AreaMultipleFilter.filter_area_in(self, jsts, "jst")
-
-    def with_person_kind_name(self):
-        return self.annotate(
-            person_kind_name=Cast("person_kind__name", output_field=CharField())
-        )
-
-    def with_institution_kind_name(self):
-        return self.annotate(
-            institution_kind_name=Cast(
-                "institution_kind__name", output_field=CharField()
-            )
-        )
 
     def with_advicer_str(self):
         return self.annotate(
