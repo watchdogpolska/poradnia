@@ -4,16 +4,20 @@
     <ol class="breadcrumb">
         <li><a href="{% url 'letters:list' %}">{% trans 'Letter list' %}</a></li>
     </ol>
-    {% if request.user.is_staff %}
-        {% crispy filter.form %}
-    {% endif %}
+    <div class="row">
+        <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+            {% if request.user.is_staff %}
+                {% crispy filter.form %}
+            {% endif %}
 
-    {% for object in object_list %}
-        {% ifchanged %}<h2><a href="{{ object.case.get_absolute_url }}">{{ object.case }}</a></h2>{% endifchanged %}
-        <div class="panel-body msg_container_base row">
-            {% include object.get_template_list with object=object %}
+            {% for object in object_list %}
+                {% ifchanged %}<h2><a href="{{ object.case.get_absolute_url }}">{{ object.case }}</a></h2>{% endifchanged %}
+                <div class="panel-body msg_container_base row">
+                    {% include object.get_template_list with object=object %}
+                </div>
+            {% endfor %}
+            <div class="text-center">{% bootstrap_paginate page_obj show_first_last="true" %}</div>
         </div>
-    {% endfor %}
-    <div class="text-center">{% bootstrap_paginate page_obj show_first_last="true" %}</div>
+    </div>
 
 {% endblock %}

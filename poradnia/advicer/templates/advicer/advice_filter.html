@@ -2,75 +2,75 @@
 {% load humanize i18n crispy_forms_tags bootstrap_pagination %}
 {% block breadcrumbs_rows %}
     <li class="active">{% trans 'Advice index' %}</li>
+    <div class="pull-right">
+        <a href="{% url 'advicer:create' %}" class="btn btn-success"><i
+                class="fa fa-pencil"></i> {% trans 'Add' %}</a>
+    </div>
 {% endblock %}
 {% block content %}
 
-    <div class="row">
-        <div class="col-md-12">
-            <div class="pull-left">
-                <h1>{% trans 'Record advices' %}</h1>
-            </div>
-            <div class="pull-right">
-                <a href="{% url 'advicer:create' %}" class="btn btn-success"><i
-                        class="fa fa-pencil"></i> {% trans 'Add' %}</a>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                {% crispy filter.form %}
+                {% if object_list %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>{% trans 'Creation date' %}</th>
+                                    <th>{% trans 'Created by' %}</th>
+                                    <th>{% trans 'Advicer' %}</th>
+                                    <th>{% trans 'Subject' %}</th>
+                                    <th>{% trans 'Client of case' %}</th>
+                                    <th>{% trans 'Case' %}</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for object in object_list %}
+                                    <tr>
+                                        <td>
+                                            <time datetime="{{ object.created_on|date:'Y-m-d h:m:sT' }}">{{ object.created_on|naturaltime }}</time>
+                                        </td>
+                                        <td {% if object.created_by_id == object.advicer_id %} colspan="2"
+                                                                                            style="text-align: center"{% endif %}>{{ object.created_by }}</td>
+                                        {% if object.created_by_id != object.advicer_id %}
+                                            <td>{{ object.advicer }}</td>
+                                        {% endif %}
+                                        <td><a href="{{ object.get_absolute_url }}">{{ object }}</a></td>
+                                        {% if object.case %}
+                                            <td><a href="{{ object.case.client.get_absolute_url }}">{{ object.case.client }}</a>
+                                            <td><a href="{{ object.case.get_absolute_url }}">{{ object.case }}</a></td>
+                                        {% else %}
+                                            <td>-</td>
+                                            <td>-</td>
+                                        {% endif %}
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">{{ object.comment }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="text-center">
+                                {% bootstrap_paginate page_obj show_first_last="true" %}
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="row">
+                        <div class="col-md-12">
+                            <p>{% url 'advicer:create' as create_url %}{% blocktrans %}There is no Advice records.
+                                <a href="{{ create_url }}">Add one</a> of these! {% endblocktrans %}</p>
+                        </div>
+                    </div>
+                {% endif %}
+
             </div>
         </div>
     </div>
-    {% crispy filter.form %}
 
-    {% if object_list %}
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table table-striped">
-                    <thead>
-                    <tr>
-                        <th>{% trans 'Creation date' %}</th>
-                        <th>{% trans 'Created by' %}</th>
-                        <th>{% trans 'Advicer' %}</th>
-                        <th>{% trans 'Subject' %}</th>
-                        <th>{% trans 'Client of case' %}</th>
-                        <th>{% trans 'Case' %}</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {% for object in object_list %}
-                        <tr>
-                            <td>
-                                <time datetime="{{ object.created_on|date:'Y-m-d h:m:sT' }}">{{ object.created_on|naturaltime }}</time>
-                            </td>
-                            <td {% if object.created_by_id == object.advicer_id %} colspan="2"
-                                                                                   style="text-align: center"{% endif %}>{{ object.created_by }}</td>
-                            {% if object.created_by_id != object.advicer_id %}
-                                <td>{{ object.advicer }}</td>
-                            {% endif %}
-                            <td><a href="{{ object.get_absolute_url }}">{{ object }}</a></td>
-                            {% if object.case %}
-                                <td><a href="{{ object.case.client.get_absolute_url }}">{{ object.case.client }}</a>
-                                <td><a href="{{ object.case.get_absolute_url }}">{{ object.case }}</a></td>
-                            {% else %}
-                                <td>-</td>
-                                <td>-</td>
-                            {% endif %}
-                        </tr>
-                        <tr>
-                            <td colspan="6">{{ object.comment }}</td>
-                        </tr>
-                    {% endfor %}
-                    </tbody>
-                </table>
-                <div class="text-center">
-                    {% bootstrap_paginate page_obj show_first_last="true" %}
-                </div>
-            </div>
-        </div>
-    {% else %}
-        <div class="row">
-            <div class="col-md-12">
-                <p>{% url 'advicer:create' as create_url %}{% blocktrans %}There is no any records.
-                    <a href="{{ create_url }}">Add one</a> of these! {% endblocktrans %}</p>
-            </div>
-        </div>
-    {% endif %}
 {% endblock %}
 
 {% block extra_css %}

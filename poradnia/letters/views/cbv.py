@@ -1,6 +1,8 @@
+import datetime
 import json
 
 import django_filters
+from ajax_datatable import AjaxDatatableView
 from atom.ext.crispy_forms.views import FormSetMixin
 from atom.ext.django_filters.filters import CrispyFilterMixin
 from braces.views import (
@@ -16,9 +18,13 @@ from django.contrib.sites.models import Site
 from django.core.exceptions import PermissionDenied
 from django.core.files.base import File
 from django.http import HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
+from django.template.defaultfilters import linebreaksbr
+from django.urls import reverse
+from django.utils import timezone
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.views import View
-from django.views.generic import CreateView, UpdateView
+from django.views.generic import CreateView, TemplateView, UpdateView
 from django_filters.views import FilterView
 
 from poradnia.cases.models import Case
@@ -128,6 +134,120 @@ class LetterListView(
     paginate_by = 20
     select_related = ["created_by", "modified_by", "case"]
     prefetch_related = ["attachment_set"]
+
+
+class LetterTableView(PermissionMixin, TemplateView):
+    """
+    View for displaying template with Letter table.
+    """
+
+    template_name = "letters/letter_table.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header_label"] = mark_safe(_("Letter search table"))
+        context["ajax_datatable_url"] = reverse("letters:letters_table_ajax_data")
+        return context
+
+
+class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
+    """
+    View to provide table list of all Letters with ajax data.
+    """
+
+    model = Letter
+    title = _("Letters")
+    initial_order = [
+        ["created_on_str", "desc"],
+    ]
+    length_menu = [[20, 50, 100], [20, 50, 100]]
+
+    column_defs = [
+        AjaxDatatableView.render_row_tools_column_def(),
+        {"name": "id", "visible": False, "title": "Id"},
+        {
+            "name": "created_on_str",
+            "visible": True,
+            "title": _("Created on"),
+        },
+        {
+            "name": "created_by_pretty_name",
+            "visible": True,
+            "title": _("Created by"),
+        },
+        {
+            "name": "name",
+            "visible": True,
+            "title": _("Letter Subject"),
+        },
+        {
+            "name": "text",
+            "visible": True,
+            "max_length": 320,
+            "width": 600,
+            "title": _("Letter Content"),
+        },
+        {
+            "name": "case_name",
+            "visible": True,
+            "foreign_field": "case__name",
+            "defaultContent": "",
+            "title": _("Case Subject"),
+        },
+        {
+            "name": "advice_subject",
+            "visible": True,
+            "foreign_field": "case__advice__subject",
+            "defaultContent": "",
+            "title": _("Advice Subject"),
+        },
+        {
+            "name": "advice_comment",
+            "visible": True,
+            "foreign_field": "case__advice__comment",
+            "width": 300,
+            "defaultContent": "",
+            "title": _("Advice Comment"),
+        },
+    ]
+
+    def customize_row(self, row, obj):
+        # row["text"] = mark_safe(linebreaksbr(obj.text[:300]))
+        row["text"] = obj.text[:300] + "..." if len(obj.text) > 300 else obj.text
+        row["case_name"] = obj.case.render_case_link()
+        row["advice_subject"] = obj.case.render_case_advice_link()
+        return
+
+    def get_initial_queryset(self, request=None):
+        qs = super().get_initial_queryset(request).prefetch_related()
+        return (
+            qs.for_user(user=self.request.user)
+            .with_formatted_datetime("created_on", timezone.get_default_timezone())
+            .with_user_pretty_name_str("created_by")
+        )
+
+    def render_row_details(self, pk, request=None):
+        obj = self.model.objects.filter(id=pk).first()
+        fields_to_skip = ["case", "genre", "status", "status_changed", "message", "eml"]
+        fields = [
+            f.name
+            for f in obj._meta.get_fields()
+            if f.concrete and f.name not in fields_to_skip
+        ]
+        html = '<table class="table table-bordered compact" style="max-width: 70%;">'
+        for field in fields:
+            try:
+                value = getattr(obj, field) or ""
+                if field == "text":
+                    value = mark_safe(linebreaksbr(value.replace("\r", "")))
+                elif isinstance(value, datetime.datetime):
+                    value = timezone.localtime(value).strftime("%Y-%m-%d %H:%M:%S")
+                verbose_n = obj._meta.get_field(field).verbose_name
+            except AttributeError:
+                continue
+            html += f'<tr><td style="width: 20%;">{verbose_n}</td><td>{value}</td></tr>'
+        html += "</table>"
+        return mark_safe(html)
 
 
 class ReceiveEmailView(View):

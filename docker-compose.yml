@@ -45,6 +45,9 @@ services:
       # porady@porady.siecobywatelska.pl must be included in LETTER_RECEIVE_WHITELISTED_ADDRESS for tests
       LETTER_RECEIVE_WHITELISTED_ADDRESS: "porady@porady.siecobywatelska.pl, porady@dev.porady.siecobywatelska.pl"
       DJANGO_RICH_TEXT_ENABLED: "False"
+      APP_MODE: "DEV"
+      ROSETTA_AZURE_CLIENT_SECRET: ${ROSETTA_AZURE_CLIENT_SECRET}
+      MY_INTERNAL_IP: ${MY_INTERNAL_IP}
     ports:
       - "8000:8000"
 

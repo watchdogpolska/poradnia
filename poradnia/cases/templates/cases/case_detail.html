@@ -25,15 +25,14 @@
 {% block extra_css %}
     {{ casegroup_form.media.css }}
 {% endblock %}
-{% block breadcrumbs %}
-    <ol class="breadcrumb">
-        <li><a href="{% url 'cases:list' %}">{% trans 'Cases' %}</a></li>
-        <li class="active">{{ object }}</li>
-    </ol>
-{% endblock %}
+{# {% block breadcrumbs %} #}
+{#    <ol class="breadcrumb"> #}
+{#        <li><a href="{% url 'cases:list' %}">{% trans 'Cases' %}</a></li> #}
+{#        <li class="active">{{ object }}</li> #}
+{#    </ol> #}
+{# {% endblock %} #}
 
 {% block content %}
-    {% include 'cases/_case_pager.html' %}
     {% get_obj_perms request.user for object as "case_perms" %}
     <div class="row">
         <div class="col-xs-12">

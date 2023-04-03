@@ -1,7 +1,8 @@
 from atom.models import AttachmentBase
 from django.conf import settings
 from django.db import models
-from django.db.models import Q
+from django.db.models import Case as djCase
+from django.db.models import CharField, F, Q, Value, When
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.timezone import now
@@ -10,6 +11,7 @@ from teryt_tree.dal_ext.filters import AreaMultipleFilter
 
 from poradnia.cases.models import Case
 from poradnia.teryt.models import JST
+from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 
 
 class AbstractCategory(models.Model):
@@ -46,7 +48,7 @@ class InstitutionKind(AbstractCategory):
         verbose_name_plural = _("Institution kinds")
 
 
-class AdviceQuerySet(QuerySet):
+class AdviceQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
     def for_user(self, user):
         if user.has_perm("advicer.can_view_all_advices"):
             return self
@@ -55,17 +57,48 @@ class AdviceQuerySet(QuerySet):
     def visible(self):
         return self.filter(visible=True)
 
-    def area(self, jst):
+    # TODO fix overlap with Advice area property
+    def jst_area(self, jst):
         return self.filter(
             jst__tree_id=jst.tree_id, jst__lft__range=(jst.lft, jst.rght)
         )
 
+    # TODO fix overlap with Advice area property
     def area_in(self, jsts):
         if not jsts:
             # Show all results if filter is empty.
             return self
         else:
             return AreaMultipleFilter.filter_area_in(self, jsts, "jst")
+
+    def with_helped_str(self):
+        return self.annotate(
+            helped_str=djCase(
+                When(helped=True, then=Value(_("Yes"))),
+                When(helped=False, then=Value(_("No"))),
+                default=Value("-"),
+                output_field=CharField(),
+            ),
+        )
+
+    def with_visible_str(self):
+        return self.annotate(
+            visible_str=djCase(
+                When(visible=True, then=Value(_("Yes"))),
+                When(visible=False, then=Value(_("No"))),
+                default=Value("-"),
+                output_field=CharField(),
+            ),
+        )
+
+    def with_jst_name_str(self):
+        return self.annotate(
+            jst_name=djCase(
+                When(jst__name__isnull=False, then=F("jst__name")),
+                default=Value("-"),
+                output_field=CharField(),
+            ),
+        )
 
 
 class Advice(models.Model):
@@ -140,6 +173,11 @@ class Advice(models.Model):
 
     def get_absolute_url(self):
         return reverse("advicer:detail", kwargs={"pk": self.pk})
+
+    def render_advice_link(self):
+        url = self.get_absolute_url()
+        label = self.subject
+        return f'<a href="{url}">{label}</a>'
 
     class Meta:
         ordering = ["-created_on"]

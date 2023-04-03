@@ -24,6 +24,7 @@ const AdministrativeDivisionUnit = require("../testing/administrative-division-u
 describe.only("advices", () => {
   beforeEach(() => {
     cy.task("db:clear");
+    cy.viewport(1920,1080);
   });
 
   it("staff can search for an advice", () => {
@@ -157,7 +158,7 @@ describe.only("advices", () => {
     // Filter with default values.
     // This step tests the form filling function, to some extent.
     cy.get("form")
-      .filter(':has(input[value="Filtruj"])')
+      .filter(':has(input[value="Zastosuj filtr"])')
       .within(($form) => {
         submitAdviceFilterForm(cy)($form, {});
       });
@@ -166,7 +167,7 @@ describe.only("advices", () => {
     // Filtering by whether a case has been marked as solved.
     // The simplest filter there is.
     cy.get("form")
-      .filter(':has(input[value="Filtruj"])')
+      .filter(':has(input[value="Zastosuj filtr"])')
       .within(($form) => {
         submitAdviceFilterForm(cy)($form, { solved: true });
       });
@@ -175,7 +176,7 @@ describe.only("advices", () => {
     // Disable the previous filter and set new fields.
     // Test a combination of multiple filters.
     cy.get("form")
-      .filter(':has(input[value="Filtruj"])')
+      .filter(':has(input[value="Zastosuj filtr"])')
       .within(($form) => {
         submitAdviceFilterForm(cy)($form, {
           administrativeDivisions: [
@@ -189,7 +190,7 @@ describe.only("advices", () => {
 
     // Another combination - multiselect by adviceArea and adviceIssue.
     cy.get("form")
-      .filter(':has(input[value="Filtruj"])')
+      .filter(':has(input[value="Zastosuj filtr"])')
       .within(($form) => {
         submitAdviceFilterForm(cy)($form, {
           adviceAreas: [adviceAreas[0], adviceAreas[1]],

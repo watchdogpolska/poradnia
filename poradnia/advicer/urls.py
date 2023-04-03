@@ -4,6 +4,16 @@ from . import views
 
 urlpatterns = [
     path("", views.AdviceList.as_view(), name="list"),
+    path(
+        "table/",
+        views.AdviceTableView.as_view(),
+        name="table",
+    ),
+    path(
+        "advice_table_ajax_data/",
+        views.AdviceAjaxDatatableView.as_view(),
+        name="advice_table_ajax_data",
+    ),
     path("nowa/", views.AdviceCreate.as_view(), name="create"),
     path("<int:pk>", views.AdviceDetail.as_view(), name="detail"),
     path("<int:pk>/edytuj/", views.AdviceUpdate.as_view(), name="update"),

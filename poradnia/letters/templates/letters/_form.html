@@ -29,17 +29,21 @@
 {% endblock %}
 
 {% block content %}
-    {% block object %}<h1>{{ object }}</h1>{% endblock %}
-    {% block description %}{% endblock %}
-    {% if object %}
-        <div class="panel-body msg_container_base row">
-            {% include object.get_template_list with object=object %}
-        </div>
-    {% endif %}
-    <form method="post" enctype="multipart/form-data" data-form-save="case-{{ object.pk }}">
-        {% crispy form %}
-        {% if formset %}
-            {% crispy formset %}
+<div class="row">
+    <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+        {% block object %}<h1>{{ object }}</h1>{% endblock %}
+        {% block description %}{% endblock %}
+        {% if object %}
+            <div class="panel-body msg_container_base row">
+                {% include object.get_template_list with object=object %}
+            </div>
         {% endif %}
-    </form>
+        <form method="post" enctype="multipart/form-data" data-form-save="case-{{ object.pk }}">
+            {% crispy form %}
+            {% if formset %}
+                {% crispy formset %}
+            {% endif %}
+        </form>
+    </div>
+</div>
 {% endblock %}

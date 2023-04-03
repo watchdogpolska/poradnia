@@ -16,6 +16,7 @@ from poradnia.cases.models import Case
 from poradnia.cases.utils import get_users_with_perm
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from poradnia.users.models import User
+from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 
 from .templatetags.format_text import format_text
 from .utils import date_random_path
@@ -23,7 +24,9 @@ from .utils import date_random_path
 logger = logging.getLogger(__name__)
 
 
-class LetterQuerySet(AbstractRecordQuerySet):
+class LetterQuerySet(
+    FormattedDatetimeMixin, UserPrettyNameMixin, AbstractRecordQuerySet
+):
     def for_user(self, user):
         qs = super().for_user(user)
         if not user.is_staff:
@@ -128,6 +131,7 @@ class Letter(AbstractRecord):
     def is_html(self):
         return bool(self.html)
 
+    # TOD0 - fix; long lines are not wrapped properly
     def render_as_html(self):
         if self.is_html():
             return self.html

@@ -4,6 +4,16 @@ from . import views
 
 urlpatterns = [
     path("", views.CaseListView.as_view(), name="list"),
+    path(
+        "table/",
+        views.CaseTableView.as_view(),
+        name="table",
+    ),
+    path(
+        "case_table_ajax_data/",
+        views.CaseAjaxDatatableView.as_view(),
+        name="case_table_ajax_data",
+    ),
     path("sprawa-<int:pk>/edytuj/", views.CaseUpdateView.as_view(), name="edit"),
     path("sprawa-<int:pk>/zamknij/", views.CaseCloseView.as_view(), name="close"),
     path("sprawa-<int:pk>/scal/", views.CaseMergeView.as_view(), name="merge"),

@@ -1,0 +1,127 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-04-03 17:35+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:20
+msgid "Subcarpathian"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:26
+msgid "Lesser Poland"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:32
+msgid "Silesian"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:38
+msgid "Opole"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:44
+msgid "Lower Silesian"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:50
+msgid "Świętokrzyskie"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:56
+msgid "Lublin"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:62
+msgid "Łódź"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:68
+msgid "Mazovian"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:74
+msgid "Greater Poland"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:80
+msgid "Lubusz"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:86
+msgid "Kuyavian-Pomeranian"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:92
+msgid "Podlaskie"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:98
+msgid "West Pomeranian"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:104
+msgid "Warmian-Masurian"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:110
+msgid "Pomeranian"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/jst_detail.html:43
+msgid "Voivodeships"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/jst_detail.html:48
+msgid "Subordinate units"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/jst_detail.html:62
+msgid "Advices"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/jst_detail.html:71
+msgid "Cases"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/jst_list.html:6
+msgid "Voivodeship"
+msgstr ""
+
+#: poradnia/teryt/templates/teryt/jst_list.html:7
+msgid "Select voivodeship."
+msgstr ""
+
+#: poradnia/teryt/urls.py:12
+msgid "^(?P<slug>[\\w-]+)$"
+msgstr ""
+
+#: poradnia/teryt/urls.py:13 poradnia/teryt/urls.py:14
+msgid "^$"
+msgstr ""
+
+#: poradnia/teryt/urls.py:16
+msgid "^voivodeship-autocomplete/$"
+msgstr ""
+
+#: poradnia/teryt/urls.py:21
+msgid "^county-autocomplete/$"
+msgstr ""
+
+#: poradnia/teryt/urls.py:26
+msgid "^community-autocomplete/$"
+msgstr ""

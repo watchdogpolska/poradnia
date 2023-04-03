@@ -22,6 +22,7 @@ const AdministrativeDivisionUnit = require("../testing/administrative-division-u
 describe("cases", () => {
   beforeEach(() => {
     cy.task("db:clear");
+    cy.viewport(1920,1080);
   });
 
   it("user can open a new case, staff can act on it", () => {
@@ -221,7 +222,7 @@ describe("cases", () => {
       cy.focused().type(user.lastName).wait(500).type("{enter}");
     });
 
-    cy.contains("Filtruj").click();
+    cy.contains("Zastosuj filtr").click();
     cy.contains(caseA.title).click();
     cy.contains(caseA.content);
   });

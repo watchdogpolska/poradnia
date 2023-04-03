@@ -22,70 +22,75 @@
     </style>
 {% endblock %}
 {% block users_content %}
-    <h2>{% trans 'Users' %}</h2>
-    {% if not perms.users.can_view_other %}
-        <p>
-            {% trans "You don't have access to data of all our users. Mostly you have access to staff and own profile." %}
-        </p>
-    {% endif %}
+<div class="row">
+    <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+        <h2>{% trans 'Users' %}</h2>
+        {% if not perms.users.can_view_other %}
+            <p>
+                {% trans "You don't have access to data of all our users. Mostly you have access to staff and own profile." %}
+            </p>
+        {% endif %}
 
-    <div class="row">
-        {% crispy filter.form %}
-        <ul class="nav nav-tabs" id="user-nav-tabs">
-            {% for key, value in is_staff.choices %}
-                <li role="presentation"{% ifequal key is_staff.selected %} class="active"{% endifequal %}><a
-                        href="?{% query_update is_staff=key page='' %}">{{ value.0 }}</a></li>
-            {% endfor %}
-        </ul>
-    </div>
+        <div class="row">
+            {% crispy filter.form %}
+            <ul class="nav nav-tabs" id="user-nav-tabs">
+                {% for key, value in is_staff.choices %}
+                    <li role="presentation"{% ifequal key is_staff.selected %} class="active"{% endifequal %}><a
+                            href="?{% query_update is_staff=key page='' %}">{{ value.0 }}</a></li>
+                {% endfor %}
+            </ul>
+        </div>
 
-    <table class="table table-condensed table-users">
-        <thead>
-        <tr>
-            <th class="user">{% trans 'User' %}</th>
-            <th class="client_cases">{% trans 'Client cases' %}</th>
-            {% if perms.cases.can_assign %}
-                <th class="free_cases">{% trans 'Assigned cases sum' %}</th>
-                <th class="free_cases">{% trans 'Free' %}</th>
-                <th class="assigned_cases">{% trans 'Active' %}</th>
-                <th class="closed_cases">{% trans 'Closed' %}</th>
-            {% endif %}
-        </tr>
-        </thead>
-        <tbody>
-        {% for user in object_list %}
-            <tr {% if user.is_staff %}class="staff"{% endif %}>
-                <td>
-                    <a href="{% url 'users:detail' user.username %}">
-                        <!--TODO - handle table-users style in a css file -->
-                        <div style="height:100%;width:100%">
-                            <img src="{% get_avatar_url user %}"> {{ user.get_nicename }}
-                        </div>
-                    </a>
-                </td>
-                <td>
-                    {{ user.case_count }}
-                </td>
+        <table class="table table-condensed table-users">
+            <thead>
+            <tr>
+                <th class="user">{% trans 'User' %}</th>
+                <th class="client_cases">{% trans 'Client cases' %}</th>
                 {% if perms.cases.can_assign %}
-                    <td>
-                        {{ user.case_assigned_sum }}
-                    </td>
-                    <td>
-                        {{ user.case_assigned_free }}
-                    </td>
-                    <td>
-                        {{ user.case_assigned_active }}
-                    </td>
-                    <td>
-                        {{ user.case_assigned_closed }}
-                    </td>
+                    <th class="free_cases">{% trans 'Assigned cases sum' %}</th>
+                    <th class="free_cases">{% trans 'Free' %}</th>
+                    <th class="assigned_cases">{% trans 'Active' %}</th>
+                    <th class="closed_cases">{% trans 'Closed' %}</th>
                 {% endif %}
             </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            {% for user in object_list %}
+                <tr {% if user.is_staff %}class="staff"{% endif %}>
+                    <td>
+                        <a href="{% url 'users:detail' user.username %}">
+                            <!--TODO - handle table-users style in a css file -->
+                            <div style="height:100%;width:100%">
+                                <img src="{% get_avatar_url user %}"> {{ user.get_nicename }}
+                            </div>
+                        </a>
+                    </td>
+                    <td>
+                        {{ user.case_count }}
+                    </td>
+                    {% if perms.cases.can_assign %}
+                        <td>
+                            {{ user.case_assigned_sum }}
+                        </td>
+                        <td>
+                            {{ user.case_assigned_free }}
+                        </td>
+                        <td>
+                            {{ user.case_assigned_active }}
+                        </td>
+                        <td>
+                            {{ user.case_assigned_closed }}
+                        </td>
+                    {% endif %}
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
 
-    <div class="row text-center">
-        {% bootstrap_paginate page_obj show_first_last="true" %}
+        <div class="row text-center">
+            {% bootstrap_paginate page_obj show_first_last="true" %}
+        </div>
     </div>
+</div>
+
 {% endblock %}

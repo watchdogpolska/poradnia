@@ -1,5 +1,6 @@
-{% load i18n %}
+{% load staticfiles i18n tinycontent_tags poradnia_tags %}
 <div class="sidebar-header">
+    {% app_mode %}
     <a href="{% url 'home' %}">
         <div class="logo"></div>
         <p>Poradnia</p>
@@ -25,5 +26,16 @@
 {% include 'users/_sidebar.html' %}
 {% include 'advicer/_sidebar.html' %}
 {% include 'cases/_sidebar.html' %}
+<div class="footer row">
+    {% tinycontent 'sponsors_note' %}
+        <div class="col-xs-12">
+            <p class="text-center">
+                <img src="{% static 'images/baner.png' %}" alt="" class="img-responsive">
+                Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
+                finansowanego z Funduszy EOG.
+            </p>
+        </div>
+    {% endtinycontent %}
+</div>
 {% block extra_sidebar %}
 {% endblock %}

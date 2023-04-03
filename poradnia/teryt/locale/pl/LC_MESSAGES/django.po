@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-16 22:51+0200\n"
+"POT-Creation-Date: 2023-04-03 17:35+0200\n"
 "PO-Revision-Date: 2017-08-13 06:29+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: \n"
@@ -20,111 +20,111 @@ msgstr ""
 "%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Generator: Poedit 1.8.7.1\n"
 
-#: templates/teryt/_voivodeship_map.svg.html:20
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:20
 msgid "Subcarpathian"
 msgstr "Podkarpackie"
 
-#: templates/teryt/_voivodeship_map.svg.html:26
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:26
 msgid "Lesser Poland"
 msgstr "Małopolskie"
 
-#: templates/teryt/_voivodeship_map.svg.html:32
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:32
 msgid "Silesian"
 msgstr "Śląskie"
 
-#: templates/teryt/_voivodeship_map.svg.html:38
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:38
 msgid "Opole"
 msgstr "Opolskie"
 
-#: templates/teryt/_voivodeship_map.svg.html:44
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:44
 msgid "Lower Silesian"
 msgstr "Dolnośląskie"
 
-#: templates/teryt/_voivodeship_map.svg.html:50
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:50
 msgid "Świętokrzyskie"
 msgstr "Świętokrzyskie"
 
-#: templates/teryt/_voivodeship_map.svg.html:56
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:56
 msgid "Lublin"
 msgstr "Lubelskie"
 
-#: templates/teryt/_voivodeship_map.svg.html:62
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:62
 msgid "Łódź"
 msgstr "Łódzkie"
 
-#: templates/teryt/_voivodeship_map.svg.html:68
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:68
 msgid "Mazovian"
 msgstr "Mazowieckie"
 
-#: templates/teryt/_voivodeship_map.svg.html:74
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:74
 msgid "Greater Poland"
 msgstr "Wielkopolska"
 
-#: templates/teryt/_voivodeship_map.svg.html:80
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:80
 msgid "Lubusz"
 msgstr "Lubuskie"
 
-#: templates/teryt/_voivodeship_map.svg.html:86
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:86
 msgid "Kuyavian-Pomeranian"
 msgstr "Kujawsko-pomorskie"
 
-#: templates/teryt/_voivodeship_map.svg.html:92
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:92
 msgid "Podlaskie"
 msgstr "Pomorskie"
 
-#: templates/teryt/_voivodeship_map.svg.html:98
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:98
 msgid "West Pomeranian"
 msgstr "Zachodniopomorskie"
 
-#: templates/teryt/_voivodeship_map.svg.html:104
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:104
 msgid "Warmian-Masurian"
 msgstr "Warmińskomazurskie"
 
-#: templates/teryt/_voivodeship_map.svg.html:110
+#: poradnia/teryt/templates/teryt/_voivodeship_map.svg.html:110
 msgid "Pomeranian"
 msgstr "Pomorskie"
 
-#: templates/teryt/jst_detail.html:43
+#: poradnia/teryt/templates/teryt/jst_detail.html:43
 msgid "Voivodeships"
 msgstr "Województwa"
 
-#: templates/teryt/jst_detail.html:48
+#: poradnia/teryt/templates/teryt/jst_detail.html:48
 msgid "Subordinate units"
 msgstr "Jednostki podrzędne"
 
-#: templates/teryt/jst_detail.html:62
+#: poradnia/teryt/templates/teryt/jst_detail.html:62
 msgid "Advices"
 msgstr "Porady"
 
-#: templates/teryt/jst_detail.html:71
+#: poradnia/teryt/templates/teryt/jst_detail.html:71
 msgid "Cases"
 msgstr "Sprawy"
 
-#: templates/teryt/jst_list.html:6
+#: poradnia/teryt/templates/teryt/jst_list.html:6
 msgid "Voivodeship"
 msgstr "Województwa"
 
-#: templates/teryt/jst_list.html:7
+#: poradnia/teryt/templates/teryt/jst_list.html:7
 msgid "Select voivodeship."
 msgstr "Wybierz województwo"
 
-#: urls.py:12
+#: poradnia/teryt/urls.py:12
 msgid "^(?P<slug>[\\w-]+)$"
 msgstr "^(?P<slug>[\\w-]+)$"
 
-#: urls.py:13 urls.py:14
+#: poradnia/teryt/urls.py:13 poradnia/teryt/urls.py:14
 msgid "^$"
 msgstr "^$"
 
-#: urls.py:16
+#: poradnia/teryt/urls.py:16
 msgid "^voivodeship-autocomplete/$"
 msgstr "^wojewodztwo-autouzupelnianie/$"
 
-#: urls.py:21
+#: poradnia/teryt/urls.py:21
 msgid "^county-autocomplete/$"
 msgstr "^powiat-autouzupelnianie/$"
 
-#: urls.py:26
+#: poradnia/teryt/urls.py:26
 msgid "^community-autocomplete/$"
 msgstr "^gminy-autouzupelnianie/$"
 
