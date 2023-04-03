@@ -237,9 +237,8 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         html = '<table class="table table-bordered compact" style="max-width: 70%;">'
         for field in fields:
             try:
-                value = getattr(obj, field)
+                value = getattr(obj, field) or ""
                 if field == "text":
-                    # value = obj.render_as_html()
                     value = mark_safe(linebreaksbr(value.replace("\r", "")))
                 elif isinstance(value, datetime.datetime):
                     value = timezone.localtime(value).strftime("%Y-%m-%d %H:%M:%S")
