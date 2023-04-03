@@ -12,6 +12,7 @@ from teryt_tree.dal_ext.filters import AreaMultipleFilter
 
 from poradnia.cases.models import Case
 from poradnia.teryt.models import JST
+from poradnia.utils.mixins import FormattedDatetimeMixin
 
 
 class AbstractCategory(models.Model):
@@ -48,7 +49,7 @@ class InstitutionKind(AbstractCategory):
         verbose_name_plural = _("Institution kinds")
 
 
-class AdviceQuerySet(QuerySet):
+class AdviceQuerySet(FormattedDatetimeMixin, QuerySet):
     def for_user(self, user):
         if user.has_perm("advicer.can_view_all_advices"):
             return self
@@ -70,11 +71,6 @@ class AdviceQuerySet(QuerySet):
             return self
         else:
             return AreaMultipleFilter.filter_area_in(self, jsts, "jst")
-
-    def with_formatted_created_on(self):
-        return self.annotate(
-            created_on_str=Cast("created_on", output_field=CharField())
-        )
 
     def with_case_name(self):
         return self.annotate(case_name=Cast("case__name", output_field=CharField()))
@@ -112,9 +108,6 @@ class AdviceQuerySet(QuerySet):
                 output_field=CharField(),
             ),
         )
-
-    def with_formatted_grant_on(self):
-        return self.annotate(grant_on_str=Cast("grant_on", output_field=CharField()))
 
     def with_helped_str(self):
         return self.annotate(

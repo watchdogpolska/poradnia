@@ -29,6 +29,7 @@ from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
+from poradnia.utils.mixins import FormattedDatetimeMixin
 
 CASE_PK_RE = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
 
@@ -46,7 +47,7 @@ def delete_files_for_cases(cases):
     delete_qs(Letter.objects.filter(case__in=cases), "eml")
 
 
-class CaseQuerySet(QuerySet):
+class CaseQuerySet(FormattedDatetimeMixin, QuerySet):
     def for_assign(self, user):
         return self.filter(
             caseuserobjectpermission__user=user,
@@ -131,14 +132,6 @@ class CaseQuerySet(QuerySet):
         return self.annotate(
             # TODO add explicit datetime formatting with TZ for MySql
             deadline_str=Cast("deadline__time", output_field=CharField())
-        )
-
-    def with_formatted_last_send(self):
-        return self.annotate(last_send_str=Cast("last_send", output_field=CharField()))
-
-    def with_formatted_created_on(self):
-        return self.annotate(
-            created_on_str=Cast("created_on", output_field=CharField())
         )
 
     def area(self, jst):

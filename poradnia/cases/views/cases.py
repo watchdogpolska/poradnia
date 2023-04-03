@@ -266,9 +266,9 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
         return (
             qs.for_user(user=self.request.user)
+            .with_formatted_datetime('created_on')
+            .with_formatted_datetime('last_send')
             .with_formatted_deadline()
-            .with_formatted_last_send()
-            .with_formatted_created_on()
         )
 
 

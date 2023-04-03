@@ -1,7 +1,8 @@
 from functools import reduce
 
 from django.core.exceptions import ImproperlyConfigured
-from django.db.models import Q
+from django.db.models import Q, CharField
+from django.db.models.functions import Cast
 from django.utils.translation import gettext_lazy as _
 
 
@@ -38,3 +39,9 @@ class CrispyApplyFilterMixin:
         self._form.helper.form_method = "get"
         self._form.helper.layout.append(Submit("filter", _("Apply Filter")))
         return self._form
+
+class FormattedDatetimeMixin:
+    def with_formatted_datetime(self, field_name):
+        return self.annotate(
+            **{f'{field_name}_str': Cast(field_name, output_field=CharField())}
+        )

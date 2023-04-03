@@ -17,6 +17,7 @@ from poradnia.cases.models import Case
 from poradnia.cases.utils import get_users_with_perm
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from poradnia.users.models import User
+from poradnia.utils.mixins import FormattedDatetimeMixin
 
 from .templatetags.format_text import format_text
 from .utils import date_random_path
@@ -24,7 +25,7 @@ from .utils import date_random_path
 logger = logging.getLogger(__name__)
 
 
-class LetterQuerySet(AbstractRecordQuerySet):
+class LetterQuerySet(FormattedDatetimeMixin, AbstractRecordQuerySet):
     def for_user(self, user):
         qs = super().for_user(user)
         if not user.is_staff:
@@ -56,12 +57,6 @@ class LetterQuerySet(AbstractRecordQuerySet):
             month=Func(F("created_on"), function="month", output_field=IntegerField())
         ).annotate(
             year=Func(F("created_on"), function="year", output_field=IntegerField())
-        )
-
-    # TODO - move to Mixin and reuse in Case and Advice
-    def with_formatted_created_on(self):
-        return self.annotate(
-            created_on_str=Cast("created_on", output_field=CharField())
         )
 
 

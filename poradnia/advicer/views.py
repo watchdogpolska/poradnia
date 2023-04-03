@@ -184,12 +184,12 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
         return (
             qs.for_user(user=self.request.user)
-            .with_formatted_created_on()
+            .with_formatted_datetime('created_on')
             .with_case_name()
             .with_person_kind_name()
             .with_institution_kind_name()
             .with_advicer_str()
-            .with_formatted_grant_on()
+            .with_formatted_datetime('grant_on')
             .with_jst_name_str()
         )
 
