@@ -164,7 +164,7 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
     column_defs = [
         AjaxDatatableView.render_row_tools_column_def(),
-        {"name": "id", "visible": True, "title": "Id"},
+        {"name": "id", "visible": False, "title": "Id"},
         {
             "name": "created_on_str",
             "visible": True,
