@@ -1,8 +1,8 @@
 from functools import reduce
 
 from django.core.exceptions import ImproperlyConfigured
-from django.db.models import Q, CharField
-from django.db.models.functions import Cast
+from django.db.models import Q
+from django.db.models.expressions import RawSQL
 from django.utils.translation import gettext_lazy as _
 
 
@@ -40,8 +40,16 @@ class CrispyApplyFilterMixin:
         self._form.helper.layout.append(Submit("filter", _("Apply Filter")))
         return self._form
 
+
 class FormattedDatetimeMixin:
-    def with_formatted_datetime(self, field_name):
-        return self.annotate(
-            **{f'{field_name}_str': Cast(field_name, output_field=CharField())}
+    def with_formatted_datetime(self, field_name, timezone="UTC"):
+        model = self.model
+        table_name = model._meta.db_table
+        expr = (
+            f"CONVERT_TZ({table_name}.{field_name}, @@session.time_zone, '{timezone}')"
         )
+        formatted_field_name = f"{field_name}_str"
+        formatted_field_expr = RawSQL(
+            f"DATE_FORMAT({expr}, '%%Y-%%m-%%d %%H:%%i:%%s')", []
+        )
+        return self.annotate(**{formatted_field_name: formatted_field_expr})

@@ -12,6 +12,7 @@ from dal import autocomplete
 from django.db.models import Q
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
+from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DetailView, TemplateView, UpdateView
@@ -184,12 +185,12 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
         return (
             qs.for_user(user=self.request.user)
-            .with_formatted_datetime('created_on')
+            .with_formatted_datetime("created_on", timezone.get_default_timezone())
             .with_case_name()
             .with_person_kind_name()
             .with_institution_kind_name()
             .with_advicer_str()
-            .with_formatted_datetime('grant_on')
+            .with_formatted_datetime("grant_on", timezone.get_default_timezone())
             .with_jst_name_str()
         )
 

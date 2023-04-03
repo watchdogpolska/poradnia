@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse
+from django.utils import timezone
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
@@ -266,8 +267,8 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
         return (
             qs.for_user(user=self.request.user)
-            .with_formatted_datetime('created_on')
-            .with_formatted_datetime('last_send')
+            .with_formatted_datetime("created_on", timezone.get_default_timezone())
+            .with_formatted_datetime("last_send", timezone.get_default_timezone())
             .with_formatted_deadline()
         )
 
