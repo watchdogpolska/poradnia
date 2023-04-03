@@ -108,6 +108,8 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "case_name",
             "visible": True,
+            "foreign_field": "case__name",
+            "defaultContent": "",
             "title": (_("Case") + " - " + _("Subject")),
         },
         {
@@ -186,7 +188,6 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_datetime("created_on", timezone.get_default_timezone())
-            .with_case_name()
             .with_person_kind_name()
             .with_institution_kind_name()
             .with_advicer_str()

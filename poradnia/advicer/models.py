@@ -72,9 +72,6 @@ class AdviceQuerySet(FormattedDatetimeMixin, QuerySet):
         else:
             return AreaMultipleFilter.filter_area_in(self, jsts, "jst")
 
-    def with_case_name(self):
-        return self.annotate(case_name=Cast("case__name", output_field=CharField()))
-
     def with_person_kind_name(self):
         return self.annotate(
             person_kind_name=Cast("person_kind__name", output_field=CharField())
