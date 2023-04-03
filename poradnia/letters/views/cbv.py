@@ -171,6 +171,11 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Created on"),
         },
         {
+            "name": "created_by_pretty_name",
+            "visible": True,
+            "title": _("Created by"),
+        },
+        {
             "name": "name",
             "visible": True,
             "title": _("Letter Subject"),
@@ -215,8 +220,10 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
     def get_initial_queryset(self, request=None):
         qs = super().get_initial_queryset(request).prefetch_related()
-        return qs.for_user(user=self.request.user).with_formatted_datetime(
-            "created_on", timezone.get_default_timezone()
+        return (
+            qs.for_user(user=self.request.user)
+            .with_formatted_datetime("created_on", timezone.get_default_timezone())
+            .with_user_pretty_name_str("created_by")
         )
 
     def render_row_details(self, pk, request=None):
