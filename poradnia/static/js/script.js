@@ -63613,6 +63613,19 @@ window.AjaxDatatableViewUtils = (function() {
             $("#tableWrapper").css({
                 maxHeight: maxHeight - 0,
             });
+            // Subscribe "initComplete" event
+            $('#datatable_cases').on('initComplete', function(event, table ) {
+                // Code to resize input fields
+                const tableWrapper = $("#tableWrapper");
+                const headerCells = tableWrapper.find("th");
+                headerCells.each(function() {
+                    const input = $(this).find("input[type=text]");
+                    $(this).css("padding", "0");
+                    input.css("width", "100%");
+                    input.css("box-sizing", "border-box");
+                });
+            });
+            // Initialize table
             AjaxDatatableViewUtils.initialize_table(
                 $('#datatable_cases'),
                 "/sprawy/case_table_ajax_data/",
@@ -63682,6 +63695,19 @@ window.AjaxDatatableViewUtils = (function() {
             $("#tableWrapper").css({
                 maxHeight: maxHeight - 0,
             });
+            // Subscribe "initComplete" event
+            $('#datatable_advices').on('initComplete', function(event, table ) {
+                // Code to resize input fields
+                const tableWrapper = $("#tableWrapper");
+                const headerCells = tableWrapper.find("th");
+                headerCells.each(function() {
+                    const input = $(this).find("input[type=text]");
+                    $(this).css("padding", "0");
+                    input.css("width", "100%");
+                    input.css("box-sizing", "border-box");
+                });
+            });
+            // Initialize table
             AjaxDatatableViewUtils.initialize_table(
                 $('#datatable_advices'),
                 "/porady/advice_table_ajax_data/",
@@ -63750,6 +63776,7 @@ window.AjaxDatatableViewUtils = (function() {
             });
             // Subscribe "initComplete" event
             $('#datatable_letters').on('initComplete', function(event, table ) {
+                // Code to resize input fields
                 const tableWrapper = $("#tableWrapper");
                 const headerCells = tableWrapper.find("th");
                 headerCells.each(function() {
