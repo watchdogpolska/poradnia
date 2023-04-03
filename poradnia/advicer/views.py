@@ -127,7 +127,7 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Institution kind"),
         },
         {
-            "name": "advicer_str",
+            "name": "advicer_pretty_name",
             "visible": True,
             "title": _("Advicer"),
         },
@@ -192,7 +192,7 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_datetime("created_on", timezone.get_default_timezone())
-            .with_advicer_str()
+            .with_user_pretty_name_str("advicer")
             .with_formatted_datetime("grant_on", timezone.get_default_timezone())
             .with_jst_name_str()
         )

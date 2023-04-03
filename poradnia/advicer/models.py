@@ -3,7 +3,6 @@ from django.conf import settings
 from django.db import models
 from django.db.models import Case as djCase
 from django.db.models import CharField, F, Q, Value, When
-from django.db.models.functions import Concat
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.timezone import now
@@ -12,7 +11,7 @@ from teryt_tree.dal_ext.filters import AreaMultipleFilter
 
 from poradnia.cases.models import Case
 from poradnia.teryt.models import JST
-from poradnia.utils.mixins import FormattedDatetimeMixin
+from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 
 
 class AbstractCategory(models.Model):
@@ -49,7 +48,7 @@ class InstitutionKind(AbstractCategory):
         verbose_name_plural = _("Institution kinds")
 
 
-class AdviceQuerySet(FormattedDatetimeMixin, QuerySet):
+class AdviceQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
     def for_user(self, user):
         if user.has_perm("advicer.can_view_all_advices"):
             return self
@@ -71,28 +70,6 @@ class AdviceQuerySet(FormattedDatetimeMixin, QuerySet):
             return self
         else:
             return AreaMultipleFilter.filter_area_in(self, jsts, "jst")
-
-    def with_advicer_str(self):
-        return self.annotate(
-            full_name=Concat(
-                F("advicer__first_name"), Value(" "), F("advicer__last_name")
-            ),
-            advicer_str=djCase(
-                When(
-                    advicer__is_staff=True,
-                    then=Concat(F("full_name"), Value(" (team)")),
-                ),
-                When(
-                    (
-                        Q(advicer__first_name__isnull=True)
-                        & Q(advicer__last_name__isnull=True)
-                    ),
-                    then=F("advicer__username"),
-                ),
-                default=Concat(F("full_name"), Value(" (ext)")),
-                output_field=CharField(),
-            ),
-        )
 
     def with_helped_str(self):
         return self.annotate(
