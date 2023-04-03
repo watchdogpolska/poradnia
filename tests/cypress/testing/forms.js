@@ -51,10 +51,11 @@ const fillPikaForm = (cy) => (form, { year, month, day, hour, minute }) => {
   // Pika seems to close upon selecting a day.
   // Start with time selection, select day in very the last step.
   // All items are `toString`ed because cypress expects an exact match upon calling `select`.
-  cy.get(".pika-select-hour").select(hour.toString());
-  cy.get(".pika-select-minute").select(minute.toString());
-  cy.get(".pika-select-month").select(month.toString());
-  cy.get(".pika-select-year").select(year.toString());
+  // applied {force: true} as per https://stackoverflow.com/questions/60660879/cypress-and-select2-jquery-plugin
+  cy.get(".pika-select-hour").select(hour.toString(), {force: true});
+  cy.get(".pika-select-minute").select(minute.toString(), {force: true});
+  cy.get(".pika-select-month").select(month.toString(), {force: true});
+  cy.get(".pika-select-year").select(year.toString(), {force: true});
   cy.get(".pika-table").contains(day).click();
 };
 
@@ -232,7 +233,7 @@ const submitAdviceFilterForm = (cy) => (
     }
   });
 
-  cy.contains("Filtruj").click();
+  cy.contains("Zastosuj filtr").click();
 };
 
 // Credits: https://stackoverflow.com/a/56343368/7742560

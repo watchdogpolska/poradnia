@@ -16,7 +16,7 @@ class FeedbackFilter(django_filters.FilterSet):
         self._form.helper = FormHelper(self._form)
         self._form.helper.form_class = "form-inline"
         self._form.helper.form_method = "get"
-        self._form.helper.layout.append(Submit("filter", _("Filter")))
+        self._form.helper.layout.append(Submit("filter", _("Apply Filter")))
         return self._form
 
     class Meta:

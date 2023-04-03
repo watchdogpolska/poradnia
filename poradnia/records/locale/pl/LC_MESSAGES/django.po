@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-16 22:46+0200\n"
+"POT-Creation-Date: 2023-04-03 17:35+0200\n"
 "PO-Revision-Date: 2020-07-16 22:46+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
@@ -17,15 +17,15 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /records/locale/en/LC_MESSAGES/django.po\n"
 
-#: apps.py:7 models.py:73
+#: poradnia/records/apps.py:7 poradnia/records/models.py:83
 msgid "Records"
 msgstr "Wpis"
 
-#: models.py:72
+#: poradnia/records/models.py:82
 msgid "Record"
 msgstr "Wpis"
 
-#: models.py:114
+#: poradnia/records/models.py:124
 #, python-brace-format
 msgid "{object_name} (#{pk}) in case #{case_id}"
 msgstr "{object_name} (#{pk}) w sprawie #{case_id}"

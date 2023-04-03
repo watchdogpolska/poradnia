@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-16 22:48+0200\n"
+"POT-Creation-Date: 2023-04-03 17:35+0200\n"
 "PO-Revision-Date: 2017-09-16 00:18+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: \n"
@@ -19,18 +19,18 @@ msgstr ""
 "|| n%100>=20) ? 1 : 2);\n"
 "X-Generator: Poedit 1.8.7.1\n"
 
-#: apps.py:7
+#: poradnia/navsearch/apps.py:7
 msgid "Navigation search"
 msgstr "Nawigacyjna wyszukiwarka"
 
-#: views.py:46
+#: poradnia/navsearch/views.py:46
 msgid "Users"
 msgstr "Użytkownicy / użytkowniczki"
 
-#: views.py:52
+#: poradnia/navsearch/views.py:52
 msgid "Cases by ID"
 msgstr "Sprawy według numeru"
 
-#: views.py:58
+#: poradnia/navsearch/views.py:58
 msgid "Cases by name"
 msgstr "Sprawy według tytułu"

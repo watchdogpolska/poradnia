@@ -4,10 +4,11 @@ from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import PermissionDenied
+from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
 from django.db import models
 from django.db.models import (
     BooleanField,
+    CharField,
     Count,
     F,
     Func,
@@ -16,6 +17,7 @@ from django.db.models import (
     Q,
     expressions,
 )
+from django.db.models.functions import Cast
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save, pre_delete
 from django.urls import reverse
@@ -27,6 +29,7 @@ from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
+from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 
 CASE_PK_RE = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
 
@@ -44,7 +47,7 @@ def delete_files_for_cases(cases):
     delete_qs(Letter.objects.filter(case__in=cases), "eml")
 
 
-class CaseQuerySet(QuerySet):
+class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
     def for_assign(self, user):
         return self.filter(
             caseuserobjectpermission__user=user,
@@ -125,6 +128,12 @@ class CaseQuerySet(QuerySet):
             )
         )
 
+    def with_formatted_deadline(self):
+        return self.annotate(
+            # TODO add explicit datetime formatting with TZ for MySql
+            deadline_str=Cast("deadline__time", output_field=CharField())
+        )
+
     def area(self, jst):
         return self.filter(
             advice__jst__tree_id=jst.tree_id,
@@ -193,6 +202,17 @@ class Case(models.Model):
 
     def get_absolute_url(self):
         return reverse("cases:detail", kwargs={"pk": str(self.pk)})
+
+    def render_case_link(self):
+        url = self.get_absolute_url()
+        label = self.name
+        return f'<a href="{url}">{label}</a>'
+
+    def render_case_advice_link(self):
+        try:
+            return self.advice.render_advice_link()
+        except ObjectDoesNotExist:
+            return ""
 
     def get_edit_url(self):
         return reverse("cases:edit", kwargs={"pk": str(self.pk)})
