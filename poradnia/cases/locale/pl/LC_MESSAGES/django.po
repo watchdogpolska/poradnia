@@ -1,458 +1,518 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-30 20:11+0100\n"
-"PO-Revision-Date: \n"
-"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"POT-Creation-Date: 2023-04-03 17:35+0200\n"
+"PO-Revision-Date: 2023-04-03 17:36+0124\n"
+"Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.8.7.1\n"
+"X-Translated-Using: django-rosetta 0.9.8\n"
 
-#: apps.py:7 models.py:210 templates/cases/_case_form_permission.html:8
-#: templates/cases/_sidebar.html:3 templates/cases/base.html:3
-#: templates/cases/case_close.html:7 templates/cases/case_detail.html:30
-#: templates/cases/case_form.html:8 templates/cases/case_merge.html:7
-#: templates/cases/case_permission_remove_confirm.html:6
+#: poradnia/cases/apps.py:7 poradnia/cases/models.py:241
+#: poradnia/cases/templates/cases/_case_form_permission.html:8
+#: poradnia/cases/templates/cases/_sidebar.html:3
+#: poradnia/cases/templates/cases/base.html:3
+#: poradnia/cases/templates/cases/case_close.html:7
+#: poradnia/cases/templates/cases/case_form.html:8
+#: poradnia/cases/templates/cases/case_merge.html:7
+#: poradnia/cases/templates/cases/case_permission_remove_confirm.html:6
 msgid "Cases"
 msgstr "Sprawy"
 
-#: filters.py:14
+#: poradnia/cases/filters.py:14
 msgid "None"
 msgstr "Brak"
 
-#: filters.py:30
+#: poradnia/cases/filters.py:30
 msgid "Has access by"
 msgstr "Osoba przypisana"
 
-#: filters.py:39 filters.py:93 models.py:134
-#: templates/cases/case_filter.html:40
+#: poradnia/cases/filters.py:41 poradnia/cases/filters.py:95
+#: poradnia/cases/models.py:154
+#: poradnia/cases/templates/cases/case_filter.html:41
+#: poradnia/cases/views/cases.py:180
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: filters.py:40 filters.py:61 models.py:141
-#: templates/cases/case_filter.html:39
+#: poradnia/cases/filters.py:42 poradnia/cases/filters.py:63
+#: poradnia/cases/models.py:161
+#: poradnia/cases/templates/cases/case_filter.html:40
+#: poradnia/cases/views/cases.py:185
 msgid "Client"
 msgstr "Klient"
 
-#: filters.py:42
+#: poradnia/cases/filters.py:44
 msgid "Replied"
 msgstr "Odpowiedziana"
 
-#: filters.py:43
+#: poradnia/cases/filters.py:45
+#: poradnia/cases/templates/cases/case_table.html:32
+#: poradnia/cases/views/cases.py:209
 msgid "Status"
 msgstr "Status"
 
-#: filters.py:44
+#: poradnia/cases/filters.py:46
 msgid "Advice registered"
 msgstr "Zarejestrowana porada"
 
-#: filters.py:59 models.py:157 templates/cases/case_detail.html:101
-#: templates/cases/case_filter.html:40
+#: poradnia/cases/filters.py:61 poradnia/cases/models.py:177
+#: poradnia/cases/templates/cases/case_detail.html:102
+#: poradnia/cases/templates/cases/case_filter.html:41
 msgid "Dead-line"
 msgstr "Termin"
 
-#: filters.py:60 filters.py:102
+#: poradnia/cases/filters.py:62 poradnia/cases/filters.py:104
 msgid "ID"
 msgstr "Numer"
 
-#: filters.py:62 filters.py:94 filters.py:103 models.py:166
+#: poradnia/cases/filters.py:64 poradnia/cases/filters.py:96
+#: poradnia/cases/filters.py:105 poradnia/cases/models.py:186
+#: poradnia/cases/views/cases.py:175
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: filters.py:63 filters.py:95 filters.py:101 models.py:144
+#: poradnia/cases/filters.py:65 poradnia/cases/filters.py:97
+#: poradnia/cases/filters.py:103 poradnia/cases/models.py:164
+#: poradnia/cases/views/cases.py:195
 msgid "Last send"
 msgstr "Ostatnia odpowiedź"
 
-#: filters.py:64
+#: poradnia/cases/filters.py:66
 msgid "Default"
 msgstr "Domyślne"
 
-#: filters.py:65 models.py:149
+#: poradnia/cases/filters.py:67 poradnia/cases/models.py:169
 msgid "Last received"
 msgstr "Ostatnio otrzymano"
 
-#: forms.py:55 forms.py:72
+#: poradnia/cases/forms.py:55 poradnia/cases/forms.py:72
 msgid "Grant"
 msgstr "Przyznaj"
 
-#: forms.py:60
+#: poradnia/cases/forms.py:60
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: forms.py:63
+#: poradnia/cases/forms.py:63
 msgid "Permissions group"
 msgstr "Grupa uprawnień"
 
-#: forms.py:92
+#: poradnia/cases/forms.py:97
 msgid "Notify user"
 msgstr "Powiadom użytkownika"
 
-#: forms.py:96 templates/cases/case_close.html:9
-#: templates/cases/case_detail.html:48
+#: poradnia/cases/forms.py:101
+#: poradnia/cases/templates/cases/case_close.html:9
+#: poradnia/cases/templates/cases/case_detail.html:47
 msgid "Close"
 msgstr "Zamknij"
 
-#: forms.py:115
+#: poradnia/cases/forms.py:120
 msgid "Destination case"
 msgstr "Docelowa sprawa"
 
-#: forms.py:120
+#: poradnia/cases/forms.py:125
 msgid ""
 "The selected case will receive all letters, events, etc. from the current "
 "case."
 msgstr ""
 "Wybrana sprawa otrzyma wszystkie listy, wydarzenia itd. z obecnej sprawy."
 
-#: forms.py:127 templates/cases/case_detail.html:56
-#: templates/cases/case_merge.html:9
+#: poradnia/cases/forms.py:132
+#: poradnia/cases/templates/cases/case_detail.html:55
+#: poradnia/cases/templates/cases/case_merge.html:9
 msgid "Merge"
 msgstr "Połącz"
 
-#: forms.py:142
+#: poradnia/cases/forms.py:147
 #, python-brace-format
 msgid "Case #{source} have been merged with case #{target}"
 msgstr "Sprawa #{source} została połączona ze sprawą #{target} ."
 
-#: models.py:128
+#: poradnia/cases/models.py:148
+#: poradnia/cases/templates/cases/case_table.html:34
 msgid "free"
 msgstr "wolna"
 
-#: models.py:129
+#: poradnia/cases/models.py:149
+#: poradnia/cases/templates/cases/case_table.html:38
 msgid "moderated"
 msgstr "moderowana"
 
-#: models.py:130
+#: poradnia/cases/models.py:150
+#: poradnia/cases/templates/cases/case_table.html:36
 msgid "assigned"
 msgstr "przypisana"
 
-#: models.py:131
+#: poradnia/cases/models.py:151
+#: poradnia/cases/templates/cases/case_table.html:40
 msgid "closed"
 msgstr "zamknięta"
 
-#: models.py:133
+#: poradnia/cases/models.py:153
 msgid "Numer sprawy"
 msgstr "Numer sprawy"
 
-#: models.py:143
+#: poradnia/cases/models.py:163 poradnia/cases/views/cases.py:202
 msgid "Letter count"
 msgstr "Liczba listów"
 
-#: models.py:146
+#: poradnia/cases/models.py:166
 msgid "Last action"
 msgstr "Ostatnia czynność"
 
-#: models.py:163
+#: poradnia/cases/models.py:183
 msgid "Created by"
 msgstr "Utworzona przez"
 
-#: models.py:172
+#: poradnia/cases/models.py:192
 msgid "Modified by"
 msgstr "Zmodyfikowane przez"
 
-#: models.py:175
+#: poradnia/cases/models.py:195
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
-#: models.py:177
+#: poradnia/cases/models.py:197
+#: poradnia/cases/templates/cases/case_table.html:44
+#: poradnia/cases/views/cases.py:216
 msgid "Handled"
 msgstr "Obsłużona"
 
-#: models.py:178
+#: poradnia/cases/models.py:198
+#: poradnia/cases/templates/cases/case_table.html:52
+#: poradnia/cases/views/cases.py:223
 msgid "Has project"
 msgstr "Posiada projekt"
 
-#: models.py:209
+#: poradnia/cases/models.py:240
 msgid "Case"
 msgstr "Sprawa"
 
-#: models.py:212
+#: poradnia/cases/models.py:243
 msgid "Can view"
 msgstr "Może widzieć sprawę"
 
-#: models.py:213
+#: poradnia/cases/models.py:244
 msgid "Can assign new permissions"
 msgstr "Może nadawać nowe uprawnienia"
 
-#: models.py:214
+#: poradnia/cases/models.py:245
 msgid "Can send text to client"
 msgstr "Może komunikować z klientem"
 
-#: models.py:215
+#: poradnia/cases/models.py:246
 msgid "Can assign permission"
 msgstr "Może nadawać uprawnienia"
 
-#: models.py:216
+#: poradnia/cases/models.py:247
 msgid "Can add record"
 msgstr "Może dodawać wpisy"
 
-#: models.py:217
+#: poradnia/cases/models.py:248
 msgid "Can change own records"
 msgstr "Może zmieniać własne wpisy"
 
-#: models.py:218
+#: poradnia/cases/models.py:249
 msgid "Can change all records"
 msgstr "Może zmieniać wszystkie wpisy"
 
-#: models.py:219
+#: poradnia/cases/models.py:250
 msgid "Can close case"
 msgstr "Może zamknąć sprawę"
 
-#: models.py:220
+#: poradnia/cases/models.py:251
 msgid "Can merge case"
 msgstr "Może połączyć sprawy"
 
-#: models.py:222
+#: poradnia/cases/models.py:253
 msgid "Can select client"
 msgstr "Może wybierać klienta"
 
-#: models.py:394
+#: poradnia/cases/models.py:426
 msgid "Name"
 msgstr "Nazwa"
 
-#: models.py:396 templates/cases/_case_form_permission.html:10
+#: poradnia/cases/models.py:428
+#: poradnia/cases/templates/cases/_case_form_permission.html:10
 msgid "Permissions"
 msgstr "Uprawnienia"
 
-#: templates/cases/_case_form_permission.html:29
-#: templates/cases/case_detail.html:87
+#: poradnia/cases/templates/cases/_case_form_permission.html:29
+#: poradnia/cases/templates/cases/case_detail.html:88
 msgid "Involved in"
 msgstr "Zaangażowani"
 
-#: templates/cases/_project_badge.html:2
+#: poradnia/cases/templates/cases/_project_badge.html:2
 msgid "Reply to client to remove badge"
 msgstr "Odpowiedź do klienta, aby usunąć oznaczenie"
 
-#: templates/cases/_project_badge.html:3
+#: poradnia/cases/templates/cases/_project_badge.html:3
 msgid "Project"
 msgstr "Projekt"
 
-#: templates/cases/_sidebar.html:6
+#: poradnia/cases/templates/cases/_sidebar.html:6
 msgid "New case"
 msgstr "Nowa sprawa"
 
-#: templates/cases/_sidebar.html:10 templates/cases/case_filter.html:26
+#: poradnia/cases/templates/cases/_sidebar.html:10
+#: poradnia/cases/templates/cases/case_filter.html:26
 msgid "Cases index"
 msgstr "Wykaz spraw"
 
-#: templates/cases/_sidebar.html:16
+#: poradnia/cases/templates/cases/_sidebar.html:14
+msgid "Case table"
+msgstr "Tabela spraw"
+
+#: poradnia/cases/templates/cases/_sidebar.html:20
 msgid "Event calendar"
 msgstr "Kalendarz wydarzeń"
 
-#: templates/cases/_sidebar.html:24
+#: poradnia/cases/templates/cases/_sidebar.html:29
 msgid "Letters"
 msgstr "Korespondencja"
 
-#: templates/cases/base.html:9
+#: poradnia/cases/templates/cases/_sidebar.html:34
+#| msgid "Letters"
+msgid "Letters table"
+msgstr "Tabela korespondencji"
+
+#: poradnia/cases/templates/cases/base.html:9
 msgid "Show quote"
 msgstr "Pokaż cytat"
 
-#: templates/cases/base.html:10
+#: poradnia/cases/templates/cases/base.html:10
 msgid "Hide quote"
 msgstr "Ukryj cytat"
 
-#: templates/cases/case_detail.html:11
+#: poradnia/cases/templates/cases/case_detail.html:11
 msgid "add another"
 msgstr "dodaj kolejne"
 
-#: templates/cases/case_detail.html:12
+#: poradnia/cases/templates/cases/case_detail.html:12
 msgid "remove"
 msgstr "usuń"
 
-#: templates/cases/case_detail.html:44 templates/cases/case_form.html:10
-#: templates/cases/case_permission_remove_confirm.html:8
+#: poradnia/cases/templates/cases/case_detail.html:43
+#: poradnia/cases/templates/cases/case_form.html:10
+#: poradnia/cases/templates/cases/case_permission_remove_confirm.html:8
 msgid "Edit"
 msgstr "Edytuj"
 
-#: templates/cases/case_detail.html:52
+#: poradnia/cases/templates/cases/case_detail.html:51
 msgid "Delete"
 msgstr "Usuń"
 
-#: templates/cases/case_detail.html:73
+#: poradnia/cases/templates/cases/case_detail.html:72
 #, python-format
 msgid ""
 "\n"
-"                        Created by <a href=\"%(created_url)s\">"
-"%(created_user)s</a> on\n"
-"                        %(created_on)s for <a href=\"%(client_url)s\">"
-"%(client_user)s</a>"
+"                        Created by <a href=\"%(created_url)s\">%(created_user)s</a> on\n"
+"                        %(created_on)s for <a href=\"%(client_url)s\">%(client_user)s</a>"
 msgstr ""
 "\n"
-"                        Utworzona przez <a href=\"%(created_url)s\">"
-"%(created_user)s</a> o \n"
-"                        %(created_on)s dla <a href=\"%(client_url)s\">"
-"%(client_user)s</a>"
+"                        Utworzona przez <a href=\"%(created_url)s\">%(created_user)s</a> o \n"
+"                        %(created_on)s dla <a href=\"%(client_url)s\">%(client_user)s</a>"
 
-#: templates/cases/case_detail.html:84
+#: poradnia/cases/templates/cases/case_detail.html:85
 msgid "Workflow"
 msgstr "Przepływ pracy"
 
-#: templates/cases/case_detail.html:92
+#: poradnia/cases/templates/cases/case_detail.html:93
 msgid "Last update"
 msgstr "Ostatnia aktualizacja"
 
-#: templates/cases/case_detail.html:103
+#: poradnia/cases/templates/cases/case_detail.html:104
 #, python-format
 msgid ""
 "\n"
-"                                    %(deadline)s at %(naturaltime)s"
+"                                            %(deadline)s at %(naturaltime)s"
 msgstr ""
 "\n"
 "                                    %(deadline)s o %(naturaltime)s"
 
-#: templates/cases/case_detail.html:114
+#: poradnia/cases/templates/cases/case_detail.html:112
 msgid "Metrical data"
 msgstr "Dane metrykalne"
 
-#: templates/cases/case_detail.html:117
+#: poradnia/cases/templates/cases/case_detail.html:115
 msgid "Advice"
 msgstr "Porada"
 
-#: templates/cases/case_detail.html:123
+#: poradnia/cases/templates/cases/case_detail.html:121
 msgid "Create new advice"
 msgstr "Utwórz nową porade"
 
-#: templates/cases/case_detail.html:132
+#: poradnia/cases/templates/cases/case_detail.html:135
 msgid "Assign permissions"
 msgstr "Przyznaj uprawnienia"
 
-#: templates/cases/case_detail.html:134
+#: poradnia/cases/templates/cases/case_detail.html:137
 msgid "..."
 msgstr "..."
 
-#: templates/cases/case_detail.html:151
+#: poradnia/cases/templates/cases/case_detail.html:154
 msgid "No records"
 msgstr "Brak wpisów"
 
-#: templates/cases/case_detail.html:176
+#: poradnia/cases/templates/cases/case_detail.html:183
 #, python-format
 msgid ""
-"The letter can also be sent via <a href=\"mailto:%(email)s\">e-mail address</"
-"a>."
+"The letter can also be sent via <a href=\"mailto:%(email)s\">e-mail "
+"address</a>."
 msgstr ""
-"List może zostać przesłany także z wykorzystaniem <a href=\"mailto:%(email)s"
-"\">poczty elektronicznej</a>."
+"List może zostać przesłany także z wykorzystaniem <a "
+"href=\"mailto:%(email)s\">poczty elektronicznej</a>."
 
-#: templates/cases/case_filter.html:38
+#: poradnia/cases/templates/cases/case_filter.html:39
 msgid "No."
 msgstr "Nr."
 
-#: templates/cases/case_filter.html:45
+#: poradnia/cases/templates/cases/case_filter.html:46
 msgid "Last response"
 msgstr "Ostatnia odpowiedź"
 
-#: templates/cases/case_filter.html:61
+#: poradnia/cases/templates/cases/case_filter.html:62
 msgid "No title"
 msgstr "Brak tytułu"
 
-#: templates/cases/case_filter.html:67
+#: poradnia/cases/templates/cases/case_filter.html:68
 msgid "Case was registered in advicer"
 msgstr "Sprawa została zarejestrowana w rejestrze porad"
 
-#: templates/cases/case_filter.html:97
+#: poradnia/cases/templates/cases/case_filter.html:98
 msgid "No action"
 msgstr "Brak czynności"
 
-#: templates/cases/case_filter.html:105
+#: poradnia/cases/templates/cases/case_filter.html:106
 msgid "No answer"
 msgstr "Brak odpowiedzi"
 
-#: templates/cases/case_filter.html:114
+#: poradnia/cases/templates/cases/case_filter.html:115
 msgid "Legend of status"
 msgstr "Legenda statusów"
 
-#: templates/cases/case_filter.html:115
+#: poradnia/cases/templates/cases/case_filter.html:116
 msgid "Cases have status changed by staff."
 msgstr ""
 "Zgłoszona przez Ciebie sprawa otrzymuje najpierw status \"wolna\". To "
 "znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. "
-"Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na \"przypisana"
-"\". A gdy już Ci pomożemy \"zakończona\"."
+"Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na "
+"\"przypisana\". A gdy już Ci pomożemy \"zakończona\"."
 
-#: templates/cases/case_filter.html:123
+#: poradnia/cases/templates/cases/case_filter.html:124
 msgid "There is no cases."
 msgstr "Tutaj nie ma spraw."
 
-#: templates/cases/case_filter.html:123
+#: poradnia/cases/templates/cases/case_filter.html:124
 msgid "Do more of these!"
 msgstr "Utwórz!"
 
-#: templates/cases/case_form_permission_add.html:4
+#: poradnia/cases/templates/cases/case_form_permission_add.html:4
 msgid "Add new user"
 msgstr "Dodaj nowego użytkownika"
 
-#: templates/cases/case_form_permission_update.html:5
+#: poradnia/cases/templates/cases/case_form_permission_update.html:5
 #, python-format
 msgid "Update permission of %(action_user)s"
 msgstr "Aktualizacja uprawnień użytkownika %(action_user)s"
 
-#: templates/cases/case_form_permission_update.html:8
+#: poradnia/cases/templates/cases/case_form_permission_update.html:8
 msgid "Remove all permission"
 msgstr "Usuń wszystkie uprawnienia"
 
-#: templates/cases/case_permission_remove_confirm.html:9
+#: poradnia/cases/templates/cases/case_permission_remove_confirm.html:9
 msgid "Remove permission"
 msgstr "Usuń uprawnienia"
 
-#: templates/cases/case_permission_remove_confirm.html:14
+#: poradnia/cases/templates/cases/case_permission_remove_confirm.html:14
 msgid "Confirmation of remove permission"
 msgstr "Potwierdzenie usunięcia uprawnień"
 
-#: templates/cases/case_permission_remove_confirm.html:15
+#: poradnia/cases/templates/cases/case_permission_remove_confirm.html:15
 #, python-format
 msgid ""
-"Are you sure you want to remove the permissions on the case \"%(case)s\" for "
-"user %(user)s?"
+"Are you sure you want to remove the permissions on the case \"%(case)s\" for"
+" user %(user)s?"
 msgstr ""
 "Czy jesteś pewien, że chcesz usunąć uprawnienia do sprawy \"%(case)s\" dlla "
 "użytkownika %(user)s?"
 
-#: views/cases.py:72
+#: poradnia/cases/templates/cases/case_table.html:18
+msgid "Case Table"
+msgstr "Tabela Spraw"
+
+#: poradnia/cases/templates/cases/case_table.html:30
+msgid "Filters"
+msgstr "Filtry"
+
+#: poradnia/cases/templates/cases/case_table.html:46
+#: poradnia/cases/templates/cases/case_table.html:54
+msgid "Yes"
+msgstr "Tak"
+
+#: poradnia/cases/templates/cases/case_table.html:48
+#: poradnia/cases/templates/cases/case_table.html:56
+msgid "No"
+msgstr "Nie"
+
+#: poradnia/cases/views/cases.py:77
 msgid "Letter"
 msgstr "List"
 
-#: views/cases.py:78
+#: poradnia/cases/views/cases.py:83
 msgid "Event"
 msgstr "Wydarzenie"
 
-#: views/cases.py:82
+#: poradnia/cases/views/cases.py:87
 msgid "Court Case"
 msgstr "Sprawa sądowa"
 
-#: views/cases.py:149
+#: poradnia/cases/views/cases.py:154
+msgid "Cases search table"
+msgstr "Tabela wyszukiwania spraw"
+
+#: poradnia/cases/views/cases.py:190
+msgid "Deadline"
+msgstr "Termin"
+
+#: poradnia/cases/views/cases.py:285
 #, python-format
 msgid "Successful updated \"%(object)s\"."
 msgstr "Pomyślnie zaktualizowano \"%(object)s”."
 
-#: views/cases.py:163
+#: poradnia/cases/views/cases.py:299
 #, python-format
 msgid "Successfully closed \"%(object)s\"."
 msgstr "Pomyślnie zamknięto \"%(object)s”."
 
-#: views/cases.py:177
+#: poradnia/cases/views/cases.py:313
 #, python-format
 msgid "Successfully merged \"%(object)s\"."
 msgstr "Pomyślnie połączono \"%(object)s”."
 
-#: views/permissions.py:60
+#: poradnia/cases/views/permissions.py:62
 #, python-format
 msgid "Success granted permission of %(user)s to %(case)s"
 msgstr "Nadano uprawnienia %(user)s do sprawy %(case)s"
 
-#: views/permissions.py:106
+#: poradnia/cases/views/permissions.py:108
 #, python-format
 msgid "Updated permission %(user)s to %(case)s!"
 msgstr "Zaktualizowano uprawniania %(user)s do sprawy %(case)s!"
 
-#: views/permissions.py:120
+#: poradnia/cases/views/permissions.py:122
 #, python-brace-format
 msgid "{user} granted permissions from {group}!"
 msgstr "{user} przyznano uprawnienia grupy {group}!"
 
-#: views/permissions.py:167
+#: poradnia/cases/views/permissions.py:169
 #, python-brace-format
 msgid "Removed all permission of \"{user}\" in case \"{case}\""
 msgstr "Usunięto wszystkie uprawnienia \"{user}\" w sprawie \"{case}\""
@@ -475,9 +535,6 @@ msgstr "Usunięto wszystkie uprawnienia \"{user}\" w sprawie \"{case}\""
 
 #~ msgid "Count of cases status assigned"
 #~ msgstr "Liczba spraw, które zostały przypisanych do członka zespołu"
-
-#~ msgid "Cases closed"
-#~ msgstr "Sprawy zamknięte"
 
 #~ msgid "Count of cases status closed"
 #~ msgstr "Liczba spraw zamkniętych"

@@ -39,8 +39,8 @@ DEBUG_TOOLBAR_PANELS = [
     "debug_toolbar.panels.redirects.RedirectsPanel",
 ]
 
-
-INTERNAL_IPS = ("127.0.0.1", "10.0.2.2")
+MY_INTERNAL_IP = env("MY_INTERNAL_IP", default="")
+INTERNAL_IPS = ("127.0.0.1", "10.0.2.2", MY_INTERNAL_IP)
 
 DEBUG_TOOLBAR_CONFIG = {
     "DISABLE_PANELS": ["debug_toolbar.panels.redirects.RedirectsPanel"],

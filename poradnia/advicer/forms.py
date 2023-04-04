@@ -10,7 +10,7 @@ from dal import autocomplete
 from django import forms
 from django.forms import ModelForm
 from django.utils.timezone import now
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 from poradnia.cases.models import Case
 

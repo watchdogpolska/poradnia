@@ -21,13 +21,13 @@
                 {% endif %}
             </div>
             {% endif %}
-            {% if object.html %}
-            <div class="embed-responsive embed-responsive-4by3">
-                <iframe srcdoc="{{object.html|escape}}" sandbox="allow-top-navigation"></iframe>
-            </div>
-            {% else %}
-            <p>{{object.text | format_text}}</p>
-            {% endif %}
+            <div style="max-height: 500px; overflow-y: auto;">
+                {% if object.html %}
+                    {{object.html|safe}}
+                {% else %}
+                    <p>{{object.text|format_text}}</p>
+                {% endif %}
+            </div>    
             {% if object.signature %}
             <blockquote>{{object.signature | linebreaks}}</blockquote>
             {% endif %}

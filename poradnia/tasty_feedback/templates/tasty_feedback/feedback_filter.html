@@ -14,37 +14,37 @@
     <li class="active">{% trans 'Feedback index' %}</li>
 {% endblock %}
 {% block feedback_content %}
-    <h1>{% trans 'Record feedbacks' %}</h1>
-
-    {% crispy filter.form %}
-
-    {% if object_list %}
-        <div class="row">
-            <table class="table table-striped">
-                <thead>
+    <div class="row">
+        <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+        <h1>{% trans 'Record feedbacks' %}</h1>
+        {% crispy filter.form %}
+        {% if object_list %}
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{% trans 'Created date' %}</th>
+                <th>{% trans 'Author' %}</th>
+                <th>{% trans 'Text' %}</th>
+                <th>{% trans 'Status' %}</th>
+                {% block extra_header %}{% endblock %}
+            </tr>
+            </thead>
+            <tbody>
+            {% for object in object_list %}
                 <tr>
-                    <th>{% trans 'Created date' %}</th>
-                    <th>{% trans 'Author' %}</th>
-                    <th>{% trans 'Text' %}</th>
-                    <th>{% trans 'Status' %}</th>
-                    {% block extra_header %}{% endblock %}
+                    <td><a href="{{ object.get_absolute_url }}">{{ object.created }}</a></td>
+                    <td>{{ object.user }}</td>
+                    <td>{{ object.text | linebreaks }}</td>
+                    <td>{{ object.get_status_display }}</td>
+                    {% block extra_row %}{% endblock %}
                 </tr>
-                </thead>
-                <tbody>
-                {% for object in object_list %}
-                    <tr>
-                        <td><a href="{{ object.get_absolute_url }}">{{ object.created }}</a></td>
-                        <td>{{ object.user }}</td>
-                        <td>{{ object.text | linebreaks }}</td>
-                        <td>{{ object.get_status_display }}</td>
-                        {% block extra_row %}{% endblock %}
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-            <div class="text-center">{% bootstrap_paginate page_obj show_first_last="true" %}</div>
-        </div>
-    {% else %}
-        <p>{% trans 'There is no any feedbacks.' %}</p>
-    {% endif %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="text-center">{% bootstrap_paginate page_obj show_first_last="true" %}</div>
+        {% else %}
+            <p>{% trans 'There is no any feedbacks.' %}</p>
+        {% endif %}
+    </div>
+    </div>
 {% endblock %}

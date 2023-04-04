@@ -2,7 +2,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("cases", "0009_auto_20150308_0738")]
 
     operations = [

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-16 18:24+0100\n"
+"POT-Creation-Date: 2023-04-03 17:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,92 +17,95 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: keys/models.py:17
-msgid "User"
-msgstr ""
-
-#: keys/models.py:18 keys/templates/keys/key_detail.html:12
-msgid "Key"
-msgstr ""
-
-#: keys/models.py:19 keys/templates/keys/key_list.html:15
-msgid "Description"
-msgstr ""
-
-#: keys/models.py:20 keys/templates/keys/key_list.html:16
-msgid "Created on"
-msgstr ""
-
-#: keys/models.py:21 keys/templates/keys/key_list.html:18
-msgid "Used on"
-msgstr ""
-
-#: keys/models.py:22
-msgid "Download on"
-msgstr ""
-
-#: keys/models.py:33
-msgid "Access key"
-msgstr ""
-
-#: keys/models.py:34
-msgid "Access keys"
-msgstr ""
-
-#: keys/templates/keys/base.html:5
-msgid "Users"
-msgstr ""
-
-#: keys/templates/keys/base.html:6
+#: poradnia/keys/apps.py:7 poradnia/keys/templates/keys/base.html:6
 msgid "Keys"
 msgstr ""
 
-#: keys/templates/keys/key_confirm_delete.html:5
+#: poradnia/keys/models.py:17
+msgid "User"
+msgstr ""
+
+#: poradnia/keys/models.py:19 poradnia/keys/templates/keys/key_detail.html:12
+msgid "Key"
+msgstr ""
+
+#: poradnia/keys/models.py:21 poradnia/keys/templates/keys/key_list.html:17
+msgid "Description"
+msgstr ""
+
+#: poradnia/keys/models.py:22 poradnia/keys/templates/keys/key_list.html:18
+msgid "Created on"
+msgstr ""
+
+#: poradnia/keys/models.py:23 poradnia/keys/templates/keys/key_list.html:20
+msgid "Used on"
+msgstr ""
+
+#: poradnia/keys/models.py:24
+msgid "Download on"
+msgstr ""
+
+#: poradnia/keys/models.py:35
+msgid "Access key"
+msgstr ""
+
+#: poradnia/keys/models.py:36
+msgid "Access keys"
+msgstr ""
+
+#: poradnia/keys/templates/keys/base.html:5
+msgid "Users"
+msgstr ""
+
+#: poradnia/keys/templates/keys/key_confirm_delete.html:5
 msgid "Confirm delete"
 msgstr ""
 
-#: keys/templates/keys/key_confirm_delete.html:11
+#: poradnia/keys/templates/keys/key_confirm_delete.html:11
 #, python-format
-msgid "Delete %(object)s"
+msgid ""
+"Delete\n"
+"                %(object)s"
 msgstr ""
 
-#: keys/templates/keys/key_confirm_delete.html:12
+#: poradnia/keys/templates/keys/key_confirm_delete.html:13
 msgid "Cancel"
 msgstr ""
 
-#: keys/templates/keys/key_form.html:5 keys/templates/keys/key_form.html:12
+#: poradnia/keys/templates/keys/key_form.html:5
+#: poradnia/keys/templates/keys/key_form.html:12
 msgid "New key"
 msgstr ""
 
-#: keys/templates/keys/key_list.html:5
+#: poradnia/keys/templates/keys/key_list.html:5
 msgid "Keys index"
 msgstr ""
 
-#: keys/templates/keys/key_list.html:10
+#: poradnia/keys/templates/keys/key_list.html:11
 msgid "Help"
 msgstr ""
 
-#: keys/templates/keys/key_list.html:11
+#: poradnia/keys/templates/keys/key_list.html:13
 msgid "Generate new key"
 msgstr ""
 
-#: keys/templates/keys/key_list.html:17
+#: poradnia/keys/templates/keys/key_list.html:19
 msgid "Downloaded on"
 msgstr ""
 
-#: keys/templates/keys/key_list.html:19
+#: poradnia/keys/templates/keys/key_list.html:21
 msgid "Actions"
 msgstr ""
 
-#: keys/templates/keys/key_list.html:28
+#: poradnia/keys/templates/keys/key_list.html:31
 msgid "Download"
 msgstr ""
 
-#: keys/templates/keys/key_list.html:29
+#: poradnia/keys/templates/keys/key_list.html:33
 msgid "Delete"
 msgstr ""
 
-#: keys/views.py:37
+#: poradnia/keys/views.py:38
 #, python-brace-format
 msgid "{object} deleted!"
 msgstr ""

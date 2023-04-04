@@ -5,19 +5,11 @@ default_language_version:
   python: python3
 minimum_pre_commit_version: "1.20.0"
 repos:
-  - repo: https://github.com/psf/black
-    rev: 22.6.0
+  - repo: https://github.com/adamchainz/django-upgrade
+    rev: 1.13.0
     hooks:
-    - id: black
-      args:
-        - --config
-        - ./pyproject.toml
-  - repo: https://github.com/PyCQA/flake8
-    rev: 6.0.0
-    hooks:
-    - id: flake8
-      args:
-      - --config=./setup.cfg
+    - id: django-upgrade
+      args: [--target-version, "3.2"]
   - repo: https://github.com/asottile/pyupgrade
     rev: v3.3.1
     hooks:
@@ -36,5 +28,18 @@ repos:
       - id: check-readthedocs
   - repo:  https://github.com/adrienverge/yamllint
     rev: v1.29.0
-    hooks: 
+    hooks:
       - id: yamllint
+  - repo: https://github.com/psf/black
+    rev: 23.1.0
+    hooks:
+    - id: black
+      args:
+        - --config
+        - ./pyproject.toml
+  - repo: https://github.com/PyCQA/flake8
+    rev: 6.0.0
+    hooks:
+    - id: flake8
+      args:
+      - --config=./setup.cfg

@@ -12,7 +12,6 @@ except ImportError:
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("users", "0013_profile_event_reminder_time")]
 
     operations = [

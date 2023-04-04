@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-11-16 18:24+0100\n"
+"POT-Creation-Date: 2023-04-03 17:35+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,15 +17,15 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: records/models.py:70
-msgid "Record"
-msgstr ""
-
-#: records/models.py:71
+#: poradnia/records/apps.py:7 poradnia/records/models.py:83
 msgid "Records"
 msgstr ""
 
-#: records/models.py:110
-#, python-format
-msgid "%(object)s (#%(pk)d) in case #%(case_id)d"
+#: poradnia/records/models.py:82
+msgid "Record"
+msgstr ""
+
+#: poradnia/records/models.py:124
+#, python-brace-format
+msgid "{object_name} (#{pk}) in case #{case_id}"
 msgstr ""

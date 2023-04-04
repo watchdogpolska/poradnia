@@ -7,7 +7,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.db import models
 from django.db.models import F, Func, IntegerField
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django_mailbox.models import Message
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
@@ -16,6 +16,7 @@ from poradnia.cases.models import Case
 from poradnia.cases.utils import get_users_with_perm
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from poradnia.users.models import User
+from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 
 from .templatetags.format_text import format_text
 from .utils import date_random_path
@@ -23,7 +24,9 @@ from .utils import date_random_path
 logger = logging.getLogger(__name__)
 
 
-class LetterQuerySet(AbstractRecordQuerySet):
+class LetterQuerySet(
+    FormattedDatetimeMixin, UserPrettyNameMixin, AbstractRecordQuerySet
+):
     def for_user(self, user):
         qs = super().for_user(user)
         if not user.is_staff:
@@ -69,7 +72,7 @@ class Letter(AbstractRecord):
     )
     name = models.CharField(max_length=250, verbose_name=_("Subject"))
     text = models.TextField(verbose_name=_("Text"))
-    html = models.TextField(verbose_name=_("HTML"), blank=True)
+    html = models.TextField(verbose_name=_("Mail formatted HTML"), blank=True)
     signature = models.TextField(verbose_name=_("Signature"), blank=True, null=True)
     created_by = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
@@ -128,6 +131,7 @@ class Letter(AbstractRecord):
     def is_html(self):
         return bool(self.html)
 
+    # TOD0 - fix; long lines are not wrapped properly
     def render_as_html(self):
         if self.is_html():
             return self.html
@@ -152,12 +156,10 @@ class Letter(AbstractRecord):
         user_qs = self.get_users_with_perms()
 
         if self.status is not Letter.STATUS.done:
-            user_qs = user_qs.filter(is_staff=True)
+            user_qs = User.objects.filter(is_staff=True).distinct() & user_qs
 
         if senders.count() == 0:
-            # union have to be used after filter
-            # see https://docs.djangoproject.com/en/3.2/ref/models/querysets/#union
-            user_qs = user_qs.union(management)
+            user_qs = user_qs | management.distinct()
 
         kwargs["user_qs"] = user_qs
 

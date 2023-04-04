@@ -7,12 +7,21 @@ version: '2.1'
 
 services:
   web:
+    build:
+      context: .
+      dockerfile: .contrib/docker/Dockerfile.web
+    # Rebuilding web container to run django app server for cypress e2e tests
+    command: bash -c "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
     environment:
       # Use a test database.
       # This should make it a bit less likely for someone to run integration
       # tests on production tables and accidentally drop all data.
       DATABASE_URL: mysql://root:password@db/test_poradnia
       TEST: 1
+      # Console email backend needed for cypress user authentication
+      DJANGO_EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
+      DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
+      DJANGO_RICH_TEXT_ENABLED: "False"
 
   tests:
     depends_on:

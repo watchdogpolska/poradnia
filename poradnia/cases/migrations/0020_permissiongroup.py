@@ -2,7 +2,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("auth", "0001_initial"), ("cases", "0019_auto_20150503_1741")]
 
     operations = [

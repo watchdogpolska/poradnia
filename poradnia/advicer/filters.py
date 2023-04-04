@@ -3,7 +3,7 @@ from atom.ext.django_filters.filters import CrispyFilterMixin
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Fieldset, Layout, Submit
 from dal import autocomplete
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from teryt_tree.dal_ext.filters import AreaMultipleFilter
 
 from poradnia.users.filters import UserChoiceFilter
@@ -104,5 +104,5 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
                 "comment",
             ),
         )
-        self._form.helper.add_input(Submit("filter", _("Filter")))
+        self._form.helper.add_input(Submit("filter", _("Apply Filter")))
         return self._form

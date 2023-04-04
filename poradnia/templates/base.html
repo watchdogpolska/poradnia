@@ -1,4 +1,4 @@
-{% load staticfiles i18n tinycontent_tags github_revision_tags %}
+{% load staticfiles i18n tinycontent_tags github_revision_tags poradnia_tags %}
 <!DOCTYPE html>
 <html lang="pl  ">
 <head>
@@ -71,7 +71,9 @@
         </div>
     </div>
 </nav>
-<div class="main">
+<!-- app_main_style tag used to differentiate dev, demo and production environments -->
+{% app_main_style %}
+{# <div class="main" style="background-color: #60e20040;"> #}
     <div class="sidebar">
         {% include '_sidebar.html' %}
     </div>
@@ -83,7 +85,7 @@
                 {% endfor %}
             {% endif %}
             {% block breadcrumbs %}{% endblock %}
-            <div>
+            <div class="container-fluid">
                 {% block content %}
                     <p>Use this document as a way to quick start any new project.</p>
                 {% endblock content %}
@@ -95,9 +97,9 @@
                 </div>
                 <div class="footer-left">
                     silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
+                    v{% poradnia_version %} |
                     <a href="https://github.com/watchdogpolska/poradnia">
-                        <i class="fa fa-github"></i> GitHub - {% github_link %}
-                    </a>
+                        <i class="fa fa-github"></i> GitHub</a> - {% github_link %}
                 </div>
                 <div class="footer-center">Strona wykorzystuje cookies</div>
             </div>
@@ -115,8 +117,10 @@
             </div>
         </div>
     </div>
-    {% load tasty_feedback_tags %}
-    {% tasty_feedback_widget %}
+    {% if user.is_authenticated %}
+        {% load tasty_feedback_tags %}
+        {% tasty_feedback_widget %}
+    {% endif %}
 
 </div>
 {% if user.is_authenticated %}

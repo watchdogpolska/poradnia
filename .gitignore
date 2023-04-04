@@ -6,6 +6,7 @@ __pycache__
 # Logs
 *.log
 pip-log.txt
+logs/*
 
 # Unit test / coverage reports
 .coverage
@@ -42,3 +43,10 @@ bower_components/
 poradnia/media/
 docs/_build/
 htmlcov
+
+# VScode
+.vscode
+
+# docker development secrets
+imap-to-webhook-url.env
+

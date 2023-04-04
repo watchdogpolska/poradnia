@@ -3,7 +3,7 @@ from braces.views import LoginRequiredMixin, StaffuserRequiredMixin, UserFormKwa
 from dal import autocomplete
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.urls import reverse
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
 from django_filters.views import FilterView
 

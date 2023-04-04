@@ -75,7 +75,6 @@ class MailTemplate:
 
 
 class TemplateMailManager:
-
     TEMPLATE_MAP = {
         TemplateKey.CASE_CLOSED: MailTemplate.from_prefix("cases/email/case_closed"),
         TemplateKey.CASE_GRANT_GROUP: MailTemplate.from_prefix(

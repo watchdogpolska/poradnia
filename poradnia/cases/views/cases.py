@@ -1,14 +1,18 @@
 from collections import OrderedDict
 
+from ajax_datatable import AjaxDatatableView
 from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from braces.views import SelectRelatedMixin, UserFormKwargsMixin
 from dal import autocomplete
 from django.contrib import messages
 from django.db.models import Q
 from django.shortcuts import redirect
+from django.urls import reverse
+from django.utils import timezone
 from django.utils.functional import cached_property
-from django.utils.translation import ugettext as _
-from django.views.generic import UpdateView
+from django.utils.safestring import mark_safe
+from django.utils.translation import gettext as _
+from django.views.generic import TemplateView, UpdateView
 from django.views.generic.detail import DetailView
 from django_filters.views import FilterView
 
@@ -26,6 +30,7 @@ from poradnia.letters.forms import AddLetterForm
 from poradnia.letters.helpers import AttachmentFormSet
 from poradnia.records.models import Record
 from poradnia.users.views import PermissionMixin
+from poradnia.utils.utils import get_numeric_param
 
 
 class SingleObjectPermissionMixin(RaisePermissionRequiredMixin):
@@ -135,6 +140,138 @@ class CaseListView(PermissionMixin, SelectRelatedMixin, FilterView):
         context = super().get_context_data(**kwargs)
         context["statuses"] = Case.STATUS
         return context
+
+
+class CaseTableView(PermissionMixin, TemplateView):
+    """
+    View for displaying template with Cases table.
+    """
+
+    template_name = "cases/case_table.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header_label"] = mark_safe(_("Cases search table"))
+        context["ajax_datatable_url"] = reverse("cases:case_table_ajax_data")
+        return context
+
+
+class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
+    """
+    View to provide table list of all Cases with ajax data.
+    """
+
+    model = Case
+    title = "Cases"
+    initial_order = [
+        ["created_on_str", "desc"],
+    ]
+    length_menu = [[20, 50, 100], [20, 50, 100]]
+
+    column_defs = [
+        {
+            "name": "created_on_str",
+            "visible": True,
+            "title": _("Created on"),
+        },
+        {
+            "name": "name",
+            "visible": True,
+            "title": _("Subject"),
+        },
+        {
+            "name": "client_pretty_name",
+            "visible": True,
+            "title": _("Client"),
+        },
+        {
+            "name": "deadline_str",
+            "visible": True,
+            "title": _("Deadline"),
+        },
+        {
+            "name": "last_send_str",
+            "visible": True,
+            "title": _("Last send"),
+        },
+        {
+            "name": "letter_count",
+            "visible": True,
+            "searchable": False,
+            "orderable": True,
+            "title": _("Letter count"),
+        },
+        {
+            "name": "status",
+            "visible": True,
+            "searchable": False,
+            "orderable": False,
+            "title": _("Status"),
+        },
+        {
+            "name": "handled",
+            "visible": True,
+            "searchable": False,
+            "orderable": False,
+            "title": _("Handled"),
+        },
+        {
+            "name": "has_project",
+            "visible": True,
+            "searchable": False,
+            "orderable": False,
+            "title": _("Has project"),
+        },
+    ]
+
+    def customize_row(self, row, obj):
+        row["name"] = obj.render_case_link()
+        return
+
+    def get_initial_queryset(self, request=None):
+        qs = super().get_initial_queryset(request)
+
+        status_filter = []
+        for status in [
+            "status_free",
+            "status_assigned",
+            "status_moderated",
+            "status_closed",
+        ]:
+            if get_numeric_param(self.request, status):
+                status_filter.append(
+                    getattr(Case.STATUS, status.replace("status_", ""))
+                )
+        if len(status_filter) > 0:
+            qs = qs.filter(status__in=status_filter)
+        else:
+            qs = qs.filter(status__isnull=True)
+
+        handled_filter = []
+        for handled in [("handled_yes", True), ("handled_no", False)]:
+            if get_numeric_param(self.request, handled[0]):
+                handled_filter.append(handled[1])
+        if len(handled_filter) > 0:
+            qs = qs.filter(handled__in=handled_filter)
+        else:
+            qs = qs.filter(handled__isnull=True)
+
+        project_filter = []
+        for project in [("has_project_yes", True), ("has_project_no", False)]:
+            if get_numeric_param(self.request, project[0]):
+                project_filter.append(project[1])
+        if len(project_filter) > 0:
+            qs = qs.filter(has_project__in=project_filter)
+        else:
+            qs = qs.filter(has_project__isnull=True)
+
+        return (
+            qs.for_user(user=self.request.user)
+            .with_formatted_datetime("created_on", timezone.get_default_timezone())
+            .with_formatted_datetime("last_send", timezone.get_default_timezone())
+            .with_formatted_deadline()
+            .with_user_pretty_name_str("client")
+        )
 
 
 class CaseUpdateView(UserFormKwargsMixin, SingleObjectPermissionMixin, UpdateView):

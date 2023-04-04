@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+{# {% load bootstrap4 %} #}
+{% load i18n %}
+
+
+{% block content %}
+
+<style>
+    input[type=search] {
+        width: 400px; /* set the desired min-width value */
+    }
+    input[type=text] {
+        width: 10px; /* set the desired min-width value */
+    }
+</style>
+
+<h3> {% trans 'Advice Table' %}</h3>
+
+<div id="modal-popup" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="width:1000px;" ></div>
+    </div>
+</div>
+
+<div id="tableWrapper">
+    <!-- TODO add colvis button and functionality -->
+    <!-- TODO fix column invisible column sorting buttons -->
+    <div class="col-sm-1 filters">
+        <br><br><br><br>
+        <h4>{% trans 'Filters' %}:</h4><br>
+        <div class="row">
+            <label>{% trans 'Helped' %}:</label><br>
+            <input type="checkbox" id="helped_yes" name="check_helped_yes" checked>
+            <label for="helped_yes" class="small">{% trans 'Yes' %}</label><br>
+            <input type="checkbox" id="helped_no" name="check_helped_no" checked>
+            <label for="helped_no" class="small">{% trans 'No' %}</label><br>
+            <input type="checkbox" id="helped_blank" name="check_helped_blank" checked>
+            <label for="helped_blank" class="small">{% trans 'Blank' %}</label><br>
+            <br><br>
+        </div>
+        <div class="row">
+            <label>{% trans 'Visible' %}:</label><br>
+            <input type="checkbox" id="visible_yes" name="check_visible_yes" checked>
+            <label for="visible_yes" class="small">{% trans 'Yes' %}</label><br>
+            <input type="checkbox" id="visible_no" name="check_visible_no" checked>
+            <label for="visible_no" class="small">{% trans 'No' %}</label><br>
+            <br><br>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table id="datatable_advices" width="100%" class="table table-bordered compact">
+            <!-- table-striped  nowrap-->
+        </table>
+    </div>
+</div>
+
+{% endblock %}
