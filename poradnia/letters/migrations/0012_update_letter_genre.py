@@ -9,7 +9,6 @@ def migrate_genre(apps, schema_editor):
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("letters", "0011_letter_html"),
     ]

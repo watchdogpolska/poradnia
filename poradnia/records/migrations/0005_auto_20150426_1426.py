@@ -5,7 +5,6 @@ from django.utils.timezone import utc
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("records", "0004_auto_20150322_0543")]
 
     operations = [

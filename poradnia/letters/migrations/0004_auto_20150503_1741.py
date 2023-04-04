@@ -5,7 +5,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
         ("django_mailbox", "0003_auto_20150409_0316"),
         ("letters", "0003_remove_attachment_text"),

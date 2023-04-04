@@ -3,7 +3,6 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [("judgements", "0001_squashed_0003_auto_20180416_0131")]
 
     operations = [
