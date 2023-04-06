@@ -1,5 +1,6 @@
 import hashlib
 import json
+import os
 import zipfile
 from io import BytesIO
 
@@ -541,6 +542,12 @@ class DownloadAttachmentViewTestCase(TestCase):
 
 
 class ReceiveEmailTestCase(TestCase):
+    def get_eml_content(self):
+        test_eml_file_path = os.path.join(os.path.dirname(__file__), "test.eml")
+        with open(test_eml_file_path, "rb") as eml_file:
+            eml_disk_content = eml_file.read()
+        return eml_disk_content
+
     def setUp(self):
         self.url = reverse("letters:webhook")
         self.authenticated_url = "{}?secret={}".format(self.url, LETTER_RECEIVE_SECRET)
@@ -551,9 +558,8 @@ class ReceiveEmailTestCase(TestCase):
 
     def test_sample_request(self):
         case = CaseFactory()
-        response = self.client.post(
-            path=self.authenticated_url, data=self._get_body(case)
-        )
+        data_body = self._get_body(case)
+        response = self.client.post(path=self.authenticated_url, data=data_body)
 
         self.assertEqual(response.json()["status"], "OK")
 
@@ -569,8 +575,14 @@ class ReceiveEmailTestCase(TestCase):
         attachment_content = (
             letter.attachment_set.all()[0].attachment.read().decode("utf-8")
         )
+        html_content = letter.html
+        html_eml_part = (
+            "<html>\n<body>\n<p>Hello,</p>\n<p>This is an example email with "
+            "<b>HTML</b> content.</p>\n<p>Regards,<br/>Sender</p>\n</body>\n</html>"
+        )
 
-        self.assertEqual(eml_content, "12345")
+        self.assertEqual(eml_content, self.get_eml_content().decode("utf-8"))
+        self.assertEqual(html_content, html_eml_part)
         self.assertEqual(attachment_content, "my-content")
 
     def test_reopen_case_free(self):
@@ -673,8 +685,9 @@ class ReceiveEmailTestCase(TestCase):
         }
         attachments = [SimpleUploadedFile("my-doc.bin", b"my-content")]
 
-        eml = SimpleUploadedFile("my-content.eml", b"12345")
-
+        eml = SimpleUploadedFile(
+            "my-content.eml", self.get_eml_content(), content_type="message/rfc822"
+        )
         return {
             "manifest": SimpleUploadedFile(
                 "manifest.json", json.dumps(manifest).encode("utf-8")
