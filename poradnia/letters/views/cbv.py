@@ -297,7 +297,7 @@ class ReceiveEmailView(View):
             genre=Letter.GENRE.mail,
             status=self.get_letter_status(actor=actor, case=case),
             text=manifest["text"]["content"],
-            html="",
+            html=get_html_from_eml_file(request.FILES["eml"]),
             signature=manifest["text"]["quote"],
             eml=File(self.request.FILES["eml"]),
         )
