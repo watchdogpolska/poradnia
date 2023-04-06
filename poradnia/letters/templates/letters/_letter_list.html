@@ -26,11 +26,12 @@
                     {{object.html|safe}}
                 {% else %}
                     <p>{{object.text|format_text}}</p>
+                    {% if object.signature %}
+                        <blockquote>{{object.signature | linebreaks}}</blockquote>
+                    {% endif %}
                 {% endif %}
             </div>    
-            {% if object.signature %}
-            <blockquote>{{object.signature | linebreaks}}</blockquote>
-            {% endif %}
+
         </div>
         {% if object.attachment_set.all %}
         <ul class="list-group">
