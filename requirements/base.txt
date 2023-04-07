@@ -1,7 +1,7 @@
 Django==3.2.18
 
 # Configuration
-django-environ==0.9.0
+django-environ==0.10.0
 
 # Forms
 django-braces==1.15.0
@@ -13,19 +13,19 @@ django-floppyforms==1.9.0
 django-model-utils==4.3.1
 
 # images
-Pillow==9.4.0
+Pillow==9.5.0
 sorl-thumbnail==12.9.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==0.52.0
+django-allauth==0.54.0
 
 # For the persistance stores
 mysqlclient==2.1.1
 
 # Unicode slugification
 unicode-slugify==0.1.5
-django-autoslug==1.9.8
+django-autoslug==1.9.9
 
 # Useful things
 # Time zones support
@@ -42,14 +42,14 @@ django-filter==22.1
 git+https://github.com/PiotrIw/django-ajax-datatable.git@05afe42
 # dal 3.9.4 has broken initialisation of jquery on multiselect2 
 django-autocomplete-light==3.5.0
-django-tinymce==3.5.0
+django-tinymce==3.6.1
 django-atom==0.16.3
 django-tinycontent==0.8.0
 icalendar==5.0.4
 html2text==2020.1.16
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.7.1
-sentry-sdk==1.16.0
+sentry-sdk==1.19.1
 python-dateutil==2.8.2
 django-github-revision==0.0.3
 zipstream-new==1.1.8

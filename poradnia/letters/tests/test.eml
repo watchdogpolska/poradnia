@@ -1,0 +1,62 @@
+Return-Path: <sender@example.com>
+Delivered-To: recipient@example.com
+Received: from mail32.example.com ([10.0.5.92])
+	by storage-s7.example.com with LMTP
+	id +FNsGjqQLmSHYAAAtk30Dw:P1
+	(envelope-from <sender@example.com>)
+	for <recipient@example.com>; Thu, 06 Apr 2023 11:26:18 +0200
+X-Virus-Scanned: amavisd-new at mail32.example.com
+Authentication-Results: mail32.example.com (amavisd-new);
+	dkim=pass (1024-bit key) header.d=example.com
+Received: (ex-smtpd smtp.example.com 7293 invoked from network); 6 Apr 2023 11:26:11 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=example.com; s=1024a;
+          t=1680773171; bh=hEwl7V86BlvdF/o7sVJBpO+uiGRnwfbgHxUZBJKK3Q0=;
+          h=Subject:From:To;
+          b=v4SrlluJqEnqlKvAJzudNm6sm7fAeV8esoLIceuE/i5pgzgUkAmO1cxhk111Gx/V5
+           LnP4S4OyvZRcit2sIneqaavxhxF1c0k7z87JL1ck6ctpkTI5/N8eEOveBFCDAVtLXs
+           FHgzjGB32gaYSoRLFcv63Mr95JakOXMueW6mOiO4=
+Received: from localhost.localdomain (HELO localhost) ([193.30.1.10])
+          (envelope-sender <example.com>)
+          by smtp.example.com (EX-SMTPD) with SMTP
+          for <recipient@example.com>; 6 Apr 2023 11:26:11 +0200
+Content-Type: multipart/alternative; boundary="boundary1"
+MIME-Version: 1.0
+User-Agent: GWP-Draft
+X-FactoryStamp: H---
+Date: Thu, 06 Apr 2023 11:26:11 +0200
+X-Draft-Variant: forward
+X-Draft-Parentmailid: e96d65c2fad9eacdf4786a6b
+X-Draft-Contenttype: text/html
+Priority: normal
+Subject: Example Email
+From: sender@example.com
+To: recipient@example.com
+Message-ID: <9832e046e8d345b0abf0bbed9a091268@example.com>
+In-Reply-To: <<35e8afd383a746a3b79c37e60602e096@example.com>>
+References: <35e8afd383a746a3b79c37e60602e096@example.com>
+X-EX-MailID: 626bdcdad62c9cd5df0d16e27013340a
+X-EX-AV: skaner antywirusowy example.com
+X-EX-SPAM: NO 0000011 [IfKV]                               
+
+--boundary1
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+
+Hello,
+
+This is an example email with plain text content.
+
+Regards,
+Sender
+
+--boundary1
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/html; charset=UTF-8
+<html>
+<body>
+<p>Hello,</p>
+<p>This is an example email with <b>HTML</b> content.</p>
+<p>Regards,<br/>Sender</p>
+</body>
+</html>
+--boundary1--
