@@ -25,7 +25,7 @@ mysqlclient==2.1.1
 
 # Unicode slugification
 unicode-slugify==0.1.5
-django-autoslug==1.9.8
+django-autoslug==1.9.9
 
 # Useful things
 # Time zones support
