@@ -10,7 +10,7 @@ factory-boy==3.2.1
 django-coverage-plugin==3.0.0
 django-test-plus==2.2.1
 vcrpy==4.2.1
-ipdb==0.13.11
+ipdb==0.13.13
 
 pre-commit==3.2.2
 
