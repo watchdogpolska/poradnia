@@ -256,7 +256,7 @@ AUTOSLUG_SLUGIFY_FUNCTION = "slugify.slugify"
 #
 # TODO add proper file logging configuration when loggers added to code
 #   as for now all stdout and stderr captured by gunicorn logs
-LOG_FILE_ENV = env("LOG_FILE_ENV", default="logs/feder.log")
+LOG_FILE_ENV = env("LOG_FILE_ENV", default="logs/poradnia.log")
 LOG_FILE = str(ROOT_DIR(LOG_FILE_ENV))
 LOGGING = {
     "version": 1,

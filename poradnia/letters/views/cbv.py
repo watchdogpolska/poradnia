@@ -29,6 +29,7 @@ from django_filters.views import FilterView
 
 from poradnia.cases.models import Case
 from poradnia.letters.settings import LETTER_RECEIVE_SECRET
+from poradnia.letters.utils import get_html_from_eml_file
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 from poradnia.users.utils import PermissionMixin
 
@@ -297,7 +298,7 @@ class ReceiveEmailView(View):
             genre=Letter.GENRE.mail,
             status=self.get_letter_status(actor=actor, case=case),
             text=manifest["text"]["content"],
-            html="",
+            html=get_html_from_eml_file(request.FILES["eml"]),
             signature=manifest["text"]["quote"],
             eml=File(self.request.FILES["eml"]),
         )
