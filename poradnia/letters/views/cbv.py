@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 
 import django_filters
 from ajax_datatable import AjaxDatatableView
@@ -36,6 +37,9 @@ from poradnia.users.utils import PermissionMixin
 from ..forms import AttachmentForm, LetterForm, NewCaseForm
 from ..models import Attachment, Letter
 from .fbv import REGISTRATION_TEXT
+
+
+logger = logging.getLogger(__name__)
 
 
 class NewCaseCreateView(
@@ -303,8 +307,12 @@ class ReceiveEmailView(View):
             signature=manifest["text"]["quote"],
             eml=File(self.request.FILES["eml"]),
         )
+        logger.info(
+            f"Letter {letter.id} created by {actor.email} for case {case.id} ({case.name})"
+        )
         for attachment in request.FILES.getlist("attachment"):
             Attachment.objects.create(letter=letter, attachment=File(attachment))
+        logger.info(f"Letter {letter.id} has {len(request.FILES.getlist('attachment'))} attachments")
         return letter
 
     def post(self, request):

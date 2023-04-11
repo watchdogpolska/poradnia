@@ -1,3 +1,4 @@
+import logging
 from atom.ext.crispy_forms.forms import HelperMixin, SingleButtonMixin
 from atom.ext.tinycontent.forms import GIODOMixin
 from atom.forms import PartialMixin
@@ -53,6 +54,7 @@ INFO_ABOUT_MARKDOWN = _(
     "Markdown</a>"
 )
 
+logger = logging.getLogger(__name__)
 
 class SimpleSubmit(BaseInput):
     input_type = "submit"
@@ -288,8 +290,10 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
             if self.case.status == Case.STATUS.closed:
                 self.case.update_status(reopen=True, save=False)
         self.case.save()
+        logger.info(f"Case {self.case.id} saved by {self.user}")
         if commit:
             obj.save()
+            logger.info(f"Letter {obj.id} saved by {self.user}")
         return obj
 
     class Meta:
