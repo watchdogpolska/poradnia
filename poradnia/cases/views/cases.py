@@ -167,6 +167,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         ["created_on_str", "desc"],
     ]
     length_menu = [[20, 50, 100], [20, 50, 100]]
+    search_values_separator = "|"
 
     column_defs = [
         {

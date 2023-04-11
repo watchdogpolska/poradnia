@@ -57,13 +57,11 @@ class AdviceQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
     def visible(self):
         return self.filter(visible=True)
 
-    # TODO fix overlap with Advice area property
-    def jst_area(self, jst):
+    def area_filter(self, jst):
         return self.filter(
             jst__tree_id=jst.tree_id, jst__lft__range=(jst.lft, jst.rght)
         )
 
-    # TODO fix overlap with Advice area property
     def area_in(self, jsts):
         if not jsts:
             # Show all results if filter is empty.
