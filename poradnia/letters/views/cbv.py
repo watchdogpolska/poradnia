@@ -308,7 +308,7 @@ class ReceiveEmailView(View):
         )
         logger.info(
             f"Letter {letter.id} created by {actor.email}"
-            " for case {case.id} ({case.name})"
+            f" for case {case.id} ({case.name})"
         )
         for attachment in request.FILES.getlist("attachment"):
             Attachment.objects.create(letter=letter, attachment=File(attachment))
