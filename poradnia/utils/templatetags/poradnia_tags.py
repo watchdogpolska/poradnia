@@ -19,7 +19,7 @@ def app_mode():
     use "DEV", "DEMO" and "PROD" values in env variable APP_MODE
     """
     if settings.APP_MODE == "PROD":
-        return mark_safe('' )
+        return mark_safe("")
     return mark_safe(f'<h1 style="color: red;">{settings.APP_MODE}</h1>')
 
 

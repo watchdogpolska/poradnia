@@ -1,4 +1,5 @@
 import logging
+
 from atom.ext.crispy_forms.forms import HelperMixin, SingleButtonMixin
 from atom.ext.tinycontent.forms import GIODOMixin
 from atom.forms import PartialMixin
@@ -55,6 +56,7 @@ INFO_ABOUT_MARKDOWN = _(
 )
 
 logger = logging.getLogger(__name__)
+
 
 class SimpleSubmit(BaseInput):
     input_type = "submit"
