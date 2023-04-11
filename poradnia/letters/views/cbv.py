@@ -260,11 +260,15 @@ class ReceiveEmailView(View):
 
     def is_allowed_recipient(self, manifest):
         domain = Site.objects.get_current().domain
+        logger.info(f"domain: {domain}")
+        logger.info(f"email to: {manifest['headers']['to']}")
+        logger.info(f"whitelisted: {settings.LETTER_RECEIVE_WHITELISTED_ADDRESS}")
         cond = [
             (addr in x or domain in x) and addr != "" and domain != ""
             for x in manifest["headers"]["to"]
             for addr in settings.LETTER_RECEIVE_WHITELISTED_ADDRESS
         ]
+        logger.info(f"cond: {cond}")
         return any(cond)
 
     def is_autoreply(self, manifest):
@@ -302,14 +306,22 @@ class ReceiveEmailView(View):
             genre=Letter.GENRE.mail,
             status=self.get_letter_status(actor=actor, case=case),
             text=manifest["text"]["content"],
-            html=get_html_from_eml_file(request.FILES["eml"]),
             signature=manifest["text"]["quote"],
             eml=File(self.request.FILES["eml"]),
         )
+        eml_file = letter.eml.open("rb")
+        htm_content = get_html_from_eml_file(eml_file=eml_file)
+        eml_file.close()
+        letter.html = htm_content
+        letter.save()
         logger.info(
             f"Letter {letter.id} created by {actor.email}"
             f" for case {case.id} ({case.name})"
         )
+        logger.info(
+            f"Letter {letter.id} eml: {letter.eml.name} of {letter.eml.size} bytes"
+        )
+        logger.info(f"Letter {letter.id} html has {len(letter.html)} chars")
         for attachment in request.FILES.getlist("attachment"):
             Attachment.objects.create(letter=letter, attachment=File(attachment))
         number_of_att = len(request.FILES.getlist("attachment"))
