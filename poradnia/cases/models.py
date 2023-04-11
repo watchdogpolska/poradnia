@@ -134,7 +134,7 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
             deadline_str=Cast("deadline__time", output_field=CharField())
         )
 
-    def area(self, jst):
+    def area_filter(self, jst):
         return self.filter(
             advice__jst__tree_id=jst.tree_id,
             advice__jst__lft__range=(jst.lft, jst.rght),
