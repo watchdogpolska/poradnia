@@ -31,6 +31,7 @@ from model_utils.fields import MonitorField, StatusField
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 
+# TODO: move to settings and fix for DEV and DEMO modes
 CASE_PK_RE = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
 
 
