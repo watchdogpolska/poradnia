@@ -307,15 +307,13 @@ class ReceiveEmailView(View):
             eml=File(self.request.FILES["eml"]),
         )
         logger.info(
-            (f"Letter {letter.id} created by {actor.email}"
-             " for case {case.id} ({case.name})")
+            f"Letter {letter.id} created by {actor.email}"
+            " for case {case.id} ({case.name})"
         )
         for attachment in request.FILES.getlist("attachment"):
             Attachment.objects.create(letter=letter, attachment=File(attachment))
         number_of_att = len(request.FILES.getlist("attachment"))
-        logger.info(
-            f"Letter {letter.id} has {number_of_att} attachments"
-        )
+        logger.info(f"Letter {letter.id} has {number_of_att} attachments")
         return letter
 
     def post(self, request):
