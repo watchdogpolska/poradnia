@@ -263,7 +263,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
 
     def get_genre(self):
         if not self.user.is_staff:
-            return Letter.GENRE.mail
+            return Letter.GENRE.app_message
         if self.SEND_STAFF in self.data:
             return Letter.GENRE.comment
         return Letter.GENRE.mail
