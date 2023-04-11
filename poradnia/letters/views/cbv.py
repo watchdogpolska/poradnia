@@ -356,6 +356,7 @@ class ReceiveEmailView(View):
         letter.send_notification(actor=actor, verb="created")
         return JsonResponse({"status": "OK", "letter": letter.pk})
 
+    # TODO: replace with get_or_create_case
     def get_case(self, subject, addresses, actor):
         try:
             case = Case.objects.by_addresses(addresses).get()
@@ -363,6 +364,12 @@ class ReceiveEmailView(View):
             case = Case.objects.create(name=subject, created_by=actor, client=actor)
             actor.notify(
                 actor=actor, verb="registered", target=case, from_email=case.get_email()
+            )
+        except Case.MultipleObjectsReturned:
+            case = Case.objects.by_addresses(addresses).first()
+            logger.warning(
+                f"Multiple cases found for addresses {addresses}. "
+                f"First case {case.id} ({case.name}) will be used."
             )
         return case
 
