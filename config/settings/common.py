@@ -305,6 +305,7 @@ LANGUAGES = (("pl", _("Polish")), ("en", _("English")))
 
 LOCALE_PATHS = (str(APPS_DIR.path("templates/locale")),)
 
+# TODO: fix for DEV and DEMO modes
 PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
 PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
 ATOMIC_REQUESTS = True

@@ -1,5 +1,6 @@
 import datetime
 import json
+import logging
 
 import django_filters
 from ajax_datatable import AjaxDatatableView
@@ -36,6 +37,8 @@ from poradnia.users.utils import PermissionMixin
 from ..forms import AttachmentForm, LetterForm, NewCaseForm
 from ..models import Attachment, Letter
 from .fbv import REGISTRATION_TEXT
+
+logger = logging.getLogger(__name__)
 
 
 class NewCaseCreateView(
@@ -162,6 +165,7 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         ["created_on_str", "desc"],
     ]
     length_menu = [[20, 50, 100], [20, 50, 100]]
+    search_values_separator = "|"
 
     column_defs = [
         AjaxDatatableView.render_row_tools_column_def(),
@@ -302,23 +306,39 @@ class ReceiveEmailView(View):
             signature=manifest["text"]["quote"],
             eml=File(self.request.FILES["eml"]),
         )
+        logger.info(
+            f"Letter {letter.id} created by {actor.email}"
+            f" for case {case.id} ({case.name})"
+        )
         for attachment in request.FILES.getlist("attachment"):
             Attachment.objects.create(letter=letter, attachment=File(attachment))
+        number_of_att = len(request.FILES.getlist("attachment"))
+        logger.info(f"Letter {letter.id} has {number_of_att} attachments")
         return letter
 
     def post(self, request):
+        logger.info(f"Received a new letter from {request.META['REMOTE_ADDR']}.")
+        logger.info(f"Request content type: {request.content_type}")
+        logger.info(f"Request headers: {request.headers}")
+        logger.info(f"Request files: {request.FILES}")
         if request.GET.get("secret") != LETTER_RECEIVE_SECRET:
             raise PermissionDenied
         if request.content_type != self.required_content_type:
+            logger.error(
+                f"Request content type is {request.content_type}, "
+                f"but {self.required_content_type} is required."
+            )
             return HttpResponseBadRequest(
                 "The request has an invalid format. "
                 'The acceptable format is "{}"'.format(self.required_content_type)
             )
         if "manifest" not in request.FILES:
+            logger.error("Request has no manifest file.")
             return HttpResponseBadRequest(
                 "The request has an invalid format. Missing 'manifest' filed."
             )
         if "eml" not in request.FILES:
+            logger.error("Request has no eml file.")
             return HttpResponseBadRequest(
                 "The request has an invalid format. Missing 'eml' filed."
             )
@@ -330,6 +350,7 @@ class ReceiveEmailView(View):
         if not self.is_allowed_recipient(manifest):
             if not self.is_autoreply(manifest):
                 self.refuse_letter(manifest)
+                logger.info(f"Letter refused: {REFUSE_MESSAGE}")
                 return HttpResponseBadRequest(
                     REFUSE_MESSAGE + "Notification have been send."
                 )
@@ -347,6 +368,7 @@ class ReceiveEmailView(View):
         letter.send_notification(actor=actor, verb="created")
         return JsonResponse({"status": "OK", "letter": letter.pk})
 
+    # TODO: replace with get_or_create_case
     def get_case(self, subject, addresses, actor):
         try:
             case = Case.objects.by_addresses(addresses).get()
@@ -354,6 +376,12 @@ class ReceiveEmailView(View):
             case = Case.objects.create(name=subject, created_by=actor, client=actor)
             actor.notify(
                 actor=actor, verb="registered", target=case, from_email=case.get_email()
+            )
+        except Case.MultipleObjectsReturned:
+            case = Case.objects.by_addresses(addresses).first()
+            logger.warning(
+                f"Multiple cases found for addresses {addresses}. "
+                f"First case {case.id} ({case.name}) will be used."
             )
         return case
 
