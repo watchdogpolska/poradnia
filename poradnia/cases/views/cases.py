@@ -247,7 +247,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             row["advice_subject"] = ""
         return
 
-    def get_initial_queryset(self, request=None):
+    def get_initial_queryset(self, request=None):  # noqa
         qs = super().get_initial_queryset(request)
 
         status_filter = []
