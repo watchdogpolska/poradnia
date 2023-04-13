@@ -218,6 +218,7 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
     def customize_row(self, row, obj):
         # row["text"] = mark_safe(linebreaksbr(obj.text[:300]))
+        row["name"] = obj.render_letter_link()
         row["text"] = obj.text[:300] + "..." if len(obj.text) > 300 else obj.text
         row["case_name"] = obj.case.render_case_link()
         row["advice_subject"] = obj.case.render_case_advice_link()

@@ -121,6 +121,11 @@ class Letter(AbstractRecord):
         case_url = self.record.case_get_absolute_url()
         return "{}#letter-{}".format(case_url, self.pk)
 
+    def render_letter_link(self):
+        url = self.get_absolute_url()
+        label = self.name
+        return f'<a href="{url}">{label}</a>'
+
     def is_done(self):
         return (
             True
