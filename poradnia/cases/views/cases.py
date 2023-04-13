@@ -196,6 +196,20 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Last send"),
         },
         {
+            "name": "advice_subject",
+            "visible": True,
+            "foreign_field": "advice__subject",
+            "searchable": True,
+            "orderable": True,
+            "title": (_("Advice") + " - " + _("Subject")),
+        },
+        {
+            "name": "advicer",
+            "foreign_field": "advice__advicer__username",
+            "visible": True,
+            "title": _("Advicer"),
+        },
+        {
             "name": "letter_count",
             "visible": True,
             "searchable": False,
@@ -227,6 +241,10 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
     def customize_row(self, row, obj):
         row["name"] = obj.render_case_link()
+        try:
+            row["advice_subject"] = obj.advice.render_advice_link()
+        except Case.advice.RelatedObjectDoesNotExist:
+            row["advice_subject"] = ""
         return
 
     def get_initial_queryset(self, request=None):
