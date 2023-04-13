@@ -290,7 +290,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         for deadline in [("has_deadline_yes", False), ("has_deadline_no", True)]:
             if get_numeric_param(self.request, deadline[0]):
                 deadline_query |= Q(deadline__isnull=deadline[1])
-        qs = qs.filter(deadline_query) 
+        qs = qs.filter(deadline_query)
 
         return (
             qs.for_user(user=self.request.user)

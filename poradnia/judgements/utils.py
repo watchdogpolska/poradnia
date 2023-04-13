@@ -1,5 +1,5 @@
-import sys
 import logging
+import sys
 
 from django.utils.encoding import force_str
 from pytz import timezone

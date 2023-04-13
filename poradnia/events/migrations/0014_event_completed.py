@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('events', '0013_auto_20211230_1124'),
+        ("events", "0013_auto_20211230_1124"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='event',
-            name='completed',
-            field=models.BooleanField(default=False, help_text='Event has been completed, no more reminders.', verbose_name='Completed'),
+            model_name="event",
+            name="completed",
+            field=models.BooleanField(
+                default=False,
+                help_text="Event has been completed, no more reminders.",
+                verbose_name="Completed",
+            ),
         ),
     ]

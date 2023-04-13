@@ -265,8 +265,9 @@ class ReceiveEmailView(View):
         logger.info(f"email to: {manifest['headers']['to']}")
         logger.info(f"whitelisted: {settings.LETTER_RECEIVE_WHITELISTED_ADDRESS}")
         cond = [
-            (addr.lower() in x.lower() or domain.lower() in x.lower()) 
-            and addr != "" and domain != ""
+            (addr.lower() in x.lower() or domain.lower() in x.lower())
+            and addr != ""
+            and domain != ""
             for x in manifest["headers"]["to"]
             for addr in settings.LETTER_RECEIVE_WHITELISTED_ADDRESS
         ]

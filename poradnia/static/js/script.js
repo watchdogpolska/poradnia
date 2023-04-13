@@ -63677,7 +63677,6 @@ window.AjaxDatatableViewUtils = (function() {
                     has_project_no: function() { return $("input[name='check_has_project_no']").is(":checked") ? 1 : 0; },
                     has_deadline_yes: function() { return $("input[name='check_has_deadline_yes']").is(":checked") ? 1 : 0; },
                     has_deadline_no: function() { return $("input[name='check_has_deadline_no']").is(":checked") ? 1 : 0; },
-
                 },
             );
             $('.filters input').on('change paste keyup', function() {

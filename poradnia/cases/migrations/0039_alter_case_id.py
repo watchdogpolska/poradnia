@@ -4,15 +4,16 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('cases', '0038_auto_20211230_1703'),
+        ("cases", "0038_auto_20211230_1703"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='case',
-            name='id',
-            field=models.AutoField(primary_key=True, serialize=False, verbose_name='Case number'),
+            model_name="case",
+            name="id",
+            field=models.AutoField(
+                primary_key=True, serialize=False, verbose_name="Case number"
+            ),
         ),
     ]
