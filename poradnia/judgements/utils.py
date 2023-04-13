@@ -18,6 +18,7 @@ class Manager:
 
     def handle_court(self, court, parser=None):
         logger.info("=" * 6 + force_str(court))
+        self.stdout.write("=" * 6 + force_str(court))
         signatures = {
             x.signature: x
             for x in CourtCase.objects.filter(court=court).with_events().all()
@@ -60,8 +61,19 @@ class Manager:
                     courtsession, session_row.datetime
                 )
             )
+            self.stdout.write(
+                "Skip update court session {} to {}".format(
+                    courtsession, session_row.datetime
+                )
+            )
             return
+
         logger.info(
+            "Update court session {} to {} from {}".format(
+                courtsession, session_row.datetime, courtsession.event.time
+            )
+        )
+        self.stdout.write(
             "Update court session {} to {} from {}".format(
                 courtsession, session_row.datetime, courtsession.event.time
             )
@@ -94,6 +106,11 @@ class Manager:
             courtcase=courtcase, parser_key=court.parser_key, event=event
         )
         logger.info(
+            "Registered court session for {} at {}".format(
+                session_row.signature, session_row.datetime
+            )
+        )
+        self.stdout.write(
             "Registered court session for {} at {}".format(
                 session_row.signature, session_row.datetime
             )
