@@ -1,10 +1,13 @@
 import sys
+import logging
 
 from django.utils.encoding import force_str
 from pytz import timezone
 
 from poradnia.events.models import Event
 from poradnia.judgements.models import CourtCase, CourtSession
+
+logger = logging.getLogger(__name__)
 
 
 class Manager:
@@ -14,7 +17,7 @@ class Manager:
         self.stderr = stderr
 
     def handle_court(self, court, parser=None):
-        self.stdout.write("=" * 6 + force_str(court))
+        logger.info("=" * 6 + force_str(court))
         signatures = {
             x.signature: x
             for x in CourtCase.objects.filter(court=court).with_events().all()
@@ -52,13 +55,13 @@ class Manager:
 
     def handle_update_courtsession(self, courtsession, session_row):
         if self._cmp_event_sessionrow(courtsession.event, session_row):
-            self.stdout.write(
+            logger.info(
                 "Skip update court session {} to {}".format(
                     courtsession, session_row.datetime
                 )
             )
             return
-        self.stdout.write(
+        logger.info(
             "Update court session {} to {} from {}".format(
                 courtsession, session_row.datetime, courtsession.event.time
             )
@@ -90,7 +93,7 @@ class Manager:
         CourtSession.objects.create(
             courtcase=courtcase, parser_key=court.parser_key, event=event
         )
-        self.stdout.write(
+        logger.info(
             "Registered court session for {} at {}".format(
                 session_row.signature, session_row.datetime
             )

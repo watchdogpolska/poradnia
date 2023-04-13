@@ -39,7 +39,7 @@ class Command(BaseCommand):
             for user in users:
                 if user.id in user_notified:
                     msg = "Skip notification about {} to user {}".format(event, user)
-                    self.stdout.write(msg)
+                    logger.info(msg)
                     continue
                 self.event_for_user(event, user)
 
