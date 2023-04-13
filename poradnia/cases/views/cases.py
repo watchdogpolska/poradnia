@@ -164,16 +164,16 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
     model = Case
     title = "Cases"
     initial_order = [
-        ["created_on_str", "desc"],
+        ["id", "desc"],
     ]
     length_menu = [[20, 50, 100], [20, 50, 100]]
     search_values_separator = "|"
 
     column_defs = [
         {
-            "name": "created_on_str",
+            "name": "id",
             "visible": True,
-            "title": _("Created on"),
+            "title": _("Case number"),
         },
         {
             "name": "name",
