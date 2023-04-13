@@ -173,7 +173,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "id",
             "visible": True,
-            "title": _("Case number"),
+            "title": _("Number"),
         },
         {
             "name": "name",
@@ -188,7 +188,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "deadline_str",
             "visible": True,
-            "title": _("Deadline"),
+            "title": _("Deadline UTC"),
         },
         {
             "name": "last_send_str",
