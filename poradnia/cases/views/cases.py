@@ -266,6 +266,14 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         else:
             qs = qs.filter(has_project__isnull=True)
 
+        # to provide empty queryset when none of the options is selected
+        deadline_query = Q(deadline=0)
+        # build query for deadline according to user selection
+        for deadline in [("has_deadline_yes", False), ("has_deadline_no", True)]:
+            if get_numeric_param(self.request, deadline[0]):
+                deadline_query |= Q(deadline__isnull=deadline[1])
+        qs = qs.filter(deadline_query) 
+
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_datetime("created_on", timezone.get_default_timezone())

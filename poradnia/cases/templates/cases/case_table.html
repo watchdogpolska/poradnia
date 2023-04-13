@@ -56,6 +56,14 @@
             <label for="has_project_no" class="small">{% trans 'No' %}</label><br>
             <br><br>
         </div>
+        <div class="row">
+            <label>{% trans 'Has deadline' %}:</label><br>
+            <input type="checkbox" id="has_deadline_yes" name="check_has_deadline_yes" checked>
+            <label for="has_deadline_yes" class="small">{% trans 'Yes' %}</label><br>
+            <input type="checkbox" id="has_deadline_no" name="check_has_deadline_no" checked>
+            <label for="has_deadline_no" class="small">{% trans 'No' %}</label><br>
+            <br><br>
+        </div>
     </div>
     <div class="table-responsive">
         <table id="datatable_cases" width="100%" class="table table-bordered compact">
