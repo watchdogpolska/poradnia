@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-03 17:35+0200\n"
+"POT-Creation-Date: 2023-04-14 15:46+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,28 +21,28 @@ msgstr ""
 msgid "Case name"
 msgstr ""
 
-#: poradnia/letters/apps.py:7 poradnia/letters/models.py:168
-#: poradnia/letters/views/cbv.py:159
+#: poradnia/letters/apps.py:7 poradnia/letters/models.py:181
+#: poradnia/letters/views/cbv.py:163
 msgid "Letters"
 msgstr ""
 
-#: poradnia/letters/forms.py:20
+#: poradnia/letters/forms.py:22
 msgid "Leave empty to use email field and create a new one user."
 msgstr ""
 
-#: poradnia/letters/forms.py:23
+#: poradnia/letters/forms.py:25
 msgid ""
 "The user account will be created automatically, so you haveaccess to the "
 "archive and data about persons responsible for the case."
 msgstr ""
 
-#: poradnia/letters/forms.py:28
+#: poradnia/letters/forms.py:30
 msgid ""
 "Short description of the case for organizational purposes. The institution "
 "name and two words will suffice."
 msgstr ""
 
-#: poradnia/letters/forms.py:33
+#: poradnia/letters/forms.py:35
 msgid ""
 "After choosing this option, your message will be sent to the client and the "
 "members of the legal team, who can see this case (admins and assigned team "
@@ -50,137 +50,142 @@ msgid ""
 "sent to the advicer's client."
 msgstr ""
 
-#: poradnia/letters/forms.py:40
+#: poradnia/letters/forms.py:42
 msgid ""
 "After choosing this option, your message will be saved in the system as a "
 "draft. The admin will check the saved draft and will either suggest changes, "
 "or will send it to the client."
 msgstr ""
 
-#: poradnia/letters/forms.py:46
+#: poradnia/letters/forms.py:48
 msgid ""
 "After choosing this option, your message will only be sent to the members of "
 "the legal team who can see this case (admins and assigned team members). "
 "Select this option if you want to consult something within the team."
 msgstr ""
 
-#: poradnia/letters/forms.py:52
+#: poradnia/letters/forms.py:54
 msgid ""
 "This field supports <a href='https://www.markdownguide.org/cheat-"
 "sheet'>Markdown</a>"
 msgstr ""
 
-#: poradnia/letters/forms.py:68
+#: poradnia/letters/forms.py:72
 #, python-format
 msgid "E-mail %(email)s are already used. Please log in."
 msgstr ""
 
-#: poradnia/letters/forms.py:78
+#: poradnia/letters/forms.py:82
 msgid "Report case"
 msgstr ""
 
-#: poradnia/letters/forms.py:82
+#: poradnia/letters/forms.py:86
 msgid "Client"
 msgstr ""
 
-#: poradnia/letters/forms.py:87
+#: poradnia/letters/forms.py:91
 msgid "User e-mail"
 msgstr ""
 
-#: poradnia/letters/forms.py:89
+#: poradnia/letters/forms.py:93
 msgid "E-mail"
 msgstr ""
 
-#: poradnia/letters/forms.py:130
+#: poradnia/letters/forms.py:138
 msgid "Have to enter user email or select a client"
 msgstr ""
 
-#: poradnia/letters/forms.py:203
+#: poradnia/letters/forms.py:211
 msgid "Reply to all"
 msgstr ""
 
-#: poradnia/letters/forms.py:211 poradnia/letters/forms.py:230
+#: poradnia/letters/forms.py:219 poradnia/letters/forms.py:238
 msgid "Save to review"
 msgstr ""
 
-#: poradnia/letters/forms.py:220 poradnia/letters/forms.py:238
+#: poradnia/letters/forms.py:228 poradnia/letters/forms.py:246
 msgid "Write to staff"
 msgstr ""
 
-#: poradnia/letters/forms.py:245
+#: poradnia/letters/forms.py:253
 msgid "Reply"
 msgstr ""
 
-#: poradnia/letters/forms.py:303
+#: poradnia/letters/forms.py:313
 msgid "Comment for staff"
 msgstr ""
 
-#: poradnia/letters/models.py:63
+#: poradnia/letters/models.py:66
 #: poradnia/letters/templates/letters/_letter_list.html:20
 msgid "Staff"
 msgstr ""
 
-#: poradnia/letters/models.py:63
+#: poradnia/letters/models.py:66
 msgid "Done"
 msgstr ""
 
-#: poradnia/letters/models.py:69
+#: poradnia/letters/models.py:72
 msgid "Accepted on"
 msgstr ""
 
-#: poradnia/letters/models.py:71
+#: poradnia/letters/models.py:74
 msgid "Subject"
 msgstr ""
 
-#: poradnia/letters/models.py:72
+#: poradnia/letters/models.py:75
 msgid "Text"
 msgstr ""
 
-#: poradnia/letters/models.py:73
+#: poradnia/letters/models.py:76
 msgid "Mail formatted HTML"
 msgstr ""
 
-#: poradnia/letters/models.py:74
+#: poradnia/letters/models.py:77
 msgid "Signature"
 msgstr ""
 
-#: poradnia/letters/models.py:78
+#: poradnia/letters/models.py:81 poradnia/letters/views/cbv.py:181
 msgid "Created by"
 msgstr ""
 
-#: poradnia/letters/models.py:84 poradnia/letters/views/cbv.py:171
+#: poradnia/letters/models.py:87 poradnia/letters/views/cbv.py:176
 msgid "Created on"
 msgstr ""
 
-#: poradnia/letters/models.py:87
+#: poradnia/letters/models.py:90
 msgid "Modified by"
 msgstr ""
 
-#: poradnia/letters/models.py:93
+#: poradnia/letters/models.py:96
 msgid "Modified on"
 msgstr ""
 
-#: poradnia/letters/models.py:99
+#: poradnia/letters/models.py:102
 msgid "Raw message contents"
 msgstr ""
 
-#: poradnia/letters/models.py:102
+#: poradnia/letters/models.py:105
 msgid "Original full content of message"
 msgstr ""
 
-#: poradnia/letters/models.py:167
+#: poradnia/letters/models.py:132
+#, python-brace-format
+msgid "Delete letter {self.id}"
+msgstr ""
+
+#: poradnia/letters/models.py:180
 msgid "Letter"
 msgstr ""
 
-#: poradnia/letters/models.py:194
+#: poradnia/letters/models.py:207
 msgid "File"
 msgstr ""
 
-#: poradnia/letters/models.py:221
+#: poradnia/letters/models.py:234
 msgid "Attachment"
 msgstr ""
 
-#: poradnia/letters/models.py:222
+#: poradnia/letters/models.py:235
 msgid "Attachments"
 msgstr ""
 
@@ -200,7 +205,7 @@ msgstr ""
 msgid "Everybody"
 msgstr ""
 
-#: poradnia/letters/templates/letters/_letter_list.html:49
+#: poradnia/letters/templates/letters/_letter_list.html:50
 #, python-format
 msgid ""
 "\n"
@@ -211,13 +216,13 @@ msgid ""
 "            "
 msgstr ""
 
-#: poradnia/letters/templates/letters/_letter_list.html:59
+#: poradnia/letters/templates/letters/_letter_list.html:61
 #: poradnia/letters/templates/letters/form_edit.html:6
-#: poradnia/letters/views/cbv.py:72
+#: poradnia/letters/views/cbv.py:76
 msgid "Edit"
 msgstr ""
 
-#: poradnia/letters/templates/letters/_letter_list.html:65
+#: poradnia/letters/templates/letters/_letter_list.html:69
 #: poradnia/letters/templates/letters/form_send.html:7
 msgid "Send"
 msgstr ""
@@ -238,40 +243,40 @@ msgstr ""
 msgid "Letters Table"
 msgstr ""
 
-#: poradnia/letters/views/cbv.py:45
+#: poradnia/letters/views/cbv.py:49
 msgid "Create a new case"
 msgstr ""
 
-#: poradnia/letters/views/cbv.py:54
+#: poradnia/letters/views/cbv.py:58
 #, python-brace-format
 msgid "Case about {object} created!"
 msgstr ""
 
-#: poradnia/letters/views/cbv.py:107
+#: poradnia/letters/views/cbv.py:111
 msgid "Status"
 msgstr ""
 
-#: poradnia/letters/views/cbv.py:148
+#: poradnia/letters/views/cbv.py:152
 msgid "Letter search table"
 msgstr ""
 
-#: poradnia/letters/views/cbv.py:176
+#: poradnia/letters/views/cbv.py:186
 msgid "Letter Subject"
 msgstr ""
 
-#: poradnia/letters/views/cbv.py:183
-msgid "Letter Content"
+#: poradnia/letters/views/cbv.py:193
+msgid "Letter Content (first 300 chars when longer)"
 msgstr ""
 
-#: poradnia/letters/views/cbv.py:190
+#: poradnia/letters/views/cbv.py:200
 msgid "Case Subject"
 msgstr ""
 
-#: poradnia/letters/views/cbv.py:197
+#: poradnia/letters/views/cbv.py:207
 msgid "Advice Subject"
 msgstr ""
 
-#: poradnia/letters/views/cbv.py:205
+#: poradnia/letters/views/cbv.py:215
 msgid "Advice Comment"
 msgstr ""
 
