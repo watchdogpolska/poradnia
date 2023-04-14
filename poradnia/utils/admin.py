@@ -4,7 +4,7 @@ from django.contrib.contenttypes.models import ContentType
 
 class LogEntryAdmin(admin.ModelAdmin):
     date_hierarchy = 'action_time'
-    list_display = ('action_time', 'user', 'action_flag', 'content_type', 'object_repr')
+    list_display = ('action_time', 'user', 'action_flag', 'content_type', 'object_id', 'object_repr')
     list_filter = ('action_flag', 'content_type')
     search_fields = ('object_repr', 'change_message', 'user__username', 'user__first_name', 'user__last_name')
     actions = None
