@@ -7,6 +7,7 @@ from django.contrib.sites.shortcuts import get_current_site
 from django.db import models
 from django.db.models import F, Func, IntegerField
 from django.urls import reverse
+from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django_mailbox.models import Message
 from model_utils import Choices
@@ -125,6 +126,11 @@ class Letter(AbstractRecord):
         url = self.get_absolute_url()
         label = self.name
         return f'<a href="{url}">{label}</a>'
+
+    def render_admin_delete_link(self):
+        url = reverse("admin:letters_letter_delete", args=(self.id,))
+        label = _(f"Delete letter {self.id}")
+        return mark_safe(f'<a href="{url}"><i class="fa fa-trash"></i> {label}</a>')
 
     def is_done(self):
         return (
