@@ -190,7 +190,7 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "visible": True,
             "max_length": 320,
             "width": 600,
-            "title": _("Letter Content"),
+            "title": _("Letter Content (first 300 chars when longer)"),
         },
         {
             "name": "case_name",
