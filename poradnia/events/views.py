@@ -31,7 +31,8 @@ from poradnia.users.utils import PermissionMixin
 from .forms import EventForm
 from .models import Event
 from .utils import EventCalendar
-
+from django.contrib.admin.models import LogEntry, CHANGE, ADDITION
+from django.contrib.contenttypes.models import ContentType
 
 class EventCreateView(
     RaisePermissionRequiredMixin, UserFormKwargsMixin, FormValidMessageMixin, CreateView
@@ -52,6 +53,18 @@ class EventCreateView(
         kwargs = super().get_form_kwargs()
         kwargs["case"] = self.case
         return kwargs
+    
+    def form_valid(self, form):
+        content_type = ContentType.objects.get_for_model(Event)
+        LogEntry.objects.log_action(
+            user_id=self.request.user.id,
+            content_type_id=content_type.id,
+            object_id=self.object.id,
+            object_repr=force_str(self.object),
+            action_flag=ADDITION,
+            change_message="Event added",
+        )
+        return super().form_valid(form)
 
     def get_form_valid_message(self):
         return _("Success added new event %(event)s") % ({"event": self.object})
@@ -82,6 +95,15 @@ class EventUpdateView(
 
     def form_valid(self, form):
         self.object.reminder_set.all().update(active=False)
+        content_type = ContentType.objects.get_for_model(Event)
+        LogEntry.objects.log_action(
+            user_id=self.request.user.id,
+            content_type_id=content_type.id,
+            object_id=self.object.id,
+            object_repr=str(self.object),
+            action_flag=CHANGE,
+            change_message='Event was changed'
+        )
         return super().form_valid(form)
 
     def get_form_valid_message(self):
