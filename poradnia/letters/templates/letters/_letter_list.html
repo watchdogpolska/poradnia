@@ -53,12 +53,15 @@
             by {{modified_by}})
             {% endblocktrans %}
             {% endif %}
+            <!-- TODO differentiate permission level for edit and delete letter -->
             {% if "can_change_all_record" in case_perms or request.user == object.created_by and "can_change_own_record" in case_perms %}
-            &bull;
-            <i class="fa fa-pencil"></i>
-            <a href="{{object.get_edit_url}}">
-                {% trans 'Edit'%}
-            </a>
+                &bull;
+                <a href="{{object.get_edit_url}}">
+                    <i class="fa fa-pencil"></i>
+                    {% trans 'Edit'%}
+                </a>
+                &bull;
+                {{ object.render_admin_delete_link }}
             {% endif %}
             {% if "can_send_to_client" in case_perms and not object.is_done %} &bull;
             <i class="fa fa-check"></i>

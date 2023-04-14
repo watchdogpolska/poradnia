@@ -57,14 +57,15 @@ class AbstractCalendar(HTMLCalendar):
         self.events = self.group_by_day(events)
 
     def formatmonthname(self, theyear, themonth, withyear=True):
-        """
-        Return a month name as a table row.
-        """
-        if withyear:
-            s = "{} {}".format(month_name[themonth - 1], theyear)
-        else:
-            s = "%s" % month_name[themonth]
-        return '<tr><th colspan="7" class="month">%s</th></tr>' % s
+        # """
+        # Return a month name as a table row.
+        # """
+        # if withyear:
+        #     s = "{} {}".format(month_name[themonth - 1], theyear)
+        # else:
+        #     s = "%s" % month_name[themonth]
+        # return '<tr><th colspan="7" class="month">%s</th></tr>' % s
+        return ""
 
     def formatweekday(self, day):
         """

@@ -164,12 +164,17 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
     model = Case
     title = "Cases"
     initial_order = [
-        ["created_on_str", "desc"],
+        ["id", "desc"],
     ]
     length_menu = [[20, 50, 100], [20, 50, 100]]
     search_values_separator = "|"
 
     column_defs = [
+        {
+            "name": "id",
+            "visible": True,
+            "title": _("Number"),
+        },
         {
             "name": "created_on_str",
             "visible": True,
@@ -188,12 +193,26 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "deadline_str",
             "visible": True,
-            "title": _("Deadline"),
+            "title": _("Deadline UTC"),
         },
         {
             "name": "last_send_str",
             "visible": True,
             "title": _("Last send"),
+        },
+        {
+            "name": "advice_subject",
+            "visible": True,
+            "foreign_field": "advice__subject",
+            "searchable": True,
+            "orderable": True,
+            "title": (_("Advice") + " - " + _("Subject")),
+        },
+        {
+            "name": "advicer",
+            "foreign_field": "advice__advicer__username",
+            "visible": True,
+            "title": _("Advicer"),
         },
         {
             "name": "letter_count",
@@ -227,9 +246,13 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
     def customize_row(self, row, obj):
         row["name"] = obj.render_case_link()
+        try:
+            row["advice_subject"] = obj.advice.render_advice_link()
+        except Case.advice.RelatedObjectDoesNotExist:
+            row["advice_subject"] = ""
         return
 
-    def get_initial_queryset(self, request=None):
+    def get_initial_queryset(self, request=None):  # noqa
         qs = super().get_initial_queryset(request)
 
         status_filter = []
@@ -265,6 +288,14 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             qs = qs.filter(has_project__in=project_filter)
         else:
             qs = qs.filter(has_project__isnull=True)
+
+        # to provide empty queryset when none of the options is selected
+        deadline_query = Q(deadline=0)
+        # build query for deadline according to user selection
+        for deadline in [("has_deadline_yes", False), ("has_deadline_no", True)]:
+            if get_numeric_param(self.request, deadline[0]):
+                deadline_query |= Q(deadline__isnull=deadline[1])
+        qs = qs.filter(deadline_query)
 
         return (
             qs.for_user(user=self.request.user)

@@ -151,7 +151,7 @@ class Case(models.Model):
         ("1", "assigned", _("assigned")),
         ("2", "closed", _("closed")),
     )
-    id = models.AutoField(verbose_name=_("Numer sprawy"), primary_key=True)
+    id = models.AutoField(verbose_name=_("Case number"), primary_key=True)
     name = models.CharField(max_length=150, verbose_name=_("Subject"))
     status = StatusField()
     status_changed = MonitorField(monitor="status")

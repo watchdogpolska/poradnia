@@ -1,6 +1,21 @@
 {% extends 'events/base.html' %}
 {% block breadcrumbs_rows %}
-    <li class="active">{{ month|date:"F Y" }}</li>
+    <!-- <li class="active">{{ month|date:"F Y" }}</li> -->
+    <nav>
+        <ul class="pager">
+            {% if previous_month %}
+                <li>
+                    <a href="{% url 'events:calendar' year=previous_month.year month=previous_month.month %}">{{ previous_month|date:"F Y" }}</a>
+                </li>
+            {% endif %}
+            &nbsp; <li>{{ month|date:"F Y" }}</li> &nbsp;
+            {% if next_month %}
+                <li>
+                    <a href="{% url 'events:calendar' year=next_month.year month=next_month.month %}">{{ next_month|date:"F Y" }}</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>    
 {% endblock %}
 
 {% block title %}{{ month|date:"F Y" }} - {{ block.super }}{% endblock %}
@@ -9,19 +24,4 @@
 
     {{ calendar }}
 
-    <nav>
-        <ul class="pager">
-            {% if previous_month %}
-                <li>
-                    <a href="{% url 'events:calendar' year=previous_month.year month=previous_month.month %}">{{ previous_month|date:"F Y" }}</a>
-                </li>
-            {% endif %}
-            <li>{{ month|date:"F Y" }}</li>
-            {% if next_month %}
-                <li>
-                    <a href="{% url 'events:calendar' year=next_month.year month=next_month.month %}">{{ next_month|date:"F Y" }}</a>
-                </li>
-            {% endif %}
-        </ul>
-    </nav>
 {% endblock %}
