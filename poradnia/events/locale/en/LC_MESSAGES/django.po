@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-03 17:35+0200\n"
+"POT-Creation-Date: 2023-04-14 18:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: poradnia/events/apps.py:7 poradnia/events/models.py:85
+#: poradnia/events/apps.py:7 poradnia/events/models.py:90
 #: poradnia/events/templates/events/base.html:5
 #: poradnia/events/templates/events/base.html:10
 msgid "Events"
@@ -50,44 +50,61 @@ msgid ""
 "cases."
 msgstr ""
 
-#: poradnia/events/models.py:44
-#: poradnia/events/templates/events/_event_list.html:18
-msgid "Time"
+#: poradnia/events/models.py:46
+msgid "Completed"
 msgstr ""
 
-#: poradnia/events/models.py:45
-msgid "Subject"
+#: poradnia/events/models.py:47
+msgid "Event has been completed, no more reminders."
 msgstr ""
 
 #: poradnia/events/models.py:49
+#: poradnia/events/templates/events/_event_list.html:22
+msgid "Time"
+msgstr ""
+
+#: poradnia/events/models.py:50
+msgid "Subject"
+msgstr ""
+
+#: poradnia/events/models.py:54
 msgid "Created by"
 msgstr ""
 
-#: poradnia/events/models.py:52
+#: poradnia/events/models.py:57
 msgid "Created on"
 msgstr ""
 
-#: poradnia/events/models.py:55
+#: poradnia/events/models.py:60
 msgid "Modified by"
 msgstr ""
 
-#: poradnia/events/models.py:61
+#: poradnia/events/models.py:66
 msgid "Modified on"
 msgstr ""
 
-#: poradnia/events/models.py:84
+#: poradnia/events/models.py:89
 msgid "Event"
 msgstr ""
 
-#: poradnia/events/templates/events/_event_list.html:22
+#: poradnia/events/templates/events/_event_list.html:15
+#: poradnia/events/templates/events/_event_list.html:19
+msgid "Yes,No"
+msgstr ""
+
+#: poradnia/events/templates/events/_event_list.html:18
+msgid "Completed (no more reminders)"
+msgstr ""
+
+#: poradnia/events/templates/events/_event_list.html:26
 msgid "Notified"
 msgstr ""
 
-#: poradnia/events/templates/events/_event_list.html:37
+#: poradnia/events/templates/events/_event_list.html:41
 msgid "Nobody yet."
 msgstr ""
 
-#: poradnia/events/templates/events/_event_list.html:57
+#: poradnia/events/templates/events/_event_list.html:61
 #: poradnia/events/templates/events/form.html:8
 msgid "Edit"
 msgstr ""
@@ -248,12 +265,12 @@ msgstr ""
 msgid "Dec"
 msgstr ""
 
-#: poradnia/events/views.py:57
+#: poradnia/events/views.py:72
 #, python-format
 msgid "Success added new event %(event)s"
 msgstr ""
 
-#: poradnia/events/views.py:88
+#: poradnia/events/views.py:112
 #, python-format
 msgid "Success updated event %(event)s"
 msgstr ""

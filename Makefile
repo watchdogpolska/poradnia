@@ -53,3 +53,6 @@ settings:
 
 docs:
 	docker-compose run web sphinx-build -b html -d docs/_build/doctrees docs docs/_build/html
+
+fulltest: check test e2e
+

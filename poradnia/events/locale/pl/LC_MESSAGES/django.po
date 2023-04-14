@@ -1,10 +1,11 @@
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-03 17:35+0200\n"
-"PO-Revision-Date: 2020-07-16 22:47+0200\n"
-"Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
+"POT-Creation-Date: 2023-04-14 18:06+0200\n"
+"PO-Revision-Date: 2023-04-14 17:28+0124\n"
+"Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
@@ -12,12 +13,13 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
-"X-Generator: Poedit 1.8.7.1\n"
-"X-Crowdin-Project: poradnia\n"
-"X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /events/locale/en/LC_MESSAGES/django.po\n"
+"X-Crowdin-Language: pl\n"
+"X-Crowdin-Project: poradnia\n"
+"X-Generator: Poedit 1.8.7.1\n"
+"X-Translated-Using: django-rosetta 0.9.8\n"
 
-#: poradnia/events/apps.py:7 poradnia/events/models.py:85
+#: poradnia/events/apps.py:7 poradnia/events/models.py:90
 #: poradnia/events/templates/events/base.html:5
 #: poradnia/events/templates/events/base.html:10
 msgid "Events"
@@ -50,44 +52,61 @@ msgid ""
 "cases."
 msgstr "Istotne wydarzenie, szczególnie podkreślone np. na liście spraw."
 
-#: poradnia/events/models.py:44
-#: poradnia/events/templates/events/_event_list.html:18
+#: poradnia/events/models.py:46
+msgid "Completed"
+msgstr "Zakończone"
+
+#: poradnia/events/models.py:47
+msgid "Event has been completed, no more reminders."
+msgstr "Wydarzenie zostało zakończone, nie będzie przypomnień."
+
+#: poradnia/events/models.py:49
+#: poradnia/events/templates/events/_event_list.html:22
 msgid "Time"
 msgstr "Czas"
 
-#: poradnia/events/models.py:45
+#: poradnia/events/models.py:50
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: poradnia/events/models.py:49
+#: poradnia/events/models.py:54
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: poradnia/events/models.py:52
+#: poradnia/events/models.py:57
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: poradnia/events/models.py:55
+#: poradnia/events/models.py:60
 msgid "Modified by"
 msgstr "Zmodyfikowane przez"
 
-#: poradnia/events/models.py:61
+#: poradnia/events/models.py:66
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
-#: poradnia/events/models.py:84
+#: poradnia/events/models.py:89
 msgid "Event"
 msgstr "Wydarzenie"
 
-#: poradnia/events/templates/events/_event_list.html:22
+#: poradnia/events/templates/events/_event_list.html:15
+#: poradnia/events/templates/events/_event_list.html:19
+msgid "Yes,No"
+msgstr "Tak, nie"
+
+#: poradnia/events/templates/events/_event_list.html:18
+msgid "Completed (no more reminders)"
+msgstr "Ukończono (nie ma więcej przypomnień)"
+
+#: poradnia/events/templates/events/_event_list.html:26
 msgid "Notified"
 msgstr "Powiadomieni"
 
-#: poradnia/events/templates/events/_event_list.html:37
+#: poradnia/events/templates/events/_event_list.html:41
 msgid "Nobody yet."
 msgstr "Nikt (jeszcze)."
 
-#: poradnia/events/templates/events/_event_list.html:57
+#: poradnia/events/templates/events/_event_list.html:61
 #: poradnia/events/templates/events/form.html:8
 msgid "Edit"
 msgstr "Edytuj"
@@ -248,12 +267,12 @@ msgstr "Paź"
 msgid "Dec"
 msgstr "Gru"
 
-#: poradnia/events/views.py:57
+#: poradnia/events/views.py:72
 #, python-format
 msgid "Success added new event %(event)s"
 msgstr "Dodano wydarzenie %(event)s"
 
-#: poradnia/events/views.py:88
+#: poradnia/events/views.py:112
 #, python-format
 msgid "Success updated event %(event)s"
 msgstr "Zaktualizowano wydarzenie %(event)s"

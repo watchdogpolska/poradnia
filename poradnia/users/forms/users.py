@@ -12,6 +12,7 @@ class UserForm(FormHorizontalMixin, SingleButtonMixin, forms.ModelForm):
         super().__init__(*args, **kwargs)
         if not self.instance or self.instance and not self.instance.is_staff:
             del self.fields["codename"]
+            self.helper.layout.fields.remove("codename")
 
     class Meta:
         # Set this form to use the User model.
@@ -29,7 +30,9 @@ class ProfileForm(
         # dynamically exclude event_reminder_time if user is not a staff member
         if not self.user.is_staff:
             del self.fields["event_reminder_time"]
+            self.helper.layout.fields.remove("event_reminder_time")
             del self.fields["email_footer"]
+            self.helper.layout.fields.remove("email_footer")
 
     class Meta:
         model = Profile

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-03 17:35+0200\n"
+"POT-Creation-Date: 2023-04-14 18:06+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -392,6 +392,6 @@ msgid ""
 "        ."
 msgstr ""
 
-#: poradnia/utils/mixins.py:40
+#: poradnia/utils/mixins.py:42
 msgid "Apply Filter"
 msgstr ""
