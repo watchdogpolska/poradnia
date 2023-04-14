@@ -41,5 +41,5 @@ class EventForm(
     class Meta:
         # Set this form to use the User model.
         model = Event
-        fields = ("deadline", "time", "text")
+        fields = ("deadline", "completed", "time", "text")
         widgets = {"time": forms.DateTimeInput(attrs={"autocomplete": "off"})}

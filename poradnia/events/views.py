@@ -9,6 +9,8 @@ from braces.views import (
 )
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
+from django.contrib.admin.models import ADDITION, CHANGE, LogEntry
+from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import force_str
@@ -53,6 +55,19 @@ class EventCreateView(
         kwargs["case"] = self.case
         return kwargs
 
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        content_type = ContentType.objects.get_for_model(Event)
+        LogEntry.objects.log_action(
+            user_id=self.request.user.id,
+            content_type_id=content_type.id,
+            object_id=self.object.id,
+            object_repr=force_str(self.object),
+            action_flag=ADDITION,
+            change_message="Event added",
+        )
+        return response
+
     def get_form_valid_message(self):
         return _("Success added new event %(event)s") % ({"event": self.object})
 
@@ -82,6 +97,15 @@ class EventUpdateView(
 
     def form_valid(self, form):
         self.object.reminder_set.all().update(active=False)
+        content_type = ContentType.objects.get_for_model(Event)
+        LogEntry.objects.log_action(
+            user_id=self.request.user.id,
+            content_type_id=content_type.id,
+            object_id=self.object.id,
+            object_repr=str(self.object),
+            action_flag=CHANGE,
+            change_message="Event was changed",
+        )
         return super().form_valid(form)
 
     def get_form_valid_message(self):

@@ -112,13 +112,17 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
             )
         else:
             del self.fields["client"]
+            self.helper.layout.fields.remove("client")
             del self.fields["email"]
+            self.helper.layout.fields.remove("email")
 
         if not self.user.is_anonymous:  # is registered
             del self.fields["email_registration"]
+            self.helper.layout.fields.remove("email_registration")
 
         if not (self.user.is_anonymous or self._is_super_staff()):
             del self.fields["giodo"]
+            self.helper.layout.fields.remove("giodo")
         elif self._is_super_staff():
             self.fields["giodo"].required = False
 

@@ -190,7 +190,7 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "visible": True,
             "max_length": 320,
             "width": 600,
-            "title": _("Letter Content"),
+            "title": _("Letter Content (first 300 chars when longer)"),
         },
         {
             "name": "case_name",
@@ -218,6 +218,7 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
     def customize_row(self, row, obj):
         # row["text"] = mark_safe(linebreaksbr(obj.text[:300]))
+        row["name"] = obj.render_letter_link()
         row["text"] = obj.text[:300] + "..." if len(obj.text) > 300 else obj.text
         row["case_name"] = obj.case.render_case_link()
         row["advice_subject"] = obj.case.render_case_advice_link()
@@ -264,7 +265,9 @@ class ReceiveEmailView(View):
         logger.info(f"email to: {manifest['headers']['to']}")
         logger.info(f"whitelisted: {settings.LETTER_RECEIVE_WHITELISTED_ADDRESS}")
         cond = [
-            (addr in x or domain in x) and addr != "" and domain != ""
+            (addr.lower() in x.lower() or domain.lower() in x.lower())
+            and addr != ""
+            and domain != ""
             for x in manifest["headers"]["to"]
             for addr in settings.LETTER_RECEIVE_WHITELISTED_ADDRESS
         ]

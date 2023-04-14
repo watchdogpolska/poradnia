@@ -12,7 +12,11 @@
         <table class="table">
             <tr>
                 <td>{% trans 'Dead-line' %}</td>
-                <td>{{ object.deadline }}</td>
+                <td>{{ object.deadline|yesno:_("Yes,No") }}</td>
+            </tr>
+            <tr>
+                <td>{% trans 'Completed (no more reminders)' %}</td>
+                <td>{{ object.completed|yesno:_("Yes,No") }}</td>
             </tr>
             <tr>
                 <td>{% trans 'Time' %}</td>

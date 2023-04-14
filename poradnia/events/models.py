@@ -41,6 +41,11 @@ class Event(AbstractRecord):
             "for example, in the list of cases."
         ),
     )
+    completed = models.BooleanField(
+        default=False,
+        verbose_name=_("Completed"),
+        help_text=_("Event has been completed, no more reminders."),
+    )
     time = models.DateTimeField(verbose_name=_("Time"))
     text = models.TextField(verbose_name=_("Subject"))
     created_by = models.ForeignKey(
