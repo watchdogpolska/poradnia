@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 15:46+0200\n"
+"POT-Creation-Date: 2023-04-14 18:06+0200\n"
 "PO-Revision-Date: 2023-04-14 17:27+0124\n"
 "Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: \n"
@@ -107,8 +107,7 @@ msgstr "Grupa uprawnień"
 msgid "Notify user"
 msgstr "Powiadom użytkownika"
 
-#: poradnia/cases/forms.py:101
-#: poradnia/cases/templates/cases/case_close.html:9
+#: poradnia/cases/forms.py:101 poradnia/cases/templates/cases/case_close.html:9
 #: poradnia/cases/templates/cases/case_detail.html:47
 msgid "Close"
 msgstr "Zamknij"
@@ -156,7 +155,6 @@ msgid "closed"
 msgstr "zamknięta"
 
 #: poradnia/cases/models.py:154
-#| msgid "Case table"
 msgid "Case number"
 msgstr "Numer sprawy"
 
@@ -313,12 +311,16 @@ msgstr "Usuń"
 #, python-format
 msgid ""
 "\n"
-"                        Created by <a href=\"%(created_url)s\">%(created_user)s</a> on\n"
-"                        %(created_on)s for <a href=\"%(client_url)s\">%(client_user)s</a>"
+"                        Created by <a href=\"%(created_url)s\">"
+"%(created_user)s</a> on\n"
+"                        %(created_on)s for <a href=\"%(client_url)s\">"
+"%(client_user)s</a>"
 msgstr ""
 "\n"
-"                        Utworzona przez <a href=\"%(created_url)s\">%(created_user)s</a> o \n"
-"                        %(created_on)s dla <a href=\"%(client_url)s\">%(client_user)s</a>"
+"                        Utworzona przez <a href=\"%(created_url)s\">"
+"%(created_user)s</a> o \n"
+"                        %(created_on)s dla <a href=\"%(client_url)s\">"
+"%(client_user)s</a>"
 
 #: poradnia/cases/templates/cases/case_detail.html:85
 msgid "Workflow"
@@ -365,11 +367,11 @@ msgstr "Brak wpisów"
 #: poradnia/cases/templates/cases/case_detail.html:183
 #, python-format
 msgid ""
-"The letter can also be sent via <a href=\"mailto:%(email)s\">e-mail "
-"address</a>."
+"The letter can also be sent via <a href=\"mailto:%(email)s\">e-mail address</"
+"a>."
 msgstr ""
-"List może zostać przesłany także z wykorzystaniem <a "
-"href=\"mailto:%(email)s\">poczty elektronicznej</a>."
+"List może zostać przesłany także z wykorzystaniem <a href=\"mailto:%(email)s"
+"\">poczty elektronicznej</a>."
 
 #: poradnia/cases/templates/cases/case_filter.html:39
 msgid "No."
@@ -404,8 +406,8 @@ msgid "Cases have status changed by staff."
 msgstr ""
 "Zgłoszona przez Ciebie sprawa otrzymuje najpierw status \"wolna\". To "
 "znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. "
-"Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na "
-"\"przypisana\". A gdy już Ci pomożemy \"zakończona\"."
+"Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na \"przypisana"
+"\". A gdy już Ci pomożemy \"zakończona\"."
 
 #: poradnia/cases/templates/cases/case_filter.html:124
 msgid "There is no cases."
@@ -439,8 +441,8 @@ msgstr "Potwierdzenie usunięcia uprawnień"
 #: poradnia/cases/templates/cases/case_permission_remove_confirm.html:15
 #, python-format
 msgid ""
-"Are you sure you want to remove the permissions on the case \"%(case)s\" for"
-" user %(user)s?"
+"Are you sure you want to remove the permissions on the case \"%(case)s\" for "
+"user %(user)s?"
 msgstr ""
 "Czy jesteś pewien, że chcesz usunąć uprawnienia do sprawy \"%(case)s\" dlla "
 "użytkownika %(user)s?"
@@ -466,7 +468,6 @@ msgid "No"
 msgstr "Nie"
 
 #: poradnia/cases/templates/cases/case_table.html:60
-#| msgid "Deadline"
 msgid "Has deadline"
 msgstr "Ma termin"
 
@@ -491,12 +492,10 @@ msgid "Number"
 msgstr "Numer"
 
 #: poradnia/cases/views/cases.py:196
-#| msgid "Deadline"
 msgid "Deadline UTC"
 msgstr "Termin UTC"
 
 #: poradnia/cases/views/cases.py:215
-#| msgid "Advice"
 msgid "Advicer"
 msgstr "Radzący"
 

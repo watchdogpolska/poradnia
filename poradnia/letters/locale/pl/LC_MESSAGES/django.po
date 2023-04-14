@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 15:46+0200\n"
-"PO-Revision-Date: 2023-04-14 17:29+0124\n"
+"POT-Creation-Date: 2023-04-14 18:06+0200\n"
+"PO-Revision-Date: 2023-04-14 18:07+0124\n"
 "Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -184,9 +184,9 @@ msgid "Original full content of message"
 msgstr "Oryginalna, pełna treść wiadomości"
 
 #: poradnia/letters/models.py:132
-#, python-brace-format
-msgid "Delete letter {self.id}"
-msgstr "Usuń list {self.id}"
+#| msgid "Delete letter {self.id}"
+msgid "Delete letter"
+msgstr "Usuń list"
 
 #: poradnia/letters/models.py:180
 msgid "Letter"

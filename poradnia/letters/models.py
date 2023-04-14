@@ -129,7 +129,7 @@ class Letter(AbstractRecord):
 
     def render_admin_delete_link(self):
         url = reverse("admin:letters_letter_delete", args=(self.id,))
-        label = _(f"Delete letter {self.id}")
+        label = _("Delete letter") + f" {self.id}"
         return mark_safe(f'<a href="{url}"><i class="fa fa-trash"></i> {label}</a>')
 
     def is_done(self):
