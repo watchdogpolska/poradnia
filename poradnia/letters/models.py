@@ -125,7 +125,7 @@ class Letter(AbstractRecord):
     def render_letter_link(self):
         url = self.get_absolute_url()
         label = self.name
-        return f'<a href="{url}">{label}</a>'
+        return mark_safe(f'<a href="{url}">{label}</a>')
 
     def render_admin_delete_link(self):
         url = reverse("admin:letters_letter_delete", args=(self.id,))
