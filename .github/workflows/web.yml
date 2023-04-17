@@ -8,7 +8,7 @@ on:
   pull_request:
 
 jobs:
-  test_web:
+  django:
     runs-on: ubuntu-latest
     strategy:
       matrix:
