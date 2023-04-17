@@ -25,7 +25,7 @@ jobs:
       - name: Get deployment env
         id: get_deployment
         run: |
-          run: echo "::set-output name=deployment::$(if [ $GITHUB_REF == 'refs/heads/master' ]; then echo 'prod'; else echo 'staging'; fi)"
+          echo "::set-output name=deployment::$(if [ $GITHUB_REF == 'refs/heads/master' ]; then echo 'prod'; else echo 'staging'; fi)"
 
       - name: Set image tag
         env:
