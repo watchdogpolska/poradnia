@@ -26,7 +26,7 @@ jobs:
         env:
           D_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           D_REPO: ${{ env.REPO_NAME }}
-          D_ACCOUNT: ${{ DOCKER_ACCOUNT }}
+          D_ACCOUNT: ${{ env.DOCKER_ACCOUNT }}
           DEPLOYMENT_ENV: "$(if [ $GITHUB_REF == 'refs/heads/master' ]; then echo 'prod'; else echo 'staging'; fi)"
           DEPLOYMENT_VERSION: ${{ steps.get_version.outputs.version }}
         id: set_tag
