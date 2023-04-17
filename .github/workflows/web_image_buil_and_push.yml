@@ -45,4 +45,4 @@ jobs:
           file: .contrib/docker/Dockerfile.web
           push: true
           tags: |
-            docker.io/${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:${{ secrets.DOCKER_USERNAME }}_${{ env.REPO_NAME }_${{ steps.get_version.outputs.version }}_${{ steps.set_tag.outputs.tag }}
+            docker.io/${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:${{ secrets.DOCKER_USERNAME }}_${{ env.REPO_NAME }}_${{ steps.get_version.outputs.version }}_${{ steps.set_tag.outputs.tag }}
