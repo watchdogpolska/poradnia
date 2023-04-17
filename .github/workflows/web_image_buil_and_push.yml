@@ -22,18 +22,23 @@ jobs:
           env
           echo "::set-output name=version::$(python version.py)"
 
+      - name: Get deployment env
+        id: get_deployment
+        run: |
+          run: echo "::set-output name=deployment::$(if [ $GITHUB_REF == 'refs/heads/master' ]; then echo 'prod'; else echo 'staging'; fi)"
+
       - name: Set image tag
         env:
           D_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          D_REPO: ${{ env.REPO_NAME }}
-          D_ACCOUNT: ${{ env.DOCKER_ACCOUNT }}
-          DEPLOYMENT_ENV: "$(if [ $GITHUB_REF == 'refs/heads/master' ]; then echo 'prod'; else echo 'staging'; fi)"
+          D_REPO: ${{ vars.REPO_NAME }}
+          D_ACCOUNT: ${{ vars.DOCKER_ACCOUNT }}
+          DEPLOYMENT_ENV: ${{ steps.get_deployment.outputs.deployment }}
           DEPLOYMENT_VERSION: ${{ steps.get_version.outputs.version }}
         id: set_tag
         run: |
           env
           echo "::set-output name=tag::$(if [ $GITHUB_REF == 'refs/heads/master' ]; then echo 'prod'; else echo 'staging'; fi)"
-          echo "::set-output name=full_version_tag::docker.io/$D_USERNAME/$D_REPO:$DEPLOYMENT_VERSION_$DEPLOYMENT_ENV"
+          echo "::set-output name=full_version_tag::docker.io/$D_ACCOUNT/$D_REPO:$DEPLOYMENT_VERSION_$DEPLOYMENT_ENV"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
