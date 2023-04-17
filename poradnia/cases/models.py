@@ -30,6 +30,7 @@ from model_utils.fields import MonitorField, StatusField
 
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
+from poradnia.utils.utils import get_numeric_param
 
 # TODO: move to settings and fix for DEV and DEMO modes
 CASE_PK_RE = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
@@ -140,6 +141,39 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
             advice__jst__tree_id=jst.tree_id,
             advice__jst__lft__range=(jst.lft, jst.rght),
         )
+
+    def ajax_boolean_filter(self, request, prefix, field):
+        filter_values = []
+        for choice in [("yes", True), ("no", False)]:
+            filter_name = prefix + choice[0]
+            if get_numeric_param(request, filter_name):
+                filter_values.append(choice[1])
+        if filter_values:
+            return self.filter(**{field + "__in": filter_values})
+        else:
+            return self.filter(**{field + "__isnull": True})
+
+    def ajax_status_filter(self, request):
+        choices = Case.STATUS._identifier_map
+        filter_values = []
+        for choice in choices.keys():
+            filter_name = "status_" + choice.lower()
+            if get_numeric_param(request, filter_name):
+                filter_values.append(choices[choice])
+        if filter_values:
+            return self.filter(status__in=filter_values)
+        else:
+            return self.filter(status__isnull=True)
+
+    def ajax_has_deadline_filter(self, request):
+        # to provide empty queryset when none of the options is selected
+        deadline_query = Q(deadline=0)
+        # build query for deadline according to user selection
+        for choice in [("yes", False), ("no", True)]:
+            filter_name = "has_deadline_" + choice[0]
+            if get_numeric_param(request, filter_name):
+                deadline_query |= Q(deadline__isnull=choice[1])
+        return self.filter(deadline_query)
 
 
 class Case(models.Model):
