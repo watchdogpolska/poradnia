@@ -19,6 +19,7 @@ jobs:
         run: |
           pwd
           ls -la
+          env
           echo "::set-output name=version::$(python version.py)"
 
       - name: Set image tag
@@ -38,5 +39,4 @@ jobs:
           file: .contrib/docker/Dockerfile.web
           push: true
           tags: |
-            echo "env.REPO_NAME: ${{ env.REPO_NAME }}""
             docker.io/${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:${{ steps.get_version.outputs.version }}_${{ steps.set_tag.outputs.tag }}
