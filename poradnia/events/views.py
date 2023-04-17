@@ -58,13 +58,17 @@ class EventCreateView(
     def form_valid(self, form):
         response = super().form_valid(form)
         content_type = ContentType.objects.get_for_model(Event)
+        change_dict = {
+            "changed": form.changed_data,
+            "cleaned_data": form.cleaned_data,
+        }
         LogEntry.objects.log_action(
             user_id=self.request.user.id,
             content_type_id=content_type.id,
             object_id=self.object.id,
             object_repr=force_str(self.object),
             action_flag=ADDITION,
-            change_message="Event added",
+            change_message=f"{change_dict}",
         )
         return response
 
@@ -98,13 +102,17 @@ class EventUpdateView(
     def form_valid(self, form):
         self.object.reminder_set.all().update(active=False)
         content_type = ContentType.objects.get_for_model(Event)
+        change_dict = {
+            "changed": form.changed_data,
+            "cleaned_data": form.cleaned_data,
+        }
         LogEntry.objects.log_action(
             user_id=self.request.user.id,
             content_type_id=content_type.id,
             object_id=self.object.id,
             object_repr=str(self.object),
             action_flag=CHANGE,
-            change_message="Event was changed",
+            change_message=f"{change_dict}",
         )
         return super().form_valid(form)
 

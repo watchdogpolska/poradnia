@@ -7,7 +7,9 @@ from crispy_forms.layout import BaseInput, Submit
 from dal import autocomplete
 from django import forms
 from django.conf import settings
+from django.contrib.admin.models import ADDITION, CHANGE, LogEntry
 from django.contrib.auth import get_user_model
+from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import ValidationError
 from django.forms import ModelForm
 from django.urls import reverse
@@ -299,6 +301,19 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         logger.info(f"Case {self.case.id} saved by {self.user}")
         if commit:
             obj.save()
+            content_type = ContentType.objects.get_for_model(Letter)
+            change_dict = {
+                "changed": self.changed_data,
+                "cleaned_data": self.cleaned_data,
+            }
+            LogEntry.objects.log_action(
+                user_id=self.user.id,
+                content_type_id=content_type.id,
+                object_id=obj.id,
+                object_repr=str(obj),
+                action_flag=ADDITION,
+                change_message=f"{change_dict}",
+            )
             logger.info(f"Letter {obj.id} saved by {self.user}")
         return obj
 
@@ -358,14 +373,32 @@ class LetterForm(SingleButtonMixin, PartialMixin, ModelForm):  # eg. edit form
         self.user = kwargs.pop("user")
         super().__init__(*args, **kwargs)
         self.helper.form_action = kwargs["instance"].get_edit_url()
+        self.fields["html"].widget = TinyMCE(attrs={"cols": 80, "rows": 30})
         self.helper.form_method = "post"
 
     def save(self, commit=True, *args, **kwargs):
         obj = super().save(commit=False, *args, **kwargs)
+        f = HTMLFilter()
+        f.feed(obj.html)
+        obj.text = f.text
         obj.modified_by = self.user
         obj.save()
+        logger.info(f"Letter {obj.id} saved by {self.user}")
+        content_type = ContentType.objects.get_for_model(Letter)
+        change_dict = {
+            "changed": self.changed_data,
+            "cleaned_data": self.cleaned_data,
+        }
+        LogEntry.objects.log_action(
+            user_id=self.user.id,
+            content_type_id=content_type.id,
+            object_id=obj.id,
+            object_repr=str(obj),
+            action_flag=CHANGE,
+            change_message=f"{change_dict}",
+        )
         return obj
 
     class Meta:
-        fields = ["name", "text"]
+        fields = ["name", "html"]
         model = Letter
