@@ -30,7 +30,6 @@ from poradnia.letters.forms import AddLetterForm
 from poradnia.letters.helpers import AttachmentFormSet
 from poradnia.records.models import Record
 from poradnia.users.views import PermissionMixin
-from poradnia.utils.utils import get_numeric_param
 
 
 class SingleObjectPermissionMixin(RaisePermissionRequiredMixin):
@@ -252,51 +251,12 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             row["advice_subject"] = ""
         return
 
-    def get_initial_queryset(self, request=None):  # noqa
+    def get_initial_queryset(self, request=None):
         qs = super().get_initial_queryset(request)
-
-        status_filter = []
-        for status in [
-            "status_free",
-            "status_assigned",
-            "status_moderated",
-            "status_closed",
-        ]:
-            if get_numeric_param(self.request, status):
-                status_filter.append(
-                    getattr(Case.STATUS, status.replace("status_", ""))
-                )
-        if len(status_filter) > 0:
-            qs = qs.filter(status__in=status_filter)
-        else:
-            qs = qs.filter(status__isnull=True)
-
-        handled_filter = []
-        for handled in [("handled_yes", True), ("handled_no", False)]:
-            if get_numeric_param(self.request, handled[0]):
-                handled_filter.append(handled[1])
-        if len(handled_filter) > 0:
-            qs = qs.filter(handled__in=handled_filter)
-        else:
-            qs = qs.filter(handled__isnull=True)
-
-        project_filter = []
-        for project in [("has_project_yes", True), ("has_project_no", False)]:
-            if get_numeric_param(self.request, project[0]):
-                project_filter.append(project[1])
-        if len(project_filter) > 0:
-            qs = qs.filter(has_project__in=project_filter)
-        else:
-            qs = qs.filter(has_project__isnull=True)
-
-        # to provide empty queryset when none of the options is selected
-        deadline_query = Q(deadline=0)
-        # build query for deadline according to user selection
-        for deadline in [("has_deadline_yes", False), ("has_deadline_no", True)]:
-            if get_numeric_param(self.request, deadline[0]):
-                deadline_query |= Q(deadline__isnull=deadline[1])
-        qs = qs.filter(deadline_query)
-
+        qs = qs.ajax_status_filter(self.request)
+        qs = qs.ajax_boolean_filter(self.request, "handled_", "handled")
+        qs = qs.ajax_boolean_filter(self.request, "has_project_", "has_project")
+        qs = qs.ajax_has_deadline_filter(self.request)
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_datetime("created_on", timezone.get_default_timezone())

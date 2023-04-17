@@ -162,14 +162,14 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
     model = Letter
     title = _("Letters")
     initial_order = [
-        ["created_on_str", "desc"],
+        ["id", "desc"],
     ]
     length_menu = [[20, 50, 100], [20, 50, 100]]
     search_values_separator = "|"
 
     column_defs = [
         AjaxDatatableView.render_row_tools_column_def(),
-        {"name": "id", "visible": False, "title": "Id"},
+        {"name": "id", "visible": True, "title": "Id"},
         {
             "name": "created_on_str",
             "visible": True,

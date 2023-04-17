@@ -22,7 +22,7 @@ services:
       - .:/app
 
   web:
-    image: docker-registry.siecobywatelska.pl/poradnia/web
+    # image: docker-registry.siecobywatelska.pl/poradnia/web
     build:
       context: .
       dockerfile: .contrib/docker/Dockerfile.web
