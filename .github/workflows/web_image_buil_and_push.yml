@@ -34,4 +34,4 @@ jobs:
           context: .
           push: true
           tags: |
-            docker.io/${{ secrets.DOCKER_USERNAME }}/${{ variables.REPO_NAME }}:${{ steps.get_version.outputs.version }}_${{ steps.set_tag.outputs.tag }}
+            docker.io/${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:${{ steps.get_version.outputs.version }}_${{ steps.set_tag.outputs.tag }}
