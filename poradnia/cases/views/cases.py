@@ -30,7 +30,6 @@ from poradnia.letters.forms import AddLetterForm
 from poradnia.letters.helpers import AttachmentFormSet
 from poradnia.records.models import Record
 from poradnia.users.views import PermissionMixin
-from poradnia.utils.utils import get_numeric_param
 
 
 class SingleObjectPermissionMixin(RaisePermissionRequiredMixin):

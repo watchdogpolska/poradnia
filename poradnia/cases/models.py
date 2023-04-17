@@ -141,7 +141,7 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
             advice__jst__tree_id=jst.tree_id,
             advice__jst__lft__range=(jst.lft, jst.rght),
         )
-    
+
     def ajax_boolean_filter(self, request, prefix, field):
         filter_values = []
         for choice in [("yes", True), ("no", False)]:
@@ -152,7 +152,7 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
             return self.filter(**{field + "__in": filter_values})
         else:
             return self.filter(**{field + "__isnull": True})
-        
+
     def ajax_status_filter(self, request):
         choices = Case.STATUS._identifier_map
         filter_values = []
@@ -164,7 +164,7 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
             return self.filter(status__in=filter_values)
         else:
             return self.filter(status__isnull=True)
-        
+
     def ajax_has_deadline_filter(self, request):
         # to provide empty queryset when none of the options is selected
         deadline_query = Q(deadline=0)
