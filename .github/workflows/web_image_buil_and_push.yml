@@ -16,7 +16,10 @@ jobs:
       - name: Get version from script
         id: get_version
         working-directory: poradnia
-        run: echo "::set-output name=version::$(python version.py)"
+        run: |
+          pwd
+          ls -la
+          echo "::set-output name=version::$(python version.py)"
 
       - name: Set image tag
         id: set_tag
@@ -32,7 +35,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          dockerfile: .contrib/docker/Dockerfile.web
+          file: .contrib/docker/Dockerfile.web
           push: true
           tags: |
+            echo "env.REPO_NAME: ${{ env.REPO_NAME }}""
             docker.io/${{ secrets.DOCKER_USERNAME }}/${{ env.REPO_NAME }}:${{ steps.get_version.outputs.version }}_${{ steps.set_tag.outputs.tag }}
