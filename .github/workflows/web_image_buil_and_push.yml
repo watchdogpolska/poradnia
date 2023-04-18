@@ -62,5 +62,5 @@ jobs:
           file: .contrib/docker/Dockerfile.web
           push: true
           tags: |
-            # docker.io/${{ env.DOCKER_ACCOUNT }}/${{ env.REPO_NAME }}:${{ env.DOCKER_ACCOUNT }}_${{ env.REPO_NAME }}_${{ steps.get_version.outputs.version }}_${{ steps.set_tag.outputs.tag }}
-            ${{ steps.set_tag.outputs.full_version_tag }}
+            ${{ vars.DOCKER_ACCOUNT }}/${{ vars.REPO_NAME }}:${{ steps.get_version.outputs.version }}-${{ steps.set_tag.outputs.tag }}
+            # ${{ steps.set_tag.outputs.full_version_tag }}
