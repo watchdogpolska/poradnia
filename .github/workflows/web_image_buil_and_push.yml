@@ -39,7 +39,7 @@ jobs:
         run: |
           env
           echo "::set-output name=tag::$(if [ $GITHUB_REF == 'refs/heads/master' ]; then echo 'prod'; else echo 'staging'; fi)"
-          echo "::set-output name=full_version_tag::$D_ACCOUNT/$D_REPO:$VERSION_TAG"
+          echo "::set-output name=full_version_tag::$D_REPO:$VERSION_TAG"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
