@@ -17,12 +17,12 @@ jobs:
         id: get_version
         working-directory: poradnia
         run: |
-          echo "::set-output name=version::$(python version.py)"
+          echo "version=$(python version.py)" >> $GITHUB_ENV
 
       - name: Get deployment env
         id: get_deployment
         run: |
-          echo "::set-output name=deployment::$(if [ $GITHUB_REF == 'refs/heads/master' ]; then echo 'prod'; else echo 'staging'; fi)"
+          echo "deployment=$(if [ $GITHUB_REF == 'refs/heads/master' ]; then echo 'prod'; else echo 'staging'; fi)" >> $GITHUB_ENV
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -43,5 +43,5 @@ jobs:
           file: .contrib/docker/Dockerfile.web
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/${{ vars.REPO_NAME }}:latest-${{ steps.get_deployment.outputs.deployment }}
-            ${{ secrets.DOCKER_USERNAME }}/${{ vars.REPO_NAME }}:${{ steps.get_version.outputs.version }}-${{ steps.get_deployment.outputs.deployment }}
+            ${{ secrets.DOCKER_USERNAME }}/${{ vars.REPO_NAME }}:latest-${{ env.deployment }}
+            ${{ secrets.DOCKER_USERNAME }}/${{ vars.REPO_NAME }}:${{ env.version }}-${{ env.deployment }}
