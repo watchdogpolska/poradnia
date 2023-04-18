@@ -11,35 +11,18 @@ jobs:
     if: github.event.pull_request.merged == true
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Get version from script
         id: get_version
         working-directory: poradnia
         run: |
-          pwd
-          ls -la
-          env
           echo "::set-output name=version::$(python version.py)"
 
       - name: Get deployment env
         id: get_deployment
         run: |
           echo "::set-output name=deployment::$(if [ $GITHUB_REF == 'refs/heads/master' ]; then echo 'prod'; else echo 'staging'; fi)"
-
-      - name: Set image tag
-        env:
-          D_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          D_REPO: ${{ vars.REPO_NAME }}
-          D_ACCOUNT: ${{ vars.DOCKER_ACCOUNT }}
-          DEPLOYMENT_ENV: ${{ steps.get_deployment.outputs.deployment }}
-          DEPLOYMENT_VERSION: ${{ steps.get_version.outputs.version }}
-          VERSION_TAG: ${{ steps.get_version.outputs.version }}-${{ steps.get_deployment.outputs.deployment }}
-        id: set_tag
-        run: |
-          env
-          echo "::set-output name=tag::$(if [ $GITHUB_REF == 'refs/heads/master' ]; then echo 'prod'; else echo 'staging'; fi)"
-          echo "::set-output name=full_version_tag::$D_REPO:$VERSION_TAG"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
@@ -54,8 +37,6 @@ jobs:
           password: ${{ secrets.DOCKER_PAT }}
 
       - name: Build and push Docker image
-        env:
-          FULL_TAG: ${{ steps.set_tag.outputs.full_version_tag }}
         uses: docker/build-push-action@v4
         with:
           context: .
