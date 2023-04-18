@@ -40,7 +40,7 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           context: .
-          file: .contrib/docker/Dockerfile.web
+          file: .contrib/docker/Dockerfile.web.production
           push: true
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/${{ vars.REPO_NAME }}:latest-${{ env.deployment }}
