@@ -30,7 +30,7 @@ jobs:
       - name: Set image tag
         env:
           D_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          D_REPO: "piotriwa/porady_dev"
+          D_REPO: ${{ vars.REPO_NAME }}
           D_ACCOUNT: ${{ vars.DOCKER_ACCOUNT }}
           DEPLOYMENT_ENV: ${{ steps.get_deployment.outputs.deployment }}
           DEPLOYMENT_VERSION: ${{ steps.get_version.outputs.version }}
@@ -39,7 +39,7 @@ jobs:
         run: |
           env
           echo "::set-output name=tag::$(if [ $GITHUB_REF == 'refs/heads/master' ]; then echo 'prod'; else echo 'staging'; fi)"
-          echo "::set-output name=full_version_tag::docker.io/$D_REPO:$VERSION_TAG"
+          echo "::set-output name=full_version_tag::$D_ACCOUNT/$D_REPO:$VERSION_TAG"
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
