@@ -62,6 +62,6 @@ jobs:
           file: .contrib/docker/Dockerfile.web
           push: true
           tags: |
-            ${{ vars.REPO_NAME }}:latest-${{ steps.set_tag.outputs.tag }}
-            ${{ steps.set_tag.outputs.full_version_tag }}
+            piiw/${{ vars.REPO_NAME }}:latest-${{ steps.set_tag.outputs.tag }}
+            piiw/${{ steps.set_tag.outputs.full_version_tag }}
           debug: true
