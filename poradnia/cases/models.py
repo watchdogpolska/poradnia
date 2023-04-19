@@ -1,3 +1,4 @@
+import logging
 import re
 
 from django.conf import settings
@@ -34,6 +35,9 @@ from poradnia.utils.utils import get_numeric_param
 
 # TODO: move to settings and fix for DEV and DEMO modes
 CASE_PK_RE = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
+
+
+logger = logging.getLogger(__name__)
 
 
 def delete_files_for_cases(cases):
@@ -392,10 +396,15 @@ class Case(models.Model):
         User = get_user_model()
         if not settings.NOTIFY_AUTHOR:
             users_to_notify = User.objects.exclude(pk=actor.pk).distinct() & user_qs
+        logger.info(
+            f"Case: {self.id} - sending notification "
+            f"to author: {settings.NOTIFY_AUTHOR}"
+        )
         for user in users_to_notify:
             user.notify(
                 actor=actor, target=target, from_email=self.get_email(), **context
             )
+            logger.info(f"Notification sent to {user} with {context}")
 
     def close(self, actor, notify=True):
         self.modified_by = actor
