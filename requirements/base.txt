@@ -45,7 +45,7 @@ django-autocomplete-light==3.5.0
 django-tinymce==3.6.1
 django-atom==0.16.3
 django-tinycontent==0.8.0
-icalendar==5.0.4
+icalendar==5.0.5
 html2text==2020.1.16
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.7.1
