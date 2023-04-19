@@ -388,9 +388,11 @@ class Case(models.Model):
     def send_notification(self, actor, user_qs, target=None, **context):
         if target is None:
             target = self
-
+        users_to_notify = user_qs
         User = get_user_model()
-        for user in User.objects.exclude(pk=actor.pk).distinct() & user_qs:
+        if not settings.NOTIFY_AUTHOR:
+            users_to_notify = User.objects.exclude(pk=actor.pk).distinct() & user_qs
+        for user in users_to_notify:
             user.notify(
                 actor=actor, target=target, from_email=self.get_email(), **context
             )

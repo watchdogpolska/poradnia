@@ -631,10 +631,14 @@ class ReceiveEmailTestCase(TestCase):
         self.assertEqual(response.json()["status"], "OK")
 
         emails = [x.to[0] for x in mail.outbox]
-        self.assertEqual(len(emails), 2)
+        if not settings.NOTIFY_AUTHOR:
+            self.assertEqual(len(emails), 2)
+            self.assertNotIn(case.client.email, emails)  # skip notify self
+        else:
+            self.assertEqual(len(emails), 3)
+            self.assertIn(case.client.email, emails)  # notify self
         self.assertIn(cuop_lawyer.user.email, emails)
         self.assertIn(cuop_user.user.email, emails)
-        self.assertNotIn(case.client.email, emails)  # skip notify self
 
     def test_user_permission_after_create(self):
         user = UserFactory()
