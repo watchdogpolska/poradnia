@@ -23,6 +23,7 @@ jobs:
         id: get_deployment
         run: |
           echo "deployment=$(if [ $GITHUB_REF == 'refs/heads/master' ]; then echo 'prod'; else echo 'staging'; fi)" >> $GITHUB_ENV
+          env
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
