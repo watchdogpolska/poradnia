@@ -165,7 +165,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
     initial_order = [
         ["id", "desc"],
     ]
-    length_menu = [[20, 50, 100], [20, 50, 100]]
+    length_menu = [[20, 50, 100, -1], [20, 50, 100, _("All")]]
     search_values_separator = "|"
 
     column_defs = [
