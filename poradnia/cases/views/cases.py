@@ -203,9 +203,9 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Deadline UTC"),
         },
         {
-            "name": "last_send_str",
+            "name": "last_action_str",
             "visible": True,
-            "title": _("Last send"),
+            "title": _("Last action"),
         },
         {
             "name": "advice_subject",
@@ -247,7 +247,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_datetime("created_on", timezone.get_default_timezone())
-            .with_formatted_datetime("last_send", timezone.get_default_timezone())
+            .with_formatted_datetime("last_action", timezone.get_default_timezone())
             .with_formatted_deadline()
             .with_user_pretty_name_str("client")
         )
