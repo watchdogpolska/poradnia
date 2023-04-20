@@ -69,9 +69,9 @@
                 <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom"
                     title='{% trans 'Cases have status changed by staff.' %}'>
                 </i>
-                <b>{% trans 'Legend of status' %} :</b><br>
+                <b>{% trans 'Status (S)' %} :</b><br>
                 {% for status in statuses %}
-                    <i class="{{ status.0|status2css }}"></i>{{ status.0|status2display }}<br>
+                    <i class="{{ status.0|status2css }}"></i>&nbsp;{{ status.0|status2display }}<br>
                 {% endfor %}
             </p>
         </div>

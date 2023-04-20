@@ -181,6 +181,13 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Created on"),
         },
         {
+            "name": "status",
+            "visible": True,
+            "searchable": False,
+            "orderable": False,
+            "title": _("S"),
+        },
+        {
             "name": "name",
             "visible": True,
             "title": _("Subject"),
