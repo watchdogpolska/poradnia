@@ -23,7 +23,9 @@ class RecordQuerySet(QuerySet):
         qs = self._for_user_by_view(user)
         if user.is_staff:
             return qs
-        return qs.filter(Q(event=None) & Q(letter__status="done"))
+        return qs.filter(
+            Q(event__public=True) | (Q(event=None) & Q(letter__status="done"))
+        )
 
     def move(self, target):
         for field in Record.STATIC_RELATION + ["courtcase"]:
