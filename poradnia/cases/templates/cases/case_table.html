@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {# {% load bootstrap4 %} #}
-{% load i18n %}
+{% load i18n cases_tags %}
 
 
 {% block content %}
@@ -63,6 +63,17 @@
             <input type="checkbox" id="has_deadline_no" name="check_has_deadline_no" checked>
             <label for="has_deadline_no" class="small">{% trans 'No' %}</label><br>
             <br><br>
+        </div>
+        <div class="row">
+            <p>
+                <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom"
+                    title='{% trans 'Cases have status changed by staff.' %}'>
+                </i>
+                <b>{% trans 'Legend of status' %} :</b><br>
+                {% for status in statuses %}
+                    <i class="{{ status.0|status2css }}"></i>{{ status.0|status2display }}<br>
+                {% endfor %}
+            </p>
         </div>
     </div>
     <div class="table-responsive">

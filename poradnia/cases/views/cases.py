@@ -152,6 +152,7 @@ class CaseTableView(PermissionMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         context["header_label"] = mark_safe(_("Cases search table"))
         context["ajax_datatable_url"] = reverse("cases:case_table_ajax_data")
+        context["statuses"] = Case.STATUS
         return context
 
 
@@ -220,31 +221,10 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "orderable": True,
             "title": _("Letter count"),
         },
-        {
-            "name": "status",
-            "visible": True,
-            "searchable": False,
-            "orderable": False,
-            "title": _("Status"),
-        },
-        {
-            "name": "handled",
-            "visible": True,
-            "searchable": False,
-            "orderable": False,
-            "title": _("Handled"),
-        },
-        {
-            "name": "has_project",
-            "visible": True,
-            "searchable": False,
-            "orderable": False,
-            "title": _("Has project"),
-        },
     ]
 
     def customize_row(self, row, obj):
-        row["name"] = obj.render_case_link()
+        row["name"] = obj.render_case_link(self.request.user)
         try:
             row["advice_subject"] = obj.advice.render_advice_link()
         except Case.advice.RelatedObjectDoesNotExist:

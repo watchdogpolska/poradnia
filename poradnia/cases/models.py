@@ -21,6 +21,7 @@ from django.db.models import (
 from django.db.models.functions import Cast
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save, pre_delete
+from django.template import Context, Template
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -242,10 +243,22 @@ class Case(models.Model):
     def get_absolute_url(self):
         return reverse("cases:detail", kwargs={"pk": str(self.pk)})
 
-    def render_case_link(self):
+    def render_case_link(self, user):
         url = self.get_absolute_url()
         label = self.name
-        return f'<a href="{url}">{label}</a>'
+        template_string = """
+            {% load cases_tags %}
+            <span class="{{ object.status|status2css }}">
+                {% if user.is_staff and not object.handled %}<b>{% endif %}
+                <a href="{{ url }}">{{ label }}</a>
+                {% if user.is_staff and not object.handled %}</b>{% endif %}
+                {% if user.is_staff and object.has_project %}
+                    {% include 'cases/_project_badge.html' %}
+                {% endif %}
+            </span>"""
+        template = Template(template_string)
+        context = Context({"object": self, "url": url, "label": label, "user": user})
+        return template.render(context=context)
 
     def render_case_advice_link(self):
         try:
