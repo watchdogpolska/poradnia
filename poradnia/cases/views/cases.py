@@ -246,6 +246,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         qs = qs.ajax_has_deadline_filter(self.request)
         return (
             qs.for_user(user=self.request.user)
+            .with_involved_staff()
             .with_formatted_datetime("created_on", timezone.get_default_timezone())
             .with_formatted_datetime("last_action", timezone.get_default_timezone())
             .with_formatted_deadline()
