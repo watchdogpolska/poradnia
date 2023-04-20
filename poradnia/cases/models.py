@@ -1,3 +1,4 @@
+import itertools
 import logging
 import re
 
@@ -243,7 +244,14 @@ class Case(models.Model):
     def get_absolute_url(self):
         return reverse("cases:detail", kwargs={"pk": str(self.pk)})
 
-    def render_case_link(self, user):
+    def render_case_link(self):
+        url = self.get_absolute_url()
+        label = self.name
+        bold_start = "" if self.handled else "<b>"
+        bold_end = "" if self.handled else "</b>"
+        return f'{bold_start}<a href="{url}">{label}</a>{bold_end}'
+
+    def render_case_link_formatted(self, user):
         url = self.get_absolute_url()
         label = self.name
         template_string = """
@@ -252,13 +260,59 @@ class Case(models.Model):
                 {% if user.is_staff and not object.handled %}<b>{% endif %}
                 <a href="{{ url }}">{{ label }}</a>
                 {% if user.is_staff and not object.handled %}</b>{% endif %}
-                {% if user.is_staff and object.has_project %}
-                    {% include 'cases/_project_badge.html' %}
-                {% endif %}
             </span>"""
         template = Template(template_string)
         context = Context({"object": self, "url": url, "label": label, "user": user})
         return template.render(context=context)
+
+    def render_status(self):
+        STATUS_STYLE = {
+            "0": "fa fa-circle-o ",
+            "1": "fa fa-dot-circle-o",
+            "3": "fa fa-plus-square-o",
+            "2": "fa fa-circle",
+        }
+        status_icon = STATUS_STYLE[self.status]
+        return f'<span class="{ status_icon }"></span>'
+
+    def render_project_badge(self):
+        if self.has_project:
+            title = _("Reply to client to remove badge")
+            name = _("Project")
+            return f"""
+                <span class="label label-success" title="{ title }">
+                <i class="fa fa-pencil"></i> { name }
+                </span>
+            """
+        else:
+            return ""
+
+    def render_handled(self):
+        if not self.handled:
+            return '<span class="fa fa-check"></span>'
+        else:
+            return ""
+
+    def render_involved_staff(self):
+        permissions = self.caseuserobjectpermission_set.all()
+        grouped_permissions = itertools.groupby(permissions, lambda p: p.user)
+        user_list = [
+            {
+                "grouper": key,
+                "title": ", ".join([p.permission.name for p in list(group)]),
+            }
+            for key, group in grouped_permissions
+            if key.is_staff
+        ]
+        return "<br>".join(
+            [
+                f"""
+                <span class="label label-info" title="{ user["title"]}">
+                {user["grouper"].get_nicename()}</span>
+            """
+                for user in user_list
+            ]
+        )
 
     def render_case_advice_link(self):
         try:
