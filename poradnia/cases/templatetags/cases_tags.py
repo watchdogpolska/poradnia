@@ -27,12 +27,14 @@ def status2display(status):
     """Converts a status into display name"""
     return Case.STATUS[status]
 
+
 @register.filter
 @stringfilter
 def status_name(status):
     """Converts a status into name"""
     choice_names_dict = {v: k for k, v in Case.STATUS._identifier_map.items()}
     return choice_names_dict[status]
+
 
 @register.simple_tag(takes_context=True)
 def full_link(context, path):
