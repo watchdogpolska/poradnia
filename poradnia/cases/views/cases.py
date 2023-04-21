@@ -166,7 +166,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
     initial_order = [
         ["id", "desc"],
     ]
-    length_menu = [[20, 50, 100, 200], [20, 50, 100, 200]]
+    length_menu = [[200, 20, 50, 100], [200, 20, 50, 100]]
     search_values_separator = "|"
 
     column_defs = [
@@ -174,11 +174,6 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "name": "id",
             "visible": True,
             "title": _("Number"),
-        },
-        {
-            "name": "created_on_str",
-            "visible": True,
-            "title": _("Created on"),
         },
         {
             "name": "status",
@@ -193,19 +188,42 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Subject"),
         },
         {
+            "name": "handled",
+            "visible": False,  # needded to speed up calculation of other columns
+            "searchable": False,
+            "orderable": False,
+            "title": _("Handled"),
+        },
+        {
+            "name": "has_project",
+            "visible": True,
+            "searchable": False,
+            "orderable": False,
+            "title": _("Project"),
+        },
+        {
+            "name": "involved_staff",
+            "title": "Involved staff",
+            "placeholder": True,
+            "searchable": False,
+            "orderable": False,
+            "className": "highlighted",
+        },
+        {
+            "name": "deadline_str",
+            "visible": True,
+            "title": _("Deadline"),
+        },
+        {
             "name": "client_pretty_name",
             "visible": True,
             "title": _("Client"),
         },
         {
-            "name": "deadline_str",
-            "visible": True,
-            "title": _("Deadline UTC"),
-        },
-        {
             "name": "last_action_str",
             "visible": True,
             "title": _("Last action"),
+            "width": 80,
         },
         {
             "name": "advice_subject",
@@ -216,22 +234,33 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": (_("Advice") + " - " + _("Subject")),
         },
         {
-            "name": "advicer",
-            "foreign_field": "advice__advicer__username",
-            "visible": True,
-            "title": _("Advicer"),
-        },
-        {
             "name": "letter_count",
             "visible": True,
             "searchable": False,
             "orderable": True,
             "title": _("Letter count"),
         },
+        {
+            "name": "created_on_str",
+            "visible": True,
+            "title": _("Created on"),
+            "width": 80,
+        },
     ]
 
     def customize_row(self, row, obj):
-        row["name"] = obj.render_case_link(self.request.user)
+        row["name"] = obj.render_case_link()
+        # row["name"] = obj.render_case_link_formatted(self.request.user)
+        row["has_project"] = obj.render_project_badge()
+        row["status"] = obj.render_status()
+        # row["handled"] = obj.render_handled()
+        row["involved_staff"] = obj.render_involved_staff()
+        row["deadline_str"] = (
+            f"""<span class="label label-warning">
+            <i class="fa fa-fire"></i>{obj.deadline_str[:10]}</span>"""
+            if obj.deadline_str
+            else ""
+        )
         try:
             row["advice_subject"] = obj.advice.render_advice_link()
         except Case.advice.RelatedObjectDoesNotExist:
