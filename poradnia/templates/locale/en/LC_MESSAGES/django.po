@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 18:06+0200\n"
+"POT-Creation-Date: 2023-04-23 21:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -56,11 +56,11 @@ msgid ""
 "            page."
 msgstr ""
 
-#: poradnia/templates/_modal.html:9 poradnia/templates/_sidebar.html:15
+#: poradnia/templates/_modal.html:9 poradnia/templates/_sidebar.html:17
 msgid "Search"
 msgstr ""
 
-#: poradnia/templates/_sidebar.html:21
+#: poradnia/templates/_sidebar.html:24
 msgid "Feedbacks"
 msgstr ""
 
