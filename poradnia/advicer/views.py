@@ -100,6 +100,12 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Comment"),
         },
         {
+            "name": "issues",
+            "visible": True,
+            "title": _("Thematic scopes of requests"),
+            "m2m_foreign_field": "issues__name",
+        },
+        {
             "name": "area",
             "visible": True,
             "title": _("Problems regarding the right to information"),

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 18:06+0200\n"
+"POT-Creation-Date: 2023-04-23 21:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -23,7 +23,7 @@ msgstr ""
 
 #: poradnia/advicer/filters.py:41 poradnia/advicer/models.py:107
 #: poradnia/advicer/templates/advicer/advice_filter.html:25
-#: poradnia/advicer/views.py:95 poradnia/advicer/views.py:113
+#: poradnia/advicer/views.py:95 poradnia/advicer/views.py:119
 msgid "Subject"
 msgstr ""
 
@@ -31,7 +31,7 @@ msgstr ""
 #: poradnia/advicer/models.py:131
 #: poradnia/advicer/templates/advicer/advice_detail.html:119
 #: poradnia/advicer/templates/advicer/advice_filter.html:24
-#: poradnia/advicer/views.py:132
+#: poradnia/advicer/views.py:138
 msgid "Advicer"
 msgstr ""
 
@@ -72,7 +72,7 @@ msgid "Person kind"
 msgstr ""
 
 #: poradnia/advicer/filters.py:72 poradnia/advicer/models.py:47
-#: poradnia/advicer/views.py:127
+#: poradnia/advicer/views.py:133
 msgid "Institution kind"
 msgstr ""
 
@@ -102,7 +102,7 @@ msgstr ""
 msgid "The thematic scope of the request"
 msgstr ""
 
-#: poradnia/advicer/models.py:30
+#: poradnia/advicer/models.py:30 poradnia/advicer/views.py:105
 msgid "Thematic scopes of requests"
 msgstr ""
 
@@ -110,11 +110,11 @@ msgstr ""
 msgid "Problem regarding the right to information"
 msgstr ""
 
-#: poradnia/advicer/models.py:36 poradnia/advicer/views.py:105
+#: poradnia/advicer/models.py:36 poradnia/advicer/views.py:111
 msgid "Problems regarding the right to information"
 msgstr ""
 
-#: poradnia/advicer/models.py:41 poradnia/advicer/views.py:120
+#: poradnia/advicer/models.py:41 poradnia/advicer/views.py:126
 msgid "Type of person who reporting the advice"
 msgstr ""
 
@@ -141,7 +141,7 @@ msgstr ""
 #: poradnia/advicer/models.py:104
 #: poradnia/advicer/templates/advicer/advice_detail.html:30
 #: poradnia/advicer/templates/advicer/advice_filter.html:27
-#: poradnia/advicer/views.py:113
+#: poradnia/advicer/views.py:119
 msgid "Case"
 msgstr ""
 
@@ -151,13 +151,13 @@ msgstr ""
 
 #: poradnia/advicer/models.py:136
 #: poradnia/advicer/templates/advicer/advice_detail.html:91
-#: poradnia/advicer/views.py:137
+#: poradnia/advicer/views.py:143
 msgid "Grant on"
 msgstr ""
 
 #: poradnia/advicer/models.py:146
 #: poradnia/advicer/templates/advicer/advice_detail.html:79
-#: poradnia/advicer/views.py:149
+#: poradnia/advicer/views.py:155
 msgid "We helped?"
 msgstr ""
 
@@ -167,13 +167,13 @@ msgstr ""
 
 #: poradnia/advicer/models.py:157
 #: poradnia/advicer/templates/advicer/advice_table.html:43
-#: poradnia/advicer/views.py:156
+#: poradnia/advicer/views.py:162
 msgid "Visible"
 msgstr ""
 
 #: poradnia/advicer/models.py:164
 #: poradnia/advicer/templates/advicer/advice_detail.html:69
-#: poradnia/advicer/views.py:142
+#: poradnia/advicer/views.py:148
 msgid "Unit of administrative division"
 msgstr ""
 
@@ -341,12 +341,12 @@ msgstr ""
 msgid "Advice search table"
 msgstr ""
 
-#: poradnia/advicer/views.py:217
+#: poradnia/advicer/views.py:223
 #, python-brace-format
 msgid "{0} updated!"
 msgstr ""
 
-#: poradnia/advicer/views.py:257
+#: poradnia/advicer/views.py:263
 #, python-brace-format
 msgid "{subject} deleted!"
 msgstr ""

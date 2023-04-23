@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 18:06+0200\n"
+"POT-Creation-Date: 2023-04-23 21:11+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: poradnia/events/apps.py:7 poradnia/events/models.py:90
+#: poradnia/events/apps.py:7 poradnia/events/models.py:95
 #: poradnia/events/templates/events/base.html:5
 #: poradnia/events/templates/events/base.html:10
 msgid "Events"
@@ -58,37 +58,46 @@ msgstr ""
 msgid "Event has been completed, no more reminders."
 msgstr ""
 
-#: poradnia/events/models.py:49
-#: poradnia/events/templates/events/_event_list.html:22
-msgid "Time"
+#: poradnia/events/models.py:51
+msgid "Public"
 msgstr ""
 
-#: poradnia/events/models.py:50
-msgid "Subject"
+#: poradnia/events/models.py:52
+msgid "Event is visible to customers (ext)."
 msgstr ""
 
 #: poradnia/events/models.py:54
+#: poradnia/events/templates/events/_event_list.html:26
+msgid "Time"
+msgstr ""
+
+#: poradnia/events/models.py:55
+msgid "Subject"
+msgstr ""
+
+#: poradnia/events/models.py:59
 msgid "Created by"
 msgstr ""
 
-#: poradnia/events/models.py:57
+#: poradnia/events/models.py:62
 msgid "Created on"
 msgstr ""
 
-#: poradnia/events/models.py:60
+#: poradnia/events/models.py:65
 msgid "Modified by"
 msgstr ""
 
-#: poradnia/events/models.py:66
+#: poradnia/events/models.py:71
 msgid "Modified on"
 msgstr ""
 
-#: poradnia/events/models.py:89
+#: poradnia/events/models.py:94
 msgid "Event"
 msgstr ""
 
 #: poradnia/events/templates/events/_event_list.html:15
 #: poradnia/events/templates/events/_event_list.html:19
+#: poradnia/events/templates/events/_event_list.html:23
 msgid "Yes,No"
 msgstr ""
 
@@ -96,15 +105,19 @@ msgstr ""
 msgid "Completed (no more reminders)"
 msgstr ""
 
-#: poradnia/events/templates/events/_event_list.html:26
+#: poradnia/events/templates/events/_event_list.html:22
+msgid "Public (visible to customers)"
+msgstr ""
+
+#: poradnia/events/templates/events/_event_list.html:30
 msgid "Notified"
 msgstr ""
 
-#: poradnia/events/templates/events/_event_list.html:41
+#: poradnia/events/templates/events/_event_list.html:45
 msgid "Nobody yet."
 msgstr ""
 
-#: poradnia/events/templates/events/_event_list.html:61
+#: poradnia/events/templates/events/_event_list.html:65
 #: poradnia/events/templates/events/form.html:8
 msgid "Edit"
 msgstr ""
@@ -265,12 +278,12 @@ msgstr ""
 msgid "Dec"
 msgstr ""
 
-#: poradnia/events/views.py:72
+#: poradnia/events/views.py:76
 #, python-format
 msgid "Success added new event %(event)s"
 msgstr ""
 
-#: poradnia/events/views.py:112
+#: poradnia/events/views.py:120
 #, python-format
 msgid "Success updated event %(event)s"
 msgstr ""

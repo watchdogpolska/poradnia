@@ -12,6 +12,9 @@
                 <li class="block-list-item">
                     <a href="{% url 'users:list' %}"><i class="fa fa-users"></i> {% trans "Users list" %}</a>
                 </li>
+                <li class="block-list-item">
+                    <a href="{% url 'admin:index' %}"><i class="fa fa-gear"></i> {% trans "App admin" %}</a>
+                </li>                
             {% endif %}
             <li class="block-list-item">
                 <a href="{% url 'account_logout' %}"><i class="fa fa-sign-out"></i> {% trans "Logout" %}</a>

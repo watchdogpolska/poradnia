@@ -1,3 +1,5 @@
+import itertools
+import logging
 import re
 
 from django.conf import settings
@@ -20,6 +22,7 @@ from django.db.models import (
 from django.db.models.functions import Cast
 from django.db.models.query import QuerySet
 from django.db.models.signals import post_save, pre_delete
+from django.template import Context, Template
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
@@ -34,6 +37,9 @@ from poradnia.utils.utils import get_numeric_param
 
 # TODO: move to settings and fix for DEV and DEMO modes
 CASE_PK_RE = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
+
+
+logger = logging.getLogger(__name__)
 
 
 def delete_files_for_cases(cases):
@@ -241,7 +247,72 @@ class Case(models.Model):
     def render_case_link(self):
         url = self.get_absolute_url()
         label = self.name
-        return f'<a href="{url}">{label}</a>'
+        bold_start = "" if self.handled else "<b>"
+        bold_end = "" if self.handled else "</b>"
+        return f'{bold_start}<a href="{url}">{label}</a>{bold_end}'
+
+    def render_case_link_formatted(self, user):
+        url = self.get_absolute_url()
+        label = self.name
+        template_string = """
+            {% load cases_tags %}
+            <span class="{{ object.status|status2css }}">
+                {% if user.is_staff and not object.handled %}<b>{% endif %}
+                <a href="{{ url }}">{{ label }}</a>
+                {% if user.is_staff and not object.handled %}</b>{% endif %}
+            </span>"""
+        template = Template(template_string)
+        context = Context({"object": self, "url": url, "label": label, "user": user})
+        return template.render(context=context)
+
+    def render_status(self):
+        STATUS_STYLE = {
+            "0": "fa fa-circle-o ",
+            "1": "fa fa-dot-circle-o",
+            "3": "fa fa-plus-square-o",
+            "2": "fa fa-circle",
+        }
+        status_icon = STATUS_STYLE[self.status]
+        return f'<span class="{ status_icon }"></span>'
+
+    def render_project_badge(self):
+        if self.has_project:
+            title = _("Reply to client to remove badge")
+            name = _("Project")
+            return f"""
+                <span class="label label-success" title="{ title }">
+                <i class="fa fa-pencil"></i> { name }
+                </span>
+            """
+        else:
+            return ""
+
+    def render_handled(self):
+        if not self.handled:
+            return '<span class="fa fa-check"></span>'
+        else:
+            return ""
+
+    def render_involved_staff(self):
+        permissions = self.caseuserobjectpermission_set.all()
+        grouped_permissions = itertools.groupby(permissions, lambda p: p.user)
+        user_list = [
+            {
+                "grouper": key,
+                "title": ", ".join([p.permission.name for p in list(group)]),
+            }
+            for key, group in grouped_permissions
+            if key.is_staff
+        ]
+        return "<br>".join(
+            [
+                f"""
+                <span class="label label-info" title="{ user["title"]}">
+                {user["grouper"].get_nicename()}</span>
+            """
+                for user in user_list
+            ]
+        )
 
     def render_case_advice_link(self):
         try:
@@ -388,12 +459,19 @@ class Case(models.Model):
     def send_notification(self, actor, user_qs, target=None, **context):
         if target is None:
             target = self
-
+        users_to_notify = user_qs
         User = get_user_model()
-        for user in User.objects.exclude(pk=actor.pk).distinct() & user_qs:
+        if not settings.NOTIFY_AUTHOR:
+            users_to_notify = User.objects.exclude(pk=actor.pk).distinct() & user_qs
+        logger.info(
+            f"Case: {self.id} - sending notification "
+            f"to author: {settings.NOTIFY_AUTHOR}"
+        )
+        for user in users_to_notify:
             user.notify(
                 actor=actor, target=target, from_email=self.get_email(), **context
             )
+            logger.info(f"Notification sent to {user} with {context}")
 
     def close(self, actor, notify=True):
         self.modified_by = actor

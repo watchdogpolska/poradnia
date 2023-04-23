@@ -56,7 +56,7 @@ def add(request, case_pk):
                 messages.success(
                     request, _("Letter %(object)s created!") % {"object": obj}
                 )
-                logger.info(f"Letter {obj.id} saved by {request.user}")
+                logger.info(f"Letter {obj.id} created by {request.user}")
                 formset.save()
                 obj.send_notification(actor=request.user, verb="created")
                 return HttpResponseRedirect(case.get_absolute_url())

@@ -46,6 +46,11 @@ class Event(AbstractRecord):
         verbose_name=_("Completed"),
         help_text=_("Event has been completed, no more reminders."),
     )
+    public = models.BooleanField(
+        default=False,
+        verbose_name=_("Public"),
+        help_text=_("Event is visible to customers (ext)."),
+    )
     time = models.DateTimeField(verbose_name=_("Time"))
     text = models.TextField(verbose_name=_("Subject"))
     created_by = models.ForeignKey(
