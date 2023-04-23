@@ -12,7 +12,6 @@ class LogEntryAdmin(admin.ModelAdmin):
         "content_type",
         "object_id",
         "object_repr",
-        "change_message",
     )
     list_filter = ("action_flag", "content_type")
     search_fields = (

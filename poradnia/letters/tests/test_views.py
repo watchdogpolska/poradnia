@@ -8,7 +8,7 @@ from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase
+from django.test import TestCase, override_settings
 from django.urls import reverse, reverse_lazy
 from guardian.shortcuts import assign_perm
 
@@ -614,7 +614,15 @@ class ReceiveEmailTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(letter.case.created_by.email, "new-user@example.com")
 
-    def test_notify_staff_about_user_letter(self):
+    @override_settings(NOTIFY_AUTHOR=True)
+    def test_notify_staff_about_user_letter_with_notify_author_enabled(self):
+        self._test_notify_staff_about_user_letter(expect_author_notification=True)
+
+    @override_settings(NOTIFY_AUTHOR=False)
+    def test_notify_staff_about_user_letter_with_notify_author_disabled(self):
+        self._test_notify_staff_about_user_letter(expect_author_notification=False)
+
+    def _test_notify_staff_about_user_letter(self, expect_author_notification):
         case = CaseFactory(client__is_staff=False)
         cuop_user = CaseUserObjectPermissionFactory(
             content_object=case,
@@ -631,10 +639,14 @@ class ReceiveEmailTestCase(TestCase):
         self.assertEqual(response.json()["status"], "OK")
 
         emails = [x.to[0] for x in mail.outbox]
-        self.assertEqual(len(emails), 2)
+        if expect_author_notification:
+            self.assertEqual(len(emails), 3)
+            self.assertIn(case.client.email, emails)  # notify self
+        else:
+            self.assertEqual(len(emails), 2)
+            self.assertNotIn(case.client.email, emails)  # skip notify self
         self.assertIn(cuop_lawyer.user.email, emails)
         self.assertIn(cuop_user.user.email, emails)
-        self.assertNotIn(case.client.email, emails)  # skip notify self
 
     def test_user_permission_after_create(self):
         user = UserFactory()

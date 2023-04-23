@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 18:06+0200\n"
+"POT-Creation-Date: 2023-04-23 21:11+0200\n"
 "PO-Revision-Date: 2023-04-03 17:40+0124\n"
 "Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -65,11 +65,11 @@ msgstr ""
 "%(url)s\">formularza logowania</a>. Jeżeli potrzebujesz jakiejś pomocy, użyj "
 "formularza na dole strony."
 
-#: poradnia/templates/_modal.html:9 poradnia/templates/_sidebar.html:15
+#: poradnia/templates/_modal.html:9 poradnia/templates/_sidebar.html:17
 msgid "Search"
 msgstr "Wyszukaj"
 
-#: poradnia/templates/_sidebar.html:21
+#: poradnia/templates/_sidebar.html:24
 msgid "Feedbacks"
 msgstr "Uwagi"
 

@@ -19,6 +19,10 @@
                 <td>{{ object.completed|yesno:_("Yes,No") }}</td>
             </tr>
             <tr>
+                <td>{% trans 'Public (visible to customers)' %}</td>
+                <td>{{ object.public|yesno:_("Yes,No") }}</td>
+            </tr>
+            <tr>
                 <td>{% trans 'Time' %}</td>
                 <td><a href="{{ object.get_calendar_url }}">{{ object.time }}</a></td>
             </tr>

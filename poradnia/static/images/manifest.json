@@ -1,0 +1,25 @@
+{
+    "name": "Porady app",
+    "short_name": "Porady",
+    "icons": [
+      {
+        "src": "//static/images/favicon-32x26.png",
+        "type": "image/png",
+        "sizes": "32x26"
+      },
+      {
+        "src": "/static/images/logo-160x128.png",
+        "type": "image/png",
+        "sizes": "160x128"
+      },
+      {
+        "src": "/static/images/logo-czerwone-tlo-1200x600.jpg",
+        "type": "image/png",
+        "sizes": "1200x600"
+      }
+    ],
+    "start_url": "/",
+    "display": "standalone",
+    "theme_color": "#007bff",
+    "background_color": "#ffffff"
+  }
