@@ -234,7 +234,7 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
     def render_row_details(self, pk, request=None):
         obj = self.model.objects.filter(id=pk).first()
-        fields_to_skip = ["case", "genre", "status", "status_changed", "message", "eml"]
+        fields_to_skip = ["case", "status_changed", "message", "eml"]
         fields = [
             f.name
             for f in obj._meta.get_fields()

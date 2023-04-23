@@ -406,3 +406,6 @@ ROSETTA_EXCLUDED_APPLICATIONS = (
     "vies",
 )
 AZURE_CLIENT_SECRET = env.str("ROSETTA_AZURE_CLIENT_SECRET", "")
+
+# Send notifications to case or letter change/addition author
+NOTIFY_AUTHOR = env.bool("NOTIFY_AUTHOR", True)

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 0.0.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-14 18:06+0200\n"
+"POT-Creation-Date: 2023-04-23 21:11+0200\n"
 "PO-Revision-Date: 2015-12-04 18:18+0100\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: pl_PL <naczelnik@jawnosc.tk>\n"
@@ -145,15 +145,19 @@ msgstr ""
 msgid "Users list"
 msgstr ""
 
-#: poradnia/users/templates/users/_sidebar.html:17
+#: poradnia/users/templates/users/_sidebar.html:16
+msgid "App admin"
+msgstr ""
+
+#: poradnia/users/templates/users/_sidebar.html:20
 msgid "Logout"
 msgstr ""
 
-#: poradnia/users/templates/users/_sidebar.html:21
+#: poradnia/users/templates/users/_sidebar.html:24
 msgid "Sign Up"
 msgstr ""
 
-#: poradnia/users/templates/users/_sidebar.html:24
+#: poradnia/users/templates/users/_sidebar.html:27
 msgid "Log In"
 msgstr ""
 
