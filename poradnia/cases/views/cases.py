@@ -212,7 +212,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "deadline_str",
             "visible": True,
-            "title": _("Deadline"),
+            "title": _("Deadline date"),
         },
         {
             "name": "client_pretty_name",
