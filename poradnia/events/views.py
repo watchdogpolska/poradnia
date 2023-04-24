@@ -155,6 +155,14 @@ class CalendarEventView(
         context = super().get_context_data(**kwargs)
         context["calendar"] = self.get_calendar()
         return context
+    
+    def get_allow_empty(self):
+        """
+        Return ``True`` if the view should display empty lists and ``False``
+        if a 404 should be raised instead.
+        """
+        return True
+
 
 
 class ICalendarView(KeyAuthMixin, PermissionMixin, BaseListView):
