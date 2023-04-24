@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-23 21:11+0200\n"
+"POT-Creation-Date: 2023-04-24 18:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: poradnia/letters/admin.py:51
+#: poradnia/letters/admin.py:52
 msgid "Case name"
 msgstr ""
 
@@ -215,13 +215,13 @@ msgid ""
 "            "
 msgstr ""
 
-#: poradnia/letters/templates/letters/_letter_list.html:61
+#: poradnia/letters/templates/letters/_letter_list.html:62
 #: poradnia/letters/templates/letters/form_edit.html:6
 #: poradnia/letters/views/cbv.py:76
 msgid "Edit"
 msgstr ""
 
-#: poradnia/letters/templates/letters/_letter_list.html:69
+#: poradnia/letters/templates/letters/_letter_list.html:71
 #: poradnia/letters/templates/letters/form_send.html:7
 msgid "Send"
 msgstr ""

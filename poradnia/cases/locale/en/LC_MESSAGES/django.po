@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-23 21:11+0200\n"
+"POT-Creation-Date: 2023-04-24 18:15+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: poradnia/cases/apps.py:7 poradnia/cases/models.py:347
+#: poradnia/cases/apps.py:7 poradnia/cases/models.py:357
 #: poradnia/cases/templates/cases/_case_form_permission.html:8
 #: poradnia/cases/templates/cases/_sidebar.html:3
 #: poradnia/cases/templates/cases/base.html:3
@@ -37,14 +37,14 @@ msgid "Has access by"
 msgstr ""
 
 #: poradnia/cases/filters.py:41 poradnia/cases/filters.py:95
-#: poradnia/cases/models.py:195
+#: poradnia/cases/models.py:205
 #: poradnia/cases/templates/cases/case_filter.html:41
 #: poradnia/cases/views/cases.py:188 poradnia/cases/views/cases.py:234
 msgid "Subject"
 msgstr ""
 
 #: poradnia/cases/filters.py:42 poradnia/cases/filters.py:63
-#: poradnia/cases/models.py:202
+#: poradnia/cases/models.py:212
 #: poradnia/cases/templates/cases/case_filter.html:40
 #: poradnia/cases/views/cases.py:220
 msgid "Client"
@@ -63,7 +63,7 @@ msgstr ""
 msgid "Advice registered"
 msgstr ""
 
-#: poradnia/cases/filters.py:61 poradnia/cases/models.py:218
+#: poradnia/cases/filters.py:61 poradnia/cases/models.py:228
 #: poradnia/cases/templates/cases/case_detail.html:102
 #: poradnia/cases/templates/cases/case_filter.html:41
 msgid "Dead-line"
@@ -74,13 +74,13 @@ msgid "ID"
 msgstr ""
 
 #: poradnia/cases/filters.py:64 poradnia/cases/filters.py:96
-#: poradnia/cases/filters.py:105 poradnia/cases/models.py:227
+#: poradnia/cases/filters.py:105 poradnia/cases/models.py:237
 #: poradnia/cases/views/cases.py:246
 msgid "Created on"
 msgstr ""
 
 #: poradnia/cases/filters.py:65 poradnia/cases/filters.py:97
-#: poradnia/cases/filters.py:103 poradnia/cases/models.py:205
+#: poradnia/cases/filters.py:103 poradnia/cases/models.py:215
 msgid "Last send"
 msgstr ""
 
@@ -88,7 +88,7 @@ msgstr ""
 msgid "Default"
 msgstr ""
 
-#: poradnia/cases/filters.py:67 poradnia/cases/models.py:210
+#: poradnia/cases/filters.py:67 poradnia/cases/models.py:220
 msgid "Last received"
 msgstr ""
 
@@ -134,115 +134,119 @@ msgstr ""
 msgid "Case #{source} have been merged with case #{target}"
 msgstr ""
 
-#: poradnia/cases/models.py:189
+#: poradnia/cases/models.py:199
 msgid "free"
 msgstr ""
 
-#: poradnia/cases/models.py:190
+#: poradnia/cases/models.py:200
 msgid "moderated"
 msgstr ""
 
-#: poradnia/cases/models.py:191
+#: poradnia/cases/models.py:201
 msgid "assigned"
 msgstr ""
 
-#: poradnia/cases/models.py:192
+#: poradnia/cases/models.py:202
 msgid "closed"
 msgstr ""
 
-#: poradnia/cases/models.py:194
+#: poradnia/cases/models.py:204
 msgid "Case number"
 msgstr ""
 
-#: poradnia/cases/models.py:204 poradnia/cases/views/cases.py:241
+#: poradnia/cases/models.py:214 poradnia/cases/views/cases.py:241
 msgid "Letter count"
 msgstr ""
 
-#: poradnia/cases/models.py:207 poradnia/cases/views/cases.py:225
+#: poradnia/cases/models.py:217 poradnia/cases/views/cases.py:225
 msgid "Last action"
 msgstr ""
 
-#: poradnia/cases/models.py:224
+#: poradnia/cases/models.py:234
 msgid "Created by"
 msgstr ""
 
-#: poradnia/cases/models.py:233
+#: poradnia/cases/models.py:243
 msgid "Modified by"
 msgstr ""
 
-#: poradnia/cases/models.py:236
+#: poradnia/cases/models.py:246
 msgid "Modified on"
 msgstr ""
 
-#: poradnia/cases/models.py:238 poradnia/cases/views/cases.py:195
+#: poradnia/cases/models.py:248 poradnia/cases/views/cases.py:195
 msgid "Handled"
 msgstr ""
 
-#: poradnia/cases/models.py:239
+#: poradnia/cases/models.py:249
 #: poradnia/cases/templates/cases/case_table.html:60
 msgid "Has project"
 msgstr ""
 
-#: poradnia/cases/models.py:280
+#: poradnia/cases/models.py:290
 #: poradnia/cases/templates/cases/_project_badge.html:2
 msgid "Reply to client to remove badge"
 msgstr ""
 
-#: poradnia/cases/models.py:281
+#: poradnia/cases/models.py:291
 #: poradnia/cases/templates/cases/_project_badge.html:3
 #: poradnia/cases/views/cases.py:202
 msgid "Project"
 msgstr ""
 
-#: poradnia/cases/models.py:346
+#: poradnia/cases/models.py:356
 msgid "Case"
 msgstr ""
 
-#: poradnia/cases/models.py:349
+#: poradnia/cases/models.py:359
 msgid "Can view"
 msgstr ""
 
-#: poradnia/cases/models.py:350
+#: poradnia/cases/models.py:360
 msgid "Can assign new permissions"
 msgstr ""
 
-#: poradnia/cases/models.py:351
+#: poradnia/cases/models.py:361
 msgid "Can send text to client"
 msgstr ""
 
-#: poradnia/cases/models.py:352
+#: poradnia/cases/models.py:362
 msgid "Can assign permission"
 msgstr ""
 
-#: poradnia/cases/models.py:353
+#: poradnia/cases/models.py:363
 msgid "Can add record"
 msgstr ""
 
-#: poradnia/cases/models.py:354
+#: poradnia/cases/models.py:364
 msgid "Can change own records"
 msgstr ""
 
-#: poradnia/cases/models.py:355
+#: poradnia/cases/models.py:365
 msgid "Can change all records"
 msgstr ""
 
-#: poradnia/cases/models.py:356
+#: poradnia/cases/models.py:366
 msgid "Can close case"
 msgstr ""
 
-#: poradnia/cases/models.py:357
+#: poradnia/cases/models.py:367
 msgid "Can merge case"
 msgstr ""
 
-#: poradnia/cases/models.py:359
+#: poradnia/cases/models.py:369
 msgid "Can select client"
 msgstr ""
 
-#: poradnia/cases/models.py:539
+#: poradnia/cases/models.py:528 poradnia/cases/models.py:529
+msgid "Cases to delete"
+msgstr ""
+
+#: poradnia/cases/models.py:556
 msgid "Name"
 msgstr ""
 
-#: poradnia/cases/models.py:541
+#: poradnia/cases/models.py:558
 #: poradnia/cases/templates/cases/_case_form_permission.html:10
 msgid "Permissions"
 msgstr ""
@@ -265,15 +269,20 @@ msgstr ""
 msgid "Case table"
 msgstr ""
 
-#: poradnia/cases/templates/cases/_sidebar.html:20
+#: poradnia/cases/templates/cases/_sidebar.html:22
+msgid "Old cases to delete"
+msgstr ""
+
+#: poradnia/cases/templates/cases/_sidebar.html:26
+#: poradnia/cases/templates/cases/_sidebar.html:27
 msgid "Event calendar"
 msgstr ""
 
-#: poradnia/cases/templates/cases/_sidebar.html:29
+#: poradnia/cases/templates/cases/_sidebar.html:36
 msgid "Letters"
 msgstr ""
 
-#: poradnia/cases/templates/cases/_sidebar.html:34
+#: poradnia/cases/templates/cases/_sidebar.html:41
 msgid "Letters table"
 msgstr ""
 
@@ -491,6 +500,10 @@ msgstr ""
 
 #: poradnia/cases/views/cases.py:183
 msgid "S"
+msgstr ""
+
+#: poradnia/cases/views/cases.py:206
+msgid "Involved staff"
 msgstr ""
 
 #: poradnia/cases/views/cases.py:215
