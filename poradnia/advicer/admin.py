@@ -8,6 +8,7 @@ class AdviceAdmin(admin.ModelAdmin):
     readonly_fields = ("created_on", "created_by", "modified_by", "modified_on")
     date_hierarchy = "created_on"
     list_display = [
+        "id",
         "created_on",
         "advicer",
         "__str__",
@@ -16,14 +17,14 @@ class AdviceAdmin(admin.ModelAdmin):
         "institution_kind",
         "visible",
     ]
-    list_display_links = ["__str__"]
+    # list_display_links = ["__str__"]
     list_filter = [
         "advicer",
         "visible",
         "person_kind",
         "institution_kind",
     ]
-    search_fields = ["user", "description"]
+    search_fields = ["id", "user", "description"]
     actions = None
 
     def get_queryset(self, request):
