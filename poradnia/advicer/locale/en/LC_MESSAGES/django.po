@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-24 18:15+0200\n"
+"POT-Creation-Date: 2023-04-24 18:37+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,6 +16,24 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
+
+#: poradnia/advicer/admin.py:9
+msgid "Case field is null"
+msgstr ""
+
+#: poradnia/advicer/admin.py:14 poradnia/advicer/models.py:75
+#: poradnia/advicer/models.py:85
+#: poradnia/advicer/templates/advicer/advice_table.html:35
+#: poradnia/advicer/templates/advicer/advice_table.html:45
+msgid "Yes"
+msgstr ""
+
+#: poradnia/advicer/admin.py:15 poradnia/advicer/models.py:76
+#: poradnia/advicer/models.py:86
+#: poradnia/advicer/templates/advicer/advice_table.html:37
+#: poradnia/advicer/templates/advicer/advice_table.html:47
+msgid "No"
+msgstr ""
 
 #: poradnia/advicer/apps.py:7
 msgid "Advicer system"
@@ -124,18 +142,6 @@ msgstr ""
 
 #: poradnia/advicer/models.py:48
 msgid "Institution kinds"
-msgstr ""
-
-#: poradnia/advicer/models.py:75 poradnia/advicer/models.py:85
-#: poradnia/advicer/templates/advicer/advice_table.html:35
-#: poradnia/advicer/templates/advicer/advice_table.html:45
-msgid "Yes"
-msgstr ""
-
-#: poradnia/advicer/models.py:76 poradnia/advicer/models.py:86
-#: poradnia/advicer/templates/advicer/advice_table.html:37
-#: poradnia/advicer/templates/advicer/advice_table.html:47
-msgid "No"
 msgstr ""
 
 #: poradnia/advicer/models.py:104
