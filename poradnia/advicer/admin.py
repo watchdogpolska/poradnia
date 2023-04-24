@@ -6,19 +6,19 @@ from .models import Advice, Area, InstitutionKind, Issue, PersonKind
 
 
 class NullCaseFilter(admin.SimpleListFilter):
-    title = _('Case field is null')
-    parameter_name = 'one_to_one_null'
+    title = _("Case field is null")
+    parameter_name = "one_to_one_null"
 
     def lookups(self, request, model_admin):
         return (
-            ('yes', _('Yes')),
-            ('no', _('No')),
+            ("yes", _("Yes")),
+            ("no", _("No")),
         )
 
     def queryset(self, request, queryset):
-        if self.value() == 'yes':
+        if self.value() == "yes":
             return queryset.filter(case__isnull=True)
-        elif self.value() == 'no':
+        elif self.value() == "no":
             return queryset.filter(~Q(case__isnull=True))
         else:
             return queryset
