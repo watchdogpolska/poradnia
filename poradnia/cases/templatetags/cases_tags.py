@@ -59,3 +59,8 @@ def full_link(context, path):
 def current_month_url():
     today = date.today()
     return reverse("events:calendar", args=[today.strftime("%Y"), today.strftime("%m")])
+
+
+@register.simple_tag()
+def old_cases_to_delete_count():
+    return Case.objects.old_cases_to_delete().count()

@@ -15,7 +15,13 @@
             </li>
         {% endif %}
         {% if request.user.is_staff %}
-
+            {% if request.user.is_superuser %}
+                <li class="block-list-item">
+                    <a href="{% url 'admin:cases_deletecaseproxy_changelist' %}"><i
+                            class="fa fa-trash" style="color: red;"></i>
+                            {% trans 'Old cases to delete' %}: {% old_cases_to_delete_count %}</a>
+                </li>
+            {% endif %}
             <li class="block-list-item">
                 <!-- <a href="{% url 'events:calendar' %}"><i class="fa fa-calendar"></i> {% trans 'Event calendar' %}</a> -->
                 <a href="{% current_month_url %}"><i class="fa fa-calendar"></i> {% trans 'Event calendar' %}</a>

@@ -409,3 +409,6 @@ AZURE_CLIENT_SECRET = env.str("ROSETTA_AZURE_CLIENT_SECRET", "")
 
 # Send notifications to case or letter change/addition author
 NOTIFY_AUTHOR = env.bool("NOTIFY_AUTHOR", True)
+
+# The number of years after which cases will be listed to delete
+YEARS_TO_STORE_CASES = env.int("YEARS_TO_STORE_CASES", 6)
