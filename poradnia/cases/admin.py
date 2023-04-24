@@ -41,6 +41,9 @@ class CaseAdmin(GuardedModelAdmin):
 
 @admin.register(DeleteCaseProxy)
 class DeleteOldCasesAdmin(CaseAdmin):
+    ordering = [
+        "last_action",
+    ]
     actions = ["delete_selected"]
 
     def get_queryset(self, request):
