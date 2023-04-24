@@ -4,23 +4,21 @@ from django.db import migrations
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('cases', '0039_alter_case_id'),
+        ("cases", "0039_alter_case_id"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='DeleteCaseProxy',
-            fields=[
-            ],
+            name="DeleteCaseProxy",
+            fields=[],
             options={
-                'verbose_name': 'Cases to delete',
-                'verbose_name_plural': 'Cases to delete',
-                'proxy': True,
-                'indexes': [],
-                'constraints': [],
+                "verbose_name": "Cases to delete",
+                "verbose_name_plural": "Cases to delete",
+                "proxy": True,
+                "indexes": [],
+                "constraints": [],
             },
-            bases=('cases.case',),
+            bases=("cases.case",),
         ),
     ]
