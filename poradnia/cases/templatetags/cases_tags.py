@@ -1,6 +1,9 @@
+from datetime import date
+
 from django import template
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.defaultfilters import stringfilter
+from django.urls import reverse
 
 from poradnia.cases.models import Case
 
@@ -50,3 +53,9 @@ def full_link(context, path):
             path if path.startswith("/") else "/" + path,
         ]
     )
+
+
+@register.simple_tag()
+def current_month_url():
+    today = date.today()
+    return reverse("events:calendar", args=[today.strftime("%Y"), today.strftime("%m")])
