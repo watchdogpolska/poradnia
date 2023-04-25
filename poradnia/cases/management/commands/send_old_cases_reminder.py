@@ -15,7 +15,7 @@ class Command(BaseCommand):
     def handle(self, **options):
         old_cases_count = Case.objects.old_cases_to_delete().count()
         if old_cases_count > 0:
-            for user in User.objects.filter(is_superuser=True).all():
+            for user in User.objects.filter(notify_old_cases=True).all():
                 template_key = TemplateKey.CASE_DELETE_OLD
                 user.send_template_email(
                     template_key, {"old_cases_count": old_cases_count}

@@ -33,7 +33,13 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
     fieldsets = list(AuthUserAdmin.fieldsets) + [
         (
             _("Notifications"),
-            {"fields": ("notify_new_case", "notify_unassigned_letter")},
+            {
+                "fields": (
+                    "notify_new_case",
+                    "notify_unassigned_letter",
+                    "notify_old_cases",
+                )
+            },
         )
     ]
     list_display = (
@@ -48,6 +54,7 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         "codename",
         "notify_new_case",
         "notify_unassigned_letter",
+        "notify_old_cases",
     )
     list_filter = (
         "is_superuser",
@@ -55,6 +62,7 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         "is_active",
         "notify_new_case",
         "notify_unassigned_letter",
+        "notify_old_cases",
         "codename",
     )
     actions = None
