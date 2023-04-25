@@ -1,6 +1,7 @@
 from datetime import date
 
 from django import template
+from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.defaultfilters import stringfilter
 from django.urls import reverse
@@ -64,3 +65,13 @@ def current_month_url():
 @register.simple_tag()
 def old_cases_to_delete_count():
     return Case.objects.old_cases_to_delete().count()
+
+
+@register.simple_tag()
+def old_cases_to_delete_url():
+    return reverse("cases:delete_old_cases")
+
+
+@register.simple_tag()
+def years_to_store_cases():
+    return settings.YEARS_TO_STORE_CASES
