@@ -1,0 +1,12 @@
+{% load cases_tags %} Stare sprawy do skasowania: {% old_cases_to_delete_count %}
+{% url 'admin:cases_deletecaseproxy_changelist' as admin_cases_delete_url %}
+Szanowny/-a,
+
+W systemie Poradnia istnieje {% old_cases_to_delete_count %} spraw,
+ które nie miały żadnej aktywności od {% years_to_store_cases %} lat.
+Przejdź pod adres {% full_link admin_cases_delete_url %} , aby je skasować.
+
+Z wyrazami szacunku,
+Zespół Watchdog Polska
+
+{% include '_email_signature.txt' %}

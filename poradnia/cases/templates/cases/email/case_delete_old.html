@@ -1,0 +1,19 @@
+{% load cases_tags %}
+{% url 'admin:cases_deletecaseproxy_changelist' as admin_cases_delete_url %}
+
+<p>Szanowny/-a,</p>
+
+<p>
+W systemie Poradnia istnieje <B>{% old_cases_to_delete_count %}</B> spraw,
+ które nie miały żadnej aktywności od {% years_to_store_cases %} lat.
+Przejdź pod adres 
+<a href="{% full_link admin_cases_delete_url %}">
+    {% full_link admin_cases_delete_url %}</a>
+, aby je skasować.
+</p>
+
+<p>
+Z wyrazami szacunku,<br>
+<B>Zespół Watchdog Polska</B> <br>
+{% include '_email_signature.html' %}
+</p>
