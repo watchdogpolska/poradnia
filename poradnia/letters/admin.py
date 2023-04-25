@@ -38,6 +38,7 @@ class LetterAdmin(admin.ModelAdmin):
     )
     inlines = [AttachmentInline]
     search_fields = (
+        "pk",
         "name",
         "record__case__name",
         "eml",

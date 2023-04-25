@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-23 21:11+0200\n"
+"POT-Creation-Date: 2023-04-24 18:37+0200\n"
 "PO-Revision-Date: 2023-04-14 18:07+0124\n"
 "Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Generator: Poedit 1.8.7.1\n"
 "X-Translated-Using: django-rosetta 0.9.8\n"
 
-#: poradnia/letters/admin.py:51
+#: poradnia/letters/admin.py:52
 msgid "Case name"
 msgstr "Nazwa sprawy"
 
@@ -244,13 +244,13 @@ msgstr ""
 "            przez %(modified_by)s)\n"
 "            "
 
-#: poradnia/letters/templates/letters/_letter_list.html:61
+#: poradnia/letters/templates/letters/_letter_list.html:62
 #: poradnia/letters/templates/letters/form_edit.html:6
 #: poradnia/letters/views/cbv.py:76
 msgid "Edit"
 msgstr "Edytuj"
 
-#: poradnia/letters/templates/letters/_letter_list.html:69
+#: poradnia/letters/templates/letters/_letter_list.html:71
 #: poradnia/letters/templates/letters/form_send.html:7
 msgid "Send"
 msgstr "Wyślij"

@@ -1,7 +1,9 @@
 import itertools
 import logging
 import re
+from datetime import datetime
 
+from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
@@ -180,6 +182,14 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
             if get_numeric_param(request, filter_name):
                 deadline_query |= Q(deadline__isnull=choice[1])
         return self.filter(deadline_query)
+
+    def old_cases_to_delete(self):
+        years_to_store = settings.YEARS_TO_STORE_CASES
+        current_month = datetime.now().replace(
+            day=1, hour=0, minute=0, second=0, microsecond=0
+        )
+        oldest_date = current_month + relativedelta(years=-years_to_store)
+        return self.filter(last_action__lt=oldest_date)
 
 
 class Case(models.Model):
@@ -510,6 +520,13 @@ class Case(models.Model):
             raise self.DoesNotExist(
                 "%s matching query does not exist." % self.__class__._meta.object_name
             )
+
+
+class DeleteCaseProxy(Case):
+    class Meta:
+        proxy = True
+        verbose_name = _("Cases to delete")
+        verbose_name_plural = _("Cases to delete")
 
 
 class CaseUserObjectPermission(UserObjectPermissionBase):
