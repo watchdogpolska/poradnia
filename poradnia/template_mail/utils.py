@@ -33,6 +33,7 @@ class TemplateKey(Enum):
     CASE_NEW = auto()
     CASE_REGISTERED = auto()
     CASE_UPDATED = auto()
+    CASE_DELETE_OLD = auto()
 
     EVENT_CREATED = auto()
     EVENT_UPDATED = auto()
@@ -86,6 +87,9 @@ class TemplateMailManager:
             "cases/email/case_registered"
         ),
         TemplateKey.CASE_UPDATED: MailTemplate.from_prefix("cases/email/case_updated"),
+        TemplateKey.CASE_DELETE_OLD: MailTemplate.from_prefix(
+            "cases/email/case_delete_old"
+        ),
         TemplateKey.EVENT_CREATED: MailTemplate.from_prefix(
             "events/email/event_created"
         ),

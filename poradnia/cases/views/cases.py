@@ -203,7 +203,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         },
         {
             "name": "involved_staff",
-            "title": "Involved staff",
+            "title": _("Involved staff"),
             "placeholder": True,
             "searchable": False,
             "orderable": False,

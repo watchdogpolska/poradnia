@@ -3,21 +3,38 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-23 21:11+0200\n"
-"PO-Revision-Date: 2023-03-29 20:23+0124\n"
+"POT-Creation-Date: 2023-04-24 18:37+0200\n"
+"PO-Revision-Date: 2023-04-24 18:37+0124\n"
 "Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Crowdin-File: /advicer/locale/en/LC_MESSAGES/django.po\n"
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-Project: poradnia\n"
 "X-Generator: Poedit 1.8.7.1\n"
-"X-Translated-Using: django-rosetta 0.9.8\n"
+"X-Translated-Using: django-rosetta 0.9.9\n"
+
+#: poradnia/advicer/admin.py:9
+msgid "Case field is null"
+msgstr "Sprawa jest pusta"
+
+#: poradnia/advicer/admin.py:14 poradnia/advicer/models.py:75
+#: poradnia/advicer/models.py:85
+#: poradnia/advicer/templates/advicer/advice_table.html:35
+#: poradnia/advicer/templates/advicer/advice_table.html:45
+msgid "Yes"
+msgstr "Tak"
+
+#: poradnia/advicer/admin.py:15 poradnia/advicer/models.py:76
+#: poradnia/advicer/models.py:86
+#: poradnia/advicer/templates/advicer/advice_table.html:37
+#: poradnia/advicer/templates/advicer/advice_table.html:47
+msgid "No"
+msgstr "Nie"
 
 #: poradnia/advicer/apps.py:7
 msgid "Advicer system"
@@ -127,18 +144,6 @@ msgstr "Rodzaj osobów, które się zgłaszają o poradę:"
 #: poradnia/advicer/models.py:48
 msgid "Institution kinds"
 msgstr "Rodzaje podmiotów zobowiązanych"
-
-#: poradnia/advicer/models.py:75 poradnia/advicer/models.py:85
-#: poradnia/advicer/templates/advicer/advice_table.html:35
-#: poradnia/advicer/templates/advicer/advice_table.html:45
-msgid "Yes"
-msgstr "Tak"
-
-#: poradnia/advicer/models.py:76 poradnia/advicer/models.py:86
-#: poradnia/advicer/templates/advicer/advice_table.html:37
-#: poradnia/advicer/templates/advicer/advice_table.html:47
-msgid "No"
-msgstr "Nie"
 
 #: poradnia/advicer/models.py:104
 #: poradnia/advicer/templates/advicer/advice_detail.html:30
@@ -269,13 +274,11 @@ msgstr "Utworzone"
 msgid ""
 "\n"
 "                                %(created)s on\n"
-"                                <time datetime=\"%(created_on_date)s\">"
-"%(created_on_natural)s</time>"
+"                                <time datetime=\"%(created_on_date)s\">%(created_on_natural)s</time>"
 msgstr ""
 "\n"
 "                                %(created)s o \n"
-"                                <time datetime=\"%(created_on_date)s\">"
-"%(created_on_natural)s</time>"
+"                                <time datetime=\"%(created_on_date)s\">%(created_on_natural)s</time>"
 
 #: poradnia/advicer/templates/advicer/advice_detail.html:108
 msgid "Modified"
@@ -286,13 +289,11 @@ msgstr "Zmodyfikowane"
 msgid ""
 "\n"
 "                                %(modified_by)s on\n"
-"                                <time datetime=\"%(modified_on_date)s\">"
-"%(modified_on_natural)s</time>"
+"                                <time datetime=\"%(modified_on_date)s\">%(modified_on_natural)s</time>"
 msgstr ""
 "\n"
 "                                %(modified_by)s o\n"
-"                                <time datetime=\"%(modified_on_date)s\">"
-"%(modified_on_natural)s</time>"
+"                                <time datetime=\"%(modified_on_date)s\">%(modified_on_natural)s</time>"
 
 #: poradnia/advicer/templates/advicer/advice_filter.html:4
 msgid "Advice index"
@@ -311,8 +312,7 @@ msgstr "Klient sprawy"
 #, python-format
 msgid ""
 "There is no Advice records.\n"
-"                                <a href=\"%(create_url)s\">Add one</a> of "
-"these! "
+"                                <a href=\"%(create_url)s\">Add one</a> of these! "
 msgstr ""
 "Brak wyników wyszukiwania Porad.\n"
 "                    <a href=\"%(create_url)s\">Dodaj nową!</a>"
