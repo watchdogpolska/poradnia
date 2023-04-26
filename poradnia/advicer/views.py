@@ -19,6 +19,7 @@ from django.views.generic import CreateView, DetailView, TemplateView, UpdateVie
 from django_filters.views import FilterView
 
 from poradnia.cases.models import Case
+from poradnia.users.models import User
 from poradnia.users.utils import PermissionMixin
 from poradnia.utils.mixins import ExprAutocompleteMixin
 from poradnia.utils.utils import get_numeric_param
@@ -142,10 +143,11 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Institution kind"),
         },
         {
-            "name": "advicer_pretty_name",
+            "name": "advicer_name",
             "choices": True,
             "autofilter": True,
             "visible": True,
+            "foreign_field": "advicer__nicename",
             "title": _("Advicer"),
         },
         {
@@ -210,10 +212,20 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_datetime("created_on", timezone.get_default_timezone())
-            .with_user_pretty_name_str("advicer")
             .with_formatted_datetime("grant_on", timezone.get_default_timezone())
             .with_jst_name_str()
         )
+
+    def get_column_defs(self, request):
+        team_choices = (
+            User.objects.filter(is_staff=True)
+            .order_by("nicename")
+            .values_list("nicename", "nicename")
+        )
+        for col in self.column_defs:
+            if col["name"] == "advicer_name":
+                col["choices"] = list(team_choices)
+        return self.column_defs
 
 
 class AdviceUpdate(
