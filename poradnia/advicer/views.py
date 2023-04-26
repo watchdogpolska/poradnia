@@ -217,14 +217,20 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         )
 
     def get_column_defs(self, request):
-        team_choices = (
+        team_choices = set(
             User.objects.filter(is_staff=True)
             .order_by("nicename")
-            .values_list("nicename", "nicename")
+            .values_list("nicename", flat=True)
         )
+        updated_choices = set(
+            Advice.objects.filter(advicer__isnull=False).values_list(
+                "advicer__nicename", flat=True
+            )
+        ).union(team_choices)
+        choices = [(v, v) for v in sorted(updated_choices)]
         for col in self.column_defs:
             if col["name"] == "advicer_name":
-                col["choices"] = list(team_choices)
+                col["choices"] = choices
         return self.column_defs
 
 
