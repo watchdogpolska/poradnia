@@ -15,7 +15,7 @@
             </li>
         {% endif %}
         {% if request.user.is_staff %}
-            {% if request.user.is_superuser %}
+            {% if request.user.notify_old_cases %}
                 <li class="block-list-item">
                     <a href="{% url 'admin:cases_deletecaseproxy_changelist' %}"><i
                             class="fa fa-trash" style="color: red;"></i>
