@@ -63707,6 +63707,9 @@ window.AjaxDatatableViewUtils = (function() {
                     $(this).css("padding", "0");
                     input.css("width", "100%");
                     input.css("box-sizing", "border-box");
+                    const select = $(this).find("select");
+                    select.css("box-sizing", "border-box");                    
+                    select.css("width", "100%");
                 });
             });
             // Initialize table

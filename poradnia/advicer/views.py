@@ -87,6 +87,7 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "created_on_str",
             "visible": True,
+            "width": 80,  # does not work for unknown reason
             "title": _("Created on"),
         },
         {
@@ -102,12 +103,16 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "issues",
             "visible": True,
+            "choices": True,
+            "autofilter": True,
             "title": _("Thematic scopes of requests"),
             "m2m_foreign_field": "issues__name",
         },
         {
             "name": "area",
             "visible": True,
+            "choices": True,
+            "autofilter": True,
             "title": _("Problems regarding the right to information"),
             "m2m_foreign_field": "area__name",
         },
@@ -121,6 +126,8 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "person_kind_name",
             "visible": True,
+            "choices": True,
+            "autofilter": True,
             "foreign_field": "person_kind__name",
             "defaultContent": "",
             "title": _("Type of person who reporting the advice"),
@@ -128,18 +135,23 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "institution_kind_name",
             "visible": True,
+            "choices": True,
+            "autofilter": True,
             "foreign_field": "institution_kind__name",
             "defaultContent": "",
             "title": _("Institution kind"),
         },
         {
             "name": "advicer_pretty_name",
+            "choices": True,
+            "autofilter": True,
             "visible": True,
             "title": _("Advicer"),
         },
         {
             "name": "grant_on_str",
             "visible": True,
+            "width": 80,  # does not work for unknown reason
             "title": _("Grant on"),
         },
         {
