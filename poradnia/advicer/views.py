@@ -88,7 +88,7 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "created_on_str",
             "visible": True,
-            "width": 80,  # does not work for unknown reason
+            "width": 80,
             "title": _("Created on"),
         },
         {
@@ -153,7 +153,7 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "grant_on_str",
             "visible": True,
-            "width": 80,  # does not work for unknown reason
+            "width": 80,
             "title": _("Grant on"),
         },
         {
@@ -166,20 +166,22 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "visible": True,
             "searchable": False,
             "orderable": True,
-            "title": _("We helped?"),
+            "title": _("H?"),
         },
         {
             "name": "visible",
             "searchable": False,
             "orderable": True,
             "visible": True,
-            "title": _("Visible"),
+            "title": _("V"),
         },
     ]
 
     def customize_row(self, row, obj):
         row["subject"] = obj.render_advice_link()
         row["case_name"] = obj.case.render_case_link() if obj.case else ""
+        row["helped"] = obj.render_helped()
+        row["visible"] = obj.render_visible()
         return
 
     def get_initial_queryset(self, request=None):
