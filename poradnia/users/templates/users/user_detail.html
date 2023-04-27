@@ -10,12 +10,16 @@
 <div class="row">
     <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
         <img src="{% get_avatar_url object %}">
-        <h2>{{ object.username }}</h2>
+        <h3><b>{% trans 'Username' %}:</b> {{ object.username }} &nbsp; &nbsp; &nbsp;
+            <b>{% trans 'Full name' %}:</b> {{ object.nicename }}</h3>
         {% if object.is_staff %}
-            <p>{% trans 'Users are member of staff.' %}</p>
+            <p>{% trans 'Is member of staff.' %}</p>
         {% endif %}
-        {% if object.description %}
-            <p><span><b>{% trans 'Description' %}:</b></span>{{ object.description }}</p>
+        {% if object.profile %}
+            <p><span><b>{% trans 'Description' %}:</b></span><br>
+                {{ object.profile.description|linebreaksbr }}</p>
+            <p><span><b>{% trans 'Email footer' %}:</b></span><br>
+                {{ object.profile.email_footer|linebreaksbr }}</p>
         {% endif %}
 
         <!-- Start Action buttons -->

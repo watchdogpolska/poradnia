@@ -2,6 +2,8 @@ from atom.views import ActionMessageMixin, ActionView
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin, UserFormKwargsMixin
 from dal import autocomplete
 from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.core.exceptions import PermissionDenied
+from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import DetailView, RedirectView, UpdateView
@@ -27,6 +29,27 @@ class UserDetailView(PermissionRequiredMixin, DetailView):
         if self.kwargs["username"] == self.request.user.username:
             return True
         return super().has_permission(*args, **kwargs)
+
+    def handle_no_permission(self):
+        if self.request.user.is_authenticated:
+            url = reverse(
+                "users:user_info", kwargs={"username": self.kwargs["username"]}
+            )
+            return HttpResponseRedirect(url)
+        else:
+            raise PermissionDenied
+
+
+class UserInfoView(DetailView):
+    model = User
+    slug_field = "username"
+    slug_url_kwarg = "username"
+    template_name = "users/user_info.html"
+    fields = ["picture", "profile"]
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        return queryset.only(*self.fields)
 
 
 class UserRedirectView(LoginRequiredMixin, RedirectView):
