@@ -83,6 +83,20 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
             Prefetch("caseuserobjectpermission_set", queryset=qs)
         )
 
+    def involved_staff(self):
+        involved_staff_ids = set(
+            CaseUserObjectPermission.objects.filter(user__is_staff=True)
+            .select_related("permission", "user")
+            .values_list("user", flat=True)
+            .all()
+        )
+        qs = (
+            get_user_model()
+            .objects.filter(id__in=involved_staff_ids)
+            .order_by("nicename")
+        )
+        return qs
+
     def by_involved_in(self, user, by_user=True, by_group=False):
         condition = Q()
         if by_user:
@@ -172,6 +186,13 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
             return self.filter(status__in=filter_values)
         else:
             return self.filter(status__isnull=True)
+
+    def ajax_involved_staff_filter(self, request):
+        involved_staff_filter = get_numeric_param(request, "involved_staff_filter")
+        if involved_staff_filter:
+            involved = get_user_model().objects.filter(id=involved_staff_filter).first()
+            return self.by_involved_in(user=involved).distinct()
+        return self
 
     def ajax_has_deadline_filter(self, request):
         # to provide empty queryset when none of the options is selected

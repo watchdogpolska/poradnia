@@ -153,6 +153,9 @@ class CaseTableView(PermissionMixin, TemplateView):
         context["header_label"] = mark_safe(_("Cases search table"))
         context["ajax_datatable_url"] = reverse("cases:case_table_ajax_data")
         context["statuses"] = Case.STATUS
+        context["involved_staff"] = [
+            (None, _("All")),
+        ] + list(Case.objects.involved_staff().values_list("id", "nicename"))
         return context
 
 
@@ -273,6 +276,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         qs = qs.ajax_boolean_filter(self.request, "handled_", "handled")
         qs = qs.ajax_boolean_filter(self.request, "has_project_", "has_project")
         qs = qs.ajax_has_deadline_filter(self.request)
+        qs = qs.ajax_involved_staff_filter(self.request)
         return (
             qs.for_user(user=self.request.user)
             .with_involved_staff()

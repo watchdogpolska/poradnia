@@ -152,6 +152,9 @@ class User(GuardianUserMixin, AbstractUser):
     codename = models.CharField(
         max_length=15, null=True, blank=True, verbose_name=_("Codename")
     )
+    nicename = models.CharField(
+        max_length=300, null=True, blank=True, verbose_name=_("Nice Name")
+    )
     notify_new_case = models.BooleanField(
         default=False,
         verbose_name=_("Notify about new case"),
@@ -168,12 +171,16 @@ class User(GuardianUserMixin, AbstractUser):
     notify_old_cases = models.BooleanField(
         default=False,
         verbose_name=_("Notify about old cases"),
-        help_text=_("Whether or not to notify user about all cases"),
+        help_text=_("Whether or not to notify user about old cases"),
     )
     created_on = models.DateTimeField(
         auto_now_add=True, null=True, blank=True, verbose_name=_("Created on")
     )
     objects = CustomUserManager()
+
+    def save(self, *args, **kwargs):
+        self.nicename = self.get_nicename()
+        super().save(*args, **kwargs)
 
     def get_codename(self):
         return self.codename or self.get_nicename()

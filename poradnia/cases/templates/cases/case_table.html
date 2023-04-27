@@ -41,7 +41,18 @@
               <br>
             {% endfor %}
             <br><br>
-          </div>
+        </div>
+        <div class="row">
+            <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom"
+                title="{% trans 'Cases that have selected user in involved staff.' %}">
+            </i>
+            <label>{% trans 'Involved staff' %}:</label><br>
+            <select id="involved_staff_select" name="involved_staff_select" style="width: 120px;">
+                {% for involved in involved_staff %}
+                    <option value="{{ involved.0 }}">{{ involved.1 }}</option>
+                {% endfor %}
+            </select><br><br><br>
+        </div>        
         <div class="row">
             <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that do have letter with status done (case subject not in bold).' %}">
