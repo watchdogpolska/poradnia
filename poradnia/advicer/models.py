@@ -177,6 +177,18 @@ class Advice(models.Model):
         label = self.subject
         return f'<a href="{url}">{label}</a>'
 
+    def render_helped(self):
+        if self.helped is None:
+            return '<span class="fa fa-question"></span>'
+        elif self.helped:
+            return '<span class="fa fa-check" style="color: green;"></span>'
+        return '<span class="fa fa-times" style="color: red;"></span>'
+
+    def render_visible(self):
+        if self.visible:
+            return '<span class="fa fa-check" style="color: green;"></span>'
+        return '<span class="fa fa-times" style="color: red;"></span>'
+
     class Meta:
         ordering = ["-created_on"]
         permissions = (("can_view_all_advices", _("Can view all advices")),)

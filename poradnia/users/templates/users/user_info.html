@@ -1,0 +1,26 @@
+{% extends "users/base.html" %}
+{% load users_tags static i18n %}
+{% block title %}{% trans 'User' %}: {{ object.get_nicename }} - {{ block.super }}{% endblock %}
+
+{% block breadcrumbs_rows %}
+    <li class="active">{{ object }}</li>
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+        <img src="{% get_avatar_url object %}">
+        <h3><b>{% trans 'Username' %}:</b> {{ object.username }} &nbsp; &nbsp; &nbsp;
+            <b>{% trans 'Full name' %}:</b> {{ object.nicename }}</h3>
+        {% if object.is_staff %}
+            <p>{% trans 'Is member of staff.' %}</p>
+        {% endif %}
+        {% if object.profile %}
+            <p><span><b>{% trans 'Description' %}:</b></span><br>
+                {{ object.profile.description|linebreaksbr }}</p>
+        {% endif %}
+
+    </div>
+</div>
+
+{% endblock content %}
