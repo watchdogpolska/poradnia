@@ -63677,9 +63677,10 @@ window.AjaxDatatableViewUtils = (function() {
                     has_project_no: function() { return $("input[name='check_has_project_no']").is(":checked") ? 1 : 0; },
                     has_deadline_yes: function() { return $("input[name='check_has_deadline_yes']").is(":checked") ? 1 : 0; },
                     has_deadline_no: function() { return $("input[name='check_has_deadline_no']").is(":checked") ? 1 : 0; },
+                    involved_staff_filter: function() { return $("select[name='involved_staff_select']").val(); },
                 },
             );
-            $('.filters input').on('change paste keyup', function() {
+            $('.filters input, .filters select').on('change paste keyup', function() {
                 // redraw the table
                 $('#datatable_cases').DataTable().ajax.reload(null, false);
             });
