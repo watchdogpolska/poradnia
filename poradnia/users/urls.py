@@ -10,6 +10,7 @@ urlpatterns = [
         views.UserDetailView.as_view(),
         name="detail",
     ),
+    path("info/<username>/", views.UserInfoView.as_view(), name="user_info"),
     re_path(
         r"^(?P<username>[\w.@+-]+)/~deassign/$",
         views.UserDeassignView.as_view(),

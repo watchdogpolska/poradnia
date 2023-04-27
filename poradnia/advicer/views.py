@@ -19,6 +19,7 @@ from django.views.generic import CreateView, DetailView, TemplateView, UpdateVie
 from django_filters.views import FilterView
 
 from poradnia.cases.models import Case
+from poradnia.users.models import User
 from poradnia.users.utils import PermissionMixin
 from poradnia.utils.mixins import ExprAutocompleteMixin
 from poradnia.utils.utils import get_numeric_param
@@ -87,6 +88,7 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "created_on_str",
             "visible": True,
+            "width": 80,
             "title": _("Created on"),
         },
         {
@@ -102,12 +104,16 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "issues",
             "visible": True,
+            "choices": True,
+            "autofilter": True,
             "title": _("Thematic scopes of requests"),
             "m2m_foreign_field": "issues__name",
         },
         {
             "name": "area",
             "visible": True,
+            "choices": True,
+            "autofilter": True,
             "title": _("Problems regarding the right to information"),
             "m2m_foreign_field": "area__name",
         },
@@ -121,6 +127,8 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "person_kind_name",
             "visible": True,
+            "choices": True,
+            "autofilter": True,
             "foreign_field": "person_kind__name",
             "defaultContent": "",
             "title": _("Type of person who reporting the advice"),
@@ -128,18 +136,24 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "institution_kind_name",
             "visible": True,
+            "choices": True,
+            "autofilter": True,
             "foreign_field": "institution_kind__name",
             "defaultContent": "",
             "title": _("Institution kind"),
         },
         {
-            "name": "advicer_pretty_name",
+            "name": "advicer_name",
+            "choices": True,
+            "autofilter": True,
             "visible": True,
+            "foreign_field": "advicer__nicename",
             "title": _("Advicer"),
         },
         {
             "name": "grant_on_str",
             "visible": True,
+            "width": 80,
             "title": _("Grant on"),
         },
         {
@@ -152,20 +166,22 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "visible": True,
             "searchable": False,
             "orderable": True,
-            "title": _("We helped?"),
+            "title": _("H?"),
         },
         {
             "name": "visible",
             "searchable": False,
             "orderable": True,
             "visible": True,
-            "title": _("Visible"),
+            "title": _("V."),
         },
     ]
 
     def customize_row(self, row, obj):
         row["subject"] = obj.render_advice_link()
         row["case_name"] = obj.case.render_case_link() if obj.case else ""
+        row["helped"] = obj.render_helped()
+        row["visible"] = obj.render_visible()
         return
 
     def get_initial_queryset(self, request=None):
@@ -198,10 +214,26 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_datetime("created_on", timezone.get_default_timezone())
-            .with_user_pretty_name_str("advicer")
             .with_formatted_datetime("grant_on", timezone.get_default_timezone())
             .with_jst_name_str()
         )
+
+    def get_column_defs(self, request):
+        team_choices = set(
+            User.objects.filter(is_staff=True)
+            .order_by("nicename")
+            .values_list("nicename", flat=True)
+        )
+        updated_choices = set(
+            Advice.objects.filter(advicer__isnull=False).values_list(
+                "advicer__nicename", flat=True
+            )
+        ).union(team_choices)
+        choices = [(v, v) for v in sorted(updated_choices)]
+        for col in self.column_defs:
+            if col["name"] == "advicer_name":
+                col["choices"] = choices
+        return self.column_defs
 
 
 class AdviceUpdate(
