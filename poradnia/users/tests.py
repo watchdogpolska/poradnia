@@ -202,11 +202,12 @@ class UserDetailViewTestCase(TestCase):
         resp = self.client.get(self.url)
         self.assertEqual(resp.status_code, 200)
 
-    def test_need_permission(self):
+    def test_generic_user_info_without_permission(self):
         user = UserFactory()
         self.client.login(username=user.username, password="pass")
         resp = self.client.get(self.url)
-        self.assertEqual(resp.status_code, 403)
+        self.assertEqual(resp.status_code, 302)
+        self.assertIn("info", resp.url)
 
     def test_has_permission_to_view(self):
         user = UserFactory()
