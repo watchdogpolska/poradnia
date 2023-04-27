@@ -173,7 +173,7 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "searchable": False,
             "orderable": True,
             "visible": True,
-            "title": _("V"),
+            "title": _("V."),
         },
     ]
 

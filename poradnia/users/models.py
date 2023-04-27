@@ -171,7 +171,7 @@ class User(GuardianUserMixin, AbstractUser):
     notify_old_cases = models.BooleanField(
         default=False,
         verbose_name=_("Notify about old cases"),
-        help_text=_("Whether or not to notify user about all cases"),
+        help_text=_("Whether or not to notify user about old cases"),
     )
     created_on = models.DateTimeField(
         auto_now_add=True, null=True, blank=True, verbose_name=_("Created on")
