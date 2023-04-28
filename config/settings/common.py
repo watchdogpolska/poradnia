@@ -412,3 +412,33 @@ NOTIFY_AUTHOR = env.bool("NOTIFY_AUTHOR", True)
 
 # The number of years after which cases will be listed to delete
 YEARS_TO_STORE_CASES = env.int("YEARS_TO_STORE_CASES", 6)
+
+BLEACH_ALLOWED_TAGS = {
+    "a",
+    "abbr",
+    "acronym",
+    "b",
+    "blockquote",
+    "code",
+    "em",
+    "h1",
+    "h2",
+    "h3",
+    "strong",
+    "em",
+    "p",
+    "ul",
+    "ol",
+    "i",
+    "li",
+    "br",
+    "sub",
+    "sup",
+    "hr",
+}
+
+BLEACH_ALLOWED_ATTRIBUTES = ALLOWED_ATTRIBUTES = {
+    "a": ["href", "title"],
+    "abbr": ["title"],
+    "acronym": ["title"],
+}

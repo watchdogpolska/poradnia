@@ -2,6 +2,7 @@ import datetime
 import json
 import logging
 
+import bleach
 import django_filters
 from ajax_datatable import AjaxDatatableView
 from atom.ext.crispy_forms.views import FormSetMixin
@@ -315,7 +316,12 @@ class ReceiveEmailView(View):
         eml_file = letter.eml.open("rb")
         htm_content = get_html_from_eml_file(eml_file=eml_file)
         eml_file.close()
-        letter.html = htm_content
+        letter.html = bleach.clean(
+            htm_content,
+            tags=settings.BLEACH_ALLOWED_TAGS,
+            attributes=settings.BLEACH_ALLOWED_ATTRIBUTES,
+            strip=True,
+        )
         letter.save()
         logger.info(
             f"Letter {letter.id} created by {actor.email}"
