@@ -14,7 +14,7 @@
         <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
             <h1>{% block header %}{% trans 'User' %}: {{ user.get_nicename }}{% endblock %}</h1>
             {% block form %}
-            <form class="form-horizontal" method="post">
+            <form enctype="multipart/form-data" class="form-horizontal" method="post">
                 {% csrf_token %}
                 {% crispy form %}
             </form>
