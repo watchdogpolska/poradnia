@@ -7,36 +7,8 @@ from django.utils.safestring import mark_safe
 
 register = template.Library()
 cleaner = Cleaner(
-    tags=[
-        "a",
-        "abbr",
-        "acronym",
-        "b",
-        "blockquote",
-        "code",
-        "em",
-        "i",
-        "li",
-        "ol",
-        "strong",
-        "ul",
-        "h1",
-        "h2",
-        "h3",
-        "h4",
-        "h5",
-        "h6",
-        "p",
-        "hr",
-        "pre",
-        "img",
-    ],
-    attributes={
-        "a": ["href", "title"],
-        "img": ["alt", "src", "title"],
-        "abbr": ["title"],
-        "acronym": ["title"],
-    },
+    tags=settings.BLEACH_ALLOWED_TAGS,
+    attributes=settings.BLEACH_ALLOWED_ATTRIBUTES,
 )
 
 

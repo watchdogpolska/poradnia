@@ -424,6 +424,9 @@ BLEACH_ALLOWED_TAGS = {
     "h1",
     "h2",
     "h3",
+    "h4",
+    "h5",
+    "h6",
     "strong",
     "em",
     "p",
@@ -435,10 +438,13 @@ BLEACH_ALLOWED_TAGS = {
     "sub",
     "sup",
     "hr",
+    "pre",
+    "img",
 }
 
 BLEACH_ALLOWED_ATTRIBUTES = ALLOWED_ATTRIBUTES = {
     "a": ["href", "title"],
     "abbr": ["title"],
     "acronym": ["title"],
+    "img": ["alt", "src", "title"],
 }
