@@ -41,13 +41,9 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
                 )
             },
         ),
-                (
+        (
             _("Avatar"),
-            {
-                "fields": (
-                    "picture",
-                )
-            },
+            {"fields": ("picture",)},
         ),
     ]
     list_display = (
