@@ -1,3 +1,4 @@
+import logging
 import re
 
 from django.contrib.auth.models import AbstractUser, UserManager
@@ -19,6 +20,8 @@ _("Username or e-mail")  # Hack to overwrite django translation
 _("Login")
 
 cup_co = "caseuserobjectpermission__content_object"
+
+logger = logging.getLogger(__name__)
 
 
 class UserQuerySet(QuerySet):
@@ -222,6 +225,10 @@ class User(GuardianUserMixin, AbstractUser):
         context = kwargs
         context["email"] = from_email  # TODO: Drop this alias
         context["actor"] = actor
+        logger.info(
+            f"Sending notification email {template_key} "
+            f"from {email_name} to {self.email} with context: {context}"
+        )
         return self.send_template_email(template_key, context, email_name)
 
     def get_absolute_url(self):

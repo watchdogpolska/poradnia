@@ -4,6 +4,7 @@ import os
 import zipfile
 from io import BytesIO
 
+import bleach
 from django.conf import settings
 from django.contrib.sites.models import Site
 from django.core import mail
@@ -580,9 +581,14 @@ class ReceiveEmailTestCase(TestCase):
             "<html>\n<body>\n<p>Hello,</p>\n<p>This is an example email with "
             "<b>HTML</b> content.</p>\n<p>Regards,<br/>Sender</p>\n</body>\n</html>"
         )
-
+        html_eml_part_sanitized = bleach.clean(
+            html_eml_part,
+            tags=settings.BLEACH_ALLOWED_TAGS,
+            attributes=settings.BLEACH_ALLOWED_ATTRIBUTES,
+            strip=True,
+        )
         self.assertEqual(eml_content, self.get_eml_content().decode("utf-8"))
-        self.assertEqual(html_content, html_eml_part)
+        self.assertEqual(html_content, html_eml_part_sanitized)
         self.assertEqual(attachment_content, "my-content")
 
     def test_reopen_case_free(self):

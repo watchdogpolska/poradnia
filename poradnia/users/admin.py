@@ -40,7 +40,11 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
                     "notify_old_cases",
                 )
             },
-        )
+        ),
+        (
+            _("Avatar"),
+            {"fields": ("picture",)},
+        ),
     ]
     list_display = (
         "pk",
