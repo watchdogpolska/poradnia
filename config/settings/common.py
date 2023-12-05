@@ -148,10 +148,13 @@ MANAGERS = ADMINS
 DATABASES = {"default": env.db(default="mysql:///porady")}
 
 DATABASES["default"]["TEST"] = {
-    "CHARSET": "utf8mb4",
-    "COLLATION": "utf8mb4_unicode_520_ci",
+#    "CHARSET": "utf8mb4",
+#    "COLLATION": "utf8mb4_unicode_520_ci",
+     "CHARSET": "utf8",
+     "COLLATION": "utf8_polish_ci",
 }
-DATABASES["default"]["CHARSET"] = "utf8mb4"
+#DATABASES["default"]["CHARSET"] = "utf8mb4"
+DATABASES["default"]["CHARSET"] = "utf"
 
 # END DATABASE CONFIGURATION
 
