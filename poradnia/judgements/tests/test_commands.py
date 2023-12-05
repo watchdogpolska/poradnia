@@ -1,9 +1,10 @@
+from io import StringIO
+
 from django.core.management import call_command
 from django.test import TestCase
 
 from poradnia.judgements.factories import CourtFactory
 
-from io import StringIO
 
 class RunCourtSessionParserTestCase(TestCase):
     def test_run_command_basic(self):
