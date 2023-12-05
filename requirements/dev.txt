@@ -9,7 +9,7 @@ graphviz==0.20.1
 factory-boy==3.2.1
 django-coverage-plugin==3.0.0
 django-test-plus==2.2.1
-vcrpy==4.2.1
+vcrpy==4.4.0
 ipdb==0.13.13
 
 pre-commit==3.2.2
