@@ -1,12 +1,9 @@
+from io import StringIO
+
 from django.core.management import call_command
 from django.test import TestCase
 
 from poradnia.judgements.factories import CourtFactory
-
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
 
 
 class RunCourtSessionParserTestCase(TestCase):
