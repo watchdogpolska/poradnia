@@ -3,11 +3,7 @@ from django.test import TestCase
 
 from poradnia.judgements.factories import CourtFactory
 
-try:
-    from StringIO import StringIO
-except ImportError:
-    from io import StringIO
-
+from io import StringIO
 
 class RunCourtSessionParserTestCase(TestCase):
     def test_run_command_basic(self):
