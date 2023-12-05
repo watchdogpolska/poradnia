@@ -13,7 +13,7 @@ django-floppyforms==1.9.0
 django-model-utils==4.3.1
 
 # images
-Pillow==9.5.0
+Pillow==10.0.1
 sorl-thumbnail==12.9.0
 
 # For user registration, either via email or social
@@ -30,26 +30,26 @@ django-autoslug==1.9.9
 # Useful things
 # Time zones support
 pytz==2023.3 
-lxml==4.9.2
+lxml==4.9.3
 cssselect==1.2.0
 # Your custom requirements go here
 django-guardian==2.4.0
 django-mailbox==4.8.2
-django-filter==23.1
+django-filter==23.5
 # django-ajax-datatable to be installed from github fork until
 # https://github.com/morlandi/django-ajax-datatable/pull/111 is merged
 # django-ajax-datatable==4.4.5
 git+https://github.com/PiotrIw/django-ajax-datatable.git@05afe42
 # dal 3.9.4 has broken initialisation of jquery on multiselect2 
-django-autocomplete-light==3.5.0
+django-autocomplete-light==3.9.7
 django-tinymce==3.6.1
 django-atom==0.16.3
 django-tinycontent==0.8.0
-icalendar==5.0.5
+icalendar==5.0.11
 html2text==2020.1.16
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.7.1
-sentry-sdk==1.21.0
+sentry-sdk==1.38.0
 python-dateutil==2.8.2
 django-github-revision==0.0.3
 zipstream-new==1.1.8
