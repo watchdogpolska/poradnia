@@ -1,16 +1,24 @@
+---
+# yamllint disable-line-length
 version: '2.1'
 # This is application’s services configuration for development purposes only.
 
 services:
   db:
-    image: mysql:5.7
+    image: mariadb:10.1
+    command: >-
+      --character-set-server=utf8
+      --collation-server=utf8_polish_ci
+      --max_allowed_packet=1024M
+      --sql-mode=STRICT_TRANS_TABLES,NO_ZERO_IN_DATE,NO_ZERO_DATE,ERROR_FOR_DIVISION_BY_ZERO,NO_AUTO_CREATE_USER,NO_ENGINE_SUBSTITUTION
+      --innodb_large_prefix=ON
     ports:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: "password"
     volumes:
       - ./.contrib/docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
-      - mysql_db:/var/lib/mysql
+      - mariadb-data-03:/var/lib/mysql
 
   gulp:
     build:
@@ -77,5 +85,5 @@ services:
   #     - imap-to-webhook-url.env
 
 volumes:
-  mysql_db:
+  mariadb-data-03:
   maildump_data:

@@ -99,7 +99,7 @@ def get_html_from_eml_file(eml_file=None):
             decoded_part = part.get_payload()
 
         # Decode the part based on the content type and add it to the content
-        if type(decoded_part) == bytes:
+        if type(decoded_part) is bytes:
             codec_map = {
                 None: "utf-8",
                 "windows-1252": "cp1252",
