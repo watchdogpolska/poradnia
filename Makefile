@@ -3,10 +3,10 @@ TEST=
 db:
 	docker-compose up -d --remove-orphans db
 
-up:
+start: wait_mysql
 	docker-compose up
 
-start:
+run-background: wait_mysql
 	docker-compose up -d
 
 stop:

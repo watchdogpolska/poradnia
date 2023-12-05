@@ -20,10 +20,17 @@ class NSAETRParser(BaseParser):
         "sygnatura": "",
         "symbol": "",
         "wydzial": "",
+        "typ": "",
+    }
+    HEADERS = {
+        "User-Agent": (
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+            " (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
+        )
     }
 
     def get_content(self):
-        response = requests.post(self.URL, data=self.POST_DATA)
+        response = requests.post(self.URL, data=self.POST_DATA, headers=self.HEADERS)
         response.raise_for_status()
         return response.text
 
