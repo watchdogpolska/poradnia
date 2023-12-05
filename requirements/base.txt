@@ -1,4 +1,4 @@
-Django==3.2.18
+Django==3.2.23
 
 # Configuration
 django-environ==0.10.0
@@ -21,7 +21,7 @@ sorl-thumbnail==12.9.0
 django-allauth==0.54.0
 
 # For the persistance stores
-mysqlclient==2.1.1
+mysqlclient==2.2.0
 
 # Unicode slugification
 unicode-slugify==0.1.5
@@ -53,7 +53,7 @@ sentry-sdk==1.21.0
 python-dateutil==2.8.2
 django-github-revision==0.0.3
 zipstream-new==1.1.8
-django-teryt-tree==0.17.0
+django-teryt-tree==0.18.4
 django-mptt==0.14.0
 mistune==2.0.5
 django-rosetta==0.9.9
