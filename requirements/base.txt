@@ -55,7 +55,7 @@ django-github-revision==0.0.3
 zipstream-new==1.1.8
 django-teryt-tree==0.18.4
 django-mptt==0.15.0
-mistune==2.0.5
+mistune==3.0.2
 django-rosetta==0.9.9
 
 # Additional sanitizer until a completely safe markdown package is found.
