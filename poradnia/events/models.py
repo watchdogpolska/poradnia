@@ -115,10 +115,21 @@ class Event(AbstractRecord):
         return render_event_icon("fa-globe", "gray", "Wydarzenie nie jest publiczne")
 
     @property
+    def render_court_session(self):
+        if hasattr(self, "courtsession") and self.courtsession:
+            return render_event_icon(
+                "fa-balance-scale",  # "fa-gavel",
+                "black; font-weight: bold; font-size: 17px;",
+                "Wydarzenie jest rozprawą sądową",
+            )
+        return ""
+
+    @property
     def render_calendar_item(self):
         title = self.text
         text = (
-            self.render_deadline
+            self.render_court_session
+            + self.render_deadline
             + self.render_completed
             + self.render_public
             + "<br> "
