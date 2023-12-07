@@ -15,7 +15,7 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
 from django.utils.encoding import force_str
 from django.utils.functional import cached_property
-from django.utils.html import mark_safe
+from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 from django.utils.translation import gettext as _
 from django.views.generic import (
