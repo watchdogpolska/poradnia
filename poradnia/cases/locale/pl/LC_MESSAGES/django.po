@@ -341,16 +341,19 @@ msgstr ""
 
 #: poradnia/cases/templates/cases/case_detail.html:112
 msgid "Metrical data"
-msgstr "Dane metrykalne"
+msgstr "Dane statystyczne"
+# msgstr "Dane metrykalne" # GH issue 1351
 
 #: poradnia/cases/templates/cases/case_detail.html:115
 #: poradnia/cases/views/cases.py:237
-msgid "Advice"
-msgstr "Porada"
+msgid "Advice tags"
+msgstr "TAGI"
+# msgstr "Porada" # GH issue 1351
 
 #: poradnia/cases/templates/cases/case_detail.html:121
-msgid "Create new advice"
-msgstr "Utwórz nową porade"
+msgid "Create new advice tags"
+msgstr "Otaguj sprawę"
+# msgstr "Utwórz nową porade" # GH issue 1351
 
 #: poradnia/cases/templates/cases/case_detail.html:135
 msgid "Assign permissions"

@@ -112,13 +112,13 @@
                             <div class="panel-heading"><i class="fa fa-phone"></i> {% trans 'Metrical data' %}</div>
                             <table class="table">
                                 <tr>
-                                    <td><i class="fa fa-area-chart"></i> {% trans 'Advice' %}</td>
+                                    <td><i class="fa fa-area-chart"></i> {% trans 'Advice tags' %}</td>
                                     <td>
                                         {% if object.advice %}
                                             <a href="{{ object.advice.get_absolute_url }}">{{ object.advice }}</a>
                                         {% else %}
                                             <a href="{% url 'advicer:create' %}?case={{ object.pk }}"><i
-                                                    class="fa fa-pencil"></i> {% trans 'Create new advice' %}</a>
+                                                    class="fa fa-pencil"></i> {% trans 'Create new advice tags' %}</a>
                                         {% endif %}
                                     </td>
                                 </tr>
