@@ -130,7 +130,7 @@ describe.only("advices", () => {
       cy.contains("a", advice.case.title).click();
 
       // Add an advice.
-      cy.contains("Utwórz nową porade").click();
+      cy.contains("Otaguj sprawę").click();
       cy.contains("form", "Dane statystyczne").within(($form) => {
         submitAdviceForm(cy)($form, advice);
       });

@@ -57,8 +57,9 @@ msgid "Status"
 msgstr "Status"
 
 #: poradnia/cases/filters.py:46
-msgid "Advice registered"
-msgstr "Zarejestrowana porada"
+msgid "Advice registered/tagged"
+msgstr "Sprawa otagowana"
+# msgstr "Zarejestrowana porada" # GH issue 1312
 
 #: poradnia/cases/filters.py:61 poradnia/cases/models.py:249
 #: poradnia/cases/templates/cases/case_detail.html:102
