@@ -103,7 +103,9 @@ class AbstractCalendar(HTMLCalendar):
         return self.field
 
     def get_field(self, obj):
-        return getattr(obj, self.get_field_name()).day
+        default_tz = pytz.timezone(settings.TIME_ZONE)
+        dt = getattr(obj, self.get_field_name()).astimezone(default_tz)
+        return dt.day
 
     def get_row_content(self, event):
         raise NotImplementedError("Method 'get_row_content' should be overwritten.")
