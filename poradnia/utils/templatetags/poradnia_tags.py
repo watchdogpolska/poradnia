@@ -1,6 +1,9 @@
 from django import template
 from django.conf import settings
+from django.contrib.auth.models import Permission
 from django.utils.safestring import mark_safe
+from django.utils.translation import gettext
+from guardian.shortcuts import get_user_perms
 
 from poradnia import get_version
 
@@ -34,3 +37,14 @@ def app_main_style():
     elif settings.APP_MODE == "DEV":
         return mark_safe('<div class="main" style="background-color: #d3e20040;">)')
     return mark_safe('<div class="main" style="background-color: #60e20040;">)')
+
+
+@register.simple_tag
+def user_obj_perms_list(user, obj):
+    """
+    user_obj_perms_list tag used to display object permissions
+    """
+    perms = get_user_perms(user, obj)
+    perm_list = [Permission.objects.get(codename=perm) for perm in perms]
+    perm_name_list = [gettext(perm.name) for perm in perm_list]
+    return ", ".join(sorted(perm_name_list))
