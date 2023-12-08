@@ -38,7 +38,8 @@ msgstr "Nie"
 
 #: poradnia/advicer/apps.py:7
 msgid "Advicer system"
-msgstr "Rejestr porad"
+msgstr "Rejestr tagów spraw"
+# msgstr "Rejestr porad" # GH #1310
 
 #: poradnia/advicer/filters.py:41 poradnia/advicer/models.py:107
 #: poradnia/advicer/templates/advicer/advice_filter.html:25
@@ -215,11 +216,14 @@ msgstr "Rejestr"
 #: poradnia/advicer/templates/advicer/base.html:3
 #: poradnia/advicer/templates/advicer/base.html:7
 msgid "Advice list"
-msgstr "Rejestr porad"
+msgstr "Rejestr tagów"
+# msgstr "Rejestr porad" # GH #1310
+
 
 #: poradnia/advicer/templates/advicer/_sidebar.html:12
 msgid "Advice table"
-msgstr "Tabela porad"
+msgstr "Tabela tagów"
+# msgstr "Tabela porad" GH #1310
 
 #: poradnia/advicer/templates/advicer/advice_confirm_delete.html:5
 msgid "Confirm delete"
@@ -294,7 +298,8 @@ msgstr ""
 
 #: poradnia/advicer/templates/advicer/advice_filter.html:4
 msgid "Advice index"
-msgstr "Wykaz porad"
+msgstr "Wykaz tagów"
+#msgstr "Wykaz porad" # GH #1310 
 
 #: poradnia/advicer/templates/advicer/advice_filter.html:7
 #: poradnia/advicer/templates/advicer/advice_form.html:24
@@ -328,7 +333,8 @@ msgstr "Aktualizowanie"
 
 #: poradnia/advicer/templates/advicer/advice_table.html:27
 msgid "Advice Table"
-msgstr "Tabela porad"
+msgstr "Tabela tagów" 
+# msgstr "Tabela porad" # GH #1310
 
 #: poradnia/advicer/templates/advicer/advice_table.html:40
 msgid "Filters"

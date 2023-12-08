@@ -12,6 +12,8 @@
                 <li class="block-list-item">
                     <a href="{% url 'users:list' %}"><i class="fa fa-users"></i> {% trans "Users list" %}</a>
                 </li>
+            {% endif %}
+            {% if request.user.is_superuser %}
                 <li class="block-list-item">
                     <a href="{% url 'admin:index' %}"><i class="fa fa-gear"></i> {% trans "App admin" %}</a>
                 </li>                

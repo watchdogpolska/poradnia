@@ -19,7 +19,7 @@ msgstr ""
 
 #: poradnia/keys/apps.py:7 poradnia/keys/templates/keys/base.html:6
 msgid "Keys"
-msgstr "Klucze"
+msgstr "Klucze API"
 
 #: poradnia/keys/models.py:17
 msgid "User"

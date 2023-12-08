@@ -27,6 +27,7 @@ from django.db.models.signals import post_save, pre_delete
 from django.template import Context, Template
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import assign_perm, get_objects_for_user, get_users_with_perms
@@ -581,6 +582,13 @@ class PermissionGroup(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def group_help_text(self):
+        perm_name_list = [gettext(p.name) for p in self.permissions.all()]
+        return f"\n{self.name}:\n" + "\n".join(
+            [f"- {n}" for n in sorted(perm_name_list)]
+        )
 
 
 def notify_new_case(sender, instance, created, **kwargs):

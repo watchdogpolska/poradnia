@@ -3,10 +3,12 @@ from datetime import timedelta
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from model_utils.models import TimeStampedModel
 
+from poradnia.events.utils import render_event_icon
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from poradnia.users.models import Profile
 
@@ -88,6 +90,54 @@ class Event(AbstractRecord):
     def get_calendar_url(self):
         return reverse(
             "events:calendar", kwargs={"month": self.time.month, "year": self.time.year}
+        )
+
+    @property
+    def render_deadline(self):
+        if self.deadline:
+            return render_event_icon(
+                "fa-hourglass", "black", "Wydarzenie jest terminem"
+            )
+        return render_event_icon("fa-hourglass", "gray", "Wydarzenie nie jest terminem")
+
+    @property
+    def render_completed(self):
+        if self.completed:
+            return render_event_icon(
+                "fa-check", "black", "Ukończono (nie ma więcej przypomnień)"
+            )
+        return render_event_icon("fa-check", "gray", "Nie ukończono (są przypomnienia)")
+
+    @property
+    def render_public(self):
+        if self.public:
+            return render_event_icon("fa-globe", "black", "Wydarzenie jest publiczne")
+        return render_event_icon("fa-globe", "gray", "Wydarzenie nie jest publiczne")
+
+    @property
+    def render_court_session(self):
+        if hasattr(self, "courtsession") and self.courtsession:
+            return render_event_icon(
+                "fa-balance-scale",  # "fa-gavel",
+                "black; font-weight: bold; font-size: 17px;",
+                "Wydarzenie jest rozprawą sądową",
+            )
+        return ""
+
+    @property
+    def render_calendar_item(self):
+        title = self.text
+        text = (
+            self.render_court_session
+            + self.render_deadline
+            + self.render_completed
+            + self.render_public
+            + "<br> "
+            + str(self.case)
+        )
+        url = self.get_absolute_url()
+        return mark_safe(
+            f'<li class_attr=""><a href="{url}" title="{title}">{text}</a></li>'
         )
 
     class Meta:

@@ -235,7 +235,7 @@ msgstr "Zmiana hasła"
 
 #: poradnia/users/templates/users/user_detail.html:40
 msgid "Keys"
-msgstr "Klucze"
+msgstr "Klucze API"
 
 #: poradnia/users/templates/users/user_detail.html:44
 msgid "My cases"

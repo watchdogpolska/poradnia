@@ -130,14 +130,15 @@ describe.only("advices", () => {
       cy.contains("a", advice.case.title).click();
 
       // Add an advice.
-      cy.contains("Utwórz nową porade").click();
+      cy.contains("Otaguj sprawę").click();
       cy.contains("form", "Dane statystyczne").within(($form) => {
         submitAdviceForm(cy)($form, advice);
       });
     }
 
     // Search for advices using the rich form with filters.
-    cy.contains("Rejestr porad").click();
+    // cy.contains("Rejestr porad").click(); // GH #1310
+    cy.contains("Rejestr tagów").click();
 
     // This function is expected to be executed on the advice form.
     // For each expected advice, validate that its subject is visible.
