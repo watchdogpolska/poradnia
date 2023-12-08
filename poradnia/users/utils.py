@@ -21,3 +21,10 @@ class PermissionMixin(LoginRequiredMixin, View):
     def get_queryset(self, *args, **kwargs):
         qs = super().get_queryset(*args, **kwargs)
         return qs.for_user(self.request.user)
+
+
+class SuperuserPermissionMixin(PermissionMixin):
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_superuser:
+            raise PermissionDenied
+        return super().dispatch(request, *args, **kwargs)
