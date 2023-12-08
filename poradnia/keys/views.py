@@ -6,18 +6,20 @@ from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import CreateView, DeleteView, DetailView, ListView
 
-from poradnia.users.utils import PermissionMixin
+from poradnia.users.utils import PermissionMixin, SuperuserPermissionMixin
 
 from .forms import KeyForm
 from .models import Key
 
 
-class KeyCreateView(PermissionMixin, UserFormKwargsMixin, CreateView):
+class KeyCreateView(
+    SuperuserPermissionMixin, PermissionMixin, UserFormKwargsMixin, CreateView
+):
     form_class = KeyForm
     model = Key
 
 
-class KeyDetailView(PermissionMixin, DetailView):
+class KeyDetailView(SuperuserPermissionMixin, PermissionMixin, DetailView):
     model = Key
 
     def get_object(self, *args, **kwargs):
@@ -30,7 +32,9 @@ class KeyDetailView(PermissionMixin, DetailView):
         return obj
 
 
-class KeyDeleteView(PermissionMixin, DeleteMessageMixin, DeleteView):
+class KeyDeleteView(
+    SuperuserPermissionMixin, PermissionMixin, DeleteMessageMixin, DeleteView
+):
     model = Key
     success_url = reverse_lazy("list")
 
@@ -38,5 +42,5 @@ class KeyDeleteView(PermissionMixin, DeleteMessageMixin, DeleteView):
         return _("{object} deleted!").format(object=self.object)
 
 
-class KeyListView(PermissionMixin, ListView):
+class KeyListView(SuperuserPermissionMixin, PermissionMixin, ListView):
     model = Key
