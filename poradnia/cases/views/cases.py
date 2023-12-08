@@ -23,7 +23,7 @@ from poradnia.cases.forms import (
     CaseGroupPermissionForm,
     CaseMergeForm,
 )
-from poradnia.cases.models import Case
+from poradnia.cases.models import Case, PermissionGroup
 from poradnia.events.forms import EventForm
 from poradnia.judgements.views import CourtCaseForm
 from poradnia.letters.forms import AddLetterForm
@@ -109,6 +109,9 @@ class CaseDetailView(SingleObjectPermissionMixin, SelectRelatedMixin, DetailView
         context["record_list"] = self.get_record_list()
         context["casegroup_form"] = CaseGroupPermissionForm(
             case=self.object, user=self.request.user
+        )
+        context["permissions_help_text"] = "\n".join(
+            [group.group_help_text for group in PermissionGroup.objects.all()]
         )
         context["next"], context["previous"] = self.get_next_and_prev()
         return context
