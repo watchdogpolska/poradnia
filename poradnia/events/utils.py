@@ -53,7 +53,7 @@ def render_event_icon(icon_class, icon_color, icon_title):
     return mark_safe(
         f"""
             <i class="fa {icon_class}" data-toggle="tooltip"
-                data-placement="bottom" style="color: {icon_color};"
+                data-placement="top" style="color: {icon_color};"
                 title="{icon_title}">
             </i>
         """
