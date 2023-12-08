@@ -1,7 +1,7 @@
 Django==3.2.23
 
 # Configuration
-django-environ==0.10.0
+django-environ==0.11.2
 
 # Forms
 django-braces==1.15.0
@@ -13,8 +13,8 @@ django-floppyforms==1.9.0
 django-model-utils==4.3.1
 
 # images
-Pillow==10.0.1
-sorl-thumbnail==12.9.0
+Pillow==10.1.0
+sorl-thumbnail==12.10.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
@@ -54,10 +54,10 @@ python-dateutil==2.8.2
 django-github-revision==0.0.3
 zipstream-new==1.1.8
 django-teryt-tree==0.18.4
-django-mptt==0.14.0
-mistune==2.0.5
+django-mptt==0.15.0
+mistune==3.0.2
 django-rosetta==0.9.9
 
 # Additional sanitizer until a completely safe markdown package is found.
-bleach==6.0.0
+bleach==6.1.0
 django-antispam==1.0.3

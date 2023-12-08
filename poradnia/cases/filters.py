@@ -43,7 +43,7 @@ class StaffCaseFilter(
     permission = PermissionChoiceFilter()
     handled = django_filters.BooleanFilter(label=_("Replied"))
     status = django_filters.MultipleChoiceFilter(label=_("Status"), choices=Case.STATUS)
-    has_advice = django_filters.BooleanFilter(label=_("Advice registered"))
+    has_advice = django_filters.BooleanFilter(label=_("Advice registered/tagged"))
     o = django_filters.OrderingFilter(
         fields=[
             "last_action",

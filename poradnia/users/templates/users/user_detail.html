@@ -35,10 +35,12 @@
                 <i class="fa fa-key"></i>
                 {% trans 'Password change' %}
             </a>
+            {% if user.is_superuser %}
             <a class="btn btn-info" href="{% url 'keys:list' %}">
                 <i class="fa fa-puzzle-piece "></i>
                 {% trans 'Keys' %}
             </a>
+            {% endif %}
             <a class="btn btn-info" href="{% url 'cases:list' %}?client={{ object.pk }}">
                 <i class="fa fa-book"></i>
                 {% trans 'My cases' %}

@@ -34,6 +34,39 @@
 
 {% block content %}
     {% get_obj_perms request.user for object as "case_perms" %}
+    <style>
+        .permissions_help {
+            /* position: fixed; */
+            /* display: inline-block; */
+            cursor: pointer;
+        }
+        
+        .permissions_help .permissions_helptext {
+          visibility: hidden;
+          width: 280px;
+          height: 500px;
+          overflow-y: scroll;
+          overflow-x: visible;
+          background-color: #555;
+          color: #fff;
+          text-align: left;
+          padding: 10px 10px;
+          border-radius: 6px;
+          position: absolute;
+          z-index: 1;
+          bottom: -350px; 
+          left: 100px; 
+          margin-left: -60px;
+          opacity: 0;
+          transition: opacity 0.3s;
+          white-space: pre-line; /* This will preserve line breaks */
+        }
+        
+        .permissions_help:hover .permissions_helptext {
+          visibility: visible;
+          opacity: 1;
+        }
+        </style>
     <div class="row">
         <div class="col-xs-12">
             <div class="case-header">
@@ -112,13 +145,13 @@
                             <div class="panel-heading"><i class="fa fa-phone"></i> {% trans 'Metrical data' %}</div>
                             <table class="table">
                                 <tr>
-                                    <td><i class="fa fa-area-chart"></i> {% trans 'Advice' %}</td>
+                                    <td><i class="fa fa-area-chart"></i> {% trans 'Advice tags' %}</td>
                                     <td>
                                         {% if object.advice %}
                                             <a href="{{ object.advice.get_absolute_url }}">{{ object.advice }}</a>
                                         {% else %}
                                             <a href="{% url 'advicer:create' %}?case={{ object.pk }}"><i
-                                                    class="fa fa-pencil"></i> {% trans 'Create new advice' %}</a>
+                                                    class="fa fa-pencil"></i> {% trans 'Create new advice tags' %}</a>
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -138,6 +171,10 @@
                                 </div>
                                 <div class="panel-body">
                                     {% crispy casegroup_form %}
+                                    <div class="permissions_help">
+                                    <i class="fa fa-shield"> Uprawnienia w grupach</i>
+                                        <span class="permissions_helptext">{{ permissions_help_text}}</span>
+                                    </div>
                                 </div>
                             </div>
                         {% endif %}
