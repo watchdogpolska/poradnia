@@ -34,7 +34,7 @@ lxml==4.9.3
 cssselect==1.2.0
 # Your custom requirements go here
 django-guardian==2.4.0
-django-mailbox==4.8.2
+django-mailbox==4.9.0
 django-filter==23.5
 # django-ajax-datatable to be installed from github fork until
 # https://github.com/morlandi/django-ajax-datatable/pull/111 is merged
