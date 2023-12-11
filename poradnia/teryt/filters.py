@@ -31,7 +31,7 @@ class AreaMultipleFilter(ModelMultipleChoiceFilter):
         Multiselect filter by area.
         If `value` is empty, returns an empty queryset.
 
-        `area_field` is the field which points to a field of type `JednostkaAdministracyjna`.
+        `area_field` is the field which points to a field of type `JST`.
 
         This method is not automatically injected to the queryset.
         It merely serves as a sample implementation of an `area_in` filter.
