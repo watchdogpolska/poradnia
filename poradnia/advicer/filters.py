@@ -4,8 +4,8 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Fieldset, Layout, Submit
 from dal import autocomplete
 from django.utils.translation import gettext_lazy as _
-from teryt_tree.dal_ext.filters import AreaMultipleFilter
 
+from poradnia.teryt.filters import AreaMultipleFilter
 from poradnia.users.filters import UserChoiceFilter
 
 from .models import Advice, Area, Issue
@@ -90,8 +90,8 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
                 ),
                 Div(
                     Div("institution_kind", css_class="col-sm-12 col-md-3"),
-                    Div("helped", css_class="col-sm-12 col-md-3"),
-                    Div("community", css_class="col-sm-12 col-md-3"),
+                    Div("helped", css_class="col-sm-12 col-md-2"),
+                    Div("community", css_class="col-sm-12 col-md-7"),
                     css_class="row",
                 ),
             ),
