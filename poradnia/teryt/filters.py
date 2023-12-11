@@ -1,7 +1,9 @@
-from django_filters.filters import ModelMultipleChoiceFilter
-from django.utils.translation import gettext as _
-from django.db.models import Q
 from functools import reduce
+
+from django.db.models import Q
+from django.utils.translation import gettext as _
+from django_filters.filters import ModelMultipleChoiceFilter
+
 from .models import JST
 
 
