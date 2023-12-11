@@ -35,9 +35,7 @@
 {% block content %}
     {% get_obj_perms request.user for object as "case_perms" %}
     <style>
-        .permissions_help {
-            /* position: fixed; */
-            /* display: inline-block; */
+        .permissions_help_icon {
             cursor: pointer;
         }
         
@@ -56,13 +54,13 @@
           z-index: 1;
           bottom: -350px; 
           left: 100px; 
-          margin-left: -60px;
+          margin-left: -90px;
           opacity: 0;
           transition: opacity 0.3s;
           white-space: pre-line; /* This will preserve line breaks */
         }
         
-        .permissions_help:hover .permissions_helptext {
+        .fa-shield:active + .permissions_helptext {
           visibility: visible;
           opacity: 1;
         }
@@ -172,7 +170,7 @@
                                 <div class="panel-body">
                                     {% crispy casegroup_form %}
                                     <div class="permissions_help">
-                                    <i class="fa fa-shield"> Uprawnienia w grupach</i>
+                                    <i class="fa fa-shield permissions_help_icon"> Uprawnienia w grupach</i>
                                         <span class="permissions_helptext">{{ permissions_help_text}}</span>
                                     </div>
                                 </div>
