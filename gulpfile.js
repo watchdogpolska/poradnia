@@ -90,6 +90,7 @@ var config = (function () {
                 path.app + '/cases/static/cases/case_datatbles.js',
                 path.app + '/advicer/static/advicer/advice_datatbles.js',
                 path.app + '/letters/static/letters/letters_datatbles.js',
+                path.app + '/events/static/events/events_datatbles.js',
             ],
             output: {
                 dir: path.static + "/js",
