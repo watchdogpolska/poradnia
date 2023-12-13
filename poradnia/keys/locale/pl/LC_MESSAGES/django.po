@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 18:50+0200\n"
+"POT-Creation-Date: 2023-12-13 06:10+0100\n"
 "PO-Revision-Date: 2020-07-16 22:56+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: Polish\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-File: /keys/locale/en/LC_MESSAGES/django.po\n"
 
-#: poradnia/keys/apps.py:7 poradnia/keys/templates/keys/base.html:6
+#: poradnia/keys/apps.py:7 poradnia/keys/templates/keys/base.html:8
 msgid "Keys"
 msgstr "Klucze API"
 
@@ -105,7 +105,7 @@ msgstr "Pobierz"
 msgid "Delete"
 msgstr "Usuń"
 
-#: poradnia/keys/views.py:38
+#: poradnia/keys/views.py:42
 #, python-brace-format
 msgid "{object} deleted!"
 msgstr "{object} usunięty!"

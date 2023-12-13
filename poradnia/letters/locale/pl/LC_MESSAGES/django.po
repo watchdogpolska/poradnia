@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 18:50+0200\n"
+"POT-Creation-Date: 2023-12-13 06:10+0100\n"
 "PO-Revision-Date: 2023-04-14 18:07+0124\n"
 "Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -24,7 +24,7 @@ msgid "Case name"
 msgstr "Nazwa sprawy"
 
 #: poradnia/letters/apps.py:7 poradnia/letters/models.py:181
-#: poradnia/letters/views/cbv.py:163
+#: poradnia/letters/views/cbv.py:164
 msgid "Letters"
 msgstr "Listy"
 
@@ -167,11 +167,11 @@ msgstr "Mail sformatowany w HTML"
 msgid "Signature"
 msgstr "Podpis"
 
-#: poradnia/letters/models.py:81 poradnia/letters/views/cbv.py:181
+#: poradnia/letters/models.py:81 poradnia/letters/views/cbv.py:182
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: poradnia/letters/models.py:87 poradnia/letters/views/cbv.py:176
+#: poradnia/letters/models.py:87 poradnia/letters/views/cbv.py:177
 msgid "Created on"
 msgstr "Utworzone o"
 
@@ -232,21 +232,21 @@ msgstr "Wszyscy"
 msgid ""
 "\n"
 "            (updated on\n"
-"            <time datetime=\"%(modified_on)s\" title=\"%(modified_on)s\">"
-"%(modified_on_natural)s</time>\n"
+"            <time datetime=\"%(modified_on)s\" "
+"title=\"%(modified_on)s\">%(modified_on_natural)s</time>\n"
 "            by %(modified_by)s)\n"
 "            "
 msgstr ""
 "\n"
 "            (zaktualizowane \n"
-"            <time datetime=\"%(modified_on)s\" title=\"%(modified_on)s\">"
-"%(modified_on_natural)s</time>\n"
+"            <time datetime=\"%(modified_on)s\" "
+"title=\"%(modified_on)s\">%(modified_on_natural)s</time>\n"
 "            przez %(modified_by)s)\n"
 "            "
 
 #: poradnia/letters/templates/letters/_letter_list.html:62
 #: poradnia/letters/templates/letters/form_edit.html:6
-#: poradnia/letters/views/cbv.py:76
+#: poradnia/letters/views/cbv.py:77
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -271,40 +271,40 @@ msgstr "Rejestr korespondencji"
 msgid "Letters Table"
 msgstr "Tabela korespondencji"
 
-#: poradnia/letters/views/cbv.py:49
+#: poradnia/letters/views/cbv.py:50
 msgid "Create a new case"
 msgstr "Tworzenie nowej sprawy"
 
-#: poradnia/letters/views/cbv.py:58
+#: poradnia/letters/views/cbv.py:59
 #, python-brace-format
 msgid "Case about {object} created!"
 msgstr "Sprawa o tytule {object} została zarejestrowana!"
 
-#: poradnia/letters/views/cbv.py:111
+#: poradnia/letters/views/cbv.py:112
 msgid "Status"
 msgstr "Status"
 
-#: poradnia/letters/views/cbv.py:152
+#: poradnia/letters/views/cbv.py:153
 msgid "Letter search table"
 msgstr "Tabela wyszukiwania korespondencji"
 
-#: poradnia/letters/views/cbv.py:186
+#: poradnia/letters/views/cbv.py:187
 msgid "Letter Subject"
 msgstr "Temat listu/maila"
 
-#: poradnia/letters/views/cbv.py:193
+#: poradnia/letters/views/cbv.py:194
 msgid "Letter Content (first 300 chars when longer)"
 msgstr "Treść listu/maila (pierwsze 300 znaków, gdy jest dłuższy)"
 
-#: poradnia/letters/views/cbv.py:200
+#: poradnia/letters/views/cbv.py:201
 msgid "Case Subject"
 msgstr "Przedmiot sprawy"
 
-#: poradnia/letters/views/cbv.py:207
+#: poradnia/letters/views/cbv.py:208
 msgid "Advice Subject"
 msgstr "Przedmiot porady"
 
-#: poradnia/letters/views/cbv.py:215
+#: poradnia/letters/views/cbv.py:216
 msgid "Advice Comment"
 msgstr "Komentarz porady"
 

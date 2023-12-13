@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 18:50+0200\n"
+"POT-Creation-Date: 2023-12-13 06:10+0100\n"
 "PO-Revision-Date: 2023-04-27 18:53+0124\n"
 "Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -11,7 +11,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 "X-Crowdin-File: /users/locale/en/LC_MESSAGES/django.po\n"
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-Project: poradnia\n"
@@ -22,8 +23,12 @@ msgstr ""
 msgid "Notifications"
 msgstr "Powiadomienia"
 
+#: poradnia/users/admin.py:45 poradnia/users/models.py:153
+msgid "Avatar"
+msgstr "Avatar"
+
 #: poradnia/users/apps.py:7 poradnia/users/forms/permissions.py:31
-#: poradnia/users/models.py:234
+#: poradnia/users/models.py:241
 #: poradnia/users/templates/users/user_filter.html:27
 msgid "Users"
 msgstr "Użytkownicy / użytkowniczki"
@@ -47,59 +52,53 @@ msgstr "Zamknięte"
 msgid "Signup"
 msgstr "Rejestracja"
 
-#: poradnia/users/login_form.py:14 poradnia/users/models.py:19
+#: poradnia/users/login_form.py:14 poradnia/users/models.py:20
 msgid "Login"
 msgstr "Nazwa użytkownika / użytkowniczki"
 
-#: poradnia/users/models.py:18
+#: poradnia/users/models.py:19
 msgid "Username or e-mail"
 msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
 
-#: poradnia/users/models.py:150
-msgid "Avatar"
-msgstr "Avatar"
-
-#: poradnia/users/models.py:153
+#: poradnia/users/models.py:156
 msgid "Codename"
 msgstr "Kryptonim"
 
-#: poradnia/users/models.py:156
+#: poradnia/users/models.py:159
 msgid "Nice Name"
 msgstr "Pełna nazwa"
 
-#: poradnia/users/models.py:160
+#: poradnia/users/models.py:163
 msgid "Notify about new case"
 msgstr "Powiadamiaj o nowych sprawach"
 
-#: poradnia/users/models.py:161
+#: poradnia/users/models.py:164
 msgid "Whether or not to notify user about all new cases"
 msgstr "Czy powiadomić o wszystkich nowych sprawach?"
 
-#: poradnia/users/models.py:165
+#: poradnia/users/models.py:168
 msgid "Defaults to reply in cases"
 msgstr "Domyślnie odpowiada w sprawach"
 
-#: poradnia/users/models.py:167
+#: poradnia/users/models.py:170
 msgid ""
 "Whether or not to notify user about any letter in case without anybody who "
 "can reply to client"
 msgstr "Czy powiadamiać w sprawach bez kogokolwiek kto może odpowiedzieć"
 
-#: poradnia/users/models.py:173
-#| msgid "Notify about new case"
+#: poradnia/users/models.py:176
 msgid "Notify about old cases"
 msgstr "Powiadamianie o starych sprawach"
 
-#: poradnia/users/models.py:174
-#| msgid "Whether or not to notify user about all new cases"
+#: poradnia/users/models.py:177
 msgid "Whether or not to notify user about old cases"
 msgstr "Czy powiadomić użytkownika o starych sprawach"
 
-#: poradnia/users/models.py:177
+#: poradnia/users/models.py:180
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: poradnia/users/models.py:233 poradnia/users/templates/users/_sidebar.html:3
+#: poradnia/users/models.py:240 poradnia/users/templates/users/_sidebar.html:3
 #: poradnia/users/templates/users/user_detail.html:3
 #: poradnia/users/templates/users/user_filter.html:47
 #: poradnia/users/templates/users/user_form.html:4
@@ -108,49 +107,49 @@ msgstr "Utworzone o"
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: poradnia/users/models.py:239
+#: poradnia/users/models.py:246
 msgid "No reminder"
 msgstr "Nie przypominaj"
 
-#: poradnia/users/models.py:240
+#: poradnia/users/models.py:247
 msgid "1 day"
 msgstr "1 dzień"
 
-#: poradnia/users/models.py:241
+#: poradnia/users/models.py:248
 msgid "3 days"
 msgstr "3 dni"
 
-#: poradnia/users/models.py:242
+#: poradnia/users/models.py:249
 msgid "7 days"
 msgstr "7 dni"
 
-#: poradnia/users/models.py:245
+#: poradnia/users/models.py:252
 #: poradnia/users/templates/users/user_detail.html:19
 #: poradnia/users/templates/users/user_info.html:19
 msgid "Description"
 msgstr "Opis"
 
-#: poradnia/users/models.py:246
+#: poradnia/users/models.py:253
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: poradnia/users/models.py:248
+#: poradnia/users/models.py:255
 #: poradnia/users/templates/users/user_detail.html:21
 msgid "Email footer"
 msgstr "Podpis dla wiadomości e-mail"
 
-#: poradnia/users/models.py:253
+#: poradnia/users/models.py:260
 msgid "Event Reminder Time"
 msgstr "Przypominaj o wydarzeniach"
 
-#: poradnia/users/models.py:257
+#: poradnia/users/models.py:264
 #: poradnia/users/templates/users/profile_form.html:7
 #: poradnia/users/templates/users/profile_form.html:10
 #: poradnia/users/templates/users/user_detail.html:32
 msgid "Profile"
 msgstr "Profil"
 
-#: poradnia/users/models.py:258
+#: poradnia/users/models.py:265
 msgid "Profiles"
 msgstr "Profile"
 
@@ -163,19 +162,19 @@ msgstr "%(user)s"
 msgid "Users list"
 msgstr "Wykaz użytkowników"
 
-#: poradnia/users/templates/users/_sidebar.html:16
+#: poradnia/users/templates/users/_sidebar.html:18
 msgid "App admin"
 msgstr "Panel administracyjny"
 
-#: poradnia/users/templates/users/_sidebar.html:20
+#: poradnia/users/templates/users/_sidebar.html:22
 msgid "Logout"
 msgstr "Wyloguj"
 
-#: poradnia/users/templates/users/_sidebar.html:24
+#: poradnia/users/templates/users/_sidebar.html:26
 msgid "Sign Up"
 msgstr "Rejestracja"
 
-#: poradnia/users/templates/users/_sidebar.html:27
+#: poradnia/users/templates/users/_sidebar.html:29
 msgid "Log In"
 msgstr "Zaloguj"
 
@@ -192,12 +191,12 @@ msgstr "Potwierdź odpisanie"
 #: poradnia/users/templates/users/user_deassign.html:8
 msgid ""
 "The operation will remove all permissions on cases for the user where they "
-"is not a client. This is an irreversible operation. Are you sure you want to"
-" do this?"
+"is not a client. This is an irreversible operation. Are you sure you want to "
+"do this?"
 msgstr ""
 "Operacja usunie wszystkie uprawnienia użytkownika, w których nie jest on "
-"klientem. Ta operacja jest nieodwracalna. Czy jesteś pewien/pewna, że chcesz"
-" to wykonać?"
+"klientem. Ta operacja jest nieodwracalna. Czy jesteś pewien/pewna, że chcesz "
+"to wykonać?"
 
 #: poradnia/users/templates/users/user_deassign.html:14
 #, python-format
@@ -210,7 +209,6 @@ msgstr "Anuluj"
 
 #: poradnia/users/templates/users/user_detail.html:13
 #: poradnia/users/templates/users/user_info.html:13
-#| msgid "User"
 msgid "Username"
 msgstr "Użytkownik / użytkowniczka"
 
@@ -221,7 +219,6 @@ msgstr "Imię i nazwisko"
 
 #: poradnia/users/templates/users/user_detail.html:16
 #: poradnia/users/templates/users/user_info.html:16
-#| msgid "Users are member of staff."
 msgid "Is member of staff."
 msgstr "Jest członkiem zespołu."
 
@@ -233,24 +230,24 @@ msgstr "O mnie"
 msgid "Password change"
 msgstr "Zmiana hasła"
 
-#: poradnia/users/templates/users/user_detail.html:40
+#: poradnia/users/templates/users/user_detail.html:41
 msgid "Keys"
 msgstr "Klucze API"
 
-#: poradnia/users/templates/users/user_detail.html:44
+#: poradnia/users/templates/users/user_detail.html:46
 msgid "My cases"
 msgstr "Moje sprawy"
 
-#: poradnia/users/templates/users/user_detail.html:50
+#: poradnia/users/templates/users/user_detail.html:52
 #: poradnia/users/templates/users/user_filter.html:48
 msgid "Client cases"
 msgstr "Sprawy klienta"
 
-#: poradnia/users/templates/users/user_detail.html:54
+#: poradnia/users/templates/users/user_detail.html:56
 msgid "Assigned cases"
 msgstr "Przypisane sprawy"
 
-#: poradnia/users/templates/users/user_detail.html:58
+#: poradnia/users/templates/users/user_detail.html:60
 msgid "Deassign cases"
 msgstr "Odpisz sprawy"
 
