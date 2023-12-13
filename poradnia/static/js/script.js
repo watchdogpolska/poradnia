@@ -63933,10 +63933,6 @@ AjaxDatatableViewUtils.init({
                     },
                 }, {
                     // extra_data
-                    // status_free: function() { return $("input[name='check_status_free']").is(":checked") ? 1 : 0; },
-                    // status_assigned: function() { return $("input[name='check_status_assigned']").is(":checked") ? 1 : 0; },
-                    // status_moderated: function() { return $("input[name='check_status_moderated']").is(":checked") ? 1 : 0; },
-                    // status_closed: function() { return $("input[name='check_status_closed']").is(":checked") ? 1 : 0; },
                     deadline_yes: function() { return $("input[name='check_deadline_yes']").is(":checked") ? 1 : 0; },
                     deadline_no: function() { return $("input[name='check_deadline_no']").is(":checked") ? 1 : 0; },
                     completed_yes: function() { return $("input[name='check_completed_yes']").is(":checked") ? 1 : 0; },
