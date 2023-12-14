@@ -7,6 +7,7 @@ from braces.views import (
 )
 from django.contrib import messages
 from django.http import HttpResponseRedirect
+from django.shortcuts import reverse
 from django.urls import reverse_lazy
 from django.utils.translation import gettext as _
 from django.views.generic import CreateView, DeleteView, DetailView
@@ -26,13 +27,21 @@ class FeedbackListView(
     model = Feedback
 
 
-class FeedbackCreateView(UserFormKwargsMixin, FormValidMessageMixin, CreateView):
+class FeedbackCreateView(
+    LoginRequiredMixin, UserFormKwargsMixin, FormValidMessageMixin, CreateView
+):
     model = Feedback
     form_class = get_form()
-    success_url = "/"
 
     def get_form_valid_message(self):
         return _("Feedback saved.")
+
+    def get_success_url(self):
+        referer_url = self.request.headers.get("referer", None)
+        if referer_url:
+            return referer_url
+        else:
+            return reverse("home")
 
 
 class FeedbackDetailView(LoginRequiredMixin, PermissionRequiredMixin, DetailView):
