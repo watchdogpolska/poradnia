@@ -182,7 +182,7 @@ class EventAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         {
             "name": "case_client",
             "visible": True,
-            "foreign_field": "case__client__email",
+            "foreign_field": "case__client__nicename",
             "defaultContent": "",
             "title": _("Client"),
         },
