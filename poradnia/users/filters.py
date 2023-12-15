@@ -6,11 +6,6 @@ from django.utils.translation import gettext_lazy as _
 
 from poradnia.users.models import User
 
-try:
-    from urllib.parse import urlencode
-except ImportError:
-    from urllib import urlencode  # noqa
-
 
 class UserChoiceFilter(django_filters.ModelChoiceFilter):
     def __init__(self, queryset=None, widget=None, *args, **kwargs):
