@@ -100,7 +100,7 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         "notify_new_case",
         "notify_unassigned_letter",
         "notify_old_cases",
-        "codename",
+        "groups",
     )
     actions = None
 
