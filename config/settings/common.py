@@ -308,9 +308,20 @@ LANGUAGES = (("pl", _("Polish")), ("en", _("English")))
 
 LOCALE_PATHS = (str(APPS_DIR.path("templates/locale")),)
 
-# TODO: fix for DEV and DEMO modes
+# APP_MODE used to differentiate dev, demo and production environments
+# use DEV, DEMO and PROD values in env variable APP_MODE
+APP_MODE = env.str("APP_MODE", "DEMO")
+
 PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
 PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
+if APP_MODE == "DEV":
+    PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@dev.porady.siecobywatelska.pl"
+    PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@dev.porady.siecobywatelska.pl"
+elif APP_MODE == "DEMO":
+    PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@staging.porady.siecobywatelska.pl"
+    PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@staging.porady.siecobywatelska.pl"
+
+# Other Poradnia settings
 ATOMIC_REQUESTS = True
 
 AVATAR_GRAVATAR_DEFAULT = "retro"
@@ -385,9 +396,6 @@ TINYMCE_DEFAULT_CONFIG = {
     "charmap | removeformat | help",
 }
 
-# APP_MODE used to differentiate dev, demo and production environments
-# use DEV, DEMO and PROD values in env variable APP_MODE
-APP_MODE = env.str("APP_MODE", "DEMO")
 
 ROSETTA_SHOW_AT_ADMIN_PANEL = True
 
