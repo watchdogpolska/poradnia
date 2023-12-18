@@ -8,6 +8,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
+import sys
+
 import environ
 from django.utils.translation import gettext_lazy as _
 
@@ -310,14 +312,16 @@ LOCALE_PATHS = (str(APPS_DIR.path("templates/locale")),)
 
 # APP_MODE used to differentiate dev, demo and production environments
 # use DEV, DEMO and PROD values in env variable APP_MODE
+# A lot of hardcoded templates and testing data contains "@porady.siecobywatelska.pl"
+TESTING = (len(sys.argv) > 1 and sys.argv[1] == "test") or env("TEST", default=False)
 APP_MODE = env.str("APP_MODE", "DEMO")
 
 PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
 PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
-if APP_MODE == "DEV":
+if APP_MODE == "DEV" and not TESTING:
     PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@dev.porady.siecobywatelska.pl"
     PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@dev.porady.siecobywatelska.pl"
-elif APP_MODE == "DEMO":
+elif APP_MODE == "DEMO" and not TESTING:
     PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@staging.porady.siecobywatelska.pl"
     PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@staging.porady.siecobywatelska.pl"
 
