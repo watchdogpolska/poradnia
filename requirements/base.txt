@@ -21,7 +21,7 @@ sorl-thumbnail==12.10.0
 django-allauth==0.54.0
 
 # For the persistance stores
-mysqlclient==2.2.0
+mysqlclient==2.2.1
 
 # Unicode slugification
 unicode-slugify==0.1.5
