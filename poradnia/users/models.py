@@ -79,11 +79,26 @@ class UserQuerySet(QuerySet):
             distinct=True,
         )
 
+        moderated = Count(
+            Case(
+                When(
+                    **{
+                        "{}__status".format(cup_co): CaseModel.STATUS.moderated,
+                        "then": "{}__pk".format(cup_co),
+                    }
+                ),
+                default=None,
+                output_field=IntegerField(),
+            ),
+            distinct=True,
+        )
+
         return self.annotate(
-            case_assigned_sum=free + active + closed,
+            case_assigned_sum=free + active + closed + moderated,
             case_assigned_free=free,
             case_assigned_active=active,
             case_assigned_closed=closed,
+            case_assigned_moderated=moderated,
         )
 
     def registered(self):

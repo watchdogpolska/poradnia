@@ -6,11 +6,6 @@ from django.utils.translation import gettext_lazy as _
 
 from poradnia.users.models import User
 
-try:
-    from urllib.parse import urlencode
-except ImportError:
-    from urllib import urlencode  # noqa
-
 
 class UserChoiceFilter(django_filters.ModelChoiceFilter):
     def __init__(self, queryset=None, widget=None, *args, **kwargs):
@@ -25,14 +20,14 @@ class UserFilter(CrispyFilterMixin, django_filters.FilterSet):
 
     sort = django_filters.OrderingFilter(
         fields=(
-            ("case_assigned_free", "free"),
+            ("case_assigned_moderated", "moderated"),
             ("case_assigned_active", "active"),
             ("case_assigned_closed", "closed"),
         ),
         help_text=None,
-        initial="case_assigned_free",
+        initial="case_assigned_moderated",
         field_labels={
-            "case_assigned_free": _("Free"),
+            "case_assigned_moderated": _("Moderated"),
             "case_assigned_active": _("Active"),
             "case_assigned_closed": _("Closed"),
         },

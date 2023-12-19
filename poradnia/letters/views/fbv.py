@@ -11,7 +11,7 @@ from django.utils.translation import gettext as _
 from poradnia.cases.models import Case
 
 # from crispy_forms.helper import FormHelper
-from ..forms import AddLetterForm, SendLetterForm
+from ..forms import AddLetterForm, AttachmentsFieldForm, SendLetterForm
 from ..helpers import AttachmentFormSet
 from ..models import Letter
 
@@ -38,7 +38,8 @@ def add(request, case_pk):
         if form.is_valid():
             obj = form.save(commit=False)
             formset = AttachmentFormSet(request.POST, request.FILES, instance=obj)
-            if formset.is_valid():
+            attachments_form = AttachmentsFieldForm(request.POST, request.FILES)
+            if formset.is_valid() or attachments_form.is_valid():
                 obj.save()
                 content_type = ContentType.objects.get_for_model(Letter)
                 change_dict = {
@@ -58,6 +59,8 @@ def add(request, case_pk):
                 )
                 logger.info(f"Letter {obj.id} created by {request.user}")
                 formset.save()
+                req_files = request.FILES.getlist("file_field")
+                obj.save_attachments(files=req_files)
                 obj.send_notification(actor=request.user, verb="created")
                 return HttpResponseRedirect(case.get_absolute_url())
     else:

@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 18:50+0200\n"
-"PO-Revision-Date: 2023-04-27 18:53+0124\n"
-"Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
+"POT-Creation-Date: 2023-12-15 12:50+0100\n"
+"PO-Revision-Date: 2023-12-15 13:03+0124\n"
+"Last-Translator: Piotr Iwa <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
@@ -18,27 +18,42 @@ msgstr ""
 "X-Generator: Poedit 1.8.7.1\n"
 "X-Translated-Using: django-rosetta 0.9.9\n"
 
-#: poradnia/users/admin.py:35
+#: poradnia/users/admin.py:12
+msgid "Is SPAM user (no login, no cases, no letters)"
+msgstr "Użytkownik ze SPAMu (brak logowania, spraw, listów)"
+
+#: poradnia/users/admin.py:17
+msgid "Yes"
+msgstr "Tak"
+
+#: poradnia/users/admin.py:18
+msgid "No"
+msgstr "Nie"
+
+#: poradnia/users/admin.py:66
 msgid "Notifications"
 msgstr "Powiadomienia"
 
+#: poradnia/users/admin.py:76 poradnia/users/models.py:168
+msgid "Avatar"
+msgstr "Avatar"
+
 #: poradnia/users/apps.py:7 poradnia/users/forms/permissions.py:31
-#: poradnia/users/models.py:234
+#: poradnia/users/models.py:256
 #: poradnia/users/templates/users/user_filter.html:27
 msgid "Users"
 msgstr "Użytkownicy / użytkowniczki"
 
-#: poradnia/users/filters.py:35
+#: poradnia/users/filters.py:30
 #: poradnia/users/templates/users/user_filter.html:51
-msgid "Free"
-msgstr "Wolne"
+msgid "Moderated"
+msgstr "Moderowane"
 
-#: poradnia/users/filters.py:36
-#: poradnia/users/templates/users/user_filter.html:52
+#: poradnia/users/filters.py:31
 msgid "Active"
 msgstr "Aktywne"
 
-#: poradnia/users/filters.py:37
+#: poradnia/users/filters.py:32
 #: poradnia/users/templates/users/user_filter.html:53
 msgid "Closed"
 msgstr "Zamknięte"
@@ -47,59 +62,53 @@ msgstr "Zamknięte"
 msgid "Signup"
 msgstr "Rejestracja"
 
-#: poradnia/users/login_form.py:14 poradnia/users/models.py:19
+#: poradnia/users/login_form.py:14 poradnia/users/models.py:20
 msgid "Login"
 msgstr "Nazwa użytkownika / użytkowniczki"
 
-#: poradnia/users/models.py:18
+#: poradnia/users/models.py:19
 msgid "Username or e-mail"
 msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
 
-#: poradnia/users/models.py:150
-msgid "Avatar"
-msgstr "Avatar"
-
-#: poradnia/users/models.py:153
+#: poradnia/users/models.py:171
 msgid "Codename"
 msgstr "Kryptonim"
 
-#: poradnia/users/models.py:156
+#: poradnia/users/models.py:174
 msgid "Nice Name"
 msgstr "Pełna nazwa"
 
-#: poradnia/users/models.py:160
+#: poradnia/users/models.py:178
 msgid "Notify about new case"
 msgstr "Powiadamiaj o nowych sprawach"
 
-#: poradnia/users/models.py:161
+#: poradnia/users/models.py:179
 msgid "Whether or not to notify user about all new cases"
 msgstr "Czy powiadomić o wszystkich nowych sprawach?"
 
-#: poradnia/users/models.py:165
+#: poradnia/users/models.py:183
 msgid "Defaults to reply in cases"
 msgstr "Domyślnie odpowiada w sprawach"
 
-#: poradnia/users/models.py:167
+#: poradnia/users/models.py:185
 msgid ""
 "Whether or not to notify user about any letter in case without anybody who "
 "can reply to client"
 msgstr "Czy powiadamiać w sprawach bez kogokolwiek kto może odpowiedzieć"
 
-#: poradnia/users/models.py:173
-#| msgid "Notify about new case"
+#: poradnia/users/models.py:191
 msgid "Notify about old cases"
 msgstr "Powiadamianie o starych sprawach"
 
-#: poradnia/users/models.py:174
-#| msgid "Whether or not to notify user about all new cases"
+#: poradnia/users/models.py:192
 msgid "Whether or not to notify user about old cases"
 msgstr "Czy powiadomić użytkownika o starych sprawach"
 
-#: poradnia/users/models.py:177
+#: poradnia/users/models.py:195
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: poradnia/users/models.py:233 poradnia/users/templates/users/_sidebar.html:3
+#: poradnia/users/models.py:255 poradnia/users/templates/users/_sidebar.html:3
 #: poradnia/users/templates/users/user_detail.html:3
 #: poradnia/users/templates/users/user_filter.html:47
 #: poradnia/users/templates/users/user_form.html:4
@@ -108,49 +117,49 @@ msgstr "Utworzone o"
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: poradnia/users/models.py:239
+#: poradnia/users/models.py:261
 msgid "No reminder"
 msgstr "Nie przypominaj"
 
-#: poradnia/users/models.py:240
+#: poradnia/users/models.py:262
 msgid "1 day"
 msgstr "1 dzień"
 
-#: poradnia/users/models.py:241
+#: poradnia/users/models.py:263
 msgid "3 days"
 msgstr "3 dni"
 
-#: poradnia/users/models.py:242
+#: poradnia/users/models.py:264
 msgid "7 days"
 msgstr "7 dni"
 
-#: poradnia/users/models.py:245
+#: poradnia/users/models.py:267
 #: poradnia/users/templates/users/user_detail.html:19
 #: poradnia/users/templates/users/user_info.html:19
 msgid "Description"
 msgstr "Opis"
 
-#: poradnia/users/models.py:246
+#: poradnia/users/models.py:268
 msgid "Homepage"
 msgstr "Strona domowa"
 
-#: poradnia/users/models.py:248
+#: poradnia/users/models.py:270
 #: poradnia/users/templates/users/user_detail.html:21
 msgid "Email footer"
 msgstr "Podpis dla wiadomości e-mail"
 
-#: poradnia/users/models.py:253
+#: poradnia/users/models.py:275
 msgid "Event Reminder Time"
 msgstr "Przypominaj o wydarzeniach"
 
-#: poradnia/users/models.py:257
+#: poradnia/users/models.py:279
 #: poradnia/users/templates/users/profile_form.html:7
 #: poradnia/users/templates/users/profile_form.html:10
 #: poradnia/users/templates/users/user_detail.html:32
 msgid "Profile"
 msgstr "Profil"
 
-#: poradnia/users/models.py:258
+#: poradnia/users/models.py:280
 msgid "Profiles"
 msgstr "Profile"
 
@@ -163,19 +172,19 @@ msgstr "%(user)s"
 msgid "Users list"
 msgstr "Wykaz użytkowników"
 
-#: poradnia/users/templates/users/_sidebar.html:16
+#: poradnia/users/templates/users/_sidebar.html:18
 msgid "App admin"
 msgstr "Panel administracyjny"
 
-#: poradnia/users/templates/users/_sidebar.html:20
+#: poradnia/users/templates/users/_sidebar.html:22
 msgid "Logout"
 msgstr "Wyloguj"
 
-#: poradnia/users/templates/users/_sidebar.html:24
+#: poradnia/users/templates/users/_sidebar.html:26
 msgid "Sign Up"
 msgstr "Rejestracja"
 
-#: poradnia/users/templates/users/_sidebar.html:27
+#: poradnia/users/templates/users/_sidebar.html:29
 msgid "Log In"
 msgstr "Zaloguj"
 
@@ -210,7 +219,6 @@ msgstr "Anuluj"
 
 #: poradnia/users/templates/users/user_detail.html:13
 #: poradnia/users/templates/users/user_info.html:13
-#| msgid "User"
 msgid "Username"
 msgstr "Użytkownik / użytkowniczka"
 
@@ -221,7 +229,6 @@ msgstr "Imię i nazwisko"
 
 #: poradnia/users/templates/users/user_detail.html:16
 #: poradnia/users/templates/users/user_info.html:16
-#| msgid "Users are member of staff."
 msgid "Is member of staff."
 msgstr "Jest członkiem zespołu."
 
@@ -233,24 +240,24 @@ msgstr "O mnie"
 msgid "Password change"
 msgstr "Zmiana hasła"
 
-#: poradnia/users/templates/users/user_detail.html:40
+#: poradnia/users/templates/users/user_detail.html:41
 msgid "Keys"
 msgstr "Klucze API"
 
-#: poradnia/users/templates/users/user_detail.html:44
+#: poradnia/users/templates/users/user_detail.html:46
 msgid "My cases"
 msgstr "Moje sprawy"
 
-#: poradnia/users/templates/users/user_detail.html:50
+#: poradnia/users/templates/users/user_detail.html:52
 #: poradnia/users/templates/users/user_filter.html:48
 msgid "Client cases"
 msgstr "Sprawy klienta"
 
-#: poradnia/users/templates/users/user_detail.html:54
+#: poradnia/users/templates/users/user_detail.html:56
 msgid "Assigned cases"
 msgstr "Przypisane sprawy"
 
-#: poradnia/users/templates/users/user_detail.html:58
+#: poradnia/users/templates/users/user_detail.html:60
 msgid "Deassign cases"
 msgstr "Odpisz sprawy"
 
@@ -262,9 +269,14 @@ msgstr ""
 "Nie masz dostepu do danych wszystkich użytkowników. W większości tylko do "
 "profilu członków zespołu i swojego."
 
-#: poradnia/users/templates/users/user_filter.html:50
+#: poradnia/users/templates/users/user_filter.html:49
 msgid "Assigned cases sum"
 msgstr "Przypisane sprawy"
+
+#: poradnia/users/templates/users/user_filter.html:52
+#| msgid "Active"
+msgid "Active_"
+msgstr "Aktywne"
 
 #: poradnia/users/templates/users/user_form.html:8
 msgid "Account"
@@ -291,6 +303,9 @@ msgstr "{subject} odpisany"
 #, python-brace-format
 msgid "{object} deassigned from {count} cases"
 msgstr "{object} odpisany z {count} spraw"
+
+#~ msgid "Free"
+#~ msgstr "Wolne"
 
 #~ msgid "Users total"
 #~ msgstr "Liczba użytkowników"

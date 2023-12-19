@@ -12,6 +12,12 @@ urlpatterns = [
     ),
     path("", views.CalendarListView.as_view(), name="calendar"),
     path("ical/", views.ICalendarView.as_view(), name="calendar_ical"),
+    path("table/", views.EventTableView.as_view(), name="table"),
+    path(
+        "events_table_ajax_data/",
+        views.EventAjaxDatatableView.as_view(),
+        name="events_table_ajax_data",
+    ),
 ]
 
 app_name = "poradnia.events"
