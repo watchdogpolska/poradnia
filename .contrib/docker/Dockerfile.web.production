@@ -1,3 +1,4 @@
+# This is Dockerfile for production
 ARG PYTHON_VERSION='3.10'
 FROM python:${PYTHON_VERSION}-slim
 RUN mkdir /code /code/production
@@ -7,13 +8,14 @@ WORKDIR /code
 ENV PYTHONUNBUFFERED 1
 RUN apt-get update \
 && apt-get install -y --no-install-recommends \
-   default-libmysqlclient-dev \
+   python3-dev default-libmysqlclient-dev build-essential \
+   default-mysql-client libssl-dev pkg-config \
    gcc \
-   build-essential \
    git \
    curl \
-   gettext libgettextpo-dev wait-for-it \
-&& rm -rf /var/lib/apt/lists/*
+   nano \
+   htop \
+   gettext libgettextpo-dev wait-for-it
 COPY requirements/*.txt ./requirements/
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements/production.txt

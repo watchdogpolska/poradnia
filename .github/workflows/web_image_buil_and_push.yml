@@ -8,7 +8,7 @@ on:
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
-    if: github.event.pull_request.merged == true && (github.ref == 'master' || github.ref == 'dev')
+    if: github.event.pull_request.merged == true && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev')
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -26,6 +26,8 @@ jobs:
             DEPLOYMENT="prod"
           elif [[ $GITHUB_REF == *"dev"* ]]; then
             DEPLOYMENT="staging"
+          else
+            DEPLOYMENT=${GITHUB_REF#refs/heads/}
           fi
           echo "deployment=$DEPLOYMENT" >> $GITHUB_ENV
           env
