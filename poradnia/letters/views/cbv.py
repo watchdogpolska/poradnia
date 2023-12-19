@@ -15,10 +15,13 @@ from braces.views import (
 )
 from django.conf import settings
 from django.contrib import messages
+from django.contrib.admin.models import ADDITION, LogEntry
 from django.contrib.auth import get_user_model
+from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.exceptions import PermissionDenied
 from django.core.files.base import File
+from django.forms.models import model_to_dict
 from django.http import HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
 from django.template.defaultfilters import linebreaksbr
 from django.urls import reverse
@@ -331,8 +334,32 @@ class ReceiveEmailView(View):
             f"Letter {letter.id} eml: {letter.eml.name} of {letter.eml.size} bytes"
         )
         logger.info(f"Letter {letter.id} html has {len(letter.html)} chars")
+        l_content_type = ContentType.objects.get_for_model(Letter)
+        change_dict = model_to_dict(letter)
+        change_dict["source"] = "imap_to_webhook"
+        LogEntry.objects.log_action(
+            user_id=actor.id,
+            content_type_id=l_content_type.id,
+            object_id=letter.id,
+            object_repr=str(letter),
+            action_flag=ADDITION,
+            change_message=f"{change_dict}",
+        )
+        att_content_type = ContentType.objects.get_for_model(Attachment)
         for attachment in request.FILES.getlist("attachment"):
-            Attachment.objects.create(letter=letter, attachment=File(attachment))
+            att_obj = Attachment.objects.create(
+                letter=letter, attachment=File(attachment)
+            )
+            att_change_dict = model_to_dict(att_obj)
+            att_change_dict["source"] = "imap_to_webhook"
+            LogEntry.objects.log_action(
+                user_id=actor.id,
+                content_type_id=att_content_type.id,
+                object_id=att_obj.id,
+                object_repr=str(att_obj),
+                action_flag=ADDITION,
+                change_message=f"{att_change_dict}",
+            )
         number_of_att = len(request.FILES.getlist("attachment"))
         logger.info(f"Letter {letter.id} has {number_of_att} attachments")
         return letter

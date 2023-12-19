@@ -40,8 +40,9 @@ django-filter==23.5
 # https://github.com/morlandi/django-ajax-datatable/pull/111 is merged
 # django-ajax-datatable==4.4.5
 git+https://github.com/PiotrIw/django-ajax-datatable.git@05afe42
-# dal 3.9.4 has broken initialisation of jquery on multiselect2 
-django-autocomplete-light==3.9.7
+# dal 3.5.0 is the latest not causing "poradnia" js frontend errors
+# TODO: resolve the problem
+django-autocomplete-light==3.5.0
 django-tinymce==3.6.1
 django-atom==0.16.3
 django-tinycontent==0.8.0

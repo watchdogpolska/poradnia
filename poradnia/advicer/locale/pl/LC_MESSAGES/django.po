@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 18:50+0200\n"
+"POT-Creation-Date: 2023-12-15 12:50+0100\n"
 "PO-Revision-Date: 2023-04-27 18:51+0124\n"
 "Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -11,7 +11,8 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
+"|| n%100>=20) ? 1 : 2);\n"
 "X-Crowdin-File: /advicer/locale/en/LC_MESSAGES/django.po\n"
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-Project: poradnia\n"
@@ -39,8 +40,8 @@ msgstr "Nie"
 #: poradnia/advicer/apps.py:7
 msgid "Advicer system"
 msgstr "Rejestr tagów spraw"
-# msgstr "Rejestr porad" # GH #1310
 
+# msgstr "Rejestr porad" # GH #1310
 #: poradnia/advicer/filters.py:41 poradnia/advicer/models.py:107
 #: poradnia/advicer/templates/advicer/advice_filter.html:25
 #: poradnia/advicer/views.py:97 poradnia/advicer/views.py:125
@@ -217,14 +218,13 @@ msgstr "Rejestr"
 #: poradnia/advicer/templates/advicer/base.html:7
 msgid "Advice list"
 msgstr "Rejestr tagów"
+
 # msgstr "Rejestr porad" # GH #1310
-
-
 #: poradnia/advicer/templates/advicer/_sidebar.html:12
 msgid "Advice table"
 msgstr "Tabela tagów"
-# msgstr "Tabela porad" GH #1310
 
+# msgstr "Tabela porad" GH #1310
 #: poradnia/advicer/templates/advicer/advice_confirm_delete.html:5
 msgid "Confirm delete"
 msgstr "Potwierdzenie usuwania"
@@ -275,11 +275,13 @@ msgstr "Utworzone"
 msgid ""
 "\n"
 "                                %(created)s on\n"
-"                                <time datetime=\"%(created_on_date)s\">%(created_on_natural)s</time>"
+"                                <time "
+"datetime=\"%(created_on_date)s\">%(created_on_natural)s</time>"
 msgstr ""
 "\n"
 "                                %(created)s o \n"
-"                                <time datetime=\"%(created_on_date)s\">%(created_on_natural)s</time>"
+"                                <time "
+"datetime=\"%(created_on_date)s\">%(created_on_natural)s</time>"
 
 #: poradnia/advicer/templates/advicer/advice_detail.html:108
 msgid "Modified"
@@ -290,17 +292,19 @@ msgstr "Zmodyfikowane"
 msgid ""
 "\n"
 "                                %(modified_by)s on\n"
-"                                <time datetime=\"%(modified_on_date)s\">%(modified_on_natural)s</time>"
+"                                <time "
+"datetime=\"%(modified_on_date)s\">%(modified_on_natural)s</time>"
 msgstr ""
 "\n"
 "                                %(modified_by)s o\n"
-"                                <time datetime=\"%(modified_on_date)s\">%(modified_on_natural)s</time>"
+"                                <time "
+"datetime=\"%(modified_on_date)s\">%(modified_on_natural)s</time>"
 
 #: poradnia/advicer/templates/advicer/advice_filter.html:4
 msgid "Advice index"
 msgstr "Wykaz tagów"
-#msgstr "Wykaz porad" # GH #1310 
 
+# msgstr "Wykaz porad" # GH #1310 
 #: poradnia/advicer/templates/advicer/advice_filter.html:7
 #: poradnia/advicer/templates/advicer/advice_form.html:24
 msgid "Add"
@@ -314,7 +318,8 @@ msgstr "Klient sprawy"
 #, python-format
 msgid ""
 "There is no Advice records.\n"
-"                                <a href=\"%(create_url)s\">Add one</a> of these! "
+"                                <a href=\"%(create_url)s\">Add one</a> of "
+"these! "
 msgstr ""
 "Brak wyników wyszukiwania Porad.\n"
 "                    <a href=\"%(create_url)s\">Dodaj nową!</a>"
@@ -333,15 +338,14 @@ msgstr "Aktualizowanie"
 
 #: poradnia/advicer/templates/advicer/advice_table.html:27
 msgid "Advice Table"
-msgstr "Tabela tagów" 
-# msgstr "Tabela porad" # GH #1310
+msgstr "Tabela tagów"
 
+# msgstr "Tabela porad" # GH #1310
 #: poradnia/advicer/templates/advicer/advice_table.html:40
 msgid "Filters"
 msgstr "Filtry"
 
 #: poradnia/advicer/templates/advicer/advice_table.html:42
-#| msgid "Helped (col. H?)"
 msgid "Helped? (col. H?)"
 msgstr "Pomogliśmy? (kol. H?)"
 
@@ -350,7 +354,6 @@ msgid "Unknown"
 msgstr "Nieznane"
 
 #: poradnia/advicer/templates/advicer/advice_table.html:58
-#| msgid "Visible (col. V)"
 msgid "Visible (col. V.)"
 msgstr "Widoczne (kol. W.)"
 
@@ -367,7 +370,6 @@ msgid "H?"
 msgstr "P?"
 
 #: poradnia/advicer/views.py:176
-#| msgid "V"
 msgid "V."
 msgstr "W."
 

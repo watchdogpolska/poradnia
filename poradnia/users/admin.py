@@ -8,6 +8,37 @@ from sorl.thumbnail.admin import AdminImageMixin
 from .models import Profile, User
 
 
+class IsSpamUserFilter(admin.SimpleListFilter):
+    title = _("Is SPAM user (no login, no cases, no letters)")
+    parameter_name = "is_spam_user"
+
+    def lookups(self, request, model_admin):
+        return (
+            ("yes", _("Yes")),
+            ("no", _("No")),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == "yes":
+            return queryset.filter(
+                last_login__isnull=True,
+                case_client__isnull=True,
+                case_created__isnull=True,
+                case_modified__isnull=True,
+                letter_created_by__isnull=True,
+            )
+        elif self.value() == "no":
+            return queryset.exclude(
+                last_login__isnull=True,
+                case_client__isnull=True,
+                case_created__isnull=True,
+                case_modified__isnull=True,
+                letter_created_by__isnull=True,
+            )
+        else:
+            return queryset
+
+
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
@@ -55,6 +86,7 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         "is_active",
         "is_staff",
         "is_superuser",
+        "last_login",
         "codename",
         "notify_new_case",
         "notify_unassigned_letter",
@@ -64,10 +96,11 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         "is_superuser",
         "is_staff",
         "is_active",
+        IsSpamUserFilter,
         "notify_new_case",
         "notify_unassigned_letter",
         "notify_old_cases",
-        "codename",
+        "groups",
     )
     actions = None
 

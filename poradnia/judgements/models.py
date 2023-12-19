@@ -1,7 +1,9 @@
 import collections
+from urllib.parse import quote
 
 from django.conf import settings
 from django.db import models
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 # Create your models here.
@@ -70,6 +72,14 @@ class CourtCase(AbstractRecord):
         verbose_name = _("Court case")
         verbose_name_plural = _("Court cases")
         unique_together = [("court", "signature")]
+
+    @property
+    def render_court_order_search_link(self):
+        qs = quote(self.signature)
+        saos_url = f"https://www.saos.org.pl/search?all={ qs }"
+        cbosa_url = f"http://orzeczenia.nsa.gov.pl/cbo/find?q=SYGNATURA+[{ qs }]"
+        link = f"[<a href={cbosa_url}> CBOSA</a> | <a href={saos_url}>SAOS</a>]"
+        return mark_safe(link)
 
 
 class CourtSession(TimeStampedModel):

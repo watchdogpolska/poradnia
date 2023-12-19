@@ -23,6 +23,10 @@
                 </li>
             {% endif %}
             <li class="block-list-item">
+                <a href="{% url 'events:table' %}"><i
+                        class="fa fa-calendar"></i> {% trans 'Events table' %}</a>
+            </li>
+            <li class="block-list-item">
                 <!-- <a href="{% url 'events:calendar' %}"><i class="fa fa-calendar"></i> {% trans 'Event calendar' %}</a> -->
                 <a href="{% current_month_url %}"><i class="fa fa-calendar"></i> {% trans 'Event calendar' %}</a>
             </li>

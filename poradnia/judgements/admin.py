@@ -39,6 +39,7 @@ class CourtAdmin(admin.ModelAdmin):
 class CourtCaseAdmin(admin.ModelAdmin):
     list_display = ["id", "court", "signature", "created_by", "modified_by"]
     search_fields = ["court", "signature", "created_by", "modified_by"]
+    list_filter = ["court"]
     actions = None
 
 
