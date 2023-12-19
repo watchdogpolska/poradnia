@@ -2,10 +2,12 @@ import logging
 from os.path import basename
 
 from django.conf import settings
+from django.contrib.admin.models import ADDITION, LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
 from django.db import models
 from django.db.models import F, Func, IntegerField
+from django.forms.models import model_to_dict
 from django.urls import reverse
 from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
@@ -175,6 +177,20 @@ class Letter(AbstractRecord):
         kwargs["user_qs"] = user_qs
 
         return super().send_notification(*args, **kwargs)
+
+    def save_attachments(self, files=[]):
+        content_type = ContentType.objects.get_for_model(Attachment)
+        for file in files:
+            obj = Attachment.objects.create(attachment=file, letter=self)
+            change_dict = model_to_dict(obj)
+            LogEntry.objects.log_action(
+                user_id=self.created_by.id,
+                content_type_id=content_type.id,
+                object_id=obj.id,
+                object_repr=str(obj),
+                action_flag=ADDITION,
+                change_message=f"{change_dict}",
+            )
 
     class Meta:
         verbose_name = _("Letter")

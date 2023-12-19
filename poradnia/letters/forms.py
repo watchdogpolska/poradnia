@@ -315,6 +315,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
                 change_message=f"{change_dict}",
             )
             logger.info(f"Letter {obj.id} saved by {self.user}")
+            obj.save_attachments(self.files.getlist("file_field"))
         return obj
 
     class Meta:
@@ -366,6 +367,36 @@ class AttachmentForm(ModelForm):
     class Meta:
         fields = ["attachment"]
         model = Attachment
+
+
+class MultipleFileInput(forms.ClearableFileInput):
+    allow_multiple_selected = True
+
+
+class MultipleFileField(forms.FileField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault(
+            "widget",
+            MultipleFileInput(),
+        )
+        super().__init__(*args, **kwargs)
+
+    def clean(self, data, initial=None):
+        single_file_clean = super().clean
+        if isinstance(data, (list, tuple)):
+            result = [single_file_clean(d, initial) for d in data]
+        else:
+            result = single_file_clean(data, initial)
+        return result
+
+
+class AttachmentsFieldForm(forms.Form):
+    file_field = MultipleFileField(
+        label=_("Attachments (select or drop here)"), required=False
+    )
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
 
 class LetterForm(SingleButtonMixin, PartialMixin, ModelForm):  # eg. edit form

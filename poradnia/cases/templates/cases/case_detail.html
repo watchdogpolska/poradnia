@@ -64,6 +64,34 @@
           visibility: visible;
           opacity: 1;
         }
+
+        #selected-files {
+            border: 1px solid lightgray;
+        }
+
+        .sticky_right {
+            padding-right: 0;
+        }
+
+        .sticky_left {
+            padding-left: 0;
+        }
+
+        .clear-button {
+            margin-top: -15px;
+            margin-bottom: 20px;
+            margin-left: 12px;
+            display: none;
+        }
+
+        #div_id_file_field {
+            margin-bottom: 5px;
+        }
+
+        #drop-zone {
+            background-color: #f5f5f5;
+        }
+
         </style>
     <div class="row">
         <div class="col-xs-12">
@@ -197,24 +225,58 @@
 
                     <ul class="nav nav-tabs" role="tablist" id="form-tab">
                         {% for label, row in forms.items %}
-                            <li role="presentation" {% if forloop.last %} class="active"{% endif %}><a href="#{{ label }}" aria-controls="{{ label }}" role="tab"
-                                                    data-toggle="tab">{{ row.title }}</a></li>
+                            <li role="presentation" 
+                                {% if forloop.last %} class="active"{% endif %}>
+                                <a href="#{{ label }}" aria-controls="{{ label }}"
+                                    role="tab" data-toggle="tab">{{ row.title }}</a>
+                            </li>
                         {% endfor %}
                     </ul>
 
                     <div class="tab-content">
                         {% for key, row in forms.items %}
-                            <div role="tabpanel" class="tab-pane {% if forloop.first %} active{% endif %}" id="{{ key }}">
+                            <div role="tabpanel" 
+                                class="tab-pane {% if forloop.first %} active{% endif %}" id="{{ key }}"
+                            >
                                 <h2>{{ row.title }}</h2>
-                                <form method="post" class="{{ row.form.helper.form_class }}" enctype="multipart/form-data"
-                                    action="{{ row.form.helper.form_action }}" data-form-save="form-{{ key }}-{{ object.pk }}">
+                                <form method="post" class="{{ row.form.helper.form_class }}" 
+                                    enctype="multipart/form-data"
+                                    action="{{ row.form.helper.form_action }}" 
+                                    data-form-save="form-{{ key }}-{{ object.pk }}"
+                                >
                                     {% crispy row.form %}
                                     {% if row.formset %}
                                         {% crispy row.formset %}
                                     {% endif %}
+                                    {% if row.attachments_form %}
+                                        <div class="row" id="drop-zone">
+                                            <div class="col-lg-4 sticky_right">
+                                                {% crispy row.attachments_form %}
+                                                <button type="button" id="clear-files-button" 
+                                                    class="clear-button">
+                                                    &nbsp;&nbsp;{% trans 'Clear Files' %}&nbsp;&nbsp;
+                                                </button>
+                                            </div>
+                                            <div class="col-lg-8 sticky_left">
+                                                <table class="table table-striped table-condensed" 
+                                                    id="selected-files"
+                                                >
+                                                    <thead id="files-table-head">
+                                                        <tr>
+                                                            <th style="font-size: 14px;">
+                                                                {% trans 'Selected files:' %}
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody></tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    {% endif %}
                                 </form>
                             </div>
                         {% endfor %}
+                        <br>
                         <p>{% blocktrans with email=object.get_email %}The letter can also be sent via <a href="mailto:{{email}}">e-mail address</a>.{% endblocktrans %}</p>
                     </div>
                 </div>
@@ -222,7 +284,62 @@
         </div>
     </div>
 
-
+    <script>
+        $(document).ready(function () {
+            var dropZone = $('#drop-zone');
+            var clearButton = $('#clear-files-button');
+            // Highlight drop zone when drag event occurs
+            dropZone.on('dragover', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).css('background-color', 'lightgray');
+            });
+            dropZone.on('dragleave', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).css('background-color', '#f5f5f5');
+            });
+            // Attach an event listener to the file input change event
+            var fileInput = $('#id_file_field');
+            fileInput.on('change', function (e) {
+                files = e.target.files;
+                updateTableWithFiles(e.target.files);
+                if (files.length > 0) {
+                    clearButton.show();
+                } else {
+                    clearButton.hide();
+                }
+            });
+            // Handle the drop event
+            dropZone.on('drop', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                $(this).css('background-color', '#f5f5f5');
+                var files = e.originalEvent.dataTransfer.files;
+                updateTableWithFiles(files);
+                $('#id_file_field')[0].files = files;
+                clearButton.show();
+            });
+            // Use a button to clear files
+            clearButton.on('click', function() {
+                fileInput[0].files = new DataTransfer().files;
+                updateTableWithFiles([]);
+                clearButton.hide();
+            });
+            var labelHeight = $('#files-table-head').height();
+            $('.control-label').height(labelHeight - 5);
+            // Function to update the table with files
+            function updateTableWithFiles(files) {
+                var tableBody = $('#selected-files tbody');
+                tableBody.empty();
+                for (var i = 0; i < files.length; i++) {
+                    var fileName = files[i].name;
+                    var row = $('<tr class="dynamic-form"><td>' + fileName + '</td></tr>');
+                    tableBody.append(row);
+                }
+            }
+        });
+    </script>
 
 
     {% include 'cases/_case_pager.html' %}
