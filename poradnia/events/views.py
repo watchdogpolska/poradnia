@@ -1,5 +1,6 @@
 import locale
 
+from ajax_datatable import AjaxDatatableView
 from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from braces.views import (
     FormValidMessageMixin,
@@ -13,6 +14,7 @@ from django.contrib.admin.models import ADDITION, CHANGE, LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.urls import reverse
 from django.utils.encoding import force_str
 from django.utils.functional import cached_property
 from django.utils.safestring import mark_safe
@@ -22,6 +24,7 @@ from django.views.generic import (
     ArchiveIndexView,
     CreateView,
     MonthArchiveView,
+    TemplateView,
     UpdateView,
 )
 from django.views.generic.list import BaseListView
@@ -125,6 +128,114 @@ class CalendarListView(PermissionMixin, LoginRequiredMixin, ArchiveIndexView):
     date_field = "time"
     allow_future = True
     date_list_period = "month"
+
+
+class EventTableView(PermissionMixin, TemplateView):
+    """
+    View for displaying template with Events table.
+    """
+
+    template_name = "events/events_table.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header_label"] = mark_safe(_("Events search table"))
+        context["ajax_datatable_url"] = reverse("events:events_table_ajax_data")
+        return context
+
+
+class EventAjaxDatatableView(PermissionMixin, AjaxDatatableView):
+    """
+    View to provide table list of all Events with ajax data.
+    """
+
+    model = Event
+    title = "Events"
+    initial_order = [
+        ["time", "desc"],
+    ]
+    length_menu = [[20, 50, 100], [20, 50, 100]]
+    search_values_separator = "|"
+    show_date_filters = True
+
+    column_defs = [
+        {
+            "name": "time",
+            "visible": True,
+            "searchable": False,
+            "orderable": True,
+            "title": _("Time"),
+        },
+        {
+            "name": "text",
+            "visible": True,
+            "title": _("Subject"),
+            "width": "300",
+        },
+        {
+            "name": "case_name",
+            "visible": True,
+            "foreign_field": "case__name",
+            "defaultContent": "",
+            "title": (_("Case") + " - " + _("Subject")),
+        },
+        {
+            "name": "case_client",
+            "visible": True,
+            "foreign_field": "case__client__nicename",
+            "defaultContent": "",
+            "title": _("Client"),
+        },
+        {
+            "name": "properties",
+            # TODO: check why translation doesn't work
+            # "title": _("Properties..."),
+            "title": "Właściwości",
+            "placeholder": True,
+            "searchable": False,
+            "orderable": False,
+            # "className": "highlighted",
+        },
+        {
+            "name": "court_case",
+            "visible": True,
+            "foreign_field": "courtsession__courtcase__signature",
+            "defaultContent": "",
+            "title": _("Court case"),
+            "searchable": True,
+            "orderable": True,
+        },
+        {
+            "name": "court",
+            "visible": True,
+            "foreign_field": "courtsession__courtcase__court__name",
+            "defaultContent": "",
+            "title": _("Court"),
+            "searchable": True,
+            "orderable": True,
+        },
+    ]
+
+    def customize_row(self, row, obj):
+        row["case_name"] = obj.case.render_case_link() if obj.case else ""
+        row["text"] = obj.render_event_link
+        row["properties"] = obj.render_property_icons
+        row["court_case"] = obj.render_court_case
+        if obj.time:
+            row["time"] = obj.render_time
+        else:
+            row["time"] = ""
+
+    def get_initial_queryset(self, request=None):
+        qs = super().get_initial_queryset(request)
+        qs = qs.ajax_boolean_filter(self.request, "deadline_", "deadline")
+        qs = qs.ajax_boolean_filter(self.request, "completed_", "completed")
+        qs = qs.ajax_boolean_filter(self.request, "public_", "public")
+        qs = qs.courtsession_filter(self.request)
+        return qs
+
+    def get_latest_by(self, request):
+        return "record_max"
 
 
 class CalendarEventView(

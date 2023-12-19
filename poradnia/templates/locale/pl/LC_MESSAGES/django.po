@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-04-27 18:50+0200\n"
+"POT-Creation-Date: 2023-12-15 12:50+0100\n"
 "PO-Revision-Date: 2023-04-03 17:40+0124\n"
 "Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -19,11 +19,11 @@ msgstr ""
 "X-Generator: Poedit 2.4.1\n"
 "X-Translated-Using: django-rosetta 0.9.8\n"
 
-#: config/settings/common.py:304
+#: config/settings/common.py:307
 msgid "Polish"
 msgstr "Polski"
 
-#: config/settings/common.py:304
+#: config/settings/common.py:307
 msgid "English"
 msgstr "Angielski"
 
@@ -41,8 +41,8 @@ msgid ""
 "You do not have permission to retrieve the URL or link you requested,\n"
 "        <b>%(url)s</b>."
 msgstr ""
-"Nie masz uprawnień, aby odwiedzić adres lub link, którego oczekujesz: <b>"
-"%(url)s</b>."
+"Nie masz uprawnień, aby odwiedzić adres lub link, którego oczekujesz: "
+"<b>%(url)s</b>."
 
 #: poradnia/templates/403.html:12
 msgid ""
@@ -61,9 +61,9 @@ msgid ""
 "need any help please use form below of\n"
 "            page."
 msgstr ""
-"Proszę zaloguj się do swojego konta używając <a href=\"%(login_url)s?next="
-"%(url)s\">formularza logowania</a>. Jeżeli potrzebujesz jakiejś pomocy, użyj "
-"formularza na dole strony."
+"Proszę zaloguj się do swojego konta używając <a href=\"%(login_url)s?"
+"next=%(url)s\">formularza logowania</a>. Jeżeli potrzebujesz jakiejś pomocy, "
+"użyj formularza na dole strony."
 
 #: poradnia/templates/_modal.html:9 poradnia/templates/_sidebar.html:17
 msgid "Search"
@@ -190,8 +190,9 @@ msgid ""
 "account and sign in\n"
 "            below:"
 msgstr ""
-"Zaloguj się proszę z użyciem kont partnerskich, albo <a href=\"%(signup_url)s"
-"\">zarejestruj się</a> na stronie %(site_name)s i zaloguj się poniżej:"
+"Zaloguj się proszę z użyciem kont partnerskich, albo <a "
+"href=\"%(signup_url)s\">zarejestruj się</a> na stronie %(site_name)s i "
+"zaloguj się poniżej:"
 
 #: poradnia/templates/account/login.html:23
 msgid "or"
