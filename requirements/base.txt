@@ -21,7 +21,7 @@ sorl-thumbnail==12.10.0
 django-allauth==0.54.0
 
 # For the persistance stores
-mysqlclient==2.2.0
+mysqlclient==2.2.1
 
 # Unicode slugification
 unicode-slugify==0.1.5
@@ -50,7 +50,7 @@ icalendar==5.0.11
 html2text==2020.1.16
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.7.1
-sentry-sdk==1.38.0
+sentry-sdk==1.39.1
 python-dateutil==2.8.2
 django-github-revision==0.0.3
 zipstream-new==1.1.8
