@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-12-15 12:50+0100\n"
-"PO-Revision-Date: 2023-12-13 06:06+0124\n"
+"PO-Revision-Date: 2024-01-02 16:22+0124\n"
 "Last-Translator: Piotr Iwa <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -106,7 +106,8 @@ msgstr "Grupa uprawnień"
 msgid "Notify user"
 msgstr "Powiadom użytkownika"
 
-#: poradnia/cases/forms.py:101 poradnia/cases/templates/cases/case_close.html:9
+#: poradnia/cases/forms.py:101
+#: poradnia/cases/templates/cases/case_close.html:9
 #: poradnia/cases/templates/cases/case_detail.html:106
 msgid "Close"
 msgstr "Zamknij"
@@ -319,16 +320,12 @@ msgstr "Usuń"
 #, python-format
 msgid ""
 "\n"
-"                        Created by <a "
-"href=\"%(created_url)s\">%(created_user)s</a> on\n"
-"                        %(created_on)s for <a "
-"href=\"%(client_url)s\">%(client_user)s</a>"
+"                        Created by <a href=\"%(created_url)s\">%(created_user)s</a> on\n"
+"                        %(created_on)s for <a href=\"%(client_url)s\">%(client_user)s</a>"
 msgstr ""
 "\n"
-"                        Utworzona przez <a "
-"href=\"%(created_url)s\">%(created_user)s</a> o \n"
-"                        %(created_on)s dla <a "
-"href=\"%(client_url)s\">%(client_user)s</a>"
+"                        Utworzona przez <a href=\"%(created_url)s\">%(created_user)s</a> o \n"
+"                        %(created_on)s dla <a href=\"%(client_url)s\">%(client_user)s</a>"
 
 #: poradnia/cases/templates/cases/case_detail.html:144
 msgid "Workflow"
@@ -376,20 +373,20 @@ msgstr "Brak wpisów"
 
 #: poradnia/cases/templates/cases/case_detail.html:257
 msgid "Clear Files"
-msgstr ""
+msgstr "Wyczyść wybrane"
 
 #: poradnia/cases/templates/cases/case_detail.html:267
 msgid "Selected files:"
-msgstr ""
+msgstr "Wybrane pliki:"
 
 #: poradnia/cases/templates/cases/case_detail.html:280
 #, python-format
 msgid ""
-"The letter can also be sent via <a href=\"mailto:%(email)s\">e-mail address</"
-"a>."
+"The letter can also be sent via <a href=\"mailto:%(email)s\">e-mail "
+"address</a>."
 msgstr ""
-"List może zostać przesłany także z wykorzystaniem <a href=\"mailto:"
-"%(email)s\">poczty elektronicznej</a>."
+"List może zostać przesłany także z wykorzystaniem <a "
+"href=\"mailto:%(email)s\">poczty elektronicznej</a>."
 
 #: poradnia/cases/templates/cases/case_filter.html:39
 msgid "No."
@@ -460,8 +457,8 @@ msgstr "Potwierdzenie usunięcia uprawnień"
 #: poradnia/cases/templates/cases/case_permission_remove_confirm.html:15
 #, python-format
 msgid ""
-"Are you sure you want to remove the permissions on the case \"%(case)s\" for "
-"user %(user)s?"
+"Are you sure you want to remove the permissions on the case \"%(case)s\" for"
+" user %(user)s?"
 msgstr ""
 "Czy jesteś pewien, że chcesz usunąć uprawnienia do sprawy \"%(case)s\" dlla "
 "użytkownika %(user)s?"
