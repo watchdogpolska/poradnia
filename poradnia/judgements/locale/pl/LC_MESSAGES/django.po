@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-15 12:50+0100\n"
+"POT-Creation-Date: 2024-01-03 19:50+0100\n"
 "PO-Revision-Date: 2020-07-16 22:51+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: \n"
@@ -34,7 +34,7 @@ msgstr "Sąd"
 msgid "Active status"
 msgstr "Status aktywności"
 
-#: poradnia/judgements/models.py:23 poradnia/judgements/models.py:92
+#: poradnia/judgements/models.py:23 poradnia/judgements/models.py:95
 msgid "Parser key"
 msgstr "Klucz parsera"
 
@@ -59,7 +59,7 @@ msgstr "Utworzony przez"
 msgid "Modified by"
 msgstr "Zmodyfikowany przez"
 
-#: poradnia/judgements/models.py:72 poradnia/judgements/models.py:87
+#: poradnia/judgements/models.py:72 poradnia/judgements/models.py:90
 msgid "Court case"
 msgstr "Sprawa sądowa"
 
@@ -67,15 +67,15 @@ msgstr "Sprawa sądowa"
 msgid "Court cases"
 msgstr "Sprawy sądowe"
 
-#: poradnia/judgements/models.py:90
+#: poradnia/judgements/models.py:93
 msgid "Event"
 msgstr "Wydarzenie"
 
-#: poradnia/judgements/models.py:95
+#: poradnia/judgements/models.py:98
 msgid "Court session"
 msgstr "Rozprawa sądowa"
 
-#: poradnia/judgements/models.py:96
+#: poradnia/judgements/models.py:99
 msgid "Court sessions"
 msgstr "Rozprawy sądowe"
 
