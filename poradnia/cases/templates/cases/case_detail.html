@@ -288,6 +288,8 @@
         $(document).ready(function () {
             var dropZone = $('#drop-zone');
             var clearButton = $('#clear-files-button');
+            var fileInput = $('#id_file_field');
+            var selectedFilesList = new DataTransfer();
             // Highlight drop zone when drag event occurs
             dropZone.on('dragover', function(e) {
                 e.preventDefault();
@@ -300,11 +302,9 @@
                 $(this).css('background-color', '#f5f5f5');
             });
             // Attach an event listener to the file input change event
-            var fileInput = $('#id_file_field');
             fileInput.on('change', function (e) {
-                files = e.target.files;
-                updateTableWithFiles(e.target.files);
-                if (files.length > 0) {
+                handleNewFiles(e.target.files);
+                if (selectedFilesList.files.length > 0) {
                     clearButton.show();
                 } else {
                     clearButton.hide();
@@ -315,14 +315,13 @@
                 e.preventDefault();
                 e.stopPropagation();
                 $(this).css('background-color', '#f5f5f5');
-                var files = e.originalEvent.dataTransfer.files;
-                updateTableWithFiles(files);
-                $('#id_file_field')[0].files = files;
+                handleNewFiles(e.originalEvent.dataTransfer.files);
                 clearButton.show();
             });
             // Use a button to clear files
             clearButton.on('click', function() {
                 fileInput[0].files = new DataTransfer().files;
+                selectedFilesList = new DataTransfer();
                 updateTableWithFiles([]);
                 clearButton.hide();
             });
@@ -337,7 +336,24 @@
                     var row = $('<tr class="dynamic-form"><td>' + fileName + '</td></tr>');
                     tableBody.append(row);
                 }
-            }
+            };
+            function handleNewFiles(eventFiles) {
+                let addedFiles = Array.from(eventFiles);
+                let selectedFiles = Array.from(selectedFilesList.files);
+                let newFiles = addedFiles.filter(addedFile => 
+                    !selectedFiles.some(selectedFile => 
+                        selectedFile.name === addedFile.name && 
+                        selectedFile.size === addedFile.size && 
+                        selectedFile.lastModified === addedFile.lastModified
+                    )
+                );
+                newFiles.forEach(file => {
+                    selectedFilesList.items.add(file);
+                });
+                
+                updateTableWithFiles(selectedFilesList.files);
+                fileInput[0].files = selectedFilesList.files;
+            };
         });
     </script>
 
