@@ -13,7 +13,7 @@ django-floppyforms==1.9.0
 django-model-utils==4.3.1
 
 # images
-Pillow==10.1.0
+Pillow==10.2.0
 sorl-thumbnail==12.10.0
 
 # For user registration, either via email or social
@@ -30,7 +30,7 @@ django-autoslug==1.9.9
 # Useful things
 # Time zones support
 pytz==2023.3.post1
-lxml==4.9.3
+lxml==5.0.0
 cssselect==1.2.0
 # Your custom requirements go here
 django-guardian==2.4.0
