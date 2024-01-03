@@ -3,9 +3,9 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-15 12:50+0100\n"
-"PO-Revision-Date: 2023-04-14 18:07+0124\n"
-"Last-Translator:   <piotr.iwanski@siecobywatelska.pl>\n"
+"POT-Creation-Date: 2024-01-03 19:50+0100\n"
+"PO-Revision-Date: 2024-01-02 16:22+0124\n"
+"Last-Translator: Piotr Iwa <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
@@ -17,14 +17,14 @@ msgstr ""
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-Project: poradnia\n"
 "X-Generator: Poedit 1.8.7.1\n"
-"X-Translated-Using: django-rosetta 0.9.8\n"
+"X-Translated-Using: django-rosetta 0.9.9\n"
 
 #: poradnia/letters/admin.py:52
 msgid "Case name"
 msgstr "Nazwa sprawy"
 
 #: poradnia/letters/apps.py:7 poradnia/letters/models.py:197
-#: poradnia/letters/views/cbv.py:164
+#: poradnia/letters/views/cbv.py:167
 msgid "Letters"
 msgstr "Listy"
 
@@ -140,7 +140,7 @@ msgstr "Komentarz dla zespołu"
 
 #: poradnia/letters/forms.py:395
 msgid "Attachments (select or drop here)"
-msgstr ""
+msgstr "Załączniki (wybierz lub upuść tutaj)"
 
 #: poradnia/letters/models.py:68
 #: poradnia/letters/templates/letters/_letter_list.html:20
@@ -171,11 +171,11 @@ msgstr "Mail sformatowany w HTML"
 msgid "Signature"
 msgstr "Podpis"
 
-#: poradnia/letters/models.py:83 poradnia/letters/views/cbv.py:182
+#: poradnia/letters/models.py:83 poradnia/letters/views/cbv.py:185
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: poradnia/letters/models.py:89 poradnia/letters/views/cbv.py:177
+#: poradnia/letters/models.py:89 poradnia/letters/views/cbv.py:180
 msgid "Created on"
 msgstr "Utworzone o"
 
@@ -250,7 +250,7 @@ msgstr ""
 
 #: poradnia/letters/templates/letters/_letter_list.html:62
 #: poradnia/letters/templates/letters/form_edit.html:6
-#: poradnia/letters/views/cbv.py:77
+#: poradnia/letters/views/cbv.py:80
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -275,40 +275,40 @@ msgstr "Rejestr korespondencji"
 msgid "Letters Table"
 msgstr "Tabela korespondencji"
 
-#: poradnia/letters/views/cbv.py:50
+#: poradnia/letters/views/cbv.py:53
 msgid "Create a new case"
 msgstr "Tworzenie nowej sprawy"
 
-#: poradnia/letters/views/cbv.py:59
+#: poradnia/letters/views/cbv.py:62
 #, python-brace-format
 msgid "Case about {object} created!"
 msgstr "Sprawa o tytule {object} została zarejestrowana!"
 
-#: poradnia/letters/views/cbv.py:112
+#: poradnia/letters/views/cbv.py:115
 msgid "Status"
 msgstr "Status"
 
-#: poradnia/letters/views/cbv.py:153
+#: poradnia/letters/views/cbv.py:156
 msgid "Letter search table"
 msgstr "Tabela wyszukiwania korespondencji"
 
-#: poradnia/letters/views/cbv.py:187
+#: poradnia/letters/views/cbv.py:190
 msgid "Letter Subject"
 msgstr "Temat listu/maila"
 
-#: poradnia/letters/views/cbv.py:194
+#: poradnia/letters/views/cbv.py:197
 msgid "Letter Content (first 300 chars when longer)"
 msgstr "Treść listu/maila (pierwsze 300 znaków, gdy jest dłuższy)"
 
-#: poradnia/letters/views/cbv.py:201
+#: poradnia/letters/views/cbv.py:204
 msgid "Case Subject"
 msgstr "Przedmiot sprawy"
 
-#: poradnia/letters/views/cbv.py:208
+#: poradnia/letters/views/cbv.py:211
 msgid "Advice Subject"
 msgstr "Przedmiot porady"
 
-#: poradnia/letters/views/cbv.py:216
+#: poradnia/letters/views/cbv.py:219
 msgid "Advice Comment"
 msgstr "Komentarz porady"
 
