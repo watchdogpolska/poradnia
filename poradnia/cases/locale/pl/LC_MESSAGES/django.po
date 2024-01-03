@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-15 12:50+0100\n"
-"PO-Revision-Date: 2024-01-02 16:22+0124\n"
+"POT-Creation-Date: 2024-01-03 19:50+0100\n"
+"PO-Revision-Date: 2024-01-03 19:54+0124\n"
 "Last-Translator: Piotr Iwa <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -375,11 +375,16 @@ msgstr "Brak wpisów"
 msgid "Clear Files"
 msgstr "Wyczyść wybrane"
 
-#: poradnia/cases/templates/cases/case_detail.html:267
+#: poradnia/cases/templates/cases/case_detail.html:268
+msgid "Select multiple files with ctr or shift."
+msgstr ""
+"Pliki można wybierać/upuszczać wielokrotnie - zostaną dodane do listy."
+
+#: poradnia/cases/templates/cases/case_detail.html:270
 msgid "Selected files:"
 msgstr "Wybrane pliki:"
 
-#: poradnia/cases/templates/cases/case_detail.html:280
+#: poradnia/cases/templates/cases/case_detail.html:283
 #, python-format
 msgid ""
 "The letter can also be sent via <a href=\"mailto:%(email)s\">e-mail "
