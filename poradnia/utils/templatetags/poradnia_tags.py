@@ -59,6 +59,6 @@ def show_donate_popup():
     from datetime import datetime
 
     now = datetime.now()
-    if (1 <= now.month <= 4) or (now.month == 5 and now.day == 1):
+    if (1 <= now.month <= 4) or (now.month == 5 and now.day in [1, 2]):
         return True
     return False
