@@ -48,3 +48,17 @@ def user_obj_perms_list(user, obj):
     perm_list = [Permission.objects.get(codename=perm) for perm in perms]
     perm_name_list = [gettext(perm.name) for perm in perm_list]
     return ", ".join(sorted(perm_name_list))
+
+
+@register.simple_tag
+def show_donate_popup():
+    """
+    show_donate_popup tag used to display donate popup between Jan 1 and May 1st
+    inclusive, every year
+    """
+    from datetime import datetime
+
+    now = datetime.now()
+    if (1 <= now.month <= 4) or (now.month == 5 and now.day == 1):
+        return True
+    return False
