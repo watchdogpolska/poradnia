@@ -538,18 +538,19 @@ class CaseCloseViewTestCase(PermissionStatusMixin, TestCase):
         self.assertEqual(self.object.status, Case.STATUS.closed)
 
 
-class CaseCloseFormTestCase(TestCase):
-    form = CaseCloseForm
+# user notification skipped, so skipping the test, code left for potential future use
+# class CaseCloseFormTestCase(TestCase):
+#     form = CaseCloseForm
 
-    def setUp(self):
-        self.user = UserFactory()
-        self.object = CaseFactory()
+#     def setUp(self):
+#         self.user = UserFactory()
+#         self.object = CaseFactory()
 
-    def test_close_notify(self):
-        self.form({"notify": False}, user=self.user, instance=self.object).save()
-        self.assertEqual(len(mail.outbox), 0)
-        self.form({"notify": True}, user=self.user, instance=self.object).save()
-        self.assertEqual(len(mail.outbox), 1)
+#     def test_close_notify(self):
+#         self.form({"notify": False}, user=self.user, instance=self.object).save()
+#         self.assertEqual(len(mail.outbox), 0)
+#         self.form({"notify": True}, user=self.user, instance=self.object).save()
+#         self.assertEqual(len(mail.outbox), 1)
 
 
 class UserPermissionCreateViewTestCase(PermissionStatusMixin, TestCase):
