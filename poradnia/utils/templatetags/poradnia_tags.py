@@ -53,7 +53,7 @@ def user_obj_perms_list(user, obj):
 @register.simple_tag
 def show_donate_popup():
     """
-    show_donate_popup tag used to display donate popup between Jan 1 and May 1st
+    show_donate_popup tag used to display donate popup between Jan 1 and May 2nd
     inclusive, every year
     """
     from datetime import datetime
