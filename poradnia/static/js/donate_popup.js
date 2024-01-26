@@ -20,7 +20,7 @@ function closePopup() {
 
 document.getElementById('alreadyDonated').addEventListener('change', function() {
     if (this.checked) {
-        Cookies.set('alreadyDonated', 'true');  // Does not expire
+        Cookies.set('alreadyDonated', 'true', { expires: 60 }); // expires in 60 days
     } else {
         Cookies.remove('alreadyDonated');
     }
