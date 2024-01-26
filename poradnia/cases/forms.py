@@ -94,7 +94,8 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
 
 
 class CaseCloseForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
-    notify = forms.BooleanField(required=False, label=_("Notify user"))
+    # skip user notification, code left for potential future use
+    # notify = forms.BooleanField(required=False, label=_("Notify user"))
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -105,7 +106,9 @@ class CaseCloseForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
 
     def save(self, commit=True, *args, **kwargs):
         obj = super().save(commit=False, *args, **kwargs)
-        obj.close(actor=self.user, notify=self.cleaned_data["notify"])
+        # skip user notification
+        # obj.close(actor=self.user, notify=self.cleaned_data["notify"])
+        obj.close(actor=self.user, notify=False)
         if commit:
             obj.save()
         return obj
