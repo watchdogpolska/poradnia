@@ -10,6 +10,24 @@ jQuery(function() {
         // Show the popup if the 'popupShown' or 'alreadyDonated' cookie is not set
         $('#popup-container').fadeIn();
     }
+
+    function adjustPopupContainer() {
+        if ($(window).width() < 1000) {
+            $('#popup-container').css({
+                'white-space': 'normal',
+                'overflow': 'auto',
+                'max-height': '90vh',
+                'max-width': '90vw'
+            });
+        } else {
+            $('#popup-container').css('white-space', 'nowrap');
+        }
+    }
+
+    // Call adjustPopupContainer when the document is ready and when the window is resized
+    adjustPopupContainer();
+    $(window).on('resize', adjustPopupContainer);
+
 });
 
 function closePopup() {
