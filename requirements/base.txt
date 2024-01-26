@@ -30,7 +30,7 @@ django-autoslug==1.9.9
 # Useful things
 # Time zones support
 pytz==2023.3.post1
-lxml==5.0.0
+lxml==5.1.0
 cssselect==1.2.0
 # Your custom requirements go here
 django-guardian==2.4.0
@@ -50,12 +50,12 @@ icalendar==5.0.11
 html2text==2020.1.16
 pyGravatar==0.0.6
 django-bootstrap-pagination==1.7.1
-sentry-sdk==1.39.1
+sentry-sdk==1.39.2
 python-dateutil==2.8.2
 django-github-revision==0.0.3
 zipstream-new==1.1.8
 django-teryt-tree==0.18.4
-django-mptt==0.15.0
+django-mptt==0.16.0
 mistune==3.0.2
 django-rosetta==0.9.9
 

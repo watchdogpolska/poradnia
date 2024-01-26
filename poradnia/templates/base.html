@@ -50,6 +50,11 @@
 
 <body>
 
+{% show_donate_popup as show_donate_popup_flag %}
+{% if show_donate_popup_flag %}
+    {% include 'donate_popup.html' %}
+{% endif %}
+
 <nav class="navbar navbar-default navbar-fixedtop">
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
@@ -128,6 +133,11 @@
     <script src="{% static 'js/script.js' %}"></script>
 {% else %}
     <script src="{% static 'js/script.min.js' %}"></script>
+{% endif %}
+
+{% if show_donate_popup_flag %}
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="{% static 'js/donate_popup.js' %}"></script>
 {% endif %}
 
 {% block javascript %}
