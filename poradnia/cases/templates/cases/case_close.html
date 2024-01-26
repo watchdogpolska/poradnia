@@ -11,6 +11,12 @@
 {% endblock %}
 {% block content %}
     <h1>{% block header %}{{ object }}{% endblock %}</h1>
+    <p>&nbsp;</p>
+    <p>
+        Sprawa zostanie zamknięta na tym etapie. Jeśli użytkownik napisze maila, <br>
+        to automatycznie otworzy sprawę i temat będzie kontynuowany.
+    </p>
+    <p>&nbsp;</p>
     {% csrf_token %}
     {% crispy form %}
 {% endblock %}

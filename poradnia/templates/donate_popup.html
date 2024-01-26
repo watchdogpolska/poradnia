@@ -1,0 +1,38 @@
+<style>
+#popup-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 100px;
+    color: white;
+    background-color: #D72626;
+    border: 1px solid #D72626;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    white-space: nowrap;
+    /* justify-content: center; */
+    /* align-items: center; */
+    /* flex-direction: column; */
+    text-align: center;
+}
+#popup-container a {
+    color: white;
+}
+#popup-container button {
+    color: white;
+}
+</style>
+
+<div id="popup-container">
+    <h3>Przekaż 1,5% podatku na działanie poradni Watchdoga!</h3>
+    <h2>Numer KRS: 0000181348</h2>
+    <h3><a href="https://siecobywatelska.pl/1-5-procent/">Więcej informacji: 1,5%</a></h3>
+    <!-- Add any other content or buttons as needed -->
+    <p>&nbsp;</p>
+    <input type="checkbox" id="alreadyDonated" name="alreadyDonated" value="donated">
+    <label for="alreadyDonated">Już przekazałem/am</label>
+    <p>&nbsp;</p>
+    <button class="dt-button" id="donate-button" onclick="closePopup()">Zamknij</button>
+</div>
