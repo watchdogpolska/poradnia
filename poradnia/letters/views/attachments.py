@@ -30,10 +30,10 @@ class StreamAttachmentView(PermissionMixin, ListView):
         response = StreamingHttpResponse(
             streaming_content=context["archive"], content_type="application/zip"
         )
-        response[
-            "Content-Disposition"
-        ] = 'attachment; filename="sprawa-{case_pk}-list-{letter_pk}.zip"'.format(
-            **self.kwargs
+        response["Content-Disposition"] = (
+            'attachment; filename="sprawa-{case_pk}-list-{letter_pk}.zip"'.format(
+                **self.kwargs
+            )
         )
         return response
 
