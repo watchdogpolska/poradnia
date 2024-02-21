@@ -45,7 +45,10 @@ git+https://github.com/PiotrIw/django-ajax-datatable.git@05afe42
 django-autocomplete-light==3.5.0
 django-tinymce==3.7.1
 django-atom==0.16.3
-django-tinycontent==0.8.0
+# django-tinycontent is not supported anymore so watchdog maintained fork
+# django-tinycontent==0.9.0 - misses Django 3.2 compatibility migration
+# django-tinycontent is not supported anymore so watchdog maintained fork is used
+git+https://github.com/watchdogpolska/django-tinycontent.git@master
 icalendar==5.0.11
 html2text==2020.1.16
 pyGravatar==0.0.6
