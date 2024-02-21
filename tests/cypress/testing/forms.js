@@ -115,7 +115,7 @@ const submitAdviceForm = (cy) => (
     });
   }
 
-  cy.contains("div", "Czy pomogliśmy").within(($div) => {
+  cy.contains("div", "Czy udzieliliśmy porady").within(($div) => {
     cy.get("select").select(solved ? "Tak" : "Nie");
   });
 
@@ -163,7 +163,7 @@ const submitAdviceFilterForm = (cy) => (
   }
 ) => {
   // If not true/false, set to a noop filter.
-  cy.contains("div", "Czy pomogliśmy").within(($div) => {
+  cy.contains("div", "Czy udzieliliśmy porady").within(($div) => {
     cy.get("select").select(
       solved === true ? "Tak" : solved === false ? "Nie" : "Nieznane"
     );
