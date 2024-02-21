@@ -32,9 +32,12 @@ class ParserTestCaseMixin(TestCase):
     def test_return_valid_signaturerow(self):
         for parser_key in get_parser_keys():
             court = CourtFactory(parser_key=parser_key)
-            with my_vcr.use_cassette(
-                generator(f=self.test_return_valid_signaturerow, suffix=parser_key)
-            ), self.subTest(parser_key=parser_key):
+            with (
+                my_vcr.use_cassette(
+                    generator(f=self.test_return_valid_signaturerow, suffix=parser_key)
+                ),
+                self.subTest(parser_key=parser_key),
+            ):
                 for i, session_row in enumerate(court.get_parser().get_session_rows()):
                     msg = "Failed for {} in {}.".format(i, parser_key)
                     self.assertTrue(
