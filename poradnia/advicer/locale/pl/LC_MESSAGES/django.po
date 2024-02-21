@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2024-01-03 19:50+0100\n"
-"PO-Revision-Date: 2024-02-21 16:08+0124\n"
+"PO-Revision-Date: 2024-02-21 16:20+0124\n"
 "Last-Translator: Piotr Iwa <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
@@ -341,7 +341,7 @@ msgstr "Filtry"
 
 #: poradnia/advicer/templates/advicer/advice_table.html:42
 msgid "Helped? (col. H?)"
-msgstr "Pomogliśmy? (kol. H?)"
+msgstr "Udzieliliśmy porady? (kol. H?)"
 
 #: poradnia/advicer/templates/advicer/advice_table.html:52
 msgid "Unknown"
