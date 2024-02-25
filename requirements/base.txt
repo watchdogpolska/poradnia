@@ -60,7 +60,7 @@ zipstream-new==1.1.8
 django-teryt-tree==0.18.4
 django-mptt==0.16.0
 mistune==3.0.2
-django-rosetta==0.9.9
+django-rosetta==0.10.0
 
 # Additional sanitizer until a completely safe markdown package is found.
 bleach==6.1.0
