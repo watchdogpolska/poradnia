@@ -1,9 +1,20 @@
 import logging
 import re
 
+from allauth.account.models import EmailAddress
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
-from django.db.models import Case, Count, F, Func, IntegerField, Q, When
+from django.db.models import (
+    Case,
+    Count,
+    Exists,
+    F,
+    Func,
+    IntegerField,
+    OuterRef,
+    Q,
+    When,
+)
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.datetime_safe import datetime
@@ -161,6 +172,18 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
                 TemplateKey.USER_NEW, recipient_list=[email], context=context
             )
         return user
+
+    def with_verified_email(self):
+        subquery = EmailAddress.objects.filter(user=OuterRef("pk"), verified=True)
+        return self.annotate(has_verified_email=Exists(subquery)).filter(
+            has_verified_email=True
+        )
+
+    def without_verified_email(self):
+        subquery = EmailAddress.objects.filter(user=OuterRef("pk"), verified=True)
+        return self.annotate(has_unverified_email=~Exists(subquery)).filter(
+            has_unverified_email=True
+        )
 
 
 class User(GuardianUserMixin, AbstractUser):
