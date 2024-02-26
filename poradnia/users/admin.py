@@ -2,6 +2,7 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from sorl.thumbnail.admin import AdminImageMixin
 
@@ -198,7 +199,39 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         "notify_old_cases",
         "groups",
     )
-    actions = None
+    actions = ["delete_selected"]
+
+    def response_action(self, request, queryset):
+        if queryset.filter(emailaddress__verified=True).exists():
+            raise ValidationError(
+                _("Users with verified email can be deleted with user form only.")
+            )
+        # # TODO: to be implemented after allauth config changed to force email
+        # # verification before login and database cleanup
+        # elif queryset.filter(last_login__isnull=False).exists():
+        #     raise ValidationError(
+        #         _("Users with last login can be deleted with user form only.")
+        #     )
+        elif queryset.filter(
+            case_client__isnull=False,
+            case_created__isnull=True,
+            case_modified__isnull=True,
+        ).exists():
+            raise ValidationError(_("Users with cases can not be deleted."))
+        elif queryset.filter(letter_created_by__isnull=False).exists():
+            raise ValidationError(_("Users with letters can not be deleted."))
+        return super().response_action(request, queryset)
+
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None:
+            if (
+                obj.case_client.exists()
+                or obj.case_created.exists()
+                or obj.case_modified.exists()
+                or obj.letter_created_by.exists()
+            ):
+                return False
+        return super().has_delete_permission(request, obj)
 
 
 @admin.register(Profile)
