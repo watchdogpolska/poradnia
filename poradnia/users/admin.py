@@ -39,6 +39,102 @@ class IsSpamUserFilter(admin.SimpleListFilter):
             return queryset
 
 
+class NoLoginUserFilter(admin.SimpleListFilter):
+    title = _("Has Logged In")
+    parameter_name = "has_logged_in_user"
+
+    def lookups(self, request, model_admin):
+        return (
+            ("yes", _("Yes")),
+            ("no", _("No")),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == "no":
+            return queryset.filter(
+                last_login__isnull=True,
+            )
+        elif self.value() == "yes":
+            return queryset.exclude(
+                last_login__isnull=True,
+            )
+        else:
+            return queryset
+
+
+class HasCasesUserFilter(admin.SimpleListFilter):
+    title = _("Has cases")
+    parameter_name = "has_cases_user"
+
+    def lookups(self, request, model_admin):
+        return (
+            ("yes", _("Yes")),
+            ("no", _("No")),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == "no":
+            return queryset.filter(
+                case_client__isnull=True,
+                case_created__isnull=True,
+                case_modified__isnull=True,
+            )
+        elif self.value() == "yes":
+            return queryset.exclude(
+                case_client__isnull=True,
+                case_created__isnull=True,
+                case_modified__isnull=True,
+            )
+        else:
+            return queryset
+
+
+class HasLettersUserFilter(admin.SimpleListFilter):
+    title = _("Has letters")
+    parameter_name = "has_letters_user"
+
+    def lookups(self, request, model_admin):
+        return (
+            ("yes", _("Yes")),
+            ("no", _("No")),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == "no":
+            return queryset.filter(
+                letter_created_by__isnull=True,
+            )
+        elif self.value() == "yes":
+            return queryset.exclude(
+                letter_created_by__isnull=True,
+            )
+        else:
+            return queryset
+
+
+class VerifiedEmailUserFilter(admin.SimpleListFilter):
+    title = _("Verified email")
+    parameter_name = "verified_email_user"
+
+    def lookups(self, request, model_admin):
+        return (
+            ("yes", _("Yes")),
+            ("no", _("No")),
+        )
+
+    def queryset(self, request, queryset):
+        if self.value() == "yes":
+            return queryset.filter(
+                emailaddress__verified=True,
+            )
+        elif self.value() == "no":
+            return queryset.exclude(
+                emailaddress__verified=True,
+            )
+        else:
+            return queryset
+
+
 class MyUserChangeForm(UserChangeForm):
     class Meta(UserChangeForm.Meta):
         model = User
