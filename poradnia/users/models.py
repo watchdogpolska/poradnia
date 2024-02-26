@@ -249,6 +249,10 @@ class User(GuardianUserMixin, AbstractUser):
     def get_absolute_url(self):
         return reverse("users:detail", kwargs={"username": self.username})
 
+    @property
+    def has_verified_email(self):
+        return self.emailaddress_set.filter(verified=True).exists()
+
     class Meta:
         ordering = ["pk"]
         permissions = (("can_view_other", "Can view other"),)

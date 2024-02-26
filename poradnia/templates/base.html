@@ -113,7 +113,7 @@
             </div>
         </div>
     </div>
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and user.has_verified_email %}
         {% load tasty_feedback_tags %}
         {% tasty_feedback_widget %}
     {% endif %}
