@@ -175,7 +175,7 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         ),
     ]
     list_display = (
-        "pk",
+        "id",
         "username",
         "first_name",
         "last_name",
@@ -193,7 +193,11 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         "is_superuser",
         "is_staff",
         "is_active",
+        VerifiedEmailUserFilter,
         IsSpamUserFilter,
+        NoLoginUserFilter,
+        HasCasesUserFilter,
+        HasLettersUserFilter,
         "notify_new_case",
         "notify_unassigned_letter",
         "notify_old_cases",
