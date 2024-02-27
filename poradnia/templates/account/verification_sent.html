@@ -9,10 +9,12 @@
         <div class="row">
             <div class="col-md-5">
                 <h2>{% trans "Verify Your E-mail Address" %}</h2>
-
+                {% url 'account_email' as email_url %}
                 <p>{% blocktrans %}We have sent an e-mail for verification. Follow the link provided to finalize the
                     signup process. Please contact us if you do not receive it within a few
                     minutes.{% endblocktrans %}</p>
+                <p>Lub możesz ponownie <a href="{{ email_url }}">
+                    otrzymać e-mail potwierdzający</a>.</p>
             </div>
         </div>
     </div>
