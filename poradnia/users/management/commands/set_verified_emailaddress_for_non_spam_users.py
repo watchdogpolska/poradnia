@@ -1,8 +1,10 @@
 import logging
+
 from allauth.account.models import EmailAddress
 from django.core.management import BaseCommand
+from django.db.models import F, Q
+
 from poradnia.users.models import User
-from django.db.models import Q, F
 
 logger = logging.getLogger(__name__)
 
