@@ -1,9 +1,20 @@
 import logging
 import re
 
+from allauth.account.models import EmailAddress
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
-from django.db.models import Case, Count, F, Func, IntegerField, Q, When
+from django.db.models import (
+    Case,
+    Count,
+    Exists,
+    F,
+    Func,
+    IntegerField,
+    OuterRef,
+    Q,
+    When,
+)
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.datetime_safe import datetime
@@ -162,6 +173,18 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
             )
         return user
 
+    def with_verified_email(self):
+        subquery = EmailAddress.objects.filter(user=OuterRef("pk"), verified=True)
+        return self.annotate(has_verified_email=Exists(subquery)).filter(
+            has_verified_email=True
+        )
+
+    def without_verified_email(self):
+        subquery = EmailAddress.objects.filter(user=OuterRef("pk"), verified=True)
+        return self.annotate(has_unverified_email=~Exists(subquery)).filter(
+            has_unverified_email=True
+        )
+
 
 class User(GuardianUserMixin, AbstractUser):
     picture = ImageField(
@@ -172,6 +195,11 @@ class User(GuardianUserMixin, AbstractUser):
     )
     nicename = models.CharField(
         max_length=300, null=True, blank=True, verbose_name=_("Nice Name")
+    )
+    is_content_editor = models.BooleanField(
+        default=False,
+        verbose_name=_("Content Editor"),
+        help_text=_("Whether or not to show user tinycontent editable fields"),
     )
     notify_new_case = models.BooleanField(
         default=False,
@@ -248,6 +276,10 @@ class User(GuardianUserMixin, AbstractUser):
 
     def get_absolute_url(self):
         return reverse("users:detail", kwargs={"username": self.username})
+
+    @property
+    def has_verified_email(self):
+        return self.emailaddress_set.filter(verified=True).exists()
 
     class Meta:
         ordering = ["pk"]
