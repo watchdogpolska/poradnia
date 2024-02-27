@@ -22,6 +22,7 @@ services:
       DJANGO_EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
       DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
       DJANGO_RICH_TEXT_ENABLED: "False"
+      ACCOUNT_EMAIL_VERIFICATION: "optional"
 
   tests:
     depends_on:
