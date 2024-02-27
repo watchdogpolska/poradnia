@@ -6,13 +6,17 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('users', '0027_alter_user_notify_old_cases'),
+        ("users", "0027_alter_user_notify_old_cases"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='user',
-            name='is_content_editor',
-            field=models.BooleanField(default=False, help_text='Whether or not to show user tinycontent editable fields', verbose_name='Content Editor'),
+            model_name="user",
+            name="is_content_editor",
+            field=models.BooleanField(
+                default=False,
+                help_text="Whether or not to show user tinycontent editable fields",
+                verbose_name="Content Editor",
+            ),
         ),
     ]
