@@ -196,6 +196,11 @@ class User(GuardianUserMixin, AbstractUser):
     nicename = models.CharField(
         max_length=300, null=True, blank=True, verbose_name=_("Nice Name")
     )
+    is_content_editor = models.BooleanField(
+        default=False,
+        verbose_name=_("Content Editor"),
+        help_text=_("Whether or not to show user tinycontent editable fields"),
+    )
     notify_new_case = models.BooleanField(
         default=False,
         verbose_name=_("Notify about new case"),
