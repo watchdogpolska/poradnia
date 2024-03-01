@@ -1,5 +1,5 @@
 ---
-name: Watchdog issue template
+name: WatchdogPolska issue template
 about: Some hints and rules to follow
 title: ''
 labels: ''
