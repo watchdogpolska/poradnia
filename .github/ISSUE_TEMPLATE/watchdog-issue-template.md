@@ -7,4 +7,5 @@ assignees: ''
 
 ---
 
-
+*** Please remember not to include application or user sensitive data ***
+*** Proszę pamiętać o nieumieszczaniu wrażliwych danych aplikacji i użytkowników ***
