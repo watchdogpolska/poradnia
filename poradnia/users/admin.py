@@ -2,7 +2,6 @@ from django import forms
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 from sorl.thumbnail.admin import AdminImageMixin
 
@@ -213,9 +212,19 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
 
     def response_action(self, request, queryset):
         if queryset.filter(emailaddress__verified=True).exists():
-            raise ValidationError(
-                _("Users with verified email can be deleted with user form only.")
+            excluded_list = (
+                queryset.filter(emailaddress__verified=True)
+                .distinct()
+                .values_list("username", flat=True)
             )
+            self.message_user(
+                request,
+                (
+                    _("Users with verified email can be deleted with user form only: ")
+                    + ", ".join(excluded_list)
+                ),
+            )
+            queryset = queryset.exclude(emailaddress__verified=True)
         # # TODO: to be implemented after allauth config changed to force email
         # # verification before login and database cleanup
         # elif queryset.filter(last_login__isnull=False).exists():
@@ -227,10 +236,49 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
             case_created__isnull=True,
             case_modified__isnull=True,
         ).exists():
-            raise ValidationError(_("Users with cases can not be deleted."))
+            excluded_list = (
+                queryset.filter(
+                    case_client__isnull=False,
+                    case_created__isnull=True,
+                    case_modified__isnull=True,
+                )
+                .distinct()
+                .values_list("username", flat=True)
+            )
+            self.message_user(
+                request,
+                (
+                    _("Users with cases can be deleted with user form only: ")
+                    + ", ".join(excluded_list)
+                ),
+            )
+            queryset = queryset.exclude(
+                case_client__isnull=False,
+                case_created__isnull=True,
+                case_modified__isnull=True,
+            )
         elif queryset.filter(letter_created_by__isnull=False).exists():
-            raise ValidationError(_("Users with letters can not be deleted."))
-        return super().response_action(request, queryset)
+            excluded_list = (
+                queryset.filter(letter_created_by__isnull=False)
+                .distinct()
+                .values_list("username", flat=True)
+            )
+            self.message_user(
+                request,
+                (
+                    _("Users with letters can be deleted with user form only: ")
+                    + ", ".join(excluded_list)
+                ),
+            )
+            queryset = queryset.exclude(letter_created_by__isnull=False)
+        if queryset.exists():
+            return super().response_action(request, queryset)
+        else:
+            self.message_user(
+                request,
+                _("No users to delete."),
+            )
+            return None
 
     def has_delete_permission(self, request, obj=None):
         if obj is not None:
