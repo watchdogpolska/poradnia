@@ -28,11 +28,18 @@ class LogEntryAdmin(admin.ModelAdmin):
     def content_type(self, obj):
         return obj.content_type.name
 
-    def has_delete_permission(self, request, obj=None):
-        return False
-
     def has_change_permission(self, request, obj=None):
         return False
 
     def has_add_permission(self, request, obj=None):
         return False
+
+    def change_view(self, request, object_id, form_url="", extra_context=None):
+        extra_context = extra_context or {}
+        extra_context["show_delete"] = False
+        return super().change_view(
+            request,
+            object_id,
+            form_url,
+            extra_context=extra_context,
+        )
