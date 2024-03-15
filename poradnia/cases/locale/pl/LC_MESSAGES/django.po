@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-03 19:50+0100\n"
+"POT-Creation-Date: 2024-03-15 12:14+0100\n"
 "PO-Revision-Date: 2024-01-03 19:54+0124\n"
 "Last-Translator: Piotr Iwa <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: \n"
@@ -102,34 +102,29 @@ msgstr "Użytkownik / użytkowniczka"
 msgid "Permissions group"
 msgstr "Grupa uprawnień"
 
-#: poradnia/cases/forms.py:97
-msgid "Notify user"
-msgstr "Powiadom użytkownika"
-
-#: poradnia/cases/forms.py:101
-#: poradnia/cases/templates/cases/case_close.html:9
+#: poradnia/cases/forms.py:102 poradnia/cases/templates/cases/case_close.html:9
 #: poradnia/cases/templates/cases/case_detail.html:106
 msgid "Close"
 msgstr "Zamknij"
 
-#: poradnia/cases/forms.py:120
+#: poradnia/cases/forms.py:123
 msgid "Destination case"
 msgstr "Docelowa sprawa"
 
-#: poradnia/cases/forms.py:125
+#: poradnia/cases/forms.py:128
 msgid ""
 "The selected case will receive all letters, events, etc. from the current "
 "case."
 msgstr ""
 "Wybrana sprawa otrzyma wszystkie listy, wydarzenia itd. z obecnej sprawy."
 
-#: poradnia/cases/forms.py:132
+#: poradnia/cases/forms.py:135
 #: poradnia/cases/templates/cases/case_detail.html:114
 #: poradnia/cases/templates/cases/case_merge.html:9
 msgid "Merge"
 msgstr "Połącz"
 
-#: poradnia/cases/forms.py:147
+#: poradnia/cases/forms.py:150
 #, python-brace-format
 msgid "Case #{source} have been merged with case #{target}"
 msgstr "Sprawa #{source} została połączona ze sprawą #{target} ."
@@ -320,12 +315,16 @@ msgstr "Usuń"
 #, python-format
 msgid ""
 "\n"
-"                        Created by <a href=\"%(created_url)s\">%(created_user)s</a> on\n"
-"                        %(created_on)s for <a href=\"%(client_url)s\">%(client_user)s</a>"
+"                        Created by <a "
+"href=\"%(created_url)s\">%(created_user)s</a> on\n"
+"                        %(created_on)s for <a "
+"href=\"%(client_url)s\">%(client_user)s</a>"
 msgstr ""
 "\n"
-"                        Utworzona przez <a href=\"%(created_url)s\">%(created_user)s</a> o \n"
-"                        %(created_on)s dla <a href=\"%(client_url)s\">%(client_user)s</a>"
+"                        Utworzona przez <a "
+"href=\"%(created_url)s\">%(created_user)s</a> o \n"
+"                        %(created_on)s dla <a "
+"href=\"%(client_url)s\">%(client_user)s</a>"
 
 #: poradnia/cases/templates/cases/case_detail.html:144
 msgid "Workflow"
@@ -377,8 +376,7 @@ msgstr "Wyczyść wybrane"
 
 #: poradnia/cases/templates/cases/case_detail.html:268
 msgid "Select multiple files with ctr or shift."
-msgstr ""
-"Pliki można wybierać/upuszczać wielokrotnie - zostaną dodane do listy."
+msgstr "Pliki można wybierać/upuszczać wielokrotnie - zostaną dodane do listy."
 
 #: poradnia/cases/templates/cases/case_detail.html:270
 msgid "Selected files:"
@@ -387,11 +385,11 @@ msgstr "Wybrane pliki:"
 #: poradnia/cases/templates/cases/case_detail.html:283
 #, python-format
 msgid ""
-"The letter can also be sent via <a href=\"mailto:%(email)s\">e-mail "
-"address</a>."
+"The letter can also be sent via <a href=\"mailto:%(email)s\">e-mail address</"
+"a>."
 msgstr ""
-"List może zostać przesłany także z wykorzystaniem <a "
-"href=\"mailto:%(email)s\">poczty elektronicznej</a>."
+"List może zostać przesłany także z wykorzystaniem <a href=\"mailto:"
+"%(email)s\">poczty elektronicznej</a>."
 
 #: poradnia/cases/templates/cases/case_filter.html:39
 msgid "No."
@@ -462,8 +460,8 @@ msgstr "Potwierdzenie usunięcia uprawnień"
 #: poradnia/cases/templates/cases/case_permission_remove_confirm.html:15
 #, python-format
 msgid ""
-"Are you sure you want to remove the permissions on the case \"%(case)s\" for"
-" user %(user)s?"
+"Are you sure you want to remove the permissions on the case \"%(case)s\" for "
+"user %(user)s?"
 msgstr ""
 "Czy jesteś pewien, że chcesz usunąć uprawnienia do sprawy \"%(case)s\" dlla "
 "użytkownika %(user)s?"
@@ -589,6 +587,9 @@ msgstr "{user} przyznano uprawnienia grupy {group}!"
 #, python-brace-format
 msgid "Removed all permission of \"{user}\" in case \"{case}\""
 msgstr "Usunięto wszystkie uprawnienia \"{user}\" w sprawie \"{case}\""
+
+#~ msgid "Notify user"
+#~ msgstr "Powiadom użytkownika"
 
 #~ msgid "Deadline UTC"
 #~ msgstr "Termin UTC"

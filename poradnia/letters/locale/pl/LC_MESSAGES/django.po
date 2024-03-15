@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-01-03 19:50+0100\n"
+"POT-Creation-Date: 2024-03-15 12:14+0100\n"
 "PO-Revision-Date: 2024-01-02 16:22+0124\n"
 "Last-Translator: Piotr Iwa <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -134,11 +134,11 @@ msgstr "Napisz do zespołu"
 msgid "Reply"
 msgstr "Odpowiedz"
 
-#: poradnia/letters/forms.py:329
+#: poradnia/letters/forms.py:337
 msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
-#: poradnia/letters/forms.py:395
+#: poradnia/letters/forms.py:403
 msgid "Attachments (select or drop here)"
 msgstr "Załączniki (wybierz lub upuść tutaj)"
 
