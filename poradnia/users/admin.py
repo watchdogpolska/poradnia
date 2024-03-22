@@ -1,10 +1,10 @@
 from django import forms
 from django.contrib import admin
+from django.contrib.admin import helpers
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.utils.translation import gettext_lazy as _
 from sorl.thumbnail.admin import AdminImageMixin
-from django.contrib.admin import helpers
 
 from .models import Profile, User
 
