@@ -1,4 +1,4 @@
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const { withPromiseLogging } = require("../testing/logging");
 
 // Run an array of functions returning Promises sequentially.
