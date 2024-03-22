@@ -4,6 +4,7 @@ from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.utils.translation import gettext_lazy as _
 from sorl.thumbnail.admin import AdminImageMixin
+from django.contrib.admin import helpers
 
 from .models import Profile, User
 
@@ -211,9 +212,11 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
     actions = ["delete_selected"]
 
     def response_action(self, request, queryset):
-        if queryset.filter(emailaddress__verified=True).exists():
+        selected = request.POST.getlist(helpers.ACTION_CHECKBOX_NAME)
+        selected_qs = self.get_queryset(request).filter(pk__in=selected)
+        if selected_qs.filter(emailaddress__verified=True).exists():
             excluded_list = (
-                queryset.filter(emailaddress__verified=True)
+                selected_qs.filter(emailaddress__verified=True)
                 .distinct()
                 .values_list("username", flat=True)
             )
@@ -224,20 +227,20 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
                     + ", ".join(excluded_list)
                 ),
             )
-            queryset = queryset.exclude(emailaddress__verified=True)
+            selected_qs = selected_qs.exclude(emailaddress__verified=True)
         # # TODO: to be implemented after allauth config changed to force email
         # # verification before login and database cleanup
         # elif queryset.filter(last_login__isnull=False).exists():
         #     raise ValidationError(
         #         _("Users with last login can be deleted with user form only.")
         #     )
-        elif queryset.filter(
+        elif selected_qs.filter(
             case_client__isnull=False,
             case_created__isnull=True,
             case_modified__isnull=True,
         ).exists():
             excluded_list = (
-                queryset.filter(
+                selected_qs.filter(
                     case_client__isnull=False,
                     case_created__isnull=True,
                     case_modified__isnull=True,
@@ -252,14 +255,14 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
                     + ", ".join(excluded_list)
                 ),
             )
-            queryset = queryset.exclude(
+            selected_qs = selected_qs.exclude(
                 case_client__isnull=False,
                 case_created__isnull=True,
                 case_modified__isnull=True,
             )
-        elif queryset.filter(letter_created_by__isnull=False).exists():
+        elif selected_qs.filter(letter_created_by__isnull=False).exists():
             excluded_list = (
-                queryset.filter(letter_created_by__isnull=False)
+                selected_qs.filter(letter_created_by__isnull=False)
                 .distinct()
                 .values_list("username", flat=True)
             )
@@ -270,26 +273,15 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
                     + ", ".join(excluded_list)
                 ),
             )
-            queryset = queryset.exclude(letter_created_by__isnull=False)
-        if queryset.exists():
-            return super().response_action(request, queryset)
+            selected_qs = selected_qs.exclude(letter_created_by__isnull=False)
+        if selected_qs.exists():
+            return super().response_action(request, selected_qs)
         else:
             self.message_user(
                 request,
                 _("No users to delete."),
             )
             return None
-
-    def has_delete_permission(self, request, obj=None):
-        if obj is not None:
-            if (
-                obj.case_client.exists()
-                or obj.case_created.exists()
-                or obj.case_modified.exists()
-                or obj.letter_created_by.exists()
-            ):
-                return False
-        return super().has_delete_permission(request, obj)
 
 
 @admin.register(Profile)
