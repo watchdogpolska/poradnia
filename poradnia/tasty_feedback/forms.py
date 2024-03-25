@@ -1,4 +1,3 @@
-from antispam.honeypot.forms import HoneypotField
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
@@ -10,7 +9,6 @@ from .models import Feedback
 
 
 class FeedbackForm(UserKwargModelFormMixin, ModelForm):
-    spam = HoneypotField()
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

@@ -50,6 +50,13 @@
 
 <body>
 
+<!-- Moved to beginning to load JQueary before any other js code  -->
+{% if debug %}
+    <script src="{% static 'js/script.js' %}"></script>
+{% else %}
+    <script src="{% static 'js/script.min.js' %}"></script>
+{% endif %}
+
 {% show_donate_popup as show_donate_popup_flag %}
 {% if show_donate_popup_flag %}
     {% include 'donate_popup.html' %}
@@ -125,12 +132,7 @@
 
 <!-- Le javascript
   ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-{% if debug %}
-    <script src="{% static 'js/script.js' %}"></script>
-{% else %}
-    <script src="{% static 'js/script.min.js' %}"></script>
-{% endif %}
+<!-- Rest of js placed at the end of the document so the pages load faster -->
 
 {% if show_donate_popup_flag %}
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
