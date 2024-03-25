@@ -87,6 +87,8 @@ MIDDLEWARE = (
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Add the account middleware:
+    "allauth.account.middleware.AccountMiddleware",
 )
 # END MIDDLEWARE CONFIGURATION
 
@@ -236,7 +238,8 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # Custom user app defaults
 # Select the correct user model
 AUTH_USER_MODEL = "users.User"
-ACCOUNT_SIGNUP_FORM_CLASS = "poradnia.users.forms.SignupForm"
+# ACCOUNT_SIGNUP_FORM_CLASS commented out until is realyy customised
+# ACCOUNT_SIGNUP_FORM_CLASS = "poradnia.users.forms.SignupForm"
 ACCOUNT_FORMS = {"login": "poradnia.users.login_form.CustomLoginForm"}
 LOGIN_REDIRECT_URL = "home"
 LOGIN_URL = "account_login"
