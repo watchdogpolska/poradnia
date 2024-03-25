@@ -18,7 +18,7 @@ sorl-thumbnail==12.10.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==0.54.0
+django-allauth==0.61.1
 
 # For the persistance stores
 mysqlclient==2.2.4
@@ -35,7 +35,7 @@ cssselect==1.2.0
 # Your custom requirements go here
 django-guardian==2.4.0
 django-mailbox==4.9.0
-django-filter==23.5
+django-filter==24.1
 # django-ajax-datatable to be installed from github fork until
 # https://github.com/morlandi/django-ajax-datatable/pull/111 is merged
 # django-ajax-datatable==4.4.5
@@ -43,12 +43,12 @@ git+https://github.com/PiotrIw/django-ajax-datatable.git@05afe42
 
 # dal 3.5.0 is the latest not causing "poradnia" js frontend errors
 # TODO: resolve the problem
-django-autocomplete-light==3.5.0
+django-autocomplete-light==3.11.0
 django-tinymce==3.7.1
 
 # replacing unmaintained django-atom with updated fork
 # django-atom==0.16.3
-git+https://github.com/PiotrIw/django-atom.git@master#egg=django-atom
+git+https://github.com/PiotrIw/django-atom.git@master
 
 # django-tinycontent is not supported anymore so watchdog maintained fork
 # django-tinycontent==0.9.0 - misses Django 3.2 compatibility migration
@@ -69,8 +69,7 @@ zipstream-new==1.1.8
 django-teryt-tree==0.18.4
 django-mptt==0.16.0
 mistune==3.0.2
-django-rosetta==0.9.9
+django-rosetta==0.10.0
 
 # Additional sanitizer until a completely safe markdown package is found.
 bleach==6.1.0
-django-antispam==1.0.3
