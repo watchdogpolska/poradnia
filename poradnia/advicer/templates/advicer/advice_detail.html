@@ -40,7 +40,7 @@
                         <td>
                         {% if object.issues.all %}
                             {% for obj in object.issues.all %}
-                                {{ obj }}{% if not forloop.last %},{% endif %}
+                                {{ obj }}{% if not forloop.last %}<br>{% endif %}
                             {% endfor %}
                         {% endif %}
                         </td>
@@ -51,7 +51,7 @@
                         <td>
                             {% if object.area.all %}
                                 {% for obj in object.area.all %}
-                                    {{ obj }}{% if not forloop.last %},{% endif %}
+                                    {{ obj }}{% if not forloop.last %}<br>{% endif %}
                                 {% endfor %}
                             {% endif %}
                         </td>
