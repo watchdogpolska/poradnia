@@ -77,7 +77,7 @@ class StaffCaseFilter(
     @property
     def form(self):
         form = super().form
-        form.helper.include_media = False
+        form.helper.include_media = True
         return form
 
     class Meta:
