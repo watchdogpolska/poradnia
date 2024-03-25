@@ -51,8 +51,6 @@ THIRD_PARTY_APPS = (
     "github_revision",
     "mptt",
     "teryt_tree",
-    "antispam",
-    "antispam.honeypot",
     "tinymce",
     "ajax_datatable",
     "rosetta",
@@ -89,6 +87,8 @@ MIDDLEWARE = (
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Add the account middleware:
+    "allauth.account.middleware.AccountMiddleware",
 )
 # END MIDDLEWARE CONFIGURATION
 
@@ -178,9 +178,6 @@ SITE_ID = 1
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True
-
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
-USE_L10N = True
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
 USE_TZ = True

@@ -29,3 +29,6 @@ class SignupForm(FormHorizontalMixin, GIODOMixin, forms.ModelForm):
 
     def save(self, user):
         user.save()
+
+    def signup(self, request, user):
+        pass

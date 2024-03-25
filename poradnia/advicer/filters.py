@@ -78,7 +78,7 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
         self._form.helper = FormHelper(self._form)
         self._form.helper.form_method = "get"
         self._form.helper.form_class = "form-inline"
-        self._form.helper.include_media = False
+        self._form.helper.include_media = True
         self._form.helper.layout = Layout(
             Fieldset(
                 _("Statistic data"),
