@@ -49,7 +49,11 @@
                     <tr>
                         <td>{% trans 'Area' %}</td>
                         <td>
-                            {{ object.area_list | linebreaks }}
+                            {% if object.area.all %}
+                                {% for obj in object.area.all %}
+                                    {{ obj }}{% if not forloop.last %},{% endif %}
+                                {% endfor %}
+                            {% endif %}
                         </td>
                     </tr>
 
