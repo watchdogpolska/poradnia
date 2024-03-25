@@ -51,8 +51,6 @@ THIRD_PARTY_APPS = (
     "github_revision",
     "mptt",
     "teryt_tree",
-    "antispam",
-    "antispam.honeypot",
     "tinymce",
     "ajax_datatable",
     "rosetta",
