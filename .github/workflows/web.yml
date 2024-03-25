@@ -1,6 +1,6 @@
 name: Python package
 
-on: 
+on:
   push:
     branches:
       - master
@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python: 
+        python:
 #           - 3.6
           - "3.10"
         django:
