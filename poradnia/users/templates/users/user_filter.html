@@ -35,7 +35,7 @@
             {% crispy filter.form %}
             <ul class="nav nav-tabs" id="user-nav-tabs">
                 {% for key, value in is_staff.choices %}
-                    <li role="presentation"{% ifequal key is_staff.selected %} class="active"{% endifequal %}><a
+                    <li role="presentation"{% if key == is_staff.selected %} class="active"{% endif %}><a
                             href="?{% query_update is_staff=key page='' %}">{{ value.0 }}</a></li>
                 {% endfor %}
             </ul>

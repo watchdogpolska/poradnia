@@ -121,17 +121,21 @@ class CaseQuerySetTestCase(TestCase):
         )
         user = UserFactory(is_staff=True)
         self.assertQuerySetEqual(
-            Case.objects.order_for_user(user, True).all(), [c, a, b]
+            [repr(obj) for obj in Case.objects.order_for_user(user, True).all()],
+            [c, a, b],
         )
         self.assertQuerySetEqual(
-            Case.objects.order_for_user(user, False).all(), [b, a, c]
+            [repr(obj) for obj in Case.objects.order_for_user(user, False).all()],
+            [b, a, c],
         )
         user = UserFactory(is_staff=False)
         self.assertQuerySetEqual(
-            Case.objects.order_for_user(user, True).all(), [b, a, c]
+            [repr(obj) for obj in Case.objects.order_for_user(user, True).all()],
+            [b, a, c],
         )
         self.assertQuerySetEqual(
-            Case.objects.order_for_user(user, False).all(), [c, a, b]
+            [repr(obj) for obj in Case.objects.order_for_user(user, False).all()],
+            [c, a, b],
         )
 
 
