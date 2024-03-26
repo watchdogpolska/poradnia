@@ -1,3 +1,4 @@
+import logging
 from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
@@ -5,6 +6,8 @@ from django.http import HttpResponseServerError
 from django.template import loader
 from django.urls import include, path
 from django.views.generic import TemplateView
+
+logger = logging.getLogger(__name__)
 
 admin.autodiscover()
 
@@ -41,9 +44,12 @@ if "rosetta" in settings.INSTALLED_APPS:
     urlpatterns += [path("rosetta/", include("rosetta.urls"))]
 
 if settings.DEBUG:
-    import debug_toolbar
+    try:
+        import debug_toolbar
 
-    urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
+        urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
+    except ImportError:
+        logger.warning("Could not import debug_toolbar.")
 
 
 def handler500(request):
