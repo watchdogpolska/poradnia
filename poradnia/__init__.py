@@ -1,4 +1,4 @@
-__version__ = "1.2.01"
+__version__ = "1.2.02"
 
 
 # Compatibility to eg. django-rest-framework
@@ -10,6 +10,3 @@ VERSION = tuple(
 
 def get_version():
     return __version__
-
-
-# TODO find chart.js usage and updated to v.4
