@@ -48,3 +48,14 @@ sentry_sdk.init(
 )
 
 CACHES = {"default": env.cache()}
+
+ALLOWED_HOSTS = [
+    env.str("DJANGO_ALLOWED_HOST", default=""),
+]
+
+CSRF_TRUSTED_ORIGINS = [
+    env.str("DJANGO_CSRF_TRUSTED_ORIGIN", default=""),
+]
+CSRF_COOKIE_SECURE = env.bool("DJANGO_CSRF_COOKIE_SECURE", default=True)
+CSRF_COOKIE_DOMAIN = env.str("DJANGO_CSRF_COOKIE_DOMAIN", default="")
+CSRF_COOKIE_SAMESITE = env.str("DJANGO_CSRF_COOKIE_SAMESITE", default="Strict")
