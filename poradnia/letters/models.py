@@ -19,6 +19,7 @@ from poradnia.cases.models import Case
 from poradnia.cases.utils import get_users_with_perm
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from poradnia.users.models import User
+from poradnia.utils.constants import NAME_MAX_LENGTH
 from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 
 from .templatetags.format_text import format_text
@@ -73,7 +74,7 @@ class Letter(AbstractRecord):
     accept = MonitorField(
         monitor="status", when=["done"], verbose_name=_("Accepted on")
     )
-    name = models.CharField(max_length=250, verbose_name=_("Subject"))
+    name = models.CharField(max_length=NAME_MAX_LENGTH, verbose_name=_("Subject"))
     text = models.TextField(verbose_name=_("Text"))
     html = models.TextField(verbose_name=_("Mail formatted HTML"), blank=True)
     signature = models.TextField(verbose_name=_("Signature"), blank=True, null=True)
