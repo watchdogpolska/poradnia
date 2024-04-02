@@ -35,6 +35,7 @@ from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
+from poradnia.utils.constants import NAME_MAX_LENGTH
 from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 from poradnia.utils.utils import get_numeric_param
 
@@ -224,7 +225,7 @@ class Case(models.Model):
         ("2", "closed", _("closed")),
     )
     id = models.AutoField(verbose_name=_("Case number"), primary_key=True)
-    name = models.CharField(max_length=150, verbose_name=_("Subject"))
+    name = models.CharField(max_length=NAME_MAX_LENGTH, verbose_name=_("Subject"))
     status = StatusField()
     status_changed = MonitorField(monitor="status")
     client = models.ForeignKey(
