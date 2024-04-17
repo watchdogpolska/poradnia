@@ -1,5 +1,5 @@
 # Pro-tip: Try not to put anything here. There should be no dependency in
 #	production that isn't in development.
 -r base.txt
-gunicorn==21.2.0
+gunicorn==22.0.0
 gevent==24.2.1
