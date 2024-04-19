@@ -44,6 +44,15 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PAT }}
 
+      - name: Display contents of code directory
+        run: ls -la
+  
+      - name: Display contents of .git directory
+        run: ls -la .git
+  
+      - name: Show git status
+        run: git status
+
       - name: Build and push Docker image
         uses: docker/build-push-action@v4
         with:
