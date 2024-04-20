@@ -15,6 +15,7 @@ RUN apt-get update \
    curl \
    nano \
    htop \
+   cron \
    gettext libgettextpo-dev wait-for-it
 RUN git config --global --add safe.directory /code
 COPY requirements/*.txt ./requirements/
