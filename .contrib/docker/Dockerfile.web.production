@@ -32,7 +32,8 @@ RUN export DJANGO_SETTINGS_MODULE="config.settings.production" && \
    export DJANGO_SERVER_EMAIL="fake_server" && \
    export RAVEN_DSN="https://examplePublicKey@o0.ingest.sentry.io/0" && \
    export CACHE_URL="locmemcache://" && \
-   python manage.py collectstatic --noinput
+   python manage.py collectstatic --noinput && \
+   cp -r staticfiles image_staticfiles
 # Start container with bash shell to allow run and debug django app
 #   or debug container starting errors:
 CMD ["bash", "-c", " sleep infinity "]
