@@ -12,18 +12,6 @@ from .common import *  # noqa
 SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 # END SECRET KEY
 
-# # EMAIL
-# DEFAULT_FROM_EMAIL = env.str(
-#     "DJANGO_DEFAULT_FROM_EMAIL", "poradnia <noreply@porady.siecobywatelska.pl>"
-# )
-# EMAIL_SUBJECT_PREFIX = env.str("DJANGO_EMAIL_SUBJECT_PREFIX", "[poradnia] ")
-
-# EMAIL_CONFIG = env.email_url("EMAIL_URL", default="smtp://localhost:25")
-# vars().update(EMAIL_CONFIG)
-
-# SERVER_EMAIL = env.str("DJANGO_SERVER_EMAIL")
-# # END EMAIL
-
 # TEMPLATE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
 TEMPLATES[0]["OPTIONS"]["loaders"] = (
