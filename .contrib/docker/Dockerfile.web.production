@@ -1,5 +1,5 @@
 # This is Dockerfile for production
-ARG PYTHON_VERSION='3.10'
+ARG PYTHON_VERSION='3.10.14'
 FROM python:${PYTHON_VERSION}-slim
 RUN mkdir /code /code/production
 WORKDIR /code

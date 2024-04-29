@@ -20,17 +20,17 @@ CLEARSESSIONS_SCHEDULE="${CLEARSESSIONS_SCHEDULE:-@daily}"
 # Set the crontab for the application
 echo "
 # $APP_NAME-send_event_reminders
-$EVENT_REMINDERS_SCHEDULE $CRON_DIR/run_locked.sh $APP_NAME-send_event_reminders 25h \
-    '$PTYHON $APP_ROOT_DIR/manage.py send_event_reminders'
+$EVENT_REMINDERS_SCHEDULE cd $APP_ROOT_DIR && $CRON_DIR/run_locked.sh $APP_NAME-send_event_reminders 25h \
+    \"$PTYHON $APP_ROOT_DIR/manage.py send_event_reminders\" >> /var/log/cron.log 2>&1
 # $APP_NAME-send_old_cases_reminder
-$OLD_CASES_REMINDER_SCHEDULE $CRON_DIR/run_locked.sh $APP_NAME-send_send_old_cases_reminder 25h \
-    '$PTYHON $APP_ROOT_DIR/manage.py send_old_cases_reminder'
+$OLD_CASES_REMINDER_SCHEDULE cd $APP_ROOT_DIR && $CRON_DIR/run_locked.sh $APP_NAME-send_send_old_cases_reminder 25h \
+    \"$PTYHON $APP_ROOT_DIR/manage.py send_old_cases_reminder\" >> /var/log/cron.log 2>&1
 # $APP_NAME-run_court_session_parser
-$COURT_SESSION_PARSER_SCHEDULE $CRON_DIR/run_locked.sh $APP_NAME-run_court_session_parser 34h \
-    '$PTYHON $APP_ROOT_DIR/manage.py run_court_session_parser'
+$COURT_SESSION_PARSER_SCHEDULE cd $APP_ROOT_DIR && $CRON_DIR/run_locked.sh $APP_NAME-run_court_session_parser 34h \
+    \"$PTYHON $APP_ROOT_DIR/manage.py run_court_session_parser\" >> /var/log/cron.log 2>&1
 # $APP_NAME-clearsessions
-$CLEARSESSIONS_SCHEDULE $CRON_DIR/run_locked.sh $APP_NAME-clearsessions 34h \
-    '$PTYHON $APP_ROOT_DIR/manage.py clearsessions'
+$CLEARSESSIONS_SCHEDULE cd $APP_ROOT_DIR && $CRON_DIR/run_locked.sh $APP_NAME-clearsessions 34h \
+    \"$PTYHON $APP_ROOT_DIR/manage.py clearsessions\" >> /var/log/cron.log 2>&1
 " | crontab -
  
 # The  run_locked.sh  script is a simple wrapper around  flock  that ensures that only one 
