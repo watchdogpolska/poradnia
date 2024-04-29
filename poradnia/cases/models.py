@@ -306,15 +306,15 @@ class Case(models.Model):
             "2": "fa fa-circle",
         }
         status_icon = STATUS_STYLE[self.status]
-        return f'<span class="{ status_icon }"></span>'
+        return f'<span class="{status_icon}"></span>'
 
     def render_project_badge(self):
         if self.has_project:
             title = _("Reply to client to remove badge")
             name = _("Project")
             return f"""
-                <span class="label label-success" title="{ title }">
-                <i class="fa fa-pencil"></i> { name }
+                <span class="label label-success" title="{title}">
+                <i class="fa fa-pencil"></i> {name}
                 </span>
             """
         else:
@@ -340,7 +340,7 @@ class Case(models.Model):
         return "<br>".join(
             [
                 f"""
-                <span class="label label-info" title="{ user["title"]}">
+                <span class="label label-info" title="{user["title"]}">
                 {user["grouper"].get_nicename()}</span>
             """
                 for user in user_list

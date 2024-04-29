@@ -78,8 +78,8 @@ class CourtCase(AbstractRecord):
         qs = quote(self.signature)
         # SAOS is not working for administrative courts - can be reused when regular
         #    courts will be added
-        # saos_url = f"https://www.saos.org.pl/search?all={ qs }"
-        cbosa_url = f"http://orzeczenia.nsa.gov.pl/cbo/find?q=SYGNATURA+[{ qs }]"
+        # saos_url = f"https://www.saos.org.pl/search?all={qs}"
+        cbosa_url = f"http://orzeczenia.nsa.gov.pl/cbo/find?q=SYGNATURA+[{qs}]"
         # link = f"[<a href={cbosa_url}> CBOSA</a> | <a href={saos_url}>SAOS</a>]"
         link = f"[<a href={cbosa_url}> CBOSA</a>]"
         return mark_safe(link)
