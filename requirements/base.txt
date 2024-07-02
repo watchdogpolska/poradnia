@@ -45,7 +45,7 @@ git+https://github.com/PiotrIw/django-ajax-datatable.git@05afe42
 # dal 3.5.0 is the latest not causing "poradnia" js frontend errors
 # TODO: resolve the problem
 django-autocomplete-light==3.11.0
-django-tinymce==3.7.1
+django-tinymce==4.1.0
 
 # replacing unmaintained django-atom with updated fork
 # django-atom==0.16.3
