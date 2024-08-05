@@ -6,12 +6,12 @@ default_language_version:
 minimum_pre_commit_version: "1.20.0"
 repos:
   - repo: https://github.com/adamchainz/django-upgrade
-    rev: 1.19.0
+    rev: 1.20.0
     hooks:
       - id: django-upgrade
         args: [--target-version, "4.2"]
   - repo: https://github.com/asottile/pyupgrade
-    rev: v3.16.0
+    rev: v3.17.0
     hooks:
       - id: pyupgrade
         args:
@@ -22,7 +22,7 @@ repos:
       - id: isort
         args: ["--profile", "black", "--filter-files"]
   - repo: https://github.com/sirosen/check-jsonschema
-    rev: 0.29.0
+    rev: 0.29.1
     hooks:
       - id: check-github-workflows
       - id: check-readthedocs
@@ -31,14 +31,14 @@ repos:
     hooks:
       - id: yamllint
   - repo: https://github.com/psf/black
-    rev: 24.4.2
+    rev: 24.8.0
     hooks:
       - id: black
         args:
           - --config
           - ./pyproject.toml
   - repo: https://github.com/PyCQA/flake8
-    rev: 7.1.0
+    rev: 7.1.1
     hooks:
       - id: flake8
         args:
