@@ -27,7 +27,7 @@ test: wait_mysql
 	docker compose run web python manage.py test --keepdb --verbosity=2 ${TEST}
 
 e2e: wait_mysql
-	docker compose --file docker compose.yml --file docker compose.test.yml up --build --exit-code-from tests db web tests
+	docker compose --file docker-compose.yml --file docker-compose.test.yml up --build --exit-code-from tests db web tests
 
 wait_mysql:
 	docker compose up -d --remove-orphans db
