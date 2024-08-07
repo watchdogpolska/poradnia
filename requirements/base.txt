@@ -1,4 +1,4 @@
-Django==4.2.14
+Django==4.2.15
 
 # Configuration
 django-environ==0.11.2
@@ -63,7 +63,7 @@ pyGravatar==0.0.6
 # django-bootstrap-pagination==1.7.1
 git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master#egg=django-bootstrap-pagination
 
-sentry-sdk==2.10.0
+sentry-sdk==2.12.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
