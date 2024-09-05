@@ -19,7 +19,7 @@ sorl-thumbnail==12.10.0
 # For user registration, either via email or social
 # Well-built with regular release cycles!
 #  version 0.62 requires config change - reverting bot change
-django-allauth==0.61.1
+django-allauth==64.2.1
 
 # For the persistance stores
 mysqlclient==2.2.4
