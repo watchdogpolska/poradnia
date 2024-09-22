@@ -1,4 +1,4 @@
-Django==4.2.13
+Django==4.2.16
 
 # Configuration
 django-environ==0.11.2
@@ -10,10 +10,10 @@ django-crispy-forms==1.14.0
 django-floppyforms==1.9.0
 
 # Models
-django-model-utils==4.5.1
+django-model-utils==5.0.0
 
 # images
-Pillow==10.3.0
+Pillow==10.4.0
 sorl-thumbnail==12.10.0
 
 # For user registration, either via email or social
@@ -30,13 +30,13 @@ django-autoslug==1.9.9
 
 # Useful things
 # Time zones support
-pytz==2024.1
-lxml==5.2.2
+pytz==2024.2
+lxml==5.3.0
 cssselect==1.2.0
 # Your custom requirements go here
 django-guardian==2.4.0
 django-mailbox==4.10.1
-django-filter==24.2
+django-filter==24.3
 # django-ajax-datatable to be installed from github fork until
 # https://github.com/morlandi/django-ajax-datatable/pull/111 is merged
 # django-ajax-datatable==4.4.5
@@ -55,7 +55,7 @@ git+https://github.com/PiotrIw/django-atom.git@master
 # django-tinycontent==0.9.0 - misses Django 3.2 compatibility migration
 # django-tinycontent is not supported anymore so watchdog maintained fork is used
 git+https://github.com/watchdogpolska/django-tinycontent.git@master
-icalendar==5.0.12
+icalendar==5.0.13
 html2text==2024.2.26
 pyGravatar==0.0.6
 
@@ -63,7 +63,7 @@ pyGravatar==0.0.6
 # django-bootstrap-pagination==1.7.1
 git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master#egg=django-bootstrap-pagination
 
-sentry-sdk==2.3.1
+sentry-sdk==2.14.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8

@@ -1,16 +1,16 @@
 # Local development dependencies go here
 -r base.txt
-Sphinx==7.3.7
+Sphinx==8.0.2
 
 # django-debug-toolbar that works with Django 1.5+
 django-debug-toolbar==4.3.0
 django-extensions==3.2.3
 graphviz==0.20.3
-factory-boy==3.3.0
+factory-boy==3.3.1
 django-coverage-plugin==3.1.0
-django-test-plus==2.2.3
+django-test-plus==2.2.4
 vcrpy==6.0.1
 ipdb==0.13.13
 
-pre-commit==3.7.1
+pre-commit==3.8.0
 
