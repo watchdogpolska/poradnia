@@ -14,6 +14,8 @@ services:
       --max_allowed_packet=1024M
     ports:
       - "3306:3306"
+    networks:
+      - poradnia-app-network
     environment:
       MYSQL_ROOT_PASSWORD: "password"
     volumes:
@@ -26,6 +28,8 @@ services:
       dockerfile: .contrib/docker/Dockerfile.gulp
     ports:
       - "35729:35729"
+    networks:
+      - poradnia-app-network
     volumes:
       - .:/app
 
@@ -58,6 +62,8 @@ services:
       MY_INTERNAL_IP: ${MY_INTERNAL_IP}
     ports:
       - "8000:8000"
+    networks:
+      - poradnia-app-network
 
   maildump:
     build:
@@ -69,7 +75,8 @@ services:
     ports:
       - "1080:1080"
       - "1025:1025"
-
+    networks:
+      - poradnia-app-network
   #
   # To use email reception uncomment below section and fill in your dev IMAP 
   # mailbox secrets in imap-to-webhook-url.env
@@ -83,7 +90,13 @@ services:
   #     COMPRESS_EML: "True"
   #   env_file:
   #     - imap-to-webhook-url.env
+  #   networks:
+  #     - poradnia-app-network
 
 volumes:
   mysql-data:
   maildump_data:
+
+networks:
+  poradnia-app-network:
+    driver: bridge
