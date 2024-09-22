@@ -23,6 +23,8 @@ services:
       DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
       DJANGO_RICH_TEXT_ENABLED: "False"
       ACCOUNT_EMAIL_VERIFICATION: "optional"
+    networks:
+      - poradnia-app-network
 
   tests:
     depends_on:
@@ -34,5 +36,11 @@ services:
     volumes: 
       - ./tests:/e2e
       - /e2e/node_modules  # un-shadow node_modules
+    networks:
+      - poradnia-app-network
     working_dir: /e2e
     command: sh -c "wait-for-it web:8000 -t 60 && npx cypress run"
+
+networks:
+  poradnia-app-network:
+    driver: bridge
