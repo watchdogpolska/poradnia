@@ -22,7 +22,7 @@ class Feedback(models.Model):
     )
     url = models.CharField(help_text=_("URL"), max_length=300)
     text = models.TextField(
-        verbose_name=_("Comment"), help_text=_("Text reported by user")
+        verbose_name=_("Content"), help_text=_("Text reported by user")
     )
     status = models.BooleanField(
         default=False, verbose_name=_("Status"), help_text=_("Feedback has been served")
