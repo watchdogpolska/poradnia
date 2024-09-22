@@ -26,7 +26,7 @@ jobs:
         docker compose --file docker-compose.yml --file docker-compose.test.yml pull
         docker pull python:${{matrix.python}}-slim
     - name: Start database early
-      run: docker-compose up -d db
+      run: docker compose up -d db
     - name: Build application
       run: make build
       env:

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-15 12:14+0100\n"
+"POT-Creation-Date: 2024-09-21 18:48+0200\n"
 "PO-Revision-Date: 2024-02-21 16:20+0124\n"
 "Last-Translator: Piotr Iwa <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -50,7 +50,7 @@ msgstr "Przedmiot"
 
 #: poradnia/advicer/filters.py:42 poradnia/advicer/filters.py:70
 #: poradnia/advicer/models.py:131
-#: poradnia/advicer/templates/advicer/advice_detail.html:119
+#: poradnia/advicer/templates/advicer/advice_detail.html:123
 #: poradnia/advicer/templates/advicer/advice_filter.html:24
 #: poradnia/advicer/views.py:151
 msgid "Advicer"
@@ -70,7 +70,7 @@ msgid "Community"
 msgstr "Gmina"
 
 #: poradnia/advicer/filters.py:51 poradnia/advicer/models.py:158
-#: poradnia/advicer/templates/advicer/advice_detail.html:74
+#: poradnia/advicer/templates/advicer/advice_detail.html:78
 #: poradnia/advicer/views.py:102
 msgid "Comment"
 msgstr "Komentarz"
@@ -103,7 +103,7 @@ msgid "Statistic data"
 msgstr "Dane statystyczne"
 
 #: poradnia/advicer/filters.py:99 poradnia/advicer/forms.py:46
-#: poradnia/advicer/templates/advicer/advice_detail.html:88
+#: poradnia/advicer/templates/advicer/advice_detail.html:92
 msgid "Details"
 msgstr "Szczegóły"
 
@@ -159,13 +159,13 @@ msgid "Person who give a advice"
 msgstr "Osoba, która udzieliła porady"
 
 #: poradnia/advicer/models.py:136
-#: poradnia/advicer/templates/advicer/advice_detail.html:91
+#: poradnia/advicer/templates/advicer/advice_detail.html:95
 #: poradnia/advicer/views.py:157
 msgid "Grant on"
 msgstr "Udzielona o"
 
 #: poradnia/advicer/models.py:146
-#: poradnia/advicer/templates/advicer/advice_detail.html:79
+#: poradnia/advicer/templates/advicer/advice_detail.html:83
 msgid "We helped?"
 msgstr "Czy udzieliliśmy porady?"
 
@@ -178,7 +178,7 @@ msgid "Visible"
 msgstr "Widoczne"
 
 #: poradnia/advicer/models.py:164
-#: poradnia/advicer/templates/advicer/advice_detail.html:69
+#: poradnia/advicer/templates/advicer/advice_detail.html:73
 #: poradnia/advicer/views.py:162
 msgid "Unit of administrative division"
 msgstr "Jednostka podziału terytorialnego"
@@ -205,7 +205,7 @@ msgid "Attachment"
 msgstr "Załącznik"
 
 #: poradnia/advicer/models.py:204
-#: poradnia/advicer/templates/advicer/advice_detail.html:129
+#: poradnia/advicer/templates/advicer/advice_detail.html:133
 msgid "Attachments"
 msgstr "Załączniki"
 
@@ -254,23 +254,23 @@ msgstr "Zagadnienie"
 msgid "Area"
 msgstr "Obszar"
 
-#: poradnia/advicer/templates/advicer/advice_detail.html:57
+#: poradnia/advicer/templates/advicer/advice_detail.html:61
 msgid "Kind of person"
 msgstr "Rodzaj osoby"
 
-#: poradnia/advicer/templates/advicer/advice_detail.html:64
+#: poradnia/advicer/templates/advicer/advice_detail.html:68
 msgid "Kind of istitution"
 msgstr "Rodzaj instytucji"
 
-#: poradnia/advicer/templates/advicer/advice_detail.html:80
+#: poradnia/advicer/templates/advicer/advice_detail.html:84
 msgid "Yes,No"
 msgstr "Tak,Nie"
 
-#: poradnia/advicer/templates/advicer/advice_detail.html:99
+#: poradnia/advicer/templates/advicer/advice_detail.html:103
 msgid "Created"
 msgstr "Utworzone"
 
-#: poradnia/advicer/templates/advicer/advice_detail.html:101
+#: poradnia/advicer/templates/advicer/advice_detail.html:105
 #, python-format
 msgid ""
 "\n"
@@ -283,11 +283,11 @@ msgstr ""
 "                                <time "
 "datetime=\"%(created_on_date)s\">%(created_on_natural)s</time>"
 
-#: poradnia/advicer/templates/advicer/advice_detail.html:108
+#: poradnia/advicer/templates/advicer/advice_detail.html:112
 msgid "Modified"
 msgstr "Zmodyfikowane"
 
-#: poradnia/advicer/templates/advicer/advice_detail.html:112
+#: poradnia/advicer/templates/advicer/advice_detail.html:116
 #, python-format
 msgid ""
 "\n"
