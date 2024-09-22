@@ -3,6 +3,7 @@
 # ```
 # docker-compose --file docker-compose.yml --file docker-compose.test.yml up --build --exit-code-from tests db web tests
 # ```
+---
 version: '2.1'
 
 services:
