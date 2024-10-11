@@ -4,7 +4,7 @@ Django==4.2.16
 django-environ==0.11.2
 
 # Forms
-django-braces==1.15.0
+django-braces==1.16.0
 django-crispy-forms==1.14.0
 # TOD0 django-floppyforms are not maintained since 2020 (last django 2.1...)
 django-floppyforms==1.9.0
