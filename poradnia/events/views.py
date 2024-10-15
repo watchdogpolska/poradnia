@@ -232,7 +232,7 @@ class EventAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         qs = qs.ajax_boolean_filter(self.request, "completed_", "completed")
         qs = qs.ajax_boolean_filter(self.request, "public_", "public")
         qs = qs.courtsession_filter(self.request)
-        return qs
+        return qs.for_user(user=self.request.user)
 
     def get_latest_by(self, request):
         return "record_max"
