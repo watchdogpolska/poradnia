@@ -4,7 +4,7 @@ Django==4.2.16
 django-environ==0.11.2
 
 # Forms
-django-braces==1.15.0
+django-braces==1.16.0
 django-crispy-forms==1.14.0
 # TOD0 django-floppyforms are not maintained since 2020 (last django 2.1...)
 django-floppyforms==1.9.0
@@ -14,7 +14,7 @@ django-model-utils==5.0.0
 
 # images
 Pillow==10.4.0
-sorl-thumbnail==12.10.0
+sorl-thumbnail==12.11.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
@@ -55,7 +55,7 @@ git+https://github.com/PiotrIw/django-atom.git@master
 # django-tinycontent==0.9.0 - misses Django 3.2 compatibility migration
 # django-tinycontent is not supported anymore so watchdog maintained fork is used
 git+https://github.com/watchdogpolska/django-tinycontent.git@master
-icalendar==5.0.13
+icalendar==6.0.1
 html2text==2024.2.26
 pyGravatar==0.0.6
 
@@ -63,14 +63,14 @@ pyGravatar==0.0.6
 # django-bootstrap-pagination==1.7.1
 git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master#egg=django-bootstrap-pagination
 
-sentry-sdk==2.14.0
+sentry-sdk==2.16.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
 django-teryt-tree==0.18.4
 django-mptt==0.16.0
 mistune==3.0.2
-django-rosetta==0.10.0
+django-rosetta==0.10.1
 
 # Additional sanitizer until a completely safe markdown package is found.
 bleach==6.1.0
