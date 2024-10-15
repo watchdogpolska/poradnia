@@ -149,14 +149,27 @@ MANAGERS = ADMINS
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#databases
 DATABASES = {"default": env.db(default="mysql:///porady")}
 
+# DATABASES["default"]["TEST"] = {
+#     #    "CHARSET": "utf8mb4",
+#     #    "COLLATION": "utf8mb4_unicode_520_ci",
+#     "CHARSET": "utf8",
+#     "COLLATION": "utf8_polish_ci",
+# }
+# # DATABASES["default"]["CHARSET"] = "utf8mb4"
+# DATABASES["default"]["CHARSET"] = "utf"
+
 DATABASES["default"]["TEST"] = {
-    #    "CHARSET": "utf8mb4",
-    #    "COLLATION": "utf8mb4_unicode_520_ci",
-    "CHARSET": "utf8",
-    "COLLATION": "utf8_polish_ci",
+    "OPTIONS": {
+        "charset": "utf8mb4",
+        "init_command": "SET NAMES 'utf8mb4' COLLATE 'utf8mb4_polish_ci'",
+    }
 }
-# DATABASES["default"]["CHARSET"] = "utf8mb4"
-DATABASES["default"]["CHARSET"] = "utf"
+
+DATABASES["default"]["OPTIONS"] = {
+    "charset": "utf8mb4",
+    "init_command": "SET NAMES 'utf8mb4' COLLATE 'utf8mb4_polish_ci'",
+}
+
 
 # END DATABASE CONFIGURATION
 
