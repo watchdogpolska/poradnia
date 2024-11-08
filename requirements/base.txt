@@ -73,4 +73,4 @@ mistune==3.0.2
 django-rosetta==0.10.1
 
 # Additional sanitizer until a completely safe markdown package is found.
-bleach==6.1.0
+bleach==6.2.0
