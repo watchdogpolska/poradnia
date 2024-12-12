@@ -1,8 +1,8 @@
 {
   "extends": [
-    "config:base"
+    "config:recommended"
   ],
-  "enabledManagers": ["dockerfile", "pip_requirements", "pip_setup"],
+  "enabledManagers": ["dockerfile", "pip_requirements", "pip_setup", "github-actions", "npm"],
   "packageRules": [
     {
       "managers": ["pip_requirements"],
