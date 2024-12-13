@@ -35,6 +35,26 @@ jobs:
       run: make check
     - name: Show settings
       run: make settings
+
+    - name: Regenerate frontend with gulp service
+      run: |
+        docker compose -f docker-compose.yml up -d gulp
+        docker compose -f docker-compose.yml logs gulp
+        docker compose -f docker-compose.yml stop gulp
+
+    - name: Check for Changes in Static Files
+      run: |
+        if ! git diff --quiet poradnia/static/; then
+          echo "Static files updated. Preparing to commit changes."
+          git config --global user.name "GitHub Actions"
+          git config --global user.email "actions@github.com"
+          git add poradnia/static/
+          git commit -m "Update static files after dependency change"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
+        else
+          echo "No changes in static files."
+        fi
+
     - name: Run unit tests
       run: make test
     - name: Run e2e tests
