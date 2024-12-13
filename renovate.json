@@ -1,17 +1,32 @@
 {
-  "extends": [
-    "config:recommended"
+  "extends": ["config:recommended"],
+  "enabledManagers": [
+    "dockerfile",
+    "pip_requirements",
+    "pip_setup",
+    "github-actions",
+    "npm"
   ],
-  "enabledManagers": ["dockerfile", "pip_requirements", "pip_setup", "github-actions", "npm"],
   "packageRules": [
     {
-      "managers": ["pip_requirements"],
-      "paths": ["requirements/local.txt","requirements/test.txt","requirements/doc.txt"],
+      "matchManagers": ["pip_requirements"],
+      "matchFileNames": [
+        "requirements/local.txt",
+        "requirements/test.txt",
+        "requirements/doc.txt"
+      ],
       "groupName": "non-production-dependencies"
     },
     {
-      "managers": ["pip_requirements"],
-      "packageNames": ["lxml", "mysqlclient", "ipdb", "gevent", "Sphinx", "pytz"],
+      "matchManagers": ["pip_requirements"],
+      "matchPackageNames": [
+        "lxml",
+        "mysqlclient",
+        "ipdb",
+        "gevent",
+        "Sphinx",
+        "pytz"
+      ],
       "automerge": true
     }
   ],
