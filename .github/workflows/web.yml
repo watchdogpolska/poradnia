@@ -36,12 +36,6 @@ jobs:
     - name: Show settings
       run: make settings
 
-    - name: Setup git repo
-      run: |
-        git status 
-        git fetch origin
-        git pull --no-rebase origin ${{ github.event.pull_request.head.ref }}
-
     - name: Regenerate frontend with gulp service
       run: |
         docker compose -f docker-compose.yml run web python manage.py collectstatic --no-input
@@ -49,6 +43,7 @@ jobs:
 
     - name: Check for Changes in Static Files
       run: |
+        git status
         if ! git diff --quiet poradnia/static/; then
           echo "Static files updated. Preparing to commit changes."
 
@@ -57,13 +52,13 @@ jobs:
           git config --global user.email "actions@github.com"
 
           # Stage and commit the changes
-          git add poradnia/static/
+          git add .
           git commit -m "Update static files after dependency change"
 
-          # Fetch the latest remote changes for the base branch
-          echo "Fetching latest changes for the base branch..."
-          git fetch origin
-          git pull --no-rebase origin ${{ github.event.pull_request.head.ref }}
+          # # Fetch the latest remote changes for the base branch
+          # echo "Fetching latest changes for the base branch..."
+          # git fetch origin
+          # git pull --no-rebase origin ${{ github.event.pull_request.head.ref }}
 
           # # Rebase onto the base branch to ensure the branch is up-to-date
           # echo "Rebasing changes onto the base branch..."
@@ -95,7 +90,7 @@ jobs:
           # fi
           
           # Push the changes back to the branch with safety
-          echo "Pushing changes back to the branch..."
+          echo "Pushing changes back to the branch associated with the PR."
           git push --force-with-lease origin HEAD:${{ github.event.pull_request.head.ref }} || {
             echo "Push failed. Ensure no conflicts or simultaneous pushes occurred.";
             exit 1;
