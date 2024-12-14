@@ -73,8 +73,8 @@ jobs:
 
             # Automatically resolve conflicts using theirs strategy for binary files
             git diff --name-only --diff-filter=U | while read file; do
-              echo "Resolving conflict in $file using 'theirs' strategy."
-              git checkout --theirs "$file" || echo "Failed to resolve conflict in $file"
+              echo "Resolving conflict in $file using 'ours' strategy."
+              git checkout --ours "$file" || echo "Failed to resolve conflict in $file"
               git add "$file"
             done
 
