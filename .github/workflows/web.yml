@@ -67,6 +67,10 @@ jobs:
             echo "Conflicted files:"
             git diff --name-only --diff-filter=U
 
+            # Show detailed conflict information
+            echo "Detailed conflict information:"
+            git diff --diff-filter=U
+
             # Automatically resolve conflicts using theirs strategy for binary files
             git diff --name-only --diff-filter=U | while read file; do
               echo "Resolving conflict in $file using 'theirs' strategy."
