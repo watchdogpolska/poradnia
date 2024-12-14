@@ -38,9 +38,7 @@ jobs:
 
     - name: Regenerate frontend with gulp service
       run: |
-        docker compose -f docker-compose.yml up -d gulp
-        docker compose -f docker-compose.yml logs gulp
-        docker compose -f docker-compose.yml stop gulp
+        docker compose -f docker-compose.yml up gulp
 
     - name: Check for Changes in Static Files
       run: |
