@@ -56,15 +56,19 @@ jobs:
           echo "Set ${{ github.event.pull_request.head.ref }} upstream"
           git branch --set-upstream-to=origin/${{ github.event.pull_request.head.ref }} ${{ github.event.pull_request.head.ref }}
           git status
+          echo "Stash changes on ${{ github.event.pull_request.head.ref }}"
           git stash
-          git pull --rebase
+          echo "Pull ${{ github.event.pull_request.head.ref }} from origin"
+          git pull
+          echo "Pop stashed changes on ${{ github.event.pull_request.head.ref }}"
           git stash pop
           # Stage and commit the changes
+          git status 
           git add .
           git commit -m "Update static files after dependency change"
           git status
           git push
-          
+          echo "Checkout back to $GITHUB_SHA commit"
           git checkout $GITHUB_SHA
           git status
 
