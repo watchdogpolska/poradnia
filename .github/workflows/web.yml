@@ -46,7 +46,6 @@ jobs:
         if ! git diff --quiet poradnia/static/; then
           echo "Static files updated. Preparing to commit changes."
 
-
           # Configure Git user for committing changes
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
