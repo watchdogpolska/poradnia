@@ -57,35 +57,37 @@ jobs:
           # Fetch the latest remote changes for the base branch
           echo "Fetching latest changes for the base branch..."
           git fetch origin
+          git pull origin
 
-          # Rebase onto the base branch to ensure the branch is up-to-date
-          echo "Rebasing changes onto the base branch..."
-          if ! git rebase origin/${{ github.event.pull_request.base.ref }}; then
-            echo "Rebase encountered conflicts. Attempting to resolve automatically..."
+          # # Rebase onto the base branch to ensure the branch is up-to-date
+          # echo "Rebasing changes onto the base branch..."
+          # if ! git rebase origin/${{ github.event.pull_request.base.ref }}; then
+          #   echo "Rebase encountered conflicts. Attempting to resolve automatically..."
 
-            # Show conflicts
-            echo "Conflicted files:"
-            git diff --name-only --diff-filter=U
+          #   # Show conflicts
+          #   echo "Conflicted files:"
+          #   git diff --name-only --diff-filter=U
 
-            # Show detailed conflict information
-            echo "Detailed conflict information:"
-            git diff --diff-filter=U
+          #   # Show detailed conflict information
+          #   echo "Detailed conflict information:"
+          #   git diff --diff-filter=U
 
-            # Automatically resolve conflicts using theirs strategy for binary files
-            git diff --name-only --diff-filter=U | while read file; do
-              echo "Resolving conflict in $file using 'ours' strategy."
-              git checkout --ours "$file" || echo "Failed to resolve conflict in $file"
-              git add "$file"
-            done
+          #   # Automatically resolve conflicts using theirs strategy for binary files
+          #   git diff --name-only --diff-filter=U | while read file; do
+          #     echo "Resolving conflict in $file using 'ours' strategy."
+          #     git checkout --ours "$file" || echo "Failed to resolve conflict in $file"
+          #     git add "$file"
+          #   done
 
-            # Continue the rebase
-            if git rebase --continue; then
-              echo "Rebase completed after resolving conflicts."
-            else
-              echo "Rebase failed despite conflict resolution. Please resolve manually."
-              exit 1
-            fi
-          fi
+          #   # Continue the rebase
+          #   if git rebase --continue; then
+          #     echo "Rebase completed after resolving conflicts."
+          #   else
+          #     echo "Rebase failed despite conflict resolution. Please resolve manually."
+          #     exit 1
+          #   fi
+          # fi
+          
           # Push the changes back to the branch with safety
           echo "Pushing changes back to the branch..."
           git push --force-with-lease origin HEAD:${{ github.event.pull_request.head.ref }} || {
