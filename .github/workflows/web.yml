@@ -50,10 +50,19 @@ jobs:
           # Configure Git user for committing changes
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
-
+          git checkout -b ${{ github.event.pull_request.head.ref }}
+          git status
+          git stash
+          git fetch origin
+          git pull --rebase
+          git stash pop
           # Stage and commit the changes
           git add .
           git commit -m "Update static files after dependency change"
+          git status
+          git push
+          
+          git checkout $GITHUB_SHA
           git status
 
           # # Fetch the latest remote changes for the base branch
@@ -91,11 +100,11 @@ jobs:
           # fi
           
           # Push the changes back to the branch with safety
-          echo "Pushing changes back to the branch associated with the PR."
-          git push --force-with-lease origin HEAD:${{ github.event.pull_request.head.ref }} || {
-            echo "Push failed. Ensure no conflicts or simultaneous pushes occurred.";
-            exit 1;
-          }
+          # echo "Pushing changes back to the branch associated with the PR."
+          # git push --force-with-lease origin HEAD:${{ github.event.pull_request.head.ref }} || {
+          #   echo "Push failed. Ensure no conflicts or simultaneous pushes occurred.";
+          #   exit 1;
+          # }
 
           echo "Static files changes have been successfully pushed."
         else
