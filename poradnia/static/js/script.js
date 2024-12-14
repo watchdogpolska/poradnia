@@ -12198,7 +12198,7 @@ window.addEventListener("load", function load(event){
 },false);
 
 //! moment.js
-//! version : 2.29.4
+//! version : 2.30.1
 //! authors : Tim Wood, Iskren Chernev, Moment.js contributors
 //! license : MIT
 //! momentjs.com
@@ -12354,24 +12354,25 @@ window.addEventListener("load", function load(event){
     }
 
     function isValid(m) {
-        if (m._isValid == null) {
-            var flags = getParsingFlags(m),
-                parsedParts = some.call(flags.parsedDateParts, function (i) {
-                    return i != null;
-                }),
-                isNowValid =
-                    !isNaN(m._d.getTime()) &&
-                    flags.overflow < 0 &&
-                    !flags.empty &&
-                    !flags.invalidEra &&
-                    !flags.invalidMonth &&
-                    !flags.invalidWeekday &&
-                    !flags.weekdayMismatch &&
-                    !flags.nullInput &&
-                    !flags.invalidFormat &&
-                    !flags.userInvalidated &&
-                    (!flags.meridiem || (flags.meridiem && parsedParts));
-
+        var flags = null,
+            parsedParts = false,
+            isNowValid = m._d && !isNaN(m._d.getTime());
+        if (isNowValid) {
+            flags = getParsingFlags(m);
+            parsedParts = some.call(flags.parsedDateParts, function (i) {
+                return i != null;
+            });
+            isNowValid =
+                flags.overflow < 0 &&
+                !flags.empty &&
+                !flags.invalidEra &&
+                !flags.invalidMonth &&
+                !flags.invalidWeekday &&
+                !flags.weekdayMismatch &&
+                !flags.nullInput &&
+                !flags.invalidFormat &&
+                !flags.userInvalidated &&
+                (!flags.meridiem || (flags.meridiem && parsedParts));
             if (m._strict) {
                 isNowValid =
                     isNowValid &&
@@ -12379,12 +12380,11 @@ window.addEventListener("load", function load(event){
                     flags.unusedTokens.length === 0 &&
                     flags.bigHour === undefined;
             }
-
-            if (Object.isFrozen == null || !Object.isFrozen(m)) {
-                m._isValid = isNowValid;
-            } else {
-                return isNowValid;
-            }
+        }
+        if (Object.isFrozen == null || !Object.isFrozen(m)) {
+            m._isValid = isNowValid;
+        } else {
+            return isNowValid;
         }
         return m._isValid;
     }
@@ -12829,12 +12829,56 @@ window.addEventListener("load", function load(event){
         return isFunction(format) ? format(output) : format.replace(/%s/i, output);
     }
 
-    var aliases = {};
-
-    function addUnitAlias(unit, shorthand) {
-        var lowerCase = unit.toLowerCase();
-        aliases[lowerCase] = aliases[lowerCase + 's'] = aliases[shorthand] = unit;
-    }
+    var aliases = {
+        D: 'date',
+        dates: 'date',
+        date: 'date',
+        d: 'day',
+        days: 'day',
+        day: 'day',
+        e: 'weekday',
+        weekdays: 'weekday',
+        weekday: 'weekday',
+        E: 'isoWeekday',
+        isoweekdays: 'isoWeekday',
+        isoweekday: 'isoWeekday',
+        DDD: 'dayOfYear',
+        dayofyears: 'dayOfYear',
+        dayofyear: 'dayOfYear',
+        h: 'hour',
+        hours: 'hour',
+        hour: 'hour',
+        ms: 'millisecond',
+        milliseconds: 'millisecond',
+        millisecond: 'millisecond',
+        m: 'minute',
+        minutes: 'minute',
+        minute: 'minute',
+        M: 'month',
+        months: 'month',
+        month: 'month',
+        Q: 'quarter',
+        quarters: 'quarter',
+        quarter: 'quarter',
+        s: 'second',
+        seconds: 'second',
+        second: 'second',
+        gg: 'weekYear',
+        weekyears: 'weekYear',
+        weekyear: 'weekYear',
+        GG: 'isoWeekYear',
+        isoweekyears: 'isoWeekYear',
+        isoweekyear: 'isoWeekYear',
+        w: 'week',
+        weeks: 'week',
+        week: 'week',
+        W: 'isoWeek',
+        isoweeks: 'isoWeek',
+        isoweek: 'isoWeek',
+        y: 'year',
+        years: 'year',
+        year: 'year',
+    };
 
     function normalizeUnits(units) {
         return typeof units === 'string'
@@ -12859,11 +12903,24 @@ window.addEventListener("load", function load(event){
         return normalizedInput;
     }
 
-    var priorities = {};
-
-    function addUnitPriority(unit, priority) {
-        priorities[unit] = priority;
-    }
+    var priorities = {
+        date: 9,
+        day: 11,
+        weekday: 11,
+        isoWeekday: 11,
+        dayOfYear: 4,
+        hour: 13,
+        millisecond: 16,
+        minute: 14,
+        month: 8,
+        quarter: 7,
+        second: 15,
+        weekYear: 1,
+        isoWeekYear: 1,
+        week: 5,
+        isoWeek: 5,
+        year: 1,
+    };
 
     function getPrioritizedUnits(unitsObj) {
         var units = [],
@@ -12877,96 +12934,6 @@ window.addEventListener("load", function load(event){
             return a.priority - b.priority;
         });
         return units;
-    }
-
-    function isLeapYear(year) {
-        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
-    }
-
-    function absFloor(number) {
-        if (number < 0) {
-            // -0 -> 0
-            return Math.ceil(number) || 0;
-        } else {
-            return Math.floor(number);
-        }
-    }
-
-    function toInt(argumentForCoercion) {
-        var coercedNumber = +argumentForCoercion,
-            value = 0;
-
-        if (coercedNumber !== 0 && isFinite(coercedNumber)) {
-            value = absFloor(coercedNumber);
-        }
-
-        return value;
-    }
-
-    function makeGetSet(unit, keepTime) {
-        return function (value) {
-            if (value != null) {
-                set$1(this, unit, value);
-                hooks.updateOffset(this, keepTime);
-                return this;
-            } else {
-                return get(this, unit);
-            }
-        };
-    }
-
-    function get(mom, unit) {
-        return mom.isValid()
-            ? mom._d['get' + (mom._isUTC ? 'UTC' : '') + unit]()
-            : NaN;
-    }
-
-    function set$1(mom, unit, value) {
-        if (mom.isValid() && !isNaN(value)) {
-            if (
-                unit === 'FullYear' &&
-                isLeapYear(mom.year()) &&
-                mom.month() === 1 &&
-                mom.date() === 29
-            ) {
-                value = toInt(value);
-                mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](
-                    value,
-                    mom.month(),
-                    daysInMonth(value, mom.month())
-                );
-            } else {
-                mom._d['set' + (mom._isUTC ? 'UTC' : '') + unit](value);
-            }
-        }
-    }
-
-    // MOMENTS
-
-    function stringGet(units) {
-        units = normalizeUnits(units);
-        if (isFunction(this[units])) {
-            return this[units]();
-        }
-        return this;
-    }
-
-    function stringSet(units, value) {
-        if (typeof units === 'object') {
-            units = normalizeObjectUnits(units);
-            var prioritized = getPrioritizedUnits(units),
-                i,
-                prioritizedLen = prioritized.length;
-            for (i = 0; i < prioritizedLen; i++) {
-                this[prioritized[i].unit](units[prioritized[i].unit]);
-            }
-        } else {
-            units = normalizeUnits(units);
-            if (isFunction(this[units])) {
-                return this[units](value);
-            }
-        }
-        return this;
     }
 
     var match1 = /\d/, //       0 - 9
@@ -12989,6 +12956,8 @@ window.addEventListener("load", function load(event){
         // includes scottish gaelic two word and hyphenated months
         matchWord =
             /[0-9]{0,256}['a-z\u00A0-\u05FF\u0700-\uD7FF\uF900-\uFDCF\uFDF0-\uFF07\uFF10-\uFFEF]{1,256}|[\u0600-\u06FF\/]{1,256}(\s*?[\u0600-\u06FF]{1,256}){1,2}/i,
+        match1to2NoLeadingZero = /^[1-9]\d?/, //         1-99
+        match1to2HasZero = /^([1-9]\d|\d)/, //           0-99
         regexes;
 
     regexes = {};
@@ -13027,6 +12996,26 @@ window.addEventListener("load", function load(event){
         return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
     }
 
+    function absFloor(number) {
+        if (number < 0) {
+            // -0 -> 0
+            return Math.ceil(number) || 0;
+        } else {
+            return Math.floor(number);
+        }
+    }
+
+    function toInt(argumentForCoercion) {
+        var coercedNumber = +argumentForCoercion,
+            value = 0;
+
+        if (coercedNumber !== 0 && isFinite(coercedNumber)) {
+            value = absFloor(coercedNumber);
+        }
+
+        return value;
+    }
+
     var tokens = {};
 
     function addParseToken(token, callback) {
@@ -13060,6 +13049,10 @@ window.addEventListener("load", function load(event){
         }
     }
 
+    function isLeapYear(year) {
+        return (year % 4 === 0 && year % 100 !== 0) || year % 400 === 0;
+    }
+
     var YEAR = 0,
         MONTH = 1,
         DATE = 2,
@@ -13069,6 +13062,173 @@ window.addEventListener("load", function load(event){
         MILLISECOND = 6,
         WEEK = 7,
         WEEKDAY = 8;
+
+    // FORMATTING
+
+    addFormatToken('Y', 0, 0, function () {
+        var y = this.year();
+        return y <= 9999 ? zeroFill(y, 4) : '+' + y;
+    });
+
+    addFormatToken(0, ['YY', 2], 0, function () {
+        return this.year() % 100;
+    });
+
+    addFormatToken(0, ['YYYY', 4], 0, 'year');
+    addFormatToken(0, ['YYYYY', 5], 0, 'year');
+    addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
+
+    // PARSING
+
+    addRegexToken('Y', matchSigned);
+    addRegexToken('YY', match1to2, match2);
+    addRegexToken('YYYY', match1to4, match4);
+    addRegexToken('YYYYY', match1to6, match6);
+    addRegexToken('YYYYYY', match1to6, match6);
+
+    addParseToken(['YYYYY', 'YYYYYY'], YEAR);
+    addParseToken('YYYY', function (input, array) {
+        array[YEAR] =
+            input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
+    });
+    addParseToken('YY', function (input, array) {
+        array[YEAR] = hooks.parseTwoDigitYear(input);
+    });
+    addParseToken('Y', function (input, array) {
+        array[YEAR] = parseInt(input, 10);
+    });
+
+    // HELPERS
+
+    function daysInYear(year) {
+        return isLeapYear(year) ? 366 : 365;
+    }
+
+    // HOOKS
+
+    hooks.parseTwoDigitYear = function (input) {
+        return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
+    };
+
+    // MOMENTS
+
+    var getSetYear = makeGetSet('FullYear', true);
+
+    function getIsLeapYear() {
+        return isLeapYear(this.year());
+    }
+
+    function makeGetSet(unit, keepTime) {
+        return function (value) {
+            if (value != null) {
+                set$1(this, unit, value);
+                hooks.updateOffset(this, keepTime);
+                return this;
+            } else {
+                return get(this, unit);
+            }
+        };
+    }
+
+    function get(mom, unit) {
+        if (!mom.isValid()) {
+            return NaN;
+        }
+
+        var d = mom._d,
+            isUTC = mom._isUTC;
+
+        switch (unit) {
+            case 'Milliseconds':
+                return isUTC ? d.getUTCMilliseconds() : d.getMilliseconds();
+            case 'Seconds':
+                return isUTC ? d.getUTCSeconds() : d.getSeconds();
+            case 'Minutes':
+                return isUTC ? d.getUTCMinutes() : d.getMinutes();
+            case 'Hours':
+                return isUTC ? d.getUTCHours() : d.getHours();
+            case 'Date':
+                return isUTC ? d.getUTCDate() : d.getDate();
+            case 'Day':
+                return isUTC ? d.getUTCDay() : d.getDay();
+            case 'Month':
+                return isUTC ? d.getUTCMonth() : d.getMonth();
+            case 'FullYear':
+                return isUTC ? d.getUTCFullYear() : d.getFullYear();
+            default:
+                return NaN; // Just in case
+        }
+    }
+
+    function set$1(mom, unit, value) {
+        var d, isUTC, year, month, date;
+
+        if (!mom.isValid() || isNaN(value)) {
+            return;
+        }
+
+        d = mom._d;
+        isUTC = mom._isUTC;
+
+        switch (unit) {
+            case 'Milliseconds':
+                return void (isUTC
+                    ? d.setUTCMilliseconds(value)
+                    : d.setMilliseconds(value));
+            case 'Seconds':
+                return void (isUTC ? d.setUTCSeconds(value) : d.setSeconds(value));
+            case 'Minutes':
+                return void (isUTC ? d.setUTCMinutes(value) : d.setMinutes(value));
+            case 'Hours':
+                return void (isUTC ? d.setUTCHours(value) : d.setHours(value));
+            case 'Date':
+                return void (isUTC ? d.setUTCDate(value) : d.setDate(value));
+            // case 'Day': // Not real
+            //    return void (isUTC ? d.setUTCDay(value) : d.setDay(value));
+            // case 'Month': // Not used because we need to pass two variables
+            //     return void (isUTC ? d.setUTCMonth(value) : d.setMonth(value));
+            case 'FullYear':
+                break; // See below ...
+            default:
+                return; // Just in case
+        }
+
+        year = value;
+        month = mom.month();
+        date = mom.date();
+        date = date === 29 && month === 1 && !isLeapYear(year) ? 28 : date;
+        void (isUTC
+            ? d.setUTCFullYear(year, month, date)
+            : d.setFullYear(year, month, date));
+    }
+
+    // MOMENTS
+
+    function stringGet(units) {
+        units = normalizeUnits(units);
+        if (isFunction(this[units])) {
+            return this[units]();
+        }
+        return this;
+    }
+
+    function stringSet(units, value) {
+        if (typeof units === 'object') {
+            units = normalizeObjectUnits(units);
+            var prioritized = getPrioritizedUnits(units),
+                i,
+                prioritizedLen = prioritized.length;
+            for (i = 0; i < prioritizedLen; i++) {
+                this[prioritized[i].unit](units[prioritized[i].unit]);
+            }
+        } else {
+            units = normalizeUnits(units);
+            if (isFunction(this[units])) {
+                return this[units](value);
+            }
+        }
+        return this;
+    }
 
     function mod(n, x) {
         return ((n % x) + x) % x;
@@ -13118,17 +13278,9 @@ window.addEventListener("load", function load(event){
         return this.localeData().months(this, format);
     });
 
-    // ALIASES
-
-    addUnitAlias('month', 'M');
-
-    // PRIORITY
-
-    addUnitPriority('month', 8);
-
     // PARSING
 
-    addRegexToken('M', match1to2);
+    addRegexToken('M', match1to2, match1to2NoLeadingZero);
     addRegexToken('MM', match1to2, match2);
     addRegexToken('MMM', function (isStrict, locale) {
         return locale.monthsShortRegex(isStrict);
@@ -13294,8 +13446,6 @@ window.addEventListener("load", function load(event){
     // MOMENTS
 
     function setMonth(mom, value) {
-        var dayOfMonth;
-
         if (!mom.isValid()) {
             // No op
             return mom;
@@ -13313,8 +13463,13 @@ window.addEventListener("load", function load(event){
             }
         }
 
-        dayOfMonth = Math.min(mom.date(), daysInMonth(mom.year(), value));
-        mom._d['set' + (mom._isUTC ? 'UTC' : '') + 'Month'](value, dayOfMonth);
+        var month = value,
+            date = mom.date();
+
+        date = date < 29 ? date : Math.min(date, daysInMonth(mom.year(), month));
+        void (mom._isUTC
+            ? mom._d.setUTCMonth(month, date)
+            : mom._d.setMonth(month, date));
         return mom;
     }
 
@@ -13381,27 +13536,24 @@ window.addEventListener("load", function load(event){
             longPieces = [],
             mixedPieces = [],
             i,
-            mom;
+            mom,
+            shortP,
+            longP;
         for (i = 0; i < 12; i++) {
             // make the regex if we don't have it already
             mom = createUTC([2000, i]);
-            shortPieces.push(this.monthsShort(mom, ''));
-            longPieces.push(this.months(mom, ''));
-            mixedPieces.push(this.months(mom, ''));
-            mixedPieces.push(this.monthsShort(mom, ''));
+            shortP = regexEscape(this.monthsShort(mom, ''));
+            longP = regexEscape(this.months(mom, ''));
+            shortPieces.push(shortP);
+            longPieces.push(longP);
+            mixedPieces.push(longP);
+            mixedPieces.push(shortP);
         }
         // Sorting makes sure if one month (or abbr) is a prefix of another it
         // will match the longer piece.
         shortPieces.sort(cmpLenRev);
         longPieces.sort(cmpLenRev);
         mixedPieces.sort(cmpLenRev);
-        for (i = 0; i < 12; i++) {
-            shortPieces[i] = regexEscape(shortPieces[i]);
-            longPieces[i] = regexEscape(longPieces[i]);
-        }
-        for (i = 0; i < 24; i++) {
-            mixedPieces[i] = regexEscape(mixedPieces[i]);
-        }
 
         this._monthsRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
         this._monthsShortRegex = this._monthsRegex;
@@ -13413,69 +13565,6 @@ window.addEventListener("load", function load(event){
             '^(' + shortPieces.join('|') + ')',
             'i'
         );
-    }
-
-    // FORMATTING
-
-    addFormatToken('Y', 0, 0, function () {
-        var y = this.year();
-        return y <= 9999 ? zeroFill(y, 4) : '+' + y;
-    });
-
-    addFormatToken(0, ['YY', 2], 0, function () {
-        return this.year() % 100;
-    });
-
-    addFormatToken(0, ['YYYY', 4], 0, 'year');
-    addFormatToken(0, ['YYYYY', 5], 0, 'year');
-    addFormatToken(0, ['YYYYYY', 6, true], 0, 'year');
-
-    // ALIASES
-
-    addUnitAlias('year', 'y');
-
-    // PRIORITIES
-
-    addUnitPriority('year', 1);
-
-    // PARSING
-
-    addRegexToken('Y', matchSigned);
-    addRegexToken('YY', match1to2, match2);
-    addRegexToken('YYYY', match1to4, match4);
-    addRegexToken('YYYYY', match1to6, match6);
-    addRegexToken('YYYYYY', match1to6, match6);
-
-    addParseToken(['YYYYY', 'YYYYYY'], YEAR);
-    addParseToken('YYYY', function (input, array) {
-        array[YEAR] =
-            input.length === 2 ? hooks.parseTwoDigitYear(input) : toInt(input);
-    });
-    addParseToken('YY', function (input, array) {
-        array[YEAR] = hooks.parseTwoDigitYear(input);
-    });
-    addParseToken('Y', function (input, array) {
-        array[YEAR] = parseInt(input, 10);
-    });
-
-    // HELPERS
-
-    function daysInYear(year) {
-        return isLeapYear(year) ? 366 : 365;
-    }
-
-    // HOOKS
-
-    hooks.parseTwoDigitYear = function (input) {
-        return toInt(input) + (toInt(input) > 68 ? 1900 : 2000);
-    };
-
-    // MOMENTS
-
-    var getSetYear = makeGetSet('FullYear', true);
-
-    function getIsLeapYear() {
-        return isLeapYear(this.year());
     }
 
     function createDate(y, m, d, h, M, s, ms) {
@@ -13583,21 +13672,11 @@ window.addEventListener("load", function load(event){
     addFormatToken('w', ['ww', 2], 'wo', 'week');
     addFormatToken('W', ['WW', 2], 'Wo', 'isoWeek');
 
-    // ALIASES
-
-    addUnitAlias('week', 'w');
-    addUnitAlias('isoWeek', 'W');
-
-    // PRIORITIES
-
-    addUnitPriority('week', 5);
-    addUnitPriority('isoWeek', 5);
-
     // PARSING
 
-    addRegexToken('w', match1to2);
+    addRegexToken('w', match1to2, match1to2NoLeadingZero);
     addRegexToken('ww', match1to2, match2);
-    addRegexToken('W', match1to2);
+    addRegexToken('W', match1to2, match1to2NoLeadingZero);
     addRegexToken('WW', match1to2, match2);
 
     addWeekParseToken(
@@ -13658,17 +13737,6 @@ window.addEventListener("load", function load(event){
 
     addFormatToken('e', 0, 0, 'weekday');
     addFormatToken('E', 0, 0, 'isoWeekday');
-
-    // ALIASES
-
-    addUnitAlias('day', 'd');
-    addUnitAlias('weekday', 'e');
-    addUnitAlias('isoWeekday', 'E');
-
-    // PRIORITY
-    addUnitPriority('day', 11);
-    addUnitPriority('weekday', 11);
-    addUnitPriority('isoWeekday', 11);
 
     // PARSING
 
@@ -13749,24 +13817,24 @@ window.addEventListener("load", function load(event){
         return m === true
             ? shiftWeekdays(weekdays, this._week.dow)
             : m
-            ? weekdays[m.day()]
-            : weekdays;
+              ? weekdays[m.day()]
+              : weekdays;
     }
 
     function localeWeekdaysShort(m) {
         return m === true
             ? shiftWeekdays(this._weekdaysShort, this._week.dow)
             : m
-            ? this._weekdaysShort[m.day()]
-            : this._weekdaysShort;
+              ? this._weekdaysShort[m.day()]
+              : this._weekdaysShort;
     }
 
     function localeWeekdaysMin(m) {
         return m === true
             ? shiftWeekdays(this._weekdaysMin, this._week.dow)
             : m
-            ? this._weekdaysMin[m.day()]
-            : this._weekdaysMin;
+              ? this._weekdaysMin[m.day()]
+              : this._weekdaysMin;
     }
 
     function handleStrictParse$1(weekdayName, format, strict) {
@@ -13915,7 +13983,8 @@ window.addEventListener("load", function load(event){
         if (!this.isValid()) {
             return input != null ? this : NaN;
         }
-        var day = this._isUTC ? this._d.getUTCDay() : this._d.getDay();
+
+        var day = get(this, 'Day');
         if (input != null) {
             input = parseWeekday(input, this.localeData());
             return this.add(input - day, 'd');
@@ -14114,13 +14183,6 @@ window.addEventListener("load", function load(event){
     meridiem('a', true);
     meridiem('A', false);
 
-    // ALIASES
-
-    addUnitAlias('hour', 'h');
-
-    // PRIORITY
-    addUnitPriority('hour', 13);
-
     // PARSING
 
     function matchMeridiem(isStrict, locale) {
@@ -14129,9 +14191,9 @@ window.addEventListener("load", function load(event){
 
     addRegexToken('a', matchMeridiem);
     addRegexToken('A', matchMeridiem);
-    addRegexToken('H', match1to2);
-    addRegexToken('h', match1to2);
-    addRegexToken('k', match1to2);
+    addRegexToken('H', match1to2, match1to2HasZero);
+    addRegexToken('h', match1to2, match1to2NoLeadingZero);
+    addRegexToken('k', match1to2, match1to2NoLeadingZero);
     addRegexToken('HH', match1to2, match2);
     addRegexToken('hh', match1to2, match2);
     addRegexToken('kk', match1to2, match2);
@@ -14281,7 +14343,8 @@ window.addEventListener("load", function load(event){
 
     function isLocaleNameSane(name) {
         // Prevent names that look like filesystem paths, i.e contain '/' or '\'
-        return name.match('^[^/\\\\]*$') != null;
+        // Ensure name is available and function returns boolean
+        return !!(name && name.match('^[^/\\\\]*$'));
     }
 
     function loadLocale(name) {
@@ -14473,21 +14536,21 @@ window.addEventListener("load", function load(event){
                 a[MONTH] < 0 || a[MONTH] > 11
                     ? MONTH
                     : a[DATE] < 1 || a[DATE] > daysInMonth(a[YEAR], a[MONTH])
-                    ? DATE
-                    : a[HOUR] < 0 ||
-                      a[HOUR] > 24 ||
-                      (a[HOUR] === 24 &&
-                          (a[MINUTE] !== 0 ||
-                              a[SECOND] !== 0 ||
-                              a[MILLISECOND] !== 0))
-                    ? HOUR
-                    : a[MINUTE] < 0 || a[MINUTE] > 59
-                    ? MINUTE
-                    : a[SECOND] < 0 || a[SECOND] > 59
-                    ? SECOND
-                    : a[MILLISECOND] < 0 || a[MILLISECOND] > 999
-                    ? MILLISECOND
-                    : -1;
+                      ? DATE
+                      : a[HOUR] < 0 ||
+                          a[HOUR] > 24 ||
+                          (a[HOUR] === 24 &&
+                              (a[MINUTE] !== 0 ||
+                                  a[SECOND] !== 0 ||
+                                  a[MILLISECOND] !== 0))
+                        ? HOUR
+                        : a[MINUTE] < 0 || a[MINUTE] > 59
+                          ? MINUTE
+                          : a[SECOND] < 0 || a[SECOND] > 59
+                            ? SECOND
+                            : a[MILLISECOND] < 0 || a[MILLISECOND] > 999
+                              ? MILLISECOND
+                              : -1;
 
             if (
                 getParsingFlags(m)._overflowDayOfYear &&
@@ -15928,16 +15991,16 @@ window.addEventListener("load", function load(event){
         return diff < -6
             ? 'sameElse'
             : diff < -1
-            ? 'lastWeek'
-            : diff < 0
-            ? 'lastDay'
-            : diff < 1
-            ? 'sameDay'
-            : diff < 2
-            ? 'nextDay'
-            : diff < 7
-            ? 'nextWeek'
-            : 'sameElse';
+              ? 'lastWeek'
+              : diff < 0
+                ? 'lastDay'
+                : diff < 1
+                  ? 'sameDay'
+                  : diff < 2
+                    ? 'nextDay'
+                    : diff < 7
+                      ? 'nextWeek'
+                      : 'sameElse';
     }
 
     function calendar$1(time, formats) {
@@ -16745,16 +16808,22 @@ window.addEventListener("load", function load(event){
             mixedPieces = [],
             i,
             l,
+            erasName,
+            erasAbbr,
+            erasNarrow,
             eras = this.eras();
 
         for (i = 0, l = eras.length; i < l; ++i) {
-            namePieces.push(regexEscape(eras[i].name));
-            abbrPieces.push(regexEscape(eras[i].abbr));
-            narrowPieces.push(regexEscape(eras[i].narrow));
+            erasName = regexEscape(eras[i].name);
+            erasAbbr = regexEscape(eras[i].abbr);
+            erasNarrow = regexEscape(eras[i].narrow);
 
-            mixedPieces.push(regexEscape(eras[i].name));
-            mixedPieces.push(regexEscape(eras[i].abbr));
-            mixedPieces.push(regexEscape(eras[i].narrow));
+            namePieces.push(erasName);
+            abbrPieces.push(erasAbbr);
+            narrowPieces.push(erasNarrow);
+            mixedPieces.push(erasName);
+            mixedPieces.push(erasAbbr);
+            mixedPieces.push(erasNarrow);
         }
 
         this._erasRegex = new RegExp('^(' + mixedPieces.join('|') + ')', 'i');
@@ -16787,14 +16856,6 @@ window.addEventListener("load", function load(event){
 
     // ALIASES
 
-    addUnitAlias('weekYear', 'gg');
-    addUnitAlias('isoWeekYear', 'GG');
-
-    // PRIORITY
-
-    addUnitPriority('weekYear', 1);
-    addUnitPriority('isoWeekYear', 1);
-
     // PARSING
 
     addRegexToken('G', matchSigned);
@@ -16824,7 +16885,7 @@ window.addEventListener("load", function load(event){
             this,
             input,
             this.week(),
-            this.weekday(),
+            this.weekday() + this.localeData()._week.dow,
             this.localeData()._week.dow,
             this.localeData()._week.doy
         );
@@ -16886,14 +16947,6 @@ window.addEventListener("load", function load(event){
 
     addFormatToken('Q', 0, 'Qo', 'quarter');
 
-    // ALIASES
-
-    addUnitAlias('quarter', 'Q');
-
-    // PRIORITY
-
-    addUnitPriority('quarter', 7);
-
     // PARSING
 
     addRegexToken('Q', match1);
@@ -16913,16 +16966,9 @@ window.addEventListener("load", function load(event){
 
     addFormatToken('D', ['DD', 2], 'Do', 'date');
 
-    // ALIASES
-
-    addUnitAlias('date', 'D');
-
-    // PRIORITY
-    addUnitPriority('date', 9);
-
     // PARSING
 
-    addRegexToken('D', match1to2);
+    addRegexToken('D', match1to2, match1to2NoLeadingZero);
     addRegexToken('DD', match1to2, match2);
     addRegexToken('Do', function (isStrict, locale) {
         // TODO: Remove "ordinalParse" fallback in next major release.
@@ -16943,13 +16989,6 @@ window.addEventListener("load", function load(event){
     // FORMATTING
 
     addFormatToken('DDD', ['DDDD', 3], 'DDDo', 'dayOfYear');
-
-    // ALIASES
-
-    addUnitAlias('dayOfYear', 'DDD');
-
-    // PRIORITY
-    addUnitPriority('dayOfYear', 4);
 
     // PARSING
 
@@ -16975,17 +17014,9 @@ window.addEventListener("load", function load(event){
 
     addFormatToken('m', ['mm', 2], 0, 'minute');
 
-    // ALIASES
-
-    addUnitAlias('minute', 'm');
-
-    // PRIORITY
-
-    addUnitPriority('minute', 14);
-
     // PARSING
 
-    addRegexToken('m', match1to2);
+    addRegexToken('m', match1to2, match1to2HasZero);
     addRegexToken('mm', match1to2, match2);
     addParseToken(['m', 'mm'], MINUTE);
 
@@ -16997,17 +17028,9 @@ window.addEventListener("load", function load(event){
 
     addFormatToken('s', ['ss', 2], 0, 'second');
 
-    // ALIASES
-
-    addUnitAlias('second', 's');
-
-    // PRIORITY
-
-    addUnitPriority('second', 15);
-
     // PARSING
 
-    addRegexToken('s', match1to2);
+    addRegexToken('s', match1to2, match1to2HasZero);
     addRegexToken('ss', match1to2, match2);
     addParseToken(['s', 'ss'], SECOND);
 
@@ -17044,14 +17067,6 @@ window.addEventListener("load", function load(event){
     addFormatToken(0, ['SSSSSSSSS', 9], 0, function () {
         return this.millisecond() * 1000000;
     });
-
-    // ALIASES
-
-    addUnitAlias('millisecond', 'ms');
-
-    // PRIORITY
-
-    addUnitPriority('millisecond', 16);
 
     // PARSING
 
@@ -17360,12 +17375,12 @@ window.addEventListener("load", function load(event){
                     toInt((number % 100) / 10) === 1
                         ? 'th'
                         : b === 1
-                        ? 'st'
-                        : b === 2
-                        ? 'nd'
-                        : b === 3
-                        ? 'rd'
-                        : 'th';
+                          ? 'st'
+                          : b === 2
+                            ? 'nd'
+                            : b === 3
+                              ? 'rd'
+                              : 'th';
             return number + output;
         },
     });
@@ -17538,19 +17553,6 @@ window.addEventListener("load", function load(event){
         }
     }
 
-    // TODO: Use this.as('ms')?
-    function valueOf$1() {
-        if (!this.isValid()) {
-            return NaN;
-        }
-        return (
-            this._milliseconds +
-            this._days * 864e5 +
-            (this._months % 12) * 2592e6 +
-            toInt(this._months / 12) * 31536e6
-        );
-    }
-
     function makeAs(alias) {
         return function () {
             return this.as(alias);
@@ -17565,7 +17567,8 @@ window.addEventListener("load", function load(event){
         asWeeks = makeAs('w'),
         asMonths = makeAs('M'),
         asQuarters = makeAs('Q'),
-        asYears = makeAs('y');
+        asYears = makeAs('y'),
+        valueOf$1 = asMilliseconds;
 
     function clone$1() {
         return createDuration(this);
@@ -17834,7 +17837,7 @@ window.addEventListener("load", function load(event){
 
     //! moment.js
 
-    hooks.version = '2.29.4';
+    hooks.version = '2.30.1';
 
     setHookCallback(createLocal);
 
@@ -21532,26 +21535,26 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
     });
 })(jQuery);
 
-/*! DataTables 1.13.4
- * ©2008-2023 SpryMedia Ltd - datatables.net/license
+/*! DataTables 1.13.11
+ * ©2008-2024 SpryMedia Ltd - datatables.net/license
  */
 
 /**
  * @summary     DataTables
  * @description Paginate, search and order HTML tables
- * @version     1.13.4
+ * @version     1.13.11
  * @author      SpryMedia Ltd
  * @contact     www.datatables.net
  * @copyright   SpryMedia Ltd.
  *
  * This source file is free software, available under the following license:
- *   MIT license - http://datatables.net/license
+ *   MIT license - https://datatables.net/license
  *
  * This source file is distributed in the hope that it will be useful, but
  * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
  * or FITNESS FOR A PARTICULAR PURPOSE. See the license files for details.
  *
- * For details please refer to: http://www.datatables.net
+ * For details please refer to: https://www.datatables.net
  */
 
 /*jslint evil: true, undef: true, browser: true */
@@ -21572,7 +21575,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 		// returns a factory function that expects the window object
 		var jq = require('jquery');
 
-		if (typeof window !== 'undefined') {
+		if (typeof window === 'undefined') {
 			module.exports = function (root, $) {
 				if ( ! root ) {
 					// CommonJS environments without a window global must pass a
@@ -21588,7 +21591,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 			};
 		}
 		else {
-			return factory( jq, window, window.document );
+			module.exports = factory( jq, window, window.document );
 		}
 	}
 	else {
@@ -22879,7 +22882,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 	// Escape regular expression special characters
 	var _re_escape_regex = new RegExp( '(\\' + [ '/', '.', '*', '+', '?', '|', '(', ')', '[', ']', '{', '}', '\\', '$', '^', '-' ].join('|\\') + ')', 'g' );
 	
-	// http://en.wikipedia.org/wiki/Foreign_exchange_market
+	// https://en.wikipedia.org/wiki/Foreign_exchange_market
 	// - \u20BD - Russian ruble.
 	// - \u20a9 - South Korean Won
 	// - \u20BA - Turkish Lira
@@ -22918,7 +22921,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 	
 	
 	var _isNumber = function ( d, decimalPoint, formatted ) {
-		let type = typeof d;
+		var type = typeof d;
 		var strType = type === 'string';
 	
 		if ( type === 'number' || type === 'bigint') {
@@ -23052,7 +23055,9 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 	
 	
 	var _stripHtml = function ( d ) {
-		return d.replace( _re_html, '' );
+		return d
+			.replace( _re_html, '' ) // Complete tags
+			.replace(/<script/i, ''); // Safety for incomplete script tag
 	};
 	
 	
@@ -23426,7 +23431,10 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 								continue;
 							}
 		
-							if ( data === null || data[ a[i] ] === undefined ) {
+							if (data === null || data[ a[i] ] === null) {
+								return null;
+							}
+							else if ( data === undefined || data[ a[i] ] === undefined ) {
 								return undefined;
 							}
 	
@@ -23873,6 +23881,12 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 				oCol.aDataSort = [ oOptions.iDataSort ];
 			}
 			_fnMap( oCol, oOptions, "aDataSort" );
+	
+			// Fall back to the aria-label attribute on the table header if no ariaTitle is
+			// provided.
+			if (! oCol.ariaTitle) {
+				oCol.ariaTitle = th.attr("aria-label");
+			}
 		}
 	
 		/* Cache the data get and set functions for speed */
@@ -25597,11 +25611,16 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 		settings.iDraw++;
 		_fnProcessingDisplay( settings, true );
 	
+		// Keep track of drawHold state to handle scrolling after the Ajax call
+		var drawHold = settings._drawHold;
+	
 		_fnBuildAjax(
 			settings,
 			_fnAjaxParameters( settings ),
 			function(json) {
+				settings._drawHold = drawHold;
 				_fnAjaxUpdateDraw( settings, json );
+				settings._drawHold = false;
 			}
 		);
 	}
@@ -25831,7 +25850,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 			/* Update all other filter input elements for the new display */
 			var n = features.f;
 			var val = !this.value ? "" : this.value; // mental IE8 fix :-(
-			if(previousSearch.return && event.key !== "Enter") {
+			if(previousSearch['return'] && event.key !== "Enter") {
 				return;
 			}
 			/* Now do the filter */
@@ -25841,7 +25860,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 					"bRegex": previousSearch.bRegex,
 					"bSmart": previousSearch.bSmart ,
 					"bCaseInsensitive": previousSearch.bCaseInsensitive,
-					"return": previousSearch.return
+					"return": previousSearch['return']
 				} );
 	
 				// Need to redraw, without resorting
@@ -25865,7 +25884,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 					_fnThrottle( searchFn, searchDelay ) :
 					searchFn
 			)
-			.on( 'mouseup', function(e) {
+			.on( 'mouseup.DT', function(e) {
 				// Edge fix! Edge 17 does not trigger anything other than mouse events when clicking
 				// on the clear icon (Edge bug 17584515). This is safe in other browsers as `searchFn`
 				// checks the value to see if it has changed. In other browsers it won't have.
@@ -25916,7 +25935,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 			oPrevSearch.bRegex = oFilter.bRegex;
 			oPrevSearch.bSmart = oFilter.bSmart;
 			oPrevSearch.bCaseInsensitive = oFilter.bCaseInsensitive;
-			oPrevSearch.return = oFilter.return;
+			oPrevSearch['return'] = oFilter['return'];
 		};
 		var fnRegex = function ( o ) {
 			// Backwards compatibility with the bEscapeRegex option
@@ -25931,7 +25950,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 		if ( _fnDataSource( oSettings ) != 'ssp' )
 		{
 			/* Global filter */
-			_fnFilter( oSettings, oInput.sSearch, iForce, fnRegex(oInput), oInput.bSmart, oInput.bCaseInsensitive, oInput.return );
+			_fnFilter( oSettings, oInput.sSearch, iForce, fnRegex(oInput), oInput.bSmart, oInput.bCaseInsensitive );
 			fnSaveFilter( oInput );
 	
 			/* Now do the individual column filter */
@@ -26100,9 +26119,13 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 			 * 
 			 * ^(?=.*?\bone\b)(?=.*?\btwo three\b)(?=.*?\bfour\b).*$
 			 */
-			var a = $.map( search.match( /"[^"]+"|[^ ]+/g ) || [''], function ( word ) {
+			var a = $.map( search.match( /["\u201C][^"\u201D]+["\u201D]|[^ ]+/g ) || [''], function ( word ) {
 				if ( word.charAt(0) === '"' ) {
 					var m = word.match( /^"(.*)"$/ );
+					word = m ? m[1] : word;
+				}
+				else if ( word.charAt(0) === '\u201C' ) {
+					var m = word.match( /^\u201C(.*)\u201D$/ );
 					word = m ? m[1] : word;
 				}
 	
@@ -26164,7 +26187,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 					// If it looks like there is an HTML entity in the string,
 					// attempt to decode it so sorting works as expected. Note that
 					// we could use a single line of jQuery to do this, but the DOM
-					// method used here is much faster http://jsperf.com/html-decode
+					// method used here is much faster https://jsperf.com/html-decode
 					if ( cellData.indexOf && cellData.indexOf('&') !== -1 ) {
 						__filter_div.innerHTML = cellData;
 						cellData = __filter_div_textContent ?
@@ -27189,11 +27212,13 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 		}
 	
 		/* Convert any user input sizes into pixel sizes */
+		var sizes = _fnConvertToWidth(_pluck(columns, 'sWidthOrig'), tableContainer);
+	
 		for ( i=0 ; i<visibleColumns.length ; i++ ) {
 			column = columns[ visibleColumns[i] ];
 	
 			if ( column.sWidth !== null ) {
-				column.sWidth = _fnConvertToWidth( column.sWidthOrig, tableContainer );
+				column.sWidth = sizes[i];
 	
 				userInputs = true;
 			}
@@ -27396,26 +27421,40 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 	
 	
 	/**
-	 * Convert a CSS unit width to pixels (e.g. 2em)
-	 *  @param {string} width width to be converted
+	 * Convert a set of CSS units width to pixels (e.g. 2em)
+	 *  @param {string[]} widths widths to be converted
 	 *  @param {node} parent parent to get the with for (required for relative widths) - optional
-	 *  @returns {int} width in pixels
+	 *  @returns {int[]} widths in pixels
 	 *  @memberof DataTable#oApi
 	 */
-	function _fnConvertToWidth ( width, parent )
+	function _fnConvertToWidth ( widths, parent )
 	{
-		if ( ! width ) {
-			return 0;
+		var els = [];
+		var results = [];
+	
+		// Add the elements in a single loop so we only need to reflow once
+		for (var i=0 ; i<widths.length ; i++) {
+			if (widths[i]) {
+				els.push(
+					$('<div/>')
+						.css( 'width', _fnStringToCss( widths[i] ) )
+						.appendTo( parent || document.body )
+				)
+			}
+			else {
+				els.push(null);
+			}
 		}
 	
-		var n = $('<div/>')
-			.css( 'width', _fnStringToCss( width ) )
-			.appendTo( parent || document.body );
+		// Get the sizes (will reflow once)
+		for (var i=0 ; i<widths.length ; i++) {
+			results.push(els[i] ? els[i][0].offsetWidth : null);
+		}
 	
-		var val = n[0].offsetWidth;
-		n.remove();
+		// Tidy
+		$(els).remove();
 	
-		return val;
+		return results;
 	}
 	
 	
@@ -28150,7 +28189,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 	
 		if ( tn ) {
 			msg += '. For more information about this error, please see '+
-			'http://datatables.net/tn/'+tn;
+			'https://datatables.net/tn/'+tn;
 		}
 	
 		if ( ! level  ) {
@@ -30081,7 +30120,13 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 					row = data[i];
 	
 					if ( row._details ) {
-						row._details.children('td[colspan]').attr('colspan', visible );
+						row._details.each(function () {
+							var el = $(this).children('td');
+	
+							if (el.length == 1) {
+								el.attr('colspan', visible);
+							}
+						});
 					}
 				}
 			} );
@@ -30908,7 +30953,8 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 	 * Set the jQuery or window object to be used by DataTables
 	 *
 	 * @param {*} module Library / container object
-	 * @param {string} type Library or container type `lib` or `win`.
+	 * @param {string} [type] Library or container type `lib`, `win` or `datetime`.
+	 *   If not provided, automatic detection is attempted.
 	 */
 	DataTable.use = function (module, type) {
 		if (type === 'lib' || module.fn) {
@@ -30917,6 +30963,9 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 		else if (type == 'win' || module.document) {
 			window = module;
 			document = module.document;
+		}
+		else if (type === 'datetime' || module.type === 'DateTime') {
+			DataTable.DateTime = module;
 		}
 	}
 	
@@ -31277,17 +31326,19 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 				resolved._;
 		}
 	
-		return resolved.replace( '%d', plural ); // nb: plural might be undefined,
+		return typeof resolved === 'string'
+			? resolved.replace( '%d', plural ) // nb: plural might be undefined,
+			: resolved;
 	} );	
 	/**
 	 * Version string for plug-ins to check compatibility. Allowed format is
 	 * `a.b.c-d` where: a:int, b:int, c:int, d:string(dev|beta|alpha). `d` is used
-	 * only for non-release builds. See http://semver.org/ for more information.
+	 * only for non-release builds. See https://semver.org/ for more information.
 	 *  @member
 	 *  @type string
 	 *  @default Version number
 	 */
-	DataTable.version = "1.13.4";
+	DataTable.version = "1.13.11";
 	
 	/**
 	 * Private data store, containing all of the settings objects that are
@@ -31863,7 +31914,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 		 * --------
 		 *
 		 * As an object, the parameters in the object are passed to
-		 * [jQuery.ajax](http://api.jquery.com/jQuery.ajax/) allowing fine control
+		 * [jQuery.ajax](https://api.jquery.com/jQuery.ajax/) allowing fine control
 		 * of the Ajax request. DataTables has a number of default parameters which
 		 * you can override using this option. Please refer to the jQuery
 		 * documentation for a full description of the options available, although
@@ -33571,7 +33622,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 			 *    $(document).ready( function() {
 			 *      $('#example').dataTable( {
 			 *        "language": {
-			 *          "url": "http://www.sprymedia.co.uk/dataTables/lang.txt"
+			 *          "url": "https://www.sprymedia.co.uk/dataTables/lang.txt"
 			 *        }
 			 *      } );
 			 *    } );
@@ -36352,7 +36403,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 				var btnDisplay, btnClass;
 	
 				var attach = function( container, buttons ) {
-					var i, ien, node, button, tabIndex;
+					var i, ien, node, button;
 					var disabledClass = classes.sPageButtonDisabled;
 					var clickHandler = function ( e ) {
 						_fnPageChange( settings, e.data.action, true );
@@ -36367,9 +36418,10 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 							attach( inner, button );
 						}
 						else {
+							var disabled = false;
+	
 							btnDisplay = null;
 							btnClass = button;
-							tabIndex = settings.iTabIndex;
 	
 							switch ( button ) {
 								case 'ellipsis':
@@ -36380,8 +36432,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 									btnDisplay = lang.sFirst;
 	
 									if ( page === 0 ) {
-										tabIndex = -1;
-										btnClass += ' ' + disabledClass;
+										disabled = true;
 									}
 									break;
 	
@@ -36389,8 +36440,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 									btnDisplay = lang.sPrevious;
 	
 									if ( page === 0 ) {
-										tabIndex = -1;
-										btnClass += ' ' + disabledClass;
+										disabled = true;
 									}
 									break;
 	
@@ -36398,8 +36448,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 									btnDisplay = lang.sNext;
 	
 									if ( pages === 0 || page === pages-1 ) {
-										tabIndex = -1;
-										btnClass += ' ' + disabledClass;
+										disabled = true;
 									}
 									break;
 	
@@ -36407,8 +36456,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 									btnDisplay = lang.sLast;
 	
 									if ( pages === 0 || page === pages-1 ) {
-										tabIndex = -1;
-										btnClass += ' ' + disabledClass;
+										disabled = true;
 									}
 									break;
 	
@@ -36421,18 +36469,20 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 	
 							if ( btnDisplay !== null ) {
 								var tag = settings.oInit.pagingTag || 'a';
-								var disabled = btnClass.indexOf(disabledClass) !== -1;
-			
+	
+								if (disabled) {
+									btnClass += ' ' + disabledClass;
+								}
 	
 								node = $('<'+tag+'>', {
 										'class': classes.sPageButton+' '+btnClass,
 										'aria-controls': settings.sTableId,
 										'aria-disabled': disabled ? 'true' : null,
 										'aria-label': aria[ button ],
-										'aria-role': 'link',
+										'role': 'link',
 										'aria-current': btnClass === classes.sPageButtonActive ? 'page' : null,
 										'data-dt-idx': button,
-										'tabindex': tabIndex,
+										'tabindex': disabled ? -1 : settings.iTabIndex,
 										'id': idx === 0 && typeof button === 'string' ?
 											settings.sTableId +'_'+ button :
 											null
@@ -36563,7 +36613,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 			return -Infinity;
 		}
 		
-		let type = typeof d;
+		var type = typeof d;
 	
 		if (type === 'number' || type === 'bigint') {
 			return d;
@@ -36649,7 +36699,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 		// string
 		"string-pre": function ( a ) {
 			// This is a little complex, but faster than always calling toString,
-			// http://jsperf.com/tostring-v-check
+			// https://jsperf.com/tostring-v-check
 			return _empty(a) ?
 				'' :
 				typeof a === 'string' ?
@@ -36937,7 +36987,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 	var __thousands = ',';
 	var __decimal = '.';
 	
-	if (Intl) {
+	if (window.Intl !== undefined) {
 		try {
 			var num = new Intl.NumberFormat().formatToParts(100000.1);
 		
@@ -37239,7 +37289,7 @@ if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)
 			}
 		};
 
-		if (typeof window !== 'undefined') {
+		if (typeof window === 'undefined') {
 			module.exports = function (root, $) {
 				if ( ! root ) {
 					// CommonJS environments without a window global must pass a
