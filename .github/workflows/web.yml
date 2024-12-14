@@ -36,6 +36,12 @@ jobs:
     - name: Show settings
       run: make settings
 
+    - name: Setup git repo
+      run: |
+        git status 
+        git fetch origin
+        git pull --no-rebase origin ${{ github.event.pull_request.head.ref }}
+
     - name: Regenerate frontend with gulp service
       run: |
         docker compose -f docker-compose.yml run web python manage.py collectstatic --no-input
