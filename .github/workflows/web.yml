@@ -57,7 +57,7 @@ jobs:
           # Fetch the latest remote changes for the base branch
           echo "Fetching latest changes for the base branch..."
           git fetch origin
-          git pull origin ${{ github.event.pull_request.head.ref }}"
+          git pull origin ${{ github.event.pull_request.head.ref }}
 
           # # Rebase onto the base branch to ensure the branch is up-to-date
           # echo "Rebasing changes onto the base branch..."
