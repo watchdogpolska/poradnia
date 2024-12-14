@@ -54,6 +54,7 @@ jobs:
           # Stage and commit the changes
           git add .
           git commit -m "Update static files after dependency change"
+          git status
 
           # # Fetch the latest remote changes for the base branch
           # echo "Fetching latest changes for the base branch..."
