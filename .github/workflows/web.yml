@@ -38,6 +38,7 @@ jobs:
 
     - name: Regenerate frontend with gulp service
       run: |
+        docker compose exec -t web python manage.py collectstatic --no-input
         docker compose -f docker-compose.yml up gulp
 
     - name: Check for Changes in Static Files
