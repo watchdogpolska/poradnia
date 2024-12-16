@@ -45,7 +45,9 @@ jobs:
       run: |
         git status
         if ! git diff --quiet poradnia/static/; then
-          echo "Static files updated. Preparing to commit changes."
+          git diff
+          echo "Static files needs to be updated. Exiting with code 1"
+          exit 1
 
           # # Configure Git user for committing changes
           # git config --global user.name "GitHub Actions"
@@ -113,7 +115,7 @@ jobs:
           #   exit 1;
           # }
 
-          echo "Static files changes have been successfully pushed."
+          # echo "Static files changes have been successfully pushed."
         else
           echo "No changes in static files."
         fi
