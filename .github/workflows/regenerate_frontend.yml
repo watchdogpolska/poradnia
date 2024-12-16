@@ -38,9 +38,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        if ! git diff poradnia/static/ package-lock.json; then
+        if ! git diff --quiet poradnia/static/ package-lock.json; then
           echo "Changes detected in poradnia/static/ or package-lock.json."
           git status
+          git diff
           echo "Configuring git"
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
