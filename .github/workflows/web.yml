@@ -5,13 +5,13 @@ on:
   #   branches:
   #     - master
   #     - dev
-  # pull_request:
-  #   types: [opened, synchronize]
-  workflow_run:
-    workflows:  ["Regenerate and update frontend"]
-      # - regenerate-and-update-frontend.yml
-    types:
-      - completed
+  pull_request:
+    types: [opened, synchronize]
+  # workflow_run:
+  #   workflows:  ["Regenerate and update frontend"]
+  #     # - regenerate-and-update-frontend.yml
+  #   types:
+  #     - completed
   
 
 jobs:
