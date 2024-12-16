@@ -2,4 +2,4 @@
 #	production that isn't in development.
 -r base.txt
 gunicorn==23.0.0
-gevent==24.10.2
+gevent==24.11.1
