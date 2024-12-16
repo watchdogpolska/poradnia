@@ -5,8 +5,8 @@ on:
   #   branches:
   #     - master
   #     - dev
-  # pull_request:
-  #   types: [opened, synchronize]
+  pull_request:
+    types: [opened, synchronize]
   workflow_run:
     workflows:
       - regenerate-and-update-frontend.yml
