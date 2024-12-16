@@ -6,11 +6,12 @@ on:
   #     - master
   #     - dev
   # pull_request:
+  #   types: [opened, synchronize]
   workflow_run:
     workflows:
-      - Regenerate and update frontend  # Matches the name of the first workflow
+      - regenerate-and-update-frontend.yml
     types:
-      - completed  # Trigger only when the first workflow is completed
+      - completed
   
 
 jobs:
