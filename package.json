@@ -29,6 +29,7 @@
     "gulp-sass": "^5.1.0",
     "sass": "^1.58.3",
     "gulp-uglify": "^3.0.2",
-    "gulp-watch": "^5.0.1"
+    "gulp-watch": "^5.0.1",
+    "caniuse-lite": "^1.0.30001600"
   }
 }

@@ -1,11 +1,12 @@
 name: Python package
 
 on:
-  push:
-    branches:
-      - master
-      - dev
+  # push:
+  #   branches:
+  #     - master
+  #     - dev
   pull_request:
+    types: [opened, synchronize]
 
 jobs:
   django:
@@ -19,7 +20,7 @@ jobs:
 #           - "==2.2.*"
           - "==4.2.*"
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     # Pull the latest image to build, and avoid caching pull-only images.
     # (docker pull is faster than caching in most cases.)
     - run: |
@@ -35,6 +36,23 @@ jobs:
       run: make check
     - name: Show settings
       run: make settings
+
+    - name: Regenerate frontend with gulp service
+      run: |
+        docker compose -f docker-compose.yml run web python manage.py collectstatic --no-input
+        docker compose -f docker-compose.yml up gulp
+
+    - name: Check for Changes in Static Files
+      run: |
+        git status
+        if ! git diff --quiet poradnia/static/; then
+          git diff
+          echo "Static files needs to be updated. Exiting with code 1"
+          exit 1
+        else
+          echo "No changes in static files."
+        fi
+  
     - name: Run unit tests
       run: make test
     - name: Run e2e tests
@@ -43,7 +61,7 @@ jobs:
   docs:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: docker compose pull
     - name: Build application
       run: make build
