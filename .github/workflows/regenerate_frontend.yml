@@ -1,0 +1,55 @@
+name: Regenerate and update frontend
+
+on:
+  pull_request:
+    types: [opened, synchronize]  # Trigger when a PR is created or updated
+
+jobs:
+  regenerate_and_commit_frontend:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python:
+          - "3.12"
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        # Ensure you fetch the PR branch
+        fetch-depth: 0
+    - run: |
+        docker compose --file docker-compose.yml --file docker-compose.test.yml pull
+        docker pull python:${{matrix.python}}-slim
+    - name: Start database early
+      run: docker compose up -d db
+    - name: Build application
+      run: make build
+      env:
+        PYTHON_VERSION: ${{ matrix.python }}
+    - name: Show settings
+      run: make settings
+    - name: Regenerate frontend with gulp service
+      run: |
+        docker compose -f docker-compose.yml run web python manage.py collectstatic --no-input
+        docker compose -f docker-compose.yml up gulp
+
+    - name: Check for Changes in Static Files and Commit to base branch if any
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      run: |
+        if ! git diff poradnia/static/ package-lock.json; then
+          echo "Changes detected in poradnia/static/ or package-lock.json."
+          git status
+          echo "Configuring git"
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          echo "Commit detected changes"
+          git add poradnia/static/ package-lock.json
+          git commit -m "Update poradnia/static/ and package-lock.json"
+          echo "Push changes to the base branch of the PR"
+          git push origin HEAD:${{ github.event.pull_request.base.ref }}
+          echo "Static files changes have been successfully pushed."
+        else
+          echo "No changes in static files."
+        fi
