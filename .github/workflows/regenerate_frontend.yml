@@ -48,8 +48,8 @@ jobs:
           echo "Commit detected changes"
           git add poradnia/static/ package-lock.json
           git commit -m "Update poradnia/static/ and package-lock.json"
-          echo "Push changes to the base branch of the PR"
-          git push origin HEAD:${{ github.event.pull_request.base.ref }}
+          echo "Push changes to the branch the PR is issued from"
+          git push origin HEAD:${{ github.event.pull_request.head.ref }}
           echo "Static files changes have been successfully pushed."
         else
           echo "No changes in static files."
