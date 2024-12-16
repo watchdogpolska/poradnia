@@ -1,11 +1,17 @@
 name: Python package
 
 on:
-  push:
-    branches:
-      - master
-      - dev
-  pull_request:
+  # push:
+  #   branches:
+  #     - master
+  #     - dev
+  # pull_request:
+  workflow_run:
+    workflows:
+      - Regenerate and update frontend  # Matches the name of the first workflow
+    types:
+      - completed  # Trigger only when the first workflow is completed
+  
 
 jobs:
   django:
