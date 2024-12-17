@@ -1,11 +1,12 @@
 name: Python package
 
 on:
-  push:
-    branches:
-      - master
-      - dev
+  # push:
+  #   branches:
+  #     - master
+  #     - dev
   pull_request:
+    types: [opened, synchronize]
 
 jobs:
   django:
@@ -43,37 +44,11 @@ jobs:
 
     - name: Check for Changes in Static Files
       run: |
+        git status
         if ! git diff --quiet poradnia/static/; then
-          echo "Static files updated. Preparing to commit changes."
-
-          # Configure Git user for committing changes
-          git config --global user.name "GitHub Actions"
-          git config --global user.email "actions@github.com"
-
-          # Stage and commit the changes
-          git add poradnia/static/
-          git commit -m "Update static files after dependency change"
-
-          # Fetch the latest remote changes for the base branch
-          echo "Fetching latest changes for the base branch..."
-          git fetch origin
-
-          # Rebase onto the base branch to ensure the branch is up-to-date
-          echo "Rebasing changes onto the base branch..."
-          git rebase origin/${{ github.event.pull_request.base.ref }} || {
-            echo "Rebase failed. Please resolve conflicts manually.";
-            git rebase --abort;
-            exit 1;
-          }
-
-          # Push the changes back to the branch with safety
-          echo "Pushing changes back to the branch..."
-          git push --force-with-lease origin HEAD:${{ github.event.pull_request.head.ref }} || {
-            echo "Push failed. Ensure no conflicts or simultaneous pushes occurred.";
-            exit 1;
-          }
-
-          echo "Static files changes have been successfully pushed."
+          git diff
+          echo "Static files needs to be updated. Exiting with code 1"
+          exit 1
         else
           echo "No changes in static files."
         fi
