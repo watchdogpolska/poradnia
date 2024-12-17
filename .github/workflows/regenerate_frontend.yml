@@ -32,7 +32,7 @@ jobs:
     - name: Regenerate frontend with gulp service
       run: |
         docker compose -f docker-compose.yml run web python manage.py collectstatic --no-input
-        docker compose -f docker-compose.yml up --abort-on-container-exit --exit-code-from gulp
+        docker compose -f docker-compose.yml up --exit-code-from gulp
 
     - name: Check for Changes in Static Files and Commit to base branch if any
       env:
