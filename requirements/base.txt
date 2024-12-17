@@ -1,4 +1,4 @@
-Django==4.2.17
+Django==5.1.4
 
 # Configuration
 django-environ==0.11.2
