@@ -1,6 +1,7 @@
 {
   "extends": ["config:recommended"],
   "baseBranches": ["dev"],
+  "branchCleanup": true,
   "enabledManagers": [
     "dockerfile",
     "pip_requirements",
