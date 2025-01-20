@@ -40,6 +40,12 @@ def status_name(status):
     return choice_names_dict[status]
 
 
+@register.filter
+def letter_count_for_user(case, user):
+    """Count letters for user"""
+    return case.letter_set.for_user(user).count()
+
+
 @register.simple_tag(takes_context=True)
 def full_link(context, path):
     scheme = (

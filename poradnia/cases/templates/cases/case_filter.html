@@ -63,7 +63,7 @@
                     {% endif %}
                 </a>
                 {% if request.user.is_staff and not object.handled %}</b>{% endif %}
-                ({{ object.letter_count }})
+                ({{ object|letter_count_for_user:request.user }})
                 {% if request.user.is_staff and object.advice_count > 0 %}
                     <i class="fa fa-area-chart" title="{% trans 'Case was registered in advicer' %}"></i>
                 {% endif %}
