@@ -242,7 +242,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": (_("Advice") + " - " + _("Subject")),
         },
         {
-            "name": "letter_count",
+            "name": "letter_count_for_user",
             "visible": True,
             "searchable": False,
             "orderable": True,
@@ -273,6 +273,9 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             row["advice_subject"] = obj.advice.render_advice_link()
         except Case.advice.RelatedObjectDoesNotExist:
             row["advice_subject"] = ""
+        row["letter_count_for_user"] = obj.letter_set.for_user(
+            self.request.user
+        ).count()
         return
 
     def get_initial_queryset(self, request=None):
