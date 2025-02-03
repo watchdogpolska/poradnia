@@ -32,31 +32,31 @@
                 {% trans 'Profile' %}
             </a>
             <a class="btn btn-info" href="{% url 'account_change_password' %}">
-                <i class="fa fa-key"></i>
+                <i class="fas fa-key"></i>
                 {% trans 'Password change' %}
             </a>
             {% if user.is_superuser %}
             <a class="btn btn-info" href="{% url 'keys:list' %}">
-                <i class="fa fa-puzzle-piece "></i>
+                <i class="fas fa-puzzle-piece "></i>
                 {% trans 'Keys' %}
             </a>
             {% endif %}
             <a class="btn btn-info" href="{% url 'cases:list' %}?client={{ object.pk }}">
-                <i class="fa fa-book"></i>
+                <i class="fas fa-book"></i>
                 {% trans 'My cases' %}
             </a>
 
         {% elif perms.cases.can_assign %}
             <a class="btn btn-info" href="{% url 'cases:list' %}?client={{ object.pk }}">
-                <i class="fa fa-book"></i>
+                <i class="fas fa-book"></i>
                 {% trans 'Client cases' %}
             </a>
             <a class="btn btn-info" href="{% url 'cases:list' %}?permission={{ object.pk }}">
-                <i class="fa fa-book"></i>
+                <i class="fas fa-book"></i>
                 {% trans 'Assigned cases' %}
             </a>
             <a class="btn btn-info" href="{% url 'users:deassign' username=object.username%}">
-                <i class="fa fa-warning"></i>
+                <i class="fa-solid fa-triangle-exclamation"></i>
                 {% trans 'Deassign cases' %}
             </a>
         {% endif %}

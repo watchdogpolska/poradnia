@@ -224,6 +224,12 @@ class Case(models.Model):
         ("1", "assigned", _("assigned")),
         ("2", "closed", _("closed")),
     )
+    STATUS_STYLE = {
+        "0": "far fa-circle ",
+        "1": "far fa-circle-dot",
+        "3": "far fa-square-plus",
+        "2": "fas fa-circle",
+    }
     id = models.AutoField(verbose_name=_("Case number"), primary_key=True)
     name = models.CharField(max_length=NAME_MAX_LENGTH, verbose_name=_("Subject"))
     status = StatusField()
@@ -299,13 +305,7 @@ class Case(models.Model):
         return template.render(context=context)
 
     def render_status(self):
-        STATUS_STYLE = {
-            "0": "fa fa-circle-o ",
-            "1": "fa fa-dot-circle-o",
-            "3": "fa fa-plus-square-o",
-            "2": "fa fa-circle",
-        }
-        status_icon = STATUS_STYLE[self.status]
+        status_icon = self.STATUS_STYLE[self.status]
         return f'<span class="{status_icon}"></span>'
 
     def render_project_badge(self):
@@ -314,7 +314,7 @@ class Case(models.Model):
             name = _("Project")
             return f"""
                 <span class="label label-success" title="{title}">
-                <i class="fa fa-pencil"></i> {name}
+                <i class="fas fa-pencil"></i> {name}
                 </span>
             """
         else:
@@ -322,7 +322,7 @@ class Case(models.Model):
 
     def render_handled(self):
         if not self.handled:
-            return '<span class="fa fa-check"></span>'
+            return '<span class="fas fa-check"></span>'
         else:
             return ""
 

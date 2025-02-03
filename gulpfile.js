@@ -56,9 +56,9 @@ var config = (function () {
         },
         icons: {
             input: [
-                path.npm + '/font-awesome/fonts/**.*'
+                path.npm + '/@fortawesome/fontawesome-free/webfonts/**.*'
             ],
-            output: path.static + "/fonts"
+            output: path.static + "/webfonts" // "/fonts"
         },
         script: {
             input: [
