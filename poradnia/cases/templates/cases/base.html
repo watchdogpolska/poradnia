@@ -6,8 +6,8 @@
     <script type="text/javascript">
         ;(function($) {
             $(function () {
-                var show = '<i class="fa fa-plus-square"></i> {%trans "Show quote" %}';
-                var hide = '<i class="fa fa-minus-square"></i> {%trans "Hide quote" %}';
+                var show = '<i class="fa-regular fa-square-plus"></i> {%trans "Show quote" %}';
+                var hide = '<i class="fa-regular fa-square-minus"></i> {%trans "Hide quote" %}';
                 $('blockquote').each(function (index, value) {
                     var el = $(value).hide();
                     var new_el = $("<button class='btn quote-link'>" + show + "</a>");

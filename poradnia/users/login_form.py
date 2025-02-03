@@ -14,6 +14,6 @@ class CustomLoginForm(SingleButtonMixin, LoginForm):
         self.fields["login"].label = _("Login")
         self.helper.form_class = "login-form"
         self.helper.layout = Layout(
-            PrependedText("login", '<i class="fa fa-user"></i>'),
-            PrependedText("password", '<i class="fa fa-key"></i>', type="password"),
+            PrependedText("login", '<i class="fas fa-user"></i>'),
+            PrependedText("password", '<i class="fas fa-key"></i>', type="password"),
         )
