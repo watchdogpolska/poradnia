@@ -39658,7 +39658,7 @@ window.AjaxDatatableViewUtils = (function() {
             Example:
 
             AjaxDatatableViewUtils.init({
-                search_icon_html: '<i class="fa fa-search"></i>',
+                search_icon_html: '<i class="fas fa-magnifying-glass"></i>',
                 language: {
                 },
                 fn_daterange_widget_initialize: function(table, data) {
@@ -39809,7 +39809,7 @@ window.AjaxDatatableViewUtils = (function() {
                             // var search_icon_html = _options.search_icon_html === undefined ?
                             //     '<div style="border: 1px solid #ccc; text-align: center;">&nbsp;</div>' : _options.search_icon_html;
                             var search_icon_html = _options.search_icon_html === undefined ? '' : _options.search_icon_html;
-                            //filter_row += '<th><i class="fa fa-search"></i>&nbsp;</th>';
+                            //filter_row += '<th><i class="fas fa-magnifying-glass"></i>&nbsp;</th>';
                             filter_row += '<th>' + search_icon_html + '</th>';
                         }
                         else {
@@ -40424,7 +40424,7 @@ window.AjaxDatatableViewUtils = (function() {
 })(jQuery);
 
 AjaxDatatableViewUtils.init({
-    search_icon_html: '<i class="fa fa-search"></i>',
+    search_icon_html: '<i class="fas fa-magnifying-glass"></i>',
     language: {
     },
     fn_daterange_widget_initialize: function(table, data) {

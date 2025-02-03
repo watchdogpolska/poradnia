@@ -130,29 +130,37 @@ class Event(AbstractRecord):
     def render_deadline(self):
         if self.deadline:
             return render_event_icon(
-                "fa-hourglass", "black", "Wydarzenie jest terminem"
+                "fas fa-hourglass-half", "black", "Wydarzenie jest terminem"
             )
-        return render_event_icon("fa-hourglass", "gray", "Wydarzenie nie jest terminem")
+        return render_event_icon(
+            "fas fa-hourglass", "gray", "Wydarzenie nie jest terminem"
+        )
 
     @property
     def render_completed(self):
         if self.completed:
             return render_event_icon(
-                "fa-check", "black", "Ukończono (nie ma więcej przypomnień)"
+                "fas fa-check", "black", "Ukończono (nie ma więcej przypomnień)"
             )
-        return render_event_icon("fa-check", "gray", "Nie ukończono (są przypomnienia)")
+        return render_event_icon(
+            "fas fa-xmark", "gray", "Nie ukończono (są przypomnienia)"
+        )
 
     @property
     def render_public(self):
         if self.public:
-            return render_event_icon("fa-globe", "black", "Wydarzenie jest publiczne")
-        return render_event_icon("fa-globe", "gray", "Wydarzenie nie jest publiczne")
+            return render_event_icon(
+                "fas fa-earth-europe", "black", "Wydarzenie jest publiczne"
+            )
+        return render_event_icon(
+            "fas fa-house-user", "gray", "Wydarzenie nie jest publiczne"
+        )
 
     @property
     def render_court_session(self):
         if hasattr(self, "courtsession") and self.courtsession:
             return render_event_icon(
-                "fa-balance-scale",  # "fa-gavel",
+                "fas fa-scale-balanced",  # "fa-gavel",
                 "black; font-weight: bold; font-size: 17px;",
                 "Wydarzenie jest rozprawą sądową",
             )

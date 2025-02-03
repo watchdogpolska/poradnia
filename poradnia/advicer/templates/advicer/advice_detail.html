@@ -11,10 +11,10 @@
             <h1 class="pull-left">{{ object }}</h1>
             <div class="btn-group pull-right">
                 <a href="{% url 'advicer:update' pk=object.pk %}" class="btn btn-primary">
-                    <i class="fa fa-pencil"></i> {% trans 'Edit' %}
+                    <i class="fas fa-pencil"></i> {% trans 'Edit' %}
                 </a>
                 <a href="{% url 'advicer:delete' pk=object.pk %}" class="btn btn-danger">
-                    <i class="fa fa-trash"></i> {% trans 'Delete' %}
+                    <i class="fas fa-trash-can"></i> {% trans 'Delete' %}
                 </a>
             </div>
         </div>

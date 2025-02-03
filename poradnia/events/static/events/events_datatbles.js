@@ -1,5 +1,5 @@
 AjaxDatatableViewUtils.init({
-    search_icon_html: '<i class="fa fa-search"></i>',
+    search_icon_html: '<i class="fas fa-magnifying-glass"></i>',
     language: {
     },
     fn_daterange_widget_initialize: function(table, data) {

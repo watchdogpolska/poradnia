@@ -35,36 +35,41 @@
 {% block content %}
     {% get_obj_perms request.user for object as "case_perms" %}
     <style>
-        .permissions_help_icon {
-            cursor: pointer;
-        }
-        
-        .permissions_help .permissions_helptext {
-          visibility: hidden;
-          width: 280px;
-          height: 500px;
-          overflow-y: scroll;
-          overflow-x: visible;
-          background-color: #555;
-          color: #fff;
-          text-align: left;
-          padding: 10px 10px;
-          border-radius: 6px;
-          position: absolute;
-          z-index: 1;
-          bottom: -350px; 
-          left: 100px; 
-          margin-left: -90px;
-          opacity: 0;
-          transition: opacity 0.3s;
-          white-space: pre-line; /* This will preserve line breaks */
-        }
-        
-        .fa-shield:active + .permissions_helptext {
-          visibility: visible;
-          opacity: 1;
-        }
+    .permissions_help summary {
+        padding-top: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        list-style: none; /* Removes default triangle from <summary> */
+    }
 
+    .permissions_help_icon {
+        margin-right: 5px; /* Adds space between icon and text */
+    }
+
+    .permissions_helptext {
+        width: 280px;
+        height: 250px;
+        overflow-y: auto;
+        background-color: #555;
+        color: #fff;
+        text-align: left;
+        padding: 10px;
+        border-radius: 6px;
+        position: absolute;
+        z-index: 1;
+        bottom: -250px;
+        left: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out;
+        white-space: pre-line;
+    }
+
+    details[open] .permissions_helptext {
+        opacity: 1;
+        visibility: visible;
+    }
         #selected-files {
             border: 1px solid lightgray;
         }
@@ -99,19 +104,19 @@
                 <div class="case-header-actions">
                     {% if 'change_case' in case_perms %}
                         <a class="btn btn-primary" href="{{ object.get_edit_url }}"><i
-                                class="fa fa-pencil-square-o"></i> {% trans 'Edit' %}</a>
+                                class="fas fa-pencil-square-o"></i> {% trans 'Edit' %}</a>
                     {% endif %}
                     {% if 'can_close_case' in case_perms and object.status != object.STATUS.closed %}
                         <a class="btn btn-default" href="{{ object.get_close_url }}"><i
-                                class="fa fa-close"></i> {% trans 'Close' %}</a>
+                                class="fa-regular fa-circle-xmark"></i> {% trans 'Close' %}</a>
                     {% endif %}
                     {% if 'delete_case' in case_perms and user.is_staff %}
                         <a class="btn btn-default" href="{% url 'admin:cases_case_delete' object_id=object.pk %}"><i
-                                class="fa fa-trash"></i> {% trans 'Delete' %}</a>
+                                class="fas fa-trash-can"></i> {% trans 'Delete' %}</a>
                     {% endif %}
                     {% if 'can_merge_case' in case_perms %}
                         <a class="btn btn-default" href="{% url 'cases:merge' pk=object.pk %}"><i
-                                class="fa fa-code-fork"></i> {% trans 'Merge' %}</a>
+                                class="fas fa-code-fork"></i> {% trans 'Merge' %}</a>
                     {% endif %}
                 </div>
                 <h1 class="case-header-title{% if user.is_staff and object.handled %} success{% endif %}">{{ object.name }}
@@ -123,7 +128,7 @@
                                 class="{{ object.status|status2css }}"></i> {{ object.status_display }}</span>
                     {% else %}
                         <span class="label label-success" title="Ostatnia zmiana 7 dni temu"> <i
-                                class="fa fa-folder-open-o"></i> {{ object.status }}</span>
+                                class="far fa-folder-open"></i> {{ object.status }}</span>
                     {% endif %}
                     {% if request.user.is_staff and object.has_project %}
                         {% include 'cases/_project_badge.html' %}
@@ -141,10 +146,10 @@
             <div class="row">
                 <div class="col-md-6">
                     <div class="panel panel-default">
-                        <div class="panel-heading"><i class="fa fa-newspaper-o"></i> {% trans 'Workflow' %}</div>
+                        <div class="panel-heading"><i class="far fa-newspaper"></i> {% trans 'Workflow' %}</div>
                         <table class="table">
                             <tr>
-                                <td><i class="fa fa-user"></i> {% trans 'Involved in' %}</td>
+                                <td><i class="fas fa-user"></i> {% trans 'Involved in' %}</td>
                                 <td>{% include 'cases/_involved_in.html' %}</td>
                             </tr>
                             {% if object.modified_by %}
@@ -158,7 +163,7 @@
                             {% endif %}
                             {% if object.deadline and request.user.is_staff %}
                                 <tr>
-                                    <td><i class="fa fa-fire"></i> {% trans 'Dead-line' %}</td>
+                                    <td><i class="fa-brands fa-gripfire"></i> {% trans 'Dead-line' %}</td>
                                     <td>
                                         {% blocktrans with object.deadline as deadline and object.deadline.time|naturaltime as naturaltime %}
                                             {{ deadline }} at {{ naturaltime }}{% endblocktrans %}</td>
@@ -168,16 +173,16 @@
                     </div>
                     {% if request.user.is_staff %}
                         <div class="panel panel-default">
-                            <div class="panel-heading"><i class="fa fa-phone"></i> {% trans 'Metrical data' %}</div>
+                            <div class="panel-heading"><i class="fas fa-phone"></i> {% trans 'Metrical data' %}</div>
                             <table class="table">
                                 <tr>
-                                    <td><i class="fa fa-area-chart"></i> {% trans 'Advice tags' %}</td>
+                                    <td><i class="fas fa-chart-area"></i> {% trans 'Advice tags' %}</td>
                                     <td>
                                         {% if object.advice %}
                                             <a href="{{ object.advice.get_absolute_url }}">{{ object.advice }}</a>
                                         {% else %}
                                             <a href="{% url 'advicer:create' %}?case={{ object.pk }}"><i
-                                                    class="fa fa-pencil"></i> {% trans 'Create new advice tags' %}</a>
+                                                    class="fas fa-pencil"></i> {% trans 'Create new advice tags' %}</a>
                                         {% endif %}
                                     </td>
                                 </tr>
@@ -191,16 +196,19 @@
                         {% if 'can_assign' in case_perms %}
                             <div class="panel panel-default">
                                 <div class="panel-heading">
-                                    <i class="fa fa-users"></i> {% trans 'Assign permissions' %}
+                                    <i class="fas fa-users"></i> {% trans 'Assign permissions' %}
                                     <a class="btn btn-default btn-xs pull-right"
                                     href="{% url 'cases:permission_add' pk=object.pk %}">{% trans "..." %}</a>
                                 </div>
                                 <div class="panel-body">
                                     {% crispy casegroup_form %}
-                                    <div class="permissions_help">
-                                    <i class="fa fa-shield permissions_help_icon"> Uprawnienia w grupach</i>
-                                        <span class="permissions_helptext">{{ permissions_help_text}}</span>
-                                    </div>
+                                    <details class="permissions_help">
+                                        <summary>
+                                            <i class="fa-solid fa-shield-halved permissions_help_icon"></i>
+                                            <span>Uprawnienia w grupach</span>
+                                        </summary>
+                                        <span class="permissions_helptext">{{ permissions_help_text }}</span>
+                                    </details>                              
                                 </div>
                             </div>
                         {% endif %}
@@ -264,7 +272,7 @@
                                                     <thead id="files-table-head">
                                                         <tr>
                                                             <th style="font-size: 14px;">
-                                                                <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom"
+                                                                <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
                                                                     title="{% trans 'Select multiple files with ctr or shift.' %}">
                                                                 </i>
                                                                 {% trans 'Selected files:' %}
