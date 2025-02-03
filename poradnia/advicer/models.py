@@ -179,15 +179,15 @@ class Advice(models.Model):
 
     def render_helped(self):
         if self.helped is None:
-            return '<span class="fa fa-question"></span>'
+            return '<span class="fas fa-question"></span>'
         elif self.helped:
-            return '<span class="fa fa-check" style="color: green;"></span>'
-        return '<span class="fa fa-times" style="color: red;"></span>'
+            return '<span class="fas fa-check" style="color: green;"></span>'
+        return '<span class="fas fa-xmark" style="color: red;"></span>'
 
     def render_visible(self):
         if self.visible:
-            return '<span class="fa fa-check" style="color: green;"></span>'
-        return '<span class="fa fa-times" style="color: red;"></span>'
+            return '<span class="fas fa-check" style="color: green;"></span>'
+        return '<span class="fas fa-xmark" style="color: red;"></span>'
 
     class Meta:
         ordering = ["-created_on"]
