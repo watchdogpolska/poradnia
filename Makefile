@@ -19,8 +19,9 @@ build:
 	docker compose build web
 
 gulp:
+	docker compose run web python manage.py collectstatic --no-input
 	docker compose up gulp
-	docker compose exec -t web python manage.py collectstatic --no-input
+	docker compose run web python manage.py collectstatic --no-input
 
 test: wait_mysql
 	docker compose exec -t db mysql --user=root --password=password -e "DROP DATABASE IF EXISTS test_poradnia;"

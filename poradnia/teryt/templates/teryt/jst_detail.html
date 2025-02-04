@@ -30,7 +30,7 @@
 
 {% block content %}
     <div class="page-header">
-        <h2><i class="fa fa-globe"></i> {{ object }}
+        <h2><i class="fas fa-globe"></i> {{ object }}
             <small>{{ object.category }}</small>
         </h2>
     </div>
@@ -58,7 +58,7 @@
         <div class="col-md-2">
             <div class="red">
                 <h3 class="title">
-                    <i class="fa fa-search"></i>
+                    <i class="fas fa-magnifying-glass"></i>
                     {% trans 'Advices' %}
                 </h3>
                 {% include '_list.html' with object_list=advice_qs %}
@@ -67,7 +67,7 @@
         <div class="col-md-7">
             <div class="red">
                 <h3 class="title">
-                    <i class="fa fa-search"></i>
+                    <i class="fas fa-magnifying-glass"></i>
                     {% trans 'Cases' %}
                 </h3>
                 {% include '_list.html' with object_list=case_qs %}

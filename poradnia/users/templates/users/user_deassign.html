@@ -11,7 +11,7 @@
             {% csrf_token %}
 
             <button type="submit" class="btn btn-danger">
-                <i class="fa fa-warning"></i>{% blocktrans %}Deassign {{ object }}{% endblocktrans %}
+                <i class="fa-solid fa-triangle-exclamation"></i>{% blocktrans %}Deassign {{ object }}{% endblocktrans %}
             </button>
             <button class="btn" href="{{ object.get_absolute_url }}">{% trans 'Cancel' %}</button>
         </div>

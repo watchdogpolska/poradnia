@@ -53,7 +53,8 @@
                         <td class="id">{{ object.pk }}</td>
                         <td class="client"><a href="{{ object.client.get_absolute_url }}">{{ object.client }}</a></td>
                         <td class="subject">
-            <span class="{{ object.status|status2css }}">
+            <i class="{{ object.status|status2css }}"></i>
+            <span class="subject">
             {% if request.user.is_staff and not object.handled %}<b>{% endif %}
                 <a href="{{ object.get_absolute_url }}">
                     {% if object.name %}
@@ -65,12 +66,12 @@
                 {% if request.user.is_staff and not object.handled %}</b>{% endif %}
                 ({{ object|letter_count_for_user:request.user }})
                 {% if request.user.is_staff and object.advice_count > 0 %}
-                    <i class="fa fa-area-chart" title="{% trans 'Case was registered in advicer' %}"></i>
+                    <i class="fas fa-chart-area" title="{% trans 'Case was registered in advicer' %}"></i>
                 {% endif %}
 
                 {% if request.user.is_staff and object.deadline.time %}
                     <span class="label label-warning">
-                <i class="fa fa-fire"></i> {{ object.deadline.time }}
+                    <i class="fa-brands fa-gripfire"></i> {{ object.deadline.time }}
             </span>
                 {% endif %}
 
@@ -112,7 +113,7 @@
                 {% endfor %}
                 </tbody>
             </table>
-            <p>{% trans 'Legend of status' %} <i class="fa fa-question-circle" data-toggle="tooltip" data-placement="bottom"
+            <p>{% trans 'Legend of status' %} <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
                                                 title='{% trans 'Cases have status changed by staff.' %}'></i>:
                 {% for status in statuses %}<i class="{{ status.0|status2css }}"></i>
                     {{ status.0|status2display }} {% endfor %}</p>

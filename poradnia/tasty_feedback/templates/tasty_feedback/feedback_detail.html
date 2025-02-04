@@ -12,7 +12,7 @@
                    href="{% url 'tasty_feedback:status' pk=object.pk %}">{% trans "Switch status" %}</a>
                 {% if object.get_github_link %}
                     <a class="btn btn-default btn-xs pull-right" href="{{ object.get_github_link }}"><i
-                            class="fa fa-github"></i> GitHub</a>{% endif %}
+                            class="fab fa-github"></i> GitHub</a>{% endif %}
             {% endblock %}
         </div>
         <table class="table">
