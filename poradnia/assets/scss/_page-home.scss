@@ -1,3 +1,5 @@
+@use "sass:color";
+
 .freatures{
 	@include make-row;
 	&__freature{
@@ -33,7 +35,7 @@
 		font-size: 2.3em;
 	}
 	&:hover{
-		background: darken(#D72626, 5%);
+		background: color.scale(#D72626, $lightness: -5%);
 		color: white;
 		text-decoration: none;
 	}

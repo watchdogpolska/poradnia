@@ -1,4 +1,4 @@
-Django==4.2.18
+Django==4.2.19
 
 # Configuration
 django-environ==0.12.0
@@ -30,7 +30,7 @@ django-autoslug==1.9.9
 
 # Useful things
 # Time zones support
-pytz==2024.2
+pytz==2025.1
 lxml==5.3.0
 cssselect==1.2.0
 # Your custom requirements go here
@@ -69,7 +69,7 @@ django-github-revision==0.0.3
 zipstream-new==1.1.8
 django-teryt-tree==0.18.4
 django-mptt==0.16.0
-mistune==3.1.0
+mistune==3.1.1
 django-rosetta==0.10.1
 
 # Additional sanitizer until a completely safe markdown package is found.
