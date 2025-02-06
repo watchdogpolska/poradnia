@@ -3,7 +3,7 @@
   "version": "1.0.1",
   "dependencies": {
     "bootstrap-sass": "^3.3.4",
-    "bootstrap": "^5.0.0",
+    "bootstrap": "^3.0.0",
     "@fortawesome/fontawesome-free": "^6.5.1",
     "jquery": "^3.3.1",
     "moment": "^2.29.4",
@@ -19,7 +19,8 @@
   },
   "devDependencies": {
     "gulp": "^4.0.0",
-    "gulp-autoprefixer": "^8.0.0",
+    "gulp-postcss": "^9.0.1",
+    "autoprefixer": "^10.4.14",
     "gulp-concat": "^2.6.0",
     "gulp-csslint": "^1.0.1",
     "gulp-livereload": "^4.0.2",
