@@ -1,5 +1,7 @@
-$block-list-item-hover-bg: lighten(#4C4C4C, 10%) !default;
-$block-list-item-selected-bg: darken(#4C4C4C, 10%) !default;
+@use "sass:color";
+
+$block-list-item-hover-bg: color.scale(#4C4C4C, $lightness: 10%) !default;
+$block-list-item-selected-bg: color.adjust(#4C4C4C, $lightness: -10%) !default;
 
 $block-list-item-padding-vertical: 0em !default;
 $block-list-item-padding-horizontal: 1em !default;
