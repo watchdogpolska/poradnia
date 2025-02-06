@@ -12,5 +12,5 @@ django-test-plus==2.2.4
 vcrpy==7.0.0
 ipdb==0.13.13
 
-pre-commit==4.0.1
+pre-commit==4.1.0
 
