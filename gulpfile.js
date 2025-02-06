@@ -4,10 +4,11 @@ var fs = require('fs'),
     concat = require('gulp-concat'),
     livereload = require('gulp-livereload'),
     cleanCSS = require('gulp-clean-css'),
-    prefix = require('gulp-autoprefixer'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass')(require('sass')),
     uglify = require('gulp-uglify'),
+    postcss = require('gulp-postcss'),
+    autoprefixer = require('autoprefixer'),
     watch = require('gulp-watch'),
     json = JSON.parse(fs.readFileSync('./package.json'));
 
@@ -97,8 +98,6 @@ var config = (function () {
     };
 }());
 
-console.log(config.script);
-
 gulp.task('icons', function () {
     return gulp.src(config.icons.input)
         .pipe(gulp.dest(config.icons.output));
@@ -122,13 +121,11 @@ gulp.task('js', function () {
 
 gulp.task('scss', function () {
     return gulp.src(config.scss.input)
-        .pipe(sass(
-            {
-                style: 'expanded',
-                includePaths: config.scss.include
-            }
-        ))
-        .pipe(prefix())
+        .pipe(sass({
+            style: 'expanded',
+            includePaths: config.scss.include
+        }))
+        .pipe(postcss([autoprefixer()]))
         .pipe(concat(config.scss.output.filename))
         .pipe(gulp.dest(config.scss.output.dir))
         .pipe(livereload())
@@ -138,19 +135,6 @@ gulp.task('scss', function () {
         .pipe(livereload());
 });
 
-// Rerun the task when a file changes
-// TODO  - fix watch task - it doesn't work
-// gulp.task('watch', function () {
-//     livereload.listen();
-//     config.scss.watch.forEach(function (path) {
-//         gulp.watch(path, ['scss']);
-//     });
-//     config.script.watch.forEach(function (path) {
-//         gulp.watch(path, ['js']);
-//     });
-// });
+gulp.task('build', gulp.series('images', 'icons', 'js', 'scss'));
 
-gulp.task('build', gulp.series('images','icons', 'js', 'scss'));
-
-// gulp.task('default', gulp.series('build', 'watch'));
 gulp.task('default', gulp.series('build'));
