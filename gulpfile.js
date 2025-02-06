@@ -35,7 +35,7 @@ var config = (function () {
             include: [
                 path.npm,
                 path.npm + '/pikaday-time/scss/',
-		        path.npm + '/bootstrap/scss/',
+		        // path.npm + '/bootstrap/scss/',
                 path.staticfiles,
                 path.assets + '/scss/'
             ],
