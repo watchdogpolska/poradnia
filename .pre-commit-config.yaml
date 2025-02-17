@@ -48,7 +48,7 @@ repos:
           - --config
           - ./pyproject.toml
   - repo: https://github.com/PyCQA/flake8
-    rev: 7.1.1
+    rev: 7.1.2
     hooks:
       - id: flake8
         args:
