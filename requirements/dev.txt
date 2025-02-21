@@ -1,6 +1,6 @@
 # Local development dependencies go here
 -r base.txt
-Sphinx==8.1.3
+Sphinx==8.2.0
 
 # django-debug-toolbar that works with Django 1.5+
 django-debug-toolbar==4.4.6
