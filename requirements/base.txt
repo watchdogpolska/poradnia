@@ -1,4 +1,4 @@
-Django==4.2.19
+Django==4.2.20
 
 # Configuration
 django-environ==0.12.0
