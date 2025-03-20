@@ -55,7 +55,7 @@ git+https://github.com/PiotrIw/django-atom.git@master
 # django-tinycontent==0.9.0 - misses Django 3.2 compatibility migration
 # django-tinycontent is not supported anymore so watchdog maintained fork is used
 git+https://github.com/watchdogpolska/django-tinycontent.git@master
-icalendar==6.1.1
+icalendar==6.1.2
 html2text==2024.2.26
 pyGravatar==0.0.6
 
