@@ -68,7 +68,7 @@ python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
 django-teryt-tree==0.18.4
-django-mptt==0.16.0
+django-mptt==0.17.0
 mistune==3.1.3
 django-rosetta==0.10.2
 
