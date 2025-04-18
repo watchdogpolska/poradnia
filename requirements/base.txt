@@ -56,7 +56,7 @@ git+https://github.com/PiotrIw/django-atom.git@master
 # django-tinycontent is not supported anymore so watchdog maintained fork is used
 git+https://github.com/watchdogpolska/django-tinycontent.git@master
 icalendar==6.1.3
-html2text==2024.2.26
+html2text==2025.4.15
 pyGravatar==0.0.6
 
 # replacing unmaintained django-bootstrap-pagination with updated fork
