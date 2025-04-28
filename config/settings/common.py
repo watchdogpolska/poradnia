@@ -76,7 +76,12 @@ LOCAL_APPS = (
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 # END APP CONFIGURATION
-INSTALLED_APPS = THIRD_PARTY_APPS + LOCAL_APPS + DJANGO_APPS
+INSTALLED_APPS = (
+    THIRD_PARTY_APPS
+    + LOCAL_APPS
+    + DJANGO_APPS
+    + ("django_cleanup.apps.CleanupConfig",)  # should be placed after all other apps
+)
 
 # MIDDLEWARE CONFIGURATION
 MIDDLEWARE = (

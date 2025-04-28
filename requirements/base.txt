@@ -37,13 +37,12 @@ cssselect==1.3.0
 django-guardian==2.4.0
 django-mailbox==4.10.1
 django-filter==25.1
+django-cleanup==9.0.0
 # django-ajax-datatable to be installed from github fork until
 # https://github.com/morlandi/django-ajax-datatable/pull/111 is merged
 # django-ajax-datatable==4.4.5
 git+https://github.com/PiotrIw/django-ajax-datatable.git@05afe42
 
-# dal 3.5.0 is the latest not causing "poradnia" js frontend errors
-# TODO: resolve the problem
 django-autocomplete-light==3.12.1
 django-tinymce==3.7.1
 
