@@ -77,8 +77,8 @@ services:
     networks:
       - poradnia-app-network
   #
-  # To use email reception uncomment below section and fill in your dev IMAP 
-  # mailbox secrets in imap-to-webhook-url.env
+  # ### To use email reception uncomment below section and fill in your dev IMAP 
+  # ### mailbox secrets in imap-to-webhook-url.env
   #  
   # imap-to-webhook-porady:
   #   image: quay.io/watchdogpolska/imap-to-webhook:latest
@@ -91,6 +91,20 @@ services:
   #     - imap-to-webhook-url.env
   #   networks:
   #     - poradnia-app-network
+
+  # ### To test webhook receiving, Turnstile or other feature required access from web
+  # ###  uncomment below section and set proper django site url in DB
+  # ngrok:
+  #   image: ngrok/ngrok:latest
+  #   command: http --url=${NGROK_URL} web:8000
+  #   environment:
+  #     - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+  #   ports:
+  #     - "4040:4040" # ngrok web interface
+  #   networks:
+  #     - poradnia-app-network
+  #   depends_on:
+  #     - web
 
 volumes:
   mysql-data:
