@@ -59,6 +59,7 @@ services:
       APP_MODE: "DEV"
       ROSETTA_AZURE_CLIENT_SECRET: ${ROSETTA_AZURE_CLIENT_SECRET}
       MY_INTERNAL_IP: ${MY_INTERNAL_IP}
+      NGROK_URL: ${NGROK_URL}
     ports:
       - "8000:8000"
     networks:
@@ -95,8 +96,10 @@ services:
   # ### To test webhook receiving, Turnstile or other feature required access from web
   # ###  uncomment below section and set proper django site url in DB
   # ngrok:
-  #   image: ngrok/ngrok:latest
-  #   command: http --url=${NGROK_URL} web:8000
+  #   build:
+  #     context: .
+  #     dockerfile: .contrib/docker/Dockerfile.ngrok
+  #   command: http web:8000 --url=${NGROK_URL} # web:8000
   #   environment:
   #     - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
   #   ports:
