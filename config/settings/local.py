@@ -56,5 +56,5 @@ DEBUG_TOOLBAR_CONFIG = {
 ACCOUNT_EMAIL_VERIFICATION = env("ACCOUNT_EMAIL_VERIFICATION", default="mandatory")
 CSRF_TRUSTED_ORIGINS = [
     "http://*",
-    env("NGROK_URL", default="").strip(),
+    env("NGROK_URL", default="http://localhost").strip(),
 ]
