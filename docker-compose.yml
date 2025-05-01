@@ -61,7 +61,7 @@ services:
       TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY}
       TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY}
       MY_INTERNAL_IP: ${MY_INTERNAL_IP}
-      NGROK_URL: ${NGROK_URL:-"http://localhost"}
+      NGROK_URL: ${NGROK_URL:-http://localhost}
     ports:
       - "8000:8000"
     networks:
