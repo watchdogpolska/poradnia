@@ -53,6 +53,7 @@ THIRD_PARTY_APPS = (
     "teryt_tree",
     "tinymce",
     "ajax_datatable",
+    "turnstile",
     "rosetta",
 )
 
@@ -425,6 +426,10 @@ ROSETTA_EXCLUDED_APPLICATIONS = (
     "vies",
 )
 AZURE_CLIENT_SECRET = env.str("ROSETTA_AZURE_CLIENT_SECRET", "")
+
+# Cludflare turnstile settings
+TURNSTILE_SITEKEY = env.str("TURNSTILE_SITE_KEY", "")
+TURNSTILE_SECRET = env.str("TURNSTILE_SECRET_KEY", "")
 
 # Send notifications to case or letter change/addition author
 NOTIFY_AUTHOR = env.bool("NOTIFY_AUTHOR", True)
