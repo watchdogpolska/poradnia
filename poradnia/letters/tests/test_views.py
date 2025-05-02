@@ -3,6 +3,7 @@ import json
 import os
 import zipfile
 from io import BytesIO
+from unittest.mock import MagicMock, patch
 
 import bleach
 from django.conf import settings
@@ -45,17 +46,18 @@ class NewCaseMixin(CaseMixin):
     def get_letter(self):
         return Letter.objects.filter(name="Lorem ipsum subject example")
 
-    def test_template_used(self):
+    def test_template_used(self, mock: MagicMock):
         resp = self.client.get(self.url)
         self.assertTemplateUsed(resp, self.template_name)
 
-    def test_field_map(self):
+    def test_field_map(self, mock: MagicMock):
         resp = self.client.get(self.url)
         self.assertEqual(list(resp.context_data["form"].fields.keys()), self.fields)
 
 
+@patch("turnstile.fields.TurnstileField.validate", return_value=True)
 class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
-    fields = ["name", "text", "email_registration", "giodo"]
+    fields = ["name", "text", "email_registration", "turnstile", "giodo"]
     post_data = {
         "attachment_set-INITIAL_FORMS": "0",
         "attachment_set-MAX_NUM_FORMS": "1000",
@@ -65,38 +67,39 @@ class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
         "giodo": "on",
         "name": "Lorem ipsum subject example",
         "text": "Lorem ipsum example text",
+        "turnstile": "valid-turnstile-response",  # Mocked valid Turnstile response
     }
 
     def get_data(self):
         return self.post_data
 
-    def test_user_registration(self):
+    def test_user_registration(self, mock: MagicMock):
         self.post()
         self.assertMailSend(
             template="users/email/new_user.txt",
             subject="Rejestracja w Poradni Sieci Obywatelskiej - Watchdog Polska",
         )
 
-    def test_user_notification(self):
+    def test_user_notification(self, mock: MagicMock):
         self.post()
         self.assertMailSend(
             template="cases/email/case_registered.txt",
             subject="Sprawa  zarejestrowana w systemie",
         )
 
-    def test_case_exists(self):
+    def test_case_exists(self, mock: MagicMock):
         self.post()
         self.assertEqual(self.get_case().count(), 1)
 
-    def test_letter_exists(self):
+    def test_letter_exists(self, mock: MagicMock):
         self.post()
         self.assertEqual(self.get_letter().count(), 1)
 
-    def test_letter_use_correct_case(self):
+    def test_letter_use_correct_case(self, mock: MagicMock):
         self.post()
         self.assertEqual(self.get_letter().get().case, self.get_case().get())
 
-    def test_object_test(self):
+    def test_object_test(self, mock: MagicMock):
         self.post()
         obj = self.get_letter().get()
         self.assertEqual("Lorem ipsum subject example", obj.name)
@@ -104,15 +107,16 @@ class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
         self.assertEqual(obj.case.client, obj.created_by)
         self.assertEqual(obj.case.client.email, "my_email@oh-noes.pl")
 
-    def test_user_registered_fail(self):
+    def test_user_registered_fail(self, mock: MagicMock):
         UserFactory(email=self.post_data["email_registration"])
         resp = self.post()
         self.assertFalse(resp.context_data["form"].is_valid())
         self.assertIn("email_registration", resp.context_data["form"].errors)
 
 
+@patch("turnstile.fields.TurnstileField.validate", return_value=True)
 class AdminNewCaseTestCase(NewCaseMixin, TestCase):
-    fields = ["name", "text", "client", "email", "giodo"]
+    fields = ["name", "text", "client", "email", "turnstile", "giodo"]
 
     def get_data(self):
         self.email = UserFactory.build().email
@@ -138,23 +142,25 @@ class AdminNewCaseTestCase(NewCaseMixin, TestCase):
             "giodo": "on",
             "name": "Lorem ipsum subject example",
             "text": "Lorem ipsum example text",
+            "turnstile": "valid-turnstile-response",
         }
 
     def setUp(self):
         self.user = UserFactory(is_staff=True, is_superuser=True)
         self.client.login(username=self.user.username, password="pass")
 
-    def test_user_registration(self):
+    def test_user_registration(self, mock: MagicMock):
         self.post()
         self.assertMailSend(template="users/email/new_user.txt", to=self.email)
 
-    def test_user_notification(self):
+    def test_user_notification(self, mock: MagicMock):
         self.post()
         self.assertMailSend(template="cases/email/case_registered.txt", to=self.email)
 
 
+@patch("turnstile.fields.TurnstileField.validate", return_value=True)
 class UserNewCaseTestCase(NewCaseMixin, TestCase):
-    fields = ["name", "text"]
+    fields = ["name", "text", "turnstile"]
 
     def get_data(self):
         return {
@@ -176,13 +182,14 @@ class UserNewCaseTestCase(NewCaseMixin, TestCase):
             "attachment_set-TOTAL_FORMS": "3",
             "name": "Lorem ipsum subject example",
             "text": "Lorem ipsum example text",
+            "turnstile": "valid-turnstile-response",  # Mocked valid Turnstile response
         }
 
     def setUp(self):
         self.user = UserFactory()
         self.client.login(username=self.user.username, password="pass")
 
-    def test_user_self_notify(self):
+    def test_user_self_notify(self, mock: MagicMock):
         self.post()
         self.assertMailSend(
             template="cases/email/case_registered.txt",

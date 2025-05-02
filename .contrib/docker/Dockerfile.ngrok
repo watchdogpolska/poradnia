@@ -1,0 +1,4 @@
+FROM ngrok/ngrok:latest
+USER root
+RUN apt update && apt install -y curl htop 
+USER ngrok
