@@ -7,6 +7,8 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext as _
 from turnstile.fields import TurnstileField
 
+from poradnia.utils.constants import TURNSTILE_ERROR_MESSAGES
+
 
 class SignupForm(
     FormHorizontalMixin,
@@ -14,7 +16,9 @@ class SignupForm(
     forms.ModelForm,
 ):
 
-    turnstile = TurnstileField(label=_(" "), language="pl")
+    turnstile = TurnstileField(
+        label=_(" "), error_messages=TURNSTILE_ERROR_MESSAGES, language="pl"
+    )
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
