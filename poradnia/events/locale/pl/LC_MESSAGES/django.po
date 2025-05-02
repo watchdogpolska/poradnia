@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-15 12:14+0100\n"
+"POT-Creation-Date: 2025-05-02 08:49+0200\n"
 "PO-Revision-Date: 2023-12-13 06:11+0124\n"
 "Last-Translator: Piotr Iwa <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -19,7 +19,7 @@ msgstr ""
 "X-Generator: Poedit 1.8.7.1\n"
 "X-Translated-Using: django-rosetta 0.9.9\n"
 
-#: poradnia/events/apps.py:7 poradnia/events/models.py:203
+#: poradnia/events/apps.py:7 poradnia/events/models.py:211
 #: poradnia/events/templates/events/base.html:5
 #: poradnia/events/templates/events/base.html:10
 msgid "Events"
@@ -101,7 +101,7 @@ msgstr "Zmodyfikowane przez"
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
-#: poradnia/events/models.py:202
+#: poradnia/events/models.py:210
 msgid "Event"
 msgstr "Wydarzenie"
 

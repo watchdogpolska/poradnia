@@ -1,3 +1,5 @@
+from unittest.mock import MagicMock, patch
+
 from django.contrib.auth.models import AnonymousUser
 from django.core import mail
 from django.test import TestCase
@@ -16,15 +18,17 @@ except ImportError:
 REGISTRATION_SUBJECT = "Rejestracja w Poradni Sieci Obywatelskiej - Watchdog Polska"
 
 
+@patch("turnstile.fields.TurnstileField.validate", return_value=True)
 class AnonymousNewCaseFormMyTests(TestCase):
     form_cls = NewCaseForm
     data = {
         "email_registration": "x123@wykop.pl",
         "name": "My famous subject",
         "text": "Letter text - Lorem ipsum",
+        "turnstile": "valid-turnstile-response",
         "giodo": "x",
     }
-    fields = ["name", "text", "email_registration", "giodo"]
+    fields = ["name", "text", "email_registration", "turnstile", "giodo"]
 
     def get_form_kwargs(self):
         return dict(user=self.user, data=self.data)
@@ -38,10 +42,10 @@ class AnonymousNewCaseFormMyTests(TestCase):
     def setUp(self):
         self.user = self.get_user()
 
-    def test_valid(self):
+    def test_valid(self, mock: MagicMock):
         self.assertTrue(self.get_bound().is_valid())
 
-    def test_create_case(self):
+    def test_create_case(self, mock: MagicMock):
         form = self.get_bound()
         form.is_valid()
 
@@ -49,7 +53,7 @@ class AnonymousNewCaseFormMyTests(TestCase):
         form.save()
         self.assertEqual(Case.objects.count(), 1)
 
-    def test_user_register(self):
+    def test_user_register(self, mock: MagicMock):
         form = self.get_bound()
         form.is_valid()
 
@@ -57,7 +61,7 @@ class AnonymousNewCaseFormMyTests(TestCase):
         form.save()
         self.assertEqual(User.objects.count() - u_count, 1)
 
-    def test_send_email_new_case_to_user_with_notify_new_case(self):
+    def test_send_email_new_case_to_user_with_notify_new_case(self, mock: MagicMock):
         form = self.get_bound()
         form.is_valid()
 
@@ -77,14 +81,14 @@ class AnonymousNewCaseFormMyTests(TestCase):
         self.assertIn(self.data["name"], mail.outbox[1].subject)
         self.assertIn(str(obj.created_by), mail.outbox[1].subject)
 
-    def test_fields_compare(self):
+    def test_fields_compare(self, mock: MagicMock):
         self.assertEqual(list(self.get_bound().fields.keys()), self.fields)
 
-    def test_login_required(self):
+    def test_login_required(self, mock: MagicMock):
         UserFactory(email=self.data["email_registration"])
         form = self.get_bound()
         self.assertIn("email_registration", form.errors)
 
-    def test_login_not_required(self):
+    def test_login_not_required(self, mock: MagicMock):
         form = self.get_bound()
         self.assertNotIn("email_registration", form.errors)
