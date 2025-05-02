@@ -9,7 +9,7 @@ msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2025-05-02 09:18+0200\n"
-"PO-Revision-Date: 2025-05-02 09:22+0200\n"
+"PO-Revision-Date: 2025-05-02 09:51+0200\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -29,7 +29,7 @@ msgstr "Nie można zweryfikować Turnstile."
 
 #: poradnia/utils/constants.py:8
 msgid "Please prove you are a human."
-msgstr "Udowodnij, że jesteś człowiekiem."
+msgstr "Kliknij pole powyżej aby udowodnć że nie jesteś automatem."
 
 #: poradnia/utils/mixins.py:42
 msgid "Apply Filter"
