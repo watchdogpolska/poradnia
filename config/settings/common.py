@@ -53,6 +53,7 @@ THIRD_PARTY_APPS = (
     "teryt_tree",
     "tinymce",
     "ajax_datatable",
+    "turnstile",
     "rosetta",
 )
 
@@ -76,7 +77,12 @@ LOCAL_APPS = (
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 # END APP CONFIGURATION
-INSTALLED_APPS = THIRD_PARTY_APPS + LOCAL_APPS + DJANGO_APPS
+INSTALLED_APPS = (
+    THIRD_PARTY_APPS
+    + LOCAL_APPS
+    + DJANGO_APPS
+    + ("django_cleanup.apps.CleanupConfig",)  # should be placed after all other apps
+)
 
 # MIDDLEWARE CONFIGURATION
 MIDDLEWARE = (
@@ -420,6 +426,10 @@ ROSETTA_EXCLUDED_APPLICATIONS = (
     "vies",
 )
 AZURE_CLIENT_SECRET = env.str("ROSETTA_AZURE_CLIENT_SECRET", "")
+
+# Cludflare turnstile settings
+TURNSTILE_SITEKEY = env.str("TURNSTILE_SITE_KEY", "")
+TURNSTILE_SECRET = env.str("TURNSTILE_SECRET_KEY", "")
 
 # Send notifications to case or letter change/addition author
 NOTIFY_AUTHOR = env.bool("NOTIFY_AUTHOR", True)

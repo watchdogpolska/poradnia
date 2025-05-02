@@ -1,10 +1,10 @@
-Django==4.2.19
+Django==4.2.20
 
 # Configuration
 django-environ==0.12.0
 
 # Forms
-django-braces==1.16.0
+django-braces==1.17.0
 django-crispy-forms==1.14.0
 # TOD0 django-floppyforms are not maintained since 2020 (last django 2.1...)
 django-floppyforms==1.9.0
@@ -13,7 +13,7 @@ django-floppyforms==1.9.0
 django-model-utils==5.0.0
 
 # images
-Pillow==11.1.0
+Pillow==11.2.1
 sorl-thumbnail==12.11.0
 
 # For user registration, either via email or social
@@ -30,21 +30,21 @@ django-autoslug==1.9.9
 
 # Useful things
 # Time zones support
-pytz==2025.1
-lxml==5.3.0
-cssselect==1.2.0
+pytz==2025.2
+lxml==5.4.0
+cssselect==1.3.0
 # Your custom requirements go here
 django-guardian==2.4.0
 django-mailbox==4.10.1
-django-filter==24.3
+django-filter==25.1
+django-cleanup==9.0.0
+django-turnstile==0.1.2 
 # django-ajax-datatable to be installed from github fork until
 # https://github.com/morlandi/django-ajax-datatable/pull/111 is merged
 # django-ajax-datatable==4.4.5
 git+https://github.com/PiotrIw/django-ajax-datatable.git@05afe42
 
-# dal 3.5.0 is the latest not causing "poradnia" js frontend errors
-# TODO: resolve the problem
-django-autocomplete-light==3.11.0
+django-autocomplete-light==3.12.1
 django-tinymce==3.7.1
 
 # replacing unmaintained django-atom with updated fork
@@ -55,22 +55,22 @@ git+https://github.com/PiotrIw/django-atom.git@master
 # django-tinycontent==0.9.0 - misses Django 3.2 compatibility migration
 # django-tinycontent is not supported anymore so watchdog maintained fork is used
 git+https://github.com/watchdogpolska/django-tinycontent.git@master
-icalendar==6.1.1
-html2text==2024.2.26
+icalendar==6.1.3
+html2text==2025.4.15
 pyGravatar==0.0.6
 
 # replacing unmaintained django-bootstrap-pagination with updated fork
 # django-bootstrap-pagination==1.7.1
 git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master#egg=django-bootstrap-pagination
 
-sentry-sdk==2.20.0
+sentry-sdk==2.27.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
 django-teryt-tree==0.18.4
-django-mptt==0.16.0
-mistune==3.1.1
-django-rosetta==0.10.1
+django-mptt==0.17.0
+mistune==3.1.3
+django-rosetta==0.10.2
 
 # Additional sanitizer until a completely safe markdown package is found.
 bleach==6.2.0
