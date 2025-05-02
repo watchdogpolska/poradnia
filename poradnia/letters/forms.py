@@ -15,8 +15,10 @@ from django.forms import ModelForm
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from tinymce.widgets import TinyMCE
+from turnstile.fields import TurnstileField
 
 from poradnia.cases.models import Case
+from poradnia.utils.constants import TURNSTILE_ERROR_MESSAGES
 
 from .models import Attachment, Letter
 from .utils import HTMLFilter
@@ -93,6 +95,9 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
     email = forms.EmailField(required=False, label=_("User e-mail"))
     email_registration = UserEmailField(
         required=True, help_text=EMAIL_TEXT, label=_("E-mail")
+    )
+    turnstile = TurnstileField(
+        label=_(" "), error_messages=TURNSTILE_ERROR_MESSAGES, language="pl"
     )
 
     def __init__(self, *args, **kwargs):

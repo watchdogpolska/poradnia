@@ -42,6 +42,8 @@ if "test" not in sys.argv:
     }
     ROSETTA_EXCLUDED_APPLICATIONS += ("debug_toolbar",)
 
+TURNSTILE_ENABLE = env("TURNSTILE_ENABLE", default=True)
+
 MY_INTERNAL_IP = env("MY_INTERNAL_IP", default="")
 INTERNAL_IPS = ("127.0.0.1", "10.0.2.2", MY_INTERNAL_IP)
 
@@ -52,3 +54,7 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 ACCOUNT_EMAIL_VERIFICATION = env("ACCOUNT_EMAIL_VERIFICATION", default="mandatory")
+CSRF_TRUSTED_ORIGINS = [
+    "http://*",
+    env("NGROK_URL", default="http://localhost").strip(),
+]

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-09-21 18:48+0200\n"
+"POT-Creation-Date: 2025-05-02 09:18+0200\n"
 "PO-Revision-Date: 2024-03-15 12:16+0124\n"
 "Last-Translator: Piotr Iwa <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -19,11 +19,11 @@ msgstr ""
 "X-Generator: Poedit 2.4.1\n"
 "X-Translated-Using: django-rosetta 0.9.9\n"
 
-#: config/settings/common.py:306
+#: config/settings/common.py:314
 msgid "Polish"
 msgstr "Polski"
 
-#: config/settings/common.py:306
+#: config/settings/common.py:314
 msgid "English"
 msgstr "Angielski"
 
@@ -448,6 +448,5 @@ msgstr ""
 "(Nie zdefiniowano treści: <a href=\"%(add_url)s?name=<code>%(name_url)s\" "
 "title=\"Dodaj ten tinycontent blok\">Dodaj treśćtrochę</a>)"
 
-#: poradnia/utils/mixins.py:42
-msgid "Apply Filter"
-msgstr "Zastosuj filtr"
+#~ msgid "Apply Filter"
+#~ msgstr "Zastosuj filtr"
