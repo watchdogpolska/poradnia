@@ -309,7 +309,7 @@ LOGGING = {
 # Guardian settings
 ANONYMOUS_USER_ID = -1
 ANONYMOUS_USER_NAME = "AnonymousUser"
-GUARDIAN_MONKEY_PATCH = False
+GUARDIAN_MONKEY_PATCH_USER = False
 
 LANGUAGES = (("pl", _("Polish")), ("en", _("English")))
 
