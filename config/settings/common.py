@@ -165,7 +165,12 @@ DATABASES["default"]["TEST"] = {
 DATABASES["default"]["OPTIONS"] = {
     "charset": "utf8mb4",
     "init_command": "SET NAMES 'utf8mb4' COLLATE 'utf8mb4_polish_ci'",
+    "connect_timeout": 5,
+    "read_timeout": 20,
+    "write_timeout": 20,
 }
+
+DATABASES["default"]["CONN_MAX_AGE"] = env.int("DB_CONN_MAX_AGE", 60)
 # END DATABASE CONFIGURATION
 
 # CACHING
