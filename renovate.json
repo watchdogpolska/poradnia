@@ -32,7 +32,7 @@
     }
   ],
   "pip_requirements": {
-    "fileMatch": ["requirements/.+?.txt"]
+    "managerFilePatterns": ["/requirements/.+?.txt/"]
   },
   "constraints": {
     "node": "< 21.0.0",
