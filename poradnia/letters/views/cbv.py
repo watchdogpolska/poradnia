@@ -37,6 +37,7 @@ from poradnia.letters.settings import LETTER_RECEIVE_SECRET
 from poradnia.letters.utils import get_html_from_eml_file
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 from poradnia.users.utils import PermissionMixin
+from poradnia.utils.constants import NAME_MAX_LENGTH
 
 from ..forms import AttachmentForm, LetterForm, NewCaseForm
 from ..models import Attachment, Letter
@@ -306,7 +307,7 @@ class ReceiveEmailView(View):
 
     def create_letter(self, request, actor, case, manifest):
         letter = Letter.objects.create(
-            name=manifest["headers"]["subject"],
+            name=manifest["headers"]["subject"][:NAME_MAX_LENGTH],
             created_by=actor,
             created_by_is_staff=actor.is_staff,
             case=case,
@@ -421,7 +422,9 @@ class ReceiveEmailView(View):
         try:
             case = Case.objects.by_addresses(addresses).get()
         except Case.DoesNotExist:
-            case = Case.objects.create(name=subject, created_by=actor, client=actor)
+            case = Case.objects.create(
+                name=subject[:NAME_MAX_LENGTH], created_by=actor, client=actor
+            )
             actor.notify(
                 actor=actor, verb="registered", target=case, from_email=case.get_email()
             )
