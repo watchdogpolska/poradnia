@@ -65,6 +65,389 @@ Architektura Wysokiego Poziomu
    │  └─────────────────┘  └─────────────────┘  └─────────────────┘ │
    └─────────────────────────────────────────────────────────────────┘
 
+Alternatywna Architektura Azure-Native
+--------------------------------------
+
+**Kontekst**
+   Alternatywne podejście wykorzystujące w pełni zarządzane usługi Azure dla zespołów preferujących mniejszą ilość własnego kodu do zarządzania.
+
+**Architektura Azure-Native - Wysokiego Poziomu**
+
+.. code-block:: text
+
+   ┌─────────────────────────────────────────────────────────────────┐
+   │                   WARSTWA FRONTENDOWA                           │
+   ├─────────────────────────────────────────────────────────────────┤
+   │  Interfejs Django Admin     │  Punkty końcowe REST API          │
+   │  ┌─────────────────────┐    │  ┌─────────────────────────────┐   │
+   │  │ Widget Wiedzy       │    │  │ /api/knowledge/search/      │   │
+   │  │ Azure Search Query  │    │  │ /api/knowledge/rag/         │   │
+   │  │ RAG Responses       │    │  │ /api/knowledge/health/      │   │
+   │  └─────────────────────┘    │  └─────────────────────────────┘   │
+   └─────────────────────────────────────────────────────────────────┘
+                                    │
+   ┌─────────────────────────────────────────────────────────────────┐
+   │                  WARSTWA APLIKACYJNA                            │
+   ├─────────────────────────────────────────────────────────────────┤
+   │  Aplikacja Django Knowledge                                     │
+   │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐ │
+   │  │ Azure Search    │  │ Azure OpenAI    │  │ Content         │ │
+   │  │ Service Client  │  │ "On Your Data"  │  │ Sync Service    │ │
+   │  │ • Query proxy   │  │ • RAG endpoint  │  │ • WP → Blob     │ │
+   │  │ • Filter logic  │  │ • Citation      │  │ • Status track  │ │
+   │  │ • Result format │  │ • Response gen. │  │ • Error handle  │ │
+   │  └─────────────────┘  └─────────────────┘  └─────────────────┘ │
+   └─────────────────────────────────────────────────────────────────┘
+                                    │
+   ┌─────────────────────────────────────────────────────────────────┐
+   │                  WARSTWA AZURE USŁUG                           │
+   ├─────────────────────────────────────────────────────────────────┤
+   │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐  │
+   │  │ Azure AI Search │  │ Azure Blob      │  │ Document        │  │
+   │  │ Index           │  │ Storage         │  │ Intelligence    │  │
+   │  │ • Vector store  │  │ • Raw content   │  │ • PDF OCR       │  │
+   │  │ • Full text     │  │ • WP exports    │  │ • Layout parse  │  │
+   │  │ • Metadata      │  │ • Attachments   │  │ • Table extract │  │
+   │  └─────────────────┘  └─────────────────┘  └─────────────────┘  │
+   └─────────────────────────────────────────────────────────────────┘
+                                    │
+   ┌─────────────────────────────────────────────────────────────────┐
+   │                WARSTWA AUTOMATYCZNEJ INGESTION                 │
+   ├─────────────────────────────────────────────────────────────────┤
+   │  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────┐ │
+   │  │ Azure AI Search │  │ Azure OpenAI    │  │ MySQL (legacy)  │ │
+   │  │ Indexer         │  │ Embedding Skill │  │ Metadane        │ │
+   │  │ • Auto schedule │  │ • Integrated    │  │ • Content refs  │ │
+   │  │ • Data source   │  │ • Batch embed   │  │ • User data     │ │
+   │  │ • Error retry   │  │ • Auto chunk    │  │ • Audit logs    │ │
+   │  └─────────────────┘  └─────────────────┘  └─────────────────┘ │
+   └─────────────────────────────────────────────────────────────────┘
+
+**Przepływ Danych Azure-Native**
+
+.. code-block:: text
+
+   1. Content Ingestion:
+   WordPress API → [PullScript] → Azure Blob Storage
+                                        ↓
+   2. Auto Processing:
+   Azure AI Search Indexer (scheduled) → Document Intelligence (PDF)
+                                        ↓
+   3. Vectorization:
+   Azure OpenAI Embedding Skill → chunks → Azure AI Search Index
+                                        ↓
+   4. Search & RAG:
+   Django Query → Azure AI Search → Azure OpenAI "On Your Data" → Response
+
+**Komponenty Azure-Native**
+
+**Azure AI Search Index**
+   Centralne repozytorium dla wektorów i metadanych
+
+.. code-block:: python
+
+   # Definicja indeksu Azure AI Search
+   index_definition = {
+       "name": "knowledge-base",
+       "fields": [
+           {"name": "id", "type": "Edm.String", "key": True},
+           {"name": "content", "type": "Edm.String", "searchable": True},
+           {"name": "title", "type": "Edm.String", "searchable": True, "filterable": True},
+           {"name": "url", "type": "Edm.String", "filterable": True},
+           {"name": "source", "type": "Edm.String", "filterable": True},
+           {"name": "published_date", "type": "Edm.DateTimeOffset", "filterable": True, "sortable": True},
+           {"name": "category", "type": "Edm.String", "filterable": True},
+           {"name": "content_vector", "type": "Collection(Edm.Single)",
+            "vectorSearchDimensions": 1536, "vectorSearchProfileName": "default"},
+       ],
+       "vectorSearch": {
+           "algorithms": [
+               {"name": "hnsw-cosine", "kind": "hnsw", "hnswParameters": {"m": 4, "efConstruction": 400}}
+           ],
+           "profiles": [
+               {"name": "default", "algorithm": "hnsw-cosine"}
+           ]
+       }
+   }
+
+**Azure AI Search Service Client**
+   Serwis Django dla komunikacji z Azure AI Search
+
+.. code-block:: python
+
+   from azure.search.documents import SearchClient
+   from azure.search.documents.models import VectorizedQuery
+
+   class AzureSearchService:
+       def __init__(self):
+           self.search_client = SearchClient(
+               endpoint=settings.AZURE_SEARCH_ENDPOINT,
+               index_name="knowledge-base",
+               credential=DefaultAzureCredential()
+           )
+           self.openai_client = AzureOpenAI(
+               api_version="2024-02-01",
+               azure_endpoint=settings.AZURE_OPENAI_ENDPOINT,
+               azure_ad_token_provider=get_bearer_token_provider(
+                   DefaultAzureCredential(), "https://cognitiveservices.azure.com/.default"
+               )
+           )
+
+       def search_articles(self, query: str, filters: dict = None, limit: int = 10) -> List[dict]:
+           """
+           Hybrydowe wyszukiwanie: wektory + full text + filtry
+           """
+           # Generowanie embedding dla zapytania
+           embedding_response = self.openai_client.embeddings.create(
+               model="text-embedding-3-small",
+               input=query
+           )
+           query_vector = embedding_response.data[0].embedding
+
+           # Przygotowanie zapytania wektorowego
+           vector_query = VectorizedQuery(
+               vector=query_vector,
+               k_nearest_neighbors=50,
+               fields="content_vector"
+           )
+
+           # Budowanie filtrów
+           filter_expression = self._build_filter_expression(filters) if filters else None
+
+           # Wykonanie hybrydowego search
+           results = self.search_client.search(
+               search_text=query,
+               vector_queries=[vector_query],
+               filter=filter_expression,
+               top=limit,
+               include_total_count=True
+           )
+
+           return [
+               {
+                   "id": result["id"],
+                   "title": result["title"],
+                   "content": result["content"][:500],
+                   "url": result["url"],
+                   "score": result["@search.score"],
+                   "source": result["source"],
+                   "published_date": result["published_date"]
+               }
+               for result in results
+           ]
+
+       def generate_rag_response(self, question: str) -> dict:
+           """
+           Wykorzystanie Azure OpenAI "On Your Data" dla RAG
+           """
+           response = self.openai_client.chat.completions.create(
+               model="gpt-4o",
+               messages=[
+                   {"role": "system", "content": "Jesteś ekspertem prawnym specjalizującym się w dostępie do informacji publicznej. Odpowiadaj na podstawie dostarczonych dokumentów."},
+                   {"role": "user", "content": question}
+               ],
+               extra_body={
+                   "data_sources": [{
+                       "type": "azure_search",
+                       "parameters": {
+                           "endpoint": settings.AZURE_SEARCH_ENDPOINT,
+                           "index_name": "knowledge-base",
+                           "authentication": {
+                               "type": "api_key",
+                               "key": settings.AZURE_SEARCH_API_KEY
+                           },
+                           "top_n_documents": 5,
+                           "in_scope": True,
+                           "role_information": "Jesteś prawnikiem specjalizującym się w dostępie do informacji publicznej."
+                       }
+                   }]
+               }
+           )
+
+           return {
+               "response": response.choices[0].message.content,
+               "citations": self._extract_citations(response.choices[0].message),
+               "usage": response.usage
+           }
+
+**Azure Indexer Configuration**
+   Automatyczny indexer dla bez-kodowej ingestion
+
+.. code-block:: python
+
+   from azure.search.documents.indexes import SearchIndexerClient
+
+   class AzureIndexerService:
+       def setup_automated_indexing(self):
+           """
+           Konfiguracja automatycznego indeksowania z Azure Blob
+           """
+           indexer_client = SearchIndexerClient(
+               endpoint=settings.AZURE_SEARCH_ENDPOINT,
+               credential=DefaultAzureCredential()
+           )
+
+           # Data Source - Azure Blob Storage
+           data_source = {
+               "name": "wordpress-content",
+               "type": "azureblob",
+               "connectionString": settings.AZURE_BLOB_CONNECTION_STRING,
+               "container": {"name": "wordpress-exports"}
+           }
+
+           # Skillset z Azure OpenAI Embedding
+           skillset = {
+               "name": "content-processing",
+               "skills": [
+                   {
+                       "@odata.type": "#Microsoft.Skills.Text.SplitSkill",
+                       "textSplitMode": "pages",
+                       "maximumPageLength": 2000,
+                       "inputs": [{"name": "text", "source": "/document/content"}],
+                       "outputs": [{"name": "textItems", "targetName": "chunks"}]
+                   },
+                   {
+                       "@odata.type": "#Microsoft.Skills.Text.AzureOpenAIEmbeddingSkill",
+                       "resourceUri": settings.AZURE_OPENAI_ENDPOINT,
+                       "deploymentId": "text-embedding-3-small",
+                       "inputs": [{"name": "text", "source": "/document/chunks/*"}],
+                       "outputs": [{"name": "embedding", "targetName": "vector"}]
+                   }
+               ]
+           }
+
+           # Indexer - łączy data source, skillset i target index
+           indexer = {
+               "name": "wordpress-indexer",
+               "dataSourceName": "wordpress-content",
+               "skillsetName": "content-processing",
+               "targetIndexName": "knowledge-base",
+               "schedule": {"interval": "PT6H"},  # Co 6 godzin
+               "fieldMappings": [
+                   {"sourceFieldName": "metadata_storage_name", "targetFieldName": "title"},
+                   {"sourceFieldName": "metadata_storage_path", "targetFieldName": "url"},
+                   {"sourceFieldName": "content", "targetFieldName": "content"}
+               ],
+               "outputFieldMappings": [
+                   {"sourceFieldName": "/document/chunks/*/vector", "targetFieldName": "content_vector"}
+               ]
+           }
+
+           # Utworzenie komponentów
+           indexer_client.create_data_source(data_source)
+           indexer_client.create_skillset(skillset)
+           indexer_client.create_indexer(indexer)
+
+**Content Sync Service**
+   Synchronizacja między WordPress a Azure Blob
+
+.. code-block:: python
+
+   from azure.storage.blob import BlobServiceClient
+   import requests
+
+   class AzureContentSyncService:
+       def __init__(self):
+           self.blob_service = BlobServiceClient(
+               account_url=settings.AZURE_BLOB_ACCOUNT_URL,
+               credential=DefaultAzureCredential()
+           )
+           self.container_name = "wordpress-exports"
+
+       def sync_wordpress_content(self, since_hours: int = 6):
+           """
+           Synchronizacja treści z WordPress do Azure Blob
+           """
+           # Pobranie zaktualizowanych artykułów z WordPress
+           since_timestamp = (datetime.now() - timedelta(hours=since_hours)).isoformat()
+           wp_response = requests.get(
+               f"{settings.WORDPRESS_API_URL}/wp/v2/posts",
+               params={"modified_after": since_timestamp, "per_page": 100}
+           )
+
+           articles = wp_response.json()
+
+           for article in articles:
+               # Przygotowanie metadanych
+               blob_name = f"articles/{article['id']}.json"
+               metadata = {
+                   "title": article['title']['rendered'],
+                   "published_date": article['date'],
+                   "modified_date": article['modified'],
+                   "source": "wordpress",
+                   "category": self._extract_category(article),
+                   "url": article['link']
+               }
+
+               # Upload artykułu jako JSON blob
+               blob_data = {
+                   "content": self._clean_html(article['content']['rendered']),
+                   "metadata": metadata
+               }
+
+               blob_client = self.blob_service.get_blob_client(
+                   container=self.container_name,
+                   blob=blob_name
+               )
+
+               blob_client.upload_blob(
+                   json.dumps(blob_data, ensure_ascii=False).encode('utf-8'),
+                   metadata=metadata,
+                   overwrite=True
+               )
+
+               # Aktualizacja statusu w MySQL
+               Article.objects.update_or_create(
+                   external_id=str(article['id']),
+                   defaults={
+                       'title': article['title']['rendered'],
+                       'url': article['link'],
+                       'content': blob_data['content'],
+                       'published_date': article['date'],
+                       'modified_date': article['modified'],
+                       'azure_blob_path': blob_name,
+                       'sync_status': 'uploaded'
+                   }
+               )
+
+**Porównanie Architektur**
+
+.. list-table:: Rekomendowana vs Azure-Native
+   :header-rows: 1
+
+   * - Aspekt
+     - **Rekomendowana (Qdrant + OpenAI)**
+     - **Azure-Native**
+   * - **Konfiguracja**
+     - Więcej kodu Python
+     - Więcej konfiguracji Azure portal
+   * - **Vendor lock-in**
+     - ✅ Niski (open source Qdrant)
+     - ⚠️ Średni (Azure AI Search)
+   * - **Maintenance**
+     - ⚠️ Zarządzanie pipeline'em
+     - ✅ Fully managed indexing
+   * - **Koszty miesięczne**
+     - €50-70 (Qdrant + OpenAI)
+     - €80-120 (Azure AI Search + OpenAI)
+   * - **PDF Processing**
+     - ⚠️ Basic (PyPDF2/pdfplumber)
+     - ✅ Advanced (Document Intelligence)
+   * - **RAG out-of-box**
+     - ❌ Custom implementation
+     - ✅ "On Your Data" ready
+   * - **Learning curve**
+     - ✅ Python-focused
+     - ⚠️ Azure ecosystem knowledge
+   * - **Debugowanie**
+     - ✅ Full code control
+     - ⚠️ Black box indexer
+   * - **Skalowanie**
+     - ⚠️ Manual (resize Qdrant)
+     - ✅ Auto (Azure AI Search)
+
+**⚠️ Uwaga**: Obecna rekomendacja (Qdrant Cloud + OpenAI API) pozostaje **preferowanym wyborem** dla zespołów z ograniczonymi zasobami i małym doświadczeniem z Azure. Azure-native approach jest alternatywą do rozważenia przy większym doświadczeniu z Azure lub wymaganiach zaawansowanego PDF processing.
+
 Komponenty Systemu
 ------------------
 

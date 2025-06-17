@@ -59,6 +59,117 @@ Decyzje Strategiczne (Wymagają zatwierdzenia kierownictwa)
    * Negocjacja umowy DPA z wybranym dostawcą
    * Przeszkolenie zespołu z wybranej platformy
 
+1a. Azure-Native Architecture Alternative
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+**Kontekst rozważań**
+   Przy wyborze Azure jako preferowanego dostawcy chmury, istnieją dedykowane Azure-native rozwiązania, które mogą uprościć architekturę i zmniejszyć ilość kodu do zarządzania przez zespół.
+
+**Azure-oriented Ingestion Tracks**
+
+.. list-table:: Gotowe Stosy Ingestion w Azure
+   :header-rows: 1
+
+   * - Track
+     - Co daje gotowe
+     - Jak to działa technicznie
+     - Typowe wywołania Python SDK
+   * - **A. Azure AI Search + Integrated Vectorization**
+     - Ingestion w jednym kroku → tekst i PDF, chunking, embeddings i zapis do indeksu wektorowego
+     - **Data Source** (Blob/WP export) → **Indexer** → **Skillset** z Document Cracking + Azure OpenAI Embedding Skill → **Vector field**
+     - ``azure-search-documents`` → ``SearchIndexerClient.create_indexer()`` → query via ``VectorQuery``
+   * - **B. Document Intelligence → Search**
+     - Wysokiej jakości OCR/layout parsing dla PDF przed wektoryzacją
+     - **DocumentIntelligenceClient** → model ``prebuilt-layout`` → paragraphs → skrypt dzieli i embeddings → **Push API** do Search
+     - ``azure-ai-documentintelligence`` → ``begin_analyze_document("prebuilt-layout")`` → iterate ``paragraph.content``
+   * - **C. Azure OpenAI "On Your Data"**
+     - Pełnozarządzany RAG store (ingestion, chunking, embeddings, obsługa cytowań) za jednym endpointem ``/chat/completions``
+     - Rejestracja **Azure AI Search** indeksu jako ``data_source`` → service auto-uruchamia indexers & chunking
+     - ``openai.AzureOpenAI().chat.completions.create(…, extra_body={"data_sources":[{"type":"azure_search", …}]})``
+   * - **D. LangChain/LlamaIndex na Azure AI Search**
+     - Te same ergonomiczne loadery/splittery, ale wektory w Azure AI Search
+     - Loader → ``CharacterTextSplitter`` → ``AzureAISearchVectorStore`` (auto-tworzy indeks, obsługuje batch, hybrid search)
+     - ``langchain.vectorstores.azuresearch.AzureSearch.add_documents(docs)`` → ``similarity_search()``
+
+**Architektura Azure-Native w dwu-VM setup**
+
+.. code-block:: text
+
+   [WordPress REST API] →[JSON]→ [PullScript]
+   [Azure Blob] ← [attachments] ← [PullScript]
+                ↓
+   [Azure AI Search Indexer] ← [optional OCR] ← [Document Intelligence]
+                ↓
+   [Integrated Vectorization] → [Azure AI Search Index]
+                ↓
+   [Django Knowledge App] ← [Azure AI Search SDK]
+
+**Komponenty**:
+   * **PullScript** - 50-liniowy skrypt Python: ``GET /wp-json/wp/v2/posts?after=<timestamp>`` → zapis do Blob
+   * **Indexer** - zdefiniowany raz w Azure portal lub via ``SearchIndexerClient`` → harmonogram co 6h
+   * **Document Intelligence (opcjonalnie)** - tylko dla nowych PDF → zwraca Markdown/tekst
+   * **EmbedStep** - Track A: integrated vectorization LUB Track B/D: własny ``SentenceTransformer``/``OpenAIEmbedding``
+   * **VectorSink** - Azure AI Search indeks z ``chunks`` (text) + ``chunk_vector`` (FLOAT_VECTOR(1536))
+
+**Zalety Azure-native approach**:
+   * **Built-in chunking & retry logic** - Integrated vectorization obsługuje token limits i batching
+   * **First-class PDF support** - Document Intelligence rozumie layout, tabele, pismo odręczne
+   * **End-to-end RAG z cytowaniami** - "On Your Data" opakowuje retrieval + re-ranking + GPT-4o za jednym requestem
+   * **Framework ecosystem** - LangChain/LlamaIndex adaptery = można później zamienić na lokalne modele
+
+**Wady Azure-native approach**:
+   * **Vendor lock-in** - silniejsze uzależnienie od Azure niż obecna rekomendacja
+   * **Mniejsza kontrola** - mniej możliwości fine-tuningu pipeline'u
+   * **Koszty** - potencjalnie wyższe koszty niż Qdrant Cloud + OpenAI API
+   * **Learning curve** - zespół musi opanować Azure AI Search zamiast prostszego Qdrant
+
+**Quick start snippet (Track A)**
+
+.. code-block:: python
+
+   from azure.identity import DefaultAzureCredential
+   from azure.search.documents.indexes import SearchIndexerClient
+
+   creds = DefaultAzureCredential()
+   svc = "https://<search>.search.windows.net"
+   admin = SearchIndexerClient(endpoint=svc, credential=creds)
+
+   # 1. blob → datasource
+   # 2. skillset includes `azureOpenAiSkill` referencing embedding deployment
+   # 3. index defines `content_vec` : Collection(Edm.Single) dimensions=1536
+   # 4. indexer wires it together
+   admin.create_indexer(indexer)          # one-time
+   admin.run_indexer(indexer.name)        # ad-hoc or via scheduledFrequency
+
+**Wybór właściwego track'u**
+
+.. list-table:: Rekomendacje Azure Tracks
+   :header-rows: 1
+
+   * - Jeśli chcesz...
+     - Zacznij od
+   * - **zero ingestion code**
+     - **A** lub **C**
+   * - **fine OCR/table accuracy**
+     - dodaj **B**
+   * - **framework glue & future portability**
+     - warstwa **D** na górze
+
+**⚠️ Rekomendacja zespołu**: **Zachować obecną rekomendację Qdrant Cloud + OpenAI API**
+
+**Uzasadnienie**:
+   * **Prostota implementacji** - mniej komponentów Azure do nauki
+   * **Vendor portability** - łatwiejsza migracja między dostawcami w przyszłości
+   * **Kontrola kosztów** - lepsze monitorowanie kosztów przy dedykowanych serwisach
+   * **Debugging** - prostsze debugowanie własnego pipeline'u
+   * **Zespół AI-beginner friendly** - Azure AI Search wymaga głębszej znajomości Azure ekosystemu
+
+**Kiedy rozważyć Azure-native**:
+   * **Zespół posiada Azure expertise**
+   * **Projekt jest Azure-first** (nie tylko AI komponenty)
+   * **Wymagane zaawansowane PDF processing** (Document Intelligence)
+   * **Planowany rapid scaling** (>100k artykułów)
+
 2. Model Embedding - API vs Self-hosted
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
