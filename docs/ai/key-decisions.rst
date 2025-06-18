@@ -48,16 +48,24 @@ Decyzje Strategiczne (Wymagają zatwierdzenia kierownictwa)
      - ⚠️ Ograniczone
      - ⚠️ Ograniczone
 
-**Rekomendacja**: Azure ze względu na Azure OpenAI Service i Data Zones EU
+**Rekomendacja**: **Azure** jako główny dostawca chmury
+
+**Uzasadnienie**:
+   * **Istniejące doświadczenie zespołu** - Jan posiada experience z Azure, co przyspieszy delivery
+   * **Częściowe wykorzystanie już teraz** - zespół już używa Azure w niektórych obszarach
+   * **Niezawodność dostawcy** - sprawdzony vendor z dobrą reputacją
+   * **Azure OpenAI Service** - natywna integracja z GPT-4 i modelami embedding
+   * **RODO compliance** - Data Zones EU i regiony europejskie
+   * **Szybsza implementacja** - leverage istniejącej wiedzy i infrastruktury
 
 **Konsekwencje wyboru**
-   * Azure: Natywna integracja z GPT-4, ale wyższe koszty infrastruktury
-   * AWS: Bedrock Claude/Mistral, ale wyższe koszty API
-   * Google: Vertex AI, ale brak GPT-4, własne modele (PaLM)
+   * **Przyspieszony development** dzięki istniejącemu doświadczeniu zespołu
+   * **Mniejsza learning curve** - nie trzeba uczyć się nowej platformy od zera
+   * **Integracja z istniejącymi serwisami** Azure w organizacji
 
 **Wymagane działania**
-   * Negocjacja umowy DPA z wybranym dostawcą
-   * Przeszkolenie zespołu z wybranej platformy
+   * Rozszerzenie istniejącej umowy Azure o AI services
+   * Setup Azure OpenAI Service w odpowiednim regionie EU
 
 1a. Azure-Native Architecture Alternative
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -206,10 +214,9 @@ Decyzje Strategiczne (Wymagają zatwierdzenia kierownictwa)
      - ⚠️ Wymaga DPA
      - ⚠️ Wymaga DPA
 
-**Oszacowanie kosztów:**
-   * Ocenić ilość artykułów do indeksowania
-   * Ocenić szacunkową ilość tokenów
-   * Oszacować koszt embeddingów w zależności od wybranego dostawcy dla początkowego indeksowania i miesięcznego użycia
+**Oszacowanie kosztów Azure OpenAI:**
+   * Text-embedding-3-small: ~$0.02/1M tokenów (~€0.018/1M tokenów)
+   * Przykład dla 10,000 artykułów (~5M tokenów): €9 na początkowe indeksowanie
 
 **Opcje B: Self-hosted**
 
@@ -241,13 +248,22 @@ Decyzje Strategiczne (Wymagają zatwierdzenia kierownictwa)
      - €50-100 (GPU instance)
      - €0 (existing infra)
 
-**Rekomendacja**: **OpenAI API** dla zespołów z ograniczonymi zasobami
+**Decyzja**: **Azure OpenAI Embedding** (text-embedding-3-small)
 
 **Uzasadnienie**:
-   * Brak potrzeby zarządzania infrastrukturą ML
-   * Przewidywalne koszty (~€30-50/miesiąc)
-   * Wysoka jakość dla języka polskiego
-   * Łatwa migracja do self-hosted w przyszłości
+   * **Szybka implementacja** - wykorzystanie istniejącego doświadczenia zespołu z Azure
+   * **Niezawodność i jakość** - sprawdzone rozwiązanie OpenAI w zarządzanym środowisku Azure
+   * **Niskie koszty początkowe** - embeddings są generalnie tanie, nie spodziewamy się wysokich kosztów na start
+   * **Brak dodatkowej infrastruktury** - managed service, zero maintenance
+   * **RODO compliance** - przetwarzanie w regionach EU
+   * **Integracja z ekosystemem** - łatwa integracja z innymi Azure services
+
+Szacowane koszty są tańsze niż zarządzanie własnymi modelami embedding.
+
+**⚠️ Reewaluacja przy**:
+   * Kosztach API >€100/miesiąc
+   * Potrzebie przetwarzania dużych wolumenów danych
+   * Wymaganiach dotyczących full data sovereignty
 
 3. Baza Wektorowa - SaaS vs Self-hosted
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -290,11 +306,12 @@ Decyzje Strategiczne (Wymagają zatwierdzenia kierownictwa)
      - ✅ Open source Weaviate
 
 **Oszacowanie kosztów dla 10,000 artykułów:**
-   * Każdy artykuł: ~3 chunki po 1536 wymiarów (OpenAI)
+   * Każdy artykuł: ~3 chunki po 1536 wymiarów (Azure OpenAI)
    * Całkowity storage: ~180MB embeddings
    * **Pinecone**: €70/miesiąc (1GB plan)
    * **Qdrant Cloud**: €19/miesiąc (1GB plan)
    * **Weaviate Cloud**: €22/miesiąc (Standard)
+   * **ChromaDB**: €0/miesiąc (embedded, storage w ramach istniejącej infrastruktury)
 
 **Opcje B: Self-hosted**
 
@@ -326,16 +343,25 @@ Decyzje Strategiczne (Wymagają zatwierdzenia kierownictwa)
      - €40-80/miesiąc
      - €10-20/miesiąc
 
-**Rekomendacja**: **Qdrant Cloud** dla zespołów z ograniczonymi zasobami
+**Rekomendacja**: **ChromaDB** jako embedded database
 
 **Uzasadnienie**:
-   * Najniższe koszty SaaS (€19/miesiąc)
-   * Brak vendor lock-in (open source)
-   * Automatyczne backup i monitoring
-   * Łatwa migracja do self-hosted w przyszłości
-   * Doskonałe performance benchmarks
+   * **Brak dodatkowej infrastruktury** - działa jako embedded database w aplikacji Django
+   * **Eliminacja wysilkow na zgodność** - brak potrzeby negocjacji DPA z zewnętrznymi dostawcami SaaS
+   * **Zerowe koszty operacyjne** - brak miesięcznych opłat za usługi chmurowe
+   * **Prostota deployment** - jeden mniej komponent do zarządzania w produkcji
+   * **Wystarczająca wydajność** - dla początkowej fazy projektu powinna być wystarczająca
+   * **Plan migracji** - łatwa reewaluacja i migracja do Qdrant/Pinecone przy problemach wydajnościowych
 
-**Alternatywa**: ChromaDB dla bardzo małych projektów (<1000 artykułów)
+**⚠️ Reewaluacja przy**:
+   * Problemach z wydajnością search (>3s response time)
+   * Rozmiarze bazy >50,000 artykułów
+   * Potrzebie horizontal scaling
+
+**Alternatywne rozwiązania dla przyszłości**:
+   * **Qdrant Cloud**: Gdy potrzebne będzie managed SaaS z lepszą wydajnością
+   * **Self-hosted Qdrant**: Gdy potrzebna kontrola nad infrastrukturą przy zachowaniu wydajności
+   * **Pinecone**: Gdy koszt nie jest głównym czynnikiem, a wymagana najwyższa wydajność
 
 4. Architektura Bazy Wektorowej - Decyzja końcowa
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -350,14 +376,15 @@ Decyzje Strategiczne (Wymagają zatwierdzenia kierownictwa)
 
 **✅ Migracja z przestarzałej MySQL**
 
-**Plan migracji**:
-   1. **Faza 1**: Qdrant Cloud dla embeddings
+**Plan implementacji**:
+   1. **Faza 1**: ChromaDB jako embedded database dla embeddings
    2. **Faza 2**: Zachowanie istniejącej MySQL dla metadanych
-   3. **Faza 3**: Ocena migracji głównej bazy do PostgreSQL
+   3. **Faza 3**: Monitoring wydajności i ocena potrzeby migracji do zewnętrznych rozwiązań
 
 **Wymagane działania**
-   * Setup Qdrant Cloud account w EU region
-   * Implementacja synchronizacji metadanych MySQL a Qdrant
+   * Instalacja ChromaDB via pip: `pip install chromadb`
+   * Implementacja ChromaDB persistence w Django (SQLite backend)
+   * Setup backup procedures dla ChromaDB data directory
 
 Decyzje Techniczne (Zespół deweloperski)
 ----------------------------------------
@@ -423,12 +450,13 @@ C) **Plugin/Extension istniejących apps**
      - ✅ Część database backup
      - ⚠️ Osobne pliki do backup
 
-**Rekomendacja**: Qdrant Cloud z PostgreSQL backup dla metadanych
+**Rekomendacja**: ChromaDB z MySQL dla metadanych (zachowanie istniejącej architektury)
 
 **Wymagane działania**
-   * Setup dual-database architecture
-   * Implementacja sync mechanism między Django a Qdrant
-   * Backup procedures dla obu systemów
+   * Implementacja ChromaDB client w Django aplikacji
+   * Definicja collection schema dla artykułów
+   * Synchronizacja metadanych między MySQL a ChromaDB
+   * Backup procedures dla ChromaDB persistence directory
 
 7. Strategia Cachowania
 ~~~~~~~~~~~~~~~~~~~~~~
@@ -467,7 +495,7 @@ C) **Plugin/Extension istniejących apps**
      - ⚠️ Consistency problems
 
 **Kiedy rozważyć cachowanie**:
-   * **Koszty API**: Gdy OpenAI koszty > €50/miesiąc
+   * **Koszty API**: Gdy Azure OpenAI koszty > €50/miesiąc
    * **Liczba użytkowników**: >20 aktywnych użytkowników dziennie
    * **Powtarzalne queries**: Gdy >30% zapytań się powtarza
    * **Latencja**: Gdy search latency > 3 sekundy
@@ -489,7 +517,7 @@ C) **Plugin/Extension istniejących apps**
 
        @staticmethod
        def track_api_costs():
-           """Monitor monthly OpenAI costs"""
+           """Monitor monthly Azure OpenAI costs"""
 
        @staticmethod
        def track_search_latency():
@@ -538,13 +566,13 @@ C) **Synchronous processing**
 
            # Batch embedding generation
            texts = [article.content for article in new_articles]
-           embeddings = openai_client.embeddings.create(
+           embeddings = azure_openai_client.embeddings.create(
                model="text-embedding-3-small",
                input=texts
            )
 
-           # Batch upload to Qdrant
-           qdrant_client.upsert_batch(embeddings)
+           # Batch upload to ChromaDB
+           chroma_collection.upsert(embeddings)
 
 **Cron setup**:
 
