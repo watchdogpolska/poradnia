@@ -7,9 +7,8 @@ WORKDIR /e2e
 
 COPY package.json package-lock.json ./
 
-RUN npm install --save
-
 USER node
+RUN npm install --save
 RUN npx cypress verify
 
 COPY . .
