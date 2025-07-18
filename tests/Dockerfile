@@ -9,6 +9,7 @@ COPY package.json package-lock.json ./
 
 RUN npm install --save
 
+USER node
 RUN npx cypress verify
 
 COPY . .
