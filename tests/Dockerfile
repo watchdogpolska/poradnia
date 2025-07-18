@@ -1,4 +1,4 @@
-FROM cypress/base:14.17.0
+FROM cypress/base:16.18.1
 
 RUN apt-get update
 RUN apt-get install -y wait-for-it
