@@ -43,18 +43,22 @@ class Article(models.Model):
     """Model to store article content with metadata and relationships."""
 
     source = models.ForeignKey(
-        ContentSource, 
-        on_delete=models.CASCADE, 
+        ContentSource,
+        on_delete=models.CASCADE,
         related_name="articles",
-        verbose_name=_("Source")
+        verbose_name=_("Source"),
     )
     external_id = models.CharField(max_length=100, verbose_name=_("External ID"))
     title = models.CharField(max_length=500, verbose_name=_("Title"))
     content = models.TextField(verbose_name=_("Content"))
     excerpt = models.TextField(blank=True, verbose_name=_("Excerpt"))
     url = models.URLField(verbose_name=_("URL"))
-    published_at = models.DateTimeField(null=True, blank=True, verbose_name=_("Published at"))
-    modified_at = models.DateTimeField(null=True, blank=True, verbose_name=_("Modified at"))
+    published_at = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Published at")
+    )
+    modified_at = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Modified at")
+    )
     categories = models.JSONField(default=list, verbose_name=_("Categories"))
     tags = models.JSONField(default=list, verbose_name=_("Tags"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
@@ -68,8 +72,8 @@ class Article(models.Model):
     class Meta:
         verbose_name = _("Article")
         verbose_name_plural = _("Articles")
-        unique_together = [['source', 'external_id']]
-        ordering = ['-published_at']
+        unique_together = [["source", "external_id"]]
+        ordering = ["-published_at"]
 
 
 class ArticleChunkQuerySet(QuerySet):
@@ -87,12 +91,14 @@ class ArticleChunk(models.Model):
         Article,
         on_delete=models.CASCADE,
         related_name="chunks",
-        verbose_name=_("Article")
+        verbose_name=_("Article"),
     )
     chunk_index = models.PositiveIntegerField(verbose_name=_("Chunk index"))
     content = models.TextField(verbose_name=_("Content"))
     embedding = models.JSONField(null=True, blank=True, verbose_name=_("Embedding"))
-    token_count = models.PositiveIntegerField(null=True, blank=True, verbose_name=_("Token count"))
+    token_count = models.PositiveIntegerField(
+        null=True, blank=True, verbose_name=_("Token count")
+    )
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
 
     objects = ArticleChunkQuerySet.as_manager()
@@ -103,8 +109,8 @@ class ArticleChunk(models.Model):
     class Meta:
         verbose_name = _("Article chunk")
         verbose_name_plural = _("Article chunks")
-        unique_together = [['article', 'chunk_index']]
-        ordering = ['article', 'chunk_index']
+        unique_together = [["article", "chunk_index"]]
+        ordering = ["article", "chunk_index"]
 
 
 class ProcessingLogQuerySet(QuerySet):
@@ -143,24 +149,21 @@ class ProcessingLog(models.Model):
     )
 
     task_type = models.CharField(
-        max_length=50, 
-        choices=TASK_TYPE.choices, 
-        verbose_name=_("Task type")
+        max_length=50, choices=TASK_TYPE.choices, verbose_name=_("Task type")
     )
     status = models.CharField(
-        max_length=20, 
-        choices=STATUS.choices, 
+        max_length=20,
+        choices=STATUS.choices,
         default="running",
-        verbose_name=_("Status")
+        verbose_name=_("Status"),
     )
     started_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Started at"))
-    finished_at = models.DateTimeField(null=True, blank=True, verbose_name=_("Finished at"))
+    finished_at = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Finished at")
+    )
     result_data = models.JSONField(default=dict, verbose_name=_("Result data"))
     sentry_event_id = models.CharField(
-        max_length=100, 
-        null=True, 
-        blank=True, 
-        verbose_name=_("Sentry event ID")
+        max_length=100, null=True, blank=True, verbose_name=_("Sentry event ID")
     )
     log_message = models.TextField(blank=True, verbose_name=_("Log message"))
     command_args = models.JSONField(default=dict, verbose_name=_("Command arguments"))
@@ -180,7 +183,7 @@ class ProcessingLog(models.Model):
     class Meta:
         verbose_name = _("Processing log")
         verbose_name_plural = _("Processing logs")
-        ordering = ['-started_at']
+        ordering = ["-started_at"]
 
 
 class SearchLogQuerySet(QuerySet):
@@ -195,14 +198,12 @@ class SearchLog(models.Model):
     """Model for search analytics with performance metrics."""
 
     user = models.ForeignKey(
-        User,
-        on_delete=models.SET_NULL,
-        null=True,
-        blank=True,
-        verbose_name=_("User")
+        User, on_delete=models.SET_NULL, null=True, blank=True, verbose_name=_("User")
     )
     query = models.TextField(verbose_name=_("Query"))
-    case_id = models.PositiveIntegerField(null=True, blank=True, verbose_name=_("Case ID"))
+    case_id = models.PositiveIntegerField(
+        null=True, blank=True, verbose_name=_("Case ID")
+    )
     results_count = models.PositiveIntegerField(verbose_name=_("Results count"))
     response_time_ms = models.PositiveIntegerField(verbose_name=_("Response time (ms)"))
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_("Created at"))
@@ -215,4 +216,4 @@ class SearchLog(models.Model):
     class Meta:
         verbose_name = _("Search log")
         verbose_name_plural = _("Search logs")
-        ordering = ['-created_at']
+        ordering = ["-created_at"]
