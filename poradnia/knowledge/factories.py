@@ -1,7 +1,7 @@
 import factory
 from django.utils import timezone
 from factory.django import DjangoModelFactory
-from factory.fuzzy import FuzzyChoice, FuzzyInteger, FuzzyText
+from factory.fuzzy import FuzzyChoice, FuzzyInteger
 
 from poradnia.users.factories import UserFactory
 
