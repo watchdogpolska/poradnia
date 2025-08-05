@@ -1,4 +1,4 @@
-Django==4.2.21
+Django==4.2.23
 
 # Configuration
 django-environ==0.12.0
@@ -13,7 +13,7 @@ django-floppyforms==1.9.0
 django-model-utils==5.0.0
 
 # images
-Pillow==11.2.1
+Pillow==11.3.0
 sorl-thumbnail==12.11.0
 
 # For user registration, either via email or social
@@ -31,10 +31,10 @@ django-autoslug==1.9.9
 # Useful things
 # Time zones support
 pytz==2025.2
-lxml==5.4.0
+lxml==6.0.0
 cssselect==1.3.0
 # Your custom requirements go here
-django-guardian==3.0.0
+django-guardian==3.0.3
 django-mailbox==4.10.1
 django-filter==25.1
 django-cleanup==9.0.0
@@ -63,7 +63,7 @@ pyGravatar==0.0.6
 # django-bootstrap-pagination==1.7.1
 git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master#egg=django-bootstrap-pagination
 
-sentry-sdk==2.29.1
+sentry-sdk==2.32.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
