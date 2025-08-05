@@ -35,13 +35,14 @@ services:
     build:
       context: ./tests/
       dockerfile: Dockerfile
-    volumes: 
+    volumes:
       - ./tests:/e2e
       - /e2e/node_modules  # un-shadow node_modules
     networks:
       - poradnia-app-network
     working_dir: /e2e
-    command: sh -c "wait-for-it web:8000 -t 60 && npx cypress run"
+    # Use cypres immage entrypoint to run tests instead of the below command
+    # command: sh -c "wait-for-it web:8000 -t 60 && cypress run --e2e"
 
 networks:
   poradnia-app-network:
