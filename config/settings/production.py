@@ -12,18 +12,6 @@ from .common import *  # noqa
 SECRET_KEY = env.str("DJANGO_SECRET_KEY")
 # END SECRET KEY
 
-# EMAIL
-DEFAULT_FROM_EMAIL = env.str(
-    "DJANGO_DEFAULT_FROM_EMAIL", "poradnia <noreply@porady.siecobywatelska.pl>"
-)
-EMAIL_SUBJECT_PREFIX = env.str("DJANGO_EMAIL_SUBJECT_PREFIX", "[poradnia] ")
-
-EMAIL_CONFIG = env.email_url("EMAIL_URL", default="smtp://localhost:25")
-vars().update(EMAIL_CONFIG)
-
-SERVER_EMAIL = env.str("DJANGO_SERVER_EMAIL")
-# END EMAIL
-
 # TEMPLATE CONFIGURATION
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#template-dirs
 TEMPLATES[0]["OPTIONS"]["loaders"] = (
@@ -48,3 +36,12 @@ sentry_sdk.init(
 )
 
 CACHES = {"default": env.cache()}
+
+ALLOWED_HOSTS = env.str("DJANGO_ALLOWED_HOSTS", default="localhost,").split(",")
+
+CSRF_TRUSTED_ORIGINS = env.str(
+    "DJANGO_CSRF_TRUSTED_ORIGINS", default="http://localhost,"
+).split(",")
+CSRF_COOKIE_SECURE = env.bool("DJANGO_CSRF_COOKIE_SECURE", default=True)
+CSRF_COOKIE_DOMAIN = env.str("DJANGO_CSRF_COOKIE_DOMAIN", default="")
+CSRF_COOKIE_SAMESITE = env.str("DJANGO_CSRF_COOKIE_SAMESITE", default="Strict")

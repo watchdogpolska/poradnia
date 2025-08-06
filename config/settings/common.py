@@ -8,6 +8,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
+import sys
+
 import environ
 from django.utils.translation import gettext_lazy as _
 
@@ -49,10 +51,9 @@ THIRD_PARTY_APPS = (
     "github_revision",
     "mptt",
     "teryt_tree",
-    "antispam",
-    "antispam.honeypot",
     "tinymce",
     "ajax_datatable",
+    "turnstile",
     "rosetta",
 )
 
@@ -70,13 +71,18 @@ LOCAL_APPS = (
     "poradnia.navsearch",
     "poradnia.judgements",
     "poradnia.teryt",
-    "poradnia.utils"
+    "poradnia.utils",
     # Your stuff: custom apps go here
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
 # END APP CONFIGURATION
-INSTALLED_APPS = THIRD_PARTY_APPS + LOCAL_APPS + DJANGO_APPS
+INSTALLED_APPS = (
+    THIRD_PARTY_APPS
+    + LOCAL_APPS
+    + DJANGO_APPS
+    + ("django_cleanup.apps.CleanupConfig",)  # should be placed after all other apps
+)
 
 # MIDDLEWARE CONFIGURATION
 MIDDLEWARE = (
@@ -87,6 +93,8 @@ MIDDLEWARE = (
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    # Add the account middleware:
+    "allauth.account.middleware.AccountMiddleware",
 )
 # END MIDDLEWARE CONFIGURATION
 
@@ -130,7 +138,7 @@ DEFAULT_FROM_EMAIL = env.str(
 )
 EMAIL_SUBJECT_PREFIX = env.str("DJANGO_EMAIL_SUBJECT_PREFIX", "[poradnia] ")
 EMAIL_USE_TLS = env.bool("DJANGO_EMAIL_USE_TLS", True)
-SERVER_EMAIL = EMAIL_HOST_USER
+SERVER_EMAIL = env.str("DJANGO_SERVER_EMAIL", "")
 # END EMAIL
 
 # MANAGER CONFIGURATION
@@ -148,14 +156,21 @@ MANAGERS = ADMINS
 DATABASES = {"default": env.db(default="mysql:///porady")}
 
 DATABASES["default"]["TEST"] = {
-    #    "CHARSET": "utf8mb4",
-    #    "COLLATION": "utf8mb4_unicode_520_ci",
-    "CHARSET": "utf8",
-    "COLLATION": "utf8_polish_ci",
+    "OPTIONS": {
+        "charset": "utf8mb4",
+        "init_command": "SET NAMES 'utf8mb4' COLLATE 'utf8mb4_polish_ci'",
+    }
 }
-# DATABASES["default"]["CHARSET"] = "utf8mb4"
-DATABASES["default"]["CHARSET"] = "utf"
 
+DATABASES["default"]["OPTIONS"] = {
+    "charset": "utf8mb4",
+    "init_command": "SET NAMES 'utf8mb4' COLLATE 'utf8mb4_polish_ci'",
+    "connect_timeout": 5,
+    "read_timeout": 20,
+    "write_timeout": 20,
+}
+
+DATABASES["default"]["CONN_MAX_AGE"] = env.int("DB_CONN_MAX_AGE", 60)
 # END DATABASE CONFIGURATION
 
 # CACHING
@@ -176,9 +191,6 @@ SITE_ID = 1
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-i18n
 USE_I18N = True
-
-# See: https://docs.djangoproject.com/en/dev/ref/settings/#use-l10n
-USE_L10N = True
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#use-tz
 USE_TZ = True
@@ -233,7 +245,7 @@ AUTHENTICATION_BACKENDS = (
 # Some really nice defaults
 ACCOUNT_AUTHENTICATION_METHOD = "username_email"
 ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # END AUTHENTICATION CONFIGURATION
 
 # Custom user app defaults
@@ -302,15 +314,28 @@ LOGGING = {
 # Guardian settings
 ANONYMOUS_USER_ID = -1
 ANONYMOUS_USER_NAME = "AnonymousUser"
-GUARDIAN_MONKEY_PATCH = False
+GUARDIAN_MONKEY_PATCH_USER = False
 
 LANGUAGES = (("pl", _("Polish")), ("en", _("English")))
 
 LOCALE_PATHS = (str(APPS_DIR.path("templates/locale")),)
 
-# TODO: fix for DEV and DEMO modes
+# APP_MODE used to differentiate dev, demo and production environments
+# use DEV, DEMO and PROD values in env variable APP_MODE
+# A lot of hardcoded templates and testing data contains "@porady.siecobywatelska.pl"
+TESTING = (len(sys.argv) > 1 and sys.argv[1] == "test") or env("TEST", default=False)
+APP_MODE = env.str("APP_MODE", "DEMO")
+
 PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
 PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
+if APP_MODE == "DEV" and not TESTING:
+    PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@dev.porady.siecobywatelska.pl"
+    PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@dev.porady.siecobywatelska.pl"
+elif APP_MODE == "DEMO" and not TESTING:
+    PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@staging.porady.siecobywatelska.pl"
+    PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@staging.porady.siecobywatelska.pl"
+
+# Other Poradnia settings
 ATOMIC_REQUESTS = True
 
 AVATAR_GRAVATAR_DEFAULT = "retro"
@@ -385,9 +410,6 @@ TINYMCE_DEFAULT_CONFIG = {
     "charmap | removeformat | help",
 }
 
-# APP_MODE used to differentiate dev, demo and production environments
-# use DEV, DEMO and PROD values in env variable APP_MODE
-APP_MODE = env.str("APP_MODE", "DEMO")
 
 ROSETTA_SHOW_AT_ADMIN_PANEL = True
 
@@ -409,6 +431,10 @@ ROSETTA_EXCLUDED_APPLICATIONS = (
     "vies",
 )
 AZURE_CLIENT_SECRET = env.str("ROSETTA_AZURE_CLIENT_SECRET", "")
+
+# Cludflare turnstile settings
+TURNSTILE_SITEKEY = env.str("TURNSTILE_SITE_KEY", "")
+TURNSTILE_SECRET = env.str("TURNSTILE_SECRET_KEY", "")
 
 # Send notifications to case or letter change/addition author
 NOTIFY_AUTHOR = env.bool("NOTIFY_AUTHOR", True)

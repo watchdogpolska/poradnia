@@ -35,7 +35,7 @@
             {% crispy filter.form %}
             <ul class="nav nav-tabs" id="user-nav-tabs">
                 {% for key, value in is_staff.choices %}
-                    <li role="presentation"{% ifequal key is_staff.selected %} class="active"{% endifequal %}><a
+                    <li role="presentation"{% if key == is_staff.selected %} class="active"{% endif %}><a
                             href="?{% query_update is_staff=key page='' %}">{{ value.0 }}</a></li>
                 {% endfor %}
             </ul>
@@ -46,12 +46,11 @@
             <tr>
                 <th class="user">{% trans 'User' %}</th>
                 <th class="client_cases">{% trans 'Client cases' %}</th>
-                {% if perms.cases.can_assign %}
-                    <th class="free_cases">{% trans 'Assigned cases sum' %}</th>
-                    <th class="free_cases">{% trans 'Free' %}</th>
-                    <th class="assigned_cases">{% trans 'Active' %}</th>
-                    <th class="closed_cases">{% trans 'Closed' %}</th>
-                {% endif %}
+                <th class="free_cases">{% trans 'Assigned cases sum' %}</th>
+                {# <th class="free_cases">{% trans 'Free' %}</th> #}
+                <th class="assigned_cases">{% trans 'Moderated' %}</th>
+                <th class="assigned_cases">{% trans 'Active_' %}</th>
+                <th class="closed_cases">{% trans 'Closed' %}</th>
             </tr>
             </thead>
             <tbody>
@@ -68,20 +67,21 @@
                     <td>
                         {{ user.case_count }}
                     </td>
-                    {% if perms.cases.can_assign %}
-                        <td>
-                            {{ user.case_assigned_sum }}
-                        </td>
-                        <td>
-                            {{ user.case_assigned_free }}
-                        </td>
-                        <td>
-                            {{ user.case_assigned_active }}
-                        </td>
-                        <td>
-                            {{ user.case_assigned_closed }}
-                        </td>
-                    {% endif %}
+                    <td>
+                        {{ user.case_assigned_sum }}
+                    </td>
+                    {# <td> #}
+                    {#    {{ user.case_assigned_free }} #}
+                    {# </td> #}
+                    <td>
+                        {{ user.case_assigned_moderated }}
+                    </td>
+                    <td>
+                        {{ user.case_assigned_active }}
+                    </td>
+                    <td>
+                        {{ user.case_assigned_closed }}
+                    </td>
                 </tr>
             {% endfor %}
             </tbody>

@@ -1,11 +1,11 @@
 # This is Dockerfile for development purposes only.
-ARG PYTHON_VERSION='3.10'
+ARG PYTHON_VERSION='3.12'
 FROM python:${PYTHON_VERSION}-slim
 RUN mkdir /code /code/production
 WORKDIR /code
 
 # Install python dependencies
-ENV PYTHONUNBUFFERED 1
+ENV PYTHONUNBUFFERED=1
 RUN apt-get update \
 && apt-get install -y --no-install-recommends \
    python3-dev default-libmysqlclient-dev build-essential \
@@ -16,6 +16,7 @@ RUN apt-get update \
    nano \
    htop \
    gettext libgettextpo-dev wait-for-it
+RUN git config --global --add safe.directory /code
 COPY requirements/*.txt ./requirements/
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements/dev.txt

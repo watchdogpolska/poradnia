@@ -10,19 +10,12 @@ from poradnia.cases.models import Case
 
 register = template.Library()
 
-STATUS_STYLE = {
-    "0": "fa fa-circle-o ",
-    "1": "fa fa-dot-circle-o",
-    "3": "fa fa-plus-square-o",
-    "2": "fa fa-circle",
-}
-
 
 @register.filter
 @stringfilter
 def status2css(status):
     """Converts a status into css style"""
-    return STATUS_STYLE[status]
+    return Case.STATUS_STYLE[status]
 
 
 @register.filter
@@ -38,6 +31,12 @@ def status_name(status):
     """Converts a status into name"""
     choice_names_dict = {v: k for k, v in Case.STATUS._identifier_map.items()}
     return choice_names_dict[status]
+
+
+@register.filter
+def letter_count_for_user(case, user):
+    """Count letters for user"""
+    return case.letter_set.for_user(user).count()
 
 
 @register.simple_tag(takes_context=True)

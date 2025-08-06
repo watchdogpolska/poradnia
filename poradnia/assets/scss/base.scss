@@ -1,7 +1,8 @@
 @import "vars";
 @import "bootstrap";
-@import "font-awesome/scss/font-awesome";
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@fortawesome/fontawesome-free/scss/brands";
+@import "@fortawesome/fontawesome-free/scss/regular";
+@import "@fortawesome/fontawesome-free/scss/solid";
 @import "pikaday";
 @import "select2";
-@import "autocomplete_light/select2";
-@import "autocomplete_light/vendor/select2/dist/css/select2";

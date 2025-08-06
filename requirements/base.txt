@@ -1,27 +1,28 @@
-Django==3.2.23
+Django==4.2.21
 
 # Configuration
-django-environ==0.10.0
+django-environ==0.12.0
 
 # Forms
-django-braces==1.15.0
+django-braces==1.17.0
 django-crispy-forms==1.14.0
 # TOD0 django-floppyforms are not maintained since 2020 (last django 2.1...)
 django-floppyforms==1.9.0
 
 # Models
-django-model-utils==4.3.1
+django-model-utils==5.0.0
 
 # images
-Pillow==10.0.1
-sorl-thumbnail==12.9.0
+Pillow==11.2.1
+sorl-thumbnail==12.11.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==0.54.0
+#  version 0.62 requires config change - reverting bot change
+django-allauth==0.61.1
 
 # For the persistance stores
-mysqlclient==2.2.0
+mysqlclient==2.2.7
 
 # Unicode slugification
 unicode-slugify==0.1.5
@@ -29,35 +30,47 @@ django-autoslug==1.9.9
 
 # Useful things
 # Time zones support
-pytz==2023.3 
-lxml==4.9.2
-cssselect==1.2.0
+pytz==2025.2
+lxml==5.4.0
+cssselect==1.3.0
 # Your custom requirements go here
-django-guardian==2.4.0
-django-mailbox==4.8.2
-django-filter==23.1
+django-guardian==3.0.0
+django-mailbox==4.10.1
+django-filter==25.1
+django-cleanup==9.0.0
+django-turnstile==0.1.2 
 # django-ajax-datatable to be installed from github fork until
 # https://github.com/morlandi/django-ajax-datatable/pull/111 is merged
 # django-ajax-datatable==4.4.5
 git+https://github.com/PiotrIw/django-ajax-datatable.git@05afe42
-# dal 3.9.4 has broken initialisation of jquery on multiselect2 
-django-autocomplete-light==3.5.0
-django-tinymce==3.6.1
-django-atom==0.16.3
-django-tinycontent==0.8.0
-icalendar==5.0.11
-html2text==2020.1.16
+
+django-autocomplete-light==3.12.1
+django-tinymce==3.7.1
+
+# replacing unmaintained django-atom with updated fork
+# django-atom==0.16.3
+git+https://github.com/PiotrIw/django-atom.git@master
+
+# django-tinycontent is not supported anymore so watchdog maintained fork
+# django-tinycontent==0.9.0 - misses Django 3.2 compatibility migration
+# django-tinycontent is not supported anymore so watchdog maintained fork is used
+git+https://github.com/watchdogpolska/django-tinycontent.git@master
+icalendar==6.3.1
+html2text==2025.4.15
 pyGravatar==0.0.6
-django-bootstrap-pagination==1.7.1
-sentry-sdk==1.21.0
-python-dateutil==2.8.2
+
+# replacing unmaintained django-bootstrap-pagination with updated fork
+# django-bootstrap-pagination==1.7.1
+git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master#egg=django-bootstrap-pagination
+
+sentry-sdk==2.29.1
+python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
 django-teryt-tree==0.18.4
-django-mptt==0.14.0
-mistune==2.0.5
-django-rosetta==0.9.9
+django-mptt==0.17.0
+mistune==3.1.3
+django-rosetta==0.10.2
 
 # Additional sanitizer until a completely safe markdown package is found.
-bleach==6.0.0
-django-antispam==1.0.3
+bleach==6.2.0

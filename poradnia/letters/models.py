@@ -2,10 +2,12 @@ import logging
 from os.path import basename
 
 from django.conf import settings
+from django.contrib.admin.models import ADDITION, LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
 from django.db import models
 from django.db.models import F, Func, IntegerField
+from django.forms.models import model_to_dict
 from django.urls import reverse
 from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
@@ -17,6 +19,7 @@ from poradnia.cases.models import Case
 from poradnia.cases.utils import get_users_with_perm
 from poradnia.records.models import AbstractRecord, AbstractRecordQuerySet
 from poradnia.users.models import User
+from poradnia.utils.constants import NAME_MAX_LENGTH
 from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 
 from .templatetags.format_text import format_text
@@ -71,7 +74,7 @@ class Letter(AbstractRecord):
     accept = MonitorField(
         monitor="status", when=["done"], verbose_name=_("Accepted on")
     )
-    name = models.CharField(max_length=250, verbose_name=_("Subject"))
+    name = models.CharField(max_length=NAME_MAX_LENGTH, verbose_name=_("Subject"))
     text = models.TextField(verbose_name=_("Text"))
     html = models.TextField(verbose_name=_("Mail formatted HTML"), blank=True)
     signature = models.TextField(verbose_name=_("Signature"), blank=True, null=True)
@@ -130,7 +133,9 @@ class Letter(AbstractRecord):
     def render_admin_delete_link(self):
         url = reverse("admin:letters_letter_delete", args=(self.id,))
         label = _("Delete letter") + f" {self.id}"
-        return mark_safe(f'<a href="{url}"><i class="fa fa-trash"></i> {label}</a>')
+        return mark_safe(
+            f'<a href="{url}"><i class="fas fa-trash-can"></i> {label}</a>'
+        )
 
     def is_done(self):
         return (
@@ -175,6 +180,20 @@ class Letter(AbstractRecord):
         kwargs["user_qs"] = user_qs
 
         return super().send_notification(*args, **kwargs)
+
+    def save_attachments(self, files=[]):
+        content_type = ContentType.objects.get_for_model(Attachment)
+        for file in files:
+            obj = Attachment.objects.create(attachment=file, letter=self)
+            change_dict = model_to_dict(obj)
+            LogEntry.objects.log_action(
+                user_id=self.created_by.id,
+                content_type_id=content_type.id,
+                object_id=obj.id,
+                object_repr=str(obj),
+                action_flag=ADDITION,
+                change_message=f"{change_dict}",
+            )
 
     class Meta:
         verbose_name = _("Letter")

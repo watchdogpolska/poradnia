@@ -30,25 +30,22 @@
         <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
     {% endif %}
     {% block extra_css %}{% endblock %}
-    <script>
-        (function (i, s, o, g, r, a, m) {
-            i['GoogleAnalyticsObject'] = r;
-            i[r] = i[r] || function () {
-                (i[r].q = i[r].q || []).push(arguments)
-            }, i[r].l = 1 * new Date();
-            a = s.createElement(o),
-                m = s.getElementsByTagName(o)[0];
-            a.async = 1;
-            a.src = g;
-            m.parentNode.insertBefore(a, m)
-        })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
 
-        ga('create', 'UA-71083051-7', 'auto');
-        ga('send', 'pageview');
-    </script>
 </head>
 
 <body>
+
+<!-- Moved to beginning to load JQueary before any other js code  -->
+{% if debug %}
+    <script src="{% static 'js/script.js' %}"></script>
+{% else %}
+    <script src="{% static 'js/script.min.js' %}"></script>
+{% endif %}
+
+{% show_donate_popup as show_donate_popup_flag %}
+{% if show_donate_popup_flag %}
+    {% include 'donate_popup.html' %}
+{% endif %}
 
 <nav class="navbar navbar-default navbar-fixedtop">
     <div class="container-fluid">
@@ -90,25 +87,22 @@
                     silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
                     v{% poradnia_version %} |
                     <a href="https://github.com/watchdogpolska/poradnia">
-                        <i class="fa fa-github"></i> GitHub</a> - {% github_link %}
+                        <i class="fab fa-github"></i> GitHub</a> - {% github_link %}
                 </div>
                 <div class="footer-center">Strona wykorzystuje cookies</div>
             </div>
-            <div class="footer row">
-                {% tinycontent 'sponsors_note' %}
-                    <div class="col-xs-12 col-md-8 col-md-push-2 col-lg-6 col-lg-push-3">
-                        <p class="text-center">
-                            <img src="{% static 'images/baner.png' %}" alt="" class="img-responsive">
+            <div class="footer">
+                    <div class="footer-center col-xs-12 col-md-6 col-md-push-3 col-lg-4 col-lg-push-4">
+                        {% tinycontent 'sponsors_note' %}
+                            <img src="{% static 'images/baner.png' %}" alt="" class="img-responsive"><br>
                             Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
-                            finansowanego z Funduszy EOG.
-                        </p>
+                            finansowanego z Funduszy EOG.<br>
+                        {% endtinycontent %}
                     </div>
-                {% endtinycontent %}
-
             </div>
         </div>
     </div>
-    {% if user.is_authenticated %}
+    {% if user.is_authenticated and user.has_verified_email %}
         {% load tasty_feedback_tags %}
         {% tasty_feedback_widget %}
     {% endif %}
@@ -123,11 +117,11 @@
 
 <!-- Le javascript
   ================================================== -->
-<!-- Placed at the end of the document so the pages load faster -->
-{% if debug %}
-    <script src="{% static 'js/script.js' %}"></script>
-{% else %}
-    <script src="{% static 'js/script.min.js' %}"></script>
+<!-- Rest of js placed at the end of the document so the pages load faster -->
+
+{% if show_donate_popup_flag %}
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="{% static 'js/donate_popup.js' %}"></script>
 {% endif %}
 
 {% block javascript %}

@@ -3,42 +3,46 @@
     <div class="block-list-header">{% trans 'Cases' %}</div>
     <ul class="block-list-list">
         <li class="block-list-item"><a href="{% url 'letters:add' %}"><i
-                class="fa fa-pencil"></i> {% trans 'New case' %}</a></li>
+                class="fas fa-pencil"></i> {% trans 'New case' %}</a></li>
         {% if request.user.is_authenticated %}
             <li class="block-list-item">
                 <a href="{% url 'cases:list' %}?status=0&amp;status=1&amp;status=3"><i
-                        class="fa fa-book"></i> {% trans 'Cases index' %}</a>
+                        class="fas fa-book"></i> {% trans 'Cases index' %}</a>
             </li>
             <li class="block-list-item">
                 <a href="{% url 'cases:table' %}"><i
-                        class="fa fa-book"></i> {% trans 'Case table' %}</a>
+                        class="fas fa-book"></i> {% trans 'Case table' %}</a>
             </li>
         {% endif %}
         {% if request.user.is_staff %}
             {% if request.user.notify_old_cases %}
                 <li class="block-list-item">
                     <a href="{% url 'admin:cases_deletecaseproxy_changelist' %}"><i
-                            class="fa fa-trash" style="color: red;"></i>
+                            class="fas fa-trash-can" style="color: red;"></i>
                             {% trans 'Old cases to delete' %}: {% old_cases_to_delete_count %}</a>
                 </li>
             {% endif %}
             <li class="block-list-item">
-                <!-- <a href="{% url 'events:calendar' %}"><i class="fa fa-calendar"></i> {% trans 'Event calendar' %}</a> -->
-                <a href="{% current_month_url %}"><i class="fa fa-calendar"></i> {% trans 'Event calendar' %}</a>
+                <a href="{% url 'events:table' %}"><i
+                        class="fas fa-calendar-days"></i> {% trans 'Events table' %}</a>
+            </li>
+            <li class="block-list-item">
+                <!-- <a href="{% url 'events:calendar' %}"><i class="fas fa-calendar-days"></i> {% trans 'Event calendar' %}</a> -->
+                <a href="{% current_month_url %}"><i class="fas fa-calendar-days"></i> {% trans 'Event calendar' %}</a>
             </li>
         {% endif %}
         <li class="block-list-item">
-            <a href="/strony/regulamin-poradnictwa/"><i class="fa fa-gavel"></i> Regulamin poradnictwa</a>
+            <a href="/strony/regulamin-poradnictwa/"><i class="fas fa-gavel"></i> Regulamin poradnictwa</a>
         </li>
         <!-- TODO - move the below to Letters or generic sidebar for code consistency -->
         {% if request.user.is_authenticated %}
             <li class="block-list-item">
-                <a href="{% url 'letters:list' %}"><i class="fa fa-envelope"></i> {% trans 'Letters' %}</a>
+                <a href="{% url 'letters:list' %}"><i class="far fa-envelope"></i> {% trans 'Letters' %}</a>
             </li>
         {% endif %}
         {% if request.user.is_authenticated %}
             <li class="block-list-item">
-                <a href="{% url 'letters:table' %}"><i class="fa fa-envelope"></i> {% trans 'Letters table' %}</a>
+                <a href="{% url 'letters:table' %}"><i class="far fa-envelope"></i> {% trans 'Letters table' %}</a>
             </li>
         {% endif %}
     </ul>

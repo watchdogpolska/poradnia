@@ -5,7 +5,7 @@
         <div class="panel-heading">
             <h2 class="panel-title">
                 <a href="#courtcase-{{object.pk}}">
-                    <i class="fa fa-gavel"></i> {{ object }}
+                    <i class="fas fa-gavel"></i> {{ object }}
                 </a>
             </h2>
         </div>
@@ -16,17 +16,12 @@
             </tr>
             <tr>
                 <td>{% trans 'Court signature' %}</td>
-                <td>{{ object.signature }}
-                    [
-                    <a href="https://www.saos.org.pl/search?all={{ object.signature | urlencode }}">SAOS</a> |
-                    <a href="http://orzeczenia.nsa.gov.pl/cbo/find?q=SYGNATURA+[{{ object.signature | urlencode }}]">CBOSA</a>
-                    ]
-                </td>
+                <td>{{ object.signature }} {{ object.render_court_order_search_link}}</td>
             </tr>
         </table>
         <div class="panel-footer">
-            <i class="fa fa-user"></i> {{ object.created_by }} &bull;
-            <i class="fa fa-clock"></i>
+            <i class="fas fa-user"></i> {{ object.created_by }} &bull;
+            <i class="far fa-clock"></i>
             <time datetime="{{ object.created_on }}"
                   title="{{ object.created_on }}">{{ object.created_on | naturaltime }}</time>
             {% if object.modified_by %}(updated on
@@ -34,7 +29,7 @@
                       title="{{ object.modified_on }}">{{ object.modified_on | naturaltime }}</time> by
                 {{ object.modified_by }}){% endif %}
             {% if "can_change_all_record" in case_perms or requests.user == object.user and "can_change_own_record" in case_perms %}
-                &bull; <i class="fa fa-pencil"></i>
+                &bull; <i class="fas fa-pencil"></i>
                 <a href="{% url 'judgements:update' pk=object.pk %}">{% trans 'Edit' %}</a>
             {% endif %}
         </div>

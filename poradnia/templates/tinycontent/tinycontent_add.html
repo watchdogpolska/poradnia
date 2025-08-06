@@ -1,0 +1,5 @@
+{% load i18n %}
+{% if perms.tinycontent.add_tinycontent and user.is_content_editor %}
+{% url 'admin:tinycontent_tinycontent_add' as add_url %} {% with name_url=name|urlencode %}
+{% blocktrans %}(No content defined: <a href="{{add_url}}?name={{ name_url }}" title="Add content here">Add some</a>){% endblocktrans %}{%endwith %}
+{% endif %}

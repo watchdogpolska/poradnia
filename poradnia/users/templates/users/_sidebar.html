@@ -5,26 +5,28 @@
 
         {% if request.user.is_authenticated %}
             <li class="block-list-item">
-                <a href="{% url 'users:detail' username=request.user.username %}"><i class="fa fa-user"></i>
+                <a href="{% url 'users:detail' username=request.user.username %}"><i class="fas fa-user"></i>
                     {% blocktrans with request.user as user %}{{ user }}{% endblocktrans %}</a>
             </li>
             {% if request.user.is_staff %}
                 <li class="block-list-item">
-                    <a href="{% url 'users:list' %}"><i class="fa fa-users"></i> {% trans "Users list" %}</a>
+                    <a href="{% url 'users:list' %}"><i class="fas fa-users"></i> {% trans "Users list" %}</a>
                 </li>
+            {% endif %}
+            {% if request.user.is_superuser %}
                 <li class="block-list-item">
-                    <a href="{% url 'admin:index' %}"><i class="fa fa-gear"></i> {% trans "App admin" %}</a>
+                    <a href="{% url 'admin:index' %}"><i class="fas fa-gear"></i> {% trans "App admin" %}</a>
                 </li>                
             {% endif %}
             <li class="block-list-item">
-                <a href="{% url 'account_logout' %}"><i class="fa fa-sign-out"></i> {% trans "Logout" %}</a>
+                <a href="{% url 'account_logout' %}"><i class="fa-solid fa-right-from-bracket"></i> {% trans "Logout" %}</a>
             </li>
         {% else %}
             <li class="block-list-item">
-                <a href="{% url 'account_signup' %}"><i class="fa fa-user"></i> {% trans "Sign Up" %}</a>
+                <a href="{% url 'account_signup' %}"><i class="fas fa-user"></i> {% trans "Sign Up" %}</a>
             </li>
             <li class="block-list-item">
-                <a href="{% url 'account_login' %}"><i class="fa fa-sign-in"></i> {% trans "Log In" %}</a>
+                <a href="{% url 'account_login' %}"><i class="fa-solid fa-right-to-bracket"></i> {% trans "Log In" %}</a>
             </li>
         {% endif %}
     </ul>

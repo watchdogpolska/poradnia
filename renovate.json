@@ -1,21 +1,48 @@
 {
-  "extends": [
-    "config:base"
+  "extends": ["config:recommended"],
+  "baseBranches": ["dev"],
+  "enabledManagers": [
+    "dockerfile",
+    "pip_requirements",
+    "pip_setup",
+    "github-actions",
+    "npm"
   ],
-  "enabledManagers": ["dockerfile", "pip_requirements", "pip_setup"],
   "packageRules": [
     {
-      "managers": ["pip_requirements"],
-      "paths": ["requirements/local.txt","requirements/test.txt","requirements/doc.txt"],
+      "matchManagers": ["pip_requirements"],
+      "matchFileNames": [
+        "requirements/local.txt",
+        "requirements/test.txt",
+        "requirements/doc.txt"
+      ],
       "groupName": "non-production-dependencies"
     },
     {
-      "managers": ["pip_requirements"],
-      "packageNames": ["lxml", "mysqlclient", "ipdb", "gevent", "Sphinx", "pytz"],
+      "matchManagers": ["pip_requirements"],
+      "matchPackageNames": [
+        "lxml",
+        "mysqlclient",
+        "ipdb",
+        "gevent",
+        "Sphinx",
+        "pytz"
+      ],
       "automerge": true
     }
   ],
   "pip_requirements": {
-    "fileMatch": ["requirements/.+?.txt"]
+    "managerFilePatterns": ["/requirements/.+?.txt/"]
+  },
+  "constraints": {
+    "node": "< 21.0.0",
+    "django": ["^4.2", "^5.2"],
+    "datatables.net-plugins": "< 2.0.0",
+    "datatables.net-buttons": "< 3.0.0",
+    "datatables.net-buttons-bs": "< 3.0.0",
+    "datatables.net-buttons-dt": "< 3.0.0",
+    "datatables.net-bs": "< 2.0.0",
+    "datatables.net-bs4": "< 2.0.0",
+    "datatables.net-dt": "< 2.0.0"
   }
 }

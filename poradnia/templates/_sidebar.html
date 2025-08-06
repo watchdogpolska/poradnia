@@ -14,14 +14,14 @@
         {% if request.user.is_authenticated %}
            <li class="block-list-item">
               <a href="#" data-toggle="modal" data-target="#navsearch_modal">
-                   <i class="fa fa-search"></i> {% trans 'Search' %}
+                   <i class="fas fa-magnifying-glass"></i> {% trans 'Search' %}
                </a>
            </li>
         {% endif %}
         
         {% if perms.tasty_feedback.view_feedback %}
             <li class="block-list-item">
-                <a href="{% url 'tasty_feedback:list' %}"><i class="fa fa-comment"></i> {% trans 'Feedbacks' %}</a>
+                <a href="{% url 'tasty_feedback:list' %}"><i class="far fa-comment"></i> {% trans 'Feedbacks' %}</a>
             </li>
         {% endif %}
     </ul>

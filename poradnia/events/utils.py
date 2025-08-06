@@ -2,7 +2,9 @@ from calendar import HTMLCalendar
 from datetime import date
 from itertools import groupby
 
-from django.utils.html import conditional_escape as esc
+import pytz
+from django.conf import settings
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 
 day_name = [
@@ -46,7 +48,16 @@ month_abbr = [
     _("Dec"),
 ]
 
-EVENT_CONTENT = '<li{class_attr}><a href="{link}" title="{title}">{content}</a></li>'
+
+def render_event_icon(icon_class, icon_color, icon_title):
+    return mark_safe(
+        f"""
+            <i class="{icon_class}" data-toggle="tooltip"
+                data-placement="top" style="color: {icon_color};"
+                title="{icon_title}">
+            </i>
+        """
+    )
 
 
 class AbstractCalendar(HTMLCalendar):
@@ -103,7 +114,9 @@ class AbstractCalendar(HTMLCalendar):
         return self.field
 
     def get_field(self, obj):
-        return getattr(obj, self.get_field_name()).day
+        default_tz = pytz.timezone(settings.TIME_ZONE)
+        dt = getattr(obj, self.get_field_name()).astimezone(default_tz)
+        return dt.day
 
     def get_row_content(self, event):
         raise NotImplementedError("Method 'get_row_content' should be overwritten.")
@@ -113,10 +126,4 @@ class EventCalendar(AbstractCalendar):
     field = "time"
 
     def get_row_content(self, event):
-        text = EVENT_CONTENT.format(
-            class_attr=' class="deadline"' if event.deadline else "",
-            link=event.get_absolute_url(),
-            title=event.text,
-            content=esc(event.case),
-        )
-        return text
+        return event.render_calendar_item

@@ -7,7 +7,11 @@
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block content %}
-    <h2>{% trans "Sign In" %}</h2>
+    {% if "konta/email" in request.GET.next %}
+        <h2>Proszę się zalogować w celu otrzymania maila do potwierdzenia adresu email.</h2>
+    {% else %}
+        <h2>{% trans "Sign In" %}</h2>
+    {% endif %}
 
     {% if socialaccount.providers %}
         <p>{% blocktrans with site.name as site_name %}Please sign in with one of your existing third party accounts.

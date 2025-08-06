@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% load static %}
+{# {% load bootstrap4 %} #}
+{% load i18n cases_tags %}
+
+
+{% block content %}
+
+<style>
+    input[type=search] {
+        width: 400px; /* set the desired min-width value */
+    }
+    input[type=text] {
+        width: 10px; /* set the desired min-width value */
+    }
+</style>
+
+<h3>{% trans 'Events Table' %}:</h3>
+
+<div id="modal-popup" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="width:1000px;" ></div>
+    </div>
+</div>
+
+<div id="tableWrapper">
+    <!-- TODO add colvis button and functionality -->
+    <div class="col-sm-1 filters">
+        <br><br><br><br>
+        <h4>{% trans 'Filters' %}:</h4><br>
+        <div class="row">
+            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+                title="{% trans 'A significant event, especially highlighted, for example, in the list of cases.' %}">
+            </i>
+            <label>{% trans 'Dead-line' %}:</label><br>
+            <input type="checkbox" id="deadline_yes" name="check_deadline_yes" checked>
+            <label for="deadline_yes" class="small">{% trans 'Yes' %}&nbsp;
+                <span class="fas fa-hourglass-half" style="color: black;"></span></label><br>
+            <input type="checkbox" id="deadline_no" name="check_deadline_no" checked>
+            <label for="deadline_no" class="small">{% trans 'No' %}&nbsp;
+                <span class="fas fa-hourglass" style="color: gray;"></span></label><br>
+            <br><br>
+        </div>
+        <div class="row">
+            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+                title="{% trans 'Event has been completed, no more reminders.' %}">
+            </i>
+            <label>{% trans 'Completed' %}:</label><br>
+            <input type="checkbox" id="completed_yes" name="check_completed_yes" checked>
+            <label for="completed_yes" class="small">{% trans 'Yes' %}&nbsp;
+                <span class="fas fa-check" style="color: black;"></span></label><br>
+            <input type="checkbox" id="completed_no" name="check_completed_no" checked>
+            <label for="completed_no" class="small">{% trans 'No' %}&nbsp;
+                <span class="fas fa-xmark" style="color: gray;"></span></label><br>
+            <br><br>
+        </div>
+        <div class="row">
+            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+                title="{% trans 'Event is visible to customers (ext).' %}">
+            </i>
+            <label>{% trans 'Public' %}:</label><br>
+            <input type="checkbox" id="public_yes" name="check_public_yes" checked>
+            <label for="public_yes" class="small">{% trans 'Yes' %}&nbsp;
+                <span class="fas fa-earth-europe" style="color: black;"></span></label><br>
+            <input type="checkbox" id="public_no" name="check_public_no" checked>
+            <label for="public_no" class="small">{% trans 'No' %}&nbsp;
+                <span class="fas fa-house-user" style="color: gray;"></span></label><br>
+            <br><br>
+        </div>
+        <div class="row">
+            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+                title="Wydarzenie jest rozprawą sądową">
+            </i>
+            <label>{% trans 'Court session' %}:</label><br>
+            <input type="checkbox" id="courtsession_yes" name="check_courtsession_yes" checked>
+            <label for="courtsession_yes" class="small">{% trans 'Yes' %}&nbsp;
+                <span class="fas fa-scale-balanced" style="color: black;
+                    font-weight: bold; font-size: 17px;"></span></label><br>
+            <input type="checkbox" id="courtsession_no" name="check_courtsession_no" checked>
+            <label for="courtsession_no" class="small">{% trans 'No' %}</label><br>
+            <br><br>
+        </div>
+    </div>
+    <div class="table-responsive">
+        <table id="datatable_events" width="100%" class="table table-bordered compact">
+            <!-- table-striped  nowrap-->
+        </table>
+    </div>
+</div>
+
+{% endblock %}

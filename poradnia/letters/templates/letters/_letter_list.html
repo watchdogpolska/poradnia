@@ -5,8 +5,8 @@
         <div class="panel-heading">
             <h2 class="panel-title">
                 <a href="#letter-{{object.pk}}">
-                    <i class="fa fa-envelope"></i>
-                    <i class="fa fa-reply{% if object.status == 'done'%}-all{% endif %}"></i>
+                    <i class="far fa-envelope"></i>
+                    <i class="fas fa-reply{% if object.status == 'done'%}-all{% endif %}"></i>
                     {{object}}
                 </a>
             </h2>
@@ -42,8 +42,8 @@
         </ul>
         {% endif %}
         <div class="panel-footer">
-            <i class="fa fa-user"></i> {{object.created_by}} &bull;
-            <i class="fa fa-clock-o"></i>
+            <i class="fas fa-user"></i> {{object.created_by}} &bull;
+            <i class="far fa-clock-o"></i>
             <time datetime="{{object.created_on}}">{{object.created_on}}
             </time>
             {% if object.modified_by %}
@@ -58,7 +58,7 @@
                 {% if not object.is_done %}
                     &bull;
                     <a href="{{object.get_edit_url}}">
-                        <i class="fa fa-pencil"></i>
+                        <i class="fas fa-pencil"></i>
                         {% trans 'Edit'%}
                     </a>
                 {% endif %}
@@ -66,17 +66,17 @@
                 {{ object.render_admin_delete_link }}
             {% endif %}
             {% if "can_send_to_client" in case_perms and not object.is_done %} &bull;
-            <i class="fa fa-check"></i>
+            <i class="fas fa-check"></i>
             <a href="{{object.get_send_url}}">
                 {% trans 'Send'%}
             </a>
             {% endif %}
             {% if object.eml %} &bull;
-            <a href="{{object.eml.url}}"><i class="fa fa-life-ring"></i></a>
+            <a href="{{object.eml.url}}"><i class="far fa-life-ring"></i></a>
             {% endif %}
             {% if request.user.is_staff and object.attachment_set.all %} &bull;
             <a href="{% url 'letters:attachments_zip' case_pk=object.case_id letter_pk=object.pk %}"><i
-                    class="fa fa-archive"></i></a>
+                    class="far fa-file-zipper"></i></a>
             {% endif %}
         </div>
     </div>

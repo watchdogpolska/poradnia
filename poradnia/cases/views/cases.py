@@ -23,11 +23,12 @@ from poradnia.cases.forms import (
     CaseGroupPermissionForm,
     CaseMergeForm,
 )
-from poradnia.cases.models import Case
+from poradnia.cases.models import Case, PermissionGroup
 from poradnia.events.forms import EventForm
 from poradnia.judgements.views import CourtCaseForm
-from poradnia.letters.forms import AddLetterForm
-from poradnia.letters.helpers import AttachmentFormSet
+from poradnia.letters.forms import AddLetterForm, AttachmentsFieldForm
+
+# from poradnia.letters.helpers import AttachmentFormSet
 from poradnia.records.models import Record
 from poradnia.users.views import PermissionMixin
 
@@ -75,7 +76,8 @@ class CaseDetailView(SingleObjectPermissionMixin, SelectRelatedMixin, DetailView
         forms["letter"] = {
             "title": _("Letter"),
             "form": AddLetterForm(user=self.request.user, case=self.object),
-            "formset": AttachmentFormSet(instance=None),
+            # "formset": AttachmentFormSet(instance=None),
+            "attachments_form": AttachmentsFieldForm(),
         }
         if self.request.user.is_staff:
             forms["event"] = {
@@ -109,6 +111,9 @@ class CaseDetailView(SingleObjectPermissionMixin, SelectRelatedMixin, DetailView
         context["record_list"] = self.get_record_list()
         context["casegroup_form"] = CaseGroupPermissionForm(
             case=self.object, user=self.request.user
+        )
+        context["permissions_help_text"] = "\n".join(
+            [group.group_help_text for group in PermissionGroup.objects.all()]
         )
         context["next"], context["previous"] = self.get_next_and_prev()
         return context
@@ -237,7 +242,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": (_("Advice") + " - " + _("Subject")),
         },
         {
-            "name": "letter_count",
+            "name": "letter_count_for_user",
             "visible": True,
             "searchable": False,
             "orderable": True,
@@ -260,7 +265,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         row["involved_staff"] = obj.render_involved_staff()
         row["deadline_str"] = (
             f"""<span class="label label-warning">
-            <i class="fa fa-fire"></i>{obj.deadline_str[:10]}</span>"""
+            <i class="fa-brands fa-gripfire"></i>{obj.deadline_str[:10]}</span>"""
             if obj.deadline_str
             else ""
         )
@@ -268,6 +273,9 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             row["advice_subject"] = obj.advice.render_advice_link()
         except Case.advice.RelatedObjectDoesNotExist:
             row["advice_subject"] = ""
+        row["letter_count_for_user"] = obj.letter_set.for_user(
+            self.request.user
+        ).count()
         return
 
     def get_initial_queryset(self, request=None):

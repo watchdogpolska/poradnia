@@ -4,10 +4,11 @@ var fs = require('fs'),
     concat = require('gulp-concat'),
     livereload = require('gulp-livereload'),
     cleanCSS = require('gulp-clean-css'),
-    prefix = require('gulp-autoprefixer'),
     rename = require('gulp-rename'),
     sass = require('gulp-sass')(require('sass')),
     uglify = require('gulp-uglify'),
+    postcss = require('gulp-postcss'),
+    autoprefixer = require('autoprefixer'),
     watch = require('gulp-watch'),
     json = JSON.parse(fs.readFileSync('./package.json'));
 
@@ -35,7 +36,7 @@ var config = (function () {
             include: [
                 path.npm,
                 path.npm + '/pikaday-time/scss/',
-		        path.npm + '/bootstrap/scss/',
+		        // path.npm + '/bootstrap/scss/',
                 path.staticfiles,
                 path.assets + '/scss/'
             ],
@@ -56,9 +57,9 @@ var config = (function () {
         },
         icons: {
             input: [
-                path.npm + '/font-awesome/fonts/**.*'
+                path.npm + '/@fortawesome/fontawesome-free/webfonts/**.*'
             ],
-            output: path.static + "/fonts"
+            output: path.static + "/webfonts" // "/fonts"
         },
         script: {
             input: [
@@ -69,13 +70,7 @@ var config = (function () {
                 // path.npm + '/bootstrap/js/dist/tab.js',
                 // path.npm + '/bootstrap/js/dist/tooltip.js',
                 // path.npm + '/bootstrap/js/dist/modal.js',
-                path.staticfiles + '/autocomplete_light/vendor/select2/dist/js/select2.full.js',
-                path.staticfiles + '/autocomplete_light/jquery.init.js',
-                path.staticfiles + '/autocomplete_light/autocomplete.init.js',
-                path.staticfiles + '/autocomplete_light/forward.js',
-                path.staticfiles + '/autocomplete_light/select2.js',
                 path.staticfiles + '/tasty_feedback/style.js',
-                path.npm + '/chart.js/dist/Chart.js',
                 path.npm + '/moment/moment.js',
                 path.npm + '/moment/locale/pl.js',
                 path.npm + '/pikaday-time/pikaday.js',
@@ -90,6 +85,7 @@ var config = (function () {
                 path.app + '/cases/static/cases/case_datatbles.js',
                 path.app + '/advicer/static/advicer/advice_datatbles.js',
                 path.app + '/letters/static/letters/letters_datatbles.js',
+                path.app + '/events/static/events/events_datatbles.js',
             ],
             output: {
                 dir: path.static + "/js",
@@ -101,8 +97,6 @@ var config = (function () {
         }
     };
 }());
-
-console.log(config.script);
 
 gulp.task('icons', function () {
     return gulp.src(config.icons.input)
@@ -127,13 +121,11 @@ gulp.task('js', function () {
 
 gulp.task('scss', function () {
     return gulp.src(config.scss.input)
-        .pipe(sass(
-            {
-                style: 'expanded',
-                includePaths: config.scss.include
-            }
-        ))
-        .pipe(prefix())
+        .pipe(sass({
+            style: 'expanded',
+            includePaths: config.scss.include
+        }))
+        .pipe(postcss([autoprefixer()]))
         .pipe(concat(config.scss.output.filename))
         .pipe(gulp.dest(config.scss.output.dir))
         .pipe(livereload())
@@ -143,19 +135,6 @@ gulp.task('scss', function () {
         .pipe(livereload());
 });
 
-// Rerun the task when a file changes
-// TODO  - fix watch task - it doesn't work
-// gulp.task('watch', function () {
-//     livereload.listen();
-//     config.scss.watch.forEach(function (path) {
-//         gulp.watch(path, ['scss']);
-//     });
-//     config.script.watch.forEach(function (path) {
-//         gulp.watch(path, ['js']);
-//     });
-// });
+gulp.task('build', gulp.series('images', 'icons', 'js', 'scss'));
 
-gulp.task('build', gulp.series('images','icons', 'js', 'scss'));
-
-// gulp.task('default', gulp.series('build', 'watch'));
 gulp.task('default', gulp.series('build'));

@@ -1,0 +1,7 @@
+{% load i18n %}
+{{ obj.rendered_content|safe }}
+
+{% if perms.tinycontent.add_tinycontent and user.is_content_editor %}
+{% url 'admin:tinycontent_tinycontent_change' obj.id as edit_url %}
+{% blocktrans %}(<a href="{{edit_url}}" title="Edit this content block">Edit</a>){% endblocktrans %}
+{% endif %}

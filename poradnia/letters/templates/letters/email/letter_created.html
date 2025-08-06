@@ -1,4 +1,6 @@
+{% if not actor.is_staff %}
 <p>{{actor}} napisał:</p>
+{% endif %}
 <div>
 {{target.render_as_html|safe}}
 </div>

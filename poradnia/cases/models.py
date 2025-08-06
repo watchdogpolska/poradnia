@@ -27,6 +27,7 @@ from django.db.models.signals import post_save, pre_delete
 from django.template import Context, Template
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import assign_perm, get_objects_for_user, get_users_with_perms
@@ -34,6 +35,7 @@ from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
+from poradnia.utils.constants import NAME_MAX_LENGTH
 from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 from poradnia.utils.utils import get_numeric_param
 
@@ -222,8 +224,14 @@ class Case(models.Model):
         ("1", "assigned", _("assigned")),
         ("2", "closed", _("closed")),
     )
+    STATUS_STYLE = {
+        "0": "far fa-circle ",
+        "1": "far fa-circle-dot",
+        "3": "far fa-square-plus",
+        "2": "fas fa-circle",
+    }
     id = models.AutoField(verbose_name=_("Case number"), primary_key=True)
-    name = models.CharField(max_length=150, verbose_name=_("Subject"))
+    name = models.CharField(max_length=NAME_MAX_LENGTH, verbose_name=_("Subject"))
     status = StatusField()
     status_changed = MonitorField(monitor="status")
     client = models.ForeignKey(
@@ -297,22 +305,16 @@ class Case(models.Model):
         return template.render(context=context)
 
     def render_status(self):
-        STATUS_STYLE = {
-            "0": "fa fa-circle-o ",
-            "1": "fa fa-dot-circle-o",
-            "3": "fa fa-plus-square-o",
-            "2": "fa fa-circle",
-        }
-        status_icon = STATUS_STYLE[self.status]
-        return f'<span class="{ status_icon }"></span>'
+        status_icon = self.STATUS_STYLE[self.status]
+        return f'<span class="{status_icon}"></span>'
 
     def render_project_badge(self):
         if self.has_project:
             title = _("Reply to client to remove badge")
             name = _("Project")
             return f"""
-                <span class="label label-success" title="{ title }">
-                <i class="fa fa-pencil"></i> { name }
+                <span class="label label-success" title="{title}">
+                <i class="fas fa-pencil"></i> {name}
                 </span>
             """
         else:
@@ -320,7 +322,7 @@ class Case(models.Model):
 
     def render_handled(self):
         if not self.handled:
-            return '<span class="fa fa-check"></span>'
+            return '<span class="fas fa-check"></span>'
         else:
             return ""
 
@@ -338,7 +340,7 @@ class Case(models.Model):
         return "<br>".join(
             [
                 f"""
-                <span class="label label-info" title="{ user["title"]}">
+                <span class="label label-info" title="{user["title"]}">
                 {user["grouper"].get_nicename()}</span>
             """
                 for user in user_list
@@ -581,6 +583,13 @@ class PermissionGroup(models.Model):
 
     def __str__(self):
         return self.name
+
+    @property
+    def group_help_text(self):
+        perm_name_list = [gettext(p.name) for p in self.permissions.all()]
+        return f"\n{self.name}:\n" + "\n".join(
+            [f"- {n}" for n in sorted(perm_name_list)]
+        )
 
 
 def notify_new_case(sender, instance, created, **kwargs):

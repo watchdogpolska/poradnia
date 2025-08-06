@@ -3,6 +3,7 @@
 # ```
 # docker-compose --file docker-compose.yml --file docker-compose.test.yml up --build --exit-code-from tests db web tests
 # ```
+---
 version: '2.1'
 
 services:
@@ -22,6 +23,10 @@ services:
       DJANGO_EMAIL_BACKEND: django.core.mail.backends.console.EmailBackend
       DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
       DJANGO_RICH_TEXT_ENABLED: "False"
+      ACCOUNT_EMAIL_VERIFICATION: "optional"
+      TURNSTILE_ENABLE: "False"
+    networks:
+      - poradnia-app-network
 
   tests:
     depends_on:
@@ -33,5 +38,11 @@ services:
     volumes: 
       - ./tests:/e2e
       - /e2e/node_modules  # un-shadow node_modules
+    networks:
+      - poradnia-app-network
     working_dir: /e2e
     command: sh -c "wait-for-it web:8000 -t 60 && npx cypress run"
+
+networks:
+  poradnia-app-network:
+    driver: bridge

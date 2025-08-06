@@ -7,6 +7,13 @@ const register = (cy) => ({
 }) => {
   // Homepage.
   cy.visit("/");
+  cy.wait(1000); // wait for 1 second for donate popup to appear
+  cy.get('body').then(($body) => {
+    if ($body.find('button#donate-button:visible').length) {
+      cy.get('#donate-button').click({force: true});
+      cy.get('#popup-container').should('not.be.visible');
+    }
+  }); // close donate popup if it appears
   cy.contains("Rejestracja").click();
 
   // Register.
@@ -26,6 +33,13 @@ const register = (cy) => ({
 const login = (cy) => ({ username, password }) => {
   // Homepage.
   cy.visit("/");
+  cy.wait(1000); // wait for 1 second for donate popup to appear
+  cy.get('body').then(($body) => {
+    if ($body.find('button:contains("Zamknij"):visible').length) {
+      cy.contains('Zamknij').click({force: true});
+      cy.get('#popup-container').should('not.be.visible');
+    }
+  }); // close donate popup if it appears
   cy.contains("Zaloguj").click();
 
   // Login.
