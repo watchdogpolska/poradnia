@@ -73,7 +73,7 @@ class NewCaseCreateView(
                 self.request, _(REGISTRATION_TEXT) % {"user": self.object.created_by}
             )
         return HttpResponseRedirect(self.object.case.get_absolute_url())
-    
+
     def form_invalid(self, form, formset):
         self.object = None
         return super().form_invalid(form, formset)
