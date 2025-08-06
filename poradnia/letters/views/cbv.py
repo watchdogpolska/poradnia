@@ -74,9 +74,9 @@ class NewCaseCreateView(
             )
         return HttpResponseRedirect(self.object.case.get_absolute_url())
     
-    def form_invalid(self, form, formset):
+    def formset_invalid(self, form, formset):
         self.object = None
-        return super().form_invalid(form, formset)
+        return super().formset_invalid(form, formset)
 
 
 class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, UpdateView):
