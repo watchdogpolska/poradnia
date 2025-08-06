@@ -74,6 +74,15 @@ class NewCaseCreateView(
             )
         return HttpResponseRedirect(self.object.case.get_absolute_url())
 
+    def form_invalid(self, form, formset=None):
+        """Called by Django when the main form is invalid (no formset)."""
+        self.object = None
+        if formset is not None:  # defensive: tolerate accidental 2-arg calls
+            return self.render_to_response(
+                self.get_context_data(form=form, formset=formset)
+            )
+        return super().form_invalid(form)
+
 
 class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, UpdateView):
     model = Letter
