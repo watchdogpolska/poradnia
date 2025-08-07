@@ -27,6 +27,10 @@ var config = (function () {
         path: path,
         scss: {
             input: [
+                path.npm + '/@fortawesome/fontawesome-free/css/fontawesome.css',
+                path.npm + '/@fortawesome/fontawesome-free/css/solid.css',
+                path.npm + '/@fortawesome/fontawesome-free/css/regular.css',
+                path.npm + '/@fortawesome/fontawesome-free/css/brands.css',
                 path.assets + '/scss/style.scss',
                 // path.npm + '/datatables.net-bs/css/dataTables.bootstrap.css',
                 // path.npm + '/datatables.net-bs4/css/dataTables.bootstrap.css',

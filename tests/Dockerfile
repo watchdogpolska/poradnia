@@ -1,16 +1,13 @@
-FROM cypress/base:14.17.0
+FROM cypress/included:14.5.3
 
-RUN apt-get update
-RUN apt-get install -y wait-for-it
+RUN apt-get update && apt-get install -y wait-for-it
 
 WORKDIR /e2e
-
-COPY package.json package-lock.json ./
-
-RUN npm install --save
-
-RUN npx cypress verify
-
 COPY . .
 
-CMD ["npx", "cypress", "run"]
+# If you still want to npm install (for mysql2, node-fetch etc.)
+RUN npm install && npm ci
+
+RUN cypress verify
+
+# Use cypres immage entrypoint to run tests

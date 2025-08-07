@@ -1,6 +1,6 @@
 {
   "extends": ["config:recommended"],
-  "baseBranches": ["dev"],
+  "baseBranchPatterns": ["dev"],
   "enabledManagers": [
     "dockerfile",
     "pip_requirements",
@@ -29,7 +29,12 @@
         "pytz"
       ],
       "automerge": true
-    }
+    },
+    {
+      "matchPackageNames": ["caniuse-lite"],
+      "automerge": true,
+      "automergeType": "branch"
+    }    
   ],
   "pip_requirements": {
     "managerFilePatterns": ["/requirements/.+?.txt/"]
