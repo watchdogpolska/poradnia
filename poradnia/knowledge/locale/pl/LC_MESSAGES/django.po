@@ -1,0 +1,233 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-07-19 18:50+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
+"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+#: poradnia/knowledge/apps.py:8
+msgid "Knowledge"
+msgstr "Wiedza"
+
+#: poradnia/knowledge/models.py:17
+msgid "Name"
+msgstr "Nazwa"
+
+#: poradnia/knowledge/models.py:18
+msgid "Base URL"
+msgstr "Bazowy URL"
+
+#: poradnia/knowledge/models.py:19
+msgid "API endpoint"
+msgstr "Endpoint API"
+
+#: poradnia/knowledge/models.py:20
+msgid "Is active"
+msgstr "Jest aktywne"
+
+#: poradnia/knowledge/models.py:21
+msgid "Last sync"
+msgstr "Ostatnia synchronizacja"
+
+#: poradnia/knowledge/models.py:22 poradnia/knowledge/models.py:60
+#: poradnia/knowledge/models.py:96 poradnia/knowledge/models.py:208
+msgid "Created at"
+msgstr "Utworzono"
+
+#: poradnia/knowledge/models.py:30
+msgid "Content source"
+msgstr "Źródło treści"
+
+#: poradnia/knowledge/models.py:31
+msgid "Content sources"
+msgstr "Źródła treści"
+
+#: poradnia/knowledge/models.py:49
+msgid "Source"
+msgstr "Źródło"
+
+#: poradnia/knowledge/models.py:51
+msgid "External ID"
+msgstr "Zewnętrzne ID"
+
+#: poradnia/knowledge/models.py:52
+msgid "Title"
+msgstr "Tytuł"
+
+#: poradnia/knowledge/models.py:53 poradnia/knowledge/models.py:93
+msgid "Content"
+msgstr "Treść"
+
+#: poradnia/knowledge/models.py:54
+msgid "Excerpt"
+msgstr "Skrót"
+
+#: poradnia/knowledge/models.py:55
+msgid "URL"
+msgstr "URL"
+
+#: poradnia/knowledge/models.py:56
+msgid "Published at"
+msgstr "Opublikowano"
+
+#: poradnia/knowledge/models.py:57
+msgid "Modified at"
+msgstr "Zmodyfikowano"
+
+#: poradnia/knowledge/models.py:58
+msgid "Categories"
+msgstr "Kategorie"
+
+#: poradnia/knowledge/models.py:59
+msgid "Tags"
+msgstr "Tagi"
+
+#: poradnia/knowledge/models.py:61
+msgid "Updated at"
+msgstr "Zaktualizowano"
+
+#: poradnia/knowledge/models.py:69 poradnia/knowledge/models.py:90
+msgid "Article"
+msgstr "Artykuł"
+
+#: poradnia/knowledge/models.py:70
+msgid "Articles"
+msgstr "Artykuły"
+
+#: poradnia/knowledge/models.py:92
+msgid "Chunk index"
+msgstr "Indeks fragmentu"
+
+#: poradnia/knowledge/models.py:94
+msgid "Embedding"
+msgstr "Embedding"
+
+#: poradnia/knowledge/models.py:95
+msgid "Token count"
+msgstr "Liczba tokenów"
+
+#: poradnia/knowledge/models.py:104
+msgid "Article chunk"
+msgstr "Fragment artykułu"
+
+#: poradnia/knowledge/models.py:105
+msgid "Article chunks"
+msgstr "Fragmenty artykułów"
+
+#: poradnia/knowledge/models.py:127
+msgid "Fetch articles"
+msgstr "Pobieranie artykułów"
+
+#: poradnia/knowledge/models.py:128
+msgid "Index articles"
+msgstr "Indeksowanie artykułów"
+
+#: poradnia/knowledge/models.py:129
+msgid "Generate embeddings"
+msgstr "Generowanie embeddings"
+
+#: poradnia/knowledge/models.py:130
+msgid "Full reindexing"
+msgstr "Pełna reindeksacja"
+
+#: poradnia/knowledge/models.py:131
+msgid "Cleanup orphaned records"
+msgstr "Czyszczenie osieroconych rekordów"
+
+#: poradnia/knowledge/models.py:138
+msgid "Running"
+msgstr "W trakcie"
+
+#: poradnia/knowledge/models.py:139
+msgid "Success"
+msgstr "Sukces"
+
+#: poradnia/knowledge/models.py:140
+msgid "Failed"
+msgstr "Niepowodzenie"
+
+#: poradnia/knowledge/models.py:141
+msgid "Partial success"
+msgstr "Częściowy sukces"
+
+#: poradnia/knowledge/models.py:148
+msgid "Task type"
+msgstr "Typ zadania"
+
+#: poradnia/knowledge/models.py:154
+msgid "Status"
+msgstr "Status"
+
+#: poradnia/knowledge/models.py:156
+msgid "Started at"
+msgstr "Rozpoczęto"
+
+#: poradnia/knowledge/models.py:157
+msgid "Finished at"
+msgstr "Zakończono"
+
+#: poradnia/knowledge/models.py:158
+msgid "Result data"
+msgstr "Dane wynikowe"
+
+#: poradnia/knowledge/models.py:163
+msgid "Sentry event ID"
+msgstr "ID zdarzenia Sentry"
+
+#: poradnia/knowledge/models.py:165
+msgid "Log message"
+msgstr "Komunikat loga"
+
+#: poradnia/knowledge/models.py:166
+msgid "Command arguments"
+msgstr "Argumenty polecenia"
+
+#: poradnia/knowledge/models.py:181
+msgid "Processing log"
+msgstr "Log przetwarzania"
+
+#: poradnia/knowledge/models.py:182
+msgid "Processing logs"
+msgstr "Logi przetwarzania"
+
+#: poradnia/knowledge/models.py:202
+msgid "User"
+msgstr "Użytkownik"
+
+#: poradnia/knowledge/models.py:204
+msgid "Query"
+msgstr "Zapytanie"
+
+#: poradnia/knowledge/models.py:205
+msgid "Case ID"
+msgstr "ID sprawy"
+
+#: poradnia/knowledge/models.py:206
+msgid "Results count"
+msgstr "Liczba wyników"
+
+#: poradnia/knowledge/models.py:207
+msgid "Response time (ms)"
+msgstr "Czas odpowiedzi (ms)"
+
+#: poradnia/knowledge/models.py:216
+msgid "Search log"
+msgstr "Log wyszukiwania"
+
+#: poradnia/knowledge/models.py:217
+msgid "Search logs"
+msgstr "Logi wyszukiwania"

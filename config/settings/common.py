@@ -71,6 +71,7 @@ LOCAL_APPS = (
     "poradnia.judgements",
     "poradnia.teryt",
     "poradnia.utils",
+    "poradnia.knowledge",  # AI-powered article indexing and search
     # Your stuff: custom apps go here
 )
 
