@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 import sys
 
 import environ
+from celery.schedules import crontab
 from django.utils.translation import gettext_lazy as _
 
 ROOT_DIR = environ.Path(__file__) - 3
@@ -542,9 +543,9 @@ CELERY_BEAT_SCHEDULE = {
     #     'task': 'poradnia.cases.tasks.send_old_cases_reminder',
     #     'schedule': crontab(hour=6, minute=0, day_of_month=2),  # Monthly on 2nd
     # },
-    # 'run-court-session-parser': {
-    #     'task': 'poradnia.judgements.tasks.run_court_session_parser',
-    #     'schedule': crontab(hour=23, minute=10),  # Daily at 23:10
-    # },
+    "run-court-session-parser": {
+        "task": "poradnia.judgements.tasks.run_court_session_parser",
+        "schedule": crontab(hour=23, minute=10),  # Daily at 23:10
+    },
 }
 # END CELERY CONFIGURATION
