@@ -54,6 +54,9 @@ THIRD_PARTY_APPS = (
     "ajax_datatable",
     "turnstile",
     "rosetta",
+    # Celery integration
+    "django_celery_beat",
+    "django_celery_results",
 )
 
 # Apps specific for this project go here.
@@ -476,3 +479,72 @@ BLEACH_ALLOWED_ATTRIBUTES = ALLOWED_ATTRIBUTES = {
     "acronym": ["title"],
     "img": ["alt", "src", "title"],
 }
+
+# CELERY CONFIGURATION
+# Celery settings for background task processing
+# Using RabbitMQ as message broker and database for result backend
+
+CELERY_TIMEZONE = TIME_ZONE  # Use Django's timezone setting
+CELERY_ENABLE_UTC = USE_TZ  # Use Django's UTC setting
+
+# Task routing and execution
+CELERY_TASK_ALWAYS_EAGER = TESTING  # Execute tasks synchronously during testing
+CELERY_TASK_EAGER_PROPAGATES = TESTING
+CELERY_TASK_STORE_EAGER_RESULT = TESTING
+
+# Task result settings
+CELERY_RESULT_EXPIRES = 3600  # Results expire after 1 hour
+CELERY_TASK_IGNORE_RESULT = False
+CELERY_TASK_TRACK_STARTED = True
+
+# Task retry configuration
+CELERY_TASK_DEFAULT_RETRY_DELAY = 60  # Default retry delay in seconds
+CELERY_TASK_MAX_RETRIES = 3
+
+# Worker settings
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1  # Disable prefetching for better load balancing
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 1000  # Restart worker after 1000 tasks
+
+# Serialization
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ["json"]
+
+# Logging integration
+CELERY_WORKER_HIJACK_ROOT_LOGGER = False  # Don't hijack Django's logging
+
+# Task routing
+CELERY_TASK_DEFAULT_QUEUE = "default"
+
+# Beat schedule configuration (using database scheduler)
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
+# Example periodic tasks schedule (for reference and testing)
+# In production, tasks are managed via Django admin interface
+CELERY_BEAT_SCHEDULE = {
+    # Example: Test task every 30 seconds (for development testing)
+    "test-every-30-seconds": {
+        "task": "config.celery.test_task",
+        "schedule": 30.0,
+        "args": ("Scheduled test task",),
+    },
+    # Example: Debug task every minute (for development testing)
+    "debug-every-minute": {
+        "task": "config.celery.debug_task",
+        "schedule": 60.0,
+    },
+    # Example: Future task schedules (to be implemented in Phase 2)
+    # 'send-event-reminders': {
+    #     'task': 'poradnia.events.tasks.send_event_reminders',
+    #     'schedule': crontab(hour=12, minute=0),  # Daily at 12:00
+    # },
+    # 'send-old-cases-reminder': {
+    #     'task': 'poradnia.cases.tasks.send_old_cases_reminder',
+    #     'schedule': crontab(hour=6, minute=0, day_of_month=2),  # Monthly on 2nd
+    # },
+    # 'run-court-session-parser': {
+    #     'task': 'poradnia.judgements.tasks.run_court_session_parser',
+    #     'schedule': crontab(hour=23, minute=10),  # Daily at 23:10
+    # },
+}
+# END CELERY CONFIGURATION

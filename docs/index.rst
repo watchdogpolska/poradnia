@@ -13,6 +13,7 @@ Spis treści
 
    readme
    getting_up
+   celery
    tests
    modules/index
 
