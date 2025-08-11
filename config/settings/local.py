@@ -58,3 +58,18 @@ CSRF_TRUSTED_ORIGINS = [
     "http://*",
     env("NGROK_URL", default="http://localhost").strip(),
 ]
+
+# CELERY LOCAL SETTINGS
+# Development-specific Celery configuration
+CELERY_BROKER_URL = env(
+    "CELERY_BROKER_URL", default="amqp://poradnia:password@localhost:5672//"
+)
+CELERY_RESULT_BACKEND = env("CELERY_RESULT_BACKEND", default="django-db")
+
+# Enable task eager execution for development/testing
+if TESTING:
+    CELERY_TASK_ALWAYS_EAGER = True
+    CELERY_TASK_EAGER_PROPAGATES = True
+    CELERY_TASK_STORE_EAGER_RESULT = True
+    CELERY_BROKER_URL = "memory://"
+    CELERY_RESULT_BACKEND = "cache+memory://"
