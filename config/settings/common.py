@@ -35,6 +35,7 @@ DJANGO_APPS = (
 )
 THIRD_PARTY_APPS = (
     "crispy_forms",  # Form layouts
+    "crispy_bootstrap3",  # Bootstrap 3 theme for crispy forms
     "allauth",  # registration
     "allauth.account",  # registration
     "allauth.socialaccount",  # registration
@@ -197,7 +198,12 @@ USE_TZ = True
 
 
 # See: http://django-crispy-forms.readthedocs.org/en/latest/install.html#template-packs
+CRISPY_ALLOWED_TEMPLATE_PACKS = [
+    "bootstrap3",
+]
 CRISPY_TEMPLATE_PACK = "bootstrap3"
+CRISPY_FAIL_SILENTLY = False
+
 # END TEMPLATE CONFIGURATION
 
 # STATIC FILE CONFIGURATION
@@ -242,8 +248,8 @@ AUTHENTICATION_BACKENDS = (
 )
 
 # Some really nice defaults
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # END AUTHENTICATION CONFIGURATION
 
