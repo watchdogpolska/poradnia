@@ -22,7 +22,8 @@ class TableFormSetHelper(FormsetHelper):
     Formset helper for table-based inline formsets.
     Uses bootstrap3 compatible template instead of the missing bootstrap template.
     """
-    # Use the built-in bootstrap3 template instead of the missing bootstrap/table_inline_formset.html
+    # Use the built-in bootstrap3 template instead of the missing 
+    # bootstrap/table_inline_formset.html
     template = 'bootstrap3/table_inline_formset.html'
 
 
@@ -46,7 +47,6 @@ class TableFormSet(TableFormSetMixin, BaseFormSet):
 class BaseTableFormSet(BaseInlineFormSet):
     """
     Base table formset compatible with the atom library version.
-    This is the main class that was causing the template error.
     """
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

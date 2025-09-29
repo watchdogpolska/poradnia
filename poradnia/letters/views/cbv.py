@@ -5,7 +5,6 @@ import logging
 import bleach
 import django_filters
 from ajax_datatable import AjaxDatatableView
-from atom.ext.crispy_forms.views import FormSetMixin
 from atom.ext.django_filters.filters import CrispyFilterMixin
 from braces.views import (
     PrefetchRelatedMixin,
@@ -38,6 +37,7 @@ from poradnia.letters.utils import get_html_from_eml_file
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 from poradnia.users.utils import PermissionMixin
 from poradnia.utils.constants import NAME_MAX_LENGTH
+from poradnia.utils.crispy_forms import FormSetMixin
 
 from ..forms import AttachmentForm, LetterForm, NewCaseForm
 from ..models import Attachment, Letter
