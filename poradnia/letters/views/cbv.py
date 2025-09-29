@@ -292,8 +292,11 @@ class ReceiveEmailView(View):
         return manifest["headers"].get("auto_reply_type", False)
 
     def create_user(self, manifest):
+        from_emails = manifest["headers"].get("from", [])
+        if not from_emails:
+            raise ValueError("No sender email address found in the manifest headers")
         return get_user_model().objects.get_by_email_or_create(
-            manifest["headers"]["from"][0]
+            from_emails[0]
         )
 
     def create_case(self, manifest, actor):
@@ -308,11 +311,13 @@ class ReceiveEmailView(View):
             "to": manifest["headers"]["to"],
             "subject": manifest["headers"]["subject"],
         }
-        TemplateMailManager.send(
-            TemplateKey.LETTER_REFUSED,
-            recipient_list=manifest["headers"]["from"],
-            context=context,
-        )
+        from_emails = manifest["headers"].get("from", [])
+        if from_emails:
+            TemplateMailManager.send(
+                TemplateKey.LETTER_REFUSED,
+                recipient_list=from_emails,
+                context=context,
+            )
 
     def create_letter(self, request, actor, case, manifest):
         letter = Letter.objects.create(
@@ -415,7 +420,13 @@ class ReceiveEmailView(View):
             return HttpResponseBadRequest(
                 REFUSE_MESSAGE + "Notification have been skipped."
             )
-        actor = self.create_user(manifest)
+        try:
+            actor = self.create_user(manifest)
+        except ValueError as e:
+            logger.error(f"Failed to create user from manifest: {e}")
+            return HttpResponseBadRequest(
+                "Invalid email format: Missing sender email address in the manifest."
+            )
         case = self.create_case(manifest, actor)
         letter = self.create_letter(request, actor, case, manifest)
         if case.status == Case.STATUS.closed and letter.status == Letter.STATUS.done:
