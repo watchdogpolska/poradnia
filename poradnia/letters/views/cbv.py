@@ -295,9 +295,7 @@ class ReceiveEmailView(View):
         from_emails = manifest["headers"].get("from", [])
         if not from_emails:
             raise ValueError("No sender email address found in the manifest headers")
-        return get_user_model().objects.get_by_email_or_create(
-            from_emails[0]
-        )
+        return get_user_model().objects.get_by_email_or_create(from_emails[0])
 
     def create_case(self, manifest, actor):
         return self.get_case(
