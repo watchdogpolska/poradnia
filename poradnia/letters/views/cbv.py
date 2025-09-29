@@ -5,7 +5,6 @@ import logging
 import bleach
 import django_filters
 from ajax_datatable import AjaxDatatableView
-from atom.ext.crispy_forms.views import FormSetMixin
 from atom.ext.django_filters.filters import CrispyFilterMixin
 from braces.views import (
     PrefetchRelatedMixin,
@@ -38,6 +37,7 @@ from poradnia.letters.utils import get_html_from_eml_file
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 from poradnia.users.utils import PermissionMixin
 from poradnia.utils.constants import NAME_MAX_LENGTH
+from poradnia.utils.crispy_forms import FormSetMixin
 
 from ..forms import AttachmentForm, LetterForm, NewCaseForm
 from ..models import Attachment, Letter
@@ -292,9 +292,10 @@ class ReceiveEmailView(View):
         return manifest["headers"].get("auto_reply_type", False)
 
     def create_user(self, manifest):
-        return get_user_model().objects.get_by_email_or_create(
-            manifest["headers"]["from"][0]
-        )
+        from_emails = manifest["headers"].get("from", [])
+        if not from_emails:
+            raise ValueError("No sender email address found in the manifest headers")
+        return get_user_model().objects.get_by_email_or_create(from_emails[0])
 
     def create_case(self, manifest, actor):
         return self.get_case(
@@ -308,11 +309,13 @@ class ReceiveEmailView(View):
             "to": manifest["headers"]["to"],
             "subject": manifest["headers"]["subject"],
         }
-        TemplateMailManager.send(
-            TemplateKey.LETTER_REFUSED,
-            recipient_list=manifest["headers"]["from"],
-            context=context,
-        )
+        from_emails = manifest["headers"].get("from", [])
+        if from_emails:
+            TemplateMailManager.send(
+                TemplateKey.LETTER_REFUSED,
+                recipient_list=from_emails,
+                context=context,
+            )
 
     def create_letter(self, request, actor, case, manifest):
         letter = Letter.objects.create(
@@ -415,7 +418,13 @@ class ReceiveEmailView(View):
             return HttpResponseBadRequest(
                 REFUSE_MESSAGE + "Notification have been skipped."
             )
-        actor = self.create_user(manifest)
+        try:
+            actor = self.create_user(manifest)
+        except ValueError as e:
+            logger.error(f"Failed to create user from manifest: {e}")
+            return HttpResponseBadRequest(
+                "Invalid email format: Missing sender email address in the manifest."
+            )
         case = self.create_case(manifest, actor)
         letter = self.create_letter(request, actor, case, manifest)
         if case.status == Case.STATUS.closed and letter.status == Letter.STATUS.done:

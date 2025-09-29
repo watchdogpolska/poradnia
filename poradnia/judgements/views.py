@@ -1,4 +1,3 @@
-from atom.ext.crispy_forms.forms import SingleButtonMixin
 from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from atom.views import DeleteMessageMixin
 from braces.forms import UserKwargModelFormMixin
@@ -12,6 +11,7 @@ from django.views.generic import CreateView, DeleteView, UpdateView
 
 from poradnia.cases.models import Case
 from poradnia.judgements.models import CourtCase
+from poradnia.utils.crispy_forms import SingleButtonMixin
 
 
 class CourtCaseForm(UserKwargModelFormMixin, SingleButtonMixin, forms.ModelForm):
