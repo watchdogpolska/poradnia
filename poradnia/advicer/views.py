@@ -1,5 +1,4 @@
 from ajax_datatable import AjaxDatatableView
-from atom.ext.crispy_forms.views import FormSetMixin
 from atom.views import ActionMessageMixin, ActionView, FormInitialMixin
 from braces.views import (
     FormValidMessageMixin,
@@ -21,6 +20,7 @@ from django_filters.views import FilterView
 from poradnia.cases.models import Case
 from poradnia.users.models import User
 from poradnia.users.utils import PermissionMixin
+from poradnia.utils.crispy_forms import FormSetMixin
 from poradnia.utils.mixins import ExprAutocompleteMixin
 from poradnia.utils.utils import get_numeric_param
 
