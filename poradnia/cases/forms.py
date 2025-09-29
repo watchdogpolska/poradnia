@@ -1,8 +1,3 @@
-from atom.ext.crispy_forms.forms import (
-    FormHorizontalMixin,
-    HelperMixin,
-    SingleButtonMixin,
-)
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.layout import Submit
 from dal import autocomplete
@@ -11,6 +6,12 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from guardian.shortcuts import assign_perm
+
+from poradnia.utils.crispy_forms import (
+    FormHorizontalMixin,
+    HelperMixin,
+    SingleButtonMixin,
+)
 
 from ..letters.models import Letter
 from ..records.models import Record

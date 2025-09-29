@@ -1,4 +1,3 @@
-from atom.ext.crispy_forms.forms import FormHorizontalMixin
 from atom.ext.tinycontent.forms import GIODOMixin
 from crispy_forms.bootstrap import PrependedText
 from crispy_forms.layout import Layout, Submit
@@ -8,6 +7,7 @@ from django.utils.translation import gettext as _
 from turnstile.fields import TurnstileField
 
 from poradnia.utils.constants import TURNSTILE_ERROR_MESSAGES
+from poradnia.utils.crispy_forms import FormHorizontalMixin
 
 
 class SignupForm(
