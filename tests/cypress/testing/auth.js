@@ -7,23 +7,20 @@ const register = (cy) => ({
 }) => {
   // Homepage.
   cy.visit("/");
-  // cy.wait(1000); // wait for 1 second for donate popup to appear
-  cy.get('body').then(($body) => {
-    if ($body.find('button#donate-button:visible').length) {
-      cy.get('#donate-button').click({force: true});
-      cy.get('#popup-container', { timeout: 4000 }).should('not.be.visible');
-    } else if ($body.find('button#alt-donate-button:visible').length) {
-      cy.get('#alt-donate-button').click({force: true});
-      cy.get('#alt-popup-container', { timeout: 4000 }).should('not.be.visible');
-    }
-  }); // close donate popup if it appears
+  // Close any donate popup that might appear
+  cy.closeDonatePopup();
   cy.contains("Rejestracja").click();
+  
+  // Ensure no popup is blocking the registration form
+  cy.closeDonatePopup();
 
   // Register.
   cy.get('input[name="first_name"]').type(firstName);
   cy.get('input[name="last_name"]').type(lastName);
   cy.get('input[name="username"]').type(username);
-  cy.get('input[name="email"]').type(email);
+  // Extra popup check before email input (common failure point)
+  cy.closeDonatePopup();
+  cy.get('input[name="email"]').type(email, {force: true});
   cy.get('input[name="password1"]').type(password);
   cy.get('input[name="password2"]').type(password);
   cy.get('input[name="giodo"]').click();
@@ -36,17 +33,12 @@ const register = (cy) => ({
 const login = (cy) => ({ username, password }) => {
   // Homepage.
   cy.visit("/");
-  // cy.wait(1000); // wait for 1 second for donate popup to appear
-  cy.get('body').then(($body) => {
-    if ($body.find('button#donate-button:visible').length) {
-      cy.get('#donate-button').click({force: true});
-      cy.get('#popup-container', { timeout: 4000 }).should('not.be.visible');
-    } else if ($body.find('button#alt-donate-button:visible').length) {
-      cy.get('#alt-donate-button').click({force: true});
-      cy.get('#alt-popup-container', { timeout: 4000 }).should('not.be.visible');
-    }
-  }); // close donate popup if it appears
+  // Close any donate popup that might appear
+  cy.closeDonatePopup();
   cy.contains("Zaloguj").click();
+  
+  // Ensure no popup is blocking the login form
+  cy.closeDonatePopup();
 
   // Login.
   cy.get('input[name="login"]').type(username);
