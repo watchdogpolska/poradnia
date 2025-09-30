@@ -1,3 +1,4 @@
+from datetime import datetime
 from django import template
 from django.conf import settings
 from django.contrib.auth.models import Permission
@@ -56,9 +57,35 @@ def show_donate_popup():
     show_donate_popup tag used to display donate popup between Jan 1 and May 2nd
     inclusive, every year
     """
-    from datetime import datetime
 
     now = datetime.now()
     if (1 <= now.month <= 4) or (now.month == 5 and now.day in [1, 2]):
         return True
     return False
+
+
+@register.simple_tag(takes_context=True)
+def show_alternative_donate_popup(context):
+    """
+    show_alternative_donate_popup tag used to display alternative donate popup
+    for authenticated and unauthenticated users (but not staff) when the main popup is not shown
+    """
+
+    # Get the current user from context
+    request = context.get('request')
+    if not request or not hasattr(request, 'user'):
+        return False
+    
+    user = request.user
+    
+    # Don't show to staff/team members (only if they are authenticated and staff)
+    if user.is_authenticated and user.is_staff:
+        return False
+    
+    # Only show when main popup is not shown (outside Jan 1 - May 2)
+    now = datetime.now()
+    main_popup_period = (1 <= now.month <= 4) or (now.month == 5 and now.day in [1, 2])
+    
+    # Show alternative popup when main popup is not shown
+    # This will show for both authenticated non-staff users and unauthenticated users
+    return not main_popup_period
