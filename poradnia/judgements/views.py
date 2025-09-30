@@ -84,6 +84,9 @@ class CourtCaseUpdateView(
     def get_form_valid_message(self):
         return _("{0} updated!").format(self.object)
 
+    def get_success_url(self):
+        return self.object.case.get_absolute_url()
+
 
 class CourtCaseDeleteView(RaisePermissionRequiredMixin, DeleteMessageMixin, DeleteView):
     model = CourtCase
