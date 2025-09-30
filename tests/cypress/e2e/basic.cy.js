@@ -3,6 +3,7 @@ describe("landing page", () => {
   it("should render", () => {
     cy.viewport(1920,1080);
     cy.visit("/");
+    cy.closeDonatePopup(); // Ensure no popup is blocking
     cy.contains("Poradnia");
   });
 });

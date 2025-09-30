@@ -10,12 +10,14 @@ describe("authentication", () => {
   it("user should be able to register and log in", () => {
     const user = User.fromId("user");
     cy.visit("/");
+    cy.closeDonatePopup(); // Ensure no popup is blocking
 
     // Register the user.
     register(cy)(user);
 
     // Validate that the user's logged in.
     cy.visit("/");
+    cy.closeDonatePopup(); // Ensure no popup is blocking
     cy.contains(user.firstName);
 
     logout(cy)();
@@ -25,6 +27,7 @@ describe("authentication", () => {
 
     // Validate that the user's logged in.
     cy.visit("/");
+    cy.closeDonatePopup(); // Ensure no popup is blocking
     cy.contains(user.firstName);
   });
 });
