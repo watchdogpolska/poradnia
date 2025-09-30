@@ -12,6 +12,9 @@ const register = (cy) => ({
     if ($body.find('button#donate-button:visible').length) {
       cy.get('#donate-button').click({force: true});
       cy.get('#popup-container', { timeout: 4000 }).should('not.be.visible');
+    } else if ($body.find('button#alt-donate-button:visible').length) {
+      cy.get('#alt-donate-button').click({force: true});
+      cy.get('#alt-popup-container', { timeout: 4000 }).should('not.be.visible');
     }
   }); // close donate popup if it appears
   cy.contains("Rejestracja").click();
@@ -35,9 +38,12 @@ const login = (cy) => ({ username, password }) => {
   cy.visit("/");
   // cy.wait(1000); // wait for 1 second for donate popup to appear
   cy.get('body').then(($body) => {
-    if ($body.find('button:contains("Zamknij"):visible').length) {
-      cy.contains('Zamknij').click({force: true});
+    if ($body.find('button#donate-button:visible').length) {
+      cy.get('#donate-button').click({force: true});
       cy.get('#popup-container', { timeout: 4000 }).should('not.be.visible');
+    } else if ($body.find('button#alt-donate-button:visible').length) {
+      cy.get('#alt-donate-button').click({force: true});
+      cy.get('#alt-popup-container', { timeout: 4000 }).should('not.be.visible');
     }
   }); // close donate popup if it appears
   cy.contains("Zaloguj").click();
