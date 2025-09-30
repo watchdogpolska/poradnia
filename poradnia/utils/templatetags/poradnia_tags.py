@@ -1,4 +1,5 @@
 from datetime import datetime
+
 from django import template
 from django.conf import settings
 from django.contrib.auth.models import Permission
@@ -72,20 +73,20 @@ def show_alternative_donate_popup(context):
     """
 
     # Get the current user from context
-    request = context.get('request')
-    if not request or not hasattr(request, 'user'):
+    request = context.get("request")
+    if not request or not hasattr(request, "user"):
         return False
-    
+
     user = request.user
-    
+
     # Don't show to staff/team members (only if they are authenticated and staff)
     if user.is_authenticated and user.is_staff:
         return False
-    
+
     # Only show when main popup is not shown (outside Jan 1 - May 2)
     now = datetime.now()
     main_popup_period = (1 <= now.month <= 4) or (now.month == 5 and now.day in [1, 2])
-    
+
     # Show alternative popup when main popup is not shown
     # This will show for both authenticated non-staff users and unauthenticated users
     return not main_popup_period
