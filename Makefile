@@ -57,3 +57,20 @@ docs:
 
 fulltest: check test e2e
 
+# Celery commands for background task processing
+celery-worker: wait_mysql
+	docker compose up --remove-orphans rabbitmq celery-worker
+
+celery-beat: wait_mysql
+	docker compose up --remove-orphans rabbitmq celery-beat
+
+celery-status:
+	docker compose exec celery-worker celery -A config inspect active
+
+celery-purge: # Clear all queues (use with caution)
+	docker compose exec celery-worker celery -A config purge
+
+# Start all Celery services together
+celery-all: wait_mysql
+	docker compose up --remove-orphans rabbitmq celery-worker celery-beat
+
