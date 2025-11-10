@@ -14,56 +14,56 @@ jobs:
     strategy:
       matrix:
         python:
-#           - 3.6
-          - "3.10"
+          #           - 3.6
+          - "3.12"
         django:
-#           - "==2.2.*"
+          #           - "==2.2.*"
           - "==4.2.*"
     steps:
-    - uses: actions/checkout@v5
-    # Pull the latest image to build, and avoid caching pull-only images.
-    # (docker pull is faster than caching in most cases.)
-    - run: |
-        docker compose --file docker-compose.yml --file docker-compose.test.yml pull
-        docker pull python:${{matrix.python}}-slim
-    - name: Start database early
-      run: docker compose up -d db
-    - name: Build application
-      run: make build
-      env:
-        PYTHON_VERSION: ${{ matrix.python }}
-    - name: Migration check
-      run: make check
-    - name: Show settings
-      run: make settings
+      - uses: actions/checkout@v5
+      # Pull the latest image to build, and avoid caching pull-only images.
+      # (docker pull is faster than caching in most cases.)
+      - run: |
+          docker compose --file docker-compose.yml --file docker-compose.test.yml pull
+          docker pull python:${{matrix.python}}-slim
+      - name: Start database early
+        run: docker compose up -d db
+      - name: Build application
+        run: make build
+        env:
+          PYTHON_VERSION: ${{ matrix.python }}
+      - name: Migration check
+        run: make check
+      - name: Show settings
+        run: make settings
 
-    - name: Regenerate frontend with gulp service
-      run: |
-        docker compose -f docker-compose.yml run web python manage.py collectstatic --no-input
-        docker compose -f docker-compose.yml up gulp
+      - name: Regenerate frontend with gulp service
+        run: |
+          docker compose -f docker-compose.yml run web python manage.py collectstatic --no-input
+          docker compose -f docker-compose.yml up gulp
 
-    - name: Check for Changes in Static Files
-      run: |
-        git status
-        if ! git diff --quiet poradnia/static/; then
-          git diff
-          echo "Static files needs to be updated. Exiting with code 1"
-          exit 1
-        else
-          echo "No changes in static files."
-        fi
-  
-    - name: Run unit tests
-      run: make test
-    - name: Run e2e tests
-      run: make e2e
+      - name: Check for Changes in Static Files
+        run: |
+          git status
+          if ! git diff --quiet poradnia/static/; then
+            git diff
+            echo "Static files needs to be updated. Exiting with code 1"
+            exit 1
+          else
+            echo "No changes in static files."
+          fi
+
+      - name: Run unit tests
+        run: make test
+      - name: Run e2e tests
+        run: make e2e
 
   docs:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v5
-    - run: docker compose pull
-    - name: Build application
-      run: make build
-    - name: Build documentation
-      run: make docs
+      - uses: actions/checkout@v5
+      - run: docker compose pull
+      - name: Build application
+        run: make build
+      - name: Build documentation
+        run: make docs

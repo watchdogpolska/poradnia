@@ -1,5 +1,6 @@
-FROM node:22
+FROM node:24
+RUN npm --version
 WORKDIR /app
 VOLUME /app
-CMD ["bash","-c", "npm install && npm rebuild node-sass && npx gulp build"]
-#CMD ["bash","-c", " npm install ; npm rebuild node-sass ; npx gulp build ;sleep infinity "]
+CMD ["bash","-c", "npm ci && npm rebuild node-sass && npx gulp build"]
+#CMD ["bash","-c", " npm ci ; npm rebuild node-sass ; npx gulp build ;sleep infinity "]
