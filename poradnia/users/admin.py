@@ -174,6 +174,7 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
             {"fields": ("picture",)},
         ),
     ]
+    date_hierarchy = "date_joined"
     list_display = (
         "id",
         "username",

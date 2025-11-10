@@ -1,4 +1,4 @@
-Django==4.2.25
+Django==4.2.26
 
 # Configuration
 django-environ==0.12.0
@@ -12,13 +12,13 @@ crispy-bootstrap3==2024.1
 django-model-utils==5.0.0
 
 # images
-Pillow==11.3.0
+Pillow==12.0.0
 sorl-thumbnail==12.11.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
 #  version 0.62 requires config change - reverting bot change
-django-allauth==65.11.2
+django-allauth==65.13.0
 
 # For the persistance stores
 mysqlclient==2.2.7
@@ -62,7 +62,7 @@ pyGravatar==0.0.6
 # django-bootstrap-pagination==1.7.1
 git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master#egg=django-bootstrap-pagination
 
-sentry-sdk==2.39.0
+sentry-sdk==2.43.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
@@ -72,4 +72,4 @@ mistune==3.1.4
 django-rosetta==0.10.2
 
 # Additional sanitizer until a completely safe markdown package is found.
-bleach==6.2.0
+bleach==6.3.0
