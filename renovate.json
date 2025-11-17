@@ -40,7 +40,7 @@
     "managerFilePatterns": ["/requirements/.+?.txt/"]
   },
   "constraints": {
-    "node": "< 21.0.0",
+    "node": "< 25.0.0",
     "django": ["^4.2", "^5.2"],
     "datatables.net-plugins": "< 2.0.0",
     "datatables.net-buttons": "< 3.0.0",
