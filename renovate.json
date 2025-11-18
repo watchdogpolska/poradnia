@@ -1,6 +1,9 @@
 {
   "extends": ["config:recommended"],
   "baseBranchPatterns": ["dev"],
+  "ignorePaths": [
+    "poradnia/static/jquery-ui/**"
+  ],
   "enabledManagers": [
     "dockerfile",
     "pip_requirements",
