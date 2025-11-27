@@ -11,7 +11,7 @@ jobs:
     if: github.event.pull_request.merged == true && (github.ref == 'refs/heads/master' || github.ref == 'refs/heads/dev')
     steps:
       - name: Checkout
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
 
       - name: Get version from script
         id: get_version
