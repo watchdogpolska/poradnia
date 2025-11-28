@@ -22,26 +22,6 @@
       "groupName": "non-production-dependencies"
     },
     {
-      "matchManagers": ["pip_requirements"],
-      "matchPackageNames": [
-        "lxml",
-        "mysqlclient",
-        "ipdb",
-        "gevent",
-        "Sphinx",
-        "pytz"
-      ],
-      "automerge": true
-    },
-    {
-      "matchPackageNames": ["caniuse-lite"],
-      "automerge": true,
-      "automergeType": "branch",
-      "minimumReleaseAge": "0",
-      "ignoreTests": true,
-      "requiredStatusChecks": null
-    },
-    {
       "matchPackageNames": ["django"],
       "allowedVersions": "^4.2 || ^5.2"
     },
