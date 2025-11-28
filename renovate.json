@@ -1,9 +1,7 @@
 {
   "extends": ["config:recommended"],
   "baseBranchPatterns": ["dev"],
-  "ignorePaths": [
-    "poradnia/static/jquery-ui/**"
-  ],
+  "ignorePaths": ["poradnia/static/jquery-ui/**"],
   "enabledManagers": [
     "dockerfile",
     "pip_requirements",
@@ -38,8 +36,7 @@
       "automerge": true,
       "automergeType": "branch",
       "minimumReleaseAge": "0",
-      "ignoreTests": true,
-      "requiredStatusChecks": null
+      "ignoreTests": true
     },
     {
       "matchPackageNames": ["django"],
