@@ -12,7 +12,7 @@ crispy-bootstrap3==2024.1
 django-model-utils==5.0.0
 
 # images
-Pillow==12.1.0
+Pillow==12.1.1
 sorl-thumbnail==13.0.0
 
 # For user registration, either via email or social
