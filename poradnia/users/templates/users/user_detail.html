@@ -35,6 +35,10 @@
                 <i class="fas fa-key"></i>
                 {% trans 'Password change' %}
             </a>
+            <a class="btn btn-info" href="{% url 'mfa_index' %}">
+                <i class="fas fa-shield-alt"></i>
+                {% trans 'Two-Factor Authentication' %}
+            </a>
             {% if user.is_superuser %}
             <a class="btn btn-info" href="{% url 'keys:list' %}">
                 <i class="fas fa-puzzle-piece "></i>

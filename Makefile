@@ -16,7 +16,7 @@ clean:
 	docker compose down
 
 build:
-	docker compose build web
+	docker compose build
 
 gulp:
 	docker compose run --remove-orphans web python manage.py collectstatic --no-input

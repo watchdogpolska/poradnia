@@ -1,11 +1,13 @@
 from django import forms
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.admin import helpers
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.utils.translation import gettext_lazy as _
 from sorl.thumbnail.admin import AdminImageMixin
 
+from . import admin_mfa  # noqa: F401
+from . import admin_socialaccount  # noqa: F401
 from .models import Profile, User
 
 
@@ -189,6 +191,7 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         "notify_new_case",
         "notify_unassigned_letter",
         "notify_old_cases",
+        "must_change_password",
     )
     search_fields = (
         "username",
@@ -210,9 +213,20 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         "notify_old_cases",
         "groups",
     )
-    actions = ["delete_selected"]
+    actions = [
+        "delete_selected",
+        "force_password_change",
+    ]
 
     def response_action(self, request, queryset):
+        # Admin has 2 action selects: action (top) and action2 (bottom).
+        action = request.POST.get("action") or request.POST.get("action2")
+
+        # Only intercept deletes; let other actions run normally.
+        if action != "delete_selected":
+            return super().response_action(request, queryset)
+
+        # --- delete-only override logic below ---
         selected = request.POST.getlist(helpers.ACTION_CHECKBOX_NAME)
         selected_qs = self.get_queryset(request).filter(pk__in=selected)
         case_msg, letter_msg = "", ""
@@ -258,6 +272,16 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
                 _("No users to delete."),
             )
             return None
+
+    @admin.action(description=_("Force password change on next login"))
+    def force_password_change(self, request, queryset):
+        # Only update rows that are not already marked (nice for accurate count)
+        qs = queryset.exclude(must_change_password=True)
+        updated = qs.update(must_change_password=True)
+
+        messages.success(
+            request, _(f"Marked {updated} user(s) to change password on next login.")
+        )
 
 
 @admin.register(Profile)

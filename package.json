@@ -4,7 +4,7 @@
   "dependencies": {
     "bootstrap-sass": "^3.3.4",
     "bootstrap": "^3.0.0",
-    "@fortawesome/fontawesome-free": ">=7.1.0",
+    "@fortawesome/fontawesome-free": ">=7.2.0",
     "jquery": "^3.3.1",
     "moment": "^2.29.4",
     "pikaday-time": "^1.4.0",
@@ -31,10 +31,10 @@
     "sass": "^1.94.0",
     "gulp-uglify": "^3.0.2",
     "gulp-watch": "^5.0.1",
-    "caniuse-lite": "^1.0.30001755"
+    "caniuse-lite": "^1.0.30001772"
   },
   "engines": {
     "node": ">=24.0.0",
-    "npm": "11.10.0"
+    "npm": "11.10.1"
   }
 }

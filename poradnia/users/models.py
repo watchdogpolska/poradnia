@@ -31,9 +31,22 @@ from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 _("Username or e-mail")  # Hack to overwrite django translation
 _("Login")
 
+
 cup_co = "caseuserobjectpermission__content_object"
 
 logger = logging.getLogger(__name__)
+
+
+# Remove bidi controls commonly introduced by copy/paste
+_BIDI_RE = re.compile(r"[\u202A\u202B\u202C\u202D\u202E\u2066\u2067\u2068\u2069]")
+
+
+def normalize_email(raw: str) -> str:
+    if not raw:
+        return raw
+    s = raw.strip().lower()
+    s = _BIDI_RE.sub("", s)
+    return s
 
 
 class UserQuerySet(QuerySet):
@@ -145,7 +158,7 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
             user = self.register_by_email(email=email, notify=notify)
         return user
 
-    def email_to_unique_username(self, email, limit=10):
+    def email_to_unique_username(self, email, limit=8):
         suffix_len = len(str(limit)) + 1
         max_length = User._meta.get_field("username").max_length - suffix_len
         limit_org = limit
@@ -199,6 +212,7 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
 
 
 class User(GuardianUserMixin, AbstractUser):
+    email = models.EmailField(unique=True)
     picture = ImageField(
         upload_to="avatars", verbose_name=_("Avatar"), null=True, blank=True
     )
@@ -234,10 +248,14 @@ class User(GuardianUserMixin, AbstractUser):
     created_on = models.DateTimeField(
         auto_now_add=True, null=True, blank=True, verbose_name=_("Created on")
     )
+    must_change_password = models.BooleanField(
+        default=False, verbose_name=_("Must change password")
+    )
     objects = CustomUserManager()
 
     def save(self, *args, **kwargs):
         self.nicename = self.get_nicename()
+        self.email = normalize_email(self.email)
         super().save(*args, **kwargs)
 
     def get_codename(self):

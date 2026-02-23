@@ -1,7 +1,7 @@
 Django==5.2.11
 
 # Configuration
-django-environ==0.12.1
+django-environ==0.13.0
 
 # Forms
 django-braces==1.17.0
@@ -17,7 +17,7 @@ sorl-thumbnail==13.0.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth==65.14.3
+django-allauth[socialaccount,mfa]==65.14.3
 
 # For the persistance stores
 mysqlclient==2.2.8
@@ -51,7 +51,7 @@ git+https://github.com/PiotrIw/django-atom.git@master
 
 # django-tinycontent is not supported anymore so watchdog maintained fork is used
 git+https://github.com/watchdogpolska/django-tinycontent.git@master
-icalendar==7.0.0
+icalendar==7.0.1
 html2text==2025.4.15
 pyGravatar==0.0.6
 
