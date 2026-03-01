@@ -64,6 +64,9 @@ services:
       NGROK_URL: ${NGROK_URL:-http://localhost}
       REQUESTS_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt"
       SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      E2E_MFA_BYPASS_SECRET: "supersecret-123"
     ports:
       - "8000:8000"
     networks:
@@ -82,9 +85,9 @@ services:
     networks:
       - poradnia-app-network
   #
-  # ### To use email reception uncomment below section and fill in your dev IMAP 
+  # ### To use email reception uncomment below section and fill in your dev IMAP
   # ### mailbox secrets in imap-to-webhook-url.env
-  #  
+  #
   # imap-to-webhook-porady:
   #   image: quay.io/watchdogpolska/imap-to-webhook:latest
   #   environment:
@@ -99,19 +102,19 @@ services:
 
   # ### To test webhook receiving, Turnstile or other feature required access from web
   # ###  uncomment below section and set proper django site url in DB
-  # ngrok:
-  #   build:
-  #     context: .
-  #     dockerfile: .contrib/docker/Dockerfile.ngrok
-  #   command: http web:8000 --url=${NGROK_URL} # web:8000
-  #   environment:
-  #     - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
-  #   ports:
-  #     - "4040:4040" # ngrok web interface
-  #   networks:
-  #     - poradnia-app-network
-  #   depends_on:
-  #     - web
+  ngrok:
+    build:
+      context: .
+      dockerfile: .contrib/docker/Dockerfile.ngrok
+    command: http web:8000 --url=${NGROK_URL} # web:8000
+    environment:
+      - NGROK_AUTHTOKEN=${NGROK_AUTHTOKEN}
+    ports:
+      - "4040:4040" # ngrok web interface
+    networks:
+      - poradnia-app-network
+    depends_on:
+      - web
 
 volumes:
   mysql-data:

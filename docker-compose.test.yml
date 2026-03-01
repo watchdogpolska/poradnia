@@ -35,14 +35,21 @@ services:
     build:
       context: ./tests/
       dockerfile: Dockerfile
+    environment:
+      # Use the same test database as the web container.
+      DATABASE_URL: mysql://root:password@db/test_poradnia
+      # Cypress needs to know where the web server is.
+      CYPRESS_BASE_URL: http://web:8000
+      # To bypass MFA in E2E tests, we use a custom header and secret.
+      E2E_MFA_BYPASS_ENABLED: "1"
+      E2E_MFA_BYPASS_SECRET: "supersecret-123"
     volumes:
       - ./tests:/e2e
       - /e2e/node_modules # un-shadow node_modules
     networks:
       - poradnia-app-network
     working_dir: /e2e
-    # Use cypres immage entrypoint to run tests instead of the below command
-    # command: sh -c "wait-for-it web:8000 -t 60 && cypress run --e2e"
+    command: sh -c "npx wait-on http://web:8000 && npx cypress run --e2e --config video=true"
 
 networks:
   poradnia-app-network:

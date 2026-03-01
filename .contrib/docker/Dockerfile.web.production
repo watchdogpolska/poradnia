@@ -37,6 +37,8 @@ RUN export DJANGO_SETTINGS_MODULE="config.settings.production" && \
    export DJANGO_SECRET_KEY="fake_key" && \
    export RAVEN_DSN="https://examplePublicKey@o0.ingest.sentry.io/0" && \
    export CACHE_URL="locmemcache://" && \
+   export GOOGLE_CLIENT_ID="fake" && \
+   export GOOGLE_CLIENT_SECRET="fake" && \
    python manage.py collectstatic --noinput && \
    cp -r staticfiles image_staticfiles
 # Start container with bash shell to allow run and debug django app

@@ -337,15 +337,10 @@ class Case(models.Model):
             for key, group in grouped_permissions
             if key.is_staff
         ]
-        return "<br>".join(
-            [
-                f"""
+        return "<br>".join([f"""
                 <span class="label label-info" title="{user["title"]}">
                 {user["grouper"].get_nicename()}</span>
-            """
-                for user in user_list
-            ]
-        )
+            """ for user in user_list])
 
     def render_case_advice_link(self):
         try:

@@ -16,8 +16,8 @@ from django.utils.translation import gettext_lazy as _
 ROOT_DIR = environ.Path(__file__) - 3
 
 APPS_DIR = ROOT_DIR.path("poradnia")
-
 env = environ.Env()
+APP_MODE = env.str("APP_MODE", "DEMO")
 
 # APP CONFIGURATION
 DJANGO_APPS = (
@@ -39,6 +39,8 @@ THIRD_PARTY_APPS = (
     "allauth",  # registration
     "allauth.account",  # registration
     "allauth.socialaccount",  # registration
+    "allauth.socialaccount.providers.google",
+    "allauth.mfa",
     "guardian",
     "django_mailbox",
     "dal",
@@ -95,13 +97,88 @@ MIDDLEWARE = (
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # Add the account middleware:
     "allauth.account.middleware.AccountMiddleware",
+    "poradnia.users.middleware.EnforceStaffMfaOnPasswordLoginMiddleware",
+    "poradnia.users.middleware.ForcePasswordChangeMiddleware",
 )
 # END MIDDLEWARE CONFIGURATION
+
+# SOCIALACCOUNT PROVIDER SPECIFIC SETTINGS
+SOCIALACCOUNT_PROVIDERS = {
+    "google": {
+        "APP": {
+            "client_id": env("GOOGLE_CLIENT_ID"),
+            "secret": env("GOOGLE_CLIENT_SECRET"),
+            "key": "",
+        },
+        "SCOPE": ["profile", "email"],
+    }
+}
+SOCIALACCOUNT_ADAPTER = "poradnia.users.adapters.SocialAccountAdapter"
+SOCIALACCOUNT_LOGIN_ON_GET = True
+# we rely on email verification of the provider, e.g. Google,
+# so we don't want allauth to require it again
+# change to "mandatory" if you want to require email verification
+# for social accounts that do not provide verified email (e.g. Facebook)
+SOCIALACCOUNT_EMAIL_VERIFICATION = "none"
+SOCIALACCOUNT_EMAIL_AUTHENTICATION = True
+SOCIALACCOUNT_EMAIL_AUTHENTICATION_AUTO_CONNECT = True
+# END SOCIALACCOUNT PROVIDER SPECIFIC SETTINGS
+
+# AUTHENTICATION CONFIGURATION
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "guardian.backends.ObjectPermissionBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        "NAME": (
+            "django.contrib.auth.password_validation."
+            + "UserAttributeSimilarityValidator"
+        ),
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.MinimumLengthValidator",
+        "OPTIONS": {
+            "min_length": 8,
+        },
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.CommonPasswordValidator",
+    },
+    {
+        "NAME": "django.contrib.auth.password_validation.NumericPasswordValidator",
+    },
+]
+ACCOUNT_DEFAULT_HTTP_PROTOCOL = "https"
+ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
+ACCOUNT_LOGIN_METHODS = {"username", "email"}
+ACCOUNT_UNIQUE_EMAIL = True
+ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_SESSION_REMEMBER = None
+MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
+MFA_SUPPORTED_TYPES = ["totp", "recovery_codes"]
+MFA_TOTP_ISSUER = f"Poradnia {APP_MODE} SO MFA"  # shown in authenticator app
+MFA_TOTP_DIGITS = 6
+MFA_TOTP_PERIOD = 30
+MFA_TOTP_TOLERANCE = 0
+# END AUTHENTICATION CONFIGURATION
+
+# Custom user app defaults
+# Select the correct user model
+AUTH_USER_MODEL = "users.User"
+ACCOUNT_SIGNUP_FORM_CLASS = "poradnia.users.forms.SignupForm"
+ACCOUNT_FORMS = {"login": "poradnia.users.login_form.CustomLoginForm"}
+LOGIN_REDIRECT_URL = "home"
+LOGIN_URL = "account_login"
+# END Custom user app defaults
 
 # SITE CONFIGURATION
 # Hosts/domain names that are valid for this site
 # See https://docs.djangoproject.com/en/1.6/ref/settings/#allowed-hosts
 ALLOWED_HOSTS = ["*"]
+SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+USE_X_FORWARDED_HOST = True
 # END SITE CONFIGURATION
 
 # MIGRATIONS CONFIGURATION
@@ -240,28 +317,6 @@ ROOT_URLCONF = "config.urls"
 WSGI_APPLICATION = "config.wsgi.application"
 # End URL Configuration
 
-# AUTHENTICATION CONFIGURATION
-AUTHENTICATION_BACKENDS = (
-    "django.contrib.auth.backends.ModelBackend",
-    "guardian.backends.ObjectPermissionBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-)
-
-# Some really nice defaults
-ACCOUNT_LOGIN_METHODS = {"username", "email"}
-ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
-ACCOUNT_EMAIL_VERIFICATION = "mandatory"
-# END AUTHENTICATION CONFIGURATION
-
-# Custom user app defaults
-# Select the correct user model
-AUTH_USER_MODEL = "users.User"
-ACCOUNT_SIGNUP_FORM_CLASS = "poradnia.users.forms.SignupForm"
-ACCOUNT_FORMS = {"login": "poradnia.users.login_form.CustomLoginForm"}
-LOGIN_REDIRECT_URL = "home"
-LOGIN_URL = "account_login"
-# END Custom user app defaults
-
 # SLUGLIFIER
 AUTOSLUG_SLUGIFY_FUNCTION = "slugify.slugify"
 # END SLUGLIFIER
@@ -320,6 +375,8 @@ LOGGING = {
 ANONYMOUS_USER_ID = -1
 ANONYMOUS_USER_NAME = "AnonymousUser"
 GUARDIAN_MONKEY_PATCH_USER = False
+JUDGEMENT_BOT_USERNAME = env.str("JUDGEMENT_BOT_USERNAME", "JudgementBot")
+JUDGEMENT_BOT_EMAIL = env.str("JUDGEMENT_BOT_EMAIL", "judgementbot@judgement.bot")
 
 LANGUAGES = (("pl", _("Polish")), ("en", _("English")))
 
@@ -329,8 +386,12 @@ LOCALE_PATHS = (str(APPS_DIR.path("templates/locale")),)
 # use DEV, DEMO and PROD values in env variable APP_MODE
 # A lot of hardcoded templates and testing data contains "@porady.siecobywatelska.pl"
 TESTING = (len(sys.argv) > 1 and sys.argv[1] == "test") or env("TEST", default=False)
-APP_MODE = env.str("APP_MODE", "DEMO")
+# To bypass MFA in E2E tests, we use a custom header and secret.
+E2E_MFA_BYPASS_ENABLED = TESTING
+E2E_MFA_BYPASS_SECRET = env.str("E2E_MFA_BYPASS_SECRET", "")
 
+# Email settings for cases. Uses different email addresses in different environments
+# to avoid sending emails to real users.
 PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
 PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
 if APP_MODE == "DEV" and not TESTING:

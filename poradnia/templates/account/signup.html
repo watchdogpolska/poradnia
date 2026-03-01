@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load crispy_forms_tags %}
+{% load socialaccount %}
 
 {% block title %}{% trans "Signup" %}{% endblock title %}
 
@@ -11,6 +12,16 @@
     <div class="registration-form">
         <p>{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>
             .{% endblocktrans %}</p>
+        {% get_providers as socialaccount_providers %}
+        {% if socialaccount_providers %}
+                <p>Możesz zarejestrować się z a pomocą konta Google:
+                    <a class="btn btn-default" href="{% provider_login_url 'google' %}">
+                        <i class="fa-brands fa-google" aria-hidden="true"></i>
+                        Rejestracja
+                    </a>
+                    lub formularza poniżej
+                </p>
+        {% endif %}
         <p>{% trans 'Field with asterisk are required.' %}</p>
         {% crispy form %}
     </div>

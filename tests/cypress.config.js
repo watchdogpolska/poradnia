@@ -4,6 +4,9 @@ const db = require('./cypress/plugins/db');
 const fetchTasks = require('./cypress/plugins/fetch');
 
 module.exports = defineConfig({
+  env: {
+    E2E_MFA_BYPASS_SECRET: process.env.E2E_MFA_BYPASS_SECRET,
+  },
   e2e: {
     // Preserve your current baseUrl:
     baseUrl: 'http://web:8000',
@@ -16,6 +19,9 @@ module.exports = defineConfig({
 
     // Make sure we use the new support entrypoint used by Cypress >=10
     supportFile: 'cypress/support/e2e.js',
+    video: true,
+    videosFolder: 'cypress/videos',
+    screenshotsFolder: 'cypress/screenshots',
 
     /**
      * Migration of your old plugins/index.js to setupNodeEvents.
@@ -26,6 +32,10 @@ module.exports = defineConfig({
         'db:query': db.query,
         'db:clear': db.clear,
         'fetch:get': fetchTasks.get,
+        log(message) {
+          console.log(message)
+          return null
+        },
       });
       return config;
     },

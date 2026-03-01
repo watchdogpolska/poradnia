@@ -2,6 +2,7 @@
 """
 Production Configurations
 """
+
 import sentry_sdk
 from dealer.auto import auto
 from sentry_sdk.integrations.django import DjangoIntegration
