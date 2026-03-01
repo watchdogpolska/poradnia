@@ -8,8 +8,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-02 09:18+0200\n"
-"PO-Revision-Date: 2025-05-02 09:51+0200\n"
+"POT-Creation-Date: 2026-03-01 22:11+0100\n"
+"PO-Revision-Date: 2026-03-01 22:27+0100\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "Language: \n"
@@ -17,11 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
-"X-Translated-Using: django-rosetta 0.10.2\n"
-
-#: poradnia/utils/apps.py:7
-msgid "Utils"
-msgstr "Narzędzia"
+"X-Translated-Using: django-rosetta 0.10.3\n"
 
 #: poradnia/utils/constants.py:6 poradnia/utils/constants.py:7
 msgid "Turnstile could not be verified."
@@ -31,6 +27,22 @@ msgstr "Nie można zweryfikować Turnstile."
 msgid "Please prove you are a human."
 msgstr "Kliknij pole powyżej aby udowodnć że nie jesteś automatem."
 
+#: poradnia/utils/crispy_forms.py:89
+msgid "Update"
+msgstr "Aktualizacja"
+
+#: poradnia/utils/crispy_forms.py:89
+msgid "Save"
+msgstr "Zapisz"
+
+#: poradnia/utils/crispy_forms.py:148
+#, python-brace-format
+msgid "{0} created!"
+msgstr "{0} utworzone!"
+
 #: poradnia/utils/mixins.py:42
 msgid "Apply Filter"
 msgstr "Zastosuj filtr"
+
+#~ msgid "Utils"
+#~ msgstr "Narzędzia"

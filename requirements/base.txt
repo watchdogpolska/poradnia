@@ -32,7 +32,7 @@ pytz==2025.2
 lxml==6.0.2
 cssselect==1.4.0
 # Your custom requirements go here
-django-guardian==3.2.0
+django-guardian==3.3.0
 django-mailbox==4.10.1
 django-filter==25.2
 django-cleanup==9.0.0
@@ -51,7 +51,7 @@ git+https://github.com/PiotrIw/django-atom.git@master
 
 # django-tinycontent is not supported anymore so watchdog maintained fork is used
 git+https://github.com/watchdogpolska/django-tinycontent.git@master
-icalendar==7.0.1
+icalendar==7.0.2
 html2text==2025.4.15
 pyGravatar==0.0.6
 
