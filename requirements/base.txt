@@ -1,11 +1,11 @@
-Django==5.2.11
+Django==5.2.12
 
 # Configuration
 django-environ==0.13.0
 
 # Forms
 django-braces==1.17.0
-django-crispy-forms==2.5
+django-crispy-forms==2.6
 crispy-bootstrap3==2024.1
 
 # Models
@@ -59,7 +59,7 @@ pyGravatar==0.0.6
 # django-bootstrap-pagination==1.7.1
 git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master#egg=django-bootstrap-pagination
 
-sentry-sdk==2.53.0
+sentry-sdk==2.54.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
