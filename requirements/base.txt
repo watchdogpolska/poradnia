@@ -1,11 +1,11 @@
-Django==5.2.11
+Django==5.2.12
 
 # Configuration
 django-environ==0.13.0
 
 # Forms
 django-braces==1.17.0
-django-crispy-forms==2.5
+django-crispy-forms==2.6
 crispy-bootstrap3==2024.1
 
 # Models
