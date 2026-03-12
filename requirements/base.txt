@@ -73,5 +73,5 @@ bleach==6.3.0
 
 # Celery and background task processing
 celery[rabbitmq]==5.4.0
-django-celery-beat==2.7.0
+django-celery-beat==2.9.0
 django-celery-results==2.5.1
