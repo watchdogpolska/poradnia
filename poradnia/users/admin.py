@@ -1,11 +1,13 @@
 from django import forms
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.contrib.admin import helpers
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django.utils.translation import gettext_lazy as _
 from sorl.thumbnail.admin import AdminImageMixin
 
+from . import admin_mfa  # noqa: F401
+from . import admin_socialaccount  # noqa: F401
 from .models import Profile, User
 
 
@@ -174,6 +176,7 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
             {"fields": ("picture",)},
         ),
     ]
+    date_hierarchy = "date_joined"
     list_display = (
         "id",
         "username",
@@ -188,6 +191,7 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         "notify_new_case",
         "notify_unassigned_letter",
         "notify_old_cases",
+        "must_change_password",
     )
     search_fields = (
         "username",
@@ -209,32 +213,24 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         "notify_old_cases",
         "groups",
     )
-    actions = ["delete_selected"]
+    actions = [
+        "delete_selected",
+        "force_password_change",
+    ]
 
     def response_action(self, request, queryset):
+        # Admin has 2 action selects: action (top) and action2 (bottom).
+        action = request.POST.get("action") or request.POST.get("action2")
+
+        # Only intercept deletes; let other actions run normally.
+        if action != "delete_selected":
+            return super().response_action(request, queryset)
+
+        # --- delete-only override logic below ---
         selected = request.POST.getlist(helpers.ACTION_CHECKBOX_NAME)
         selected_qs = self.get_queryset(request).filter(pk__in=selected)
-        if selected_qs.filter(emailaddress__verified=True).exists():
-            excluded_list = (
-                selected_qs.filter(emailaddress__verified=True)
-                .distinct()
-                .values_list("username", flat=True)
-            )
-            self.message_user(
-                request,
-                (
-                    _("Users with verified email can be deleted with user form only: ")
-                    + ", ".join(excluded_list)
-                ),
-            )
-            selected_qs = selected_qs.exclude(emailaddress__verified=True)
-        # # TODO: to be implemented after allauth config changed to force email
-        # # verification before login and database cleanup
-        # elif queryset.filter(last_login__isnull=False).exists():
-        #     raise ValidationError(
-        #         _("Users with last login can be deleted with user form only.")
-        #     )
-        elif selected_qs.filter(
+        case_msg, letter_msg = "", ""
+        if selected_qs.filter(
             case_client__isnull=False,
             case_created__isnull=True,
             case_modified__isnull=True,
@@ -248,32 +244,26 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
                 .distinct()
                 .values_list("username", flat=True)
             )
-            self.message_user(
-                request,
-                (
-                    _("Users with cases can be deleted with user form only: ")
-                    + ", ".join(excluded_list)
-                ),
-            )
+            case_msg = _(
+                "Users with cases can be deleted with user form only: "
+            ) + ", ".join(excluded_list)
             selected_qs = selected_qs.exclude(
                 case_client__isnull=False,
                 case_created__isnull=True,
                 case_modified__isnull=True,
             )
-        elif selected_qs.filter(letter_created_by__isnull=False).exists():
+        if selected_qs.filter(letter_created_by__isnull=False).exists():
             excluded_list = (
                 selected_qs.filter(letter_created_by__isnull=False)
                 .distinct()
                 .values_list("username", flat=True)
             )
-            self.message_user(
-                request,
-                (
-                    _("Users with letters can be deleted with user form only: ")
-                    + ", ".join(excluded_list)
-                ),
-            )
+            letter_msg = _(
+                "Users with letters can be deleted with user form only: "
+            ) + ", ".join(excluded_list)
             selected_qs = selected_qs.exclude(letter_created_by__isnull=False)
+        if case_msg or letter_msg:
+            self.message_user(request, case_msg + "\n \n" + letter_msg)
         if selected_qs.exists():
             return super().response_action(request, selected_qs)
         else:
@@ -282,6 +272,16 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
                 _("No users to delete."),
             )
             return None
+
+    @admin.action(description=_("Force password change on next login"))
+    def force_password_change(self, request, queryset):
+        # Only update rows that are not already marked (nice for accurate count)
+        qs = queryset.exclude(must_change_password=True)
+        updated = qs.update(must_change_password=True)
+
+        messages.success(
+            request, _(f"Marked {updated} user(s) to change password on next login.")
+        )
 
 
 @admin.register(Profile)

@@ -1,8 +1,9 @@
-from atom.ext.crispy_forms.forms import FormHorizontalMixin, SingleButtonMixin
 from braces.forms import UserKwargModelFormMixin
 from django import forms
 from django.contrib.auth import get_user_model
 from django.forms import Textarea
+
+from poradnia.utils.crispy_forms import FormHorizontalMixin, SingleButtonMixin
 
 from ..models import Profile
 

@@ -1,13 +1,13 @@
-from atom.ext.crispy_forms.forms import FormHorizontalMixin
-from atom.ext.tinycontent.forms import GIODOMixin
 from crispy_forms.bootstrap import PrependedText
 from crispy_forms.layout import Layout, Submit
 from django import forms
 from django.contrib.auth import get_user_model
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from turnstile.fields import TurnstileField
 
 from poradnia.utils.constants import TURNSTILE_ERROR_MESSAGES
+from poradnia.utils.crispy_forms import FormHorizontalMixin, GIODOMixin
 
 
 class SignupForm(
@@ -27,10 +27,14 @@ class SignupForm(
         self.helper.layout = Layout(
             "first_name",
             "last_name",
-            PrependedText("username", '<i class="fas fa-user"></i>'),
+            PrependedText("username", mark_safe('<i class="fas fa-user"></i>')),
             PrependedText("email", "@"),
-            PrependedText("password1", '<i class="fas fa-key"></i>', type="password"),
-            PrependedText("password2", '<i class="fas fa-key"></i>', type="password"),
+            PrependedText(
+                "password1", mark_safe('<i class="fas fa-key"></i>'), type="password"
+            ),
+            PrependedText(
+                "password2", mark_safe('<i class="fas fa-key"></i>'), type="password"
+            ),
             "giodo",
             "turnstile",
         )

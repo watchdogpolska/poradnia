@@ -6,7 +6,7 @@
         {% if request.user.is_authenticated %}
             <li class="block-list-item">
                 <a href="{% url 'users:detail' username=request.user.username %}"><i class="fas fa-user"></i>
-                    {% blocktrans with request.user as user %}{{ user }}{% endblocktrans %}</a>
+                    {% blocktrans with request.user as user %}{{ user }} - profil i bezpieczeństwo{% endblocktrans %}</a>
             </li>
             {% if request.user.is_staff %}
                 <li class="block-list-item">

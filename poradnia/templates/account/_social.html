@@ -1,0 +1,8 @@
+{% load socialaccount i18n %}
+
+<div class="btn-group" role="group">
+    <a class="btn btn-default" href="{% provider_login_url 'google' %}">
+        <i class="fa-brands fa-google" aria-hidden="true"></i>
+        {% trans 'Google' %}
+    </a>
+</div>

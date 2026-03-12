@@ -15,7 +15,7 @@ interactions:
       User-Agent:
       - python-requests/2.26.0
     method: POST
-    uri: https://www.nsa.gov.pl/ewokanda/wsa/rzeszow/
+    uri: https://bip.nsa.gov.pl/ewokanda/wsa/rzeszow/
   response:
     body:
       string: "<!DOCTYPE html>\n<html lang=\"pl\" xmlns=\"http://www.w3.org/1999/xhtml\">\n\n<head>\n<meta

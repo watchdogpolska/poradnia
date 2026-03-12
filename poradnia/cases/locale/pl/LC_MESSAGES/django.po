@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-02 08:49+0200\n"
+"POT-Creation-Date: 2026-03-01 22:11+0100\n"
 "PO-Revision-Date: 2024-01-03 19:54+0124\n"
 "Last-Translator: Piotr Iwa <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: \n"
@@ -14,7 +14,7 @@ msgstr ""
 "X-Generator: Poedit 1.8.7.1\n"
 "X-Translated-Using: django-rosetta 0.9.9\n"
 
-#: poradnia/cases/apps.py:7 poradnia/cases/models.py:380
+#: poradnia/cases/apps.py:7 poradnia/cases/models.py:375
 #: poradnia/cases/templates/cases/_case_form_permission.html:8
 #: poradnia/cases/templates/cases/_sidebar.html:3
 #: poradnia/cases/templates/cases/base.html:3
@@ -90,41 +90,41 @@ msgstr "Domyślne"
 msgid "Last received"
 msgstr "Ostatnio otrzymano"
 
-#: poradnia/cases/forms.py:55 poradnia/cases/forms.py:72
+#: poradnia/cases/forms.py:56 poradnia/cases/forms.py:73
 msgid "Grant"
 msgstr "Przyznaj"
 
-#: poradnia/cases/forms.py:60
+#: poradnia/cases/forms.py:61
 msgid "User"
 msgstr "Użytkownik / użytkowniczka"
 
-#: poradnia/cases/forms.py:63
+#: poradnia/cases/forms.py:64
 msgid "Permissions group"
 msgstr "Grupa uprawnień"
 
-#: poradnia/cases/forms.py:102 poradnia/cases/templates/cases/case_close.html:9
+#: poradnia/cases/forms.py:103 poradnia/cases/templates/cases/case_close.html:9
 #: poradnia/cases/templates/cases/case_detail.html:111
 msgid "Close"
 msgstr "Zamknij"
 
-#: poradnia/cases/forms.py:123
+#: poradnia/cases/forms.py:124
 msgid "Destination case"
 msgstr "Docelowa sprawa"
 
-#: poradnia/cases/forms.py:128
+#: poradnia/cases/forms.py:129
 msgid ""
 "The selected case will receive all letters, events, etc. from the current "
 "case."
 msgstr ""
 "Wybrana sprawa otrzyma wszystkie listy, wydarzenia itd. z obecnej sprawy."
 
-#: poradnia/cases/forms.py:135
+#: poradnia/cases/forms.py:136
 #: poradnia/cases/templates/cases/case_detail.html:119
 #: poradnia/cases/templates/cases/case_merge.html:9
 msgid "Merge"
 msgstr "Połącz"
 
-#: poradnia/cases/forms.py:150
+#: poradnia/cases/forms.py:151
 #, python-brace-format
 msgid "Case #{source} have been merged with case #{target}"
 msgstr "Sprawa #{source} została połączona ze sprawą #{target} ."
@@ -189,59 +189,59 @@ msgstr "Odpowiedź do klienta, aby usunąć oznaczenie"
 msgid "Project"
 msgstr "Projekt"
 
-#: poradnia/cases/models.py:379
+#: poradnia/cases/models.py:374
 msgid "Case"
 msgstr "Sprawa"
 
-#: poradnia/cases/models.py:382
+#: poradnia/cases/models.py:377
 msgid "Can view"
 msgstr "Może widzieć sprawę"
 
-#: poradnia/cases/models.py:383
+#: poradnia/cases/models.py:378
 msgid "Can assign new permissions"
 msgstr "Może nadawać nowe uprawnienia"
 
-#: poradnia/cases/models.py:384
+#: poradnia/cases/models.py:379
 msgid "Can send text to client"
 msgstr "Może komunikować z klientem"
 
-#: poradnia/cases/models.py:385
+#: poradnia/cases/models.py:380
 msgid "Can assign permission"
 msgstr "Może nadawać uprawnienia"
 
-#: poradnia/cases/models.py:386
+#: poradnia/cases/models.py:381
 msgid "Can add record"
 msgstr "Może dodawać wpisy"
 
-#: poradnia/cases/models.py:387
+#: poradnia/cases/models.py:382
 msgid "Can change own records"
 msgstr "Może zmieniać własne wpisy"
 
-#: poradnia/cases/models.py:388
+#: poradnia/cases/models.py:383
 msgid "Can change all records"
 msgstr "Może zmieniać wszystkie wpisy"
 
-#: poradnia/cases/models.py:389
+#: poradnia/cases/models.py:384
 msgid "Can close case"
 msgstr "Może zamknąć sprawę"
 
-#: poradnia/cases/models.py:390
+#: poradnia/cases/models.py:385
 msgid "Can merge case"
 msgstr "Może połączyć sprawy"
 
-#: poradnia/cases/models.py:392
+#: poradnia/cases/models.py:387
 msgid "Can select client"
 msgstr "Może wybierać klienta"
 
-#: poradnia/cases/models.py:551 poradnia/cases/models.py:552
+#: poradnia/cases/models.py:546 poradnia/cases/models.py:547
 msgid "Cases to delete"
 msgstr "Sprawy do usunięcia"
 
-#: poradnia/cases/models.py:579
+#: poradnia/cases/models.py:574
 msgid "Name"
 msgstr "Nazwa"
 
-#: poradnia/cases/models.py:581
+#: poradnia/cases/models.py:576
 #: poradnia/cases/templates/cases/_case_form_permission.html:10
 msgid "Permissions"
 msgstr "Uprawnienia"

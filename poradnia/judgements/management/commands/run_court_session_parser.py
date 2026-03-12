@@ -3,7 +3,7 @@ from django.core.management.base import BaseCommand
 
 from poradnia.judgements.models import Court
 from poradnia.judgements.registry import get_parser_keys
-from poradnia.judgements.settings import JUDGEMENT_BOT_USERNAME
+from poradnia.judgements.settings import JUDGEMENT_BOT_EMAIL, JUDGEMENT_BOT_USERNAME
 from poradnia.judgements.utils import Manager
 
 
@@ -24,7 +24,8 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         self.options = options
         self.judgement_bot, _ = get_user_model().objects.get_or_create(
-            username=JUDGEMENT_BOT_USERNAME
+            username=JUDGEMENT_BOT_USERNAME,
+            defaults={"email": JUDGEMENT_BOT_EMAIL},
         )
 
         manager = Manager(

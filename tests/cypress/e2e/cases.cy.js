@@ -79,6 +79,7 @@ describe("cases", () => {
     login(cy)(userRequester);
 
     cy.visit("/");
+    cy.closeDonatePopup(); // Ensure no popup is blocking
     cy.contains("Nowa sprawa").click();
 
     // Fill the case form.
@@ -98,6 +99,7 @@ describe("cases", () => {
     // Handle the case as staff.
     login(cy)(userStaff);
     cy.visit("/");
+    cy.closeDonatePopup(); // Ensure no popup is blocking
     cy.contains("Wykaz spraw").click();
     cy.contains(case_.title).click();
 
@@ -192,6 +194,7 @@ describe("cases", () => {
     }
 
     // Find a case by title, using the simple search form.
+    cy.closeDonatePopup(); // Ensure no popup is blocking
     cy.contains("Wyszukaj").click();
     cy.get('input[type="search"]').clear().type("caseA");
     cy.contains("a", caseA.title).click();
