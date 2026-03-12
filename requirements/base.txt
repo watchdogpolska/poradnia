@@ -70,3 +70,8 @@ django-rosetta==0.10.3
 
 # Additional sanitizer until a completely safe markdown package is found.
 bleach==6.3.0
+
+# Celery and background task processing
+celery[rabbitmq]==5.4.0
+django-celery-beat==2.9.0
+django-celery-results==2.5.1
