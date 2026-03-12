@@ -14,7 +14,7 @@ from django.contrib.auth import get_user_model
 
 from poradnia.judgements.models import Court, CourtSession
 from poradnia.judgements.registry import get_parser_keys
-from poradnia.judgements.settings import JUDGEMENT_BOT_USERNAME
+from poradnia.judgements.settings import JUDGEMENT_BOT_EMAIL, JUDGEMENT_BOT_USERNAME
 from poradnia.judgements.utils import Manager
 
 logger = get_task_logger(__name__)
@@ -93,7 +93,10 @@ def _prepare_task_environment(parser_key: str):
 
     # Get or create the judgement bot user
     User = get_user_model()
-    judgement_bot, created = User.objects.get_or_create(username=JUDGEMENT_BOT_USERNAME)
+    judgement_bot, created = User.objects.get_or_create(
+        username=JUDGEMENT_BOT_USERNAME,
+        defaults={"email": JUDGEMENT_BOT_EMAIL},
+    )
     if created:
         logger.info(f"Created new judgement bot user: {JUDGEMENT_BOT_USERNAME}")
 
