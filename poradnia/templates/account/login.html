@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load account %}
 {% load crispy_forms_tags %}
+{% load socialaccount %}
 
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
 
@@ -10,26 +11,40 @@
     {% if "konta/email" in request.GET.next %}
         <h2>Proszę się zalogować w celu otrzymania maila do potwierdzenia adresu email.</h2>
     {% else %}
-        <h2>{% trans "Sign In" %}</h2>
-    {% endif %}
+        <h2>Proszę się zalogować</h2>
+    {% endif %}    
+    
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4 col-md-offset-4">
 
-    {% if socialaccount.providers %}
-        <p>{% blocktrans with site.name as site_name %}Please sign in with one of your existing third party accounts.
-            Or, <a href="{{ signup_url }}">sign up</a> for a {{ site_name }} account and sign in
-            below:{% endblocktrans %}</p>
 
-        <div class="socialaccount_ballot">
+                {% get_providers as socialaccount_providers %}
+                {% if socialaccount_providers %}
 
-            <ul class="socialaccount_providers">
-                {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-            </ul>
+                    <h3>Logowanie kontem Google</h3>
+                    <p>Proszę zalogować się za pomocą konta Google,
+                        lub <a href="{{ signup_url }}">zarejestrować się</a>
+                        i zalogować się poniżej.</p>
 
-            <div class="login-or">{% trans 'or' %}</div>
+                    {% include 'account/_social.html' %}
 
+                    <h3 class="login-or">Alternatywnie użyj konta użytkownika</h3>
+
+                {% endif %}
+                {% crispy form %}
+                
+                <p>
+                    <b>UWAGA:</b> Członkowie zespołu poradni mogą logować się tylko za pomocą konta Google
+                     lub hasła z uwierzytelnianiem wieloskładnikowym.
+                    <br><br>
+                    Pozostali użytkownicy mogą logować się za pomocą hasła, jednak zalecamy korzystanie 
+                    z logowania za pomocą konta Google lub aktywację uwierzytelniania wieloskładnikowego. 
+                    Takie podejście zapewnia lepsze bezpieczeństwo Waszych danych niż logowanie samym 
+                    tylko hasłem.
+                </p>
+            </div>
         </div>
+    </div>
 
-        {% include "socialaccount/snippets/login_extra.html" %}
-    {% endif %}
-    {% crispy form %}
-    <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
 {% endblock %}

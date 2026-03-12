@@ -15,7 +15,7 @@ interactions:
       User-Agent:
       - python-requests/2.26.0
     method: POST
-    uri: https://www.nsa.gov.pl/ewokanda/
+    uri: https://bip.nsa.gov.pl/ewokanda/
   response:
     body:
       string: "<!DOCTYPE html>\n<html lang=\"pl\" xmlns=\"http://www.w3.org/1999/xhtml\">\n\n<head>\n<meta
@@ -40,9 +40,9 @@ interactions:
         2px 2px 2px;\n\tpage-break-inside: avoid;\n}\n#tabela th {\n\tfont-size:12px;\n\ttext-align:left;\n\tpadding-top:5px;\n\tpadding-bottom:4px;\n\tbackground-color:#82A1DA;\n\tcolor:#ffffff;\n}\n\n#tabela
         tr.alt td {\n\tcolor:#000000;\n\tbackground-color:#F0F4FA;\n\tpage-break-inside:
         avoid;\n}\n\n\t\n}\n</style>\n</head>\n\n<body>\n\n<table id=\"header\" role=\"presentation\">\n\n
-        \   <tr>\n\t\t<td id=\"logo\">\n\t\t\t<h1><a href=\"http://www.nsa.gov.pl\"><img
+        \   <tr>\n\t\t<td id=\"logo\">\n\t\t\t<h1><a href=\"http://bip.nsa.gov.pl\"><img
         src=\"/ewokanda/pic/baner2.JPG\" alt=\"eWokanda, NSA, Naczelny S\u0105d Administracyjny\"
-        title=\"Strona g\u0142\xF3wna Naczelnego S\u0105du Administracyjnego -  http://www.nsa.gov.pl\"
+        title=\"Strona g\u0142\xF3wna Naczelnego S\u0105du Administracyjnego -  http://bip.nsa.gov.pl\"
         width=\"984\" height=\"126\" /></a></h1>\n\t\t</td>\n\t\n\t</tr>\n\t\n\n</table>\n\n\n<form
         method=\"post\">\n\t<fieldset name=\"opcje\">\n\t<legend><strong> Opcje wyszukania
         </strong></legend>\n\t<div>\n\t\t\n\t<table id=\"ow\" style=\"width: 1000px\"

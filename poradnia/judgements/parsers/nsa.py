@@ -1,3 +1,5 @@
+import logging
+
 import requests
 from lxml import html
 
@@ -5,9 +7,11 @@ from ..models import SessionRow
 from ..registry import register_parser
 from .base import BaseParser
 
+logger = logging.getLogger(__name__)
+
 
 class NSAETRParser(BaseParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/"
     HOUR_FIELD = "Godz."
     POST_DATA = {
         "data": "",
@@ -24,13 +28,35 @@ class NSAETRParser(BaseParser):
     }
     HEADERS = {
         "User-Agent": (
-            "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
-            " (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
+            "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:145.0) Gecko/20100101 "
+            " Firefox/145.0 Chrome/143.0.0.0 Safari/537.36"
         )
     }
 
     def get_content(self):
-        response = requests.post(self.URL, data=self.POST_DATA, headers=self.HEADERS)
+        try:
+            response = requests.post(
+                self.URL, data=self.POST_DATA, headers=self.HEADERS, verify=True
+            )
+        except (
+            requests.exceptions.SSLError,
+            requests.exceptions.RequestException,
+        ) as e:
+            logger.error(
+                f"Error fetching data from {self.URL}: {e}"
+                + f"\nrespone code: {e.response.status_code if e.response else ''}"
+                + f"\nrequest data: {self.POST_DATA}"
+                + f"\nrequest headers: {self.HEADERS}"
+            )
+            raise
+
+        logger.info(
+            f"Received data from {self.URL}:"
+            + f"\nrespone code: {response.status_code}"
+            + f"\nrequest data: {self.POST_DATA}"
+            + f"\nrequest headers: {self.HEADERS}"
+        )
+
         response.raise_for_status()
         return response.text
 
@@ -54,70 +80,70 @@ register_parser("NSA")(NSAETRParser)
 
 @register_parser("WSA_Bialystok")
 class WSABialystokParser(NSAETRParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/bialystok/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/bialystok/"
 
 
 @register_parser("WSA_Bydgoszcz")
 class WSABydgoszczParser(NSAETRParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/bydgoszcz/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/bydgoszcz/"
 
 
 @register_parser("WSA_Gdansk")
 class WSAGdanskParser(NSAETRParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/gdansk/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/gdansk/"
 
 
 @register_parser("WSA_Gorzow")
 class WSAGorzowParser(NSAETRParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/gorzow/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/gorzow/"
 
 
 @register_parser("WSA_Kielce")
 class WSAKielceParser(NSAETRParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/kielce/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/kielce/"
 
 
 @register_parser("WSA_Krakow")
 class WSAKrakowParser(NSAETRParser):
     # Also http://bip.krakow.wsa.gov.pl/71/177/elektroniczny-terminarz-rozpraw-etr.html
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/krakow/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/krakow/"
 
 
 @register_parser("WSA_Lublin")
 class WSALublinParser(NSAETRParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/lublin/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/lublin/"
 
 
 @register_parser("WSA_Lodz")
 class WSALodzParser(NSAETRParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/lodz/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/lodz/"
 
 
 @register_parser("WSA_Olsztyn")
 class WSAOlsztynParser(NSAETRParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/olsztyn/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/olsztyn/"
 
 
 @register_parser("WSA_Opole")
 class WSAOpoleParser(NSAETRParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/opole/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/opole/"
 
 
 @register_parser("WSA_Poznan")
 class WSAPoznanParser(NSAETRParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/poznan/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/poznan/"
 
 
 @register_parser("WSA_Rzeszow")
 class WSARzeszowParser(NSAETRParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/rzeszow/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/rzeszow/"
 
 
 @register_parser("WSA_Szczecin")
 class WSASzczecinParser(NSAETRParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/szczecin/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/szczecin/"
 
 
 @register_parser("WSA_Wroclaw")
 class WSAWroclawParser(NSAETRParser):
-    URL = "https://www.nsa.gov.pl/ewokanda/wsa/wroclaw/"
+    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/wroclaw/"

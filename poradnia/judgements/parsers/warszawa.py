@@ -13,7 +13,7 @@ from poradnia.judgements.registry import register_parser
 @register_parser("WSA_Warszawa")
 class WarsawETRParser(BaseParser):
     URL = "https://bip.warszawa.wsa.gov.pl/183/elektroniczny-terminarz-rozpraw.html"
-    # Also http://www.nsa.gov.pl/ewokanda/wsa/warszawa/
+    # Also http://bip.nsa.gov.pl/ewokanda/wsa/warszawa/
     POST_DATA = {
         "act": "szukaj",
         "data_posiedzenia": (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d"),

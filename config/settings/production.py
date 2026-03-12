@@ -2,6 +2,7 @@
 """
 Production Configurations
 """
+
 import sentry_sdk
 from celery.schedules import crontab
 from dealer.auto import auto

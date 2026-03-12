@@ -24,6 +24,17 @@ class UserFactory(factory.django.DjangoModelFactory):
         model = "users.User"  # Equivalent to ``model = myapp.models.User``
         django_get_or_create = ("username",)
 
+    @factory.post_generation
+    def profile(self, create, extracted, **kwargs):
+        if not create:
+            return
+        if extracted is False:
+            # Don't create a profile if it will be auto-created
+            return
+        # Only create a profile if extracted is a dict with extra fields
+        if isinstance(extracted, dict):
+            ProfileFactory(user=self, **extracted)
+
 
 class StaffFactory(UserFactory):
     is_staff = True

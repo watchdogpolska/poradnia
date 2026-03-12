@@ -74,7 +74,9 @@ class Letter(AbstractRecord):
     accept = MonitorField(
         monitor="status", when=["done"], verbose_name=_("Accepted on")
     )
-    name = models.CharField(max_length=NAME_MAX_LENGTH, verbose_name=_("Subject"))
+    name = models.CharField(
+        max_length=(NAME_MAX_LENGTH + 50), verbose_name=_("Subject")
+    )
     text = models.TextField(verbose_name=_("Text"))
     html = models.TextField(verbose_name=_("Mail formatted HTML"), blank=True)
     signature = models.TextField(verbose_name=_("Signature"), blank=True, null=True)
@@ -223,7 +225,11 @@ class AttachmentQuerySet(models.QuerySet):
 
 class Attachment(models.Model):
     letter = models.ForeignKey(to=Letter, on_delete=models.CASCADE)
-    attachment = models.FileField(upload_to=date_random_path, verbose_name=_("File"))
+    attachment = models.FileField(
+        upload_to=date_random_path,
+        verbose_name=_("File"),
+        max_length=500,
+    )
 
     objects = AttachmentQuerySet.as_manager()
 

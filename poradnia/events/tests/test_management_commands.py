@@ -58,7 +58,7 @@ class RemindersCommandsTestCase(TestCase):
 
     def test_sending_notification_if_no_profile(self):
         cuop = CaseUserObjectPermissionFactory(
-            user__profile=None, user__is_staff=True, content_object=self.case
+            user__profile=False, user__is_staff=True, content_object=self.case
         )
         event_to_trigger = EventFactory(case=self.case, time=timezone.now())
         management.call_command("send_event_reminders", stdout=self.stdout)

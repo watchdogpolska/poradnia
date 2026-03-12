@@ -32,16 +32,19 @@ class UserTestCase(TestCase):
         self.assertEqual(User.objects.count(), 2)
 
     def _create_user(self, email, username):
-        User.objects.email_to_unique_username(email)
-        self.assertEqual(username, username)
-        User.objects.create_user(username=username)
+        unique_username = User.objects.email_to_unique_username(email)
+        self.assertEqual(username, unique_username)
+        User.objects.create_user(email=email, username=username)
 
     def test_email_to_username(self):
-        self._create_user("example@example.com", "example_example_com")
-        for i in range(1, 11):
-            self._create_user("example@example.com", "example_example_com-" + str(i))
+        print("Testing example0@example.com user creation")
+        self._create_user("example0@example.com", "example__example_com")
+        for i in range(1, 9):
+            print(f"Testing example{i}@example.com user creation")
+            self._create_user(f"example{i}@example.com", f"example__example_com-{i}")
         with self.assertRaises(ValueError):
-            self._create_user("example@example.com", "example_example_com-11")
+            print("Testing example9@example.com user creation")
+            self._create_user("example9@example.com", "example__example_com-9")
 
     def test_login_email(self):  # Test for regresion #204
         max_length = User._meta.get_field("username").max_length
