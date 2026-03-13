@@ -2,6 +2,45 @@
 # yamllint disable-line-length
 # This is application’s services configuration for development purposes only.
 
+x-django-env: &django-env
+  DATABASE_URL: mysql://root:password@db/poradnia
+  DJANGO_EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
+  DJANGO_EMAIL_HOST: "maildump"
+  DJANGO_EMAIL_PORT: "1025"
+  DJANGO_EMAIL_USE_TLS: "False"
+  DJANGO_EMAIL_HOST_PASSWORD: ""
+  DJANGO_EMAIL_HOST_USER: "porady@dev.porady.siecobywatelska.pl"
+  DJANGO_EMAIL_SUBJECT_PREFIX: "[poradnia_dev] "
+  DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
+  LETTER_RECEIVE_SECRET: "dev_letter_receive_very_secret"
+  # porady@porady.siecobywatelska.pl must be included in LETTER_RECEIVE_WHITELISTED_ADDRESS for tests
+  LETTER_RECEIVE_WHITELISTED_ADDRESS: "porady@porady.siecobywatelska.pl,porady@dev.porady.siecobywatelska.pl"
+  DJANGO_RICH_TEXT_ENABLED: "False"
+  APP_MODE: "DEV"
+  ROSETTA_AZURE_CLIENT_SECRET: ${ROSETTA_AZURE_CLIENT_SECRET}
+  TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY}
+  TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY}
+  MY_INTERNAL_IP: ${MY_INTERNAL_IP}
+  NGROK_URL: ${NGROK_URL:-http://localhost}
+  CELERY_BROKER_URL: "amqp://poradnia:password@rabbitmq:5672/dev"
+  CELERY_RESULT_BACKEND: "django-db"
+  REQUESTS_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt"
+  SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
+  GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+  GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+  E2E_MFA_BYPASS_SECRET: "supersecret-123"
+
+x-django-service: &django-service
+  build:
+    context: .
+    dockerfile: .contrib/docker/Dockerfile.web
+  volumes:
+    - .:/code
+  environment:
+    <<: *django-env
+  networks:
+    - poradnia-app-network
+
 services:
   db:
     image: mysql:8.0.36-bullseye
@@ -34,45 +73,12 @@ services:
 
   web:
     # image: docker-registry.siecobywatelska.pl/poradnia/web
-    build:
-      context: .
-      dockerfile: .contrib/docker/Dockerfile.web
-      # args:
-      #   PYTHON_VERSION: '${PYTHON_VERSION:-3.7}'
-
-    volumes:
-      - .:/code
-    environment:
-      DATABASE_URL: mysql://root:password@db/poradnia
-      DJANGO_EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
-      DJANGO_EMAIL_HOST: "maildump"
-      DJANGO_EMAIL_PORT: "1025"
-      DJANGO_EMAIL_USE_TLS: "False"
-      DJANGO_EMAIL_HOST_PASSWORD: ""
-      DJANGO_EMAIL_HOST_USER: "porady@dev.porady.siecobywatelska.pl"
-      DJANGO_EMAIL_SUBJECT_PREFIX: "[poradnia_dev] "
-      DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
-      LETTER_RECEIVE_SECRET: "dev_letter_receive_very_secret"
-      # porady@porady.siecobywatelska.pl must be included in LETTER_RECEIVE_WHITELISTED_ADDRESS for tests
-      LETTER_RECEIVE_WHITELISTED_ADDRESS: "porady@porady.siecobywatelska.pl,porady@dev.porady.siecobywatelska.pl"
-      DJANGO_RICH_TEXT_ENABLED: "False"
-      APP_MODE: "DEV"
-      ROSETTA_AZURE_CLIENT_SECRET: ${ROSETTA_AZURE_CLIENT_SECRET}
-      TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY}
-      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY}
-      MY_INTERNAL_IP: ${MY_INTERNAL_IP}
-      NGROK_URL: ${NGROK_URL:-http://localhost}
-      CELERY_BROKER_URL: "amqp://poradnia:password@rabbitmq:5672//"
-      CELERY_RESULT_BACKEND: "django-db"
-      REQUESTS_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt"
-      SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      E2E_MFA_BYPASS_SECRET: "supersecret-123"
+    <<: *django-service
     ports:
       - "8000:8000"
-    networks:
-      - poradnia-app-network
+    depends_on:
+      - db
+      - rabbitmq
 
   maildump:
     build:
@@ -95,86 +101,22 @@ services:
       RABBITMQ_DEFAULT_PASS: password
     ports:
       - "5672:5672"
-      - "15672:15672"  # Management UI
+      - "15672:15672" # Management UI
     networks:
       - poradnia-app-network
     volumes:
       - ./rabbitmq-data:/var/lib/rabbitmq
 
   celery-worker:
-    build:
-      context: .
-      dockerfile: .contrib/docker/Dockerfile.web
+    <<: *django-service
     command: celery -A config worker -l INFO
-    volumes:
-      - .:/code
-    environment:
-      DATABASE_URL: mysql://root:password@db/poradnia
-      DJANGO_EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
-      DJANGO_EMAIL_HOST: "maildump"
-      DJANGO_EMAIL_PORT: "1025"
-      DJANGO_EMAIL_USE_TLS: "False"
-      DJANGO_EMAIL_HOST_PASSWORD: ""
-      DJANGO_EMAIL_HOST_USER: "porady@dev.porady.siecobywatelska.pl"
-      DJANGO_EMAIL_SUBJECT_PREFIX: "[poradnia_dev] "
-      DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
-      LETTER_RECEIVE_SECRET: "dev_letter_receive_very_secret"
-      LETTER_RECEIVE_WHITELISTED_ADDRESS: "porady@porady.siecobywatelska.pl,porady@dev.porady.siecobywatelska.pl"
-      DJANGO_RICH_TEXT_ENABLED: "False"
-      APP_MODE: "DEV"
-      ROSETTA_AZURE_CLIENT_SECRET: ${ROSETTA_AZURE_CLIENT_SECRET}
-      TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY}
-      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY}
-      MY_INTERNAL_IP: ${MY_INTERNAL_IP}
-      NGROK_URL: ${NGROK_URL:-http://localhost}
-      CELERY_BROKER_URL: "amqp://poradnia:password@rabbitmq:5672/dev"
-      CELERY_RESULT_BACKEND: "django-db"
-      REQUESTS_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt"
-      SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      E2E_MFA_BYPASS_SECRET: "supersecret-123"
-    networks:
-      - poradnia-app-network
     depends_on:
       - db
       - rabbitmq
 
   celery-beat:
-    build:
-      context: .
-      dockerfile: .contrib/docker/Dockerfile.web
+    <<: *django-service
     command: celery -A config beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
-    volumes:
-      - .:/code
-    environment:
-      DATABASE_URL: mysql://root:password@db/poradnia
-      DJANGO_EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
-      DJANGO_EMAIL_HOST: "maildump"
-      DJANGO_EMAIL_PORT: "1025"
-      DJANGO_EMAIL_USE_TLS: "False"
-      DJANGO_EMAIL_HOST_PASSWORD: ""
-      DJANGO_EMAIL_HOST_USER: "porady@dev.porady.siecobywatelska.pl"
-      DJANGO_EMAIL_SUBJECT_PREFIX: "[poradnia_dev] "
-      DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
-      LETTER_RECEIVE_SECRET: "dev_letter_receive_very_secret"
-      LETTER_RECEIVE_WHITELISTED_ADDRESS: "porady@porady.siecobywatelska.pl,porady@dev.porady.siecobywatelska.pl"
-      DJANGO_RICH_TEXT_ENABLED: "False"
-      APP_MODE: "DEV"
-      ROSETTA_AZURE_CLIENT_SECRET: ${ROSETTA_AZURE_CLIENT_SECRET}
-      TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY}
-      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY}
-      MY_INTERNAL_IP: ${MY_INTERNAL_IP}
-      NGROK_URL: ${NGROK_URL:-http://localhost}
-      CELERY_BROKER_URL: "amqp://poradnia:password@rabbitmq:5672/dev"
-      CELERY_RESULT_BACKEND: "django-db"
-      REQUESTS_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt"
-      SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      E2E_MFA_BYPASS_SECRET: "supersecret-123"
-    networks:
-      - poradnia-app-network
     depends_on:
       - db
       - rabbitmq
