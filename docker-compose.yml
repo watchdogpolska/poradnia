@@ -19,7 +19,7 @@ services:
       MYSQL_ROOT_PASSWORD: "password"
     volumes:
       - ./.contrib/docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
-      - mysql-data:/var/lib/mysql
+      - ./db_data:/var/lib/mysql
 
   gulp:
     build:
@@ -98,7 +98,7 @@ services:
     networks:
       - poradnia-app-network
     volumes:
-      - rabbitmq-data:/var/lib/rabbitmq
+      - ./rabbitmq-data:/var/lib/rabbitmq
 
   celery-worker:
     build:
@@ -200,9 +200,7 @@ services:
       - web
 
 volumes:
-  mysql-data:
   maildump_data:
-  rabbitmq-data:
 
 networks:
   poradnia-app-network:
