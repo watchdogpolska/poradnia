@@ -88,8 +88,9 @@ services:
       - poradnia-app-network
 
   rabbitmq:
-    image: rabbitmq:3.12-management-alpine
+    image: rabbitmq:4.2.4-management-alpine
     environment:
+      RABBITMQ_DEFAULT_VHOST: dev
       RABBITMQ_DEFAULT_USER: poradnia
       RABBITMQ_DEFAULT_PASS: password
     ports:
@@ -126,8 +127,13 @@ services:
       TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY}
       MY_INTERNAL_IP: ${MY_INTERNAL_IP}
       NGROK_URL: ${NGROK_URL:-http://localhost}
-      CELERY_BROKER_URL: "amqp://poradnia:password@rabbitmq:5672//"
+      CELERY_BROKER_URL: "amqp://poradnia:password@rabbitmq:5672/dev"
       CELERY_RESULT_BACKEND: "django-db"
+      REQUESTS_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt"
+      SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      E2E_MFA_BYPASS_SECRET: "supersecret-123"
     networks:
       - poradnia-app-network
     depends_on:
@@ -160,8 +166,13 @@ services:
       TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY}
       MY_INTERNAL_IP: ${MY_INTERNAL_IP}
       NGROK_URL: ${NGROK_URL:-http://localhost}
-      CELERY_BROKER_URL: "amqp://poradnia:password@rabbitmq:5672//"
+      CELERY_BROKER_URL: "amqp://poradnia:password@rabbitmq:5672/dev"
       CELERY_RESULT_BACKEND: "django-db"
+      REQUESTS_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt"
+      SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
+      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+      E2E_MFA_BYPASS_SECRET: "supersecret-123"
     networks:
       - poradnia-app-network
     depends_on:
