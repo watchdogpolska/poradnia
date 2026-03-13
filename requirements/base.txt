@@ -72,6 +72,6 @@ django-rosetta==0.10.3
 bleach==6.3.0
 
 # Celery and background task processing
-celery[rabbitmq]==5.4.0
+celery[rabbitmq]==5.6.2
 django-celery-beat==2.9.0
-django-celery-results==2.5.1
+django-celery-results==2.6.0

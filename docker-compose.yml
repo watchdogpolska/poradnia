@@ -94,7 +94,7 @@ services:
       - poradnia-app-network
 
   rabbitmq:
-    image: rabbitmq:4.2.4-management-alpine
+    image: rabbitmq:3.13.7-management-alpine
     environment:
       RABBITMQ_DEFAULT_VHOST: dev
       RABBITMQ_DEFAULT_USER: poradnia
@@ -114,14 +114,16 @@ services:
 
   celery-worker:
     <<: *django-service
-    command: celery -A config worker -l INFO
+    command: >
+      bash -c "wait-for-it rabbitmq:5672 -- celery -A config worker -l INFO"
     depends_on:
       - db
       - rabbitmq
 
   celery-beat:
     <<: *django-service
-    command: celery -A config beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    command: >
+      bash -c "wait-for-it rabbitmq:5672 -- celery -A config beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"
     depends_on:
       - db
       - rabbitmq

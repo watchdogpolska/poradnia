@@ -553,6 +553,7 @@ BLEACH_ALLOWED_ATTRIBUTES = ALLOWED_ATTRIBUTES = {
 # Celery settings for background task processing
 # Using RabbitMQ as message broker and database for result backend
 
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_TIMEZONE = TIME_ZONE  # Use Django's timezone setting
 CELERY_ENABLE_UTC = USE_TZ  # Use Django's UTC setting
 
