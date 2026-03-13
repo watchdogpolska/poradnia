@@ -50,3 +50,6 @@ htmlcov
 # docker development secrets
 imap-to-webhook-url.env
 
+# dev data folders content
+db_data/
+rabbitmq-data/
