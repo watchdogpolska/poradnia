@@ -12,6 +12,7 @@ x-django-env: &django-env
   DJANGO_EMAIL_HOST_USER: "porady@dev.porady.siecobywatelska.pl"
   DJANGO_EMAIL_SUBJECT_PREFIX: "[poradnia_dev] "
   DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
+  DJANGO_SETTINGS_MODULE: "config.settings.local"
   LETTER_RECEIVE_SECRET: "dev_letter_receive_very_secret"
   # porady@porady.siecobywatelska.pl must be included in LETTER_RECEIVE_WHITELISTED_ADDRESS for tests
   LETTER_RECEIVE_WHITELISTED_ADDRESS: "porady@porady.siecobywatelska.pl,porady@dev.porady.siecobywatelska.pl"
@@ -143,8 +144,8 @@ services:
   #   networks:
   #     - poradnia-app-network
 
-  # ### To test webhook receiving, Turnstile or other feature required access from web
-  # ###  uncomment below section and set proper django site url in DB
+  ### To test webhook receiving, Turnstile or other feature required access from web
+  ###  uncomment below section and set proper django site url in DB
   ngrok:
     build:
       context: .
