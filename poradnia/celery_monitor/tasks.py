@@ -456,7 +456,7 @@ def monitor_stale_workers(self):
     }
 
 
-@shared_task(bind=True, ignore_result=False)
+@shared_task(bind=True, ignore_result=True)
 def enqueue_sla_probe(self):
     """
     Beat calls this task. It immediately enqueues the actual worker-side probe
@@ -485,7 +485,7 @@ def enqueue_sla_probe(self):
     }
 
 
-@shared_task(bind=True, ignore_result=False)
+@shared_task(bind=True, ignore_result=True)
 def sla_probe_worker(self, enqueued_at_iso, queue_name=""):
     """
     Measures queue-to-worker lag:
