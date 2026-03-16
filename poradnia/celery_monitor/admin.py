@@ -1,5 +1,6 @@
 from django.contrib import admin
 from django.utils.html import format_html
+from django_celery_results.models import TaskResult
 
 from .models import MonitoringAlert, QueueSnapshot, SystemHealthCheck, WorkerHeartbeat
 
@@ -43,6 +44,14 @@ class SystemHealthCheckAdmin(admin.ModelAdmin):
     def status_badge(self, obj):
         return _status_badge(obj.status)
 
+    # Disable add
+    def has_add_permission(self, request):
+        return False
+
+    # Disable edit
+    def has_change_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(QueueSnapshot)
 class QueueSnapshotAdmin(admin.ModelAdmin):
@@ -64,6 +73,14 @@ class QueueSnapshotAdmin(admin.ModelAdmin):
     def status_badge(self, obj):
         return _status_badge(obj.status)
 
+    # Disable add
+    def has_add_permission(self, request):
+        return False
+
+    # Disable edit
+    def has_change_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(WorkerHeartbeat)
 class WorkerHeartbeatAdmin(admin.ModelAdmin):
@@ -83,6 +100,14 @@ class WorkerHeartbeatAdmin(admin.ModelAdmin):
     def status_badge(self, obj):
         return _status_badge(obj.status)
 
+    # Disable add
+    def has_add_permission(self, request):
+        return False
+
+    # Disable edit
+    def has_change_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(MonitoringAlert)
 class MonitoringAlertAdmin(admin.ModelAdmin):
@@ -100,3 +125,56 @@ class MonitoringAlertAdmin(admin.ModelAdmin):
     list_filter = ("severity", "is_resolved", "source")
     search_fields = ("title", "message", "dedupe_key")
     readonly_fields = [f.name for f in MonitoringAlert._meta.fields]
+
+    # Disable add
+    def has_add_permission(self, request):
+        return False
+
+    # Disable edit
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+class TaskResultAdmin(admin.ModelAdmin):
+    """Readonly admin for Celery results."""
+
+    list_display = (
+        "task_id",
+        "periodic_task_name",
+        "task_name",
+        "status",
+        "date_done",
+        "worker",
+    )
+    readonly_fields = [f.name for f in TaskResult._meta.fields]
+    ordering = ("-date_done",)
+    list_filter = (
+        "periodic_task_name",
+        "task_name",
+        "status",
+        "date_done",
+        "worker",
+    )
+    search_fields = (
+        "task_id",
+        "task_name",
+    )
+    date_hierarchy = "date_done"
+
+    # Disable add
+    def has_add_permission(self, request):
+        return False
+
+    # Disable edit
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    # Disable delete
+    def has_delete_permission(self, request, obj=None):
+        if obj is not None:
+            return False
+        return True
+
+
+admin.site.unregister(TaskResult)
+admin.site.register(TaskResult, TaskResultAdmin)
