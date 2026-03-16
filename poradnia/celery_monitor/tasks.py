@@ -11,9 +11,16 @@ from django.conf import settings
 from django.core.mail import mail_admins
 from django.db import connection
 from django.utils import timezone
+from django.utils.dateparse import parse_datetime
 from kombu import Connection
 
-from .models import MonitoringAlert, QueueSnapshot, SystemHealthCheck, WorkerHeartbeat
+from .models import (
+    MonitoringAlert,
+    QueueSnapshot,
+    SystemHealthCheck,
+    TaskSlaSnapshot,
+    WorkerHeartbeat,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -446,4 +453,117 @@ def monitor_stale_workers(self):
     return {
         "stale_workers": stale_count,
         "deleted_old_workers": deleted_count,
+    }
+
+
+@shared_task(bind=True, ignore_result=False)
+def enqueue_sla_probe(self):
+    """
+    Beat calls this task. It immediately enqueues the actual worker-side probe
+    carrying the enqueue timestamp.
+    """
+    now = timezone.now()
+    queue_names = _get_setting(
+        "CELERY_MONITOR_QUEUES",
+        [
+            "poradnia",
+        ],
+    )
+    for queue_name in queue_names:
+        sla_probe_worker.apply_async(
+            kwargs={
+                "enqueued_at_iso": now.isoformat(),
+                "queue_name": queue_name,
+            },
+            queue=queue_name,
+        )
+
+    return {
+        "status": "enqueued",
+        "queue_names": queue_names,
+        "enqueued_at": now.isoformat(),
+    }
+
+
+@shared_task(bind=True, ignore_result=False)
+def sla_probe_worker(self, enqueued_at_iso, queue_name=""):
+    """
+    Measures queue-to-worker lag:
+    how long it took from enqueue until actual execution start.
+    """
+    started_at = timezone.now()
+    enqueued_at = parse_datetime(enqueued_at_iso)
+
+    if enqueued_at is None:
+        raise ValueError(f"Invalid enqueued_at_iso: {enqueued_at_iso!r}")
+
+    lag_ms = int((started_at - enqueued_at).total_seconds() * 1000)
+
+    warn_ms = int(_get_setting("CELERY_MONITOR_SLA_WARN_MS", 15000))
+    crit_ms = int(_get_setting("CELERY_MONITOR_SLA_CRIT_MS", 60000))
+
+    if lag_ms >= crit_ms:
+        status = TaskSlaSnapshot.STATUS_CRIT
+    elif lag_ms >= warn_ms:
+        status = TaskSlaSnapshot.STATUS_WARN
+    else:
+        status = TaskSlaSnapshot.STATUS_OK
+
+    obj, _ = TaskSlaSnapshot.objects.update_or_create(
+        probe_name="default",
+        defaults={
+            "queue_name": queue_name,
+            "status": status,
+            "enqueued_at": enqueued_at,
+            "started_at": started_at,
+            "lag_ms": lag_ms,
+            "task_id": self.request.id or "",
+            "worker_hostname": self.request.hostname or "",
+            "details_json": {},
+        },
+    )
+
+    dedupe_key = "sla_probe:default"
+    if status == TaskSlaSnapshot.STATUS_CRIT:
+        _create_or_touch_alert(
+            source="sla_probe_worker",
+            dedupe_key=dedupe_key,
+            severity=MonitoringAlert.SEVERITY_CRIT,
+            title="Celery task consumption lag critical",
+            message=f"lag_ms={lag_ms}, queue={queue_name}",
+            payload={
+                "lag_ms": lag_ms,
+                "warn_ms": warn_ms,
+                "crit_ms": crit_ms,
+                "queue_name": queue_name,
+                "worker_hostname": obj.worker_hostname,
+                "enqueued_at": enqueued_at.isoformat(),
+                "started_at": started_at.isoformat(),
+            },
+        )
+    elif status == TaskSlaSnapshot.STATUS_WARN:
+        _create_or_touch_alert(
+            source="sla_probe_worker",
+            dedupe_key=dedupe_key,
+            severity=MonitoringAlert.SEVERITY_WARN,
+            title="Celery task consumption lag warning",
+            message=f"lag_ms={lag_ms}, queue={queue_name}",
+            payload={
+                "lag_ms": lag_ms,
+                "warn_ms": warn_ms,
+                "crit_ms": crit_ms,
+                "queue_name": queue_name,
+                "worker_hostname": obj.worker_hostname,
+                "enqueued_at": enqueued_at.isoformat(),
+                "started_at": started_at.isoformat(),
+            },
+        )
+    else:
+        _resolve_alert(dedupe_key)
+
+    return {
+        "status": status,
+        "lag_ms": lag_ms,
+        "queue_name": queue_name,
+        "worker_hostname": obj.worker_hostname,
     }

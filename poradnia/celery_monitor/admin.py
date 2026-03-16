@@ -2,7 +2,13 @@ from django.contrib import admin
 from django.utils.html import format_html
 from django_celery_results.models import TaskResult
 
-from .models import MonitoringAlert, QueueSnapshot, SystemHealthCheck, WorkerHeartbeat
+from .models import (
+    MonitoringAlert,
+    QueueSnapshot,
+    SystemHealthCheck,
+    TaskSlaSnapshot,
+    WorkerHeartbeat,
+)
 
 
 def _status_badge(status):
@@ -36,9 +42,6 @@ class SystemHealthCheckAdmin(admin.ModelAdmin):
         "worker_hostname",
     )
     readonly_fields = [f.name for f in SystemHealthCheck._meta.fields]
-
-    def has_add_permission(self, request):
-        return False
 
     @admin.display(description="Status")
     def status_badge(self, obj):
@@ -125,6 +128,33 @@ class MonitoringAlertAdmin(admin.ModelAdmin):
     list_filter = ("severity", "is_resolved", "source")
     search_fields = ("title", "message", "dedupe_key")
     readonly_fields = [f.name for f in MonitoringAlert._meta.fields]
+
+    # Disable add
+    def has_add_permission(self, request):
+        return False
+
+    # Disable edit
+    def has_change_permission(self, request, obj=None):
+        return False
+
+
+@admin.register(TaskSlaSnapshot)
+class TaskSlaSnapshotAdmin(admin.ModelAdmin):
+    list_display = (
+        "probe_name",
+        "queue_name",
+        "status_badge",
+        "lag_ms",
+        "enqueued_at",
+        "started_at",
+        "worker_hostname",
+    )
+    list_filter = ("status", "queue_name")
+    readonly_fields = [f.name for f in TaskSlaSnapshot._meta.fields]
+
+    @admin.display(description="Status")
+    def status_badge(self, obj):
+        return _status_badge(obj.status)
 
     # Disable add
     def has_add_permission(self, request):

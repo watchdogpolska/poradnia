@@ -127,3 +127,31 @@ class MonitoringAlert(MonitorBaseModel):
 
     def __str__(self):
         return f"[{self.severity}] {self.title}"
+
+
+class TaskSlaSnapshot(MonitorBaseModel):
+    STATUS_OK = "ok"
+    STATUS_WARN = "warn"
+    STATUS_CRIT = "crit"
+    STATUS_CHOICES = [
+        (STATUS_OK, "OK"),
+        (STATUS_WARN, "Warning"),
+        (STATUS_CRIT, "Critical"),
+    ]
+
+    probe_name = models.CharField(max_length=100, unique=True, default="default")
+    queue_name = models.CharField(max_length=255, blank=True, default="")
+
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=STATUS_OK)
+
+    enqueued_at = models.DateTimeField(null=True, blank=True)
+    started_at = models.DateTimeField(default=timezone.now)
+    lag_ms = models.IntegerField(default=0)
+
+    task_id = models.CharField(max_length=255, blank=True, default="")
+    worker_hostname = models.CharField(max_length=255, blank=True, default="")
+
+    details_json = models.JSONField(default=dict, blank=True)
+
+    def __str__(self):
+        return f"{self.probe_name} ({self.status})"
