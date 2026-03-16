@@ -12,6 +12,7 @@ import sys
 
 import environ
 from celery.schedules import crontab
+from urllib.parse import urlparse, unquote
 from django.utils.translation import gettext_lazy as _
 
 ROOT_DIR = environ.Path(__file__) - 3
@@ -78,7 +79,7 @@ LOCAL_APPS = (
     "poradnia.judgements",
     "poradnia.teryt",
     "poradnia.utils",
-    # Your stuff: custom apps go here
+    "poradnia.celery_monitor",
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -554,6 +555,7 @@ BLEACH_ALLOWED_ATTRIBUTES = ALLOWED_ATTRIBUTES = {
 # Using RabbitMQ as message broker and database for result backend
 
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_BROKER_URL = env.str("CELERY_BROKER_URL", "amqp://guest:guest@localhost:5672//")
 CELERY_TIMEZONE = TIME_ZONE  # Use Django's timezone setting
 CELERY_ENABLE_UTC = USE_TZ  # Use Django's UTC setting
 
@@ -563,9 +565,10 @@ CELERY_TASK_EAGER_PROPAGATES = TESTING
 CELERY_TASK_STORE_EAGER_RESULT = TESTING
 
 # Task result settings
-CELERY_RESULT_EXPIRES = 3600  # Results expire after 1 hour
+CELERY_RESULT_EXPIRES = 604_800  # Results expire after 1 week
 CELERY_TASK_IGNORE_RESULT = False
 CELERY_TASK_TRACK_STARTED = True
+CELERY_RESULT_EXTENDED = True
 
 # Task retry configuration
 CELERY_TASK_DEFAULT_RETRY_DELAY = 60  # Default retry delay in seconds
@@ -573,7 +576,7 @@ CELERY_TASK_MAX_RETRIES = 3
 
 # Worker settings
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1  # Disable prefetching for better load balancing
-CELERY_WORKER_MAX_TASKS_PER_CHILD = 1000  # Restart worker after 1000 tasks
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 100  # Restart worker after 1000 tasks
 
 # Serialization
 CELERY_TASK_SERIALIZER = "json"
@@ -584,7 +587,7 @@ CELERY_ACCEPT_CONTENT = ["json"]
 CELERY_WORKER_HIJACK_ROOT_LOGGER = False  # Don't hijack Django's logging
 
 # Task routing
-CELERY_TASK_DEFAULT_QUEUE = "default"
+CELERY_TASK_DEFAULT_QUEUE = "poradnia"
 
 # Beat schedule configuration (using database scheduler)
 CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
@@ -617,4 +620,26 @@ CELERY_BEAT_SCHEDULE = {
         "schedule": crontab(hour=23, minute=10),  # Daily at 23:10
     },
 }
+
+# Rabbit MQ monitoring settings
+RABBITMQ_API_URL = env.str("RABBITMQ_API_URL", "http://localhost:15672")
+broker = urlparse(CELERY_BROKER_URL)
+RABBITMQ_API_USER = broker.username
+RABBITMQ_API_PASSWORD = broker.password
+CELERY_MONITOR_VHOST = unquote(broker.path.lstrip("/"))
+CELERY_MONITOR_QUEUES = [
+    CELERY_TASK_DEFAULT_QUEUE,
+]
+RABBITMQ_QUEUE_WARNING_THRESHOLD = env.int("RABBITMQ_QUEUE_WARNING_THRESHOLD", 50)
+RABBITMQ_QUEUE_CRITICAL_THRESHOLD = env.int("RABBITMQ_QUEUE_CRITICAL_THRESHOLD", 100)
+RABBITMQ_WORKER_WARNING_THRESHOLD = env.int("RABBITMQ_WORKER_WARNING_THRESHOLD", 1)
+RABBITMQ_WORKER_CRITICAL_THRESHOLD = env.int("RABBITMQ_WORKER_CRITICAL_THRESHOLD", 0)
+CELERY_QUEUE_READY_WARN = env.int("CELERY_QUEUE_READY_WARN", 50)
+CELERY_QUEUE_READY_CRIT = env.int("CELERY_QUEUE_READY_CRIT", 100)
+CELERY_QUEUE_UNACK_WARN = env.int("CELERY_QUEUE_UNACK_WARN", 50)
+CELERY_QUEUE_UNACK_CRIT = env.int("CELERY_QUEUE_UNACK_CRIT", 100)
+
 # END CELERY CONFIGURATION
+
+FILE_TO_TEXT_URL = env("FILE_TO_TEXT_URL", default="http://localhost:9980/")
+FILE_TO_TEXT_TOKEN = env("FILE_TO_TEXT_TOKEN", default="")
