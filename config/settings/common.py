@@ -9,10 +9,10 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
 import sys
+from urllib.parse import unquote, urlparse
 
 import environ
 from celery.schedules import crontab
-from urllib.parse import urlparse, unquote
 from django.utils.translation import gettext_lazy as _
 
 ROOT_DIR = environ.Path(__file__) - 3
@@ -630,6 +630,8 @@ CELERY_MONITOR_VHOST = unquote(broker.path.lstrip("/"))
 CELERY_MONITOR_QUEUES = [
     CELERY_TASK_DEFAULT_QUEUE,
 ]
+CELERY_WORKER_STALE_AFTER_SECONDS = 180
+CELERY_MONITOR_WORKER_CLEANUP_AFTER_SECONDS = 86400
 RABBITMQ_QUEUE_WARNING_THRESHOLD = env.int("RABBITMQ_QUEUE_WARNING_THRESHOLD", 50)
 RABBITMQ_QUEUE_CRITICAL_THRESHOLD = env.int("RABBITMQ_QUEUE_CRITICAL_THRESHOLD", 100)
 RABBITMQ_WORKER_WARNING_THRESHOLD = env.int("RABBITMQ_WORKER_WARNING_THRESHOLD", 1)

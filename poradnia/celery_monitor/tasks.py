@@ -6,7 +6,7 @@ import time
 import urllib.request
 from urllib.parse import quote
 
-from celery import current_app, shared_task
+from celery import shared_task
 from django.conf import settings
 from django.core.mail import mail_admins
 from django.db import connection
@@ -131,7 +131,7 @@ def _resolve_alert(dedupe_key):
 
 
 # Added in migration 0002_seed_monitor_periodic_tasks.py to celery beat db table
-@shared_task(bind=True, ignore_result=False)
+@shared_task(bind=True, ignore_result=True)
 def healthcheck_task(self):
     checked_at = timezone.now()
 
@@ -213,7 +213,7 @@ def healthcheck_task(self):
 
 
 # Added in migration 0002_seed_monitor_periodic_tasks.py to celery beat db table
-@shared_task(bind=True, ignore_result=False)
+@shared_task(bind=True, ignore_result=True)
 def queue_depth_check(self):
     api_url = settings.RABBITMQ_API_URL.rstrip("/")
     api_user = settings.RABBITMQ_API_USER
@@ -342,14 +342,18 @@ def queue_depth_check(self):
 
 
 # Added in migration 0002_seed_monitor_periodic_tasks.py to celery beat db table
-@shared_task(bind=True, ignore_result=False)
+@shared_task(bind=True, ignore_result=True)
 def worker_heartbeat(self):
+    """
+    Record that a worker actually consumed and executed this task.
+
+    For this monitor, successful task execution is the primary worker-liveness
+    signal. We intentionally do not use Celery remote-control ping here,
+    because self-ping from inside a running worker task is noisy and can
+    produce false negatives in containerized deployments.
+    """
     worker_name = self.request.hostname or f"unknown@{socket.gethostname()}"
     now = timezone.now()
-
-    inspect = current_app.control.inspect(timeout=3)
-    ping_data = inspect.ping() or {}
-    ping_ok = worker_name in ping_data if isinstance(ping_data, dict) else False
 
     obj, _ = WorkerHeartbeat.objects.update_or_create(
         worker_name=worker_name,
@@ -359,10 +363,14 @@ def worker_heartbeat(self):
             "status": WorkerHeartbeat.STATUS_OK,
             "last_seen_at": now,
             "last_task_id": self.request.id or "",
-            "ping_ok": ping_ok,
-            "ping_details_json": (
-                ping_data if isinstance(ping_data, dict) else {"raw": ping_data}
-            ),
+            "ping_ok": True,
+            "ping_details_json": {
+                "mode": "task_execution_heartbeat",
+                "note": (
+                    "Worker heartbeat confirmed by successful execution of "
+                    "worker_heartbeat task; remote-control ping intentionally skipped."
+                ),
+            },
         },
     )
 
@@ -377,13 +385,42 @@ def worker_heartbeat(self):
 
 
 # Added in migration 0002_seed_monitor_periodic_tasks.py to celery beat db table
-@shared_task(bind=True, ignore_result=False)
+@shared_task(bind=True, ignore_result=True)
 def monitor_stale_workers(self):
-    stale_after_seconds = int(_get_setting("CELERY_WORKER_STALE_AFTER_SECONDS", 180))
-    cutoff = timezone.now() - timezone.timedelta(seconds=stale_after_seconds)
+    """
+    Marks workers stale if heartbeat is too old.
 
-    stale_workers = WorkerHeartbeat.objects.filter(last_seen_at__lt=cutoff)
-    count = 0
+    Containerized deployments often produce old worker rows after container
+    recreation because the Celery worker hostname changes. To avoid permanent
+    noise, very old worker rows are deleted automatically.
+    """
+    now = timezone.now()
+
+    stale_after_seconds = int(_get_setting("CELERY_WORKER_STALE_AFTER_SECONDS", 180))
+    cleanup_after_seconds = int(
+        _get_setting("CELERY_MONITOR_WORKER_CLEANUP_AFTER_SECONDS", 86400)
+    )
+
+    stale_cutoff = now - timezone.timedelta(seconds=stale_after_seconds)
+    cleanup_cutoff = now - timezone.timedelta(seconds=cleanup_after_seconds)
+
+    # 1. Hard-delete ancient worker rows from long-gone containers
+    deleted_count, _ = WorkerHeartbeat.objects.filter(
+        last_seen_at__lt=cleanup_cutoff
+    ).delete()
+
+    # 2. Fresh workers remain OK
+    WorkerHeartbeat.objects.filter(last_seen_at__gte=stale_cutoff).exclude(
+        status=WorkerHeartbeat.STATUS_OK
+    ).update(status=WorkerHeartbeat.STATUS_OK)
+
+    # 3. Recent-but-missed workers become stale
+    stale_workers = WorkerHeartbeat.objects.filter(
+        last_seen_at__lt=stale_cutoff,
+        last_seen_at__gte=cleanup_cutoff,
+    )
+
+    stale_count = 0
 
     for worker in stale_workers:
         if worker.status != WorkerHeartbeat.STATUS_STALE:
@@ -398,10 +435,15 @@ def monitor_stale_workers(self):
             message=f"Last seen at {worker.last_seen_at.isoformat()}",
             payload={
                 "worker_name": worker.worker_name,
+                "hostname": worker.hostname,
+                "pid": worker.pid,
                 "last_seen_at": worker.last_seen_at.isoformat(),
                 "stale_after_seconds": stale_after_seconds,
             },
         )
-        count += 1
+        stale_count += 1
 
-    return {"stale_workers": count}
+    return {
+        "stale_workers": stale_count,
+        "deleted_old_workers": deleted_count,
+    }
