@@ -6,18 +6,20 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('letters', '0018_alter_attachment_attachment_alter_letter_name'),
+        ("letters", "0018_alter_attachment_attachment_alter_letter_name"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='attachment',
-            name='text_content',
-            field=models.TextField(blank=True, null=True, verbose_name='Text content'),
+            model_name="attachment",
+            name="text_content",
+            field=models.TextField(blank=True, null=True, verbose_name="Text content"),
         ),
         migrations.AddField(
-            model_name='attachment',
-            name='text_content_update_result',
-            field=models.TextField(blank=True, null=True, verbose_name='Text content update result'),
+            model_name="attachment",
+            name="text_content_update_result",
+            field=models.TextField(
+                blank=True, null=True, verbose_name="Text content update result"
+            ),
         ),
     ]
