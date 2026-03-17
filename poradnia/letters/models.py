@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.admin.models import ADDITION, LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
-from django.db import models
+from django.db import models, transaction
 from django.db.models import F, Func, IntegerField
 from django.forms.models import model_to_dict
 from django.urls import reverse
@@ -202,6 +202,72 @@ class Letter(AbstractRecord):
                 action_flag=ADDITION,
                 change_message=f"{change_dict}",
             )
+
+    def update_attachments_text_content(self):
+        """
+        Synchronously update text_content for all attachments of this letter.
+
+        Returns a structured summary dict.
+        """
+        attachments_qs = self.attachment_set.all()
+        attachments_total = attachments_qs.count()
+
+        logger.info(
+            "Letter %s - attachments to update text content: %s",
+            self.pk,
+            attachments_total,
+        )
+
+        updated = 0
+        failed = 0
+        updated_attachment_pks = []
+        failed_attachment_pks = []
+
+        for attachment in attachments_qs.iterator():
+            ok = attachment.update_text_content()
+            if ok:
+                updated += 1
+                updated_attachment_pks.append(attachment.pk)
+                logger.info(
+                    "Letter %s - attachment pk=%s text content updated.",
+                    self.pk,
+                    attachment.pk,
+                )
+            else:
+                failed += 1
+                failed_attachment_pks.append(attachment.pk)
+                logger.warning(
+                    "Letter %s - attachment pk=%s text content update failed.",
+                    self.pk,
+                    attachment.pk,
+                )
+
+        result = {
+            "letter_pk": self.pk,
+            "status": "done",
+            "attachments_total": attachments_total,
+            "attachments_updated": updated,
+            "attachments_failed": failed,
+            "updated_attachment_pks": updated_attachment_pks,
+            "failed_attachment_pks": failed_attachment_pks,
+        }
+
+        logger.info(
+            "Letter %s - attachments text content update finished: %s",
+            self.pk,
+            result,
+        )
+        return result
+
+    def enqueue_attachments_text_content_update(self):
+        """
+        Enqueue attachment text extraction after current DB transaction commits.
+        """
+        from poradnia.letters.tasks import update_letter_attachments_text_content_task
+
+        transaction.on_commit(
+            lambda: update_letter_attachments_text_content_task.delay(self.pk)
+        )
 
 
 lrc_cup = "letter__record__case__caseuserobjectpermission"
