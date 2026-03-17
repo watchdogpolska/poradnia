@@ -67,3 +67,34 @@ class LetterAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser
+
+
+@admin.register(Attachment)
+class AttachmentAdmin(admin.ModelAdmin):
+    """
+    Admin View for Attachment
+    """
+
+    list_display = (
+        "pk",
+        "letter",
+        "attachment",
+    )
+    search_fields = (
+        "pk",
+        "letter__id",
+        "attachment",
+    )
+    raw_id_fields = ("letter",)
+    list_editable = ()
+    ordering = ("-pk",)
+    actions = None
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return request.user.is_superuser
