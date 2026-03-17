@@ -10,7 +10,7 @@ from django.test import TestCase
 from poradnia.judgements.factories import CourtFactory
 from poradnia.judgements.models import Court
 from poradnia.judgements.settings import JUDGEMENT_BOT_USERNAME
-from poradnia.judgements.tasks import _get_courts_queryset, run_court_session_parser
+from poradnia.judgements.tasks import _get_courts_to_process, run_court_session_parser
 
 
 class RunCourtSessionParserTaskTestCase(TestCase):
@@ -34,7 +34,7 @@ class RunCourtSessionParserTaskTestCase(TestCase):
 
         # Assertions
         self.assertEqual(result["status"], "completed_success")
-        self.assertEqual(result["courts_processed"], 1)
+        self.assertEqual(result["courts_succeeded"], 1)
         self.assertEqual(result["courts_failed"], 0)
 
         # Verify manager was called
@@ -54,7 +54,7 @@ class RunCourtSessionParserTaskTestCase(TestCase):
         result = run_court_session_parser(court_ids=[self.court.id])
 
         # Should only process the filtered court
-        self.assertEqual(result["courts_processed"], 1)
+        self.assertEqual(result["courts_succeeded"], 1)
         mock_manager.handle_court.assert_called_once_with(self.court)
 
     @patch("poradnia.judgements.tasks.Manager")
@@ -71,7 +71,7 @@ class RunCourtSessionParserTaskTestCase(TestCase):
         result = run_court_session_parser(parser_key="WSA_Warszawa")
 
         # Should only process courts with matching parser
-        self.assertEqual(result["courts_processed"], 1)
+        self.assertEqual(result["courts_succeeded"], 1)
         mock_manager.handle_court.assert_called_once_with(self.court)
 
     def test_task_execution_no_courts(self):
@@ -82,7 +82,7 @@ class RunCourtSessionParserTaskTestCase(TestCase):
         result = run_court_session_parser()
 
         self.assertEqual(result["status"], "completed_no_courts")
-        self.assertEqual(result["courts_processed"], 0)
+        self.assertEqual(result["courts_succeeded"], 0)
 
     @patch("poradnia.judgements.tasks.Manager")
     def test_task_execution_partial_failure(self, mock_manager_class):
@@ -106,7 +106,7 @@ class RunCourtSessionParserTaskTestCase(TestCase):
 
         # Should have partial success
         self.assertEqual(result["status"], "completed_partial")
-        self.assertEqual(result["courts_processed"], 1)
+        self.assertEqual(result["courts_succeeded"], 1)
         self.assertEqual(result["courts_failed"], 1)
         self.assertEqual(len(result["errors"]), 1)
         self.assertEqual(result["errors"][0]["court_id"], court2.id)
@@ -143,34 +143,36 @@ class GetCourtsQuerysetTestCase(TestCase):
 
     def test_no_filters(self):
         """Test getting all courts with no filters."""
-        courts = list(_get_courts_queryset())
+        courts = list(_get_courts_to_process())
         self.assertEqual(len(courts), 2)
         self.assertIn(self.court1, courts)
         self.assertIn(self.court2, courts)
 
     def test_court_id_filter(self):
         """Test filtering by court IDs."""
-        courts = list(_get_courts_queryset(court_ids=[self.court1.id]))
+        courts = list(_get_courts_to_process(court_ids=[self.court1.id]))
         self.assertEqual(len(courts), 1)
         self.assertEqual(courts[0], self.court1)
 
     def test_parser_key_filter(self):
         """Test filtering by parser key."""
-        courts = list(_get_courts_queryset(parser_key="WSA_Warszawa"))
+        courts = list(_get_courts_to_process(parser_key="WSA_Warszawa"))
         self.assertEqual(len(courts), 1)
         self.assertEqual(courts[0], self.court1)
 
     def test_combined_filters(self):
         """Test combining court ID and parser key filters."""
         courts = list(
-            _get_courts_queryset(court_ids=[self.court1.id], parser_key="WSA_Warszawa")
+            _get_courts_to_process(
+                court_ids=[self.court1.id], parser_key="WSA_Warszawa"
+            )
         )
         self.assertEqual(len(courts), 1)
         self.assertEqual(courts[0], self.court1)
 
         # Test with mismatched filters
         courts = list(
-            _get_courts_queryset(court_ids=[self.court1.id], parser_key="WSA_Gliwice")
+            _get_courts_to_process(court_ids=[self.court1.id], parser_key="WSA_Gliwice")
         )
         self.assertEqual(len(courts), 0)
 
@@ -186,6 +188,6 @@ class GetCourtsQuerysetTestCase(TestCase):
             "parser_status",
             new_callable=lambda: property(parser_status_side_effect),
         ):
-            courts = list(_get_courts_queryset())
+            courts = list(_get_courts_to_process())
             self.assertEqual(len(courts), 1)
             self.assertEqual(courts[0], self.court1)
