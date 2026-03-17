@@ -51,7 +51,6 @@ def seed_periodic_tasks(apps, schema_editor):
                 "task": item["task"],
                 "interval": item["interval"],
                 "enabled": True,
-                "one_off": False,
                 "description": item["description"],
             },
         )

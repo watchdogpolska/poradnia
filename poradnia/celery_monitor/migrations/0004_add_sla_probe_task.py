@@ -16,7 +16,6 @@ def add_sla_probe_task(apps, schema_editor):
             "task": "poradnia.celery_monitor.tasks.enqueue_sla_probe",
             "interval": interval,
             "enabled": True,
-            "one_off": False,
             "description": "Celery monitoring SLA probe (task consumption latency)",
         },
     )
