@@ -283,10 +283,8 @@ class Attachment(models.Model):
                             self.attachment.read(),
                         )
                     },
-                    headers={
-                        "Authorization": f"JWT {settings.FILE_TO_TEXT_TOKEN}",
-                    },
-                    timeout=(10, 120),  # connect timeout, read timeout
+                    headers={"Authorization": f"JWT {settings.FILE_TO_TEXT_TOKEN}"},
+                    timeout=(10, 120),
                 )
             finally:
                 self.attachment.close()
@@ -302,13 +300,13 @@ class Attachment(models.Model):
                 return False
 
             payload = response.json()
-            log_message_dict = payload.copy()
-            log_message_dict.pop("text", None)
+            log_payload = payload.copy()
+            log_payload.pop("text", None)
 
             logger.info(
                 "File to text API response: %s, %s",
                 response.status_code,
-                log_message_dict,
+                log_payload,
             )
 
             self.text_content = payload.get("text")
