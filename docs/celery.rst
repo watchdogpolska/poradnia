@@ -127,14 +127,13 @@ Tworzenie zadań
 Zadania testowe
 ~~~~~~~~~~~~~~~
 
-Infrastruktura zawiera dwa zadania testowe do weryfikacji:
+Infrastruktura zawiera dwa zadanie testowe do weryfikacji:
 
 .. code-block:: python
 
-    from config.celery import debug_task, test_task
+    from config.celery import test_task
 
     # Wykonaj zadania testowe
-    debug_task.delay()
     test_task.delay("Witaj z Celery!")
 
 Tworzenie nowych zadań

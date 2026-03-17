@@ -24,13 +24,8 @@ app.config_from_object("django.conf:settings", namespace="CELERY")
 app.autodiscover_tasks()
 
 
-@app.task(bind=True, ignore_result=True)
-def debug_task(self):
-    """Debug task to test Celery functionality."""
-    print(f"Request: {self.request!r}")
-    return "Debug task executed successfully"
-
-
+# Example test task to verify Celery is working correctly and test
+# results backend connectivity.
 @app.task
 def test_task(message="Hello from Celery!"):
     """Simple test task for infrastructure verification."""

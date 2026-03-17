@@ -596,29 +596,11 @@ CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
 # In production, tasks are managed via Django admin interface
 CELERY_BEAT_SCHEDULE = {
     # Example: Test task every 30 seconds (for development testing)
-    "test-every-30-seconds": {
-        "task": "config.celery.test_task",
-        "schedule": 30.0,
-        "args": ("Scheduled test task",),
-    },
-    # Example: Debug task every minute (for development testing)
-    "debug-every-minute": {
-        "task": "config.celery.debug_task",
-        "schedule": 60.0,
-    },
-    # Example: Future task schedules (to be implemented in Phase 2)
-    # 'send-event-reminders': {
-    #     'task': 'poradnia.events.tasks.send_event_reminders',
-    #     'schedule': crontab(hour=12, minute=0),  # Daily at 12:00
+    # "test-every-30-seconds": {
+    #     "task": "config.celery.test_task",
+    #     "schedule": 30.0,
+    #     "args": ("Scheduled test result task",),
     # },
-    # 'send-old-cases-reminder': {
-    #     'task': 'poradnia.cases.tasks.send_old_cases_reminder',
-    #     'schedule': crontab(hour=6, minute=0, day_of_month=2),  # Monthly on 2nd
-    # },
-    "run-court-session-parser": {
-        "task": "poradnia.judgements.tasks.run_court_session_parser",
-        "schedule": crontab(hour=23, minute=10),  # Daily at 23:10
-    },
 }
 
 # Rabbit MQ monitoring settings
