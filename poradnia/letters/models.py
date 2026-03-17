@@ -1,6 +1,7 @@
 import logging
 from os.path import basename
 
+import requests
 from django.conf import settings
 from django.contrib.admin.models import ADDITION, LogEntry
 from django.contrib.contenttypes.models import ContentType
@@ -230,8 +231,17 @@ class Attachment(models.Model):
         verbose_name=_("File"),
         max_length=500,
     )
-
+    text_content = models.TextField(
+        verbose_name=_("Text content"), blank=True, null=True
+    )
+    text_content_update_result = models.TextField(
+        verbose_name=_("Text content update result"), blank=True, null=True
+    )
     objects = AttachmentQuerySet.as_manager()
+
+    class Meta:
+        verbose_name = _("Attachment")
+        verbose_name_plural = _("Attachments")
 
     @property
     def filename(self):
@@ -255,6 +265,59 @@ class Attachment(models.Model):
             ["https://", get_current_site(None).domain, self.get_absolute_url()]
         )
 
-    class Meta:
-        verbose_name = _("Attachment")
-        verbose_name_plural = _("Attachments")
+    def update_text_content(self):
+        try:
+            logger.info(
+                f"Updating text content for att. {self.pk}: {self.attachment.name}"
+            )
+            response = requests.post(
+                settings.FILE_TO_TEXT_URL,
+                files={
+                    "file": (
+                        self.attachment.name.split("/")[-1],
+                        self.attachment.read(),
+                    )
+                },
+                headers={"Authorization": f"JWT {settings.FILE_TO_TEXT_TOKEN}"},
+            )
+            if response.status_code != 200:
+                msg = (
+                    f"File to text API response: {response.status_code},"
+                    + f" content: {response.content.decode('utf-8')}"
+                )
+                logger.error(msg)
+                self.text_content_update_result = msg
+                # save update_fields does not work with MySQL 5.7
+                # self.save(update_fields=["text_content_update_result"])
+                self.save()
+                return False
+            log_message_dict = response.json().copy()
+            _ = log_message_dict.pop("text")
+            logger.info(
+                f"File to text API response:{response.status_code}, {log_message_dict}"
+            )
+            self.text_content = response.json()["text"]
+            self.text_content_update_result = response.json()["message"]
+            # save update_fields does not work with MySQL 5.7
+            # self.save(update_fields=["text_content", "text_content_update_result"])
+            self.save()
+            return True
+        except Exception as e:
+            logger.error(e)
+            self.text_content_update_result = str(e)
+            # save update_fields does not work with MySQL 5.7
+            # self.save(update_fields=["text_content_update_result"])
+            self.save()
+            return False
+
+    @property
+    def text_content_warning(self):
+        warning = """
+            Uwaga: treść załączników została odczytana maszynowo, więc może
+            zawierać błędy związane z nieprawidłowym odczytaniem znaków,
+            a także błędną interpretacji układu tekstu na stronie.
+            Jeśli nie masz stosownych uprawnień i potrzebujesz dostępu
+            do oryginału, skontaktuj się z biurem SOWP.
+
+        """
+        return warning  # " ".join(warning.split())
