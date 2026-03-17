@@ -113,6 +113,11 @@ class Letter(AbstractRecord):
 
     objects = LetterQuerySet.as_manager()
 
+    class Meta:
+        verbose_name = _("Letter")
+        verbose_name_plural = _("Letters")
+        ordering = ["-created_on"]
+
     def __str__(self):
         return self.name
 
@@ -197,11 +202,6 @@ class Letter(AbstractRecord):
                 action_flag=ADDITION,
                 change_message=f"{change_dict}",
             )
-
-    class Meta:
-        verbose_name = _("Letter")
-        verbose_name_plural = _("Letters")
-        ordering = ["-created_on"]
 
 
 lrc_cup = "letter__record__case__caseuserobjectpermission"
