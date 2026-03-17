@@ -12,7 +12,6 @@ import sys
 from urllib.parse import unquote, urlparse
 
 import environ
-from celery.schedules import crontab
 from django.utils.translation import gettext_lazy as _
 
 ROOT_DIR = environ.Path(__file__) - 3

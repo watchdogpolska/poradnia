@@ -1,6 +1,5 @@
 from django.db import migrations
 
-
 TASK_NAME = "send-event-reminders"
 TASK_PATH = "poradnia.events.tasks.send_event_reminders"
 

@@ -1,6 +1,5 @@
 from django.db import migrations
 
-
 TASK_NAME = "run-court-session-parser"
 TASK_PATH = "poradnia.judgements.tasks.run_court_session_parser"
 

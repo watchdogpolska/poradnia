@@ -1,6 +1,5 @@
 from django.db import migrations
 
-
 TASK_NAME = "send-old-cases-reminder"
 TASK_PATH = "poradnia.cases.tasks.send_old_cases_reminder"
 
