@@ -268,45 +268,61 @@ class Attachment(models.Model):
     def update_text_content(self):
         try:
             logger.info(
-                f"Updating text content for att. {self.pk}: {self.attachment.name}"
+                "Updating text content for attachment pk=%s file=%s",
+                self.pk,
+                self.attachment.name,
             )
-            response = requests.post(
-                settings.FILE_TO_TEXT_URL,
-                files={
-                    "file": (
-                        self.attachment.name.split("/")[-1],
-                        self.attachment.read(),
-                    )
-                },
-                headers={"Authorization": f"JWT {settings.FILE_TO_TEXT_TOKEN}"},
-            )
+
+            self.attachment.open("rb")
+            try:
+                response = requests.post(
+                    settings.FILE_TO_TEXT_URL,
+                    files={
+                        "file": (
+                            self.attachment.name.split("/")[-1],
+                            self.attachment.read(),
+                        )
+                    },
+                    headers={
+                        "Authorization": f"JWT {settings.FILE_TO_TEXT_TOKEN}",
+                    },
+                    timeout=(10, 120),  # connect timeout, read timeout
+                )
+            finally:
+                self.attachment.close()
+
             if response.status_code != 200:
                 msg = (
-                    f"File to text API response: {response.status_code},"
-                    + f" content: {response.content.decode('utf-8')}"
+                    f"File to text API response: {response.status_code}, "
+                    f"content: {response.text}"
                 )
                 logger.error(msg)
                 self.text_content_update_result = msg
-                # save update_fields does not work with MySQL 5.7
-                # self.save(update_fields=["text_content_update_result"])
                 self.save()
                 return False
-            log_message_dict = response.json().copy()
-            _ = log_message_dict.pop("text")
+
+            payload = response.json()
+            log_message_dict = payload.copy()
+            log_message_dict.pop("text", None)
+
             logger.info(
-                f"File to text API response:{response.status_code}, {log_message_dict}"
+                "File to text API response: %s, %s",
+                response.status_code,
+                log_message_dict,
             )
-            self.text_content = response.json()["text"]
-            self.text_content_update_result = response.json()["message"]
-            # save update_fields does not work with MySQL 5.7
-            # self.save(update_fields=["text_content", "text_content_update_result"])
+
+            self.text_content = payload.get("text")
+            self.text_content_update_result = payload.get("message", "")
             self.save()
             return True
-        except Exception as e:
-            logger.error(e)
-            self.text_content_update_result = str(e)
-            # save update_fields does not work with MySQL 5.7
-            # self.save(update_fields=["text_content_update_result"])
+
+        except Exception as exc:
+            logger.exception(
+                "Attachment pk=%s text content update failed: %s",
+                self.pk,
+                exc,
+            )
+            self.text_content_update_result = str(exc)
             self.save()
             return False
 
