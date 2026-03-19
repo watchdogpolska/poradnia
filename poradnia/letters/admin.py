@@ -1,7 +1,8 @@
-from django.contrib import admin
+from django.contrib import admin, messages
 from django.utils.translation import gettext_lazy as _
 
 from .models import Attachment, Letter
+from .tasks import update_attachment_text_content_task
 
 
 class AttachmentInline(admin.StackedInline):
@@ -46,7 +47,7 @@ class LetterAdmin(admin.ModelAdmin):
     raw_id_fields = ()
     list_editable = ()
     ordering = ("-pk",)
-    actions = None
+    actions = ["enqueue_letter_attachments_text_extraction"]
 
     @admin.display(
         description=_("Case name"),
@@ -68,6 +69,31 @@ class LetterAdmin(admin.ModelAdmin):
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser
 
+    @admin.action(
+        description="Enqueue text extraction for attachments of selected letters (60s apart)"
+    )
+    def enqueue_letter_attachments_text_extraction(self, request, queryset):
+        attachment_ids = list(
+            Attachment.objects.filter(letter__in=queryset)
+            .order_by("letter_id", "pk")
+            .values_list("pk", flat=True)
+        )
+
+        for index, attachment_pk in enumerate(attachment_ids):
+            update_attachment_text_content_task.apply_async(
+                args=[attachment_pk],
+                countdown=index * 60,
+            )
+
+        self.message_user(
+            request,
+            (
+                f"Enqueued {len(attachment_ids)} attachment text extraction task(s) "
+                f"from {queryset.count()} letter(s) with 60-second spacing."
+            ),
+            level=messages.SUCCESS,
+        )
+
 
 @admin.register(Attachment)
 class AttachmentAdmin(admin.ModelAdmin):
@@ -88,7 +114,7 @@ class AttachmentAdmin(admin.ModelAdmin):
     raw_id_fields = ("letter",)
     list_editable = ()
     ordering = ("-pk",)
-    actions = None
+    actions = ["enqueue_attachment_text_extraction"]
 
     def has_add_permission(self, request):
         return False
@@ -98,3 +124,24 @@ class AttachmentAdmin(admin.ModelAdmin):
 
     def has_delete_permission(self, request, obj=None):
         return request.user.is_superuser
+
+    @admin.action(
+        description="Enqueue text extraction for selected attachments (60s apart)"
+    )
+    def enqueue_attachment_text_extraction(self, request, queryset):
+        attachment_ids = list(queryset.order_by("pk").values_list("pk", flat=True))
+
+        for index, attachment_pk in enumerate(attachment_ids):
+            update_attachment_text_content_task.apply_async(
+                args=[attachment_pk],
+                countdown=index * 60,
+            )
+
+        self.message_user(
+            request,
+            (
+                f"Enqueued {len(attachment_ids)} attachment text extraction task(s) "
+                f"with 60-second spacing."
+            ),
+            level=messages.SUCCESS,
+        )
