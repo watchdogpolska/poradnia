@@ -70,7 +70,9 @@ class LetterAdmin(admin.ModelAdmin):
         return request.user.is_superuser
 
     @admin.action(
-        description="Enqueue text extraction for attachments of selected letters (60s apart)"
+        description=_(
+            "Enqueue attacment text extraction tasks for selected letters (60s apart)"
+        )
     )
     def enqueue_letter_attachments_text_extraction(self, request, queryset):
         attachment_ids = list(
@@ -87,7 +89,7 @@ class LetterAdmin(admin.ModelAdmin):
 
         self.message_user(
             request,
-            (
+            _(
                 f"Enqueued {len(attachment_ids)} attachment text extraction task(s) "
                 f"from {queryset.count()} letter(s) with 60-second spacing."
             ),
@@ -126,7 +128,7 @@ class AttachmentAdmin(admin.ModelAdmin):
         return request.user.is_superuser
 
     @admin.action(
-        description="Enqueue text extraction for selected attachments (60s apart)"
+        description=_("Enqueue text extraction for selected attachments (60s apart)")
     )
     def enqueue_attachment_text_extraction(self, request, queryset):
         attachment_ids = list(queryset.order_by("pk").values_list("pk", flat=True))
@@ -139,7 +141,7 @@ class AttachmentAdmin(admin.ModelAdmin):
 
         self.message_user(
             request,
-            (
+            _(
                 f"Enqueued {len(attachment_ids)} attachment text extraction task(s) "
                 f"with 60-second spacing."
             ),
