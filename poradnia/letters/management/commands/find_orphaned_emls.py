@@ -124,7 +124,7 @@ class Command(BaseCommand):
 
             if not dirs and not files:
                 empty_dirs.append(root)
-                logger.warning("Empty directory found: %s", root)
+                # logger.warning("Empty directory found: %s", root)
 
         logger.info("Empty directories found: %s", len(empty_dirs))
 
