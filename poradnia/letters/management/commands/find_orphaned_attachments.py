@@ -114,8 +114,6 @@ class Command(BaseCommand):
                     logger.error("Failed to delete file %s: %s", abs_path, exc)
         else:
             logger.info("Dry-run: orphaned files were not deleted")
-            for abs_path in orphan_files:
-                logger.info("Dry-run: would delete file: %s", abs_path)
 
         logger.info("Scanning for empty directories...")
         empty_dirs = []
@@ -142,8 +140,17 @@ class Command(BaseCommand):
                     logger.error("Failed to delete dir %s: %s", dir_path, exc)
         else:
             logger.info("Dry-run: empty directories were not deleted")
-            for dir_path in empty_dirs:
-                logger.info("Dry-run: would delete empty dir: %s", dir_path)
+
+        if delete_mode:
+            logger.info("Filesystem scan completed")
+            logger.info("Directories seen: %s", total_dirs_seen)
+            logger.info("Files checked: %s", total_files_checked)
+            logger.info(
+                "Deleted orphaned attachments: %s files, %.2f MB",
+                len(orphan_files),
+                orphan_files_size / (1024 * 1024),
+            )
+            logger.info("Deleted empty directories found: %s", len(empty_dirs))
 
         end_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
         logger.info("Completed: %s", end_time)
