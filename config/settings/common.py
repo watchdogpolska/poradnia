@@ -576,6 +576,10 @@ CELERY_TASK_MAX_RETRIES = 3
 # Worker settings
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1  # Disable prefetching for better load balancing
 CELERY_WORKER_MAX_TASKS_PER_CHILD = 100  # Restart worker after 1000 tasks
+CELERY_TASK_ACKS_LATE = False  # keep default
+CELERY_TASK_REJECT_ON_WORKER_LOST = True
+CELERY_TASK_SOFT_TIME_LIMIT = 300
+CELERY_TASK_TIME_LIMIT = 360
 
 # Serialization
 CELERY_TASK_SERIALIZER = "json"

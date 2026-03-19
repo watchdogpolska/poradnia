@@ -8,6 +8,8 @@ logger = logging.getLogger(__name__)
 
 @shared_task(
     bind=True,
+    acks_late=True,
+    reject_on_worker_lost=True,
     ignore_result=False,
     autoretry_for=(Exception,),
     retry_backoff=True,
@@ -40,6 +42,8 @@ def update_letter_attachments_text_content_task(self, letter_pk):
 
 @shared_task(
     bind=True,
+    acks_late=True,
+    reject_on_worker_lost=True,
     ignore_result=False,
     autoretry_for=(Exception,),
     retry_backoff=True,
