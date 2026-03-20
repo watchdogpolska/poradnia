@@ -71,27 +71,27 @@ class LetterAdmin(admin.ModelAdmin):
 
     @admin.action(
         description=_(
-            "Enqueue attacment text extraction tasks for selected letters (60s apart)"
+            "Enqueue attacment text extraction tasks for selected letters (20s apart)"
         )
     )
     def enqueue_letter_attachments_text_extraction(self, request, queryset):
         attachment_ids = list(
             Attachment.objects.filter(letter__in=queryset)
-            .order_by("letter_id", "pk")
+            .order_by("-letter_id", "-pk")
             .values_list("pk", flat=True)
         )
 
         for index, attachment_pk in enumerate(attachment_ids):
             update_attachment_text_content_task.apply_async(
                 args=[attachment_pk],
-                countdown=index * 60,
+                countdown=index * 20,
             )
 
         self.message_user(
             request,
             _(
                 f"Enqueued {len(attachment_ids)} attachment text extraction task(s) "
-                f"from {queryset.count()} letter(s) with 60-second spacing."
+                f"from {queryset.count()} letter(s) with 20-second spacing."
             ),
             level=messages.SUCCESS,
         )
@@ -128,22 +128,22 @@ class AttachmentAdmin(admin.ModelAdmin):
         return request.user.is_superuser
 
     @admin.action(
-        description=_("Enqueue text extraction for selected attachments (60s apart)")
+        description=_("Enqueue text extraction for selected attachments (20s apart)")
     )
     def enqueue_attachment_text_extraction(self, request, queryset):
-        attachment_ids = list(queryset.order_by("pk").values_list("pk", flat=True))
+        attachment_ids = list(queryset.order_by("-pk").values_list("pk", flat=True))
 
         for index, attachment_pk in enumerate(attachment_ids):
             update_attachment_text_content_task.apply_async(
                 args=[attachment_pk],
-                countdown=index * 60,
+                countdown=index * 20,
             )
 
         self.message_user(
             request,
             _(
                 f"Enqueued {len(attachment_ids)} attachment text extraction task(s) "
-                f"with 60-second spacing."
+                f"with 20-second spacing."
             ),
             level=messages.SUCCESS,
         )
