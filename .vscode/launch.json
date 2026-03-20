@@ -1,0 +1,181 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+    
+        {
+            "name": "Python: Django server 0.0.0.0:8000",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "runserver",
+                "0.0.0.0:8000"
+            ],
+            "django": true,
+            "justMyCode": false
+        },
+        {
+            "name": "Python: Django shell",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "shell"
+            ],
+            "django": true,
+            "justMyCode": false
+        },
+        {
+            "name": "Python: Django tests v2",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "test",
+                "-v2"
+            ],
+            "django": true,
+            "justMyCode": false
+        },
+        {
+            "name": "Python: Django tests letters v2",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "test",
+                "poradnia.letters",
+                "-v2"
+            ],
+            "django": true,
+            "justMyCode": false
+        },
+        {
+            "name": "Python: Django tests users v2",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "test",
+                "poradnia.users",
+                "-v2"
+            ],
+            "django": true,
+            "justMyCode": false
+        },
+        {
+            "name": "Python: Django tests judgements v2",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/manage.py",
+            "args": [
+                "test",
+                "poradnia.judgements",
+                "-v2"
+            ],
+            "django": true,
+            "justMyCode": false
+        },
+        // {
+        //     "name": "Python: Django update_letters_from_emls",
+        //     "type": "debugpy",
+        //     "request": "launch",
+        //     "program": "${workspaceFolder}/manage.py",
+        //     "args": [
+        //         "update_letters_from_emls",
+        //     ],
+        //     "django": true,
+        //     "justMyCode": false
+        // },
+        // {
+        //     "name": "Python: Django send_old_cases_reminder",
+        //     "type": "debugpy",
+        //     "request": "launch",
+        //     "program": "${workspaceFolder}/manage.py",
+        //     "args": [
+        //         "send_old_cases_reminder",
+        //     ],
+        //     "django": true,
+        //     "justMyCode": false
+        // },
+        // {
+        //     "name": "Python: Django send_event_reminders",
+        //     "type": "debugpy",
+        //     "request": "launch",
+        //     "program": "${workspaceFolder}/manage.py",
+        //     "args": [
+        //         "send_event_reminders",
+        //     ],
+        //     "django": true,
+        //     "justMyCode": false
+        // },
+        // {
+        //     "name": "Python: Django set_verified_emailaddress_for_non_spam_users",
+        //     "type": "debugpy",
+        //     "request": "launch",
+        //     "program": "${workspaceFolder}/manage.py",
+        //     "args": [
+        //         "set_verified_emailaddress_for_non_spam_users",
+        //     ],
+        //     "django": true,
+        //     "justMyCode": false
+        // },
+        {
+            "name": "Start Celery worker",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "celery",
+            "args": [
+                "-A",
+                "config",
+                "worker",
+                "--pool=solo",
+                // "--concurrency=1",
+                "--loglevel=INFO",
+            ],
+            "django": true,
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}"
+        },
+        {
+            "name": "Start Celery beat",
+            "type": "debugpy",
+            "request": "launch",
+            "module": "celery",
+            "args": [
+                "-A",
+                "config",
+                "beat",
+                "--loglevel=INFO",
+                "--logfile=${env:LOG_FILE_ENV}",
+                "--scheduler=django_celery_beat.schedulers:DatabaseScheduler",
+                "--pidfile="
+            ],
+            "django": true,
+            "justMyCode": false,
+            "cwd": "${workspaceFolder}"
+        }
+    ],
+    "compounds": [
+        {
+            "name": "Django server + Celery worker + Celery beat",
+            "configurations": [
+                "Python: Django server 0.0.0.0:8000",
+                "Start Celery worker",
+                "Start Celery beat"
+            ],
+            "stopAll": true
+        },
+        {
+            "name": "Run: Django shell + Celery Worker",
+            "configurations": [
+                "Python: Django shell", 
+                "Start Celery worker",
+            ],
+            "stopAll": true
+        },
+        ]
+}

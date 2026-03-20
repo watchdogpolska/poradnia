@@ -31,6 +31,8 @@ x-django-env: &django-env
   GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
   GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
   E2E_MFA_BYPASS_SECRET: "supersecret-123"
+  FILE_TO_TEXT_URL: ${FILE_TO_TEXT_URL}
+  FILE_TO_TEXT_TOKEN: ${FILE_TO_TEXT_TOKEN}
 
 x-django-service: &django-service
   build:
@@ -114,22 +116,25 @@ services:
       timeout: 5s
       retries: 20
 
-  celery-worker:
-    <<: *django-service
-    command: >
-      bash -c "wait-for-it rabbitmq:5672 -- celery -A config worker -l INFO"
-    depends_on:
-      - db
-      - rabbitmq
+  # ### Easier debug when running celery worker and beat inside development web container
+  # ### - to be run with VScode launch configurations
+  # ### Uncomment below to run in separate containers
+  # celery-worker:
+  #   <<: *django-service
+  #   command: >
+  #     bash -c "wait-for-it rabbitmq:5672 -- celery -A config worker -l INFO"
+  #   depends_on:
+  #     - db
+  #     - rabbitmq
 
-  celery-beat:
-    <<: *django-service
-    command: >
-      bash -c "wait-for-it rabbitmq:5672 -- celery -A config beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"
-    depends_on:
-      - db
-      - rabbitmq
-  #
+  # celery-beat:
+  #   <<: *django-service
+  #   command: >
+  #     bash -c "wait-for-it rabbitmq:5672 -- celery -A config beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+  #   depends_on:
+  #     - db
+  #     - rabbitmq
+
   # ### To use email reception uncomment below section and fill in your dev IMAP
   # ### mailbox secrets in imap-to-webhook-url.env
   #
