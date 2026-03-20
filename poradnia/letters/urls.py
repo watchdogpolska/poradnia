@@ -33,6 +33,11 @@ urlpatterns = [
     path("", views.NewCaseCreateView.as_view(), name="home"),
     path("", views.NewCaseCreateView.as_view(), name="add"),
     path("tinymce/", include("tinymce.urls")),
+    path(
+        "attachments/<int:pk>/text-content-modal/",
+        views.cbv.AttachmentTextContentModalView.as_view(),
+        name="attachment_text_content_modal",
+    ),
 ]
 
 app_name = "poradnia.letters"
