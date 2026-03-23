@@ -107,13 +107,16 @@ class AttachmentAdmin(admin.ModelAdmin):
         "pk",
         "letter",
         "attachment",
+        "text_content_update_result",
     )
     search_fields = (
         "pk",
         "letter__id",
         "attachment",
+        "text_content_update_result",
     )
     raw_id_fields = ("letter",)
+    list_filter = ("text_content_update_result",)
     list_editable = ()
     ordering = ("-pk",)
     actions = ["enqueue_attachment_text_extraction"]
