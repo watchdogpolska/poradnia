@@ -130,10 +130,36 @@ services:
   # celery-beat:
   #   <<: *django-service
   #   command: >
-  #     bash -c "wait-for-it rabbitmq:5672 -- celery -A config beat -l INFO --scheduler django_celery_beat.schedulers:DatabaseScheduler"
+  #     bash -c "
+  #       wait-for-it rabbitmq:5672 --
+  #       celery -A config beat -l INFO
+  #       --scheduler django_celery_beat.schedulers:DatabaseScheduler
+  #     "
   #   depends_on:
   #     - db
   #     - rabbitmq
+
+  celery-flower:
+    <<: *django-service
+    command:
+      - wait-for-it
+      - rabbitmq:5672
+      - --
+      - celery
+      - -A
+      - config
+      - flower
+      - --loglevel=INFO
+      - --port=5555
+      - --persistent
+      - --db=/code/data_flower/flower.db
+      - --max-tasks=500000
+      - --broker-api=http://poradnia:strong_dev_password@rabbitmq:15672/api/
+    depends_on:
+      - db
+      - rabbitmq
+    ports:
+      - "5555:5555"
 
   # ### To use email reception uncomment below section and fill in your dev IMAP
   # ### mailbox secrets in imap-to-webhook-url.env
