@@ -51,5 +51,6 @@ htmlcov
 imap-to-webhook-url.env
 
 # dev data folders content
-db_data/
-rabbitmq-data/
+data_db/
+data_flower/
+data_rabbitmq/

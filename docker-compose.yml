@@ -62,7 +62,7 @@ services:
       MYSQL_ROOT_PASSWORD: "password"
     volumes:
       - ./.contrib/docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
-      - ./db_data:/var/lib/mysql
+      - ./data_db:/var/lib/mysql
 
   gulp:
     build:
@@ -109,7 +109,7 @@ services:
     networks:
       - poradnia-app-network
     volumes:
-      - ./rabbitmq-data:/var/lib/rabbitmq
+      - ./data_rabbitmq:/var/lib/rabbitmq
     healthcheck:
       test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
       interval: 5s
