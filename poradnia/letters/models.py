@@ -350,7 +350,7 @@ class Attachment(models.Model):
                         )
                     },
                     headers={"Authorization": f"JWT {settings.FILE_TO_TEXT_TOKEN}"},
-                    timeout=(10, 120),
+                    timeout=(10, settings.FILE_TO_TEXT_TIMEOUT),
                 )
             finally:
                 self.attachment.close()
