@@ -5,7 +5,7 @@ from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from braces.views import SelectRelatedMixin, UserFormKwargsMixin
 from dal import autocomplete
 from django.contrib import messages
-from django.db.models import Q, Prefetch
+from django.db.models import Prefetch, Q
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils import timezone
