@@ -132,12 +132,14 @@
                 "-A",
                 "config",
                 "worker",
-                "--pool=solo",
-                // "--concurrency=1",
-                "--loglevel=INFO",
+                "--pool=prefork",
+                "--concurrency=1",
+                "-E",
+                "--loglevel=INFO"
             ],
             "django": true,
             "justMyCode": false,
+            "subProcess": true,
             "cwd": "${workspaceFolder}"
         },
         {
