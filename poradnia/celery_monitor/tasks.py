@@ -277,7 +277,12 @@ def queue_depth_check(self):
         messages = int(q.get("messages", 0))
         consumers = int(q.get("consumers", 0))
 
-        if ready >= ready_crit or unack >= unack_crit or consumers == 0:
+        has_backlog = ready > 0 or unack > 0
+        if (
+            ready >= ready_crit
+            or unack >= unack_crit
+            or (has_backlog and consumers == 0)
+        ):
             status = QueueSnapshot.STATUS_CRIT
         elif ready >= ready_warn or unack >= unack_warn:
             status = QueueSnapshot.STATUS_WARN
