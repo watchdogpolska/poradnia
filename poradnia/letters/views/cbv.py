@@ -22,8 +22,8 @@ from django.core.exceptions import PermissionDenied
 from django.core.files.base import File
 from django.forms.models import model_to_dict
 from django.http import HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
-from django.template.defaultfilters import linebreaksbr
 from django.shortcuts import get_object_or_404, render
+from django.template.defaultfilters import linebreaksbr
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.safestring import mark_safe
