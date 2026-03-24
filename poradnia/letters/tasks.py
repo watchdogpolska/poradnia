@@ -109,7 +109,14 @@ def update_attachment_text_content_task(
 
 
 @shared_task(bind=True, ignore_result=False)
-def enqueue_attachment_text_content_updates(self, max_batch_size=0):
+def enqueue_attachment_text_content_updates(
+    self,
+    max_batch_size=0,
+    exclude_text_content_update_result=[
+        "File type not supported",
+        "Processed",
+    ],
+):
     """
     Periodic task that tops up the attachment text extraction queue only until
     CELERY_QUEUE_READY_WARN is reached.
@@ -188,10 +195,7 @@ def enqueue_attachment_text_content_updates(self, max_batch_size=0):
 
         attachment_ids = list(
             Attachment.objects.exclude(
-                text_content_update_result__in=[
-                    "File type not supported",
-                    "Processed",
-                ]
+                text_content_update_result__in=exclude_text_content_update_result
             )
             .order_by("-id")
             .values_list("id", flat=True)[:free_slots]
