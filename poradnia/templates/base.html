@@ -136,6 +136,39 @@
 
 {% block javascript %}
 {% endblock %}
+
+<div id="attachment-text-modal-container"></div>
+<div id="htmx-spinner" class="htmx-indicator">
+    Loading...
+</div>
+<script>
+    $(document).on('click', '[hx-target="#attachment-text-modal-container"]', function () {
+        var $existingModal = $('#attachmentTextModal');
+
+        if ($existingModal.length) {
+            $existingModal.modal('hide');
+        }
+
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open');
+    });
+
+    document.body.addEventListener('htmx:afterSwap', function (event) {
+        if (event.target.id === 'attachment-text-modal-container') {
+            var $modal = $('#attachmentTextModal');
+            if ($modal.length) {
+                $modal.modal('show');
+            }
+        }
+    });
+
+    $(document).on('hidden.bs.modal', '#attachmentTextModal', function () {
+        $('#attachment-text-modal-container').empty();
+        $('.modal-backdrop').remove();
+        $('body').removeClass('modal-open');
+    });
+</script>
+
 </body>
 </html>
 

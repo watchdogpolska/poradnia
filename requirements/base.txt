@@ -1,11 +1,11 @@
-Django==5.2.11
+Django==5.2.12
 
 # Configuration
 django-environ==0.13.0
 
 # Forms
 django-braces==1.17.0
-django-crispy-forms==2.5
+django-crispy-forms==2.6
 crispy-bootstrap3==2024.1
 
 # Models
@@ -17,7 +17,7 @@ sorl-thumbnail==13.0.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth[socialaccount,mfa]==65.14.3
+django-allauth[socialaccount,mfa]==65.15.0
 
 # For the persistance stores
 mysqlclient==2.2.8
@@ -28,7 +28,7 @@ django-autoslug==1.9.9
 
 # Useful things
 # Time zones support
-pytz==2025.2
+pytz==2026.1.post1
 lxml==6.0.2
 cssselect==1.4.0
 # Your custom requirements go here
@@ -51,7 +51,7 @@ git+https://github.com/PiotrIw/django-atom.git@master
 
 # django-tinycontent is not supported anymore so watchdog maintained fork is used
 git+https://github.com/watchdogpolska/django-tinycontent.git@master
-icalendar==7.0.2
+icalendar==7.0.3
 html2text==2025.4.15
 pyGravatar==0.0.6
 
@@ -59,7 +59,7 @@ pyGravatar==0.0.6
 # django-bootstrap-pagination==1.7.1
 git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master#egg=django-bootstrap-pagination
 
-sentry-sdk==2.53.0
+sentry-sdk==2.55.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
@@ -70,3 +70,9 @@ django-rosetta==0.10.3
 
 # Additional sanitizer until a completely safe markdown package is found.
 bleach==6.3.0
+
+# Celery and background task processing
+celery[rabbitmq]==5.6.2
+django-celery-beat==2.9.0
+django-celery-results==2.6.0
+flower==2.0.1

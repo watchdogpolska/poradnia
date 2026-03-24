@@ -8,8 +8,8 @@ WORKDIR /data
 ENV PYTHONUNBUFFERED=1
 RUN apt-get update && apt-get -y --no-install-recommends install curl mc
 
-# Pin setuptools to keep pkg_resources available (maildump still imports it)
-RUN python -m pip install --upgrade pip wheel \
- && python -m pip install "setuptools<81" \
+# Dev-only compatibility workaround:
+# maildump still imports pkg_resources, so keep setuptools below 81.
+RUN python -m pip install --upgrade pip wheel "setuptools<81" \
  && python -m pip install --no-cache-dir maildump
 CMD ["bash", "-c", "maildump --http-ip 0.0.0.0 --smtp-ip 0.0.0.0 --db porady_sent_mail.sqlite"]
