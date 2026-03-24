@@ -59,7 +59,7 @@ pyGravatar==0.0.6
 # django-bootstrap-pagination==1.7.1
 git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master#egg=django-bootstrap-pagination
 
-sentry-sdk==2.54.0
+sentry-sdk==2.55.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
@@ -70,3 +70,9 @@ django-rosetta==0.10.3
 
 # Additional sanitizer until a completely safe markdown package is found.
 bleach==6.3.0
+
+# Celery and background task processing
+celery[rabbitmq]==5.6.2
+django-celery-beat==2.9.0
+django-celery-results==2.6.0
+flower==2.0.1

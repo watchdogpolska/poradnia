@@ -2,6 +2,49 @@
 # yamllint disable-line-length
 # This is application’s services configuration for development purposes only.
 
+x-django-env: &django-env
+  DATABASE_URL: mysql://root:password@db/poradnia
+  DJANGO_EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
+  DJANGO_EMAIL_HOST: "maildump"
+  DJANGO_EMAIL_PORT: "1025"
+  DJANGO_EMAIL_USE_TLS: "False"
+  DJANGO_EMAIL_HOST_PASSWORD: ""
+  DJANGO_EMAIL_HOST_USER: "porady@dev.porady.siecobywatelska.pl"
+  DJANGO_EMAIL_SUBJECT_PREFIX: "[poradnia_dev] "
+  DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
+  DJANGO_SETTINGS_MODULE: "config.settings.local"
+  LETTER_RECEIVE_SECRET: "dev_letter_receive_very_secret"
+  # porady@porady.siecobywatelska.pl must be included in LETTER_RECEIVE_WHITELISTED_ADDRESS for tests
+  LETTER_RECEIVE_WHITELISTED_ADDRESS: "porady@porady.siecobywatelska.pl,porady@dev.porady.siecobywatelska.pl"
+  DJANGO_RICH_TEXT_ENABLED: "False"
+  APP_MODE: "DEV"
+  ROSETTA_AZURE_CLIENT_SECRET: ${ROSETTA_AZURE_CLIENT_SECRET}
+  TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY}
+  TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY}
+  MY_INTERNAL_IP: ${MY_INTERNAL_IP}
+  NGROK_URL: ${NGROK_URL:-http://localhost}
+  CELERY_BROKER_URL: "amqp://poradnia:strong_dev_password@rabbitmq:5672/poradnia_dev"
+  CELERY_RESULT_BACKEND: "django-db"
+  RABBITMQ_API_URL: "http://rabbitmq:15672"
+  REQUESTS_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt"
+  SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
+  GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
+  GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
+  E2E_MFA_BYPASS_SECRET: "supersecret-123"
+  FILE_TO_TEXT_URL: ${FILE_TO_TEXT_URL}
+  FILE_TO_TEXT_TOKEN: ${FILE_TO_TEXT_TOKEN}
+
+x-django-service: &django-service
+  build:
+    context: .
+    dockerfile: .contrib/docker/Dockerfile.web
+  volumes:
+    - .:/code
+  environment:
+    <<: *django-env
+  networks:
+    - poradnia-app-network
+
 services:
   db:
     image: mysql:8.0.36-bullseye
@@ -19,7 +62,7 @@ services:
       MYSQL_ROOT_PASSWORD: "password"
     volumes:
       - ./.contrib/docker/docker-entrypoint-initdb.d:/docker-entrypoint-initdb.d:ro
-      - mysql-data:/var/lib/mysql
+      - ./data_db:/var/lib/mysql
 
   gulp:
     build:
@@ -34,43 +77,12 @@ services:
 
   web:
     # image: docker-registry.siecobywatelska.pl/poradnia/web
-    build:
-      context: .
-      dockerfile: .contrib/docker/Dockerfile.web
-      # args:
-      #   PYTHON_VERSION: '${PYTHON_VERSION:-3.7}'
-
-    volumes:
-      - .:/code
-    environment:
-      DATABASE_URL: mysql://root:password@db/poradnia
-      DJANGO_EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
-      DJANGO_EMAIL_HOST: "maildump"
-      DJANGO_EMAIL_PORT: "1025"
-      DJANGO_EMAIL_USE_TLS: "False"
-      DJANGO_EMAIL_HOST_PASSWORD: ""
-      DJANGO_EMAIL_HOST_USER: "porady@dev.porady.siecobywatelska.pl"
-      DJANGO_EMAIL_SUBJECT_PREFIX: "[poradnia_dev] "
-      DJANGO_DEFAULT_FROM_EMAIL: "poradnia_dev <noreply@dev.porady.siecobywatelska.pl>"
-      LETTER_RECEIVE_SECRET: "dev_letter_receive_very_secret"
-      # porady@porady.siecobywatelska.pl must be included in LETTER_RECEIVE_WHITELISTED_ADDRESS for tests
-      LETTER_RECEIVE_WHITELISTED_ADDRESS: "porady@porady.siecobywatelska.pl,porady@dev.porady.siecobywatelska.pl"
-      DJANGO_RICH_TEXT_ENABLED: "False"
-      APP_MODE: "DEV"
-      ROSETTA_AZURE_CLIENT_SECRET: ${ROSETTA_AZURE_CLIENT_SECRET}
-      TURNSTILE_SITE_KEY: ${TURNSTILE_SITE_KEY}
-      TURNSTILE_SECRET_KEY: ${TURNSTILE_SECRET_KEY}
-      MY_INTERNAL_IP: ${MY_INTERNAL_IP}
-      NGROK_URL: ${NGROK_URL:-http://localhost}
-      REQUESTS_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt"
-      SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
-      GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}
-      GOOGLE_CLIENT_SECRET: ${GOOGLE_CLIENT_SECRET}
-      E2E_MFA_BYPASS_SECRET: "supersecret-123"
+    <<: *django-service
     ports:
       - "8000:8000"
-    networks:
-      - poradnia-app-network
+    depends_on:
+      - db
+      - rabbitmq
 
   maildump:
     build:
@@ -84,7 +96,71 @@ services:
       - "1025:1025"
     networks:
       - poradnia-app-network
-  #
+
+  rabbitmq:
+    image: rabbitmq:3.13.7-management-alpine
+    environment:
+      RABBITMQ_DEFAULT_VHOST: poradnia_dev
+      RABBITMQ_DEFAULT_USER: poradnia
+      RABBITMQ_DEFAULT_PASS: strong_dev_password
+    ports:
+      - "5672:5672"
+      - "15672:15672" # Management UI
+    networks:
+      - poradnia-app-network
+    volumes:
+      - ./data_rabbitmq:/var/lib/rabbitmq
+    healthcheck:
+      test: ["CMD", "rabbitmq-diagnostics", "-q", "ping"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  # ### Easier debug when running celery worker and beat inside development web container
+  # ### - to be run with VScode launch configurations
+  # ### Uncomment below to run in separate containers
+  # celery-worker:
+  #   <<: *django-service
+  #   command: >
+  #     bash -c "wait-for-it rabbitmq:5672 -- celery -A config worker -l INFO"
+  #   depends_on:
+  #     - db
+  #     - rabbitmq
+
+  # celery-beat:
+  #   <<: *django-service
+  #   command: >
+  #     bash -c "
+  #       wait-for-it rabbitmq:5672 --
+  #       celery -A config beat -l INFO
+  #       --scheduler django_celery_beat.schedulers:DatabaseScheduler
+  #     "
+  #   depends_on:
+  #     - db
+  #     - rabbitmq
+
+  celery-flower:
+    <<: *django-service
+    command:
+      - wait-for-it
+      - rabbitmq:5672
+      - --
+      - celery
+      - -A
+      - config
+      - flower
+      - --loglevel=INFO
+      - --port=5555
+      - --persistent
+      - --db=/code/data_flower/flower.db
+      - --max-tasks=5000
+      - --broker-api=http://poradnia:strong_dev_password@rabbitmq:15672/api/
+    depends_on:
+      - db
+      - rabbitmq
+    ports:
+      - "5555:5555"
+
   # ### To use email reception uncomment below section and fill in your dev IMAP
   # ### mailbox secrets in imap-to-webhook-url.env
   #
@@ -100,8 +176,8 @@ services:
   #   networks:
   #     - poradnia-app-network
 
-  # ### To test webhook receiving, Turnstile or other feature required access from web
-  # ###  uncomment below section and set proper django site url in DB
+  ### To test webhook receiving, Turnstile or other feature required access from web
+  ###  uncomment below section and set proper django site url in DB
   ngrok:
     build:
       context: .
@@ -117,7 +193,6 @@ services:
       - web
 
 volumes:
-  mysql-data:
   maildump_data:
 
 networks:

@@ -44,9 +44,13 @@ poradnia/media/
 docs/_build/
 htmlcov
 
-# VScode
-.vscode
+# VScode - store devoelopment configuration and settings
+#.vscode
 
 # docker development secrets
 imap-to-webhook-url.env
 
+# dev data folders content
+data_db/
+data_flower/
+data_rabbitmq/
