@@ -22,6 +22,7 @@ from django.core.exceptions import PermissionDenied
 from django.core.files.base import File
 from django.forms.models import model_to_dict
 from django.http import HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
+from django.shortcuts import get_object_or_404, render
 from django.template.defaultfilters import linebreaksbr
 from django.urls import reverse
 from django.utils import timezone
@@ -494,3 +495,17 @@ class ReceiveEmailView(View):
             return Letter.STATUS.staff
         else:
             return Letter.STATUS.done
+
+
+class AttachmentTextContentModalView(PermissionMixin, View):
+    def get(self, request, pk, *args, **kwargs):
+        attachment = get_object_or_404(
+            Attachment.objects.select_related("letter"),
+            pk=pk,
+        )
+
+        return render(
+            request,
+            "letters/attachment_text_content_modal.html",
+            {"attachment": attachment},
+        )

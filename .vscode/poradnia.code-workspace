@@ -1,0 +1,11 @@
+{
+	"folders": [
+		{
+			"path": ".."
+		}
+	],
+	"name": "poradnia-v1-5-mysql8",
+	"settings": {
+		"python.venvPath": "", // Empty string to disable venv
+	},
+}
