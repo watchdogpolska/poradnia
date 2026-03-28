@@ -1,0 +1,28 @@
+name: GHCR Prune Old Images
+
+on:
+  schedule:
+    - cron: '0 3 * * 0'
+  workflow_dispatch:
+
+jobs:
+  prune-ghcr:
+    runs-on: ubuntu-latest
+    permissions:
+      packages: write
+    steps:
+      - name: Prune old dev images
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: poradnia/web/dev
+          package-type: container
+          min-versions-to-keep: 10
+          delete-only-untagged-versions: false
+
+      - name: Prune old production images
+        uses: actions/delete-package-versions@v5
+        with:
+          package-name: poradnia/web/production
+          package-type: container
+          min-versions-to-keep: 10
+          delete-only-untagged-versions: false
