@@ -24,6 +24,23 @@ Wskazane jest także zaimportowanie danych z rejestru TERC poprzez polecenie::
 
     $ docker-compose run web bash ./.contrib/load_terc.sh
 
+Obrazy Docker w GitHub Container Registry
+------------------------------------------
+
+Obrazy Docker aplikacji są automatycznie budowane i publikowane w GitHub Container Registry (GHCR)
+po każdym scaleniu zmian do gałęzi ``master``.
+
+Dostępne obrazy:
+
+- ``ghcr.io/watchdogpolska/poradnia/web/dev:<commit_sha>`` -- obraz deweloperski (z zależnościami deweloperskimi)
+- ``ghcr.io/watchdogpolska/poradnia/web/production:<commit_sha>`` -- obraz produkcyjny (ze skompilowanymi plikami statycznymi)
+
+Najnowszy obraz jest również dostępny pod tagiem ``latest``.
+
+Pobranie obrazu::
+
+    $ docker pull ghcr.io/watchdogpolska/poradnia/web/production:latest
+
 Wdrożenie
 ---------
 
