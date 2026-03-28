@@ -9,21 +9,8 @@ PYTHON_VERSION="3.13"
 
 cd "$PROJECT_DIR"
 
-# ── 1. Start Docker daemon if not running ──────────────────────────────────
-if ! docker info &>/dev/null; then
-    echo "Starting Docker daemon..."
-    sudo dockerd &>/var/log/dockerd.log &
-    for i in $(seq 1 15); do
-        docker info &>/dev/null && break
-        sleep 2
-    done
-    if ! docker info &>/dev/null; then
-        echo "ERROR: Docker daemon failed to start" >&2
-        exit 1
-    fi
-fi
-
-# Configure Docker daemon proxy if HTTP_PROXY is set and config is missing
+# ── 1. Configure and start Docker daemon ──────────────────────────────────
+# Configure proxy before starting, so Docker only needs to start once
 if [ -n "${HTTP_PROXY:-}" ] && [ ! -f /etc/docker/daemon.json ]; then
     echo "Configuring Docker daemon proxy..."
     mkdir -p /etc/docker
@@ -36,14 +23,19 @@ if [ -n "${HTTP_PROXY:-}" ] && [ ! -f /etc/docker/daemon.json ]; then
   }
 }
 EOF
-    # Restart Docker to pick up proxy config
-    kill "$(pidof dockerd)" 2>/dev/null || true
-    sleep 2
+fi
+
+if ! docker info &>/dev/null; then
+    echo "Starting Docker daemon..."
     sudo dockerd &>/var/log/dockerd.log &
     for i in $(seq 1 15); do
         docker info &>/dev/null && break
         sleep 2
     done
+    if ! docker info &>/dev/null; then
+        echo "ERROR: Docker daemon failed to start" >&2
+        exit 1
+    fi
 fi
 
 echo "Docker daemon is running."
