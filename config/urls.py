@@ -27,6 +27,7 @@ urlpatterns = [
     path("porady/", include("poradnia.advicer.urls", namespace="advicer")),
     path("uwagi/", include("poradnia.tasty_feedback.urls", namespace="tasty_feedback")),
     path("sprawy_sadowe/", include("poradnia.judgements.urls", namespace="judgements")),
+    path("wiedza/", include("poradnia.knowledge.urls", namespace="knowledge")),
     path("teryt/", include("poradnia.teryt.urls", namespace="teryt")),
     path("robots.txt", TemplateView.as_view(template_name="robots.txt")),
     path(
