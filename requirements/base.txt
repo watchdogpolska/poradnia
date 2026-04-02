@@ -32,7 +32,7 @@ pytz==2026.1.post1
 lxml==6.0.2
 cssselect==1.4.0
 # Your custom requirements go here
-django-guardian==3.3.0
+django-guardian==3.3.1
 django-mailbox==4.10.1
 django-filter==25.2
 django-cleanup==9.0.0
@@ -59,7 +59,7 @@ pyGravatar==0.0.6
 # django-bootstrap-pagination==1.7.1
 git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master#egg=django-bootstrap-pagination
 
-sentry-sdk==2.55.0
+sentry-sdk==2.57.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
@@ -72,7 +72,7 @@ django-rosetta==0.10.3
 bleach==6.3.0
 
 # Celery and background task processing
-celery[rabbitmq]==5.6.2
+celery[rabbitmq]==5.6.3
 django-celery-beat==2.9.0
 django-celery-results==2.6.0
 flower==2.0.1
