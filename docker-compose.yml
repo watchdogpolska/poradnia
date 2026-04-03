@@ -26,6 +26,9 @@ x-django-env: &django-env
   CELERY_BROKER_URL: "amqp://poradnia:strong_dev_password@rabbitmq:5672/poradnia_dev"
   CELERY_RESULT_BACKEND: "django-db"
   RABBITMQ_API_URL: "http://rabbitmq:15672"
+  RABBITMQ_API_USER: "poradnia"
+  RABBITMQ_API_PASSWORD: "strong_dev_password"
+  CELERY_MONITOR_VHOST: "poradnia_dev"
   REQUESTS_CA_BUNDLE: "/etc/ssl/certs/ca-certificates.crt"
   SSL_CERT_FILE: "/etc/ssl/certs/ca-certificates.crt"
   GOOGLE_CLIENT_ID: ${GOOGLE_CLIENT_ID}

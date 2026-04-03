@@ -611,9 +611,12 @@ CELERY_BEAT_SCHEDULE = {
 # Rabbit MQ monitoring settings
 RABBITMQ_API_URL = env.str("RABBITMQ_API_URL", "http://localhost:15672")
 broker = urlparse(CELERY_BROKER_URL)
-RABBITMQ_API_USER = broker.username
-RABBITMQ_API_PASSWORD = broker.password
-CELERY_MONITOR_VHOST = unquote(broker.path.lstrip("/"))
+RABBITMQ_API_USER = env.str("RABBITMQ_API_USER", "")
+RABBITMQ_API_PASSWORD = env.str("RABBITMQ_API_PASSWORD", "")
+CELERY_MONITOR_VHOST = env.str(
+    "CELERY_MONITOR_VHOST",
+    unquote(broker.path.lstrip("/")),
+)
 CELERY_MONITOR_QUEUES = [
     CELERY_TASK_DEFAULT_QUEUE,
 ]
