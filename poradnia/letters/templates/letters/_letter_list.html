@@ -36,9 +36,22 @@
         {% if object.attachment_set.all %}
         <ul class="list-group">
             {% for att in object.attachment_set.all %}
-            <li class="list-group-item"><i class="{{ att.attachment.name | file2css }}"></i> <a
-                    href="{{att.get_absolute_url}}">{{att.filename}}</a></li>
-            {% endfor%}
+            <li class="list-group-item">
+                <i class="{{ att.attachment.name|file2css }}"></i>
+                <button
+                    type="button"
+                    class="btn btn-xs btn-default"
+                    title="{% trans 'Show extracted text' %}"
+                    hx-get="{% url 'letters:attachment_text_content_modal' pk=att.pk %}"
+                    hx-target="#attachment-text-modal-container"
+                    hx-swap="innerHTML"
+                    hx-indicator="#htmx-spinner"
+                >
+                    <i class="fas fa-align-left"></i>
+                </button>
+                <a href="{{ att.get_absolute_url }}">{{ att.filename }}</a>
+            </li>
+            {% endfor %}
         </ul>
         {% endif %}
         <div class="panel-footer">
