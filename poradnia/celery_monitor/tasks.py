@@ -1,10 +1,12 @@
+import base64
 import json
 import logging
 import os
 import socket
 import time
-import urllib.request
+from urllib.error import HTTPError, URLError
 from urllib.parse import quote
+from urllib.request import Request, urlopen
 
 from celery import shared_task
 from django.conf import settings
@@ -25,19 +27,36 @@ from .models import (
 logger = logging.getLogger(__name__)
 
 
-def rabbit_api(path):
-    url = settings.RABBITMQ_API_URL.rstrip("/") + "/" + path.lstrip("/")
-    password_mgr = urllib.request.HTTPPasswordMgrWithDefaultRealm()
-    password_mgr.add_password(
-        None,
-        url,
-        settings.RABBITMQ_API_USER,
-        settings.RABBITMQ_API_PASSWORD,
-    )
-    auth = urllib.request.HTTPBasicAuthHandler(password_mgr)
-    opener = urllib.request.build_opener(auth)
-    with opener.open(url, timeout=10) as response:
-        return json.loads(response.read().decode("utf-8"))
+def rabbit_api(path: str):
+    base_url = settings.RABBITMQ_API_URL.rstrip("/")
+    user = settings.RABBITMQ_API_USER
+    password = settings.RABBITMQ_API_PASSWORD
+
+    if not base_url or not user or not password:
+        raise RuntimeError("RabbitMQ API settings are incomplete.")
+
+    url = f"{base_url}/{path.lstrip('/')}"
+    token = base64.b64encode(f"{user}:{password}".encode()).decode("ascii")
+
+    req = Request(url)
+    req.add_header("Authorization", f"Basic {token}")
+    req.add_header("Accept", "application/json")
+
+    try:
+        with urlopen(req, timeout=10) as response:
+            body = response.read().decode("utf-8")
+            return json.loads(body)
+    except HTTPError as exc:
+        try:
+            body = exc.read().decode("utf-8", errors="replace")
+        except Exception:
+            body = ""
+        raise RuntimeError(
+            f"RabbitMQ API HTTP {exc.code} {exc.reason} for {url}. "
+            f"Response: {body[:500]}"
+        ) from exc
+    except URLError as exc:
+        raise RuntimeError(f"RabbitMQ API unreachable at {url}: {exc}") from exc
 
 
 def _get_setting(name, default):
