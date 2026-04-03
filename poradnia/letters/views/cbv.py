@@ -1,6 +1,8 @@
 import datetime
 import json
 import logging
+import mimetypes
+import os
 
 import bleach
 import django_filters
@@ -16,16 +18,24 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.admin.models import ADDITION, LogEntry
 from django.contrib.auth import get_user_model
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.models import Site
 from django.core.exceptions import PermissionDenied
 from django.core.files.base import File
 from django.forms.models import model_to_dict
-from django.http import HttpResponseBadRequest, HttpResponseRedirect, JsonResponse
+from django.http import (
+    FileResponse,
+    Http404,
+    HttpResponseBadRequest,
+    HttpResponseRedirect,
+    JsonResponse,
+)
 from django.shortcuts import get_object_or_404, render
 from django.template.defaultfilters import linebreaksbr
 from django.urls import reverse
 from django.utils import timezone
+from django.utils._os import safe_join
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.views import View
@@ -509,3 +519,53 @@ class AttachmentTextContentModalView(PermissionMixin, View):
             "letters/attachment_text_content_modal.html",
             {"attachment": attachment},
         )
+
+
+class ProtectedMediaView(LoginRequiredMixin, View):
+    def get(self, request, path, *args, **kwargs):
+        obj, file_field = self._resolve_object(request.user, path)
+
+        try:
+            full_path = safe_join(settings.MEDIA_ROOT, file_field.name)
+        except ValueError:
+            raise Http404("Invalid path")
+
+        if not os.path.isfile(full_path):
+            raise Http404("File not found")
+
+        content_type, _ = mimetypes.guess_type(full_path)
+
+        return FileResponse(
+            open(full_path, "rb"),
+            content_type=content_type or "application/octet-stream",
+            as_attachment=True,
+            filename=os.path.basename(file_field.name),
+        )
+
+    def _resolve_object(self, user, path):
+        """
+        Resolve path → (object, file_field)
+        and enforce permissions via .for_user()
+        """
+
+        # --- LETTER ATTACHMENTS ---
+        if path.startswith("letters/"):
+            try:
+                obj = (
+                    Attachment.objects.select_related("letter")
+                    .for_user(user)
+                    .get(attachment=path)
+                )
+                return obj, obj.attachment
+            except Attachment.DoesNotExist:
+                raise Http404("Attachment not found")
+
+        # --- RAW MESSAGE (.eml) ---
+        if path.startswith("messages/"):
+            try:
+                obj = Letter.objects.for_user(user).get(eml=path)
+                return obj, obj.eml
+            except Letter.DoesNotExist:
+                raise Http404("Message file not found")
+
+        raise Http404("Unsupported media path")
