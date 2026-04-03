@@ -36,7 +36,7 @@ def rabbit_api(path: str):
         raise RuntimeError("RabbitMQ API settings are incomplete.")
 
     url = f"{base_url}/{path.lstrip('/')}"
-    token = base64.b64encode(f"{user}:{password}".encode("utf-8")).decode("ascii")
+    token = base64.b64encode(f"{user}:{password}".encode()).decode("ascii")
 
     req = Request(url)
     req.add_header("Authorization", f"Basic {token}")
