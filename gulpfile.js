@@ -60,6 +60,7 @@ const config = {
   script: {
     input: [
       path.npm + "/jquery/dist/jquery.js",
+      path.npm + "/htmx.org/dist/htmx.js",
       path.npm + "/bootstrap-sass/assets/javascripts/bootstrap/tab.js",
       path.npm + "/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js",
       path.npm + "/bootstrap-sass/assets/javascripts/bootstrap/modal.js",
