@@ -1,0 +1,10 @@
+{% for group in results %}
+	<div class="panel panel-default">
+		<div class="panel-heading">{{ group.text }}</div>
+		<div class="list-group">
+			{% for item in group.children %}
+				<a class="list-group-item" href="{{ item.url }}">{{ item.text }}</a>
+			{% endfor %}
+		</div>
+	</div>
+{% endfor %}
