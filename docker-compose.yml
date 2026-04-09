@@ -50,7 +50,7 @@ x-django-service: &django-service
 
 services:
   db:
-    image: mysql:8.0.36-bullseye
+    image: mysql:8.0.36
     security_opt:
       - seccomp:unconfined
     command: >-
