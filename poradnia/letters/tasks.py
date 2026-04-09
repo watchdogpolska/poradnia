@@ -3,6 +3,7 @@ import logging
 from celery import shared_task
 from django.conf import settings
 from django.core.cache import cache
+from django.db import close_old_connections
 from django.utils import timezone
 
 logger = logging.getLogger(__name__)
@@ -25,6 +26,7 @@ def update_letter_attachments_text_content_task(self, letter_pk):
     """
     from poradnia.letters.models import Letter
 
+    close_old_connections()
     try:
         letter = Letter.objects.get(pk=letter_pk)
     except Letter.DoesNotExist:
@@ -38,6 +40,8 @@ def update_letter_attachments_text_content_task(self, letter_pk):
             "attachments_updated": 0,
             "attachments_failed": 0,
         }
+    finally:
+        close_old_connections()
 
     return letter.update_attachments_text_content()
 
@@ -69,43 +73,51 @@ def update_attachment_text_content_task(
     """
     from poradnia.letters.models import Attachment
 
+    close_old_connections()
     try:
-        attachment = Attachment.objects.select_related("letter").get(pk=attachment_pk)
-    except Attachment.DoesNotExist:
-        msg = f"Attachment pk={attachment_pk} not found."
-        logger.warning(msg)
-        return {
-            "attachment_pk": attachment_pk,
-            "status": "not_found",
-            "message": msg,
+        try:
+            attachment = Attachment.objects.select_related("letter").get(
+                pk=attachment_pk
+            )
+        except Attachment.DoesNotExist:
+            msg = f"Attachment pk={attachment_pk} not found."
+            logger.warning(msg)
+            return {
+                "attachment_pk": attachment_pk,
+                "status": "not_found",
+                "message": msg,
+            }
+
+        logger.info(
+            "Processing attachment pk=%s (letter_pk=%s)",
+            attachment.pk,
+            attachment.letter_id,
+        )
+
+        ok = attachment.update_text_content()
+
+        close_old_connections()
+
+        result = {
+            "attachment_pk": attachment.pk,
+            "letter_pk": attachment.letter_id,
+            "status": "ok" if ok else "failed",
         }
 
-    logger.info(
-        "Processing attachment pk=%s (letter_pk=%s)",
-        attachment.pk,
-        attachment.letter_id,
-    )
+        if ok:
+            logger.info(
+                "Attachment pk=%s updated successfully",
+                attachment.pk,
+            )
+        else:
+            logger.warning(
+                "Attachment pk=%s update failed",
+                attachment.pk,
+            )
 
-    ok = attachment.update_text_content()
-
-    result = {
-        "attachment_pk": attachment.pk,
-        "letter_pk": attachment.letter_id,
-        "status": "ok" if ok else "failed",
-    }
-
-    if ok:
-        logger.info(
-            "Attachment pk=%s updated successfully",
-            attachment.pk,
-        )
-    else:
-        logger.warning(
-            "Attachment pk=%s update failed",
-            attachment.pk,
-        )
-
-    return result
+        return result
+    finally:
+        close_old_connections()
 
 
 @shared_task(bind=True, ignore_result=False)
