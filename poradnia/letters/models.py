@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.admin.models import ADDITION, LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
-from django.db import models, transaction, close_old_connections
+from django.db import close_old_connections, models, transaction
 from django.db.models import F, Func, IntegerField
 from django.forms.models import model_to_dict
 from django.urls import reverse

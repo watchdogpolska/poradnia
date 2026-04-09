@@ -556,7 +556,7 @@ BLEACH_ALLOWED_ATTRIBUTES = ALLOWED_ATTRIBUTES = {
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
 CELERY_BROKER_CONNECTION_MAX_RETRIES = None
 CELERY_BROKER_CONNECTION_TIMEOUT = 10  # default is often too high
-CELERY_BROKER_HEARTBEAT = 30           # helps detect dead connections faster
+CELERY_BROKER_HEARTBEAT = 30  # helps detect dead connections faster
 CELERY_BROKER_URL = env.str("CELERY_BROKER_URL", "amqp://guest:guest@localhost:5672//")
 CELERY_TIMEZONE = TIME_ZONE  # Use Django's timezone setting
 CELERY_ENABLE_UTC = USE_TZ  # Use Django's UTC setting
