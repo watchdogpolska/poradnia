@@ -135,6 +135,7 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
         if not settings.TURNSTILE_SECRET:
             del self.fields["turnstile"]
             self.helper.layout.fields.remove("turnstile")
+
     def _is_super_staff(self):
         return self.user.has_perm("cases.can_select_client")
 
