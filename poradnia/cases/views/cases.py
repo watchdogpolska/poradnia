@@ -5,7 +5,7 @@ from atom.ext.guardian.views import RaisePermissionRequiredMixin
 from braces.views import SelectRelatedMixin, UserFormKwargsMixin
 from dal import autocomplete
 from django.contrib import messages
-from django.db.models import Q
+from django.db.models import Prefetch, Q
 from django.shortcuts import redirect
 from django.urls import reverse
 from django.utils import timezone
@@ -29,6 +29,7 @@ from poradnia.judgements.views import CourtCaseForm
 from poradnia.letters.forms import AddLetterForm, AttachmentsFieldForm
 
 # from poradnia.letters.helpers import AttachmentFormSet
+from poradnia.letters.models import Attachment
 from poradnia.records.models import Record
 from poradnia.users.views import PermissionMixin
 
@@ -58,16 +59,28 @@ class CaseDetailView(SingleObjectPermissionMixin, SelectRelatedMixin, DetailView
         "event__modified_by",
         "event",
     ]
-    prefetch_record_related = ["letter__attachment_set"]
+    # prefetch_record_related = ["letter__attachment_set"]
     permission_required = ["cases.can_view"]
     accept_global_perms = True
+
+    def get_prefetch_record_related(self):
+        return [
+            Prefetch(
+                "letter__attachment_set",
+                queryset=Attachment.objects.only(
+                    "id",
+                    "letter_id",
+                    "attachment",
+                ),
+            )
+        ]
 
     def get_record_list(self):
         return (
             Record.objects.filter(case=self.object)
             .for_user(self.request.user)
             .select_related(*self.select_record_related)
-            .prefetch_related(*self.prefetch_record_related)
+            .prefetch_related(*self.get_prefetch_record_related())
             .all()
         )
 

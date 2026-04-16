@@ -1,11 +1,12 @@
 import logging
 from os.path import basename
 
+import requests
 from django.conf import settings
 from django.contrib.admin.models import ADDITION, LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
-from django.db import models
+from django.db import close_old_connections, models, transaction
 from django.db.models import F, Func, IntegerField
 from django.forms.models import model_to_dict
 from django.urls import reverse
@@ -112,6 +113,11 @@ class Letter(AbstractRecord):
 
     objects = LetterQuerySet.as_manager()
 
+    class Meta:
+        verbose_name = _("Letter")
+        verbose_name_plural = _("Letters")
+        ordering = ["-created_on"]
+
     def __str__(self):
         return self.name
 
@@ -197,10 +203,71 @@ class Letter(AbstractRecord):
                 change_message=f"{change_dict}",
             )
 
-    class Meta:
-        verbose_name = _("Letter")
-        verbose_name_plural = _("Letters")
-        ordering = ["-created_on"]
+    def update_attachments_text_content(self):
+        """
+        Synchronously update text_content for all attachments of this letter.
+
+        Returns a structured summary dict.
+        """
+        attachments_qs = self.attachment_set.all()
+        attachments_total = attachments_qs.count()
+
+        logger.info(
+            "Letter %s - attachments to update text content: %s",
+            self.pk,
+            attachments_total,
+        )
+
+        updated = 0
+        failed = 0
+        updated_attachment_pks = []
+        failed_attachment_pks = []
+
+        for attachment in attachments_qs.iterator():
+            ok = attachment.update_text_content()
+            if ok:
+                updated += 1
+                updated_attachment_pks.append(attachment.pk)
+                logger.info(
+                    "Letter %s - attachment pk=%s text content updated.",
+                    self.pk,
+                    attachment.pk,
+                )
+            else:
+                failed += 1
+                failed_attachment_pks.append(attachment.pk)
+                logger.warning(
+                    "Letter %s - attachment pk=%s text content update failed.",
+                    self.pk,
+                    attachment.pk,
+                )
+
+        result = {
+            "letter_pk": self.pk,
+            "status": "done",
+            "attachments_total": attachments_total,
+            "attachments_updated": updated,
+            "attachments_failed": failed,
+            "updated_attachment_pks": updated_attachment_pks,
+            "failed_attachment_pks": failed_attachment_pks,
+        }
+
+        logger.info(
+            "Letter %s - attachments text content update finished: %s",
+            self.pk,
+            result,
+        )
+        return result
+
+    def enqueue_attachments_text_content_update(self):
+        """
+        Enqueue attachment text extraction after current DB transaction commits.
+        """
+        from poradnia.letters.tasks import update_letter_attachments_text_content_task
+
+        transaction.on_commit(
+            lambda: update_letter_attachments_text_content_task.delay(self.pk)
+        )
 
 
 lrc_cup = "letter__record__case__caseuserobjectpermission"
@@ -230,8 +297,17 @@ class Attachment(models.Model):
         verbose_name=_("File"),
         max_length=500,
     )
-
+    text_content = models.TextField(
+        verbose_name=_("Text content"), blank=True, null=True
+    )
+    text_content_update_result = models.TextField(
+        verbose_name=_("Text content update result"), blank=True, null=True
+    )
     objects = AttachmentQuerySet.as_manager()
+
+    class Meta:
+        verbose_name = _("Attachment")
+        verbose_name_plural = _("Attachments")
 
     @property
     def filename(self):
@@ -255,6 +331,85 @@ class Attachment(models.Model):
             ["https://", get_current_site(None).domain, self.get_absolute_url()]
         )
 
-    class Meta:
-        verbose_name = _("Attachment")
-        verbose_name_plural = _("Attachments")
+    def update_text_content(self):
+        close_old_connections()
+        try:
+            logger.info(
+                "Updating text content for attachment pk=%s file=%s",
+                self.pk,
+                self.attachment.name,
+            )
+
+            self.attachment.open("rb")
+            try:
+                response = requests.post(
+                    settings.FILE_TO_TEXT_URL,
+                    files={
+                        "file": (
+                            self.attachment.name.split("/")[-1],
+                            self.attachment.read(),
+                        )
+                    },
+                    headers={"Authorization": f"JWT {settings.FILE_TO_TEXT_TOKEN}"},
+                    timeout=settings.FILE_TO_TEXT_REQUEST_TIMEOUTS,
+                )
+            finally:
+                self.attachment.close()
+
+            close_old_connections()
+
+            if response.status_code != 200:
+                msg = (
+                    f"File to text API response: {response.status_code}, "
+                    f"content: {response.text}"
+                )
+                logger.error(msg)
+                self.text_content_update_result = msg
+                self.save(update_fields=["text_content_update_result"])
+                return False
+
+            payload = response.json()
+            log_payload = payload.copy()
+            log_payload.pop("text", None)
+
+            logger.info(
+                "File to text API response: %s, %s",
+                response.status_code,
+                log_payload,
+            )
+
+            self.text_content = payload.get("text")
+            self.text_content_update_result = payload.get("message", "")
+            self.save(update_fields=["text_content", "text_content_update_result"])
+            return True
+
+        except Exception as exc:
+            logger.exception(
+                "Attachment pk=%s text content update failed: %s",
+                self.pk,
+                exc,
+            )
+            try:
+                close_old_connections()
+                self.text_content_update_result = str(exc)
+                self.save(update_fields=["text_content_update_result"])
+            except Exception:
+                logger.exception(
+                    "Attachment pk=%s failed to persist failure status",
+                    self.pk,
+                )
+            return False
+        finally:
+            close_old_connections()
+
+    @property
+    def text_content_warning(self):
+        warning = """
+            Uwaga: treść załączników została odczytana maszynowo, więc może
+            zawierać błędy związane z nieprawidłowym odczytaniem znaków,
+            a także błędną interpretacji układu tekstu na stronie.
+            Jeśli nie masz stosownych uprawnień i potrzebujesz dostępu
+            do oryginału, skontaktuj się z biurem SOWP.
+
+        """
+        return warning  # " ".join(warning.split())
