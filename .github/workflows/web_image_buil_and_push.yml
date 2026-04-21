@@ -41,27 +41,14 @@ jobs:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PAT }}
 
-      - name: Display contents of code directory
-        run: ls -la
-  
-      - name: Display contents of .git directory
-        run: ls -la .git
-      
-      - name: Create git copy
-        run: cp -r .git .git_copy
-  
-      - name: Show git status
-        run: git status
-
       - name: Build and push Docker image
         uses: docker/build-push-action@v7
         with:
           context: .
           file: .contrib/docker/Dockerfile.web.production
           push: true
+          build-args: |
+            GIT_SHA=${{ github.sha }}
           tags: |
             ${{ secrets.DOCKER_USERNAME }}/${{ vars.REPO_NAME }}:latest-${{ env.deployment }}
             ${{ secrets.DOCKER_USERNAME }}/${{ vars.REPO_NAME }}:${{ env.version }}-${{ env.deployment }}
-      
-      - name: Remove git copy
-        run: rm -rf .git_copy
