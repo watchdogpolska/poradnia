@@ -66,6 +66,37 @@ Następnie wystarczy standardowe polecenie::
 Po uruchomieniu kontenerów użyj konfiguracji uruchamiania VSCode (``launch.json``),
 aby wystartować i debugować serwer Django wewnątrz kontenera.
 
+Pominięcie zabezpieczeń w środowisku deweloperskim
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Niektóre mechanizmy bezpieczeństwa można wyłączyć lokalnie, aby przyspieszyć pracę deweloperską.
+Służą do tego zmienne środowiskowe w pliku ``.env``.
+
+**Wyłączenie CAPTCHA (Turnstile) w formularzu zgłoszenia:**
+
+Zmienna ``TURNSTILE_ENABLE=False`` powoduje, że pole CAPTCHA jest usuwane z formularza
+``NewCaseForm``, co umożliwia testowanie bez konfigurowania kluczy Turnstile::
+
+    TURNSTILE_ENABLE=False
+
+**Wyłączenie wymuszania MFA dla pracowników:**
+
+Zmienna ``MFA_ENFORCE_ENABLED=False`` wyłącza middleware
+``EnforceStaffMfaOnPasswordLoginMiddleware``, dzięki czemu konta pracowników (w tym
+superużytkownik) mogą logować się hasłem bez konfigurowania TOTP::
+
+    MFA_ENFORCE_ENABLED=False
+
+Obie zmienne można dodać do pliku ``.env`` w katalogu projektu:
+
+.. code-block:: bash
+
+    $ echo "TURNSTILE_ENABLE=False" >> .env
+    $ echo "MFA_ENFORCE_ENABLED=False" >> .env
+
+.. warning::
+   Tych ustawień **nie należy używać w środowisku produkcyjnym**.
+
 Obrazy Docker w GitHub Container Registry
 ------------------------------------------
 

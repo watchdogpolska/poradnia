@@ -63,6 +63,9 @@ class EnforceStaffMfaOnPasswordLoginMiddleware:
         self.get_response = get_response
 
     def __call__(self, request):
+        if not settings.MFA_ENFORCE_ENABLED:
+            return self.get_response(request)
+
         user = getattr(request, "user", None)
         path = request.path_info
 
