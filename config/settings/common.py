@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
 import sys
+from urllib.parse import unquote, urlparse
 
 import environ
 from django.utils.translation import gettext_lazy as _
@@ -57,6 +58,9 @@ THIRD_PARTY_APPS = (
     "ajax_datatable",
     "turnstile",
     "rosetta",
+    # Celery integration
+    "django_celery_beat",
+    "django_celery_results",
 )
 
 # Apps specific for this project go here.
@@ -74,7 +78,7 @@ LOCAL_APPS = (
     "poradnia.judgements",
     "poradnia.teryt",
     "poradnia.utils",
-    # Your stuff: custom apps go here
+    "poradnia.celery_monitor",
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -544,3 +548,104 @@ BLEACH_ALLOWED_ATTRIBUTES = ALLOWED_ATTRIBUTES = {
     "acronym": ["title"],
     "img": ["alt", "src", "title"],
 }
+
+# CELERY CONFIGURATION
+# Celery settings for background task processing
+# Using RabbitMQ as message broker and database for result backend
+
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_BROKER_CONNECTION_MAX_RETRIES = None
+CELERY_BROKER_CONNECTION_TIMEOUT = 10  # default is often too high
+CELERY_BROKER_HEARTBEAT = 30  # helps detect dead connections faster
+CELERY_BROKER_URL = env.str("CELERY_BROKER_URL", "amqp://guest:guest@localhost:5672//")
+CELERY_TIMEZONE = TIME_ZONE  # Use Django's timezone setting
+CELERY_ENABLE_UTC = USE_TZ  # Use Django's UTC setting
+
+# Task routing and execution
+CELERY_TASK_ALWAYS_EAGER = TESTING  # Execute tasks synchronously during testing
+CELERY_TASK_EAGER_PROPAGATES = TESTING
+CELERY_TASK_STORE_EAGER_RESULT = TESTING
+
+# Task result settings
+CELERY_RESULT_EXPIRES = 604_800  # Results expire after 1 week
+CELERY_TASK_IGNORE_RESULT = False
+CELERY_TASK_TRACK_STARTED = True
+CELERY_RESULT_EXTENDED = True
+CELERY_WORKER_SEND_TASK_EVENTS = True
+CELERY_TASK_SEND_SENT_EVENT = True
+
+# Task retry configuration
+CELERY_TASK_DEFAULT_RETRY_DELAY = 60  # Default retry delay in seconds
+CELERY_TASK_MAX_RETRIES = 3
+
+# Worker settings
+CELERY_WORKER_PREFETCH_MULTIPLIER = 1  # Disable prefetching for better load balancing
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 100  # Restart worker after 100 tasks
+CELERY_TASK_ACKS_LATE = False  # keep default
+CELERY_TASK_REJECT_ON_WORKER_LOST = True
+CELERY_TASK_SOFT_TIME_LIMIT = 330
+CELERY_TASK_TIME_LIMIT = 360
+
+# Serialization
+CELERY_TASK_SERIALIZER = "json"
+CELERY_RESULT_SERIALIZER = "json"
+CELERY_ACCEPT_CONTENT = ["json"]
+
+# Logging integration
+CELERY_WORKER_HIJACK_ROOT_LOGGER = False  # Don't hijack Django's logging
+
+# Task routing
+CELERY_TASK_DEFAULT_QUEUE = "poradnia"
+
+# Beat schedule configuration (using database scheduler)
+CELERY_BEAT_SCHEDULER = "django_celery_beat.schedulers:DatabaseScheduler"
+
+# Example periodic tasks schedule (for reference and testing)
+# In production, tasks are managed via Django admin interface
+CELERY_BEAT_SCHEDULE = {
+    # Example: Test task every 30 seconds (for development testing)
+    # "test-every-30-seconds": {
+    #     "task": "config.celery.test_task",
+    #     "schedule": 30.0,
+    #     "args": ("Scheduled test result task",),
+    # },
+}
+
+# Rabbit MQ monitoring settings
+RABBITMQ_API_URL = env.str("RABBITMQ_API_URL", "http://localhost:15672")
+broker = urlparse(CELERY_BROKER_URL)
+RABBITMQ_API_USER = env.str("RABBITMQ_API_USER", "")
+RABBITMQ_API_PASSWORD = env.str("RABBITMQ_API_PASSWORD", "")
+CELERY_MONITOR_VHOST = env.str(
+    "CELERY_MONITOR_VHOST",
+    unquote(broker.path.lstrip("/")),
+)
+CELERY_MONITOR_QUEUES = [
+    CELERY_TASK_DEFAULT_QUEUE,
+]
+CELERY_WORKER_STALE_AFTER_SECONDS = 180
+CELERY_MONITOR_WORKER_CLEANUP_AFTER_SECONDS = 86400
+# ### Uused settings
+# RABBITMQ_QUEUE_WARNING_THRESHOLD = env.int("RABBITMQ_QUEUE_WARNING_THRESHOLD", 50)
+# RABBITMQ_QUEUE_CRITICAL_THRESHOLD = env.int("RABBITMQ_QUEUE_CRITICAL_THRESHOLD", 100)
+# RABBITMQ_WORKER_WARNING_THRESHOLD = env.int("RABBITMQ_WORKER_WARNING_THRESHOLD", 1)
+# RABBITMQ_WORKER_CRITICAL_THRESHOLD = env.int("RABBITMQ_WORKER_CRITICAL_THRESHOLD", 0)
+CELERY_QUEUE_READY_WARN = env.int("CELERY_QUEUE_READY_WARN", 50)
+CELERY_QUEUE_READY_CRIT = env.int("CELERY_QUEUE_READY_CRIT", 200)
+CELERY_QUEUE_UNACK_WARN = env.int("CELERY_QUEUE_UNACK_WARN", 5)
+CELERY_QUEUE_UNACK_CRIT = env.int("CELERY_QUEUE_UNACK_CRIT", 20)
+CELERY_MONITOR_SLA_WARN_MS = env.int("CELERY_MONITOR_SLA_WARN_MS", 15000)
+CELERY_MONITOR_SLA_CRIT_MS = env.int("CELERY_MONITOR_SLA_CRIT_MS", 60000)
+
+# END CELERY CONFIGURATION
+
+FILE_TO_TEXT_URL = env("FILE_TO_TEXT_URL", default="http://localhost:9980/")
+FILE_TO_TEXT_TOKEN = env("FILE_TO_TEXT_TOKEN", default="")
+FILE_TO_TEXT_CONNECT_TIMEOUT = 10
+FILE_TO_TEXT_READ_TIMEOUT = (
+    CELERY_TASK_SOFT_TIME_LIMIT - FILE_TO_TEXT_CONNECT_TIMEOUT - 5
+)
+FILE_TO_TEXT_REQUEST_TIMEOUTS = (
+    FILE_TO_TEXT_CONNECT_TIMEOUT,
+    FILE_TO_TEXT_READ_TIMEOUT,
+)

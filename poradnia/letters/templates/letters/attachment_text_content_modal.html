@@ -1,0 +1,37 @@
+{% load i18n %}
+
+<div
+    class="modal fade"
+    id="attachmentTextModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="attachmentTextModalLabel"
+>
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button
+                    type="button"
+                    class="close"
+                    data-dismiss="modal"
+                    aria-label="{% trans 'Close' %}"
+                >
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="attachmentTextModalLabel">
+                    {{ attachment.filename }}
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div style="max-height: 70vh; overflow-y: auto; white-space: pre-wrap; word-break: break-word;">
+                    {% if attachment.text_content %}
+                        {{ attachment.text_content }}
+                    {% else %}
+                        <em>{% trans "No extracted text available." %}</em>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
