@@ -35,18 +35,14 @@ jobs:
             ghcr.io/watchdogpolska/poradnia/web/dev:${{ github.sha }}
             ghcr.io/watchdogpolska/poradnia/web/dev:latest
 
-      - name: Create git copy
-        run: cp -r .git .git_copy
-
       - name: Build and push production image
         uses: docker/build-push-action@v7
         with:
           context: .
           file: .contrib/docker/Dockerfile.web.production
           push: true
+          build-args: |
+            GIT_SHA=${{ github.sha }}
           tags: |
             ghcr.io/watchdogpolska/poradnia/web/production:${{ github.sha }}
             ghcr.io/watchdogpolska/poradnia/web/production:latest
-
-      - name: Remove git copy
-        run: rm -rf .git_copy
