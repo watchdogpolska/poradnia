@@ -63,6 +63,7 @@ const config = {
       path.npm + "/bootstrap-sass/assets/javascripts/bootstrap/tab.js",
       path.npm + "/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js",
       path.npm + "/bootstrap-sass/assets/javascripts/bootstrap/modal.js",
+      path.npm + "/htmx.org/dist/htmx.js",
       path.staticfiles + "/tasty_feedback/style.js",
       path.npm + "/moment/moment.js",
       path.npm + "/moment/locale/pl.js",
