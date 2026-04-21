@@ -1,6 +1,5 @@
 .git
 .tox
-.vagrant.d
 node_modules
 **/*.pyc
 docs
