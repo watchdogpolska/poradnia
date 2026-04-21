@@ -6,7 +6,7 @@ from django.conf import settings
 from django.contrib.admin.models import ADDITION, LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.sites.shortcuts import get_current_site
-from django.db import models, transaction
+from django.db import close_old_connections, models, transaction
 from django.db.models import F, Func, IntegerField
 from django.forms.models import model_to_dict
 from django.urls import reverse
@@ -332,6 +332,7 @@ class Attachment(models.Model):
         )
 
     def update_text_content(self):
+        close_old_connections()
         try:
             logger.info(
                 "Updating text content for attachment pk=%s file=%s",
@@ -355,6 +356,8 @@ class Attachment(models.Model):
             finally:
                 self.attachment.close()
 
+            close_old_connections()
+
             if response.status_code != 200:
                 msg = (
                     f"File to text API response: {response.status_code}, "
@@ -362,7 +365,7 @@ class Attachment(models.Model):
                 )
                 logger.error(msg)
                 self.text_content_update_result = msg
-                self.save()
+                self.save(update_fields=["text_content_update_result"])
                 return False
 
             payload = response.json()
@@ -377,7 +380,7 @@ class Attachment(models.Model):
 
             self.text_content = payload.get("text")
             self.text_content_update_result = payload.get("message", "")
-            self.save()
+            self.save(update_fields=["text_content", "text_content_update_result"])
             return True
 
         except Exception as exc:
@@ -386,9 +389,18 @@ class Attachment(models.Model):
                 self.pk,
                 exc,
             )
-            self.text_content_update_result = str(exc)
-            self.save()
+            try:
+                close_old_connections()
+                self.text_content_update_result = str(exc)
+                self.save(update_fields=["text_content_update_result"])
+            except Exception:
+                logger.exception(
+                    "Attachment pk=%s failed to persist failure status",
+                    self.pk,
+                )
             return False
+        finally:
+            close_old_connections()
 
     @property
     def text_content_warning(self):

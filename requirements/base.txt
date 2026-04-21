@@ -1,4 +1,4 @@
-Django==5.2.12
+Django==5.2.13
 
 # Configuration
 django-environ==0.13.0
@@ -29,7 +29,7 @@ django-autoslug==1.9.9
 # Useful things
 # Time zones support
 pytz==2026.1.post1
-lxml==6.0.2
+lxml==6.0.3
 cssselect==1.4.0
 # Your custom requirements go here
 django-guardian==3.3.1
@@ -59,7 +59,7 @@ pyGravatar==0.0.6
 # django-bootstrap-pagination==1.7.1
 git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master#egg=django-bootstrap-pagination
 
-sentry-sdk==2.57.0
+sentry-sdk==2.58.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
