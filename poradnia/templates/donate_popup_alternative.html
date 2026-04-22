@@ -2,7 +2,9 @@
 
 <style>
 #alt-popup-container {
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
     position: fixed;
     top: 50%;
     left: 50%;
@@ -16,6 +18,19 @@
     white-space: nowrap;
     text-align: center;
     border-radius: 10px;
+}
+#alt-popup-container.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 400ms ease, visibility 0s linear 0s;
+}
+@media (max-width: 999px) {
+    #alt-popup-container {
+        white-space: normal;
+        overflow: auto;
+        max-height: 90vh;
+        max-width: 90vw;
+    }
 }
 #alt-popup-container a {
     color: white;
