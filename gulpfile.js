@@ -70,7 +70,6 @@ const config = {
       path.npm + "/pikaday-time/pikaday.js",
       path.npm + "/patternomaly/dist/patternomaly.js",
       path.assets + "/js/*.js",
-      path.app + "/navsearch/static/navsearch/*.js",
       path.npm + "/datatables.net/js/jquery.dataTables.js",
       path.npm + "/datatables.net-dt/js/dataTables.dataTables.js",
       path.npm + "/datatables.net-buttons/js/dataTables.buttons.js",
