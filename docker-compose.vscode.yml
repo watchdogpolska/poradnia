@@ -1,0 +1,25 @@
+---
+# Docker Compose override for VSCode remote debugging.
+#
+# The web container runs migrations then sleeps so VSCode can start
+# and debug the Django server via a launch configuration.
+#
+# Usage — pick one:
+#
+#   Option 1 (one-off):
+#     docker-compose -f docker-compose.yml -f docker-compose.vscode.yml up
+#
+#   Option 2 (current shell session):
+#     export COMPOSE_FILE=docker-compose.yml:docker-compose.vscode.yml
+#     docker-compose up
+#
+#   Option 3 (persistent, via .env — recommended for daily work):
+#     echo "COMPOSE_FILE=docker-compose.yml:docker-compose.vscode.yml" >> .env
+#     docker-compose up
+
+services:
+  web:
+    command: >
+      bash -c "python manage.py collectstatic --no-input &&
+               python manage.py migrate &&
+               sleep infinity"

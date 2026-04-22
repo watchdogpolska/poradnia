@@ -503,9 +503,17 @@ ROSETTA_EXCLUDED_APPLICATIONS = (
 )
 AZURE_CLIENT_SECRET = env.str("ROSETTA_AZURE_CLIENT_SECRET", "")
 
-# Cludflare turnstile settings
+# Cloudflare Turnstile CAPTCHA settings
 TURNSTILE_SITEKEY = env.str("TURNSTILE_SITE_KEY", "")
 TURNSTILE_SECRET = env.str("TURNSTILE_SECRET_KEY", "")
+# When False, removes the Turnstile CAPTCHA field from NewCaseForm.
+# Set to False in local development to skip CAPTCHA without configuring Turnstile keys.
+TURNSTILE_ENABLE = env.bool("TURNSTILE_ENABLE", True)
+
+# When False, EnforceStaffMfaOnPasswordLoginMiddleware is fully disabled.
+# Set to False in local development to allow staff (including superusers) to log in
+# with password only, without configuring TOTP.
+MFA_ENFORCE_ENABLED = env.bool("MFA_ENFORCE_ENABLED", True)
 
 # Send notifications to case or letter change/addition author
 NOTIFY_AUTHOR = env.bool("NOTIFY_AUTHOR", True)
@@ -554,6 +562,9 @@ BLEACH_ALLOWED_ATTRIBUTES = ALLOWED_ATTRIBUTES = {
 # Using RabbitMQ as message broker and database for result backend
 
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
+CELERY_BROKER_CONNECTION_MAX_RETRIES = None
+CELERY_BROKER_CONNECTION_TIMEOUT = 10  # default is often too high
+CELERY_BROKER_HEARTBEAT = 30  # helps detect dead connections faster
 CELERY_BROKER_URL = env.str("CELERY_BROKER_URL", "amqp://guest:guest@localhost:5672//")
 CELERY_TIMEZONE = TIME_ZONE  # Use Django's timezone setting
 CELERY_ENABLE_UTC = USE_TZ  # Use Django's UTC setting
@@ -577,7 +588,7 @@ CELERY_TASK_MAX_RETRIES = 3
 
 # Worker settings
 CELERY_WORKER_PREFETCH_MULTIPLIER = 1  # Disable prefetching for better load balancing
-CELERY_WORKER_MAX_TASKS_PER_CHILD = 100  # Restart worker after 1000 tasks
+CELERY_WORKER_MAX_TASKS_PER_CHILD = 100  # Restart worker after 100 tasks
 CELERY_TASK_ACKS_LATE = False  # keep default
 CELERY_TASK_REJECT_ON_WORKER_LOST = True
 CELERY_TASK_SOFT_TIME_LIMIT = 330
