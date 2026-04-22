@@ -1,5 +1,6 @@
 import logging
 import re
+from email.utils import formataddr
 
 from allauth.account.models import EmailAddress
 from django.contrib.auth.models import AbstractUser, UserManager
@@ -283,7 +284,7 @@ class User(GuardianUserMixin, AbstractUser):
 
     def _get_email_name(self, actor, from_email):
         if from_email:
-            return "{} <{}>".format(actor, from_email)
+            return formataddr((str(actor), from_email))
         return None
 
     def notify(self, actor, verb, **kwargs):
