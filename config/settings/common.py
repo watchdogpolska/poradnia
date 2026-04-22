@@ -18,6 +18,7 @@ ROOT_DIR = environ.Path(__file__) - 3
 
 APPS_DIR = ROOT_DIR.path("poradnia")
 env = environ.Env()
+env.read_env(str(ROOT_DIR(".env")))
 APP_MODE = env.str("APP_MODE", "DEMO")
 
 # APP CONFIGURATION
@@ -503,9 +504,17 @@ ROSETTA_EXCLUDED_APPLICATIONS = (
 )
 AZURE_CLIENT_SECRET = env.str("ROSETTA_AZURE_CLIENT_SECRET", "")
 
-# Cludflare turnstile settings
+# Cloudflare Turnstile CAPTCHA settings
 TURNSTILE_SITEKEY = env.str("TURNSTILE_SITE_KEY", "")
 TURNSTILE_SECRET = env.str("TURNSTILE_SECRET_KEY", "")
+# When False, removes the Turnstile CAPTCHA field from NewCaseForm.
+# Set to False in local development to skip CAPTCHA without configuring Turnstile keys.
+TURNSTILE_ENABLE = env.bool("TURNSTILE_ENABLE", True)
+
+# When False, EnforceStaffMfaOnPasswordLoginMiddleware is fully disabled.
+# Set to False in local development to allow staff (including superusers) to log in
+# with password only, without configuring TOTP.
+MFA_ENFORCE_ENABLED = env.bool("MFA_ENFORCE_ENABLED", True)
 
 # Send notifications to case or letter change/addition author
 NOTIFY_AUTHOR = env.bool("NOTIFY_AUTHOR", True)

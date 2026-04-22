@@ -126,6 +126,10 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
             del self.fields["email_registration"]
             self.helper.layout.fields.remove("email_registration")
 
+        if not settings.TURNSTILE_ENABLE:
+            del self.fields["turnstile"]
+            self.helper.layout.fields.remove("turnstile")
+
         if not (self.user.is_anonymous or self._is_super_staff()):
             del self.fields["giodo"]
             self.helper.layout.fields.remove("giodo")
