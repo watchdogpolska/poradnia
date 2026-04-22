@@ -62,7 +62,22 @@ class EnforceStaffMfaOnPasswordLoginMiddleware:
     def __init__(self, get_response):
         self.get_response = get_response
 
+    def _is_e2e_bypass(self, request) -> bool:
+        if not getattr(settings, "E2E_MFA_BYPASS_ENABLED", False):
+            return False
+        secret = getattr(settings, "E2E_MFA_BYPASS_SECRET", "")
+        return bool(secret and request.COOKIES.get("e2e_bypass_mfa") == secret)
+
+    def _is_exempt_url_name(self, request) -> bool:
+        try:
+            return resolve(request.path_info).url_name in self.EXEMPT_URL_NAMES
+        except Exception:
+            return False
+
     def __call__(self, request):
+        if not settings.MFA_ENFORCE_ENABLED:
+            return self.get_response(request)
+
         user = getattr(request, "user", None)
         path = request.path_info
 
@@ -85,27 +100,8 @@ class EnforceStaffMfaOnPasswordLoginMiddleware:
         ):
             return self.get_response(request)
 
-        # Debug logging to help troubleshoot any issues with E2E bypass
-        # logger.info(
-        #     "E2E enabled=%s",
-        #     getattr(settings, "E2E_MFA_BYPASS_ENABLED", None),
-        # )
-        # logger.info("E2E secret=%s", getattr(settings, "E2E_MFA_BYPASS_SECRET", None))
-        # logger.info("E2E received cookies=%s", request.COOKIES.get("e2e_bypass_mfa"))
-
-        # E2E tests bypass: if enabled and cookie matches secret, skip MFA enforcement.
-        if getattr(settings, "E2E_MFA_BYPASS_ENABLED", False):
-            secret = getattr(settings, "E2E_MFA_BYPASS_SECRET", "")
-            if secret and request.COOKIES.get("e2e_bypass_mfa") == secret:
-                return self.get_response(request)
-
-        try:
-            match = resolve(request.path_info)
-            if match.url_name in self.EXEMPT_URL_NAMES:
-                return self.get_response(request)
-        except Exception:
-            # If resolve fails for some reason, fall through to enforcement
-            pass
+        if self._is_e2e_bypass(request) or self._is_exempt_url_name(request):
+            return self.get_response(request)
 
         auth_method_types = _get_auth_method_types(request)
 
