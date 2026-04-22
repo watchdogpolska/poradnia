@@ -1,8 +1,7 @@
 Użycie aplikacji
 ================
 
-Dostępne i aktywnie wspierane są aktualnie dwie metody uruchomienia aplikacji. Starsze oparte o Vagrant
-(wspartym przez Ansible) oraz nowsze oparte o Docker.
+Dostępna i aktywnie wspierana jest metoda uruchomienia aplikacji oparta o Docker.
 
 Praca w środowisku Docker
 -------------------------

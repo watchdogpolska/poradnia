@@ -22,7 +22,6 @@ RUN curl -o /usr/local/share/ca-certificates/certum-trusted-root-g2.crt \
 RUN curl -o /usr/local/share/ca-certificates/certum-ov-tls-g2-r39-ca.crt \
    https://repository.certum.pl/certumovtlsg2r39ca.crt
 RUN update-ca-certificates
-RUN git config --global --add safe.directory /code
 COPY requirements/*.txt ./requirements/
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements/dev.txt
