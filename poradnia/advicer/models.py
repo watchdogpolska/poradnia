@@ -16,6 +16,13 @@ from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 
 class AbstractCategory(models.Model):
     name = models.CharField(max_length=100, verbose_name=_("Name"))
+    active = models.BooleanField(default=True, verbose_name=_("Active"))
+    tag_helper = models.TextField(
+        verbose_name=_("Tag helper"),
+        null=True,
+        blank=True,
+        help_text=_("Helper text how to apply the tag."),
+    )
 
     def __str__(self):
         return self.name
