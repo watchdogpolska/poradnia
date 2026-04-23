@@ -110,7 +110,7 @@ def _validate_payload(payload):
     elif not payload["subject"].strip():
         errors["subject"] = ["This field may not be blank."]
 
-    for field in ["institution_kind_id", "jst_id"]:
+    for field in ["institution_kind_id", "person_kind_id", "jst_id"]:
         if field not in payload or not _is_int(payload[field]):
             errors[field] = ["This field is required and must be integer."]
 
@@ -128,7 +128,7 @@ def _resolve_relations(payload, issue_ids, area_ids, errors):
         ("advicer_id", "advicer", User, False),
         ("created_by_id", "created_by", User, False),
         ("modified_by_id", "modified_by", User, True),
-        ("person_kind_id", "person_kind", PersonKind, True),
+        ("person_kind_id", "person_kind", PersonKind, False),
         ("institution_kind_id", "institution_kind", InstitutionKind, False),
         ("jst_id", "jst", JST, False),
     ]
@@ -214,6 +214,7 @@ class AdviceWebhookUpsertView(View):
     Required payload fields:
     - ``subject``: non-empty string
     - ``institution_kind_id``: integer, must reference an existing ``InstitutionKind``
+    - ``person_kind_id``: integer, must reference an existing ``PersonKind``
     - ``jst_id``: integer, must reference an existing ``JST``
     - ``issue_ids``: non-empty list[integer], every id must reference
                      an existing ``Issue``
@@ -228,7 +229,6 @@ class AdviceWebhookUpsertView(View):
     - ``comment``: string or null
     - ``grant_on``: ISO-8601 datetime string
     - ``modified_by_id``: integer or null
-    - ``person_kind_id``: integer or null
     - ``helped``: boolean or null
     - ``visible``: boolean
 
