@@ -125,22 +125,29 @@ def _validate_required_fields(payload, errors):
 
 
 def _validate_optional_fields(payload, errors):
-    if "comment" in payload and payload["comment"] is not None:
-        if not isinstance(payload["comment"], str):
-            errors["comment"] = ["Must be a string or null."]
+    if "comment" in payload:
+        if payload["comment"] is None or not isinstance(payload["comment"], str):
+            errors["comment"] = ["Must be a non-empty string."]
+        elif not payload["comment"].strip():
+            errors["comment"] = ["This field may not be blank."]
 
-    if "helped" in payload and payload["helped"] is not None:
-        if not isinstance(payload["helped"], bool):
-            errors["helped"] = ["Must be a boolean or null."]
+    if "helped" in payload:
+        if payload["helped"] is None or not isinstance(payload["helped"], bool):
+            errors["helped"] = ["Must be a boolean."]
 
-    if "visible" in payload and not isinstance(payload["visible"], bool):
-        errors["visible"] = ["Must be a boolean."]
+    if "visible" in payload:
+        if not isinstance(payload["visible"], bool):
+            errors["visible"] = ["Must be a boolean."]
 
     if "grant_on" in payload:
-        if not isinstance(payload["grant_on"], str) or not parse_datetime(
+        if not payload["grant_on"] or not isinstance(payload["grant_on"], str) or not parse_datetime(
             payload["grant_on"]
         ):
-            errors["grant_on"] = ["Must be a valid ISO-8601 datetime string."]
+            errors["grant_on"] = ["Must be a valid non-empty ISO-8601 datetime string."]
+
+    if "modified_by_id" in payload:
+        if not _is_int(payload["modified_by_id"]):
+            errors["modified_by_id"] = ["Must be an integer."]
 
 
 def _validate_payload(payload):
@@ -263,10 +270,10 @@ class AdviceWebhookUpsertView(View):
     - ``created_by_id``: integer
 
     Optional fields:
-    - ``comment``: string or null
+    - ``comment``: string
     - ``grant_on``: ISO-8601 datetime string
-    - ``modified_by_id``: integer or null
-    - ``helped``: boolean or null
+    - ``modified_by_id``: integer
+    - ``helped``: boolean
     - ``visible``: boolean
 
     Example payload
