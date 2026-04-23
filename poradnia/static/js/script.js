@@ -44940,10 +44940,12 @@ window.AjaxDatatableViewUtils = (function() {
                     involved_staff_filter: function() { return $("select[name='involved_staff_select']").val(); },
                 },
             );
-            $('.filters input, .filters select').on('change paste keyup', function() {
-                // redraw the table
-                $('#datatable_cases').DataTable().ajax.reload(null, false);
-            });
+            const filtersContainer = document.querySelector('.filters');
+            if (filtersContainer) {
+                filtersContainer.addEventListener('change', function() {
+                    $('#datatable_cases').DataTable().ajax.reload(null, false);
+                });
+            }
         }
     });
 })(jQuery);
