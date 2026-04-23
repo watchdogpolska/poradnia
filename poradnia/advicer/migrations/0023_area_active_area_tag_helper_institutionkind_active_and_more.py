@@ -6,48 +6,68 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('advicer', '0022_alter_advice_helped'),
+        ("advicer", "0022_alter_advice_helped"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='area',
-            name='active',
-            field=models.BooleanField(default=True, verbose_name='Active'),
+            model_name="area",
+            name="active",
+            field=models.BooleanField(default=True, verbose_name="Active"),
         ),
         migrations.AddField(
-            model_name='area',
-            name='tag_helper',
-            field=models.TextField(blank=True, help_text='Helper text how to apply the tag.', null=True, verbose_name='Tag helper'),
+            model_name="area",
+            name="tag_helper",
+            field=models.TextField(
+                blank=True,
+                help_text="Helper text how to apply the tag.",
+                null=True,
+                verbose_name="Tag helper",
+            ),
         ),
         migrations.AddField(
-            model_name='institutionkind',
-            name='active',
-            field=models.BooleanField(default=True, verbose_name='Active'),
+            model_name="institutionkind",
+            name="active",
+            field=models.BooleanField(default=True, verbose_name="Active"),
         ),
         migrations.AddField(
-            model_name='institutionkind',
-            name='tag_helper',
-            field=models.TextField(blank=True, help_text='Helper text how to apply the tag.', null=True, verbose_name='Tag helper'),
+            model_name="institutionkind",
+            name="tag_helper",
+            field=models.TextField(
+                blank=True,
+                help_text="Helper text how to apply the tag.",
+                null=True,
+                verbose_name="Tag helper",
+            ),
         ),
         migrations.AddField(
-            model_name='issue',
-            name='active',
-            field=models.BooleanField(default=True, verbose_name='Active'),
+            model_name="issue",
+            name="active",
+            field=models.BooleanField(default=True, verbose_name="Active"),
         ),
         migrations.AddField(
-            model_name='issue',
-            name='tag_helper',
-            field=models.TextField(blank=True, help_text='Helper text how to apply the tag.', null=True, verbose_name='Tag helper'),
+            model_name="issue",
+            name="tag_helper",
+            field=models.TextField(
+                blank=True,
+                help_text="Helper text how to apply the tag.",
+                null=True,
+                verbose_name="Tag helper",
+            ),
         ),
         migrations.AddField(
-            model_name='personkind',
-            name='active',
-            field=models.BooleanField(default=True, verbose_name='Active'),
+            model_name="personkind",
+            name="active",
+            field=models.BooleanField(default=True, verbose_name="Active"),
         ),
         migrations.AddField(
-            model_name='personkind',
-            name='tag_helper',
-            field=models.TextField(blank=True, help_text='Helper text how to apply the tag.', null=True, verbose_name='Tag helper'),
+            model_name="personkind",
+            name="tag_helper",
+            field=models.TextField(
+                blank=True,
+                help_text="Helper text how to apply the tag.",
+                null=True,
+                verbose_name="Tag helper",
+            ),
         ),
     ]
