@@ -56,6 +56,144 @@ def _validate_required_id_list(payload, field_name, errors):
     return value
 
 
+def _check_token(request):
+    configured = getattr(settings, "ADVICER_WEBHOOK_BEARER_TOKEN", "") or os.getenv(
+        "ADVICER_WEBHOOK_BEARER_TOKEN", ""
+    )
+    if not configured:
+        return _json_error("webhook_not_configured", "Token not configured.", 503)
+
+    auth = request.headers.get("Authorization", "")
+    if not auth.startswith("Bearer "):
+        return _json_error("unauthorized", "Missing bearer token.", 401)
+
+    token = auth.removeprefix("Bearer ").strip()
+    if not hmac.compare_digest(token, configured):
+        return _json_error("unauthorized", "Invalid bearer token.", 401)
+
+    return None
+
+
+def _parse_payload(request):
+    try:
+        data = json.loads(request.body.decode("utf-8") or "{}")
+    except (UnicodeDecodeError, json.JSONDecodeError):
+        return None, _json_error("invalid_json", "Invalid JSON.", 400)
+
+    if not isinstance(data, dict):
+        return None, _json_error("invalid_payload", "Must be JSON object.", 400)
+
+    return data, None
+
+
+def _validate_payload(payload):
+    errors = {}
+
+    has_advice_id = "advice_id" in payload
+    has_case_id = "case_id" in payload
+
+    if not has_advice_id and not has_case_id:
+        msg = ["Exactly one of advice_id or case_id is required."]
+        errors["advice_id"] = msg
+        errors["case_id"] = msg
+    elif has_advice_id and has_case_id:
+        msg = ["Only one of advice_id or case_id is allowed, not both."]
+        errors["advice_id"] = msg
+        errors["case_id"] = msg
+
+    for field in ["advice_id", "case_id"]:
+        if field in payload and not _is_int(payload[field]):
+            errors[field] = ["This field must be integer."]
+
+    if "subject" not in payload or not isinstance(payload["subject"], str):
+        errors["subject"] = ["This field is required and must be string."]
+    elif not payload["subject"].strip():
+        errors["subject"] = ["This field may not be blank."]
+
+    for field in ["institution_kind_id", "jst_id"]:
+        if field not in payload or not _is_int(payload[field]):
+            errors[field] = ["This field is required and must be integer."]
+
+    issue_ids = _validate_required_id_list(payload, "issue_ids", errors)
+    area_ids = _validate_required_id_list(payload, "area_ids", errors)
+
+    return errors, issue_ids, area_ids
+
+
+def _resolve_relations(payload, issue_ids, area_ids, errors):
+    resolved = {}
+    User = get_user_model()
+
+    fk_map = [
+        ("advicer_id", "advicer", User, False),
+        ("created_by_id", "created_by", User, False),
+        ("modified_by_id", "modified_by", User, True),
+        ("person_kind_id", "person_kind", PersonKind, True),
+        ("institution_kind_id", "institution_kind", InstitutionKind, False),
+        ("jst_id", "jst", JST, False),
+    ]
+
+    for key, attr, model, allow_null in fk_map:
+        if key not in payload:
+            continue
+
+        val = payload[key]
+        if val is None:
+            if not allow_null:
+                errors[key] = ["Cannot be null."]
+            continue
+
+        obj = model.objects.filter(pk=val).first()
+        if not obj:
+            errors[key] = [f"{model.__name__} not found."]
+            continue
+
+        if key == "advicer_id" and not obj.is_staff:
+            errors[key] = ["Advicer must be staff."]
+            continue
+
+        resolved[attr] = obj
+
+    if "case_id" in payload:
+        case = Case.objects.filter(pk=payload["case_id"]).first()
+        if not case:
+            errors["case_id"] = ["Case not found."]
+        else:
+            resolved["case"] = case
+
+    issue_map = Issue.objects.in_bulk(issue_ids)
+    if set(issue_ids) != set(issue_map):
+        errors["issue_ids"] = ["Invalid issue ids."]
+    else:
+        resolved["issues"] = list(issue_map.values())
+
+    area_map = Area.objects.in_bulk(area_ids)
+    if set(area_ids) != set(area_map):
+        errors["area_ids"] = ["Invalid area ids."]
+    else:
+        resolved["area"] = list(area_map.values())
+
+    return resolved
+
+
+def _get_or_create_advice(payload, resolved):
+    advice_id = payload.get("advice_id")
+    if advice_id is not None:
+        advice = Advice.objects.filter(pk=advice_id).first()
+        if not advice:
+            return None, _json_error("advice_not_found", "Advice not found.", 404)
+        return advice, False
+
+    # case_id path: update existing or create new
+    case_id = payload.get("case_id")
+    advice = Advice.objects.filter(case_id=case_id).first()
+    if advice:
+        return advice, False
+
+    advice = Advice(case=resolved.get("case"))
+    return advice, True
+
+
 @method_decorator(csrf_exempt, name="dispatch")
 class AdviceWebhookUpsertView(View):
     """
@@ -69,9 +207,9 @@ class AdviceWebhookUpsertView(View):
 
     JSON schema
     -----------
-    At least one identifier is required:
-    - ``advice_id``: integer, optional. Existing ``Advice.pk`` to update.
-    - ``case_id``: integer, optional. Used as an upsert key through ``Advice.case``.
+    Only one identifier is required and allowed for upsert operation:
+    - ``advice_id``: integer. Existing ``Advice.pk`` to update.
+    - ``case_id``: integer. Used to create Advice for Case with ``Advice.case`` set.
 
     Required payload fields:
     - ``subject``: non-empty string
@@ -131,247 +269,44 @@ class AdviceWebhookUpsertView(View):
     """
 
     def post(self, request, *args, **kwargs):
-        configured_token = getattr(
-            settings, "ADVICER_WEBHOOK_BEARER_TOKEN", ""
-        ) or os.getenv("ADVICER_WEBHOOK_BEARER_TOKEN", "")
-        if not configured_token:
-            return _json_error(
-                code="webhook_not_configured",
-                message="Advice webhook token is not configured.",
-                status=503,
-            )
+        err = _check_token(request)
+        if err:
+            return err
 
-        auth_header = request.headers.get("Authorization", "")
-        if not auth_header.startswith("Bearer "):
-            return _json_error(
-                code="unauthorized",
-                message="Missing bearer token.",
-                status=401,
-            )
+        payload, err = _parse_payload(request)
+        if err:
+            return err
 
-        token = auth_header.removeprefix("Bearer ").strip()
-        if not token or not hmac.compare_digest(token, configured_token):
-            return _json_error(
-                code="unauthorized",
-                message="Invalid bearer token.",
-                status=401,
-            )
-
-        try:
-            payload = json.loads(request.body.decode("utf-8") or "{}")
-        except (UnicodeDecodeError, json.JSONDecodeError):
-            return _json_error(
-                code="invalid_json",
-                message="Request body must contain valid JSON.",
-                status=400,
-            )
-
-        if not isinstance(payload, dict):
-            return _json_error(
-                code="invalid_payload",
-                message="JSON payload must be an object.",
-                status=400,
-            )
-
-        errors = {}
-        advice_id = payload.get("advice_id")
-        case_id = payload.get("case_id")
-
-        if advice_id is None and case_id is None:
-            errors["non_field_errors"] = [
-                "Provide at least one of advice_id or case_id."
-            ]
-        if advice_id is not None and not _is_int(advice_id):
-            errors["advice_id"] = ["Must be an integer."]
-        if case_id is not None and not _is_int(case_id):
-            errors["case_id"] = ["Must be an integer."]
-
-        if "subject" not in payload:
-            errors["subject"] = ["This field is required."]
-        else:
-            subject = payload["subject"]
-            if not isinstance(subject, str):
-                errors["subject"] = ["Must be a string."]
-            elif not subject.strip():
-                errors["subject"] = ["This field may not be blank."]
-
-        if "comment" in payload:
-            value = payload["comment"]
-            if value is not None and not isinstance(value, str):
-                errors["comment"] = ["Must be a string or null."]
-
-        if "grant_on" in payload:
-            value = payload["grant_on"]
-            if not isinstance(value, str) or parse_datetime(value) is None:
-                errors["grant_on"] = ["Must be a valid ISO-8601 datetime string."]
-
-        required_int_fields = ["institution_kind_id", "jst_id"]
-        optional_int_fields = [
-            "advicer_id",
-            "created_by_id",
-            "modified_by_id",
-            "person_kind_id",
-        ]
-
-        for field_name in required_int_fields:
-            if field_name not in payload:
-                errors[field_name] = ["This field is required."]
-            elif not _is_int(payload[field_name]):
-                errors[field_name] = ["Must be an integer."]
-
-        for field_name in optional_int_fields:
-            if field_name in payload:
-                value = payload[field_name]
-                if value is not None and not _is_int(value):
-                    errors[field_name] = ["Must be an integer or null."]
-
-        if (
-            "helped" in payload
-            and payload["helped"] is not None
-            and not isinstance(payload["helped"], bool)
-        ):
-            errors["helped"] = ["Must be a boolean or null."]
-
-        if "visible" in payload and not isinstance(payload["visible"], bool):
-            errors["visible"] = ["Must be a boolean."]
-
-        issue_ids = _validate_required_id_list(payload, "issue_ids", errors)
-        area_ids = _validate_required_id_list(payload, "area_ids", errors)
-
+        errors, issue_ids, area_ids = _validate_payload(payload)
         if errors:
-            return _json_error(
-                code="validation_error",
-                message="Payload validation failed.",
-                status=400,
-                fields=errors,
-            )
+            return _json_error("validation_error", "Invalid payload.", 400, errors)
 
-        advice = None
-        if advice_id is not None:
-            advice = Advice.objects.filter(pk=advice_id).first()
-            if advice is None:
-                return _json_error(
-                    code="advice_not_found",
-                    message="Advice not found.",
-                    status=404,
-                )
-
-        case = None
-        if case_id is not None:
-            case = Case.objects.filter(pk=case_id).first()
-            if case is None:
-                errors["case_id"] = ["Case not found."]
-            elif advice is not None and advice.case_id not in (None, case.pk):
-                errors["case_id"] = ["Does not match the existing advice.case_id."]
-
-        if advice is None and case_id is not None:
-            advice = Advice.objects.filter(case_id=case_id).first()
-
-        created = advice is None
-
-        if created:
-            if "advicer_id" not in payload:
-                errors["advicer_id"] = [
-                    "This field is required when creating an Advice."
-                ]
-            if "created_by_id" not in payload:
-                errors["created_by_id"] = [
-                    "This field is required when creating an Advice."
-                ]
-            advice = Advice()
-
-        User = get_user_model()
-
-        resolved_values = {}
-        fk_specs = [
-            ("advicer_id", "advicer", User, False),
-            ("created_by_id", "created_by", User, False),
-            ("modified_by_id", "modified_by", User, True),
-            ("person_kind_id", "person_kind", PersonKind, True),
-            (
-                "institution_kind_id",
-                "institution_kind",
-                InstitutionKind,
-                False,
-            ),
-            ("jst_id", "jst", JST, False),
-        ]
-
-        for payload_key, attr_name, model, allow_null in fk_specs:
-            if payload_key not in payload:
-                continue
-
-            value = payload[payload_key]
-            if value is None:
-                if allow_null:
-                    resolved_values[attr_name] = None
-                else:
-                    errors[payload_key] = ["This field may not be null."]
-                continue
-
-            instance = model.objects.filter(pk=value).first()
-            if instance is None:
-                errors[payload_key] = [f"{model.__name__} not found."]
-                continue
-
-            if payload_key == "advicer_id" and not instance.is_staff:
-                errors[payload_key] = ["Advicer must reference a staff user."]
-                continue
-
-            resolved_values[attr_name] = instance
-
-        issue_map = Issue.objects.in_bulk(issue_ids)
-        missing_issue_ids = sorted(set(issue_ids) - set(issue_map))
-        if missing_issue_ids:
-            errors["issue_ids"] = [f"Issue ids not found: {missing_issue_ids}"]
-        else:
-            resolved_values["issues"] = [issue_map[pk] for pk in issue_ids]
-
-        area_map = Area.objects.in_bulk(area_ids)
-        missing_area_ids = sorted(set(area_ids) - set(area_map))
-        if missing_area_ids:
-            errors["area_ids"] = [f"Area ids not found: {missing_area_ids}"]
-        else:
-            resolved_values["area"] = [area_map[pk] for pk in area_ids]
-
+        resolved = _resolve_relations(payload, issue_ids, area_ids, errors)
         if errors:
-            return _json_error(
-                code="validation_error",
-                message="Payload validation failed.",
-                status=400,
-                fields=errors,
-            )
+            return _json_error("validation_error", "Invalid relations.", 400, errors)
+
+        advice, created = _get_or_create_advice(payload, resolved)
+        if isinstance(created, JsonResponse):
+            return created
 
         with transaction.atomic():
-            if case_id is not None:
-                advice.case = case
-
             advice.subject = payload["subject"].strip()
 
-            for field_name in ["comment", "helped", "visible"]:
-                if field_name in payload:
-                    setattr(advice, field_name, payload[field_name])
+            for f in ["comment", "helped", "visible"]:
+                if f in payload:
+                    setattr(advice, f, payload[f])
 
             if "grant_on" in payload:
                 advice.grant_on = parse_datetime(payload["grant_on"])
 
-            for attr_name in [
-                "advicer",
-                "created_by",
-                "modified_by",
-                "person_kind",
-                "institution_kind",
-                "jst",
-            ]:
-                if attr_name in resolved_values:
-                    setattr(advice, attr_name, resolved_values[attr_name])
-
-            if created and "modified_by" not in resolved_values:
-                advice.modified_by = resolved_values["created_by"]
+            for attr, val in resolved.items():
+                if attr not in ("issues", "area"):
+                    setattr(advice, attr, val)
 
             advice.save()
-            advice.issues.set(resolved_values["issues"])
-            advice.area.set(resolved_values["area"])
+
+            advice.issues.set(resolved["issues"])
+            advice.area.set(resolved["area"])
 
         return JsonResponse(
             {
@@ -379,7 +314,6 @@ class AdviceWebhookUpsertView(View):
                 "result": "created" if created else "updated",
                 "advice_id": advice.pk,
                 "case_id": advice.case_id,
-                "detail_url": advice.get_absolute_url(),
             },
             status=201 if created else 200,
         )
