@@ -125,29 +125,32 @@ def _validate_required_fields(payload, errors):
 
 
 def _validate_optional_fields(payload, errors):
-    if "comment" in payload:
-        if payload["comment"] is None or not isinstance(payload["comment"], str):
-            errors["comment"] = ["Must be a non-empty string."]
-        elif not payload["comment"].strip():
-            errors["comment"] = ["This field may not be blank."]
+    if "comment" in payload and (
+        payload["comment"] is None
+        or not isinstance(payload["comment"], str)
+        or not payload["comment"].strip()
+    ):
+        errors["comment"] = ["Must be a non-empty string."]
 
-    if "helped" in payload:
-        if payload["helped"] is None or not isinstance(payload["helped"], bool):
-            errors["helped"] = ["Must be a boolean."]
+    if "helped" in payload and (
+        payload["helped"] is None or not isinstance(payload["helped"], bool)
+    ):
+        errors["helped"] = ["Must be a boolean."]
 
-    if "visible" in payload:
-        if not isinstance(payload["visible"], bool):
-            errors["visible"] = ["Must be a boolean."]
+    if "visible" in payload and (
+        payload["visible"] is None or not isinstance(payload["visible"], bool)
+    ):
+        errors["visible"] = ["Must be a boolean."]
 
-    if "grant_on" in payload:
-        if not payload["grant_on"] or not isinstance(payload["grant_on"], str) or not parse_datetime(
-            payload["grant_on"]
-        ):
-            errors["grant_on"] = ["Must be a valid non-empty ISO-8601 datetime string."]
+    if "grant_on" in payload and (
+        not payload["grant_on"]
+        or not isinstance(payload["grant_on"], str)
+        or not parse_datetime(payload["grant_on"])
+    ):
+        errors["grant_on"] = ["Must be a valid non-empty ISO-8601 datetime string."]
 
-    if "modified_by_id" in payload:
-        if not _is_int(payload["modified_by_id"]):
-            errors["modified_by_id"] = ["Must be an integer."]
+    if "modified_by_id" in payload and not _is_int(payload["modified_by_id"]):
+        errors["modified_by_id"] = ["Must be an integer."]
 
 
 def _validate_payload(payload):
@@ -164,39 +167,62 @@ def _validate_payload(payload):
     return errors, issue_ids, area_ids
 
 
+def _resolve_fk(payload, key, attr, model, errors, allow_null=False, validator=None):
+    if key not in payload:
+        return None
+
+    val = payload[key]
+    if val is None:
+        if not allow_null:
+            errors[key] = ["Cannot be null."]
+        return None
+
+    obj = model.objects.filter(pk=val).first()
+    if not obj:
+        errors[key] = [f"{model.__name__} not found."]
+        return None
+
+    if validator is not None:
+        validation_error = validator(obj)
+        if validation_error:
+            errors[key] = [validation_error]
+            return None
+
+    return attr, obj
+
+
+def _validate_advicer(user):
+    if not user.is_staff:
+        return "Advicer must be staff."
+    return None
+
+
 def _resolve_relations(payload, issue_ids, area_ids, errors):
     resolved = {}
     User = get_user_model()
 
     fk_map = [
-        ("advicer_id", "advicer", User, False),
-        ("created_by_id", "created_by", User, False),
-        ("modified_by_id", "modified_by", User, True),
-        ("person_kind_id", "person_kind", PersonKind, False),
-        ("institution_kind_id", "institution_kind", InstitutionKind, False),
-        ("jst_id", "jst", JST, False),
+        ("advicer_id", "advicer", User, False, _validate_advicer),
+        ("created_by_id", "created_by", User, False, None),
+        ("modified_by_id", "modified_by", User, True, None),
+        ("person_kind_id", "person_kind", PersonKind, False, None),
+        ("institution_kind_id", "institution_kind", InstitutionKind, False, None),
+        ("jst_id", "jst", JST, False, None),
     ]
 
-    for key, attr, model, allow_null in fk_map:
-        if key not in payload:
-            continue
-
-        val = payload[key]
-        if val is None:
-            if not allow_null:
-                errors[key] = ["Cannot be null."]
-            continue
-
-        obj = model.objects.filter(pk=val).first()
-        if not obj:
-            errors[key] = [f"{model.__name__} not found."]
-            continue
-
-        if key == "advicer_id" and not obj.is_staff:
-            errors[key] = ["Advicer must be staff."]
-            continue
-
-        resolved[attr] = obj
+    for key, attr, model, allow_null, validator in fk_map:
+        result = _resolve_fk(
+            payload=payload,
+            key=key,
+            attr=attr,
+            model=model,
+            errors=errors,
+            allow_null=allow_null,
+            validator=validator,
+        )
+        if result:
+            attr, obj = result
+            resolved[attr] = obj
 
     if "case_id" in payload:
         case = Case.objects.filter(pk=payload["case_id"]).first()
