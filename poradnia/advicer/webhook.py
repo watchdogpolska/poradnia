@@ -77,8 +77,10 @@ class AdviceWebhookUpsertView(View):
     - ``subject``: non-empty string
     - ``institution_kind_id``: integer, must reference an existing ``InstitutionKind``
     - ``jst_id``: integer, must reference an existing ``JST``
-    - ``issue_ids``: non-empty list[integer], every id must reference an existing ``Issue``
-    - ``area_ids``: non-empty list[integer], every id must reference an existing ``Area``
+    - ``issue_ids``: non-empty list[integer], every id must reference
+                     an existing ``Issue``
+    - ``area_ids``: non-empty list[integer], every id must reference
+                    an existing ``Area``
 
     Create additionally requires:
     - ``advicer_id``: integer, must point to a staff user
