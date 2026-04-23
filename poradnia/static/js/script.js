@@ -45094,10 +45094,6 @@ window.AjaxDatatableViewUtils = (function() {
                     // extra_data
                 },
             );
-            // $('.filters input').on('change paste keyup', function() {
-            //     // redraw the table
-            //     $('#datatable_letters').DataTable().ajax.reload(null, false);
-            // });
         }
     });
 })(jQuery);
