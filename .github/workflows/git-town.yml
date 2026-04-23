@@ -15,3 +15,6 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - uses: git-town/action@v1
+        with:
+          perennial-branches: |
+            dev
