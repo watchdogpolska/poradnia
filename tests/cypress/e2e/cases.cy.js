@@ -229,4 +229,49 @@ describe("cases", () => {
     cy.contains(caseA.title).click();
     cy.contains(caseA.content);
   });
+
+  it("staff can toggle status filters to reload the case table", () => {
+    const user = User.fromId("testUser");
+    register(cy)(user);
+    addSuperUserPrivileges(cy)(user);
+
+    // Create two cases. Both default to status "free".
+    const cases = ["caseA", "caseB"].map(Case.fromId);
+    for (const case_ of cases) {
+      cy.contains("Nowa sprawa").click();
+      cy.contains("form", "Treść").within(($form) => {
+        submitCaseForm(cy)($form, case_);
+      });
+    }
+
+    cy.closeDonatePopup();
+    cy.contains("Wykaz spraw").click();
+
+    cy.intercept("GET", "/sprawy/case_table_ajax_data/*").as("dtAjax");
+
+    // Initial load — both cases visible in the table body.
+    cy.wait("@dtAjax");
+    cy.get("#datatable_cases tbody").within(() => {
+      cy.contains(cases[0].title);
+      cy.contains(cases[1].title);
+    });
+
+    // Unchecking status_free triggers the new native change listener,
+    // which calls DataTables ajax.reload(). Both cases (status=free)
+    // should disappear.
+    cy.get('input[name="check_status_free"]').uncheck();
+    cy.wait("@dtAjax");
+    cy.get("#datatable_cases tbody").within(() => {
+      cy.contains(cases[0].title).should("not.exist");
+      cy.contains(cases[1].title).should("not.exist");
+    });
+
+    // Re-check — rows reappear.
+    cy.get('input[name="check_status_free"]').check();
+    cy.wait("@dtAjax");
+    cy.get("#datatable_cases tbody").within(() => {
+      cy.contains(cases[0].title);
+      cy.contains(cases[1].title);
+    });
+  });
 });
