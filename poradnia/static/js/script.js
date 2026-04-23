@@ -25845,7 +25845,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
 
-    $(function () {
+    function initFormSave() {
         function storageAvailable(type) {
             try {
                 var storage = window[type],
@@ -25919,7 +25919,13 @@ document.addEventListener('DOMContentLoaded', function () {
             loadInitalData(inputs, saveKey);
             setupListeners(inputs, saveKey);
         });
-    });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initFormSave);
+    } else {
+        initFormSave();
+    }
 })(jQuery);
 
 document.addEventListener('DOMContentLoaded', function() {
