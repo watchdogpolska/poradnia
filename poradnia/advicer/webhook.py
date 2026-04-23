@@ -264,6 +264,25 @@ def _get_or_create_advice(payload, resolved):
     return advice, True
 
 
+def _apply_advice_payload(advice, payload, resolved):
+    advice.subject = payload["subject"].strip()
+
+    for f in ["comment", "helped", "visible"]:
+        if f in payload:
+            setattr(advice, f, payload[f])
+
+    if "grant_on" in payload:
+        advice.grant_on = parse_datetime(payload["grant_on"])
+
+    for attr, val in resolved.items():
+        if attr not in ("issues", "area"):
+            setattr(advice, attr, val)
+
+    advice.save()
+    advice.issues.set(resolved["issues"])
+    advice.area.set(resolved["area"])
+
+
 @method_decorator(csrf_exempt, name="dispatch")
 class AdviceWebhookUpsertView(View):
     """
@@ -360,23 +379,7 @@ class AdviceWebhookUpsertView(View):
             return created
 
         with transaction.atomic():
-            advice.subject = payload["subject"].strip()
-
-            for f in ["comment", "helped", "visible"]:
-                if f in payload:
-                    setattr(advice, f, payload[f])
-
-            if "grant_on" in payload:
-                advice.grant_on = parse_datetime(payload["grant_on"])
-
-            for attr, val in resolved.items():
-                if attr not in ("issues", "area"):
-                    setattr(advice, attr, val)
-
-            advice.save()
-
-            advice.issues.set(resolved["issues"])
-            advice.area.set(resolved["area"])
+            _apply_advice_payload(advice, payload, resolved)
 
         return JsonResponse(
             {
