@@ -86,13 +86,10 @@ def _parse_payload(request):
     return data, None
 
 
-def _validate_payload(payload):
-    errors = {}
-
+def _validate_identifiers(payload, errors):
     has_advice_id = "advice_id" in payload
     has_case_id = "case_id" in payload
 
-    # Validate mutually exclusive identifiers
     if not has_advice_id and not has_case_id:
         msg = ["Exactly one of advice_id or case_id is required."]
         errors["advice_id"] = msg
@@ -102,7 +99,12 @@ def _validate_payload(payload):
         errors["advice_id"] = msg
         errors["case_id"] = msg
 
-    # Validate required fields on create (case_id path implies potential creation)
+    for field in ["advice_id", "case_id"]:
+        if field in payload and not _is_int(payload[field]):
+            errors[field] = ["This field must be integer."]
+
+
+def _validate_create_requirements(payload, errors):
     if "case_id" in payload and "advice_id" not in payload:
         for field in ["advicer_id", "created_by_id"]:
             if field not in payload or not _is_int(payload[field]):
@@ -110,11 +112,8 @@ def _validate_payload(payload):
                     "This field is required on create and must be integer."
                 ]
 
-    # Validate required typed fields
-    for field in ["advice_id", "case_id"]:
-        if field in payload and not _is_int(payload[field]):
-            errors[field] = ["This field must be integer."]
 
+def _validate_required_fields(payload, errors):
     if "subject" not in payload or not isinstance(payload["subject"], str):
         errors["subject"] = ["This field is required and must be string."]
     elif not payload["subject"].strip():
@@ -124,7 +123,8 @@ def _validate_payload(payload):
         if field not in payload or not _is_int(payload[field]):
             errors[field] = ["This field is required and must be integer."]
 
-    # Validate optional typed fields
+
+def _validate_optional_fields(payload, errors):
     if "comment" in payload and payload["comment"] is not None:
         if not isinstance(payload["comment"], str):
             errors["comment"] = ["Must be a string or null."]
@@ -141,6 +141,15 @@ def _validate_payload(payload):
             payload["grant_on"]
         ):
             errors["grant_on"] = ["Must be a valid ISO-8601 datetime string."]
+
+
+def _validate_payload(payload):
+    errors = {}
+
+    _validate_identifiers(payload, errors)
+    _validate_create_requirements(payload, errors)
+    _validate_required_fields(payload, errors)
+    _validate_optional_fields(payload, errors)
 
     issue_ids = _validate_required_id_list(payload, "issue_ids", errors)
     area_ids = _validate_required_id_list(payload, "area_ids", errors)
