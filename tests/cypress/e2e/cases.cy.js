@@ -229,4 +229,44 @@ describe("cases", () => {
     cy.contains(caseA.title).click();
     cy.contains(caseA.content);
   });
+
+  it("filter toggles trigger a DataTables reload on /sprawy/table/", () => {
+    const user = User.fromId("testUser");
+    register(cy)(user);
+    addSuperUserPrivileges(cy)(user);
+
+    // Seed one case so the table is non-empty.
+    const case_ = Case.fromId("caseA");
+    cy.contains("Nowa sprawa").click();
+    cy.contains("form", "Treść").within(($form) => {
+      submitCaseForm(cy)($form, case_);
+    });
+
+    cy.closeDonatePopup();
+    // django-ajax-datatable posts to this path (no query string) — use
+    // pathname so the intercept catches any method without needing a
+    // wildcard that minimatch won't match against an empty suffix.
+    cy.intercept({ pathname: "/sprawy/case_table_ajax_data/" }).as("dtAjax");
+    cy.visit("/sprawy/table/");
+
+    // Initial DataTables load on page arrival.
+    cy.wait("@dtAjax");
+
+    // Each filter change must fire the DataTables ajax endpoint via the
+    // new native `change` listener on `.filters`.
+    cy.get('input[name="check_status_free"]').uncheck();
+    cy.wait("@dtAjax");
+
+    cy.get('input[name="check_status_free"]').check();
+    cy.wait("@dtAjax");
+
+    // Cover the <select> path too, if options exist beyond the default.
+    cy.get('select[name="involved_staff_select"]').then(($sel) => {
+      const options = $sel.find("option");
+      if (options.length > 1) {
+        cy.wrap($sel).select(options[1].value);
+        cy.wait("@dtAjax");
+      }
+    });
+  });
 });
