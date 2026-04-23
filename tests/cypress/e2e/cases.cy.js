@@ -243,7 +243,8 @@ describe("cases", () => {
     });
 
     cy.closeDonatePopup();
-    cy.intercept("GET", "/sprawy/case_table_ajax_data/*").as("dtAjax");
+    // django-ajax-datatable posts to the data endpoint — match any method.
+    cy.intercept("/sprawy/case_table_ajax_data/*").as("dtAjax");
     cy.visit("/sprawy/table/");
 
     // Initial DataTables load on page arrival.
