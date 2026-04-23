@@ -45018,10 +45018,12 @@ window.AjaxDatatableViewUtils = (function() {
                     visible_no: function() { return $("input[name='check_visible_no']").is(":checked") ? 1 : 0; },
                 },
             );
-            $('.filters input').on('change paste keyup', function() {
-                // redraw the table
-                $('#datatable_advices').DataTable().ajax.reload(null, false);
-            });
+            const filtersContainer = document.querySelector('.filters');
+            if (filtersContainer) {
+                filtersContainer.addEventListener('change', function() {
+                    $('#datatable_advices').DataTable().ajax.reload(null, false);
+                });
+            }
         }
     });
 })(jQuery);
