@@ -25845,7 +25845,7 @@ document.addEventListener('DOMContentLoaded', function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
 
-    $(function () {
+    function initFormSave() {
         function storageAvailable(type) {
             try {
                 var storage = window[type],
@@ -25919,7 +25919,13 @@ document.addEventListener('DOMContentLoaded', function () {
             loadInitalData(inputs, saveKey);
             setupListeners(inputs, saveKey);
         });
-    });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", initFormSave);
+    } else {
+        initFormSave();
+    }
 })(jQuery);
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -44934,12 +44940,10 @@ window.AjaxDatatableViewUtils = (function() {
                     involved_staff_filter: function() { return $("select[name='involved_staff_select']").val(); },
                 },
             );
-            const filtersContainer = document.querySelector('.filters');
-            if (filtersContainer) {
-                filtersContainer.addEventListener('change', function() {
-                    $('#datatable_cases').DataTable().ajax.reload(null, false);
-                });
-            }
+            $('.filters input, .filters select').on('change paste keyup', function() {
+                // redraw the table
+                $('#datatable_cases').DataTable().ajax.reload(null, false);
+            });
         }
     });
 })(jQuery);

@@ -296,75 +296,89 @@
     </div>
 
     <script>
-        $(document).ready(function () {
-            var dropZone = $('#drop-zone');
-            var clearButton = $('#clear-files-button');
-            var fileInput = $('#id_file_field');
+        document.addEventListener('DOMContentLoaded', function () {
+            var dropZone = document.getElementById('drop-zone');
+            var clearButton = document.getElementById('clear-files-button');
+            var fileInput = document.getElementById('id_file_field');
+            if (!dropZone || !fileInput) {
+                return;
+            }
             var selectedFilesList = new DataTransfer();
+
             // Highlight drop zone when drag event occurs
-            dropZone.on('dragover', function(e) {
+            dropZone.addEventListener('dragover', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                $(this).css('background-color', 'lightgray');
+                dropZone.style.backgroundColor = 'lightgray';
             });
-            dropZone.on('dragleave', function(e) {
+            dropZone.addEventListener('dragleave', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                $(this).css('background-color', '#f5f5f5');
-            });
-            // Attach an event listener to the file input change event
-            fileInput.on('change', function (e) {
-                handleNewFiles(e.target.files);
-                if (selectedFilesList.files.length > 0) {
-                    clearButton.show();
-                } else {
-                    clearButton.hide();
-                }
+                dropZone.style.backgroundColor = '#f5f5f5';
             });
             // Handle the drop event
-            dropZone.on('drop', function(e) {
+            dropZone.addEventListener('drop', function (e) {
                 e.preventDefault();
                 e.stopPropagation();
-                $(this).css('background-color', '#f5f5f5');
-                handleNewFiles(e.originalEvent.dataTransfer.files);
-                clearButton.show();
+                dropZone.style.backgroundColor = '#f5f5f5';
+                handleNewFiles(e.dataTransfer.files);
+                clearButton.style.display = 'inline-block';
+            });
+            // Attach an event listener to the file input change event
+            fileInput.addEventListener('change', function (e) {
+                handleNewFiles(e.target.files);
+                clearButton.style.display = selectedFilesList.files.length > 0 ? 'inline-block' : 'none';
             });
             // Use a button to clear files
-            clearButton.on('click', function() {
-                fileInput[0].files = new DataTransfer().files;
+            clearButton.addEventListener('click', function () {
+                fileInput.files = new DataTransfer().files;
                 selectedFilesList = new DataTransfer();
                 updateTableWithFiles([]);
-                clearButton.hide();
+                clearButton.style.display = 'none';
             });
-            var labelHeight = $('#files-table-head').height();
-            $('.control-label').height(labelHeight - 5);
+
+            var filesTableHead = document.getElementById('files-table-head');
+            if (filesTableHead) {
+                var labelHeight = filesTableHead.offsetHeight;
+                document.querySelectorAll('.control-label').forEach(function (el) {
+                    el.style.height = (labelHeight - 5) + 'px';
+                });
+            }
+
             // Function to update the table with files
             function updateTableWithFiles(files) {
-                var tableBody = $('#selected-files tbody');
-                tableBody.empty();
-                for (var i = 0; i < files.length; i++) {
-                    var fileName = files[i].name;
-                    var row = $('<tr class="dynamic-form"><td>' + fileName + '</td></tr>');
-                    tableBody.append(row);
+                var tableBody = document.querySelector('#selected-files tbody');
+                if (!tableBody) {
+                    return;
                 }
-            };
+                tableBody.innerHTML = '';
+                for (var i = 0; i < files.length; i++) {
+                    var row = document.createElement('tr');
+                    row.className = 'dynamic-form';
+                    var cell = document.createElement('td');
+                    cell.textContent = files[i].name;
+                    row.appendChild(cell);
+                    tableBody.appendChild(row);
+                }
+            }
+
             function handleNewFiles(eventFiles) {
-                let addedFiles = Array.from(eventFiles);
-                let selectedFiles = Array.from(selectedFilesList.files);
-                let newFiles = addedFiles.filter(addedFile => 
-                    !selectedFiles.some(selectedFile => 
-                        selectedFile.name === addedFile.name && 
-                        selectedFile.size === addedFile.size && 
-                        selectedFile.lastModified === addedFile.lastModified
-                    )
-                );
-                newFiles.forEach(file => {
+                var addedFiles = Array.from(eventFiles);
+                var selectedFiles = Array.from(selectedFilesList.files);
+                var newFiles = addedFiles.filter(function (addedFile) {
+                    return !selectedFiles.some(function (selectedFile) {
+                        return selectedFile.name === addedFile.name &&
+                            selectedFile.size === addedFile.size &&
+                            selectedFile.lastModified === addedFile.lastModified;
+                    });
+                });
+                newFiles.forEach(function (file) {
                     selectedFilesList.items.add(file);
                 });
-                
+
                 updateTableWithFiles(selectedFilesList.files);
-                fileInput[0].files = selectedFilesList.files;
-            };
+                fileInput.files = selectedFilesList.files;
+            }
         });
     </script>
 
