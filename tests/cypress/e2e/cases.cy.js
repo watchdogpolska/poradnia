@@ -243,8 +243,10 @@ describe("cases", () => {
     });
 
     cy.closeDonatePopup();
-    // django-ajax-datatable posts to the data endpoint — match any method.
-    cy.intercept("/sprawy/case_table_ajax_data/*").as("dtAjax");
+    // django-ajax-datatable posts to this path (no query string) — use
+    // pathname so the intercept catches any method without needing a
+    // wildcard that minimatch won't match against an empty suffix.
+    cy.intercept({ pathname: "/sprawy/case_table_ajax_data/" }).as("dtAjax");
     cy.visit("/sprawy/table/");
 
     // Initial DataTables load on page arrival.
