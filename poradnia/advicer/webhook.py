@@ -92,6 +92,7 @@ def _validate_payload(payload):
     has_advice_id = "advice_id" in payload
     has_case_id = "case_id" in payload
 
+    # Validate mutually exclusive identifiers
     if not has_advice_id and not has_case_id:
         msg = ["Exactly one of advice_id or case_id is required."]
         errors["advice_id"] = msg
@@ -101,6 +102,15 @@ def _validate_payload(payload):
         errors["advice_id"] = msg
         errors["case_id"] = msg
 
+    # Validate required fields on create (case_id path implies potential creation)
+    if "case_id" in payload and "advice_id" not in payload:
+        for field in ["advicer_id", "created_by_id"]:
+            if field not in payload or not _is_int(payload[field]):
+                errors[field] = [
+                    "This field is required on create and must be integer."
+                ]
+
+    # Validate required typed fields
     for field in ["advice_id", "case_id"]:
         if field in payload and not _is_int(payload[field]):
             errors[field] = ["This field must be integer."]
@@ -113,6 +123,24 @@ def _validate_payload(payload):
     for field in ["institution_kind_id", "person_kind_id", "jst_id"]:
         if field not in payload or not _is_int(payload[field]):
             errors[field] = ["This field is required and must be integer."]
+
+    # Validate optional typed fields
+    if "comment" in payload and payload["comment"] is not None:
+        if not isinstance(payload["comment"], str):
+            errors["comment"] = ["Must be a string or null."]
+
+    if "helped" in payload and payload["helped"] is not None:
+        if not isinstance(payload["helped"], bool):
+            errors["helped"] = ["Must be a boolean or null."]
+
+    if "visible" in payload and not isinstance(payload["visible"], bool):
+        errors["visible"] = ["Must be a boolean."]
+
+    if "grant_on" in payload:
+        if not isinstance(payload["grant_on"], str) or not parse_datetime(
+            payload["grant_on"]
+        ):
+            errors["grant_on"] = ["Must be a valid ISO-8601 datetime string."]
 
     issue_ids = _validate_required_id_list(payload, "issue_ids", errors)
     area_ids = _validate_required_id_list(payload, "area_ids", errors)
