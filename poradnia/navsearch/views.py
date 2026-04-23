@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.http import JsonResponse
+from django.shortcuts import render
 from django.utils.encoding import force_str
 from django.utils.translation import gettext_lazy as _
 from django.views import View
@@ -36,27 +36,25 @@ class AutocompleteView(View):
 
     def get(self, *args, **kwargs):
         q = self.request.GET.get("q")
-        data = [] if not q else self.get_results(q)
-        return JsonResponse({"results": data}, safe=False)
+        results = [] if not q else self.get_results(q)
+        return render(
+            self.request,
+            "navsearch/_results.html",
+            {"results": results},
+        )
 
     def get_results(self, q):
-        data = []
-        data.append(
+        return [
             {
                 "text": _("Users"),
                 "children": [self.get_item(x) for x in self.get_user_queryset(q)],
-            }
-        )
-        data.append(
+            },
             {
                 "text": _("Cases by ID"),
                 "children": [self.get_item(x) for x in self.get_case_id_queryset(q)],
-            }
-        )
-        data.append(
+            },
             {
                 "text": _("Cases by name"),
                 "children": [self.get_item(x) for x in self.get_case_queryset(q)],
-            }
-        )
-        return data
+            },
+        ]

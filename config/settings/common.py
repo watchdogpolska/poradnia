@@ -18,6 +18,7 @@ ROOT_DIR = environ.Path(__file__) - 3
 
 APPS_DIR = ROOT_DIR.path("poradnia")
 env = environ.Env()
+env.read_env(str(ROOT_DIR(".env")))
 APP_MODE = env.str("APP_MODE", "DEMO")
 
 # APP CONFIGURATION
@@ -110,8 +111,8 @@ MIDDLEWARE = (
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "APP": {
-            "client_id": env("GOOGLE_CLIENT_ID"),
-            "secret": env("GOOGLE_CLIENT_SECRET"),
+            "client_id": env("GOOGLE_CLIENT_ID", default=""),
+            "secret": env("GOOGLE_CLIENT_SECRET", default=""),
             "key": "",
         },
         "SCOPE": ["profile", "email"],

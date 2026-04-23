@@ -1,8 +1,13 @@
-<div class="navsearch" data-autocomplete-url="{% url 'navsearch:navigation_autocomplete' %}">
-	<form class="form">
+{% url 'navsearch:navigation_autocomplete' as autocomplete_url %}
+<div class="navsearch">
+	<form class="form" onsubmit="return false;">
 		<div class="form-group">
 			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
-			<input type="search" id="search" class="form-control navsearch__input">
+			<input type="search" id="search" name="q" class="form-control navsearch__input"
+				hx-get="{{ autocomplete_url }}"
+				hx-trigger="input changed delay:300ms"
+				hx-target=".navsearch__results"
+				hx-swap="innerHTML">
 		</div>
 	</form>
 	<div class="navsearch__results"></div>
