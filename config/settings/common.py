@@ -238,10 +238,11 @@ MANAGERS = ADMINS
 DATABASES = {"default": env.db(default="mysql:///porady")}
 
 DATABASES["default"]["TEST"] = {
+    "NAME": "test_poradnia",
     "OPTIONS": {
         "charset": "utf8mb4",
         "init_command": "SET NAMES 'utf8mb4' COLLATE 'utf8mb4_polish_ci'",
-    }
+    },
 }
 
 DATABASES["default"]["OPTIONS"] = {
