@@ -21,7 +21,7 @@ const User = require("../testing/user");
 const Advice = require("../testing/advice");
 const AdministrativeDivisionUnit = require("../testing/administrative-division-unit");
 
-describe.only("advices", () => {
+describe("advices", () => {
   beforeEach(() => {
     cy.task("db:clear");
     cy.viewport(1920,1080);

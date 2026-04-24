@@ -77,21 +77,25 @@ const createAdministrativeDivisionUnit = (cy) => (unit) => {
 };
 
 const createAdviceArea = (cy) => (adviceArea) => {
-  const { name } = adviceArea;
+  const { name, active = 1, tag_helper = null } = adviceArea;
   cy.task(
     "db:query",
     buildInsertQuery("advicer_area", {
       name: withExtraQuotes(name),
+      active,
+      tag_helper: tag_helper === null ? "NULL" : withExtraQuotes(tag_helper),
     })
   );
 };
 
 const createAdviceIssue = (cy) => (adviceIssue) => {
-  const { name } = adviceIssue;
+  const { name, active = 1, tag_helper = null } = adviceIssue;
   cy.task(
     "db:query",
     buildInsertQuery("advicer_issue", {
       name: withExtraQuotes(name),
+      active,
+      tag_helper: tag_helper === null ? "NULL" : withExtraQuotes(tag_helper),
     })
   );
 };
