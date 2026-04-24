@@ -216,11 +216,12 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Handled"),
         },
         {
-            "name": "has_project",
+            "name": "advice_subject",
             "visible": True,
-            "searchable": False,
-            "orderable": False,
-            "title": _("Project"),
+            "foreign_field": "advice__subject",
+            "searchable": True,
+            "orderable": True,
+            "title": (_("Tag") + " - " + _("Subject")),
         },
         {
             "name": "involved_staff",
@@ -247,14 +248,6 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "width": 80,
         },
         {
-            "name": "advice_subject",
-            "visible": True,
-            "foreign_field": "advice__subject",
-            "searchable": True,
-            "orderable": True,
-            "title": (_("Advice") + " - " + _("Subject")),
-        },
-        {
             "name": "letter_count_for_user",
             "visible": True,
             "searchable": False,
@@ -266,6 +259,13 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "visible": True,
             "title": _("Created on"),
             "width": 80,
+        },
+        {
+            "name": "has_project",
+            "visible": True,
+            "searchable": False,
+            "orderable": False,
+            "title": _("Project"),
         },
     ]
 
@@ -296,6 +296,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         qs = qs.ajax_status_filter(self.request)
         qs = qs.ajax_boolean_filter(self.request, "handled_", "handled")
         qs = qs.ajax_boolean_filter(self.request, "has_project_", "has_project")
+        qs = qs.ajax_has_tag_filter(self.request)
         qs = qs.ajax_has_deadline_filter(self.request)
         qs = qs.ajax_involved_staff_filter(self.request)
         return (

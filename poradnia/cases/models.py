@@ -211,6 +211,16 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
                 deadline_query |= Q(deadline__isnull=choice[1])
         return self.filter(deadline_query)
 
+    def ajax_has_tag_filter(self, request):
+        # to provide empty queryset when none of the options is selected
+        tag_query = Q(pk__in=[])
+        # build query for tag according to user selection
+        for choice in [("yes", False), ("no", True)]:
+            filter_name = "has_tag_" + choice[0]
+            if get_numeric_param(request, filter_name):
+                tag_query |= Q(advice__isnull=choice[1])
+        return self.filter(tag_query)
+
     def old_cases_to_delete(self):
         years_to_store = settings.YEARS_TO_STORE_CASES
         current_month = datetime.now().replace(
