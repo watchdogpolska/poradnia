@@ -353,7 +353,7 @@ class AdviceWebhookUpsertView(View):
         if errors:
             return _json_error("validation_error", "Invalid relations.", 400, errors)
 
-        advice, created = _get_or_create_advice(payload, resolved)
+        advice, created = _get_or_create_advice(resolved)
         if isinstance(created, JsonResponse):
             return created
 
