@@ -87,30 +87,16 @@ def _parse_payload(request):
 
 
 def _validate_identifiers(payload, errors):
-    has_advice_id = "advice_id" in payload
-    has_case_id = "case_id" in payload
-
-    if not has_advice_id and not has_case_id:
-        msg = ["Exactly one of advice_id or case_id is required."]
-        errors["advice_id"] = msg
-        errors["case_id"] = msg
-    elif has_advice_id and has_case_id:
-        msg = ["Only one of advice_id or case_id is allowed, not both."]
-        errors["advice_id"] = msg
-        errors["case_id"] = msg
-
-    for field in ["advice_id", "case_id"]:
-        if field in payload and not _is_int(payload[field]):
-            errors[field] = ["This field must be integer."]
+    if "case_id" not in payload:
+        errors["case_id"] = ["This field is required."]
+    elif not _is_int(payload["case_id"]):
+        errors["case_id"] = ["This field must be integer."]
 
 
 def _validate_create_requirements(payload, errors):
-    if "case_id" in payload and "advice_id" not in payload:
-        for field in ["advicer_id", "created_by_id"]:
-            if field not in payload or not _is_int(payload[field]):
-                errors[field] = [
-                    "This field is required on create and must be integer."
-                ]
+    for field in ["advicer_id", "created_by_id"]:
+        if field not in payload or not _is_int(payload[field]):
+            errors[field] = ["This field is required on create and must be integer."]
 
 
 def _validate_required_fields(payload, errors):
@@ -246,17 +232,8 @@ def _resolve_relations(payload, issue_ids, area_ids, errors):
     return resolved
 
 
-def _get_or_create_advice(payload, resolved):
-    advice_id = payload.get("advice_id")
-    if advice_id is not None:
-        advice = Advice.objects.filter(pk=advice_id).first()
-        if not advice:
-            return None, _json_error("advice_not_found", "Advice not found.", 404)
-        return advice, False
-
-    # case_id path: update existing or create new
-    case_id = payload.get("case_id")
-    advice = Advice.objects.filter(case_id=case_id).first()
+def _get_or_create_advice(resolved):
+    advice = Advice.objects.filter(case=resolved["case"]).first()
     if advice:
         return advice, False
 
@@ -296,9 +273,9 @@ class AdviceWebhookUpsertView(View):
 
     JSON schema
     -----------
-    Only one identifier is required and allowed for upsert operation:
-    - ``advice_id``: integer. Existing ``Advice.pk`` to update.
-    - ``case_id``: integer. Used to create Advice for Case with ``Advice.case`` set.
+    Identifier required for upsert operation:
+    - ``case_id``: integer. Existing ``Advice`` is updated by ``Advice.case``;
+                   otherwise a new ``Advice`` is created for this case.
 
     Required payload fields:
     - ``subject``: non-empty string
@@ -352,7 +329,7 @@ class AdviceWebhookUpsertView(View):
     ``401 Unauthorized``
         Missing or invalid bearer token.
     ``404 Not Found``
-        ``advice_id`` points to a non-existent Advice.
+        ``case_id`` points to a non-existent Case.
     ``503 Service Unavailable``
         Webhook token is not configured on the server.
     """
@@ -371,6 +348,8 @@ class AdviceWebhookUpsertView(View):
             return _json_error("validation_error", "Invalid payload.", 400, errors)
 
         resolved = _resolve_relations(payload, issue_ids, area_ids, errors)
+        if "case_id" in errors and errors["case_id"] == ["Case not found."]:
+            return _json_error("case_not_found", "Case not found.", 404)
         if errors:
             return _json_error("validation_error", "Invalid relations.", 400, errors)
 
