@@ -47,7 +47,6 @@ htmlcov
 
 # docker development secrets
 imap-to-webhook-url.env
-.env
 
 # dev data folders content
 data_db/
