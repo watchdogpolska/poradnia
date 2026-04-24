@@ -3,7 +3,6 @@ import os
 from types import SimpleNamespace
 from unittest.mock import MagicMock, patch
 
-from django.http import JsonResponse
 from django.test import RequestFactory, SimpleTestCase, TestCase, override_settings
 
 from poradnia.advicer import webhook as webhook_module
