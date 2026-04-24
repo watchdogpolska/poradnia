@@ -183,35 +183,23 @@ class WebhookHelpersTestCase(SimpleTestCase):
         self.assertEqual(payload, {"x": 1})
         self.assertIsNone(error)
 
-    def test_validate_identifiers_missing_both(self):
+    def test_validate_identifiers_missing_case_id(self):
         errors = {}
         webhook_module._validate_identifiers({}, errors)
 
-        self.assertEqual(
-            errors,
-            {
-                "advice_id": ["Exactly one of advice_id or case_id is required."],
-                "case_id": ["Exactly one of advice_id or case_id is required."],
-            },
-        )
-
-    def test_validate_identifiers_both_present(self):
-        errors = {}
-        webhook_module._validate_identifiers({"advice_id": 1, "case_id": 2}, errors)
-
-        self.assertEqual(
-            errors,
-            {
-                "advice_id": ["Only one of advice_id or case_id is allowed, not both."],
-                "case_id": ["Only one of advice_id or case_id is allowed, not both."],
-            },
-        )
+        self.assertEqual(errors, {"case_id": ["This field is required."]})
 
     def test_validate_identifiers_non_int(self):
         errors = {}
-        webhook_module._validate_identifiers({"advice_id": "1"}, errors)
+        webhook_module._validate_identifiers({"case_id": "1"}, errors)
 
-        self.assertEqual(errors, {"advice_id": ["This field must be integer."]})
+        self.assertEqual(errors, {"case_id": ["This field must be integer."]})
+
+    def test_validate_identifiers_ok(self):
+        errors = {}
+        webhook_module._validate_identifiers({"case_id": 1}, errors)
+
+        self.assertEqual(errors, {})
 
     def test_validate_create_requirements_for_create(self):
         errors = {}
@@ -226,13 +214,6 @@ class WebhookHelpersTestCase(SimpleTestCase):
                 ],
             },
         )
-
-    def test_validate_create_requirements_skipped_for_update(self):
-        errors = {}
-        webhook_module._validate_create_requirements(
-            {"case_id": 1, "advice_id": 2}, errors
-        )
-        self.assertEqual(errors, {})
 
     def test_validate_required_fields(self):
         errors = {}
@@ -579,43 +560,16 @@ class WebhookHelpersTestCase(SimpleTestCase):
         )
 
     @patch.object(webhook_module, "Advice")
-    def test_get_or_create_advice_by_advice_id_not_found(self, advice_model):
-        advice_model.objects.filter.return_value.first.return_value = None
-
-        advice, created = webhook_module._get_or_create_advice(
-            {"advice_id": 5},
-            {},
-        )
-
-        self.assertIsNone(advice)
-        self.assertIsInstance(created, JsonResponse)
-        self.assertEqual(created.status_code, 404)
-
-    @patch.object(webhook_module, "Advice")
-    def test_get_or_create_advice_by_advice_id_found(self, advice_model):
-        advice_obj = SimpleNamespace(pk=5)
-        advice_model.objects.filter.return_value.first.return_value = advice_obj
-
-        advice, created = webhook_module._get_or_create_advice(
-            {"advice_id": 5},
-            {},
-        )
-
-        self.assertEqual(advice, advice_obj)
-        self.assertFalse(created)
-
-    @patch.object(webhook_module, "Advice")
     def test_get_or_create_advice_by_case_updates_existing(self, advice_model):
+        case = SimpleNamespace(pk=10)
         advice_obj = SimpleNamespace(pk=7)
         advice_model.objects.filter.return_value.first.return_value = advice_obj
 
-        advice, created = webhook_module._get_or_create_advice(
-            {"case_id": 10},
-            {"case": SimpleNamespace(pk=10)},
-        )
+        advice, created = webhook_module._get_or_create_advice({"case": case})
 
         self.assertEqual(advice, advice_obj)
         self.assertFalse(created)
+        advice_model.objects.filter.assert_called_once_with(case=case)
 
     @patch.object(webhook_module, "Advice")
     def test_get_or_create_advice_by_case_creates_new(self, advice_model):
@@ -625,14 +579,11 @@ class WebhookHelpersTestCase(SimpleTestCase):
         advice_model.objects.filter.return_value.first.return_value = None
         advice_model.return_value = new_advice
 
-        advice, created = webhook_module._get_or_create_advice(
-            {"case_id": 10},
-            {"case": case},
-        )
+        advice, created = webhook_module._get_or_create_advice({"case": case})
 
         self.assertTrue(created)
         self.assertIs(advice, new_advice)
-        advice_model.objects.filter.assert_called_once_with(case_id=10)
+        advice_model.objects.filter.assert_called_once_with(case=case)
         advice_model.assert_called_once_with(case=case)
 
     def test_apply_advice_payload(self):
@@ -763,39 +714,10 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
 
         response = self.view(self._request({}))
 
-        self.assertEqual(response.status_code, 400)
-        payload = _decode_json_response(response)
-        self.assertEqual(payload["error"]["fields"], {"case_id": ["Case not found."]})
-
-    @override_settings(ADVICER_WEBHOOK_BEARER_TOKEN="secret")
-    @patch.object(webhook_module, "_get_or_create_advice")
-    @patch.object(webhook_module, "_resolve_relations")
-    @patch.object(webhook_module, "_validate_payload")
-    @patch.object(webhook_module, "_parse_payload")
-    @patch.object(webhook_module, "_check_token")
-    def test_post_returns_advice_not_found_response(
-        self,
-        check_token,
-        parse_payload,
-        validate_payload,
-        resolve_relations,
-        get_or_create_advice,
-    ):
-        check_token.return_value = None
-        parse_payload.return_value = ({"x": 1}, None)
-        validate_payload.return_value = ({}, [1], [2])
-        resolve_relations.return_value = {"issues": [], "area": []}
-        not_found_response = webhook_module._json_error(
-            "advice_not_found", "Advice not found.", 404
-        )
-        get_or_create_advice.return_value = (None, not_found_response)
-
-        response = self.view(self._request({}))
-
         self.assertEqual(response.status_code, 404)
-        self.assertEqual(
-            _decode_json_response(response)["error"]["code"], "advice_not_found"
-        )
+        payload = _decode_json_response(response)
+        self.assertEqual(payload["error"]["code"], "case_not_found")
+        self.assertNotIn("fields", payload["error"])
 
     @override_settings(ADVICER_WEBHOOK_BEARER_TOKEN="secret")
     @patch.object(webhook_module, "_apply_advice_payload")
@@ -839,6 +761,7 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
             payload,
             {"issues": [], "area": []},
         )
+        get_or_create_advice.assert_called_once_with({"issues": [], "area": []})
 
     @override_settings(ADVICER_WEBHOOK_BEARER_TOKEN="secret")
     @patch.object(webhook_module, "_apply_advice_payload")
@@ -856,7 +779,7 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
         get_or_create_advice,
         apply_advice_payload,
     ):
-        payload = {"advice_id": 88, "subject": "Subject"}
+        payload = {"case_id": 10, "subject": "Subject"}
         advice = SimpleNamespace(pk=88, case_id=10)
 
         check_token.return_value = None
@@ -882,3 +805,4 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
             payload,
             {"issues": [], "area": []},
         )
+        get_or_create_advice.assert_called_once_with({"issues": [], "area": []})
