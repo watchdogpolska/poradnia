@@ -347,14 +347,14 @@ def process_django_model(app, what, name, obj, options, lines):
             if isinstance(
                 field, (models.ForeignKey, models.OneToOneField, models.ManyToManyField)
             ):
+                related = field.related_model
+                if isinstance(related, str):
+                    related_ref = related
+                else:
+                    related_ref = "{}.{}".format(related.__module__, related.__name__)
                 lines.append(
-                    ":type %s: %s to :class:`%s.%s`"
-                    % (
-                        field.attname,
-                        type(field).__name__,
-                        field.related_model.__module__,
-                        field.related_model.__name__,
-                    )
+                    ":type %s: %s to :class:`%s`"
+                    % (field.attname, type(field).__name__, related_ref)
                 )
             else:
                 lines.append(":type {}: {}".format(field.attname, type(field).__name__))
