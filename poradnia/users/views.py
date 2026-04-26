@@ -1,3 +1,4 @@
+from ajax_datatable import AjaxDatatableView
 from atom.views import ActionMessageMixin, ActionView
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin, UserFormKwargsMixin
 from dal import autocomplete
@@ -5,11 +6,10 @@ from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.utils.translation import gettext_lazy as _
 from django.utils.safestring import mark_safe
-from django.views.generic import DetailView, RedirectView, UpdateView, TemplateView
+from django.utils.translation import gettext_lazy as _
+from django.views.generic import DetailView, RedirectView, TemplateView, UpdateView
 from django_filters.views import FilterView
-from ajax_datatable import AjaxDatatableView
 
 from poradnia.cases.models import Case, CaseUserObjectPermission
 from poradnia.utils.mixins import ExprAutocompleteMixin
@@ -169,6 +169,7 @@ class UserDeassignView(
             object=self.object, count=self.count
         )
 
+
 class UserTableView(StaffuserRequiredMixin, PermissionMixin, TemplateView):
     """
     View for displaying template with Users table.
@@ -199,7 +200,13 @@ class UserAjaxDatatableView(StaffuserRequiredMixin, PermissionMixin, AjaxDatatab
     column_defs = [
         {"name": "pk", "title": "ID", "visible": False},
         {"name": "username", "title": _("Username"), "visible": True},
-        {"name": "nicename", "title": _("Nice Name"), "visible": True, "searchable": True, "orderable": True},
+        {
+            "name": "nicename",
+            "title": _("Nice Name"),
+            "visible": True,
+            "searchable": True,
+            "orderable": True,
+        },
         {"name": "email", "title": _("Email"), "visible": True},
         {"name": "is_staff", "title": _("Staff"), "visible": True, "searchable": False},
         {
