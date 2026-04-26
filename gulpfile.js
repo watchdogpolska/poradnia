@@ -78,7 +78,9 @@ const config = {
       path.app + "/advicer/static/advicer/advice_datatbles.js",
       path.app + "/letters/static/letters/letters_datatbles.js",
       path.app + "/events/static/events/events_datatbles.js",
-    ],
+      path.app + "/users/static/users/users_datatbles.js",
+      ],
+
     output: {
       dir: path.static + "/js",
       filename: "script.js",

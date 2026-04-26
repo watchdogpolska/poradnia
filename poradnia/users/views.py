@@ -6,8 +6,10 @@ from django.core.exceptions import PermissionDenied
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, RedirectView, UpdateView
+from django.utils.safestring import mark_safe
+from django.views.generic import DetailView, RedirectView, UpdateView, TemplateView
 from django_filters.views import FilterView
+from ajax_datatable import AjaxDatatableView
 
 from poradnia.cases.models import Case, CaseUserObjectPermission
 from poradnia.utils.mixins import ExprAutocompleteMixin
@@ -166,3 +168,64 @@ class UserDeassignView(
         return _("{object} deassigned from {count} cases").format(
             object=self.object, count=self.count
         )
+
+class UserTableView(StaffuserRequiredMixin, PermissionMixin, TemplateView):
+    """
+    View for displaying template with Users table.
+    """
+
+    template_name = "users/user_table.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header_label"] = mark_safe(_("Users search table"))
+        context["ajax_datatable_url"] = reverse("users:users_table_ajax_data")
+        return context
+
+
+class UserAjaxDatatableView(StaffuserRequiredMixin, PermissionMixin, AjaxDatatableView):
+    """
+    View to provide table list of all Users with ajax data.
+    """
+
+    model = User
+    title = _("Users")
+    initial_order = [
+        ["username", "asc"],
+    ]
+    length_menu = [[20, 50, 100], [20, 50, 100]]
+    search_values_separator = "|"
+
+    column_defs = [
+        {"name": "pk", "title": "ID", "visible": False},
+        {"name": "username", "title": _("Username"), "visible": True},
+        {"name": "nicename", "title": _("Nice Name"), "visible": True, "searchable": True, "orderable": True},
+        {"name": "email", "title": _("Email"), "visible": True},
+        {"name": "is_staff", "title": _("Staff"), "visible": True, "searchable": False},
+        {
+            "name": "case_count",
+            "title": _("Client cases"),
+            "visible": True,
+            "searchable": False,
+            "orderable": True,
+        },
+        {
+            "name": "case_assigned_sum",
+            "title": _("Assigned cases sum"),
+            "visible": True,
+            "searchable": False,
+            "orderable": True,
+        },
+    ]
+
+    def get_initial_queryset(self, request=None):
+        qs = super().get_initial_queryset(request)
+        qs = qs.with_case_count()
+        qs = qs.with_case_count_assigned()
+        return qs
+
+    def customize_row(self, row, obj):
+        row["username"] = mark_safe(
+            f'<a href="{obj.get_absolute_url()}">{obj.username}</a>'
+        )
+        row["is_staff"] = _("Yes") if obj.is_staff else _("No")
