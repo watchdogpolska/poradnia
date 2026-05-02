@@ -9,8 +9,11 @@
 
 {% block extra_css %}
     <style>
-        .staff {
-            background-color: #FF7474;
+        /* BS5 paints --bs-table-bg on each cell (>:not(caption)>*>*),
+           overriding any background-color set on <tr>. Drive the BS3-style
+           pink staff-row tint via the same custom property so it survives. */
+        .table > tbody > tr.staff {
+            --bs-table-bg: #f2dede;
         }
         #submit-id-filter {
             margin-top: 20px;
