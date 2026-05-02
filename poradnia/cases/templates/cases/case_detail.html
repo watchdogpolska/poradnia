@@ -5,6 +5,7 @@
     {{ block.super }}
     {{ casegroup_form.media.js }}
     <script type="text/javascript">
+        // jquery.formset.js plugin still depends on jQuery (Stage 4 work).
         ;(function($) {
             $(function () {
                 $('form tbody tr').formset({
@@ -13,12 +14,15 @@
                     prefix: 'attachment_set'
                 });
             });
-            $('#form-tab a').click(function (e) {
-                e.preventDefault()
-                $(this).tab('show')
-            });
-            $('#form-tab a:first').tab('show')
         })(jQuery);
+        // Tab switching is BS5-native via data-bs-toggle="tab" on the
+        // anchors. Force the first tab to show on load.
+        document.addEventListener('DOMContentLoaded', function () {
+            var first = document.querySelector('#form-tab a');
+            if (first) {
+                bootstrap.Tab.getOrCreateInstance(first).show();
+            }
+        });
     </script>
 {% endblock %}
 
@@ -234,7 +238,7 @@
                     <ul class="nav nav-tabs" role="tablist" id="form-tab">
                         {% for label, row in forms.items %}
                             <li class="nav-item" role="presentation">
-                                <a class="nav-link{% if forloop.last %} active{% endif %}"
+                                <a class="nav-link{% if forloop.first %} active{% endif %}"
                                     href="#{{ label }}" aria-controls="{{ label }}"
                                     role="tab" data-bs-toggle="tab">{{ row.title }}</a>
                             </li>
