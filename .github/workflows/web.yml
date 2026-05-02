@@ -57,13 +57,3 @@ jobs:
         run: make test
       - name: Run e2e tests
         run: make e2e
-
-  docs:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - run: docker compose pull
-      - name: Build application
-        run: make build
-      - name: Build documentation
-        run: make docs
