@@ -11,3 +11,14 @@
   margin-left: auto;
   margin-right: auto;
 }
+
+// Restore BS3-style visible 4-sided card border.
+// BS5's default `--bs-card-border-color` is `rgba(0,0,0,0.175)` (translucent
+// black) which combined with subpixel rendering on non-integer devicePixelRatio
+// displays renders as a near-invisible ~0.75px wash. BS3 panels used a solid
+// `#ddd` border that read clearly on white. Re-pin the card border color to
+// BS3's `$panel-default-border` so side-panel cards (Workflow, Metrical data,
+// Permissions) and timeline letter cards regain a visible bounding outline.
+.card {
+  --bs-card-border-color: #{$panel-default-border};
+}

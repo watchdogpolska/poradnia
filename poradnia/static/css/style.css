@@ -22857,6 +22857,10 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.card {
+  --bs-card-border-color: #ddd;
+}
+
 /*!
  * Pikaday
  * Copyright © 2014 David Bushell | BSD & MIT license | http://dbushell.com/
