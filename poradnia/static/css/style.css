@@ -23372,6 +23372,18 @@ body.show-sidebar .sidebar {
   border-right-color: #ddd;
   left: -8px;
 }
+.timeline-comment.border-secondary > .card-header,
+.timeline-comment:not([class*=border-]) > .card-header {
+  background-color: #f5f5f5;
+  border-bottom-color: #f5f5f5;
+  color: #333;
+}
+.timeline-comment.border-secondary > .card-header a, .timeline-comment.border-secondary > .card-header .card-title, .timeline-comment.border-secondary > .card-header .card-title a,
+.timeline-comment:not([class*=border-]) > .card-header a,
+.timeline-comment:not([class*=border-]) > .card-header .card-title,
+.timeline-comment:not([class*=border-]) > .card-header .card-title a {
+  color: #333;
+}
 
 .timeline-comment.border-primary {
   position: relative;
@@ -23391,6 +23403,14 @@ body.show-sidebar .sidebar {
 .timeline-comment.border-primary:before {
   border-right-color: #D82727;
   left: -8px;
+}
+.timeline-comment.border-primary > .card-header {
+  background-color: #D82727;
+  border-bottom-color: #D82727;
+  color: #fff;
+}
+.timeline-comment.border-primary > .card-header a, .timeline-comment.border-primary > .card-header .card-title, .timeline-comment.border-primary > .card-header .card-title a {
+  color: #fff;
 }
 
 .timeline-comment.border-success {
@@ -23412,6 +23432,14 @@ body.show-sidebar .sidebar {
   border-right-color: #d6e9c6;
   left: -8px;
 }
+.timeline-comment.border-success > .card-header {
+  background-color: #dff0d8;
+  border-bottom-color: #dff0d8;
+  color: #3c763d;
+}
+.timeline-comment.border-success > .card-header a, .timeline-comment.border-success > .card-header .card-title, .timeline-comment.border-success > .card-header .card-title a {
+  color: #3c763d;
+}
 
 .timeline-comment.border-info {
   position: relative;
@@ -23431,6 +23459,14 @@ body.show-sidebar .sidebar {
 .timeline-comment.border-info:before {
   border-right-color: #bce8f1;
   left: -8px;
+}
+.timeline-comment.border-info > .card-header {
+  background-color: #d9edf7;
+  border-bottom-color: #d9edf7;
+  color: #31708f;
+}
+.timeline-comment.border-info > .card-header a, .timeline-comment.border-info > .card-header .card-title, .timeline-comment.border-info > .card-header .card-title a {
+  color: #31708f;
 }
 
 .timeline-comment.border-warning {
@@ -23452,6 +23488,14 @@ body.show-sidebar .sidebar {
   border-right-color: #faebcc;
   left: -8px;
 }
+.timeline-comment.border-warning > .card-header {
+  background-color: #fcf8e3;
+  border-bottom-color: #fcf8e3;
+  color: #8a6d3b;
+}
+.timeline-comment.border-warning > .card-header a, .timeline-comment.border-warning > .card-header .card-title, .timeline-comment.border-warning > .card-header .card-title a {
+  color: #8a6d3b;
+}
 
 .timeline-comment.border-danger {
   position: relative;
@@ -23471,6 +23515,14 @@ body.show-sidebar .sidebar {
 .timeline-comment.border-danger:before {
   border-right-color: #ebccd1;
   left: -8px;
+}
+.timeline-comment.border-danger > .card-header {
+  background-color: #f2dede;
+  border-bottom-color: #f2dede;
+  color: #a94442;
+}
+.timeline-comment.border-danger > .card-header a, .timeline-comment.border-danger > .card-header .card-title, .timeline-comment.border-danger > .card-header .card-title a {
+  color: #a94442;
 }
 
 .form-horizontal {
