@@ -31,3 +31,34 @@
 .card {
   --bs-card-border-color: #{$panel-default-border};
 }
+
+// Restore BS3 `.pager` (removed in BS4+). Used by events/calendar.html,
+// notifications/list.html, and cases/_case_pager.html.
+.pager {
+  padding-left: 0;
+  margin: 20px 0;
+  list-style: none;
+  text-align: center;
+  &::after { display: block; clear: both; content: ""; } // clearfix for floats
+
+  li {
+    display: inline;
+    > a, > span {
+      display: inline-block;
+      padding: 5px 14px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 15px;
+    }
+    > a:hover, > a:focus { text-decoration: none; background-color: #eee; }
+  }
+
+  .previous > a, .previous > span { float: left; }
+  .next > a, .next > span { float: right; }
+
+  .disabled > a, .disabled > a:hover, .disabled > a:focus, .disabled > span {
+    color: #777;
+    background-color: #fff;
+    cursor: not-allowed;
+  }
+}

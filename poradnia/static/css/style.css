@@ -22868,6 +22868,43 @@ textarea.form-control-lg {
   --bs-card-border-color: #ddd;
 }
 
+.pager {
+  padding-left: 0;
+  margin: 20px 0;
+  list-style: none;
+  text-align: center;
+}
+.pager::after {
+  display: block;
+  clear: both;
+  content: "";
+}
+.pager li {
+  display: inline;
+}
+.pager li > a, .pager li > span {
+  display: inline-block;
+  padding: 5px 14px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+}
+.pager li > a:hover, .pager li > a:focus {
+  text-decoration: none;
+  background-color: #eee;
+}
+.pager .previous > a, .pager .previous > span {
+  float: left;
+}
+.pager .next > a, .pager .next > span {
+  float: right;
+}
+.pager .disabled > a, .pager .disabled > a:hover, .pager .disabled > a:focus, .pager .disabled > span {
+  color: #777;
+  background-color: #fff;
+  cursor: not-allowed;
+}
+
 /*!
  * Pikaday
  * Copyright © 2014 David Bushell | BSD & MIT license | http://dbushell.com/
