@@ -23388,6 +23388,41 @@ body.show-sidebar .sidebar {
 .timeline-comment:not([class*=border-]) > .card-header .card-title a {
   color: #333;
 }
+.timeline-comment.border-secondary > .card-header .card-title, .timeline-comment.border-secondary > .card-header h1, .timeline-comment.border-secondary > .card-header .h1, .timeline-comment.border-secondary > .card-header h2, .timeline-comment.border-secondary > .card-header .h2, .timeline-comment.border-secondary > .card-header h3, .timeline-comment.border-secondary > .card-header .h3, .timeline-comment.border-secondary > .card-header h4, .timeline-comment.border-secondary > .card-header .h4, .timeline-comment.border-secondary > .card-header h5, .timeline-comment.border-secondary > .card-header .h5, .timeline-comment.border-secondary > .card-header h6, .timeline-comment.border-secondary > .card-header .h6,
+.timeline-comment:not([class*=border-]) > .card-header .card-title,
+.timeline-comment:not([class*=border-]) > .card-header h1,
+.timeline-comment:not([class*=border-]) > .card-header .h1,
+.timeline-comment:not([class*=border-]) > .card-header h2,
+.timeline-comment:not([class*=border-]) > .card-header .h2,
+.timeline-comment:not([class*=border-]) > .card-header h3,
+.timeline-comment:not([class*=border-]) > .card-header .h3,
+.timeline-comment:not([class*=border-]) > .card-header h4,
+.timeline-comment:not([class*=border-]) > .card-header .h4,
+.timeline-comment:not([class*=border-]) > .card-header h5,
+.timeline-comment:not([class*=border-]) > .card-header .h5,
+.timeline-comment:not([class*=border-]) > .card-header h6,
+.timeline-comment:not([class*=border-]) > .card-header .h6 {
+  font-size: 16px;
+  line-height: 1.1;
+  margin: 0;
+  color: #333;
+}
+.timeline-comment.border-secondary > .card-header .card-title a, .timeline-comment.border-secondary > .card-header h1 a, .timeline-comment.border-secondary > .card-header .h1 a, .timeline-comment.border-secondary > .card-header h2 a, .timeline-comment.border-secondary > .card-header .h2 a, .timeline-comment.border-secondary > .card-header h3 a, .timeline-comment.border-secondary > .card-header .h3 a, .timeline-comment.border-secondary > .card-header h4 a, .timeline-comment.border-secondary > .card-header .h4 a, .timeline-comment.border-secondary > .card-header h5 a, .timeline-comment.border-secondary > .card-header .h5 a, .timeline-comment.border-secondary > .card-header h6 a, .timeline-comment.border-secondary > .card-header .h6 a,
+.timeline-comment:not([class*=border-]) > .card-header .card-title a,
+.timeline-comment:not([class*=border-]) > .card-header h1 a,
+.timeline-comment:not([class*=border-]) > .card-header .h1 a,
+.timeline-comment:not([class*=border-]) > .card-header h2 a,
+.timeline-comment:not([class*=border-]) > .card-header .h2 a,
+.timeline-comment:not([class*=border-]) > .card-header h3 a,
+.timeline-comment:not([class*=border-]) > .card-header .h3 a,
+.timeline-comment:not([class*=border-]) > .card-header h4 a,
+.timeline-comment:not([class*=border-]) > .card-header .h4 a,
+.timeline-comment:not([class*=border-]) > .card-header h5 a,
+.timeline-comment:not([class*=border-]) > .card-header .h5 a,
+.timeline-comment:not([class*=border-]) > .card-header h6 a,
+.timeline-comment:not([class*=border-]) > .card-header .h6 a {
+  color: #333;
+}
 
 .timeline-comment.border-primary {
   position: relative;
@@ -23414,6 +23449,15 @@ body.show-sidebar .sidebar {
   color: #fff;
 }
 .timeline-comment.border-primary > .card-header a, .timeline-comment.border-primary > .card-header .card-title, .timeline-comment.border-primary > .card-header .card-title a {
+  color: #fff;
+}
+.timeline-comment.border-primary > .card-header .card-title, .timeline-comment.border-primary > .card-header h1, .timeline-comment.border-primary > .card-header .h1, .timeline-comment.border-primary > .card-header h2, .timeline-comment.border-primary > .card-header .h2, .timeline-comment.border-primary > .card-header h3, .timeline-comment.border-primary > .card-header .h3, .timeline-comment.border-primary > .card-header h4, .timeline-comment.border-primary > .card-header .h4, .timeline-comment.border-primary > .card-header h5, .timeline-comment.border-primary > .card-header .h5, .timeline-comment.border-primary > .card-header h6, .timeline-comment.border-primary > .card-header .h6 {
+  font-size: 16px;
+  line-height: 1.1;
+  margin: 0;
+  color: #fff;
+}
+.timeline-comment.border-primary > .card-header .card-title a, .timeline-comment.border-primary > .card-header h1 a, .timeline-comment.border-primary > .card-header .h1 a, .timeline-comment.border-primary > .card-header h2 a, .timeline-comment.border-primary > .card-header .h2 a, .timeline-comment.border-primary > .card-header h3 a, .timeline-comment.border-primary > .card-header .h3 a, .timeline-comment.border-primary > .card-header h4 a, .timeline-comment.border-primary > .card-header .h4 a, .timeline-comment.border-primary > .card-header h5 a, .timeline-comment.border-primary > .card-header .h5 a, .timeline-comment.border-primary > .card-header h6 a, .timeline-comment.border-primary > .card-header .h6 a {
   color: #fff;
 }
 
@@ -23444,6 +23488,15 @@ body.show-sidebar .sidebar {
 .timeline-comment.border-success > .card-header a, .timeline-comment.border-success > .card-header .card-title, .timeline-comment.border-success > .card-header .card-title a {
   color: #3c763d;
 }
+.timeline-comment.border-success > .card-header .card-title, .timeline-comment.border-success > .card-header h1, .timeline-comment.border-success > .card-header .h1, .timeline-comment.border-success > .card-header h2, .timeline-comment.border-success > .card-header .h2, .timeline-comment.border-success > .card-header h3, .timeline-comment.border-success > .card-header .h3, .timeline-comment.border-success > .card-header h4, .timeline-comment.border-success > .card-header .h4, .timeline-comment.border-success > .card-header h5, .timeline-comment.border-success > .card-header .h5, .timeline-comment.border-success > .card-header h6, .timeline-comment.border-success > .card-header .h6 {
+  font-size: 16px;
+  line-height: 1.1;
+  margin: 0;
+  color: #3c763d;
+}
+.timeline-comment.border-success > .card-header .card-title a, .timeline-comment.border-success > .card-header h1 a, .timeline-comment.border-success > .card-header .h1 a, .timeline-comment.border-success > .card-header h2 a, .timeline-comment.border-success > .card-header .h2 a, .timeline-comment.border-success > .card-header h3 a, .timeline-comment.border-success > .card-header .h3 a, .timeline-comment.border-success > .card-header h4 a, .timeline-comment.border-success > .card-header .h4 a, .timeline-comment.border-success > .card-header h5 a, .timeline-comment.border-success > .card-header .h5 a, .timeline-comment.border-success > .card-header h6 a, .timeline-comment.border-success > .card-header .h6 a {
+  color: #3c763d;
+}
 
 .timeline-comment.border-info {
   position: relative;
@@ -23470,6 +23523,15 @@ body.show-sidebar .sidebar {
   color: #31708f;
 }
 .timeline-comment.border-info > .card-header a, .timeline-comment.border-info > .card-header .card-title, .timeline-comment.border-info > .card-header .card-title a {
+  color: #31708f;
+}
+.timeline-comment.border-info > .card-header .card-title, .timeline-comment.border-info > .card-header h1, .timeline-comment.border-info > .card-header .h1, .timeline-comment.border-info > .card-header h2, .timeline-comment.border-info > .card-header .h2, .timeline-comment.border-info > .card-header h3, .timeline-comment.border-info > .card-header .h3, .timeline-comment.border-info > .card-header h4, .timeline-comment.border-info > .card-header .h4, .timeline-comment.border-info > .card-header h5, .timeline-comment.border-info > .card-header .h5, .timeline-comment.border-info > .card-header h6, .timeline-comment.border-info > .card-header .h6 {
+  font-size: 16px;
+  line-height: 1.1;
+  margin: 0;
+  color: #31708f;
+}
+.timeline-comment.border-info > .card-header .card-title a, .timeline-comment.border-info > .card-header h1 a, .timeline-comment.border-info > .card-header .h1 a, .timeline-comment.border-info > .card-header h2 a, .timeline-comment.border-info > .card-header .h2 a, .timeline-comment.border-info > .card-header h3 a, .timeline-comment.border-info > .card-header .h3 a, .timeline-comment.border-info > .card-header h4 a, .timeline-comment.border-info > .card-header .h4 a, .timeline-comment.border-info > .card-header h5 a, .timeline-comment.border-info > .card-header .h5 a, .timeline-comment.border-info > .card-header h6 a, .timeline-comment.border-info > .card-header .h6 a {
   color: #31708f;
 }
 
@@ -23500,6 +23562,15 @@ body.show-sidebar .sidebar {
 .timeline-comment.border-warning > .card-header a, .timeline-comment.border-warning > .card-header .card-title, .timeline-comment.border-warning > .card-header .card-title a {
   color: #8a6d3b;
 }
+.timeline-comment.border-warning > .card-header .card-title, .timeline-comment.border-warning > .card-header h1, .timeline-comment.border-warning > .card-header .h1, .timeline-comment.border-warning > .card-header h2, .timeline-comment.border-warning > .card-header .h2, .timeline-comment.border-warning > .card-header h3, .timeline-comment.border-warning > .card-header .h3, .timeline-comment.border-warning > .card-header h4, .timeline-comment.border-warning > .card-header .h4, .timeline-comment.border-warning > .card-header h5, .timeline-comment.border-warning > .card-header .h5, .timeline-comment.border-warning > .card-header h6, .timeline-comment.border-warning > .card-header .h6 {
+  font-size: 16px;
+  line-height: 1.1;
+  margin: 0;
+  color: #8a6d3b;
+}
+.timeline-comment.border-warning > .card-header .card-title a, .timeline-comment.border-warning > .card-header h1 a, .timeline-comment.border-warning > .card-header .h1 a, .timeline-comment.border-warning > .card-header h2 a, .timeline-comment.border-warning > .card-header .h2 a, .timeline-comment.border-warning > .card-header h3 a, .timeline-comment.border-warning > .card-header .h3 a, .timeline-comment.border-warning > .card-header h4 a, .timeline-comment.border-warning > .card-header .h4 a, .timeline-comment.border-warning > .card-header h5 a, .timeline-comment.border-warning > .card-header .h5 a, .timeline-comment.border-warning > .card-header h6 a, .timeline-comment.border-warning > .card-header .h6 a {
+  color: #8a6d3b;
+}
 
 .timeline-comment.border-danger {
   position: relative;
@@ -23526,6 +23597,15 @@ body.show-sidebar .sidebar {
   color: #a94442;
 }
 .timeline-comment.border-danger > .card-header a, .timeline-comment.border-danger > .card-header .card-title, .timeline-comment.border-danger > .card-header .card-title a {
+  color: #a94442;
+}
+.timeline-comment.border-danger > .card-header .card-title, .timeline-comment.border-danger > .card-header h1, .timeline-comment.border-danger > .card-header .h1, .timeline-comment.border-danger > .card-header h2, .timeline-comment.border-danger > .card-header .h2, .timeline-comment.border-danger > .card-header h3, .timeline-comment.border-danger > .card-header .h3, .timeline-comment.border-danger > .card-header h4, .timeline-comment.border-danger > .card-header .h4, .timeline-comment.border-danger > .card-header h5, .timeline-comment.border-danger > .card-header .h5, .timeline-comment.border-danger > .card-header h6, .timeline-comment.border-danger > .card-header .h6 {
+  font-size: 16px;
+  line-height: 1.1;
+  margin: 0;
+  color: #a94442;
+}
+.timeline-comment.border-danger > .card-header .card-title a, .timeline-comment.border-danger > .card-header h1 a, .timeline-comment.border-danger > .card-header .h1 a, .timeline-comment.border-danger > .card-header h2 a, .timeline-comment.border-danger > .card-header .h2 a, .timeline-comment.border-danger > .card-header h3 a, .timeline-comment.border-danger > .card-header .h3 a, .timeline-comment.border-danger > .card-header h4 a, .timeline-comment.border-danger > .card-header .h4 a, .timeline-comment.border-danger > .card-header h5 a, .timeline-comment.border-danger > .card-header .h5 a, .timeline-comment.border-danger > .card-header h6 a, .timeline-comment.border-danger > .card-header .h6 a {
   color: #a94442;
 }
 

@@ -81,6 +81,15 @@ $timeline-line-padding: 4px;
 		a, .card-title, .card-title a {
 			color: $color;
 		}
+		.card-title, h1, h2, h3, h4, h5, h6 {
+			font-size: 16px;
+			line-height: 1.1;
+			margin: 0;
+			color: $color;
+		}
+		.card-title a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+			color: $color;
+		}
 	}
 }
 
