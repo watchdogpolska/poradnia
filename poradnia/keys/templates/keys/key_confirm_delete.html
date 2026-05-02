@@ -1,8 +1,8 @@
 {% extends 'keys/base.html' %}
 {% load i18n %}
 {% block breadcrumbs_rows %}
-    <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
-    <li class="active">{% trans 'Confirm delete' %}</li>
+    <li class="breadcrumb-item"><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% trans 'Confirm delete' %}</li>
 {% endblock %}
 {% block content %}
     <form method="post">

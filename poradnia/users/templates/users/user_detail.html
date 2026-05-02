@@ -3,7 +3,7 @@
 {% block title %}{% trans 'User' %}: {{ object.get_nicename }} - {{ block.super }}{% endblock %}
 
 {% block breadcrumbs_rows %}
-    <li class="active">{{ object }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ object }}</li>
 {% endblock %}
 
 {% block content %}

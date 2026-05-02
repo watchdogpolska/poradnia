@@ -5,9 +5,9 @@
 
 {% block breadcrumbs %}
     <ol class="breadcrumb">
-        <li><a href="{% url 'cases:list' %}">{% trans 'Cases' %}</a></li>
-        <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
-        <li class="active">{% trans 'Permissions' %}</li>
+        <li class="breadcrumb-item"><a href="{% url 'cases:list' %}">{% trans 'Cases' %}</a></li>
+        <li class="breadcrumb-item"><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{% trans 'Permissions' %}</li>
     </ol>
 {% endblock %}
 

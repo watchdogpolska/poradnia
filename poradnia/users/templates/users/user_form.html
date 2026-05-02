@@ -4,8 +4,8 @@
 {% block title %}{% trans 'User' %}: {{ user.username }} - {{ block.super }}{% endblock %}
 
 {% block breadcrumbs_rows %}
-    <li><a href="{{ user.get_absolute_url }}">{{ user }}</a></li>
-    <li class="active">{% trans 'Account' %}</li>
+    <li class="breadcrumb-item"><a href="{{ user.get_absolute_url }}">{{ user }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% trans 'Account' %}</li>
 {% endblock %}
 
 {% block content %}

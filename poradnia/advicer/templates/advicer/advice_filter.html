@@ -1,7 +1,7 @@
 {% extends 'advicer/base.html' %}
 {% load humanize i18n crispy_forms_tags bootstrap_pagination %}
 {% block breadcrumbs_rows %}
-    <li class="active">{% trans 'Advice index' %}</li>
+    <li class="breadcrumb-item active" aria-current="page">{% trans 'Advice index' %}</li>
     <div class="float-end">
         <a href="{% url 'advicer:create' %}" class="btn btn-success"><i
                 class="fas fa-pencil"></i> {% trans 'Add' %}</a>

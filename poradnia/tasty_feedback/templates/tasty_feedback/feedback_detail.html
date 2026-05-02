@@ -1,7 +1,7 @@
 {% extends 'tasty_feedback/base.html' %}
 {% load humanize i18n crispy_forms_tags %}
 {% block breadcrumbs_rows %}
-    <li class="active">{{ object }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ object }}</li>
 {% endblock %}
 {% block feedback_content %}
     <div class="card">

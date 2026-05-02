@@ -2,7 +2,7 @@
 {% load i18n humanize users_tags %}
 {% block title %}{{ object }} - {{ block.super }}{% endblock %}
 {% block breadcrumbs_rows %}
-    <li class="active">{{ object }}</a>
+    <li class="breadcrumb-item active" aria-current="page">{{ object }}</li>
 {% endblock %}
 
 {% block content %}
