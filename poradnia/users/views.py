@@ -199,7 +199,13 @@ class UserAjaxDatatableView(StaffuserRequiredMixin, PermissionMixin, AjaxDatatab
 
     column_defs = [
         {"name": "pk", "title": "ID", "visible": False},
-        {"name": "username", "title": _("Username"), "visible": True},
+        {
+            "name": "username",
+            "title": _("Username"),
+            "visible": True,
+            "searchable": True,
+            "orderable": True,
+        },
         {
             "name": "nicename",
             "title": _("Nice Name"),
@@ -207,8 +213,21 @@ class UserAjaxDatatableView(StaffuserRequiredMixin, PermissionMixin, AjaxDatatab
             "searchable": True,
             "orderable": True,
         },
-        {"name": "email", "title": _("Email"), "visible": True},
-        {"name": "is_staff", "title": _("Staff"), "visible": True, "searchable": False},
+        {
+            "name": "email",
+            "title": _("Email"),
+            "visible": True,
+            "searchable": True,
+            "orderable": True,
+        },
+        {
+            "name": "is_staff",
+            "title": _("Staff"),
+            "visible": True,
+            "searchable": True,
+            # (value, label) pairs.
+            "choices": [(1, _("Yes")), (0, _("No"))],
+        },
         {
             "name": "case_count",
             "title": _("Client cases"),
@@ -235,4 +254,3 @@ class UserAjaxDatatableView(StaffuserRequiredMixin, PermissionMixin, AjaxDatatab
         row["username"] = mark_safe(
             f'<a href="{obj.get_absolute_url()}">{obj.username}</a>'
         )
-        row["is_staff"] = _("Yes") if obj.is_staff else _("No")
