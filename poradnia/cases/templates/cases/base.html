@@ -5,17 +5,27 @@
     {{ block.super }}
     <script type="text/javascript">
         document.addEventListener('DOMContentLoaded', function () {
-            var show = '<i class="fa-regular fa-square-plus"></i> {%trans "Show quote" %}';
-            var hide = '<i class="fa-regular fa-square-minus"></i> {%trans "Hide quote" %}';
-            document.querySelectorAll('blockquote').forEach(function (el) {
+            const states = {
+                show: { iconClass: 'fa-regular fa-square-plus', text: '{% trans "Show quote" %}' },
+                hide: { iconClass: 'fa-regular fa-square-minus', text: '{% trans "Hide quote" %}' },
+            };
+            document.querySelectorAll('blockquote').forEach((el) => {
                 el.hidden = true;
-                var btn = document.createElement('button');
+                const btn = document.createElement('button');
+                btn.type = 'button';
                 btn.className = 'btn quote-link';
-                btn.innerHTML = show;
-                btn.addEventListener('click', function (event) {
+                const icon = document.createElement('i');
+                const label = document.createElement('span');
+                btn.append(icon, ' ', label);
+                const apply = ({ iconClass, text }) => {
+                    icon.className = iconClass;
+                    label.textContent = text;
+                };
+                apply(states.show);
+                btn.addEventListener('click', (event) => {
                     event.preventDefault();
                     el.hidden = !el.hidden;
-                    btn.innerHTML = el.hidden ? show : hide;
+                    apply(el.hidden ? states.show : states.hide);
                 });
                 el.parentNode.insertBefore(btn, el);
             });
