@@ -9,8 +9,8 @@ register = template.Library()
 @register.filter
 def letter2panel(obj):
     if obj.genre == obj.GENRE.comment:
-        return "panel-info"
-    return "panel-primary" if obj.created_by_is_staff else "panel-default"
+        return "border-info"
+    return "border-primary" if obj.created_by_is_staff else "border-secondary"
 
 
 @register.filter

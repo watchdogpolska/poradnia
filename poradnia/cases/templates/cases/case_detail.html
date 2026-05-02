@@ -99,7 +99,7 @@
 
         </style>
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
             <div class="case-header">
                 <div class="case-header-actions">
                     {% if 'change_case' in case_perms %}
@@ -107,15 +107,15 @@
                                 class="fa-solid fa-pen-to-square"></i> {% trans 'Edit' %}</a>
                     {% endif %}
                     {% if 'can_close_case' in case_perms and object.status != object.STATUS.closed %}
-                        <a class="btn btn-default" href="{{ object.get_close_url }}"><i
+                        <a class="btn btn-secondary" href="{{ object.get_close_url }}"><i
                                 class="fa-regular fa-circle-xmark"></i> {% trans 'Close' %}</a>
                     {% endif %}
                     {% if 'delete_case' in case_perms and user.is_staff %}
-                        <a class="btn btn-default" href="{% url 'admin:cases_case_delete' object_id=object.pk %}"><i
+                        <a class="btn btn-secondary" href="{% url 'admin:cases_case_delete' object_id=object.pk %}"><i
                                 class="fas fa-trash-can"></i> {% trans 'Delete' %}</a>
                     {% endif %}
                     {% if 'can_merge_case' in case_perms %}
-                        <a class="btn btn-default" href="{% url 'cases:merge' pk=object.pk %}"><i
+                        <a class="btn btn-secondary" href="{% url 'cases:merge' pk=object.pk %}"><i
                                 class="fas fa-code-fork"></i> {% trans 'Merge' %}</a>
                     {% endif %}
                 </div>
@@ -123,11 +123,11 @@
                     <span class="case-header-number">#{{ object.pk }}</span></h1>
                 <div class="case-header-meta">
                     {% if object.status_changed %}
-                        <span class="label label-success"
+                        <span class="badge text-bg-success"
                               title="Ostatnia zmiana stanu: {{ object.status_changed }} dni temu"> <i
                                 class="{{ object.status|status2css }}"></i> {{ object.status_display }}</span>
                     {% else %}
-                        <span class="label label-success" title="Ostatnia zmiana 7 dni temu"> <i
+                        <span class="badge text-bg-success" title="Ostatnia zmiana 7 dni temu"> <i
                                 class="far fa-folder-open"></i> {{ object.status }}</span>
                     {% endif %}
                     {% if request.user.is_staff and object.has_project %}
@@ -145,8 +145,8 @@
         <div class="col-lg-6" style="height: 1000px; overflow-y: auto;">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><i class="far fa-newspaper"></i> {% trans 'Workflow' %}</div>
+                    <div class="card">
+                        <div class="card-header"><i class="far fa-newspaper"></i> {% trans 'Workflow' %}</div>
                         <table class="table">
                             <tr>
                                 <td><i class="fas fa-user"></i> {% trans 'Involved in' %}</td>
@@ -172,8 +172,8 @@
                         </table>
                     </div>
                     {% if request.user.is_staff %}
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><i class="fas fa-phone"></i> {% trans 'Metrical data' %}</div>
+                        <div class="card">
+                            <div class="card-header"><i class="fas fa-phone"></i> {% trans 'Metrical data' %}</div>
                             <table class="table">
                                 <tr>
                                     <td><i class="fas fa-chart-area"></i> {% trans 'Advice tags' %}</td>
@@ -194,13 +194,13 @@
                 {% if request.user.is_staff %}
                     <div class=" col-md-6">
                         {% if 'can_assign' in case_perms %}
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
+                            <div class="card">
+                                <div class="card-header">
                                     <i class="fas fa-users"></i> {% trans 'Assign permissions' %}
-                                    <a class="btn btn-default btn-xs pull-right"
+                                    <a class="btn btn-secondary btn-xs float-end"
                                     href="{% url 'cases:permission_add' pk=object.pk %}">{% trans "..." %}</a>
                                 </div>
-                                <div class="panel-body">
+                                <div class="card-body">
                                     {% crispy casegroup_form %}
                                     <details class="permissions_help">
                                         <summary>
@@ -222,7 +222,7 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <span class="label label-warning">{% trans 'No records' %}</span>
+                <span class="badge text-bg-warning">{% trans 'No records' %}</span>
             {% endif %}        
         
         </div>
@@ -233,10 +233,10 @@
 
                     <ul class="nav nav-tabs" role="tablist" id="form-tab">
                         {% for label, row in forms.items %}
-                            <li role="presentation" 
-                                {% if forloop.last %} class="active"{% endif %}>
-                                <a href="#{{ label }}" aria-controls="{{ label }}"
-                                    role="tab" data-toggle="tab">{{ row.title }}</a>
+                            <li class="nav-item" role="presentation">
+                                <a class="nav-link{% if forloop.last %} active{% endif %}"
+                                    href="#{{ label }}" aria-controls="{{ label }}"
+                                    role="tab" data-bs-toggle="tab">{{ row.title }}</a>
                             </li>
                         {% endfor %}
                     </ul>
@@ -272,7 +272,7 @@
                                                     <thead id="files-table-head">
                                                         <tr>
                                                             <th style="font-size: 14px;">
-                                                                <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+                                                                <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                                                                     title="{% trans 'Select multiple files with ctr or shift.' %}">
                                                                 </i>
                                                                 {% trans 'Selected files:' %}

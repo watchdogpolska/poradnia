@@ -29,7 +29,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+    <div class="col-lg-8 col-md-10 col-sm-12 col-12 offset-lg-2 offset-md-1">
         {% crispy filter.form %}
 
         {% if object_list %}
@@ -70,7 +70,7 @@
                 {% endif %}
 
                 {% if request.user.is_staff and object.deadline.time %}
-                    <span class="label label-warning">
+                    <span class="badge text-bg-warning">
                     <i class="fa-brands fa-gripfire"></i> {{ object.deadline.time }}
             </span>
                 {% endif %}
@@ -82,7 +82,7 @@
                 {% if request.user.is_staff and object.caseuserobjectpermission_set.all %}
                     {% regroup object.caseuserobjectpermission_set.all by user as user_list %}
                     {% for user in user_list %}
-                        <span class="label label-info"
+                        <span class="badge text-bg-info"
                             title="{% for item in user.list %}{% trans item.permission.name %},{% endfor %}">
                 {{ user.grouper.get_codename }}
                 </span>
@@ -113,7 +113,7 @@
                 {% endfor %}
                 </tbody>
             </table>
-            <p>{% trans 'Legend of status' %} <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+            <p>{% trans 'Legend of status' %} <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                                                 title='{% trans 'Cases have status changed by staff.' %}'></i>:
                 {% for status in statuses %}<i class="{{ status.0|status2css }}"></i>
                     {{ status.0|status2display }} {% endfor %}</p>
