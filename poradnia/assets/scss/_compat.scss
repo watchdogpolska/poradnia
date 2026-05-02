@@ -1,0 +1,13 @@
+// BS3 mixin shims still referenced by app SCSS. BS5 ships `clearfix` but
+// not `square` or `center-block`.
+
+@mixin square($size) {
+  width: $size;
+  height: $size;
+}
+
+@mixin center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}

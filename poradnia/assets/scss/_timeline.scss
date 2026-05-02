@@ -68,21 +68,22 @@ $timeline-line-padding: 4px;
 		left: #{ -$timeline-triangle-size };
 	}	
 }
-.timeline-comment.panel-default {
+.timeline-comment.border-secondary,
+.timeline-comment:not([class*="border-"]) {
 	@include timeline-comment-variant($panel-default-border, $panel-default-heading-bg);
 }
-.timeline-comment.panel-primary {
+.timeline-comment.border-primary {
 	@include timeline-comment-variant($panel-primary-border, $panel-primary-heading-bg);
 }
-.timeline-comment.panel-success {
+.timeline-comment.border-success {
 	@include timeline-comment-variant($panel-success-border, $panel-success-heading-bg);
 }
-.timeline-comment.panel-info {
+.timeline-comment.border-info {
 	@include timeline-comment-variant($panel-info-border, $panel-info-heading-bg);
 }
-.timeline-comment.panel-warning {
+.timeline-comment.border-warning {
 	@include timeline-comment-variant($panel-warning-border, $panel-warning-heading-bg);
 }
-.timeline-comment.panel-danger {
+.timeline-comment.border-danger {
 	@include timeline-comment-variant($panel-danger-border, $panel-danger-heading-bg);
 }
