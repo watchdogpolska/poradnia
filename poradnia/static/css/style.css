@@ -22857,6 +22857,13 @@ textarea.form-control-lg {
     display: none !important;
   }
 }
+.breadcrumb {
+  background-color: #f5f5f5;
+  padding: 8px 15px;
+  border-radius: 4px;
+  margin-bottom: 20px;
+}
+
 .card {
   --bs-card-border-color: #ddd;
 }

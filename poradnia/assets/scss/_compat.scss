@@ -12,6 +12,15 @@
   margin-right: auto;
 }
 
+// Restore BS3-style breadcrumb chrome. BS5 dropped the default pill-bar
+// background/padding/radius; re-add it using existing BS3 panel vars.
+.breadcrumb {
+  background-color: $panel-default-heading-bg; // #f5f5f5
+  padding: 8px 15px;
+  border-radius: $border-radius-base; // 4px
+  margin-bottom: 20px;
+}
+
 // Restore BS3-style visible 4-sided card border.
 // BS5's default `--bs-card-border-color` is `rgba(0,0,0,0.175)` (translucent
 // black) which combined with subpixel rendering on non-integer devicePixelRatio
