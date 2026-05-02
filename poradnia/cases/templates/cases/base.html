@@ -4,21 +4,21 @@
 {% block javascript %}
     {{ block.super }}
     <script type="text/javascript">
-        ;(function($) {
-            $(function () {
-                var show = '<i class="fa-regular fa-square-plus"></i> {%trans "Show quote" %}';
-                var hide = '<i class="fa-regular fa-square-minus"></i> {%trans "Hide quote" %}';
-                $('blockquote').each(function (index, value) {
-                    var el = $(value).hide();
-                    var new_el = $("<button class='btn quote-link'>" + show + "</a>");
-                    new_el.click(function (event) {
-                        event.preventDefault();
-                        el.slideToggle();
-                        this.innerHTML = this.innerHTML == show ? hide : show;
-                    });
-                    el.before(new_el);
+        document.addEventListener('DOMContentLoaded', function () {
+            var show = '<i class="fa-regular fa-square-plus"></i> {%trans "Show quote" %}';
+            var hide = '<i class="fa-regular fa-square-minus"></i> {%trans "Hide quote" %}';
+            document.querySelectorAll('blockquote').forEach(function (el) {
+                el.hidden = true;
+                var btn = document.createElement('button');
+                btn.className = 'btn quote-link';
+                btn.innerHTML = show;
+                btn.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    el.hidden = !el.hidden;
+                    btn.innerHTML = el.hidden ? show : hide;
                 });
+                el.parentNode.insertBefore(btn, el);
             });
-        })(jQuery);
+        });
     </script>
 {% endblock %}
