@@ -28,8 +28,14 @@
 // `#ddd` border that read clearly on white. Re-pin the card border color to
 // BS3's `$panel-default-border` so side-panel cards (Workflow, Metrical data,
 // Permissions) and timeline letter cards regain a visible bounding outline.
+//
+// Also restore BS3 `.panel { margin-bottom: 20px }` for stacked cards. BS5
+// `.card` ships with no default margin, which collapses the gap between
+// case-detail side-panel cards (Przepływ pracy / Dane statystyczne /
+// Permissions) and between timeline letter cards.
 .card {
   --bs-card-border-color: #{$panel-default-border};
+  margin-bottom: 20px;
 }
 
 // Restore BS3 `.pager` (removed in BS4+). Used by events/calendar.html,

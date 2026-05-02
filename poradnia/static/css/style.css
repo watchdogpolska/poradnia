@@ -22866,6 +22866,7 @@ textarea.form-control-lg {
 
 .card {
   --bs-card-border-color: #ddd;
+  margin-bottom: 20px;
 }
 
 .pager {
