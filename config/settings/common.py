@@ -37,7 +37,7 @@ DJANGO_APPS = (
 )
 THIRD_PARTY_APPS = (
     "crispy_forms",  # Form layouts
-    "crispy_bootstrap3",  # Bootstrap 3 theme for crispy forms
+    "crispy_bootstrap5",  # Bootstrap 5 theme for crispy forms
     "allauth",  # registration
     "allauth.account",  # registration
     "allauth.socialaccount",  # registration
@@ -281,9 +281,9 @@ USE_TZ = True
 
 # See: http://django-crispy-forms.readthedocs.org/en/latest/install.html#template-packs
 CRISPY_ALLOWED_TEMPLATE_PACKS = [
-    "bootstrap3",
+    "bootstrap5",
 ]
-CRISPY_TEMPLATE_PACK = "bootstrap3"
+CRISPY_TEMPLATE_PACK = "bootstrap5"
 CRISPY_FAIL_SILENTLY = False
 
 # END TEMPLATE CONFIGURATION

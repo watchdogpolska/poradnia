@@ -60,9 +60,8 @@ const config = {
   script: {
     input: [
       path.npm + "/jquery/dist/jquery.js",
-      path.npm + "/bootstrap-sass/assets/javascripts/bootstrap/tab.js",
-      path.npm + "/bootstrap-sass/assets/javascripts/bootstrap/tooltip.js",
-      path.npm + "/bootstrap-sass/assets/javascripts/bootstrap/modal.js",
+      path.npm + "/@popperjs/core/dist/umd/popper.min.js",
+      path.npm + "/bootstrap/dist/js/bootstrap.min.js",
       path.npm + "/htmx.org/dist/htmx.js",
       path.staticfiles + "/tasty_feedback/style.js",
       path.npm + "/moment/moment.js",
