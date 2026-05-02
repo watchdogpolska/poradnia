@@ -22906,6 +22906,15 @@ textarea.form-control-lg {
   cursor: not-allowed;
 }
 
+.filter-option {
+  line-height: 1.4;
+  margin-bottom: 0.15rem;
+}
+
+.row > .filter-option label {
+  margin-bottom: 0;
+}
+
 /*!
  * Pikaday
  * Copyright © 2014 David Bushell | BSD & MIT license | http://dbushell.com/

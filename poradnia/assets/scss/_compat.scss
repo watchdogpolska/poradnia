@@ -68,3 +68,15 @@
     cursor: not-allowed;
   }
 }
+
+// Filter sidebar density — match BS3's tight checkbox+label+icon stack on
+// /sprawy/table/, /porady/table/, etc. The case_table.html / advice_table.html
+// templates emit each filter group inside .row > .filter-option*; this
+// constrains row-height per option so they stack tightly.
+.filter-option {
+    line-height: 1.4;
+    margin-bottom: 0.15rem;
+}
+.row > .filter-option label {
+    margin-bottom: 0;
+}

@@ -35,11 +35,12 @@
             </i>
             <label>{% trans 'Status (col. "S")' %}:</label><br>
             {% for status in statuses %}
-              <input type="checkbox" id="status_{{ status.0|status_name }}" name="check_status_{{ status.0|status_name }}"
-                {% if status.0|status_name != 'closed' %}checked{% endif %}>
-              <label for="status_{{ status.0|status_name }}" class="small">{{ status.0|status2display }}</label> &nbsp;
-              <i class="{{ status.0|status2css }}"></i>
-              <br>
+              <div class="filter-option d-flex align-items-center gap-1">
+                <input type="checkbox" id="status_{{ status.0|status_name }}" name="check_status_{{ status.0|status_name }}"
+                  {% if status.0|status_name != 'closed' %}checked{% endif %}>
+                <label for="status_{{ status.0|status_name }}" class="small mb-0">{{ status.0|status2display }}</label>
+                <i class="{{ status.0|status2css }}"></i>
+              </div>
             {% endfor %}
             <br><br>
         </div>
@@ -59,10 +60,14 @@
                 title="{% trans 'Cases that do have letter with status done (case subject not in bold).' %}">
             </i>
             <label>{% trans 'Replied' %}:</label><br>
-            <input type="checkbox" id="handled_yes" name="check_handled_yes" checked>
-            <label for="handled_yes" class="small">{% trans 'Yes' %}</label><br>
-            <input type="checkbox" id="handled_no" name="check_handled_no" checked>
-            <label for="handled_no" class="small">{% trans 'No' %}</label><br>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="handled_yes" name="check_handled_yes" checked>
+              <label for="handled_yes" class="small mb-0">{% trans 'Yes' %}</label>
+            </div>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="handled_no" name="check_handled_no" checked>
+              <label for="handled_no" class="small mb-0">{% trans 'No' %}</label>
+            </div>
             <br><br>
         </div>
         <div class="row">
@@ -70,10 +75,14 @@
                 title="{% trans 'Cases that have letter project.' %}">
             </i>
             <label>{% trans 'Has project' %}:</label><br>
-            <input type="checkbox" id="has_project_yes" name="check_has_project_yes" checked>
-            <label for="has_project_yes" class="small">{% trans 'Yes' %}</label><br>
-            <input type="checkbox" id="has_project_no" name="check_has_project_no" checked>
-            <label for="has_project_no" class="small">{% trans 'No' %}</label><br>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="has_project_yes" name="check_has_project_yes" checked>
+              <label for="has_project_yes" class="small mb-0">{% trans 'Yes' %}</label>
+            </div>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="has_project_no" name="check_has_project_no" checked>
+              <label for="has_project_no" class="small mb-0">{% trans 'No' %}</label>
+            </div>
             <br><br>
         </div>
         <div class="row">
@@ -81,10 +90,14 @@
                 title="{% trans 'Cases that have event with deadline.' %}">
             </i>
             <label>{% trans 'Has deadline' %}:</label><br>
-            <input type="checkbox" id="has_deadline_yes" name="check_has_deadline_yes" checked>
-            <label for="has_deadline_yes" class="small">{% trans 'Yes' %}</label><br>
-            <input type="checkbox" id="has_deadline_no" name="check_has_deadline_no" checked>
-            <label for="has_deadline_no" class="small">{% trans 'No' %}</label><br>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="has_deadline_yes" name="check_has_deadline_yes" checked>
+              <label for="has_deadline_yes" class="small mb-0">{% trans 'Yes' %}</label>
+            </div>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="has_deadline_no" name="check_has_deadline_no" checked>
+              <label for="has_deadline_no" class="small mb-0">{% trans 'No' %}</label>
+            </div>
             <br><br>
         </div>
     </div>
