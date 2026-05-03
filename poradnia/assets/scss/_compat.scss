@@ -38,6 +38,17 @@
   margin-bottom: 20px;
 }
 
+// BS3 `.panel > .table:last-child` zeroed the table's bottom margin so the
+// table flush-fit inside the panel. BS5 ships no equivalent rule, so the
+// `.table` default `margin-bottom: 1rem` leaves ~16px of empty space inside
+// the card below the last table row. Restore the BS3 behaviour for tables
+// rendered as a direct card child (no `.card-body` wrapper). Affects:
+//   - cases/case_detail.html → "Przepływ pracy" / "Dane statystyczne" cards
+//   - tasty_feedback/feedback_detail.html → feedback metadata card
+.card > .table:last-child {
+  margin-bottom: 0;
+}
+
 // Restore BS3 `.pager` (removed in BS4+). Used by events/calendar.html,
 // notifications/list.html, and cases/_case_pager.html.
 .pager {

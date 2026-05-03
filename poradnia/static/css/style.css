@@ -22869,6 +22869,10 @@ textarea.form-control-lg {
   margin-bottom: 20px;
 }
 
+.card > .table:last-child {
+  margin-bottom: 0;
+}
+
 .pager {
   padding-left: 0;
   margin: 20px 0;
