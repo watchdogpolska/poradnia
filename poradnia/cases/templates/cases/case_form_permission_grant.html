@@ -1,0 +1,12 @@
+{% extends "cases/case_form.html" %}
+{% load crispy_forms_tags i18n %}
+
+{% block content %}
+<div class="row">
+    <div class="col-lg-8 col-md-10 col-sm-12 col-12 offset-lg-2 offset-md-1">
+        <h1>{% block header %}{{ object }}{% endblock %}</h1>
+        {% csrf_token %}
+        {% crispy form %}
+    </div>
+</div>
+{% endblock %}
