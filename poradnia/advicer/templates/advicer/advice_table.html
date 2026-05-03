@@ -35,11 +35,11 @@
 <div id="tableWrapper">
     <!-- TODO add colvis button and functionality -->
     <!-- TODO fix column invisible column sorting buttons -->
-    <div class="row">
-    <div class="col-sm-3 col-md-2 filters">
+    <div class="row g-0">
+    <div class="col-auto filters">
         <br><br><br><br>
         <h4>{% trans 'Filters' %}:</h4><br>
-        <div class="row">
+        <div class="filter-group">
             <label>{% trans 'Helped? (col. H?)' %}:</label><br>
             <div class="filter-option d-flex align-items-center gap-1">
               <input type="checkbox" id="helped_yes" name="check_helped_yes" checked>
@@ -61,7 +61,7 @@
             </div>
             <br><br>
         </div>
-        <div class="row">
+        <div class="filter-group">
             <label>{% trans 'Visible (col. V.)' %}:</label><br>
             <div class="filter-option d-flex align-items-center gap-1">
               <input type="checkbox" id="visible_yes" name="check_visible_yes" checked>
@@ -78,7 +78,7 @@
             <br><br>
         </div>
     </div>
-    <div class="col-sm-9 col-md-10 table-responsive">
+    <div class="col table-responsive">
         <table id="datatable_advices" width="100%" class="table table-bordered compact">
             <!-- table-striped  nowrap-->
         </table>
