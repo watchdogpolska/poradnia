@@ -277,7 +277,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         # row["handled"] = obj.render_handled()
         row["involved_staff"] = obj.render_involved_staff()
         row["deadline_str"] = (
-            f"""<span class="label label-warning">
+            f"""<span class="badge text-bg-warning">
             <i class="fa-brands fa-gripfire"></i>{obj.deadline_str[:10]}</span>"""
             if obj.deadline_str
             else ""

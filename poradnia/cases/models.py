@@ -313,7 +313,7 @@ class Case(models.Model):
             title = _("Reply to client to remove badge")
             name = _("Project")
             return f"""
-                <span class="label label-success" title="{title}">
+                <span class="badge text-bg-success" title="{title}">
                 <i class="fas fa-pencil"></i> {name}
                 </span>
             """
@@ -338,7 +338,7 @@ class Case(models.Model):
             if key.is_staff
         ]
         return "<br>".join([f"""
-                <span class="label label-info" title="{user["title"]}">
+                <span class="badge text-bg-info" title="{user["title"]}">
                 {user["grouper"].get_nicename()}</span>
             """ for user in user_list])
 
