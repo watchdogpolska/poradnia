@@ -81,6 +81,40 @@
     margin-bottom: 0;
 }
 
+// BS3 dropped `.form-inline` in BS4; restore the inline-form layout used by
+// crispy `FormHelper.form_class = "form-inline"` in:
+//   - poradnia/cases/forms.py (case-detail "Przyznaj uprawnienia" widget)
+//   - poradnia/advicer/filters.py (advice list filter)
+//   - poradnia/tasty_feedback/filters.py (feedback filter)
+//   - poradnia/utils/mixins.py (FilterMixin default helper)
+// Without this rule the form's children stack vertically (~200px) instead of
+// laying out on a single horizontal row (~61px in BS3).
+.form-inline {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-end;
+    gap: 0.5rem;
+
+    > label,
+    .form-label {
+        margin-bottom: 0;
+    }
+    .form-control,
+    .form-select {
+        width: auto;
+        min-width: 8rem;
+        display: inline-block;
+    }
+    .input-group {
+        width: auto;
+    }
+    // crispy_bootstrap5 wraps each field in `.mb-3`; collapse that vertical
+    // gap so wrapped form-groups don't add row-height inside an inline form.
+    .mb-3 {
+        margin-bottom: 0 !important;
+    }
+}
+
 // /sprawy/ filter form density. crispy_forms (BS5 pack) wraps each field in a
 // `.mb-3` div which adds 16px between fields, stacking with `.row.mb-1` row
 // margins to make the 3-row filter ~310px tall vs BS3's 159px. Inside this
