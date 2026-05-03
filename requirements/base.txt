@@ -51,7 +51,7 @@ git+https://github.com/PiotrIw/django-atom.git@master
 
 # django-tinycontent is not supported anymore so watchdog maintained fork is used
 git+https://github.com/watchdogpolska/django-tinycontent.git@master
-icalendar==7.0.3
+icalendar==7.1.0
 html2text==2025.4.15
 pyGravatar==0.0.6
 
