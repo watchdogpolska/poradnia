@@ -1,4 +1,4 @@
-FROM cypress/included:15.14.1
+FROM cypress/included:15.14.2
 
 RUN apt-get update && apt-get install -y wait-for-it
 
