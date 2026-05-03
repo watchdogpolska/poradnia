@@ -45121,7 +45121,8 @@ AjaxDatatableViewUtils.init({
                     '<input type="date" class="date_to datepicker"></span>' +
             '</div>'
         );
-        toolbar.find('.date_from, .date_to').on('change', function(event) {
+        toolbar[0].addEventListener('change', function(event) {
+            if (!event.target.matches('.date_from, .date_to')) return;
             // Annotate table with values retrieved from date widgets
             table.data('date_from', wrapper.find('.date_from').val());
             table.data('date_to', wrapper.find('.date_to').val());
@@ -45206,10 +45207,12 @@ AjaxDatatableViewUtils.init({
                     // involved_staff_filter: function() { return $("select[name='involved_staff_select']").val(); },
                 },
             );
-            $('.filters input, .filters select').on('change paste keyup', function() {
-                // redraw the table
-                $('#datatable_events').DataTable().ajax.reload(null, false);
-            });
+            const filtersContainer = document.querySelector('.filters');
+            if (filtersContainer) {
+                filtersContainer.addEventListener('change', function() {
+                    $('#datatable_events').DataTable().ajax.reload(null, false);
+                });
+            }
         }
     });
 })(jQuery);
