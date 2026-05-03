@@ -26,10 +26,10 @@
 <div id="tableWrapper">
     <!-- TODO add colvis button and functionality -->
     <div class="row g-0">
-    <div class="col-sm-3 col-md-2 filters">
+    <div class="col-sm-2 filters">
         <br><br><br><br>
         <h4>{% trans 'Filters' %}:</h4><br>
-        <div class="row">
+        <div class="filter-group">
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title='{% trans 'Cases have status changed by staff.' %}'>
             </i>
@@ -44,7 +44,7 @@
             {% endfor %}
             <br><br>
         </div>
-        <div class="row">
+        <div class="filter-group">
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have selected user in involved staff.' %}">
             </i>
@@ -54,8 +54,8 @@
                     <option value="{{ involved.0 }}">{{ involved.1 }}</option>
                 {% endfor %}
             </select><br><br><br>
-        </div>        
-        <div class="row">
+        </div>
+        <div class="filter-group">
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that do have letter with status done (case subject not in bold).' %}">
             </i>
@@ -70,7 +70,7 @@
             </div>
             <br><br>
         </div>
-        <div class="row">
+        <div class="filter-group">
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have letter project.' %}">
             </i>
@@ -85,7 +85,7 @@
             </div>
             <br><br>
         </div>
-        <div class="row">
+        <div class="filter-group">
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have event with deadline.' %}">
             </i>
@@ -101,7 +101,7 @@
             <br><br>
         </div>
     </div>
-    <div class="col-sm-9 col-md-10 table-responsive">
+    <div class="col-sm-10 table-responsive">
         <table id="datatable_cases" width="100%" class="table table-bordered compact">
             <!-- table-striped  nowrap-->
         </table>
