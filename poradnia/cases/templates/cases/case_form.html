@@ -5,15 +5,15 @@
 
 {% block breadcrumbs %}
     <ol class="breadcrumb">
-        <li><a href="{% url 'cases:list' %}">{% trans 'Cases' %}</a></li>
-        <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
-        <li class="active">{% trans 'Edit' %}</li>
+        <li class="breadcrumb-item"><a href="{% url 'cases:list' %}">{% trans 'Cases' %}</a></li>
+        <li class="breadcrumb-item"><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{% trans 'Edit' %}</li>
     </ol>
 {% endblock %}
 
 {% block content %}
 <div class="row">
-    <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+    <div class="col-lg-8 col-md-10 col-sm-12 col-12">
         <h1>{% block header %}{{ object }}{% endblock %}</h1>
         {% csrf_token %}
         {% crispy form %}

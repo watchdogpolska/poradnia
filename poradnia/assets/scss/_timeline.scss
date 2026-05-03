@@ -66,23 +66,55 @@ $timeline-line-padding: 4px;
 	&:before{
 		border-right-color: $border;
 		left: #{ -$timeline-triangle-size };
-	}	
+	}
 }
-.timeline-comment.panel-default {
+
+// Restore BS3-style coloured `.card-header` fill on timeline letters.
+// BS5's default `.card-header` keeps a translucent dark wash regardless
+// of the surrounding `.border-*` utility, so we re-paint the header to
+// match the BS3 panel-heading background and pick a legible text colour.
+@mixin timeline-comment-header($bg, $color) {
+	> .card-header {
+		background-color: $bg;
+		border-bottom-color: $bg;
+		color: $color;
+		a, .card-title, .card-title a {
+			color: $color;
+		}
+		.card-title, h1, h2, h3, h4, h5, h6 {
+			font-size: 16px;
+			line-height: 1.1;
+			margin: 0;
+			color: $color;
+		}
+		.card-title a, h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+			color: $color;
+		}
+	}
+}
+
+.timeline-comment.border-secondary,
+.timeline-comment:not([class*="border-"]) {
 	@include timeline-comment-variant($panel-default-border, $panel-default-heading-bg);
+	@include timeline-comment-header($panel-default-heading-bg, $gray-dark);
 }
-.timeline-comment.panel-primary {
+.timeline-comment.border-primary {
 	@include timeline-comment-variant($panel-primary-border, $panel-primary-heading-bg);
+	@include timeline-comment-header($panel-primary-heading-bg, #fff);
 }
-.timeline-comment.panel-success {
+.timeline-comment.border-success {
 	@include timeline-comment-variant($panel-success-border, $panel-success-heading-bg);
+	@include timeline-comment-header($panel-success-heading-bg, #3c763d);
 }
-.timeline-comment.panel-info {
+.timeline-comment.border-info {
 	@include timeline-comment-variant($panel-info-border, $panel-info-heading-bg);
+	@include timeline-comment-header($panel-info-heading-bg, #31708f);
 }
-.timeline-comment.panel-warning {
+.timeline-comment.border-warning {
 	@include timeline-comment-variant($panel-warning-border, $panel-warning-heading-bg);
+	@include timeline-comment-header($panel-warning-heading-bg, #8a6d3b);
 }
-.timeline-comment.panel-danger {
+.timeline-comment.border-danger {
 	@include timeline-comment-variant($panel-danger-border, $panel-danger-heading-bg);
+	@include timeline-comment-header($panel-danger-heading-bg, #a94442);
 }

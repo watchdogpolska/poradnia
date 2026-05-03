@@ -1,10 +1,10 @@
 <div class="alert alert-block alert-{{ notice.level }}">
     {% if notice.unread %}
-        <a class="close pull-right" href="{% url 'notifications:mark_as_read' notice.slug %}">
+        <a class="close float-end" href="{% url 'notifications:mark_as_read' notice.slug %}">
             <i class="icon-close"></i>[MARK READ]
         </a>
     {% else %}
-        <a class="close pull-right" href="{% url 'notifications:mark_as_unread' notice.slug %}">
+        <a class="close float-end" href="{% url 'notifications:mark_as_unread' notice.slug %}">
             <i class="icon-close"></i>[MARK UNREAD]
         </a>
     {% endif %}

@@ -25,25 +25,27 @@
 
 <div id="tableWrapper">
     <!-- TODO add colvis button and functionality -->
-    <div class="col-sm-1 filters">
+    <div class="row g-0">
+    <div class="col-auto filters">
         <br><br><br><br>
         <h4>{% trans 'Filters' %}:</h4><br>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div class="filter-group">
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title='{% trans 'Cases have status changed by staff.' %}'>
             </i>
             <label>{% trans 'Status (col. "S")' %}:</label><br>
             {% for status in statuses %}
-              <input type="checkbox" id="status_{{ status.0|status_name }}" name="check_status_{{ status.0|status_name }}"
-                {% if status.0|status_name != 'closed' %}checked{% endif %}>
-              <label for="status_{{ status.0|status_name }}" class="small">{{ status.0|status2display }}</label> &nbsp;
-              <i class="{{ status.0|status2css }}"></i>
-              <br>
+              <div class="filter-option d-flex align-items-center gap-1">
+                <input type="checkbox" id="status_{{ status.0|status_name }}" name="check_status_{{ status.0|status_name }}"
+                  {% if status.0|status_name != 'closed' %}checked{% endif %}>
+                <label for="status_{{ status.0|status_name }}" class="small mb-0">{{ status.0|status2display }}</label>
+                <i class="{{ status.0|status2css }}"></i>
+              </div>
             {% endfor %}
             <br><br>
         </div>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div class="filter-group">
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have selected user in involved staff.' %}">
             </i>
             <label>{% trans 'Involved staff' %}:</label><br>
@@ -52,45 +54,58 @@
                     <option value="{{ involved.0 }}">{{ involved.1 }}</option>
                 {% endfor %}
             </select><br><br><br>
-        </div>        
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        </div>
+        <div class="filter-group">
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that do have letter with status done (case subject not in bold).' %}">
             </i>
             <label>{% trans 'Replied' %}:</label><br>
-            <input type="checkbox" id="handled_yes" name="check_handled_yes" checked>
-            <label for="handled_yes" class="small">{% trans 'Yes' %}</label><br>
-            <input type="checkbox" id="handled_no" name="check_handled_no" checked>
-            <label for="handled_no" class="small">{% trans 'No' %}</label><br>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="handled_yes" name="check_handled_yes" checked>
+              <label for="handled_yes" class="small mb-0">{% trans 'Yes' %}</label>
+            </div>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="handled_no" name="check_handled_no" checked>
+              <label for="handled_no" class="small mb-0">{% trans 'No' %}</label>
+            </div>
             <br><br>
         </div>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div class="filter-group">
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have letter project.' %}">
             </i>
             <label>{% trans 'Has project' %}:</label><br>
-            <input type="checkbox" id="has_project_yes" name="check_has_project_yes" checked>
-            <label for="has_project_yes" class="small">{% trans 'Yes' %}</label><br>
-            <input type="checkbox" id="has_project_no" name="check_has_project_no" checked>
-            <label for="has_project_no" class="small">{% trans 'No' %}</label><br>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="has_project_yes" name="check_has_project_yes" checked>
+              <label for="has_project_yes" class="small mb-0">{% trans 'Yes' %}</label>
+            </div>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="has_project_no" name="check_has_project_no" checked>
+              <label for="has_project_no" class="small mb-0">{% trans 'No' %}</label>
+            </div>
             <br><br>
         </div>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div class="filter-group">
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have event with deadline.' %}">
             </i>
             <label>{% trans 'Has deadline' %}:</label><br>
-            <input type="checkbox" id="has_deadline_yes" name="check_has_deadline_yes" checked>
-            <label for="has_deadline_yes" class="small">{% trans 'Yes' %}</label><br>
-            <input type="checkbox" id="has_deadline_no" name="check_has_deadline_no" checked>
-            <label for="has_deadline_no" class="small">{% trans 'No' %}</label><br>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="has_deadline_yes" name="check_has_deadline_yes" checked>
+              <label for="has_deadline_yes" class="small mb-0">{% trans 'Yes' %}</label>
+            </div>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="has_deadline_no" name="check_has_deadline_no" checked>
+              <label for="has_deadline_no" class="small mb-0">{% trans 'No' %}</label>
+            </div>
             <br><br>
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="col table-responsive">
         <table id="datatable_cases" width="100%" class="table table-bordered compact">
             <!-- table-striped  nowrap-->
         </table>
+    </div>
     </div>
 </div>
 

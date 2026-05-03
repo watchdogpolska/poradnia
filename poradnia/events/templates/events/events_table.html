@@ -25,11 +25,12 @@
 
 <div id="tableWrapper">
     <!-- TODO add colvis button and functionality -->
-    <div class="col-sm-1 filters">
+    <div class="row g-0">
+    <div class="col-auto filters">
         <br><br><br><br>
         <h4>{% trans 'Filters' %}:</h4><br>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div class="filter-group">
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'A significant event, especially highlighted, for example, in the list of cases.' %}">
             </i>
             <label>{% trans 'Dead-line' %}:</label><br>
@@ -41,8 +42,8 @@
                 <span class="fas fa-hourglass" style="color: gray;"></span></label><br>
             <br><br>
         </div>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div class="filter-group">
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Event has been completed, no more reminders.' %}">
             </i>
             <label>{% trans 'Completed' %}:</label><br>
@@ -54,8 +55,8 @@
                 <span class="fas fa-xmark" style="color: gray;"></span></label><br>
             <br><br>
         </div>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div class="filter-group">
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Event is visible to customers (ext).' %}">
             </i>
             <label>{% trans 'Public' %}:</label><br>
@@ -67,8 +68,8 @@
                 <span class="fas fa-house-user" style="color: gray;"></span></label><br>
             <br><br>
         </div>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div class="filter-group">
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="Wydarzenie jest rozprawą sądową">
             </i>
             <label>{% trans 'Court session' %}:</label><br>
@@ -81,10 +82,11 @@
             <br><br>
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="col table-responsive">
         <table id="datatable_events" width="100%" class="table table-bordered compact">
             <!-- table-striped  nowrap-->
         </table>
+    </div>
     </div>
 </div>
 

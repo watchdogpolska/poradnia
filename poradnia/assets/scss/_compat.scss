@@ -1,0 +1,164 @@
+// BS3 mixin shims still referenced by app SCSS. BS5 ships `clearfix` but
+// not `square` or `center-block`.
+
+@mixin square($size) {
+  width: $size;
+  height: $size;
+}
+
+@mixin center-block {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+// Restore BS3-style breadcrumb chrome. BS5 dropped the default pill-bar
+// background/padding/radius; re-add it using existing BS3 panel vars.
+.breadcrumb {
+  background-color: $panel-default-heading-bg; // #f5f5f5
+  padding: 8px 15px;
+  border-radius: $border-radius-base; // 4px
+  margin-bottom: 20px;
+}
+
+// Restore BS3-style visible 4-sided card border.
+// BS5's default `--bs-card-border-color` is `rgba(0,0,0,0.175)` (translucent
+// black) which combined with subpixel rendering on non-integer devicePixelRatio
+// displays renders as a near-invisible ~0.75px wash. BS3 panels used a solid
+// `#ddd` border that read clearly on white. Re-pin the card border color to
+// BS3's `$panel-default-border` so side-panel cards (Workflow, Metrical data,
+// Permissions) and timeline letter cards regain a visible bounding outline.
+//
+// Also restore BS3 `.panel { margin-bottom: 20px }` for stacked cards. BS5
+// `.card` ships with no default margin, which collapses the gap between
+// case-detail side-panel cards (Przepływ pracy / Dane statystyczne /
+// Permissions) and between timeline letter cards.
+.card {
+  --bs-card-border-color: #{$panel-default-border};
+  margin-bottom: 20px;
+}
+
+// BS3 `.panel > .table:last-child` zeroed the table's bottom margin so the
+// table flush-fit inside the panel. BS5 ships no equivalent rule, so the
+// `.table` default `margin-bottom: 1rem` leaves ~16px of empty space inside
+// the card below the last table row. Restore the BS3 behaviour for tables
+// rendered as a direct card child (no `.card-body` wrapper). Affects:
+//   - cases/case_detail.html → "Przepływ pracy" / "Dane statystyczne" cards
+//   - tasty_feedback/feedback_detail.html → feedback metadata card
+.card > .table:last-child {
+  margin-bottom: 0;
+}
+
+// Restore BS3 `.pager` (removed in BS4+). Used by events/calendar.html,
+// notifications/list.html, and cases/_case_pager.html.
+.pager {
+  padding-left: 0;
+  margin: 20px 0;
+  list-style: none;
+  text-align: center;
+  &::after { display: block; clear: both; content: ""; } // clearfix for floats
+
+  li {
+    display: inline;
+    > a, > span {
+      display: inline-block;
+      padding: 5px 14px;
+      background-color: #fff;
+      border: 1px solid #ddd;
+      border-radius: 15px;
+    }
+    > a:hover, > a:focus { text-decoration: none; background-color: #eee; }
+  }
+
+  .previous > a, .previous > span { float: left; }
+  .next > a, .next > span { float: right; }
+
+  .disabled > a, .disabled > a:hover, .disabled > a:focus, .disabled > span {
+    color: #777;
+    background-color: #fff;
+    cursor: not-allowed;
+  }
+}
+
+// Filter sidebar density — match BS3's tight checkbox+label+icon stack on
+// /sprawy/table/, /porady/table/, etc. The case_table.html / advice_table.html
+// templates emit each filter group inside .row > .filter-option*; this
+// constrains row-height per option so they stack tightly.
+.filter-option {
+    line-height: 1.4;
+    margin-bottom: 0.15rem;
+}
+.row > .filter-option label {
+    margin-bottom: 0;
+}
+
+// BS3 dropped `.form-inline` in BS4; restore the inline-form layout used by
+// crispy `FormHelper.form_class = "form-inline"` in:
+//   - poradnia/cases/forms.py (case-detail "Przyznaj uprawnienia" widget)
+//   - poradnia/advicer/filters.py (advice list filter)
+//   - poradnia/tasty_feedback/filters.py (feedback filter)
+//   - poradnia/utils/mixins.py (FilterMixin default helper)
+// Without this rule the form's children stack vertically (~200px) instead of
+// laying out on a single horizontal row (~61px in BS3).
+.form-inline {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: flex-end;
+    gap: 0.5rem;
+
+    > label,
+    .form-label {
+        margin-bottom: 0;
+    }
+    .form-control,
+    .form-select {
+        width: auto;
+        min-width: 8rem;
+        display: inline-block;
+    }
+    .input-group {
+        width: auto;
+    }
+    // crispy_bootstrap5 wraps each field in `.mb-3`; collapse that vertical
+    // gap so wrapped form-groups don't add row-height inside an inline form.
+    .mb-3 {
+        margin-bottom: 0 !important;
+    }
+}
+
+// Restore BS3's default `.btn` fallback styling. BS5 ships no default look for
+// a bare `<button class="btn">`; BS3 used a light-gray fill (`.btn-default`).
+// Allauth's `account/password_reset.html` template emits a class-only submit,
+// leaving the button visually invisible in BS5. Targets buttons that have only
+// `.btn` (no .btn-primary, .btn-secondary, .btn-success, .btn-danger,
+// .btn-warning, .btn-info, .btn-light, .btn-dark, .btn-link, or
+// .btn-outline-*) so variant buttons keep their own colour.
+.btn:not(.btn-primary):not(.btn-secondary):not(.btn-success):not(.btn-danger):not(.btn-warning):not(.btn-info):not(.btn-light):not(.btn-dark):not(.btn-link):not([class*="btn-outline-"]) {
+    color: #212529;
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+}
+.btn:not(.btn-primary):not(.btn-secondary):not(.btn-success):not(.btn-danger):not(.btn-warning):not(.btn-info):not(.btn-light):not(.btn-dark):not(.btn-link):not([class*="btn-outline-"]):hover {
+    background-color: #e2e6ea;
+    border-color: #d3d9df;
+}
+
+// /sprawy/ filter form density. crispy_forms (BS5 pack) wraps each field in a
+// `.mb-3` div which adds 16px between fields, stacking with `.row.mb-1` row
+// margins to make the 3-row filter ~310px tall vs BS3's 159px. Inside this
+// scoped wrapper, drop the per-field bottom margin and tighten labels/inputs
+// to restore the dense BS3 look without affecting other crispy forms.
+.cases-filter-compact {
+    .mb-3 { margin-bottom: 0.15rem !important; }
+    .form-label { margin-bottom: 0; font-size: 0.85rem; line-height: 1.2; }
+    .form-control, .form-select { padding-top: 0.15rem; padding-bottom: 0.15rem; line-height: 1.3; }
+    .row.mb-1 { margin-bottom: 0.15rem !important; }
+    // Cap the Status multi-select to 2 visible rows (matches BS3 dropdown
+    // height); the BS5 default sizes it to all 4 options which dominates row 1.
+    select[multiple].form-select { min-height: 0; height: 3rem; }
+    // select2 (django-autocomplete-light / select2 widget) renders a sibling
+    // span; align its height with the tightened form-control padding.
+    .select2-selection--single { min-height: 0; height: calc(1.3em + 0.3rem + 2px); }
+    .select2-selection__rendered { line-height: 1.3 !important; padding-top: 0; padding-bottom: 0; }
+    .select2-selection__arrow { height: 100% !important; }
+}

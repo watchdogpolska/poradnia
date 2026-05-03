@@ -1,6 +1,6 @@
 {% load poradnia_tags %}
 {% for user in object.get_users_with_perms.all %}
-    <i class="fas fa-shield-halved" data-toggle="tooltip" data-placement="bottom"
+    <i class="fas fa-shield-halved" data-bs-toggle="tooltip" data-placement="bottom"
         title="{% user_obj_perms_list user object %}">
     </i>
     <a href="{{ user.get_absolute_url }}">{{ user }}</a>

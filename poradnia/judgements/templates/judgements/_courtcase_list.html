@@ -1,9 +1,9 @@
 {% load guardian_tags crispy_forms_tags humanize users_tags i18n %}
 <div class="timeline-messange">
     <a href="#"><img src="{% get_avatar_url object.created_by %}" class="timeline-avatar"></a>
-    <div class="panel {{ object.created_by.is_staff|yesno:'panel-default,panel-primary' }}  timeline-comment" id="courtcase-{{object.pk}}">
-        <div class="panel-heading">
-            <h2 class="panel-title">
+    <div class="card {{ object.created_by.is_staff|yesno:'card border-primary,card border-secondary' }}  timeline-comment" id="courtcase-{{object.pk}}">
+        <div class="card-header">
+            <h2 class="card-title">
                 <a href="#courtcase-{{object.pk}}">
                     <i class="fas fa-gavel"></i> {{ object }}
                 </a>
@@ -19,7 +19,7 @@
                 <td>{{ object.signature }} {{ object.render_court_order_search_link}}</td>
             </tr>
         </table>
-        <div class="panel-footer">
+        <div class="card-footer">
             <i class="fas fa-user"></i> {{ object.created_by }} &bull;
             <i class="far fa-clock"></i>
             <time datetime="{{ object.created_on }}"

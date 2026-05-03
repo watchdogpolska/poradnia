@@ -35,42 +35,54 @@
 <div id="tableWrapper">
     <!-- TODO add colvis button and functionality -->
     <!-- TODO fix column invisible column sorting buttons -->
-    <div class="col-sm-1 filters">
+    <div class="row g-0">
+    <div class="col-auto filters">
         <br><br><br><br>
         <h4>{% trans 'Filters' %}:</h4><br>
-        <div class="row">
+        <div class="filter-group">
             <label>{% trans 'Helped? (col. H?)' %}:</label><br>
-            <input type="checkbox" id="helped_yes" name="check_helped_yes" checked>
-            <label for="helped_yes" class="small">{% trans 'Yes' %} &nbsp;
-                <span class="fas fa-check" style="color: green;"></span>
-            </label><br>
-            <input type="checkbox" id="helped_no" name="check_helped_no" checked>
-            <label for="helped_no" class="small">{% trans 'No' %} &nbsp;
-                <span class="fas fa-xmark" style="color: red;"></span>
-            </label><br>
-            <input type="checkbox" id="helped_blank" name="check_helped_blank" checked>
-            <label for="helped_blank" class="small">{% trans 'Unknown' %}  &nbsp;
-                <span class="fas fa-question"></span>
-            </label><br>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="helped_yes" name="check_helped_yes" checked>
+              <label for="helped_yes" class="small mb-0">{% trans 'Yes' %}
+                  <span class="fas fa-check" style="color: green;"></span>
+              </label>
+            </div>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="helped_no" name="check_helped_no" checked>
+              <label for="helped_no" class="small mb-0">{% trans 'No' %}
+                  <span class="fas fa-xmark" style="color: red;"></span>
+              </label>
+            </div>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="helped_blank" name="check_helped_blank" checked>
+              <label for="helped_blank" class="small mb-0">{% trans 'Unknown' %}
+                  <span class="fas fa-question"></span>
+              </label>
+            </div>
             <br><br>
         </div>
-        <div class="row">
+        <div class="filter-group">
             <label>{% trans 'Visible (col. V.)' %}:</label><br>
-            <input type="checkbox" id="visible_yes" name="check_visible_yes" checked>
-            <label for="visible_yes" class="small">{% trans 'Yes' %}  &nbsp;
-                <span class="fas fa-check" style="color: green;"></span>
-            </label><br>
-            <input type="checkbox" id="visible_no" name="check_visible_no" checked>
-            <label for="visible_no" class="small">{% trans 'No' %}   &nbsp;
-                <span class="fas fa-xmark" style="color: red;"></span>
-            </label><br>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="visible_yes" name="check_visible_yes" checked>
+              <label for="visible_yes" class="small mb-0">{% trans 'Yes' %}
+                  <span class="fas fa-check" style="color: green;"></span>
+              </label>
+            </div>
+            <div class="filter-option d-flex align-items-center gap-1">
+              <input type="checkbox" id="visible_no" name="check_visible_no" checked>
+              <label for="visible_no" class="small mb-0">{% trans 'No' %}
+                  <span class="fas fa-xmark" style="color: red;"></span>
+              </label>
+            </div>
             <br><br>
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="col table-responsive">
         <table id="datatable_advices" width="100%" class="table table-bordered compact">
             <!-- table-striped  nowrap-->
         </table>
+    </div>
     </div>
 </div>
 

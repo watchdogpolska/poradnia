@@ -3,8 +3,8 @@
 
 
 {% block breadcrumbs_rows %}
-    <li><a href="{{ user.get_absolute_url }}">{{ user }}</a></li>
-    <li class="active">{% trans 'Profile' %}</li>
+    <li class="breadcrumb-item"><a href="{{ user.get_absolute_url }}">{{ user }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% trans 'Profile' %}</li>
 {% endblock %}
 
 {% block title %}{% trans 'Profile' %} - {{ block.super }}{% endblock %}

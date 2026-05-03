@@ -11,11 +11,11 @@
 {% endblock %}
 
 {% block breadcrumbs_rows %}
-    <li class="active">{% trans 'Feedback index' %}</li>
+    <li class="breadcrumb-item active" aria-current="page">{% trans 'Feedback index' %}</li>
 {% endblock %}
 {% block feedback_content %}
     <div class="row">
-        <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+        <div class="col-lg-8 col-md-10 col-sm-12 col-12 offset-lg-2 offset-md-1">
         <h1>{% trans 'Record feedbacks' %}</h1>
         {% crispy filter.form %}
         {% if object_list %}

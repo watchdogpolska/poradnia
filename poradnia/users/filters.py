@@ -1,5 +1,6 @@
 import django_filters
 from atom.ext.django_filters.filters import CrispyFilterMixin
+from crispy_forms.helper import FormHelper
 from dal import autocomplete
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
@@ -17,6 +18,14 @@ class UserChoiceFilter(django_filters.ModelChoiceFilter):
 class UserFilter(CrispyFilterMixin, django_filters.FilterSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+    @property
+    def form(self):
+        self._form = super(CrispyFilterMixin, self).form
+        self._form.helper = FormHelper(self._form)
+        self._form.helper.form_method = "get"
+        self._form.helper.form_class = "form-inline"
+        return self._form
 
     sort = django_filters.OrderingFilter(
         fields=(

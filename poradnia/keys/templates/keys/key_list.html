@@ -2,11 +2,11 @@
 {% load i18n humanize %}
 
 {% block breadcrumbs_rows %}
-    <li class="active">{% trans 'Keys index' %}</li>
+    <li class="breadcrumb-item active" aria-current="page">{% trans 'Keys index' %}</li>
 {% endblock %}
 
 {% block content %}
-    <div class="text-right">
+    <div class="text-end">
         <p><a href="https://github.com/watchdogpolska/poradnia/blob/master/docs/modules/keys.rst" class="btn btn-primary"><i
                 class="fas fa-question"></i> {% trans 'Help' %}</a>
             <a href="{% url 'keys:create' %}" class="btn btn-primary"><i
@@ -27,9 +27,9 @@
                 <td>{{ object.download_on|naturaltime }}</td>
                 <td>{{ object.used_on|naturaltime }}</td>
                 <td>
-                    <a href="{% url 'keys:details' pk=object.pk %}" class="btn btn-default"><i
+                    <a href="{% url 'keys:details' pk=object.pk %}" class="btn btn-secondary"><i
                             class="fas fa-download"></i>{% trans 'Download' %}</a>
-                    <a href="{% url 'keys:delete' pk=object.pk %}" class="btn btn-default"><i
+                    <a href="{% url 'keys:delete' pk=object.pk %}" class="btn btn-secondary"><i
                             class="fas fa-trash-can"></i>{% trans 'Delete' %}</a>
                 </td>
             </tr>

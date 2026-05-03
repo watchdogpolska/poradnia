@@ -1,4 +1,6 @@
 import django_filters
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Column, Div, Layout, Row, Submit
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
@@ -6,6 +8,75 @@ from poradnia.users.filters import UserChoiceFilter
 from poradnia.utils.mixins import CrispyApplyFilterMixin
 
 from .models import Case
+
+
+class StaffCaseFilterFormHelper(FormHelper):
+    """Multi-column horizontal layout for the staff cases list filter.
+
+    Restores the dense BS3-era arrangement; without an explicit Layout,
+    crispy_forms BS5 stacks each field full-width which produced a ~9-row
+    vertical filter on `/sprawy/`.
+    """
+
+    form_method = "get"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.layout = Layout(
+            Div(
+                Row(
+                    Column("id", css_class="col-md-2"),
+                    Column("status", css_class="col-md-3"),
+                    Column("client", css_class="col-md-3"),
+                    Column("name", css_class="col-md-4"),
+                    css_class="g-1 mb-1",
+                ),
+                Row(
+                    Column("has_project", css_class="col-md-3"),
+                    Column("permission", css_class="col-md-3"),
+                    Column("handled", css_class="col-md-3"),
+                    Column("has_advice", css_class="col-md-3"),
+                    css_class="g-1 mb-1",
+                ),
+                Row(
+                    Column("o", css_class="col-md-4"),
+                    Column(
+                        Submit("filter", _("Apply Filter"), css_class="btn-danger"),
+                        css_class="col-md-3 align-self-end",
+                    ),
+                    css_class="g-1 mb-1",
+                ),
+                css_class="cases-filter-compact",
+            ),
+        )
+
+
+class UserCaseFilterFormHelper(FormHelper):
+    """Compact horizontal layout for the client cases list filter."""
+
+    form_method = "get"
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.layout = Layout(
+            Div(
+                Row(
+                    Column("name", css_class="col-md-4"),
+                    Column("created_on", css_class="col-md-3"),
+                    Column("last_send", css_class="col-md-3"),
+                    css_class="g-1 mb-1",
+                ),
+                Row(
+                    Column("o", css_class="col-md-4"),
+                    Column(
+                        Submit("filter", _("Apply Filter"), css_class="btn-danger"),
+                        css_class="col-md-3 align-self-end",
+                    ),
+                    css_class="g-1 mb-1",
+                ),
+                css_class="cases-filter-compact",
+            ),
+        )
 
 
 class NullDateRangeFilter(django_filters.DateRangeFilter):
@@ -77,6 +148,7 @@ class StaffCaseFilter(
     @property
     def form(self):
         form = super().form
+        form.helper = StaffCaseFilterFormHelper(form)
         form.helper.include_media = True
         return form
 
@@ -91,6 +163,12 @@ class UserCaseFilter(CrispyApplyFilterMixin, CaseFilterMixin, django_filters.Fil
             "-%s" % (Case.USER_ORDER_DEFAULT_FIELD)
         )
         super().__init__(*args, **kwargs)
+
+    @property
+    def form(self):
+        form = super().form
+        form.helper = UserCaseFilterFormHelper(form)
+        return form
 
     name = django_filters.CharFilter(label=_("Subject"), lookup_expr="icontains")
     created_on = django_filters.DateRangeFilter(label=_("Created on"))

@@ -1,13 +1,21 @@
 {% if next or previous %}
-    <ul class="pager">
+    {# BS3 `.pager` was removed in BS4. Render as plain unstyled list with #}
+    {# outline-secondary buttons so the prev/next anchors keep their pill shape. #}
+    <ul class="list-unstyled d-flex justify-content-between case-pager">
         {% if next %}
-            <li class="previous"><a href="{{ next.get_absolute_url }}"> <span
-                    aria-hidden="true">&larr;</span> {{ next }}</a></li>
+            <li class="previous">
+                <a href="{{ next.get_absolute_url }}" class="btn btn-outline-secondary">
+                    <span aria-hidden="true">&larr;</span> {{ next }}
+                </a>
+            </li>
         {% endif %}
 
         {% if previous %}
-            <li class="next"><a href="{{ previous.get_absolute_url }}"> {{ previous }} <span
-                    aria-hidden="true">&rarr;</span></a></li>
+            <li class="next ms-auto">
+                <a href="{{ previous.get_absolute_url }}" class="btn btn-outline-secondary">
+                    {{ previous }} <span aria-hidden="true">&rarr;</span>
+                </a>
+            </li>
         {% endif %}
     </ul>
 {% endif %}

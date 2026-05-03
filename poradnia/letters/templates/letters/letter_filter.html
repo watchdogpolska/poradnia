@@ -2,10 +2,10 @@
 {% load i18n crispy_forms_tags bootstrap_pagination %}
 {% block content %}
     <ol class="breadcrumb">
-        <li><a href="{% url 'letters:list' %}">{% trans 'Letter list' %}</a></li>
+        <li class="breadcrumb-item active" aria-current="page"><a href="{% url 'letters:list' %}">{% trans 'Letter list' %}</a></li>
     </ol>
     <div class="row">
-        <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+        <div class="col-lg-8 col-md-10 col-sm-12 col-12 offset-lg-2 offset-md-1">
             {# Hiding unused not working properly filter until needed #}
             {# {% if request.user.is_staff %} #}
             {#     {% crispy filter.form %} #}
@@ -13,7 +13,7 @@
 
             {% for object in object_list %}
                 {% ifchanged %}<h2><a href="{{ object.case.get_absolute_url }}">{{ object.case }}</a></h2>{% endifchanged %}
-                <div class="panel-body msg_container_base row">
+                <div class="card-body msg_container_base row">
                     {% include object.get_template_list with object=object %}
                 </div>
             {% endfor %}

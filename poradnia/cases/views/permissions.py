@@ -116,7 +116,7 @@ class UserPermissionUpdateView(
 class CaseGroupPermissionView(CasePermissionTestMixin, FormValidMessageMixin, FormView):
     model = Case
     form_class = CaseGroupPermissionForm
-    template_name = "cases/case_form.html"
+    template_name = "cases/case_form_permission_grant.html"
 
     def get_form_valid_message(self):
         return _("{user} granted permissions from {group}!").format(

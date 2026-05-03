@@ -1,8 +1,8 @@
 {% extends 'users/user_form.html' %}
 {% load i18n %}
 {% block breadcrumbs_rows %}
-    <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
-    <li class="active">{% trans 'Confirm deassign' %}</li>
+    <li class="breadcrumb-item"><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
+    <li class="breadcrumb-item active" aria-current="page">{% trans 'Confirm deassign' %}</li>
 {% endblock %}
 {% block form %}
 <p>{% blocktrans %}The operation will remove all permissions on cases for the user where they is not a client. This is an irreversible operation. Are you sure you want to do this?{% endblocktrans %}</p>

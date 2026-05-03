@@ -3,12 +3,12 @@
 {% block title %}{% trans 'User' %}: {{ object.get_nicename }} - {{ block.super }}{% endblock %}
 
 {% block breadcrumbs_rows %}
-    <li class="active">{{ object }}</li>
+    <li class="breadcrumb-item active" aria-current="page">{{ object }}</li>
 {% endblock %}
 
 {% block content %}
 <div class="row">
-    <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+    <div class="col-lg-8 col-md-10 col-sm-12 col-12 offset-lg-2 offset-md-1">
         <img src="{% get_avatar_url object %}">
         <h3><b>{% trans 'Username' %}:</b> {{ object.username }} &nbsp; &nbsp; &nbsp;
             <b>{% trans 'Full name' %}:</b> {{ object.nicename }}</h3>
