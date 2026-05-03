@@ -1,6 +1,6 @@
 import django_filters
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Column, Layout, Row, Submit
+from crispy_forms.layout import Column, Div, Layout, Row, Submit
 from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
@@ -23,24 +23,30 @@ class StaffCaseFilterFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.layout = Layout(
-            Row(
-                Column("id", css_class="col-md-2"),
-                Column("status", css_class="col-md-3"),
-                Column("client", css_class="col-md-3"),
-                Column("name", css_class="col-md-4"),
-            ),
-            Row(
-                Column("has_project", css_class="col-md-3"),
-                Column("permission", css_class="col-md-3"),
-                Column("handled", css_class="col-md-3"),
-                Column("has_advice", css_class="col-md-3"),
-            ),
-            Row(
-                Column("o", css_class="col-md-4"),
-                Column(
-                    Submit("filter", _("Apply Filter"), css_class="btn-danger"),
-                    css_class="col-md-3 align-self-end",
+            Div(
+                Row(
+                    Column("id", css_class="col-md-2"),
+                    Column("status", css_class="col-md-3"),
+                    Column("client", css_class="col-md-3"),
+                    Column("name", css_class="col-md-4"),
+                    css_class="g-1 mb-1",
                 ),
+                Row(
+                    Column("has_project", css_class="col-md-3"),
+                    Column("permission", css_class="col-md-3"),
+                    Column("handled", css_class="col-md-3"),
+                    Column("has_advice", css_class="col-md-3"),
+                    css_class="g-1 mb-1",
+                ),
+                Row(
+                    Column("o", css_class="col-md-4"),
+                    Column(
+                        Submit("filter", _("Apply Filter"), css_class="btn-danger"),
+                        css_class="col-md-3 align-self-end",
+                    ),
+                    css_class="g-1 mb-1",
+                ),
+                css_class="cases-filter-compact",
             ),
         )
 
@@ -53,17 +59,22 @@ class UserCaseFilterFormHelper(FormHelper):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.layout = Layout(
-            Row(
-                Column("name", css_class="col-md-4"),
-                Column("created_on", css_class="col-md-3"),
-                Column("last_send", css_class="col-md-3"),
-            ),
-            Row(
-                Column("o", css_class="col-md-4"),
-                Column(
-                    Submit("filter", _("Apply Filter"), css_class="btn-danger"),
-                    css_class="col-md-3 align-self-end",
+            Div(
+                Row(
+                    Column("name", css_class="col-md-4"),
+                    Column("created_on", css_class="col-md-3"),
+                    Column("last_send", css_class="col-md-3"),
+                    css_class="g-1 mb-1",
                 ),
+                Row(
+                    Column("o", css_class="col-md-4"),
+                    Column(
+                        Submit("filter", _("Apply Filter"), css_class="btn-danger"),
+                        css_class="col-md-3 align-self-end",
+                    ),
+                    css_class="g-1 mb-1",
+                ),
+                css_class="cases-filter-compact",
             ),
         )
 
