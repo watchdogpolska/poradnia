@@ -115,6 +115,23 @@
     }
 }
 
+// Restore BS3's default `.btn` fallback styling. BS5 ships no default look for
+// a bare `<button class="btn">`; BS3 used a light-gray fill (`.btn-default`).
+// Allauth's `account/password_reset.html` template emits a class-only submit,
+// leaving the button visually invisible in BS5. Targets buttons that have only
+// `.btn` (no .btn-primary, .btn-secondary, .btn-success, .btn-danger,
+// .btn-warning, .btn-info, .btn-light, .btn-dark, .btn-link, or
+// .btn-outline-*) so variant buttons keep their own colour.
+.btn:not(.btn-primary):not(.btn-secondary):not(.btn-success):not(.btn-danger):not(.btn-warning):not(.btn-info):not(.btn-light):not(.btn-dark):not(.btn-link):not([class*="btn-outline-"]) {
+    color: #212529;
+    background-color: #f8f9fa;
+    border-color: #dee2e6;
+}
+.btn:not(.btn-primary):not(.btn-secondary):not(.btn-success):not(.btn-danger):not(.btn-warning):not(.btn-info):not(.btn-light):not(.btn-dark):not(.btn-link):not([class*="btn-outline-"]):hover {
+    background-color: #e2e6ea;
+    border-color: #d3d9df;
+}
+
 // /sprawy/ filter form density. crispy_forms (BS5 pack) wraps each field in a
 // `.mb-3` div which adds 16px between fields, stacking with `.row.mb-1` row
 // margins to make the 3-row filter ~310px tall vs BS3's 159px. Inside this
