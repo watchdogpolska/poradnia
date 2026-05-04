@@ -25838,93 +25838,95 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-;(function($) {
+// Bootstrap-3 tooltip plugin still depends on jQuery — Stage 3 leftover
+// (pending widget-replacement decision in #2134).
+;(function ($) {
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
+})(jQuery);
 
-    function initFormSave() {
-        function storageAvailable(type) {
-            try {
-                var storage = window[type],
-                    x = "__storage_test__";
-                storage.setItem(x, x);
-                storage.removeItem(x);
-                return true;
-            } catch (e) {
-                return (
-                    e instanceof DOMException &&
+function initFormSave() {
+    function storageAvailable(type) {
+        try {
+            var storage = window[type],
+                x = "__storage_test__";
+            storage.setItem(x, x);
+            storage.removeItem(x);
+            return true;
+        } catch (e) {
+            return (
+                e instanceof DOMException &&
+                // everything except Firefox
+                (e.code === 22 ||
+                    // Firefox
+                    e.code === 1014 ||
+                    // test name field too, because code might not be present
                     // everything except Firefox
-                    (e.code === 22 ||
-                        // Firefox
-                        e.code === 1014 ||
-                        // test name field too, because code might not be present
-                        // everything except Firefox
-                        e.name === "QuotaExceededError" ||
-                        // Firefox
-                        e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
-                    // acknowledge QuotaExceededError only if there's something already stored
-                    window[type].length !== 0
-                );
-            }
+                    e.name === "QuotaExceededError" ||
+                    // Firefox
+                    e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
+                // acknowledge QuotaExceededError only if there's something already stored
+                window[type].length !== 0
+            );
         }
+    }
 
-        if (!storageAvailable("localStorage")) {
-            return;
-        }
+    if (!storageAvailable("localStorage")) {
+        return;
+    }
 
-        function findByName(inputs, name) {
-            return inputs.find(function (el) {
-                return el.name == name;
-            });
-        }
-
-        function loadInitalData(inputs, saveKey) {
-            try {
-                var formData = JSON.parse(localStorage.getItem(saveKey));
-                if (formData) {
-                    formData.forEach(function (inputData) {
-                        var input = findByName(inputs, inputData.name);
-                        if (input) {
-                            input.value = inputData.value;
-                        }
-                    });
-                }
-            } catch (e) {
-            }
-        }
-
-        function serializeForm(inputs) {
-            return inputs.map(function (input) {
-                return {name: input.name, value: input.value};
-            });
-        }
-
-        function setupListeners(inputs, saveKey) {
-            inputs.forEach(function (input) {
-                input.addEventListener("input", function () {
-                    var formData = serializeForm(inputs);
-                    localStorage.setItem(saveKey, JSON.stringify(formData));
-                });
-            });
-        }
-
-        var forms = Array.from(document.querySelectorAll("[data-form-save]"));
-
-        forms.forEach(function (element) {
-            var saveKey = "form-" + element.getAttribute("data-form-save");
-            var inputs = Array.from(element.querySelectorAll('input:not([type="hidden"]), textarea'));
-            loadInitalData(inputs, saveKey);
-            setupListeners(inputs, saveKey);
+    function findByName(inputs, name) {
+        return inputs.find(function (el) {
+            return el.name == name;
         });
     }
 
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", initFormSave);
-    } else {
-        initFormSave();
+    function loadInitalData(inputs, saveKey) {
+        try {
+            var formData = JSON.parse(localStorage.getItem(saveKey));
+            if (formData) {
+                formData.forEach(function (inputData) {
+                    var input = findByName(inputs, inputData.name);
+                    if (input) {
+                        input.value = inputData.value;
+                    }
+                });
+            }
+        } catch (e) {
+        }
     }
-})(jQuery);
+
+    function serializeForm(inputs) {
+        return inputs.map(function (input) {
+            return {name: input.name, value: input.value};
+        });
+    }
+
+    function setupListeners(inputs, saveKey) {
+        inputs.forEach(function (input) {
+            input.addEventListener("input", function () {
+                var formData = serializeForm(inputs);
+                localStorage.setItem(saveKey, JSON.stringify(formData));
+            });
+        });
+    }
+
+    var forms = Array.from(document.querySelectorAll("[data-form-save]"));
+
+    forms.forEach(function (element) {
+        var saveKey = "form-" + element.getAttribute("data-form-save");
+        var inputs = Array.from(element.querySelectorAll('input:not([type="hidden"]), textarea'));
+        loadInitalData(inputs, saveKey);
+        setupListeners(inputs, saveKey);
+    });
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initFormSave);
+} else {
+    initFormSave();
+}
 
 document.addEventListener('DOMContentLoaded', function() {
 			var menu_toogles = document.querySelectorAll('.navbar-toggle');
@@ -44861,248 +44863,239 @@ window.AjaxDatatableViewUtils = (function() {
 
 })();
 
-;(function($) {
-    $(function() {
-        const table1 = document.getElementById("datatable_cases");
-        if (table1) {
-            var tableTop = $("#tableWrapper")[0].getBoundingClientRect().top;
-            var viewportHeight = $(window).innerHeight();
-            var maxHeight = viewportHeight - tableTop;
-            $("#tableWrapper").css({
-                maxHeight: maxHeight - 0,
-            });
-            // Subscribe "initComplete" event
-            $('#datatable_cases').on('initComplete', function(event, table ) {
-                // Code to resize input fields
-                const tableWrapper = $("#tableWrapper");
-                const headerCells = tableWrapper.find("th");
-                headerCells.each(function() {
-                    const input = $(this).find("input[type=text]");
-                    $(this).css("padding", "0");
-                    input.css("width", "100%");
-                    input.css("box-sizing", "border-box");
-                });
-            });
-            // Initialize table
-            AjaxDatatableViewUtils.initialize_table(
-                $('#datatable_cases'),
-                "/sprawy/case_table_ajax_data/",
-                {
-                    // extra_options (example)
-                    processing: true,
-                    serverSide: true,
-                    autoWidth: true,
-                    full_row_select: false,
-                    scrollX: true,
-                    // searching: false,
-                    scrollY: maxHeight - 250,
-                    // TODO make fixedColumns working !!!
-                    // fixedColumns: {
-                    //     left: 1,
-                    //     // right: 1
-                    // }
-                    "language": {
-                        "processing":     "Przetwarzanie...",
-                        "search":         "Szukaj:",
-                        "lengthMenu":     "Pokaż _MENU_ pozycji",
-                        "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                        "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                        "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                        "infoPostFix":    "",
-                        "loadingRecords": "Wczytywanie...",
-                        "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                        "emptyTable":     "Brak danych",
-                        "paginate": {
-                            "first":      "Pierwsza",
-                            "previous":   "Poprzednia",
-                            "next":       "Następna",
-                            "last":       "Ostatnia"
-                        },
-                        "aria": {
-                            "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                            "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
-                        }
-                    },
-                }, {
-                    // extra_data
-                    status_free: function() { return $("input[name='check_status_free']").is(":checked") ? 1 : 0; },
-                    status_assigned: function() { return $("input[name='check_status_assigned']").is(":checked") ? 1 : 0; },
-                    status_moderated: function() { return $("input[name='check_status_moderated']").is(":checked") ? 1 : 0; },
-                    status_closed: function() { return $("input[name='check_status_closed']").is(":checked") ? 1 : 0; },
-                    handled_yes: function() { return $("input[name='check_handled_yes']").is(":checked") ? 1 : 0; },
-                    handled_no: function() { return $("input[name='check_handled_no']").is(":checked") ? 1 : 0; },
-                    has_project_yes: function() { return $("input[name='check_has_project_yes']").is(":checked") ? 1 : 0; },
-                    has_project_no: function() { return $("input[name='check_has_project_no']").is(":checked") ? 1 : 0; },
-                    has_deadline_yes: function() { return $("input[name='check_has_deadline_yes']").is(":checked") ? 1 : 0; },
-                    has_deadline_no: function() { return $("input[name='check_has_deadline_no']").is(":checked") ? 1 : 0; },
-                    involved_staff_filter: function() { return $("select[name='involved_staff_select']").val(); },
-                },
-            );
-            const filtersContainer = document.querySelector('.filters');
-            if (filtersContainer) {
-                filtersContainer.addEventListener('change', function() {
-                    $('#datatable_cases').DataTable().ajax.reload(null, false);
-                });
+document.addEventListener('DOMContentLoaded', function () {
+    const table1 = document.getElementById("datatable_cases");
+    if (!table1) return;
+    const tableWrapper = document.getElementById("tableWrapper");
+    const tableTop = tableWrapper.getBoundingClientRect().top;
+    const viewportHeight = window.innerHeight;
+    const maxHeight = viewportHeight - tableTop;
+    tableWrapper.style.maxHeight = maxHeight + 'px';
+    // Subscribe "initComplete" event
+    $('#datatable_cases').on('initComplete', function (event, table) {
+        // Code to resize input fields
+        const headerCells = tableWrapper.querySelectorAll("th");
+        headerCells.forEach(function (th) {
+            th.style.padding = "0";
+            const input = th.querySelector("input[type=text]");
+            if (input) {
+                input.style.width = "100%";
+                input.style.boxSizing = "border-box";
             }
-        }
+        });
     });
-})(jQuery);
-
-;(function($) {
-    $(function() {
-        const table1 = document.getElementById("datatable_advices");
-        if (table1) {
-            var tableTop = $("#tableWrapper")[0].getBoundingClientRect().top;
-            var viewportHeight = $(window).innerHeight();
-            var maxHeight = viewportHeight - tableTop;
-            $("#tableWrapper").css({
-                maxHeight: maxHeight - 0,
-            });
-            // Subscribe "initComplete" event
-            $('#datatable_advices').on('initComplete', function(event, table ) {
-                // Code to resize input fields
-                const tableWrapper = $("#tableWrapper");
-                const headerCells = tableWrapper.find("th");
-                headerCells.each(function() {
-                    const input = $(this).find("input[type=text]");
-                    $(this).css("padding", "0");
-                    input.css("width", "100%");
-                    input.css("box-sizing", "border-box");
-                    const select = $(this).find("select");
-                    select.css("box-sizing", "border-box");                    
-                    select.css("width", "100%");
-                });
-            });
-            // Initialize table
-            AjaxDatatableViewUtils.initialize_table(
-                $('#datatable_advices'),
-                "/porady/advice_table_ajax_data/",
-                {
-                    // extra_options (example)
-                    processing: true,
-                    serverSide: true,
-                    autoWidth: true,
-                    full_row_select: false,
-                    scrollX: true,
-                    // searching: false,
-                    scrollY: maxHeight - 250,
-                    // TODO make fixedColumns working !!!
-                    // fixedColumns: {
-                    //     left: 1,
-                    //     // right: 1
-                    // }
-                    "language": {
-                        "processing":     "Przetwarzanie...",
-                        "search":         "Szukaj:",
-                        "lengthMenu":     "Pokaż _MENU_ pozycji",
-                        "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                        "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                        "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                        "infoPostFix":    "",
-                        "loadingRecords": "Wczytywanie...",
-                        "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                        "emptyTable":     "Brak danych",
-                        "paginate": {
-                            "first":      "Pierwsza",
-                            "previous":   "Poprzednia",
-                            "next":       "Następna",
-                            "last":       "Ostatnia"
-                        },
-                        "aria": {
-                            "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                            "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
-                        }
-                    },
-                }, {
-                    // extra_data
-                    helped_yes: function() { return $("input[name='check_helped_yes']").is(":checked") ? 1 : 0; },
-                    helped_no: function() { return $("input[name='check_helped_no']").is(":checked") ? 1 : 0; },
-                    helped_blank: function() { return $("input[name='check_helped_blank']").is(":checked") ? 1 : 0; },
-                    visible_yes: function() { return $("input[name='check_visible_yes']").is(":checked") ? 1 : 0; },
-                    visible_no: function() { return $("input[name='check_visible_no']").is(":checked") ? 1 : 0; },
+    // Initialize table
+    AjaxDatatableViewUtils.initialize_table(
+        $('#datatable_cases'),
+        "/sprawy/case_table_ajax_data/",
+        {
+            // extra_options (example)
+            processing: true,
+            serverSide: true,
+            autoWidth: true,
+            full_row_select: false,
+            scrollX: true,
+            // searching: false,
+            scrollY: maxHeight - 250,
+            // TODO make fixedColumns working !!!
+            // fixedColumns: {
+            //     left: 1,
+            //     // right: 1
+            // }
+            "language": {
+                "processing":     "Przetwarzanie...",
+                "search":         "Szukaj:",
+                "lengthMenu":     "Pokaż _MENU_ pozycji",
+                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
+                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                "infoPostFix":    "",
+                "loadingRecords": "Wczytywanie...",
+                "zeroRecords":    "Nie znaleziono pasujących pozycji",
+                "emptyTable":     "Brak danych",
+                "paginate": {
+                    "first":      "Pierwsza",
+                    "previous":   "Poprzednia",
+                    "next":       "Następna",
+                    "last":       "Ostatnia"
                 },
-            );
-            $('.filters input').on('change paste keyup', function() {
-                // redraw the table
-                $('#datatable_advices').DataTable().ajax.reload(null, false);
-            });
-        }
-    });
-})(jQuery);
+                "aria": {
+                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                }
+            },
+        }, {
+            // extra_data
+            status_free: function() { return document.querySelector("input[name='check_status_free']").checked ? 1 : 0; },
+            status_assigned: function() { return document.querySelector("input[name='check_status_assigned']").checked ? 1 : 0; },
+            status_moderated: function() { return document.querySelector("input[name='check_status_moderated']").checked ? 1 : 0; },
+            status_closed: function() { return document.querySelector("input[name='check_status_closed']").checked ? 1 : 0; },
+            handled_yes: function() { return document.querySelector("input[name='check_handled_yes']").checked ? 1 : 0; },
+            handled_no: function() { return document.querySelector("input[name='check_handled_no']").checked ? 1 : 0; },
+            has_project_yes: function() { return document.querySelector("input[name='check_has_project_yes']").checked ? 1 : 0; },
+            has_project_no: function() { return document.querySelector("input[name='check_has_project_no']").checked ? 1 : 0; },
+            has_deadline_yes: function() { return document.querySelector("input[name='check_has_deadline_yes']").checked ? 1 : 0; },
+            has_deadline_no: function() { return document.querySelector("input[name='check_has_deadline_no']").checked ? 1 : 0; },
+            involved_staff_filter: function() { return document.querySelector("select[name='involved_staff_select']").value; },
+        },
+    );
+    const filtersContainer = document.querySelector('.filters');
+    if (filtersContainer) {
+        filtersContainer.addEventListener('change', function () {
+            $('#datatable_cases').DataTable().ajax.reload(null, false);
+        });
+    }
+});
 
-;(function($) {
-    $(function() {
-        const table1 = document.getElementById("datatable_letters");
-        if (table1) {
-            var tableTop = $("#tableWrapper")[0].getBoundingClientRect().top;
-            var viewportHeight = $(window).innerHeight();
-            var maxHeight = viewportHeight - tableTop;
-            $("#tableWrapper").css({
-                maxHeight: maxHeight - 0,
-            });
-            // Subscribe "initComplete" event
-            $('#datatable_letters').on('initComplete', function(event, table ) {
-                // Code to resize input fields
-                const tableWrapper = $("#tableWrapper");
-                const headerCells = tableWrapper.find("th");
-                headerCells.each(function() {
-                    const input = $(this).find("input[type=text]");
-                    $(this).css("padding", "0");
-                    input.css("width", "100%");
-                    input.css("box-sizing", "border-box");
-                });
-            });
-            // Initialize table
-            AjaxDatatableViewUtils.initialize_table(
-                $('#datatable_letters'),
-                "/listy/letters_table_ajax_data/",
-                {
-                    // extra_options (example)
-                    processing: true,
-                    serverSide: true,
-                    autoWidth: true,
-                    full_row_select: false,
-                    scrollX: true,
-                    // searching: false,
-                    scrollY: maxHeight - 250,
-                    // TODO make fixedColumns working !!!
-                    // fixedColumns: {
-                    //     left: 1,
-                    //     // right: 1
-                    // },
-                    "language": {
-                        "processing":     "Przetwarzanie...",
-                        "search":         "Szukaj:",
-                        "lengthMenu":     "Pokaż _MENU_ pozycji",
-                        "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                        "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                        "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                        "infoPostFix":    "",
-                        "loadingRecords": "Wczytywanie...",
-                        "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                        "emptyTable":     "Brak danych",
-                        "paginate": {
-                            "first":      "Pierwsza",
-                            "previous":   "Poprzednia",
-                            "next":       "Następna",
-                            "last":       "Ostatnia"
-                        },
-                        "aria": {
-                            "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                            "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
-                        }
-                    },
-                }, {
-                    // extra_data
-                },
-            );
-            // $('.filters input').on('change paste keyup', function() {
-            //     // redraw the table
-            //     $('#datatable_letters').DataTable().ajax.reload(null, false);
-            // });
-        }
+document.addEventListener('DOMContentLoaded', function () {
+    const table1 = document.getElementById("datatable_advices");
+    if (!table1) return;
+    const tableWrapper = document.getElementById("tableWrapper");
+    const tableTop = tableWrapper.getBoundingClientRect().top;
+    const viewportHeight = window.innerHeight;
+    const maxHeight = viewportHeight - tableTop;
+    tableWrapper.style.maxHeight = maxHeight + 'px';
+    // Subscribe "initComplete" event
+    $('#datatable_advices').on('initComplete', function (event, table) {
+        // Code to resize input fields
+        const headerCells = tableWrapper.querySelectorAll("th");
+        headerCells.forEach(function (th) {
+            th.style.padding = "0";
+            const input = th.querySelector("input[type=text]");
+            if (input) {
+                input.style.width = "100%";
+                input.style.boxSizing = "border-box";
+            }
+            const select = th.querySelector("select");
+            if (select) {
+                select.style.boxSizing = "border-box";
+                select.style.width = "100%";
+            }
+        });
     });
-})(jQuery);
+    // Initialize table
+    AjaxDatatableViewUtils.initialize_table(
+        $('#datatable_advices'),
+        "/porady/advice_table_ajax_data/",
+        {
+            // extra_options (example)
+            processing: true,
+            serverSide: true,
+            autoWidth: true,
+            full_row_select: false,
+            scrollX: true,
+            // searching: false,
+            scrollY: maxHeight - 250,
+            // TODO make fixedColumns working !!!
+            // fixedColumns: {
+            //     left: 1,
+            //     // right: 1
+            // }
+            "language": {
+                "processing":     "Przetwarzanie...",
+                "search":         "Szukaj:",
+                "lengthMenu":     "Pokaż _MENU_ pozycji",
+                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
+                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                "infoPostFix":    "",
+                "loadingRecords": "Wczytywanie...",
+                "zeroRecords":    "Nie znaleziono pasujących pozycji",
+                "emptyTable":     "Brak danych",
+                "paginate": {
+                    "first":      "Pierwsza",
+                    "previous":   "Poprzednia",
+                    "next":       "Następna",
+                    "last":       "Ostatnia"
+                },
+                "aria": {
+                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                }
+            },
+        }, {
+            // extra_data
+            helped_yes: function() { return document.querySelector("input[name='check_helped_yes']").checked ? 1 : 0; },
+            helped_no: function() { return document.querySelector("input[name='check_helped_no']").checked ? 1 : 0; },
+            helped_blank: function() { return document.querySelector("input[name='check_helped_blank']").checked ? 1 : 0; },
+            visible_yes: function() { return document.querySelector("input[name='check_visible_yes']").checked ? 1 : 0; },
+            visible_no: function() { return document.querySelector("input[name='check_visible_no']").checked ? 1 : 0; },
+        },
+    );
+    const filtersContainer = document.querySelector('.filters');
+    if (filtersContainer) {
+        filtersContainer.addEventListener('change', function () {
+            $('#datatable_advices').DataTable().ajax.reload(null, false);
+        });
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function () {
+    const table1 = document.getElementById("datatable_letters");
+    if (!table1) return;
+    const tableWrapper = document.getElementById("tableWrapper");
+    const tableTop = tableWrapper.getBoundingClientRect().top;
+    const viewportHeight = window.innerHeight;
+    const maxHeight = viewportHeight - tableTop;
+    tableWrapper.style.maxHeight = maxHeight + 'px';
+    // Subscribe "initComplete" event
+    $('#datatable_letters').on('initComplete', function (event, table) {
+        // Code to resize input fields
+        const headerCells = tableWrapper.querySelectorAll("th");
+        headerCells.forEach(function (th) {
+            th.style.padding = "0";
+            const input = th.querySelector("input[type=text]");
+            if (input) {
+                input.style.width = "100%";
+                input.style.boxSizing = "border-box";
+            }
+        });
+    });
+    // Initialize table
+    AjaxDatatableViewUtils.initialize_table(
+        $('#datatable_letters'),
+        "/listy/letters_table_ajax_data/",
+        {
+            // extra_options (example)
+            processing: true,
+            serverSide: true,
+            autoWidth: true,
+            full_row_select: false,
+            scrollX: true,
+            // searching: false,
+            scrollY: maxHeight - 250,
+            // TODO make fixedColumns working !!!
+            // fixedColumns: {
+            //     left: 1,
+            //     // right: 1
+            // },
+            "language": {
+                "processing":     "Przetwarzanie...",
+                "search":         "Szukaj:",
+                "lengthMenu":     "Pokaż _MENU_ pozycji",
+                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
+                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                "infoPostFix":    "",
+                "loadingRecords": "Wczytywanie...",
+                "zeroRecords":    "Nie znaleziono pasujących pozycji",
+                "emptyTable":     "Brak danych",
+                "paginate": {
+                    "first":      "Pierwsza",
+                    "previous":   "Poprzednia",
+                    "next":       "Następna",
+                    "last":       "Ostatnia"
+                },
+                "aria": {
+                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                }
+            },
+        }, {
+            // extra_data
+        },
+    );
+});
 
 AjaxDatatableViewUtils.init({
     search_icon_html: '<i class="fas fa-magnifying-glass"></i>',
@@ -45119,7 +45112,8 @@ AjaxDatatableViewUtils.init({
                     '<input type="date" class="date_to datepicker"></span>' +
             '</div>'
         );
-        toolbar.find('.date_from, .date_to').on('change', function(event) {
+        toolbar[0].addEventListener('change', function(event) {
+            if (!event.target.matches('.date_from, .date_to')) return;
             // Annotate table with values retrieved from date widgets
             table.data('date_from', wrapper.find('.date_from').val());
             table.data('date_to', wrapper.find('.date_to').val());
@@ -45129,85 +45123,84 @@ AjaxDatatableViewUtils.init({
     }
 });
 
-;(function($) {
-    $(function() {
-        const table1 = document.getElementById("datatable_events");
-        if (table1) {
-            var tableTop = $("#tableWrapper")[0].getBoundingClientRect().top;
-            var viewportHeight = $(window).innerHeight();
-            var maxHeight = viewportHeight - tableTop;
-            $("#tableWrapper").css({
-                maxHeight: maxHeight - 0,
-            });
-            // Subscribe "initComplete" event
-            $('#datatable_events').on('initComplete', function(event, table ) {
-                // Code to resize input fields
-                const tableWrapper = $("#tableWrapper");
-                const headerCells = tableWrapper.find("th");
-                headerCells.each(function() {
-                    const input = $(this).find("input[type=text]");
-                    $(this).css("padding", "0");
-                    input.css("width", "100%");
-                    input.css("box-sizing", "border-box");
-                });
-            });
-            // Initialize table
-            AjaxDatatableViewUtils.initialize_table(
-                $('#datatable_events'),
-                "/wydarzenia/events_table_ajax_data/",
-                {
-                    // extra_options (example)
-                    processing: true,
-                    serverSide: true,
-                    autoWidth: true,
-                    full_row_select: false,
-                    scrollX: true,
-                    // searching: false,
-                    scrollY: maxHeight - 250,
-                    // TODO make fixedColumns working !!!
-                    // fixedColumns: {
-                    //     left: 1,
-                    //     // right: 1
-                    // }
-                    "language": {
-                        "processing":     "Przetwarzanie...",
-                        "search":         "Szukaj:",
-                        "lengthMenu":     "Pokaż _MENU_ pozycji",
-                        "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                        "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                        "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                        "infoPostFix":    "",
-                        "loadingRecords": "Wczytywanie...",
-                        "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                        "emptyTable":     "Brak danych",
-                        "paginate": {
-                            "first":      "Pierwsza",
-                            "previous":   "Poprzednia",
-                            "next":       "Następna",
-                            "last":       "Ostatnia"
-                        },
-                        "aria": {
-                            "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                            "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
-                        }
-                    },
-                }, {
-                    // extra_data
-                    deadline_yes: function() { return $("input[name='check_deadline_yes']").is(":checked") ? 1 : 0; },
-                    deadline_no: function() { return $("input[name='check_deadline_no']").is(":checked") ? 1 : 0; },
-                    completed_yes: function() { return $("input[name='check_completed_yes']").is(":checked") ? 1 : 0; },
-                    completed_no: function() { return $("input[name='check_completed_no']").is(":checked") ? 1 : 0; },
-                    public_yes: function() { return $("input[name='check_public_yes']").is(":checked") ? 1 : 0; },
-                    public_no: function() { return $("input[name='check_public_no']").is(":checked") ? 1 : 0; },
-                    courtsession_yes: function() { return $("input[name='check_courtsession_yes']").is(":checked") ? 1 : 0; },
-                    courtsession_no: function() { return $("input[name='check_courtsession_no']").is(":checked") ? 1 : 0; },
-                    // involved_staff_filter: function() { return $("select[name='involved_staff_select']").val(); },
-                },
-            );
-            $('.filters input, .filters select').on('change paste keyup', function() {
-                // redraw the table
-                $('#datatable_events').DataTable().ajax.reload(null, false);
-            });
-        }
+document.addEventListener('DOMContentLoaded', function () {
+    const table1 = document.getElementById("datatable_events");
+    if (!table1) return;
+    const tableWrapper = document.getElementById("tableWrapper");
+    const tableTop = tableWrapper.getBoundingClientRect().top;
+    const viewportHeight = window.innerHeight;
+    const maxHeight = viewportHeight - tableTop;
+    tableWrapper.style.maxHeight = maxHeight + 'px';
+    // Subscribe "initComplete" event
+    $('#datatable_events').on('initComplete', function (event, table) {
+        // Code to resize input fields
+        const headerCells = tableWrapper.querySelectorAll("th");
+        headerCells.forEach(function (th) {
+            th.style.padding = "0";
+            const input = th.querySelector("input[type=text]");
+            if (input) {
+                input.style.width = "100%";
+                input.style.boxSizing = "border-box";
+            }
+        });
     });
-})(jQuery);
+    // Initialize table
+    AjaxDatatableViewUtils.initialize_table(
+        $('#datatable_events'),
+        "/wydarzenia/events_table_ajax_data/",
+        {
+            // extra_options (example)
+            processing: true,
+            serverSide: true,
+            autoWidth: true,
+            full_row_select: false,
+            scrollX: true,
+            // searching: false,
+            scrollY: maxHeight - 250,
+            // TODO make fixedColumns working !!!
+            // fixedColumns: {
+            //     left: 1,
+            //     // right: 1
+            // }
+            "language": {
+                "processing":     "Przetwarzanie...",
+                "search":         "Szukaj:",
+                "lengthMenu":     "Pokaż _MENU_ pozycji",
+                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
+                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                "infoPostFix":    "",
+                "loadingRecords": "Wczytywanie...",
+                "zeroRecords":    "Nie znaleziono pasujących pozycji",
+                "emptyTable":     "Brak danych",
+                "paginate": {
+                    "first":      "Pierwsza",
+                    "previous":   "Poprzednia",
+                    "next":       "Następna",
+                    "last":       "Ostatnia"
+                },
+                "aria": {
+                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                }
+            },
+        }, {
+            // extra_data
+            deadline_yes: function() { return document.querySelector("input[name='check_deadline_yes']").checked ? 1 : 0; },
+            deadline_no: function() { return document.querySelector("input[name='check_deadline_no']").checked ? 1 : 0; },
+            completed_yes: function() { return document.querySelector("input[name='check_completed_yes']").checked ? 1 : 0; },
+            completed_no: function() { return document.querySelector("input[name='check_completed_no']").checked ? 1 : 0; },
+            public_yes: function() { return document.querySelector("input[name='check_public_yes']").checked ? 1 : 0; },
+            public_no: function() { return document.querySelector("input[name='check_public_no']").checked ? 1 : 0; },
+            courtsession_yes: function() { return document.querySelector("input[name='check_courtsession_yes']").checked ? 1 : 0; },
+            courtsession_no: function() { return document.querySelector("input[name='check_courtsession_no']").checked ? 1 : 0; },
+            // involved_staff_filter: function() { return document.querySelector("select[name='involved_staff_select']").value; },
+        },
+    );
+    const filtersContainer = document.querySelector('.filters');
+    if (filtersContainer) {
+        filtersContainer.addEventListener('change', function () {
+            $('#datatable_events').DataTable().ajax.reload(null, false);
+        });
+    }
+});

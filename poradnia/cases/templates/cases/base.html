@@ -4,21 +4,31 @@
 {% block javascript %}
     {{ block.super }}
     <script type="text/javascript">
-        ;(function($) {
-            $(function () {
-                var show = '<i class="fa-regular fa-square-plus"></i> {%trans "Show quote" %}';
-                var hide = '<i class="fa-regular fa-square-minus"></i> {%trans "Hide quote" %}';
-                $('blockquote').each(function (index, value) {
-                    var el = $(value).hide();
-                    var new_el = $("<button class='btn quote-link'>" + show + "</a>");
-                    new_el.click(function (event) {
-                        event.preventDefault();
-                        el.slideToggle();
-                        this.innerHTML = this.innerHTML == show ? hide : show;
-                    });
-                    el.before(new_el);
+        document.addEventListener('DOMContentLoaded', function () {
+            const states = {
+                show: { iconClass: 'fa-regular fa-square-plus', text: '{% trans "Show quote" %}' },
+                hide: { iconClass: 'fa-regular fa-square-minus', text: '{% trans "Hide quote" %}' },
+            };
+            document.querySelectorAll('blockquote').forEach((el) => {
+                el.hidden = true;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn quote-link';
+                const icon = document.createElement('i');
+                const label = document.createElement('span');
+                btn.append(icon, ' ', label);
+                const apply = ({ iconClass, text }) => {
+                    icon.className = iconClass;
+                    label.textContent = text;
+                };
+                apply(states.show);
+                btn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    el.hidden = !el.hidden;
+                    apply(el.hidden ? states.show : states.hide);
                 });
+                el.parentNode.insertBefore(btn, el);
             });
-        })(jQuery);
+        });
     </script>
 {% endblock %}
