@@ -1,9 +1,12 @@
+import re
+
 from ajax_datatable import AjaxDatatableView
 from atom.views import ActionMessageMixin, ActionView
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin, UserFormKwargsMixin
 from dal import autocomplete
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from django.utils.safestring import mark_safe
@@ -230,16 +233,16 @@ class UserAjaxDatatableView(StaffuserRequiredMixin, PermissionMixin, AjaxDatatab
         },
         {
             "name": "case_count",
-            "title": _("Client cases"),
+            "title": _("Client cases") + " (e.g. x, >y)",
             "visible": True,
-            "searchable": False,
+            "searchable": True,
             "orderable": True,
         },
         {
             "name": "case_assigned_sum",
-            "title": _("Assigned cases sum"),
+            "title": _("Assigned cases sum") + " (e.g. x, >y)",
             "visible": True,
-            "searchable": False,
+            "searchable": True,
             "orderable": True,
         },
     ]
@@ -249,6 +252,47 @@ class UserAjaxDatatableView(StaffuserRequiredMixin, PermissionMixin, AjaxDatatab
         qs = qs.with_case_count()
         qs = qs.with_case_count_assigned()
         return qs
+
+    def filter_queryset_by_column(self, column_name, search_value, qs):
+        """
+        Allow simple boolean expressions in case columns, e.g. >10.
+        """
+        if column_name in ["case_count", "case_assigned_sum"] and search_value:
+            if (
+                self.search_values_separator
+                and self.search_values_separator in search_value
+            ):
+                search_values = [
+                    t.strip() for t in search_value.split(self.search_values_separator)
+                ]
+            else:
+                search_values = [search_value.strip()]
+
+            column_filters = Q()
+            for val in search_values:
+                match = re.match(r"^(?P<operator>[<>!=]=?)?\s*(?P<value>\d+)$", val)
+                if match:
+                    operator = match.group("operator")
+                    value = int(match.group("value"))
+                    lookup = {
+                        ">": "__gt",
+                        ">=": "__gte",
+                        "<": "__lt",
+                        "<=": "__lte",
+                        "=": "",
+                        "!=": "",
+                    }.get(operator, "")
+
+                    # Handle `=` and `!=` separately - there's no builtin qs operator.
+                    if operator == "!=":
+                        column_filters |= ~Q(**{f"{column_name}{lookup}": value})
+                    else:
+                        column_filters |= Q(**{f"{column_name}{lookup}": value})
+
+            if column_filters:
+                return qs.filter(column_filters)
+
+        return super().filter_queryset_by_column(column_name, search_value, qs)
 
     def customize_row(self, row, obj):
         row["username"] = mark_safe(
