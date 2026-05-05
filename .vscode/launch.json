@@ -67,13 +67,13 @@
             "justMyCode": false
         },
         {
-            "name": "Python: Django tests judgements v2",
+            "name": "Python: Django tests advicer v2",
             "type": "debugpy",
             "request": "launch",
             "program": "${workspaceFolder}/manage.py",
             "args": [
                 "test",
-                "poradnia.judgements",
+                "poradnia.advicer",
                 "-v2"
             ],
             "django": true,

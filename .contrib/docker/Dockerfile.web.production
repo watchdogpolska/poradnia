@@ -4,6 +4,12 @@ FROM python:${PYTHON_VERSION}-slim
 RUN mkdir /code /code/production
 WORKDIR /code
 
+# Pass git commit SHA via build arg so dealer can report it
+# without needing the .git directory inside the image.
+ARG GIT_SHA=unknown
+ENV DEALER_REVISION=${GIT_SHA}
+ENV DEALER_TAG=${GIT_SHA}
+
 # Install python dependencies
 ENV PYTHONUNBUFFERED=1
 RUN apt-get update \
@@ -18,7 +24,6 @@ RUN apt-get update \
    cron \
    ca-certificates \
    gettext libgettextpo-dev wait-for-it
-RUN git config --global --add safe.directory /code
 RUN curl -o /usr/local/share/ca-certificates/certum-trusted-root-g2.crt \
    https://repository.certum.pl/ctrca.pem
 RUN curl -o /usr/local/share/certum-ov-tls-g2-r39-ca.pem \
@@ -27,12 +32,7 @@ RUN update-ca-certificates
 COPY requirements/*.txt ./requirements/
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements/production.txt
-RUN ls -la
 COPY . .
-RUN ls -la
-RUN mv .git_copy .git
-RUN ls -la
-RUN git status
 RUN export DJANGO_SETTINGS_MODULE="config.settings.production" && \
    export DJANGO_SECRET_KEY="fake_key" && \
    export RAVEN_DSN="https://examplePublicKey@o0.ingest.sentry.io/0" && \

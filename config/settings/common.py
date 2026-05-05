@@ -18,6 +18,7 @@ ROOT_DIR = environ.Path(__file__) - 3
 
 APPS_DIR = ROOT_DIR.path("poradnia")
 env = environ.Env()
+env.read_env(str(ROOT_DIR(".env")))
 APP_MODE = env.str("APP_MODE", "DEMO")
 
 # APP CONFIGURATION
@@ -110,8 +111,8 @@ MIDDLEWARE = (
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "APP": {
-            "client_id": env("GOOGLE_CLIENT_ID"),
-            "secret": env("GOOGLE_CLIENT_SECRET"),
+            "client_id": env("GOOGLE_CLIENT_ID", default=""),
+            "secret": env("GOOGLE_CLIENT_SECRET", default=""),
             "key": "",
         },
         "SCOPE": ["profile", "email"],
@@ -237,10 +238,11 @@ MANAGERS = ADMINS
 DATABASES = {"default": env.db(default="mysql:///porady")}
 
 DATABASES["default"]["TEST"] = {
+    "NAME": "test_poradnia",
     "OPTIONS": {
         "charset": "utf8mb4",
         "init_command": "SET NAMES 'utf8mb4' COLLATE 'utf8mb4_polish_ci'",
-    }
+    },
 }
 
 DATABASES["default"]["OPTIONS"] = {
@@ -503,9 +505,17 @@ ROSETTA_EXCLUDED_APPLICATIONS = (
 )
 AZURE_CLIENT_SECRET = env.str("ROSETTA_AZURE_CLIENT_SECRET", "")
 
-# Cludflare turnstile settings
+# Cloudflare Turnstile CAPTCHA settings
 TURNSTILE_SITEKEY = env.str("TURNSTILE_SITE_KEY", "")
 TURNSTILE_SECRET = env.str("TURNSTILE_SECRET_KEY", "")
+# When False, removes the Turnstile CAPTCHA field from NewCaseForm.
+# Set to False in local development to skip CAPTCHA without configuring Turnstile keys.
+TURNSTILE_ENABLE = env.bool("TURNSTILE_ENABLE", True)
+
+# When False, EnforceStaffMfaOnPasswordLoginMiddleware is fully disabled.
+# Set to False in local development to allow staff (including superusers) to log in
+# with password only, without configuring TOTP.
+MFA_ENFORCE_ENABLED = env.bool("MFA_ENFORCE_ENABLED", True)
 
 # Send notifications to case or letter change/addition author
 NOTIFY_AUTHOR = env.bool("NOTIFY_AUTHOR", True)
@@ -649,3 +659,9 @@ FILE_TO_TEXT_REQUEST_TIMEOUTS = (
     FILE_TO_TEXT_CONNECT_TIMEOUT,
     FILE_TO_TEXT_READ_TIMEOUT,
 )
+
+# n8n API settings for workflow automation
+N8N_ADVICE_WEBHOOK_URL = env("N8N_ADVICE_WEBHOOK_URL", default="")
+N8N_ADVICE_WEBHOOK_TOKEN = env("N8N_ADVICE_WEBHOOK_TOKEN", default="")
+N8N_ADVICE_WEBHOOK_TIMEOUT = env.int("N8N_ADVICE_WEBHOOK_TIMEOUT", default=30)
+ADVICER_WEBHOOK_BEARER_TOKEN = env.str("ADVICER_WEBHOOK_BEARER_TOKEN", "")

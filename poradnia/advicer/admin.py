@@ -54,6 +54,12 @@ class AdviceAdmin(admin.ModelAdmin):
         qs = super().get_queryset(request)
         return qs.for_user(request.user)
 
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(Issue, InstitutionKind, PersonKind, Area)
 class CategoryAdmin(admin.ModelAdmin):

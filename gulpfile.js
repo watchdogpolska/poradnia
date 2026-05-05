@@ -70,7 +70,6 @@ const config = {
       path.npm + "/pikaday-time/pikaday.js",
       path.npm + "/patternomaly/dist/patternomaly.js",
       path.assets + "/js/*.js",
-      path.app + "/navsearch/static/navsearch/*.js",
       path.npm + "/datatables.net/js/jquery.dataTables.js",
       path.npm + "/datatables.net-dt/js/dataTables.dataTables.js",
       path.npm + "/datatables.net-buttons/js/dataTables.buttons.js",
@@ -79,7 +78,9 @@ const config = {
       path.app + "/advicer/static/advicer/advice_datatbles.js",
       path.app + "/letters/static/letters/letters_datatbles.js",
       path.app + "/events/static/events/events_datatbles.js",
-    ],
+      path.app + "/users/static/users/users_datatbles.js",
+      ],
+
     output: {
       dir: path.static + "/js",
       filename: "script.js",

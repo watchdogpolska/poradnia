@@ -3,12 +3,17 @@ import logging
 import re
 from datetime import datetime
 
+import requests
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Permission
 from django.contrib.contenttypes.models import ContentType
-from django.core.exceptions import ObjectDoesNotExist, PermissionDenied
+from django.core.exceptions import (
+    ImproperlyConfigured,
+    ObjectDoesNotExist,
+    PermissionDenied,
+)
 from django.db import models
 from django.db.models import (
     BooleanField,
@@ -206,6 +211,16 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
                 deadline_query |= Q(deadline__isnull=choice[1])
         return self.filter(deadline_query)
 
+    def ajax_has_tag_filter(self, request):
+        # to provide empty queryset when none of the options is selected
+        tag_query = Q(pk__in=[])
+        # build query for tag according to user selection
+        for choice in [("yes", False), ("no", True)]:
+            filter_name = "has_tag_" + choice[0]
+            if get_numeric_param(request, filter_name):
+                tag_query |= Q(advice__isnull=choice[1])
+        return self.filter(tag_query)
+
     def old_cases_to_delete(self):
         years_to_store = settings.YEARS_TO_STORE_CASES
         current_month = datetime.now().replace(
@@ -276,6 +291,12 @@ class Case(models.Model):
     )
     handled = models.BooleanField(default=False, verbose_name=_("Handled"))
     has_project = models.BooleanField(default=False, verbose_name=_("Has project"))
+    advice_classification_response_status = models.IntegerField(
+        null=True, blank=True, verbose_name=_("Advice classification response status")
+    )
+    advice_classification_request_sent_on = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Advice classification request sent on")
+    )
 
     def status_display(self):
         return self.STATUS[self.status]
@@ -538,6 +559,130 @@ class Case(models.Model):
             raise self.DoesNotExist(
                 "%s matching query does not exist." % self.__class__._meta.object_name
             )
+
+    def request_n8n_advice_classification(self):
+        """
+        Send this case to the configured n8n advice-classification webhook.
+
+        The webhook is expected to create or update the Advice object related to
+        this Case. The request is authenticated with a Bearer token and contains
+        case context, the first two non-staff letters with attachment OCR text,
+        active advicer taxonomy tags, client data, and the first involved staff
+        user as advisor candidate.
+
+        Required settings:
+        - N8N_ADVICE_WEBHOOK_URL
+        - N8N_ADVICE_WEBHOOK_TOKEN
+
+        Returns the decoded JSON response when n8n returns JSON; otherwise
+        returns a dict with the response status code and raw response text.
+        Raises requests.HTTPError for non-2xx responses.
+        """
+        webhook_url = getattr(settings, "N8N_ADVICE_WEBHOOK_URL", None)
+        webhook_token = getattr(settings, "N8N_ADVICE_WEBHOOK_TOKEN", None)
+
+        if not webhook_url or not webhook_token:
+            raise ImproperlyConfigured(
+                "N8N_ADVICE_WEBHOOK_URL and N8N_ADVICE_WEBHOOK_TOKEN must be set."
+            )
+
+        response = requests.post(
+            webhook_url,
+            json=self._build_n8n_advice_payload(),
+            headers={
+                "Authorization": f"Bearer {webhook_token}",
+                "Content-Type": "application/json",
+            },
+            timeout=getattr(settings, "N8N_ADVICE_WEBHOOK_TIMEOUT", 30),
+        )
+        response.raise_for_status()
+        self.advice_classification_request_sent_on = timezone.now()
+        self.advice_classification_response_status = response.status_code
+        self.save(
+            update_fields=[
+                "advice_classification_request_sent_on",
+                "advice_classification_response_status",
+            ]
+        )
+
+        try:
+            return response.json()
+        except ValueError:
+            return {
+                "status_code": response.status_code,
+                "text": response.text,
+            }
+
+    def _build_n8n_advice_payload(self):
+        from poradnia.advicer.models import (
+            Area,
+            InstitutionKind,
+            Issue,
+            PersonKind,
+        )
+        from poradnia.letters.models import Letter
+
+        def serialize_user(user):
+            if not user:
+                return None
+            return {
+                "id": user.pk,
+                "name": (
+                    user.get_nicename()
+                    if hasattr(user, "get_nicename")
+                    else user.get_full_name() or user.get_username()
+                ),
+            }
+
+        def serialize_tags(model):
+            return list(
+                model.objects.filter(active=True)
+                .order_by("id")
+                .values("id", "name", "tag_helper")
+            )
+
+        letters = (
+            Letter.objects.filter(
+                record__case=self,
+                created_by_is_staff=False,
+            )
+            .prefetch_related("attachment_set")
+            .order_by("id")[:2]
+        )
+
+        advisor = (
+            self.caseuserobjectpermission_set.filter(user__is_staff=True)
+            .select_related("user")
+            .order_by("user__nicename", "user_id")
+            .first()
+        )
+
+        return {
+            "case": {
+                "id": self.pk,
+                "name": self.name,
+            },
+            "letters": [
+                {
+                    "id": letter.pk,
+                    "text": letter.text,
+                    "attachments": [
+                        {
+                            "id": attachment.pk,
+                            "text_content": attachment.text_content,
+                        }
+                        for attachment in letter.attachment_set.all().order_by("id")
+                    ],
+                }
+                for letter in letters
+            ],
+            "issues": serialize_tags(Issue),
+            "areas": serialize_tags(Area),
+            "person_kinds": serialize_tags(PersonKind),
+            "institution_kinds": serialize_tags(InstitutionKind),
+            "client": serialize_user(self.client),
+            "advisor": serialize_user(advisor.user if advisor else None),
+        }
 
 
 class DeleteCaseProxy(Case):

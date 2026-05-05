@@ -21,7 +21,7 @@ const User = require("../testing/user");
 const Advice = require("../testing/advice");
 const AdministrativeDivisionUnit = require("../testing/administrative-division-unit");
 
-describe.only("advices", () => {
+describe("advices", () => {
   beforeEach(() => {
     cy.task("db:clear");
     cy.viewport(1920,1080);
@@ -199,5 +199,26 @@ describe.only("advices", () => {
         });
       });
     validateContainsOnly([advices[1]]);
+  });
+
+  it("filter toggles trigger a DataTables reload on /porady/table/", () => {
+    const user = User.fromId("testUser");
+    register(cy)(user);
+    addSuperUserPrivileges(cy)(user);
+
+    cy.closeDonatePopup();
+    cy.intercept({ pathname: "/porady/advice_table_ajax_data/" }).as("dtAjax");
+    cy.visit("/porady/table/");
+
+    // Initial DataTables load.
+    cy.wait("@dtAjax");
+
+    // Each filter change must fire the DataTables ajax endpoint via the
+    // new native `change` listener on `.filters`.
+    cy.get('input[name="check_helped_yes"]').uncheck();
+    cy.wait("@dtAjax");
+
+    cy.get('input[name="check_helped_yes"]').check();
+    cy.wait("@dtAjax");
   });
 });

@@ -3,7 +3,7 @@
 # This is application’s services configuration for development purposes only.
 
 x-django-env: &django-env
-  DATABASE_URL: mysql://root:password@db/poradnia
+  DATABASE_URL: ${DATABASE_URL:-mysql://root:password@db/poradnia}
   DJANGO_EMAIL_BACKEND: "django.core.mail.backends.smtp.EmailBackend"
   DJANGO_EMAIL_HOST: "maildump"
   DJANGO_EMAIL_PORT: "1025"

@@ -25,13 +25,18 @@ class AdviceForm(
     ModelForm,
 ):
     def __init__(self, *args, **kwargs):
+        initial = kwargs.get("initial", {})
         super().__init__(*args, **kwargs)
         self.helper.form_method = "post"
         self.fields["grant_on"].initial = now()
-        self.fields["case"].queryset = Case.objects.for_user(self.user).all()
-        self.fields["case"].help_text = _(
-            "Select from poradnia.cases which do " "you have a permission"
-        )
+        case_initial = initial.get("case") or getattr(self.instance, "case", None)
+        if case_initial:
+            self.fields["case"].disabled = True
+        else:
+            self.fields["case"].queryset = Case.objects.for_user(self.user).all()
+            self.fields["case"].help_text = _(
+                "Select from poradnia.cases which do " "you have a permission"
+            )
         self.helper.layout = Layout(
             Fieldset(
                 _("Statistic data"),
@@ -63,7 +68,6 @@ class AdviceForm(
         ]
         widgets = {
             "jst": autocomplete.ModelSelect2(url="teryt:community-autocomplete"),
-            "case": autocomplete.ModelSelect2(url="cases:autocomplete"),
             "issues": autocomplete.ModelSelect2Multiple(
                 url="advicer:issue-autocomplete"
             ),
