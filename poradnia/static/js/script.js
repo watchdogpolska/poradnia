@@ -12206,7 +12206,7 @@ var htmx = (function() {
     location,
     /** @type {typeof internalEval} */
     _: null,
-    version: '2.0.8'
+    version: '2.0.10'
   }
   // Tsc madness part 2
   htmx.onLoad = onLoadHelper
@@ -12754,10 +12754,11 @@ var htmx = (function() {
    * @returns {string}
    */
   function normalizePath(path) {
-    // use dummy base URL to allow normalize on path only
-    const url = new URL(path, 'http://x')
-    if (url) {
+    try {
+      const url = new URL(path, window.location.href)
       path = url.pathname + url.search
+    } catch (e) {
+      // fallback for malformed URLs
     }
     // remove trailing slash, unless index page
     if (path != '/') {
@@ -13418,7 +13419,7 @@ var htmx = (function() {
       oobElement.parentNode.removeChild(oobElement)
     } else {
       oobElement.parentNode.removeChild(oobElement)
-      triggerErrorEvent(getDocument().body, 'htmx:oobErrorNoTarget', { content: oobElement })
+      triggerErrorEvent(getDocument().body, 'htmx:oobErrorNoTarget', { content: oobElement, target: selector })
     }
     return oobValue
   }
@@ -13469,10 +13470,8 @@ var htmx = (function() {
     forEach(fragment.querySelectorAll('[id]'), function(newNode) {
       const id = getRawAttribute(newNode, 'id')
       if (id && id.length > 0) {
-        const normalizedId = id.replace("'", "\\'")
-        const normalizedTag = newNode.tagName.replace(':', '\\:')
         const parentElt = asParentNode(parentNode)
-        const oldNode = parentElt && parentElt.querySelector(normalizedTag + "[id='" + normalizedId + "']")
+        const oldNode = parentElt && parentElt.querySelector(CSS.escape(newNode.tagName) + '#' + CSS.escape(id))
         if (oldNode && oldNode !== parentElt) {
           const newAttributes = newNode.cloneNode()
           cloneAttributes(newNode, oldNode)
@@ -13885,10 +13884,10 @@ var htmx = (function() {
         }
       }
 
-      target.classList.remove(htmx.config.swappingClass)
+      removeClassFromElement(target, htmx.config.swappingClass)
       forEach(settleInfo.elts, function(elt) {
         if (elt.classList) {
-          elt.classList.add(htmx.config.settlingClass)
+          addClassToElement(elt, htmx.config.settlingClass)
         }
         triggerEvent(elt, 'htmx:afterSwap', swapOptions.eventInfo)
       })
@@ -13906,7 +13905,7 @@ var htmx = (function() {
         })
         forEach(settleInfo.elts, function(elt) {
           if (elt.classList) {
-            elt.classList.remove(htmx.config.settlingClass)
+            removeClassFromElement(elt, htmx.config.settlingClass)
           }
           triggerEvent(elt, 'htmx:afterSettle', swapOptions.eventInfo)
         })
@@ -15021,7 +15020,7 @@ var htmx = (function() {
       htmx.logger(elt, eventName, detail)
     }
     if (detail.error) {
-      logError(detail.error)
+      logError(detail.error + (detail.target ? ', ' + detail.target : ''))
       triggerEvent(elt, 'htmx:error', { errorInfo: detail })
     }
     let eventResult = elt.dispatchEvent(event)
@@ -15287,7 +15286,7 @@ var htmx = (function() {
     forEach(indicators, function(ic) {
       const internalData = getInternalData(ic)
       internalData.requestCount = (internalData.requestCount || 0) + 1
-      ic.classList.add.call(ic.classList, htmx.config.requestClass)
+      addClassToElement(ic, htmx.config.requestClass)
     })
     return indicators
   }
@@ -15304,8 +15303,10 @@ var htmx = (function() {
     forEach(disabledElts, function(disabledElement) {
       const internalData = getInternalData(disabledElement)
       internalData.requestCount = (internalData.requestCount || 0) + 1
-      disabledElement.setAttribute('disabled', '')
-      disabledElement.setAttribute('data-disabled-by-htmx', '')
+      if (!disabledElement.hasAttribute('disabled')) {
+        disabledElement.setAttribute('disabled', '')
+        disabledElement.setAttribute('data-disabled-by-htmx', '')
+      }
     })
     return disabledElts
   }
@@ -15322,12 +15323,12 @@ var htmx = (function() {
     forEach(indicators, function(ic) {
       const internalData = getInternalData(ic)
       if (internalData.requestCount === 0) {
-        ic.classList.remove.call(ic.classList, htmx.config.requestClass)
+        removeClassFromElement(ic, htmx.config.requestClass)
       }
     })
     forEach(disabled, function(disabledElement) {
       const internalData = getInternalData(disabledElement)
-      if (internalData.requestCount === 0) {
+      if (internalData.requestCount === 0 && disabledElement.hasAttribute('data-disabled-by-htmx')) {
         disabledElement.removeAttribute('disabled')
         disabledElement.removeAttribute('data-disabled-by-htmx')
       }
@@ -16606,8 +16607,10 @@ var htmx = (function() {
     const requestPath = responseInfo.pathInfo.finalRequestPath
     const responsePath = responseInfo.pathInfo.responsePath
 
-    const pushUrl = responseInfo.etc.push || getClosestAttributeValue(elt, 'hx-push-url')
-    const replaceUrl = responseInfo.etc.replace || getClosestAttributeValue(elt, 'hx-replace-url')
+    let pushUrl = responseInfo.etc.push || getClosestAttributeValue(elt, 'hx-push-url')
+    let replaceUrl = responseInfo.etc.replace || getClosestAttributeValue(elt, 'hx-replace-url')
+    if (pushUrl === 'false') pushUrl = null
+    if (replaceUrl === 'false') replaceUrl = null
     const elementIsBoosted = getInternalData(elt).boosted
 
     let saveType = null
@@ -16625,11 +16628,6 @@ var htmx = (function() {
     }
 
     if (path) {
-    // false indicates no push, return empty object
-      if (path === 'false') {
-        return {}
-      }
-
       // true indicates we want to follow wherever the server ended up sending us
       if (path === 'true') {
         path = responsePath || requestPath // if there is no response path, go with the original request path
@@ -16735,7 +16733,7 @@ var htmx = (function() {
         redirectPath = redirectSwapSpec.path
         delete redirectSwapSpec.path
       }
-      redirectSwapSpec.push = redirectSwapSpec.push || 'true'
+      redirectSwapSpec.push = redirectSwapSpec.push ?? 'true'
       ajaxHelper('get', redirectPath, redirectSwapSpec)
       return
     }
@@ -16825,7 +16823,7 @@ var htmx = (function() {
         swapSpec.ignoreTitle = ignoreTitle
       }
 
-      target.classList.add(htmx.config.swappingClass)
+      addClassToElement(target, htmx.config.swappingClass)
 
       if (responseInfoSelect) {
         selectOverride = responseInfoSelect
@@ -25825,104 +25823,110 @@ return pattern;
     };
 })(jQuery);
 
-;(function($) {
-    $(function () {
-        var fields = document.querySelectorAll('.datetimeinput');
-        var fields_array = Array.prototype.slice.call(fields);
-        fields_array.forEach(function (item) {
-            new Pikaday({
-                field: item,
-                firstDay: 1,
-                format: 'DD.MM.YYYY HH:mm:ss',
-                minDate: new Date('2000-01-01'),
-                maxDate: new Date('2040-12-31'),
-                yearRange: [2000, 2040],
-                showTime: true,
-                use24hour: true
-            });
+document.addEventListener('DOMContentLoaded', function () {
+    document.querySelectorAll('.datetimeinput').forEach(function (item) {
+        new Pikaday({
+            field: item,
+            firstDay: 1,
+            format: 'DD.MM.YYYY HH:mm:ss',
+            minDate: new Date('2000-01-01'),
+            maxDate: new Date('2040-12-31'),
+            yearRange: [2000, 2040],
+            showTime: true,
+            use24hour: true
         });
     });
+});
 
+// Bootstrap-3 tooltip plugin still depends on jQuery — Stage 3 leftover
+// (pending widget-replacement decision in #2134).
+;(function ($) {
     $(function () {
         $('[data-toggle="tooltip"]').tooltip();
     });
-
-    $(function () {
-        function storageAvailable(type) {
-            try {
-                var storage = window[type],
-                    x = "__storage_test__";
-                storage.setItem(x, x);
-                storage.removeItem(x);
-                return true;
-            } catch (e) {
-                return (
-                    e instanceof DOMException &&
-                    // everything except Firefox
-                    (e.code === 22 ||
-                        // Firefox
-                        e.code === 1014 ||
-                        // test name field too, because code might not be present
-                        // everything except Firefox
-                        e.name === "QuotaExceededError" ||
-                        // Firefox
-                        e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
-                    // acknowledge QuotaExceededError only if there's something already stored
-                    window[type].length !== 0
-                );
-            }
-        }
-
-        if (!storageAvailable("localStorage")) {
-            return;
-        }
-
-        function findByName(inputs, name) {
-            return inputs.find(function (el) {
-                return el.name == name;
-            });
-        }
-
-        function loadInitalData(inputs, saveKey) {
-            try {
-                var formData = JSON.parse(localStorage.getItem(saveKey));
-                if (formData) {
-                    formData.forEach(function (inputData) {
-                        var input = findByName(inputs, inputData.name);
-                        if (input) {
-                            input.value = inputData.value;
-                        }
-                    });
-                }
-            } catch (e) {
-            }
-        }
-
-        function serializeForm(inputs) {
-            return inputs.map(function (input) {
-                return {name: input.name, value: input.value};
-            });
-        }
-
-        function setupListeners(inputs, saveKey) {
-            inputs.forEach(function (input) {
-                input.addEventListener("input", function () {
-                    var formData = serializeForm(inputs);
-                    localStorage.setItem(saveKey, JSON.stringify(formData));
-                });
-            });
-        }
-
-        var forms = Array.from(document.querySelectorAll("[data-form-save]"));
-
-        forms.forEach(function (element) {
-            var saveKey = "form-" + element.getAttribute("data-form-save");
-            var inputs = Array.from(element.querySelectorAll('input:not([type="hidden"]), textarea'));
-            loadInitalData(inputs, saveKey);
-            setupListeners(inputs, saveKey);
-        });
-    });
 })(jQuery);
+
+function initFormSave() {
+    function storageAvailable(type) {
+        try {
+            var storage = window[type],
+                x = "__storage_test__";
+            storage.setItem(x, x);
+            storage.removeItem(x);
+            return true;
+        } catch (e) {
+            return (
+                e instanceof DOMException &&
+                // everything except Firefox
+                (e.code === 22 ||
+                    // Firefox
+                    e.code === 1014 ||
+                    // test name field too, because code might not be present
+                    // everything except Firefox
+                    e.name === "QuotaExceededError" ||
+                    // Firefox
+                    e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
+                // acknowledge QuotaExceededError only if there's something already stored
+                window[type].length !== 0
+            );
+        }
+    }
+
+    if (!storageAvailable("localStorage")) {
+        return;
+    }
+
+    function findByName(inputs, name) {
+        return inputs.find(function (el) {
+            return el.name == name;
+        });
+    }
+
+    function loadInitalData(inputs, saveKey) {
+        try {
+            var formData = JSON.parse(localStorage.getItem(saveKey));
+            if (formData) {
+                formData.forEach(function (inputData) {
+                    var input = findByName(inputs, inputData.name);
+                    if (input) {
+                        input.value = inputData.value;
+                    }
+                });
+            }
+        } catch (e) {
+        }
+    }
+
+    function serializeForm(inputs) {
+        return inputs.map(function (input) {
+            return {name: input.name, value: input.value};
+        });
+    }
+
+    function setupListeners(inputs, saveKey) {
+        inputs.forEach(function (input) {
+            input.addEventListener("input", function () {
+                var formData = serializeForm(inputs);
+                localStorage.setItem(saveKey, JSON.stringify(formData));
+            });
+        });
+    }
+
+    var forms = Array.from(document.querySelectorAll("[data-form-save]"));
+
+    forms.forEach(function (element) {
+        var saveKey = "form-" + element.getAttribute("data-form-save");
+        var inputs = Array.from(element.querySelectorAll('input:not([type="hidden"]), textarea'));
+        loadInitalData(inputs, saveKey);
+        setupListeners(inputs, saveKey);
+    });
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initFormSave);
+} else {
+    initFormSave();
+}
 
 document.addEventListener('DOMContentLoaded', function() {
 			var menu_toogles = document.querySelectorAll('.navbar-toggle');
@@ -25935,674 +25939,6 @@ document.addEventListener('DOMContentLoaded', function() {
 				});
 			});
 		});
-/**
- * @license
- * Lodash (Custom Build) <https://lodash.com/>
- * Build: `lodash exports="global" include="debounce"`
- * Copyright JS Foundation and other contributors <https://js.foundation/>
- * Released under MIT license <https://lodash.com/license>
- * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
- * Copyright Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
- */
-;(function() {
-
-  /** Used as a safe reference for `undefined` in pre-ES5 environments. */
-  var undefined;
-
-  /** Used as the semantic version number. */
-  var VERSION = '4.17.4';
-
-  /** Error message constants. */
-  var FUNC_ERROR_TEXT = 'Expected a function';
-
-  /** Used as references for various `Number` constants. */
-  var NAN = 0 / 0;
-
-  /** `Object#toString` result references. */
-  var nullTag = '[object Null]',
-      symbolTag = '[object Symbol]',
-      undefinedTag = '[object Undefined]';
-
-  /** Used to match leading and trailing whitespace. */
-  var reTrim = /^\s+|\s+$/g;
-
-  /** Used to detect bad signed hexadecimal string values. */
-  var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
-
-  /** Used to detect binary string values. */
-  var reIsBinary = /^0b[01]+$/i;
-
-  /** Used to detect octal string values. */
-  var reIsOctal = /^0o[0-7]+$/i;
-
-  /** Built-in method references without a dependency on `root`. */
-  var freeParseInt = parseInt;
-
-  /** Detect free variable `global` from Node.js. */
-  var freeGlobal = typeof global == 'object' && global && global.Object === Object && global;
-
-  /** Detect free variable `self`. */
-  var freeSelf = typeof self == 'object' && self && self.Object === Object && self;
-
-  /** Used as a reference to the global object. */
-  var root = freeGlobal || freeSelf || Function('return this')();
-
-  /*--------------------------------------------------------------------------*/
-
-  /** Used for built-in method references. */
-  var objectProto = Object.prototype;
-
-  /** Used to check objects for own properties. */
-  var hasOwnProperty = objectProto.hasOwnProperty;
-
-  /**
-   * Used to resolve the
-   * [`toStringTag`](http://ecma-international.org/ecma-262/7.0/#sec-object.prototype.tostring)
-   * of values.
-   */
-  var nativeObjectToString = objectProto.toString;
-
-  /** Built-in value references. */
-  var Symbol = root.Symbol,
-      symToStringTag = Symbol ? Symbol.toStringTag : undefined;
-
-  /* Built-in method references for those with the same name as other `lodash` methods. */
-  var nativeMax = Math.max,
-      nativeMin = Math.min;
-
-  /** Used to lookup unminified function names. */
-  var realNames = {};
-
-  /*------------------------------------------------------------------------*/
-
-  /**
-   * Creates a `lodash` object which wraps `value` to enable implicit method
-   * chain sequences. Methods that operate on and return arrays, collections,
-   * and functions can be chained together. Methods that retrieve a single value
-   * or may return a primitive value will automatically end the chain sequence
-   * and return the unwrapped value. Otherwise, the value must be unwrapped
-   * with `_#value`.
-   *
-   * Explicit chain sequences, which must be unwrapped with `_#value`, may be
-   * enabled using `_.chain`.
-   *
-   * The execution of chained methods is lazy, that is, it's deferred until
-   * `_#value` is implicitly or explicitly called.
-   *
-   * Lazy evaluation allows several methods to support shortcut fusion.
-   * Shortcut fusion is an optimization to merge iteratee calls; this avoids
-   * the creation of intermediate arrays and can greatly reduce the number of
-   * iteratee executions. Sections of a chain sequence qualify for shortcut
-   * fusion if the section is applied to an array and iteratees accept only
-   * one argument. The heuristic for whether a section qualifies for shortcut
-   * fusion is subject to change.
-   *
-   * Chaining is supported in custom builds as long as the `_#value` method is
-   * directly or indirectly included in the build.
-   *
-   * In addition to lodash methods, wrappers have `Array` and `String` methods.
-   *
-   * The wrapper `Array` methods are:
-   * `concat`, `join`, `pop`, `push`, `shift`, `sort`, `splice`, and `unshift`
-   *
-   * The wrapper `String` methods are:
-   * `replace` and `split`
-   *
-   * The wrapper methods that support shortcut fusion are:
-   * `at`, `compact`, `drop`, `dropRight`, `dropWhile`, `filter`, `find`,
-   * `findLast`, `head`, `initial`, `last`, `map`, `reject`, `reverse`, `slice`,
-   * `tail`, `take`, `takeRight`, `takeRightWhile`, `takeWhile`, and `toArray`
-   *
-   * The chainable wrapper methods are:
-   * `after`, `ary`, `assign`, `assignIn`, `assignInWith`, `assignWith`, `at`,
-   * `before`, `bind`, `bindAll`, `bindKey`, `castArray`, `chain`, `chunk`,
-   * `commit`, `compact`, `concat`, `conforms`, `constant`, `countBy`, `create`,
-   * `curry`, `debounce`, `defaults`, `defaultsDeep`, `defer`, `delay`,
-   * `difference`, `differenceBy`, `differenceWith`, `drop`, `dropRight`,
-   * `dropRightWhile`, `dropWhile`, `extend`, `extendWith`, `fill`, `filter`,
-   * `flatMap`, `flatMapDeep`, `flatMapDepth`, `flatten`, `flattenDeep`,
-   * `flattenDepth`, `flip`, `flow`, `flowRight`, `fromPairs`, `functions`,
-   * `functionsIn`, `groupBy`, `initial`, `intersection`, `intersectionBy`,
-   * `intersectionWith`, `invert`, `invertBy`, `invokeMap`, `iteratee`, `keyBy`,
-   * `keys`, `keysIn`, `map`, `mapKeys`, `mapValues`, `matches`, `matchesProperty`,
-   * `memoize`, `merge`, `mergeWith`, `method`, `methodOf`, `mixin`, `negate`,
-   * `nthArg`, `omit`, `omitBy`, `once`, `orderBy`, `over`, `overArgs`,
-   * `overEvery`, `overSome`, `partial`, `partialRight`, `partition`, `pick`,
-   * `pickBy`, `plant`, `property`, `propertyOf`, `pull`, `pullAll`, `pullAllBy`,
-   * `pullAllWith`, `pullAt`, `push`, `range`, `rangeRight`, `rearg`, `reject`,
-   * `remove`, `rest`, `reverse`, `sampleSize`, `set`, `setWith`, `shuffle`,
-   * `slice`, `sort`, `sortBy`, `splice`, `spread`, `tail`, `take`, `takeRight`,
-   * `takeRightWhile`, `takeWhile`, `tap`, `throttle`, `thru`, `toArray`,
-   * `toPairs`, `toPairsIn`, `toPath`, `toPlainObject`, `transform`, `unary`,
-   * `union`, `unionBy`, `unionWith`, `uniq`, `uniqBy`, `uniqWith`, `unset`,
-   * `unshift`, `unzip`, `unzipWith`, `update`, `updateWith`, `values`,
-   * `valuesIn`, `without`, `wrap`, `xor`, `xorBy`, `xorWith`, `zip`,
-   * `zipObject`, `zipObjectDeep`, and `zipWith`
-   *
-   * The wrapper methods that are **not** chainable by default are:
-   * `add`, `attempt`, `camelCase`, `capitalize`, `ceil`, `clamp`, `clone`,
-   * `cloneDeep`, `cloneDeepWith`, `cloneWith`, `conformsTo`, `deburr`,
-   * `defaultTo`, `divide`, `each`, `eachRight`, `endsWith`, `eq`, `escape`,
-   * `escapeRegExp`, `every`, `find`, `findIndex`, `findKey`, `findLast`,
-   * `findLastIndex`, `findLastKey`, `first`, `floor`, `forEach`, `forEachRight`,
-   * `forIn`, `forInRight`, `forOwn`, `forOwnRight`, `get`, `gt`, `gte`, `has`,
-   * `hasIn`, `head`, `identity`, `includes`, `indexOf`, `inRange`, `invoke`,
-   * `isArguments`, `isArray`, `isArrayBuffer`, `isArrayLike`, `isArrayLikeObject`,
-   * `isBoolean`, `isBuffer`, `isDate`, `isElement`, `isEmpty`, `isEqual`,
-   * `isEqualWith`, `isError`, `isFinite`, `isFunction`, `isInteger`, `isLength`,
-   * `isMap`, `isMatch`, `isMatchWith`, `isNaN`, `isNative`, `isNil`, `isNull`,
-   * `isNumber`, `isObject`, `isObjectLike`, `isPlainObject`, `isRegExp`,
-   * `isSafeInteger`, `isSet`, `isString`, `isUndefined`, `isTypedArray`,
-   * `isWeakMap`, `isWeakSet`, `join`, `kebabCase`, `last`, `lastIndexOf`,
-   * `lowerCase`, `lowerFirst`, `lt`, `lte`, `max`, `maxBy`, `mean`, `meanBy`,
-   * `min`, `minBy`, `multiply`, `noConflict`, `noop`, `now`, `nth`, `pad`,
-   * `padEnd`, `padStart`, `parseInt`, `pop`, `random`, `reduce`, `reduceRight`,
-   * `repeat`, `result`, `round`, `runInContext`, `sample`, `shift`, `size`,
-   * `snakeCase`, `some`, `sortedIndex`, `sortedIndexBy`, `sortedLastIndex`,
-   * `sortedLastIndexBy`, `startCase`, `startsWith`, `stubArray`, `stubFalse`,
-   * `stubObject`, `stubString`, `stubTrue`, `subtract`, `sum`, `sumBy`,
-   * `template`, `times`, `toFinite`, `toInteger`, `toJSON`, `toLength`,
-   * `toLower`, `toNumber`, `toSafeInteger`, `toString`, `toUpper`, `trim`,
-   * `trimEnd`, `trimStart`, `truncate`, `unescape`, `uniqueId`, `upperCase`,
-   * `upperFirst`, `value`, and `words`
-   *
-   * @name _
-   * @constructor
-   * @category Seq
-   * @param {*} value The value to wrap in a `lodash` instance.
-   * @returns {Object} Returns the new `lodash` wrapper instance.
-   * @example
-   *
-   * function square(n) {
-   *   return n * n;
-   * }
-   *
-   * var wrapped = _([1, 2, 3]);
-   *
-   * // Returns an unwrapped value.
-   * wrapped.reduce(_.add);
-   * // => 6
-   *
-   * // Returns a wrapped value.
-   * var squares = wrapped.map(square);
-   *
-   * _.isArray(squares);
-   * // => false
-   *
-   * _.isArray(squares.value());
-   * // => true
-   */
-  function lodash() {
-    // No operation performed.
-  }
-
-  /*------------------------------------------------------------------------*/
-
-  /**
-   * The base implementation of `getTag` without fallbacks for buggy environments.
-   *
-   * @private
-   * @param {*} value The value to query.
-   * @returns {string} Returns the `toStringTag`.
-   */
-  function baseGetTag(value) {
-    if (value == null) {
-      return value === undefined ? undefinedTag : nullTag;
-    }
-    return (symToStringTag && symToStringTag in Object(value))
-      ? getRawTag(value)
-      : objectToString(value);
-  }
-
-  /**
-   * A specialized version of `baseGetTag` which ignores `Symbol.toStringTag` values.
-   *
-   * @private
-   * @param {*} value The value to query.
-   * @returns {string} Returns the raw `toStringTag`.
-   */
-  function getRawTag(value) {
-    var isOwn = hasOwnProperty.call(value, symToStringTag),
-        tag = value[symToStringTag];
-
-    try {
-      value[symToStringTag] = undefined;
-      var unmasked = true;
-    } catch (e) {}
-
-    var result = nativeObjectToString.call(value);
-    if (unmasked) {
-      if (isOwn) {
-        value[symToStringTag] = tag;
-      } else {
-        delete value[symToStringTag];
-      }
-    }
-    return result;
-  }
-
-  /**
-   * Converts `value` to a string using `Object.prototype.toString`.
-   *
-   * @private
-   * @param {*} value The value to convert.
-   * @returns {string} Returns the converted string.
-   */
-  function objectToString(value) {
-    return nativeObjectToString.call(value);
-  }
-
-  /*------------------------------------------------------------------------*/
-
-  /**
-   * Gets the timestamp of the number of milliseconds that have elapsed since
-   * the Unix epoch (1 January 1970 00:00:00 UTC).
-   *
-   * @static
-   * @memberOf _
-   * @since 2.4.0
-   * @category Date
-   * @returns {number} Returns the timestamp.
-   * @example
-   *
-   * _.defer(function(stamp) {
-   *   console.log(_.now() - stamp);
-   * }, _.now());
-   * // => Logs the number of milliseconds it took for the deferred invocation.
-   */
-  var now = function() {
-    return root.Date.now();
-  };
-
-  /*------------------------------------------------------------------------*/
-
-  /**
-   * Creates a debounced function that delays invoking `func` until after `wait`
-   * milliseconds have elapsed since the last time the debounced function was
-   * invoked. The debounced function comes with a `cancel` method to cancel
-   * delayed `func` invocations and a `flush` method to immediately invoke them.
-   * Provide `options` to indicate whether `func` should be invoked on the
-   * leading and/or trailing edge of the `wait` timeout. The `func` is invoked
-   * with the last arguments provided to the debounced function. Subsequent
-   * calls to the debounced function return the result of the last `func`
-   * invocation.
-   *
-   * **Note:** If `leading` and `trailing` options are `true`, `func` is
-   * invoked on the trailing edge of the timeout only if the debounced function
-   * is invoked more than once during the `wait` timeout.
-   *
-   * If `wait` is `0` and `leading` is `false`, `func` invocation is deferred
-   * until to the next tick, similar to `setTimeout` with a timeout of `0`.
-   *
-   * See [David Corbacho's article](https://css-tricks.com/debouncing-throttling-explained-examples/)
-   * for details over the differences between `_.debounce` and `_.throttle`.
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Function
-   * @param {Function} func The function to debounce.
-   * @param {number} [wait=0] The number of milliseconds to delay.
-   * @param {Object} [options={}] The options object.
-   * @param {boolean} [options.leading=false]
-   *  Specify invoking on the leading edge of the timeout.
-   * @param {number} [options.maxWait]
-   *  The maximum time `func` is allowed to be delayed before it's invoked.
-   * @param {boolean} [options.trailing=true]
-   *  Specify invoking on the trailing edge of the timeout.
-   * @returns {Function} Returns the new debounced function.
-   * @example
-   *
-   * // Avoid costly calculations while the window size is in flux.
-   * jQuery(window).on('resize', _.debounce(calculateLayout, 150));
-   *
-   * // Invoke `sendMail` when clicked, debouncing subsequent calls.
-   * jQuery(element).on('click', _.debounce(sendMail, 300, {
-   *   'leading': true,
-   *   'trailing': false
-   * }));
-   *
-   * // Ensure `batchLog` is invoked once after 1 second of debounced calls.
-   * var debounced = _.debounce(batchLog, 250, { 'maxWait': 1000 });
-   * var source = new EventSource('/stream');
-   * jQuery(source).on('message', debounced);
-   *
-   * // Cancel the trailing debounced invocation.
-   * jQuery(window).on('popstate', debounced.cancel);
-   */
-  function debounce(func, wait, options) {
-    var lastArgs,
-        lastThis,
-        maxWait,
-        result,
-        timerId,
-        lastCallTime,
-        lastInvokeTime = 0,
-        leading = false,
-        maxing = false,
-        trailing = true;
-
-    if (typeof func != 'function') {
-      throw new TypeError(FUNC_ERROR_TEXT);
-    }
-    wait = toNumber(wait) || 0;
-    if (isObject(options)) {
-      leading = !!options.leading;
-      maxing = 'maxWait' in options;
-      maxWait = maxing ? nativeMax(toNumber(options.maxWait) || 0, wait) : maxWait;
-      trailing = 'trailing' in options ? !!options.trailing : trailing;
-    }
-
-    function invokeFunc(time) {
-      var args = lastArgs,
-          thisArg = lastThis;
-
-      lastArgs = lastThis = undefined;
-      lastInvokeTime = time;
-      result = func.apply(thisArg, args);
-      return result;
-    }
-
-    function leadingEdge(time) {
-      // Reset any `maxWait` timer.
-      lastInvokeTime = time;
-      // Start the timer for the trailing edge.
-      timerId = setTimeout(timerExpired, wait);
-      // Invoke the leading edge.
-      return leading ? invokeFunc(time) : result;
-    }
-
-    function remainingWait(time) {
-      var timeSinceLastCall = time - lastCallTime,
-          timeSinceLastInvoke = time - lastInvokeTime,
-          result = wait - timeSinceLastCall;
-
-      return maxing ? nativeMin(result, maxWait - timeSinceLastInvoke) : result;
-    }
-
-    function shouldInvoke(time) {
-      var timeSinceLastCall = time - lastCallTime,
-          timeSinceLastInvoke = time - lastInvokeTime;
-
-      // Either this is the first call, activity has stopped and we're at the
-      // trailing edge, the system time has gone backwards and we're treating
-      // it as the trailing edge, or we've hit the `maxWait` limit.
-      return (lastCallTime === undefined || (timeSinceLastCall >= wait) ||
-        (timeSinceLastCall < 0) || (maxing && timeSinceLastInvoke >= maxWait));
-    }
-
-    function timerExpired() {
-      var time = now();
-      if (shouldInvoke(time)) {
-        return trailingEdge(time);
-      }
-      // Restart the timer.
-      timerId = setTimeout(timerExpired, remainingWait(time));
-    }
-
-    function trailingEdge(time) {
-      timerId = undefined;
-
-      // Only invoke if we have `lastArgs` which means `func` has been
-      // debounced at least once.
-      if (trailing && lastArgs) {
-        return invokeFunc(time);
-      }
-      lastArgs = lastThis = undefined;
-      return result;
-    }
-
-    function cancel() {
-      if (timerId !== undefined) {
-        clearTimeout(timerId);
-      }
-      lastInvokeTime = 0;
-      lastArgs = lastCallTime = lastThis = timerId = undefined;
-    }
-
-    function flush() {
-      return timerId === undefined ? result : trailingEdge(now());
-    }
-
-    function debounced() {
-      var time = now(),
-          isInvoking = shouldInvoke(time);
-
-      lastArgs = arguments;
-      lastThis = this;
-      lastCallTime = time;
-
-      if (isInvoking) {
-        if (timerId === undefined) {
-          return leadingEdge(lastCallTime);
-        }
-        if (maxing) {
-          // Handle invocations in a tight loop.
-          timerId = setTimeout(timerExpired, wait);
-          return invokeFunc(lastCallTime);
-        }
-      }
-      if (timerId === undefined) {
-        timerId = setTimeout(timerExpired, wait);
-      }
-      return result;
-    }
-    debounced.cancel = cancel;
-    debounced.flush = flush;
-    return debounced;
-  }
-
-  /*------------------------------------------------------------------------*/
-
-  /**
-   * Checks if `value` is the
-   * [language type](http://www.ecma-international.org/ecma-262/7.0/#sec-ecmascript-language-types)
-   * of `Object`. (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
-   *
-   * @static
-   * @memberOf _
-   * @since 0.1.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is an object, else `false`.
-   * @example
-   *
-   * _.isObject({});
-   * // => true
-   *
-   * _.isObject([1, 2, 3]);
-   * // => true
-   *
-   * _.isObject(_.noop);
-   * // => true
-   *
-   * _.isObject(null);
-   * // => false
-   */
-  function isObject(value) {
-    var type = typeof value;
-    return value != null && (type == 'object' || type == 'function');
-  }
-
-  /**
-   * Checks if `value` is object-like. A value is object-like if it's not `null`
-   * and has a `typeof` result of "object".
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
-   * @example
-   *
-   * _.isObjectLike({});
-   * // => true
-   *
-   * _.isObjectLike([1, 2, 3]);
-   * // => true
-   *
-   * _.isObjectLike(_.noop);
-   * // => false
-   *
-   * _.isObjectLike(null);
-   * // => false
-   */
-  function isObjectLike(value) {
-    return value != null && typeof value == 'object';
-  }
-
-  /**
-   * Checks if `value` is classified as a `Symbol` primitive or object.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a symbol, else `false`.
-   * @example
-   *
-   * _.isSymbol(Symbol.iterator);
-   * // => true
-   *
-   * _.isSymbol('abc');
-   * // => false
-   */
-  function isSymbol(value) {
-    return typeof value == 'symbol' ||
-      (isObjectLike(value) && baseGetTag(value) == symbolTag);
-  }
-
-  /**
-   * Converts `value` to a number.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to process.
-   * @returns {number} Returns the number.
-   * @example
-   *
-   * _.toNumber(3.2);
-   * // => 3.2
-   *
-   * _.toNumber(Number.MIN_VALUE);
-   * // => 5e-324
-   *
-   * _.toNumber(Infinity);
-   * // => Infinity
-   *
-   * _.toNumber('3.2');
-   * // => 3.2
-   */
-  function toNumber(value) {
-    if (typeof value == 'number') {
-      return value;
-    }
-    if (isSymbol(value)) {
-      return NAN;
-    }
-    if (isObject(value)) {
-      var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
-      value = isObject(other) ? (other + '') : other;
-    }
-    if (typeof value != 'string') {
-      return value === 0 ? value : +value;
-    }
-    value = value.replace(reTrim, '');
-    var isBinary = reIsBinary.test(value);
-    return (isBinary || reIsOctal.test(value))
-      ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
-      : (reIsBadHex.test(value) ? NAN : +value);
-  }
-
-  /*------------------------------------------------------------------------*/
-
-  // Add methods that return wrapped values in chain sequences.
-  lodash.debounce = debounce;
-
-  /*------------------------------------------------------------------------*/
-
-  // Add methods that return unwrapped values in chain sequences.
-  lodash.isObject = isObject;
-  lodash.isObjectLike = isObjectLike;
-  lodash.isSymbol = isSymbol;
-  lodash.now = now;
-  lodash.toNumber = toNumber;
-
-  /*------------------------------------------------------------------------*/
-
-  /**
-   * The semantic version number.
-   *
-   * @static
-   * @memberOf _
-   * @type {string}
-   */
-  lodash.VERSION = VERSION;
-
-  /*--------------------------------------------------------------------------*/
-
-  // Export to the global object.
-  root._ = lodash;
-}.call(this));
-
-/**
- * @license
- * Lodash (Custom Build) lodash.com/license | Underscore.js 1.8.3 underscorejs.org/LICENSE
- * Build: `lodash exports="global" include="debounce"`
- */
-;(function(){function t(){}function e(t){var e=typeof t;return null!=t&&("object"==e||"function"==e)}function n(t){return null!=t&&typeof t=="object"}function r(t){var e;if(!(e=typeof t=="symbol")&&(e=n(t))){if(null==t)t=t===o?"[object Undefined]":"[object Null]";else if(m&&m in Object(t)){e=y.call(t,m);var r=t[m];try{t[m]=o;var i=true}catch(t){}var u=j.call(t);i&&(e?t[m]=r:delete t[m]),t=u}else t=j.call(t);e="[object Symbol]"==t}return e}function i(t){if(typeof t=="number")return t;if(r(t))return u;
-if(e(t)&&(t=typeof t.valueOf=="function"?t.valueOf():t,t=e(t)?t+"":t),typeof t!="string")return 0===t?t:+t;t=t.replace(c,"");var n=l.test(t);return n||a.test(t)?b(t.slice(2),n?2:8):f.test(t)?u:+t}var o,u=NaN,c=/^\s+|\s+$/g,f=/^[-+]0x[0-9a-f]+$/i,l=/^0b[01]+$/i,a=/^0o[0-7]+$/i,b=parseInt,s=typeof self=="object"&&self&&self.Object===Object&&self,p=typeof global=="object"&&global&&global.Object===Object&&global||s||Function("return this")(),s=Object.prototype,y=s.hasOwnProperty,j=s.toString,m=(s=p.Symbol)?s.toStringTag:o,v=Math.max,g=Math.min,O=function(){
-return p.Date.now()};t.debounce=function(t,n,r){function u(e){var n=b,r=s;return b=s=o,h=e,y=t.apply(r,n)}function c(t){var e=t-m;return t-=h,m===o||e>=n||0>e||d&&t>=p}function f(){var t=O();if(c(t))return l(t);var e,r=setTimeout;e=t-h,t=n-(t-m),e=d?g(t,p-e):t,j=r(f,e)}function l(t){return j=o,S&&b?u(t):(b=s=o,y)}function a(){var t=O(),e=c(t);if(b=arguments,s=this,m=t,e){if(j===o)return h=t=m,j=setTimeout(f,n),T?u(t):y;if(d)return j=setTimeout(f,n),u(m)}return j===o&&(j=setTimeout(f,n)),y}var b,s,p,y,j,m,h=0,T=false,d=false,S=true;
-if(typeof t!="function")throw new TypeError("Expected a function");return n=i(n)||0,e(r)&&(T=!!r.leading,p=(d="maxWait"in r)?v(i(r.maxWait)||0,n):p,S="trailing"in r?!!r.trailing:S),a.cancel=function(){j!==o&&clearTimeout(j),h=0,b=m=s=j=o},a.flush=function(){return j===o?y:l(O())},a},t.isObject=e,t.isObjectLike=n,t.isSymbol=r,t.now=O,t.toNumber=i,t.VERSION="4.17.4",p._=t}).call(this);
-;(function($) {
-    $(document).ready(function () {
-        $('.navsearch').each(function(){
-            $navsearch = $(this);
-            $input =  $navsearch.find('.navsearch__input');
-            $results = $navsearch.find('.navsearch__results');
-            $url = $navsearch.data('autocomplete-url');
-            $input.on('keyup, keydown', _.debounce(function(event) {
-                var keywords = $input.val();
-
-                $.getJSON($url, {q: keywords}, function(response) {
-                    // Clear
-                    $results.empty();
-
-                    response.results.forEach(function(group) {
-                        // Create
-                        $group = $('<div class="panel panel-default">');
-                        $group_title = $('<div class="panel-heading"></div>')
-                        $group_list = $('<div class="list-group"></div>');
-
-                        // Bind
-                        $group_title.text(group.text);
-                        group.children.forEach(function(item) {
-                            // Create
-                            var $item = $('<a class="list-group-item">');
-
-                            // Bind
-                            $item.attr('href', item.url)
-                                .text(item.text);
-
-                            // Append
-                            $group_list.append($item);
-                        })
-
-                        // Append
-                        $group.append($group_title);
-                        $group.append($group_list);
-                        $results.append($group);
-                    });
-                });
-            }, 300))
-        })
-    });
-})(jQuery);
-
 /*! DataTables 1.13.11
  * ©2008-2024 SpryMedia Ltd - datatables.net/license
  */
@@ -45527,246 +44863,239 @@ window.AjaxDatatableViewUtils = (function() {
 
 })();
 
-;(function($) {
-    $(function() {
-        const table1 = document.getElementById("datatable_cases");
-        if (table1) {
-            var tableTop = $("#tableWrapper")[0].getBoundingClientRect().top;
-            var viewportHeight = $(window).innerHeight();
-            var maxHeight = viewportHeight - tableTop;
-            $("#tableWrapper").css({
-                maxHeight: maxHeight - 0,
-            });
-            // Subscribe "initComplete" event
-            $('#datatable_cases').on('initComplete', function(event, table ) {
-                // Code to resize input fields
-                const tableWrapper = $("#tableWrapper");
-                const headerCells = tableWrapper.find("th");
-                headerCells.each(function() {
-                    const input = $(this).find("input[type=text]");
-                    $(this).css("padding", "0");
-                    input.css("width", "100%");
-                    input.css("box-sizing", "border-box");
-                });
-            });
-            // Initialize table
-            AjaxDatatableViewUtils.initialize_table(
-                $('#datatable_cases'),
-                "/sprawy/case_table_ajax_data/",
-                {
-                    // extra_options (example)
-                    processing: true,
-                    serverSide: true,
-                    autoWidth: true,
-                    full_row_select: false,
-                    scrollX: true,
-                    // searching: false,
-                    scrollY: maxHeight - 250,
-                    // TODO make fixedColumns working !!!
-                    // fixedColumns: {
-                    //     left: 1,
-                    //     // right: 1
-                    // }
-                    "language": {
-                        "processing":     "Przetwarzanie...",
-                        "search":         "Szukaj:",
-                        "lengthMenu":     "Pokaż _MENU_ pozycji",
-                        "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                        "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                        "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                        "infoPostFix":    "",
-                        "loadingRecords": "Wczytywanie...",
-                        "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                        "emptyTable":     "Brak danych",
-                        "paginate": {
-                            "first":      "Pierwsza",
-                            "previous":   "Poprzednia",
-                            "next":       "Następna",
-                            "last":       "Ostatnia"
-                        },
-                        "aria": {
-                            "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                            "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
-                        }
-                    },
-                }, {
-                    // extra_data
-                    status_free: function() { return $("input[name='check_status_free']").is(":checked") ? 1 : 0; },
-                    status_assigned: function() { return $("input[name='check_status_assigned']").is(":checked") ? 1 : 0; },
-                    status_moderated: function() { return $("input[name='check_status_moderated']").is(":checked") ? 1 : 0; },
-                    status_closed: function() { return $("input[name='check_status_closed']").is(":checked") ? 1 : 0; },
-                    handled_yes: function() { return $("input[name='check_handled_yes']").is(":checked") ? 1 : 0; },
-                    handled_no: function() { return $("input[name='check_handled_no']").is(":checked") ? 1 : 0; },
-                    has_project_yes: function() { return $("input[name='check_has_project_yes']").is(":checked") ? 1 : 0; },
-                    has_project_no: function() { return $("input[name='check_has_project_no']").is(":checked") ? 1 : 0; },
-                    has_deadline_yes: function() { return $("input[name='check_has_deadline_yes']").is(":checked") ? 1 : 0; },
-                    has_deadline_no: function() { return $("input[name='check_has_deadline_no']").is(":checked") ? 1 : 0; },
-                    involved_staff_filter: function() { return $("select[name='involved_staff_select']").val(); },
-                },
-            );
-            $('.filters input, .filters select').on('change paste keyup', function() {
-                // redraw the table
-                $('#datatable_cases').DataTable().ajax.reload(null, false);
-            });
-        }
+document.addEventListener('DOMContentLoaded', function () {
+    const table1 = document.getElementById("datatable_cases");
+    if (!table1) return;
+    const tableWrapper = document.getElementById("tableWrapper");
+    const tableTop = tableWrapper.getBoundingClientRect().top;
+    const viewportHeight = window.innerHeight;
+    const maxHeight = viewportHeight - tableTop;
+    tableWrapper.style.maxHeight = maxHeight + 'px';
+    // Subscribe "initComplete" event
+    $('#datatable_cases').on('initComplete', function (event, table) {
+        // Code to resize input fields
+        const headerCells = tableWrapper.querySelectorAll("th");
+        headerCells.forEach(function (th) {
+            th.style.padding = "0";
+            const input = th.querySelector("input[type=text]");
+            if (input) {
+                input.style.width = "100%";
+                input.style.boxSizing = "border-box";
+            }
+        });
     });
-})(jQuery);
+    // Initialize table
+    AjaxDatatableViewUtils.initialize_table(
+        $('#datatable_cases'),
+        "/sprawy/case_table_ajax_data/",
+        {
+            // extra_options (example)
+            processing: true,
+            serverSide: true,
+            autoWidth: true,
+            full_row_select: false,
+            scrollX: true,
+            // searching: false,
+            scrollY: maxHeight - 250,
+            // TODO make fixedColumns working !!!
+            // fixedColumns: {
+            //     left: 1,
+            //     // right: 1
+            // }
+            "language": {
+                "processing":     "Przetwarzanie...",
+                "search":         "Szukaj:",
+                "lengthMenu":     "Pokaż _MENU_ pozycji",
+                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
+                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                "infoPostFix":    "",
+                "loadingRecords": "Wczytywanie...",
+                "zeroRecords":    "Nie znaleziono pasujących pozycji",
+                "emptyTable":     "Brak danych",
+                "paginate": {
+                    "first":      "Pierwsza",
+                    "previous":   "Poprzednia",
+                    "next":       "Następna",
+                    "last":       "Ostatnia"
+                },
+                "aria": {
+                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                }
+            },
+        }, {
+            // extra_data
+            status_free: function() { return document.querySelector("input[name='check_status_free']").checked ? 1 : 0; },
+            status_assigned: function() { return document.querySelector("input[name='check_status_assigned']").checked ? 1 : 0; },
+            status_moderated: function() { return document.querySelector("input[name='check_status_moderated']").checked ? 1 : 0; },
+            status_closed: function() { return document.querySelector("input[name='check_status_closed']").checked ? 1 : 0; },
+            handled_yes: function() { return document.querySelector("input[name='check_handled_yes']").checked ? 1 : 0; },
+            handled_no: function() { return document.querySelector("input[name='check_handled_no']").checked ? 1 : 0; },
+            has_project_yes: function() { return document.querySelector("input[name='check_has_project_yes']").checked ? 1 : 0; },
+            has_project_no: function() { return document.querySelector("input[name='check_has_project_no']").checked ? 1 : 0; },
+            has_deadline_yes: function() { return document.querySelector("input[name='check_has_deadline_yes']").checked ? 1 : 0; },
+            has_deadline_no: function() { return document.querySelector("input[name='check_has_deadline_no']").checked ? 1 : 0; },
+            involved_staff_filter: function() { return document.querySelector("select[name='involved_staff_select']").value; },
+        },
+    );
+    const filtersContainer = document.querySelector('.filters');
+    if (filtersContainer) {
+        filtersContainer.addEventListener('change', function () {
+            $('#datatable_cases').DataTable().ajax.reload(null, false);
+        });
+    }
+});
 
-;(function($) {
-    $(function() {
-        const table1 = document.getElementById("datatable_advices");
-        if (table1) {
-            var tableTop = $("#tableWrapper")[0].getBoundingClientRect().top;
-            var viewportHeight = $(window).innerHeight();
-            var maxHeight = viewportHeight - tableTop;
-            $("#tableWrapper").css({
-                maxHeight: maxHeight - 0,
-            });
-            // Subscribe "initComplete" event
-            $('#datatable_advices').on('initComplete', function(event, table ) {
-                // Code to resize input fields
-                const tableWrapper = $("#tableWrapper");
-                const headerCells = tableWrapper.find("th");
-                headerCells.each(function() {
-                    const input = $(this).find("input[type=text]");
-                    $(this).css("padding", "0");
-                    input.css("width", "100%");
-                    input.css("box-sizing", "border-box");
-                    const select = $(this).find("select");
-                    select.css("box-sizing", "border-box");                    
-                    select.css("width", "100%");
-                });
-            });
-            // Initialize table
-            AjaxDatatableViewUtils.initialize_table(
-                $('#datatable_advices'),
-                "/porady/advice_table_ajax_data/",
-                {
-                    // extra_options (example)
-                    processing: true,
-                    serverSide: true,
-                    autoWidth: true,
-                    full_row_select: false,
-                    scrollX: true,
-                    // searching: false,
-                    scrollY: maxHeight - 250,
-                    // TODO make fixedColumns working !!!
-                    // fixedColumns: {
-                    //     left: 1,
-                    //     // right: 1
-                    // }
-                    "language": {
-                        "processing":     "Przetwarzanie...",
-                        "search":         "Szukaj:",
-                        "lengthMenu":     "Pokaż _MENU_ pozycji",
-                        "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                        "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                        "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                        "infoPostFix":    "",
-                        "loadingRecords": "Wczytywanie...",
-                        "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                        "emptyTable":     "Brak danych",
-                        "paginate": {
-                            "first":      "Pierwsza",
-                            "previous":   "Poprzednia",
-                            "next":       "Następna",
-                            "last":       "Ostatnia"
-                        },
-                        "aria": {
-                            "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                            "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
-                        }
-                    },
-                }, {
-                    // extra_data
-                    helped_yes: function() { return $("input[name='check_helped_yes']").is(":checked") ? 1 : 0; },
-                    helped_no: function() { return $("input[name='check_helped_no']").is(":checked") ? 1 : 0; },
-                    helped_blank: function() { return $("input[name='check_helped_blank']").is(":checked") ? 1 : 0; },
-                    visible_yes: function() { return $("input[name='check_visible_yes']").is(":checked") ? 1 : 0; },
-                    visible_no: function() { return $("input[name='check_visible_no']").is(":checked") ? 1 : 0; },
-                },
-            );
-            $('.filters input').on('change paste keyup', function() {
-                // redraw the table
-                $('#datatable_advices').DataTable().ajax.reload(null, false);
-            });
-        }
+document.addEventListener('DOMContentLoaded', function () {
+    const table1 = document.getElementById("datatable_advices");
+    if (!table1) return;
+    const tableWrapper = document.getElementById("tableWrapper");
+    const tableTop = tableWrapper.getBoundingClientRect().top;
+    const viewportHeight = window.innerHeight;
+    const maxHeight = viewportHeight - tableTop;
+    tableWrapper.style.maxHeight = maxHeight + 'px';
+    // Subscribe "initComplete" event
+    $('#datatable_advices').on('initComplete', function (event, table) {
+        // Code to resize input fields
+        const headerCells = tableWrapper.querySelectorAll("th");
+        headerCells.forEach(function (th) {
+            th.style.padding = "0";
+            const input = th.querySelector("input[type=text]");
+            if (input) {
+                input.style.width = "100%";
+                input.style.boxSizing = "border-box";
+            }
+            const select = th.querySelector("select");
+            if (select) {
+                select.style.boxSizing = "border-box";
+                select.style.width = "100%";
+            }
+        });
     });
-})(jQuery);
+    // Initialize table
+    AjaxDatatableViewUtils.initialize_table(
+        $('#datatable_advices'),
+        "/porady/advice_table_ajax_data/",
+        {
+            // extra_options (example)
+            processing: true,
+            serverSide: true,
+            autoWidth: true,
+            full_row_select: false,
+            scrollX: true,
+            // searching: false,
+            scrollY: maxHeight - 250,
+            // TODO make fixedColumns working !!!
+            // fixedColumns: {
+            //     left: 1,
+            //     // right: 1
+            // }
+            "language": {
+                "processing":     "Przetwarzanie...",
+                "search":         "Szukaj:",
+                "lengthMenu":     "Pokaż _MENU_ pozycji",
+                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
+                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                "infoPostFix":    "",
+                "loadingRecords": "Wczytywanie...",
+                "zeroRecords":    "Nie znaleziono pasujących pozycji",
+                "emptyTable":     "Brak danych",
+                "paginate": {
+                    "first":      "Pierwsza",
+                    "previous":   "Poprzednia",
+                    "next":       "Następna",
+                    "last":       "Ostatnia"
+                },
+                "aria": {
+                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                }
+            },
+        }, {
+            // extra_data
+            helped_yes: function() { return document.querySelector("input[name='check_helped_yes']").checked ? 1 : 0; },
+            helped_no: function() { return document.querySelector("input[name='check_helped_no']").checked ? 1 : 0; },
+            helped_blank: function() { return document.querySelector("input[name='check_helped_blank']").checked ? 1 : 0; },
+            visible_yes: function() { return document.querySelector("input[name='check_visible_yes']").checked ? 1 : 0; },
+            visible_no: function() { return document.querySelector("input[name='check_visible_no']").checked ? 1 : 0; },
+        },
+    );
+    const filtersContainer = document.querySelector('.filters');
+    if (filtersContainer) {
+        filtersContainer.addEventListener('change', function () {
+            $('#datatable_advices').DataTable().ajax.reload(null, false);
+        });
+    }
+});
 
-;(function($) {
-    $(function() {
-        const table1 = document.getElementById("datatable_letters");
-        if (table1) {
-            var tableTop = $("#tableWrapper")[0].getBoundingClientRect().top;
-            var viewportHeight = $(window).innerHeight();
-            var maxHeight = viewportHeight - tableTop;
-            $("#tableWrapper").css({
-                maxHeight: maxHeight - 0,
-            });
-            // Subscribe "initComplete" event
-            $('#datatable_letters').on('initComplete', function(event, table ) {
-                // Code to resize input fields
-                const tableWrapper = $("#tableWrapper");
-                const headerCells = tableWrapper.find("th");
-                headerCells.each(function() {
-                    const input = $(this).find("input[type=text]");
-                    $(this).css("padding", "0");
-                    input.css("width", "100%");
-                    input.css("box-sizing", "border-box");
-                });
-            });
-            // Initialize table
-            AjaxDatatableViewUtils.initialize_table(
-                $('#datatable_letters'),
-                "/listy/letters_table_ajax_data/",
-                {
-                    // extra_options (example)
-                    processing: true,
-                    serverSide: true,
-                    autoWidth: true,
-                    full_row_select: false,
-                    scrollX: true,
-                    // searching: false,
-                    scrollY: maxHeight - 250,
-                    // TODO make fixedColumns working !!!
-                    // fixedColumns: {
-                    //     left: 1,
-                    //     // right: 1
-                    // },
-                    "language": {
-                        "processing":     "Przetwarzanie...",
-                        "search":         "Szukaj:",
-                        "lengthMenu":     "Pokaż _MENU_ pozycji",
-                        "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                        "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                        "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                        "infoPostFix":    "",
-                        "loadingRecords": "Wczytywanie...",
-                        "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                        "emptyTable":     "Brak danych",
-                        "paginate": {
-                            "first":      "Pierwsza",
-                            "previous":   "Poprzednia",
-                            "next":       "Następna",
-                            "last":       "Ostatnia"
-                        },
-                        "aria": {
-                            "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                            "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
-                        }
-                    },
-                }, {
-                    // extra_data
-                },
-            );
-            // $('.filters input').on('change paste keyup', function() {
-            //     // redraw the table
-            //     $('#datatable_letters').DataTable().ajax.reload(null, false);
-            // });
-        }
+document.addEventListener('DOMContentLoaded', function () {
+    const table1 = document.getElementById("datatable_letters");
+    if (!table1) return;
+    const tableWrapper = document.getElementById("tableWrapper");
+    const tableTop = tableWrapper.getBoundingClientRect().top;
+    const viewportHeight = window.innerHeight;
+    const maxHeight = viewportHeight - tableTop;
+    tableWrapper.style.maxHeight = maxHeight + 'px';
+    // Subscribe "initComplete" event
+    $('#datatable_letters').on('initComplete', function (event, table) {
+        // Code to resize input fields
+        const headerCells = tableWrapper.querySelectorAll("th");
+        headerCells.forEach(function (th) {
+            th.style.padding = "0";
+            const input = th.querySelector("input[type=text]");
+            if (input) {
+                input.style.width = "100%";
+                input.style.boxSizing = "border-box";
+            }
+        });
     });
-})(jQuery);
+    // Initialize table
+    AjaxDatatableViewUtils.initialize_table(
+        $('#datatable_letters'),
+        "/listy/letters_table_ajax_data/",
+        {
+            // extra_options (example)
+            processing: true,
+            serverSide: true,
+            autoWidth: true,
+            full_row_select: false,
+            scrollX: true,
+            // searching: false,
+            scrollY: maxHeight - 250,
+            // TODO make fixedColumns working !!!
+            // fixedColumns: {
+            //     left: 1,
+            //     // right: 1
+            // },
+            "language": {
+                "processing":     "Przetwarzanie...",
+                "search":         "Szukaj:",
+                "lengthMenu":     "Pokaż _MENU_ pozycji",
+                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
+                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                "infoPostFix":    "",
+                "loadingRecords": "Wczytywanie...",
+                "zeroRecords":    "Nie znaleziono pasujących pozycji",
+                "emptyTable":     "Brak danych",
+                "paginate": {
+                    "first":      "Pierwsza",
+                    "previous":   "Poprzednia",
+                    "next":       "Następna",
+                    "last":       "Ostatnia"
+                },
+                "aria": {
+                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                }
+            },
+        }, {
+            // extra_data
+        },
+    );
+});
 
 AjaxDatatableViewUtils.init({
     search_icon_html: '<i class="fas fa-magnifying-glass"></i>',
@@ -45783,7 +45112,8 @@ AjaxDatatableViewUtils.init({
                     '<input type="date" class="date_to datepicker"></span>' +
             '</div>'
         );
-        toolbar.find('.date_from, .date_to').on('change', function(event) {
+        toolbar[0].addEventListener('change', function(event) {
+            if (!event.target.matches('.date_from, .date_to')) return;
             // Annotate table with values retrieved from date widgets
             table.data('date_from', wrapper.find('.date_from').val());
             table.data('date_to', wrapper.find('.date_to').val());
@@ -45793,9 +45123,91 @@ AjaxDatatableViewUtils.init({
     }
 });
 
+document.addEventListener('DOMContentLoaded', function () {
+    const table1 = document.getElementById("datatable_events");
+    if (!table1) return;
+    const tableWrapper = document.getElementById("tableWrapper");
+    const tableTop = tableWrapper.getBoundingClientRect().top;
+    const viewportHeight = window.innerHeight;
+    const maxHeight = viewportHeight - tableTop;
+    tableWrapper.style.maxHeight = maxHeight + 'px';
+    // Subscribe "initComplete" event
+    $('#datatable_events').on('initComplete', function (event, table) {
+        // Code to resize input fields
+        const headerCells = tableWrapper.querySelectorAll("th");
+        headerCells.forEach(function (th) {
+            th.style.padding = "0";
+            const input = th.querySelector("input[type=text]");
+            if (input) {
+                input.style.width = "100%";
+                input.style.boxSizing = "border-box";
+            }
+        });
+    });
+    // Initialize table
+    AjaxDatatableViewUtils.initialize_table(
+        $('#datatable_events'),
+        "/wydarzenia/events_table_ajax_data/",
+        {
+            // extra_options (example)
+            processing: true,
+            serverSide: true,
+            autoWidth: true,
+            full_row_select: false,
+            scrollX: true,
+            // searching: false,
+            scrollY: maxHeight - 250,
+            // TODO make fixedColumns working !!!
+            // fixedColumns: {
+            //     left: 1,
+            //     // right: 1
+            // }
+            "language": {
+                "processing":     "Przetwarzanie...",
+                "search":         "Szukaj:",
+                "lengthMenu":     "Pokaż _MENU_ pozycji",
+                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
+                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+                "infoPostFix":    "",
+                "loadingRecords": "Wczytywanie...",
+                "zeroRecords":    "Nie znaleziono pasujących pozycji",
+                "emptyTable":     "Brak danych",
+                "paginate": {
+                    "first":      "Pierwsza",
+                    "previous":   "Poprzednia",
+                    "next":       "Następna",
+                    "last":       "Ostatnia"
+                },
+                "aria": {
+                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
+                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                }
+            },
+        }, {
+            // extra_data
+            deadline_yes: function() { return document.querySelector("input[name='check_deadline_yes']").checked ? 1 : 0; },
+            deadline_no: function() { return document.querySelector("input[name='check_deadline_no']").checked ? 1 : 0; },
+            completed_yes: function() { return document.querySelector("input[name='check_completed_yes']").checked ? 1 : 0; },
+            completed_no: function() { return document.querySelector("input[name='check_completed_no']").checked ? 1 : 0; },
+            public_yes: function() { return document.querySelector("input[name='check_public_yes']").checked ? 1 : 0; },
+            public_no: function() { return document.querySelector("input[name='check_public_no']").checked ? 1 : 0; },
+            courtsession_yes: function() { return document.querySelector("input[name='check_courtsession_yes']").checked ? 1 : 0; },
+            courtsession_no: function() { return document.querySelector("input[name='check_courtsession_no']").checked ? 1 : 0; },
+            // involved_staff_filter: function() { return document.querySelector("select[name='involved_staff_select']").value; },
+        },
+    );
+    const filtersContainer = document.querySelector('.filters');
+    if (filtersContainer) {
+        filtersContainer.addEventListener('change', function () {
+            $('#datatable_events').DataTable().ajax.reload(null, false);
+        });
+    }
+});
+
 ;(function($) {
     $(function() {
-        const table1 = document.getElementById("datatable_events");
+        const table1 = document.getElementById("datatable_users");
         if (table1) {
             var tableTop = $("#tableWrapper")[0].getBoundingClientRect().top;
             var viewportHeight = $(window).innerHeight();
@@ -45803,8 +45215,9 @@ AjaxDatatableViewUtils.init({
             $("#tableWrapper").css({
                 maxHeight: maxHeight - 0,
             });
+
             // Subscribe "initComplete" event
-            $('#datatable_events').on('initComplete', function(event, table ) {
+            $('#datatable_users').on('initComplete', function(event, table ) {
                 // Code to resize input fields
                 const tableWrapper = $("#tableWrapper");
                 const headerCells = tableWrapper.find("th");
@@ -45815,24 +45228,18 @@ AjaxDatatableViewUtils.init({
                     input.css("box-sizing", "border-box");
                 });
             });
+
             // Initialize table
             AjaxDatatableViewUtils.initialize_table(
-                $('#datatable_events'),
-                "/wydarzenia/events_table_ajax_data/",
+                $('#datatable_users'),
+                "/uzytkownik/users_table_ajax_data/",
                 {
-                    // extra_options (example)
                     processing: true,
                     serverSide: true,
                     autoWidth: true,
                     full_row_select: false,
                     scrollX: true,
-                    // searching: false,
                     scrollY: maxHeight - 250,
-                    // TODO make fixedColumns working !!!
-                    // fixedColumns: {
-                    //     left: 1,
-                    //     // right: 1
-                    // }
                     "language": {
                         "processing":     "Przetwarzanie...",
                         "search":         "Szukaj:",
@@ -45857,21 +45264,8 @@ AjaxDatatableViewUtils.init({
                     },
                 }, {
                     // extra_data
-                    deadline_yes: function() { return $("input[name='check_deadline_yes']").is(":checked") ? 1 : 0; },
-                    deadline_no: function() { return $("input[name='check_deadline_no']").is(":checked") ? 1 : 0; },
-                    completed_yes: function() { return $("input[name='check_completed_yes']").is(":checked") ? 1 : 0; },
-                    completed_no: function() { return $("input[name='check_completed_no']").is(":checked") ? 1 : 0; },
-                    public_yes: function() { return $("input[name='check_public_yes']").is(":checked") ? 1 : 0; },
-                    public_no: function() { return $("input[name='check_public_no']").is(":checked") ? 1 : 0; },
-                    courtsession_yes: function() { return $("input[name='check_courtsession_yes']").is(":checked") ? 1 : 0; },
-                    courtsession_no: function() { return $("input[name='check_courtsession_no']").is(":checked") ? 1 : 0; },
-                    // involved_staff_filter: function() { return $("select[name='involved_staff_select']").val(); },
                 },
             );
-            $('.filters input, .filters select').on('change paste keyup', function() {
-                // redraw the table
-                $('#datatable_events').DataTable().ajax.reload(null, false);
-            });
         }
     });
 })(jQuery);
