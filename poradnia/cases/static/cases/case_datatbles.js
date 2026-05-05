@@ -67,6 +67,8 @@ document.addEventListener('DOMContentLoaded', function () {
             status_closed: function() { return document.querySelector("input[name='check_status_closed']").checked ? 1 : 0; },
             handled_yes: function() { return document.querySelector("input[name='check_handled_yes']").checked ? 1 : 0; },
             handled_no: function() { return document.querySelector("input[name='check_handled_no']").checked ? 1 : 0; },
+            has_tag_yes: function() { return document.querySelector("input[name='check_has_tag_yes']").checked ? 1 : 0; },
+            has_tag_no: function() { return document.querySelector("input[name='check_has_tag_no']").checked ? 1 : 0; },
             has_project_yes: function() { return document.querySelector("input[name='check_has_project_yes']").checked ? 1 : 0; },
             has_project_no: function() { return document.querySelector("input[name='check_has_project_no']").checked ? 1 : 0; },
             has_deadline_yes: function() { return document.querySelector("input[name='check_has_deadline_yes']").checked ? 1 : 0; },
