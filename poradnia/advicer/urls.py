@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from . import views, webhook
 
 urlpatterns = [
     path("", views.AdviceList.as_view(), name="list"),
@@ -25,6 +25,11 @@ urlpatterns = [
     ),
     path(
         "area-autocomplete/", views.AreaAutocomplete.as_view(), name="area-autocomplete"
+    ),
+    path(
+        "webhook/advice/",
+        webhook.AdviceWebhookUpsertView.as_view(),
+        name="advice-webhook-upsert",
     ),
 ]
 

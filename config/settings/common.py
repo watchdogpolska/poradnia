@@ -238,10 +238,11 @@ MANAGERS = ADMINS
 DATABASES = {"default": env.db(default="mysql:///porady")}
 
 DATABASES["default"]["TEST"] = {
+    "NAME": "test_poradnia",
     "OPTIONS": {
         "charset": "utf8mb4",
         "init_command": "SET NAMES 'utf8mb4' COLLATE 'utf8mb4_polish_ci'",
-    }
+    },
 }
 
 DATABASES["default"]["OPTIONS"] = {
@@ -658,3 +659,9 @@ FILE_TO_TEXT_REQUEST_TIMEOUTS = (
     FILE_TO_TEXT_CONNECT_TIMEOUT,
     FILE_TO_TEXT_READ_TIMEOUT,
 )
+
+# n8n API settings for workflow automation
+N8N_ADVICE_WEBHOOK_URL = env("N8N_ADVICE_WEBHOOK_URL", default="")
+N8N_ADVICE_WEBHOOK_TOKEN = env("N8N_ADVICE_WEBHOOK_TOKEN", default="")
+N8N_ADVICE_WEBHOOK_TIMEOUT = env.int("N8N_ADVICE_WEBHOOK_TIMEOUT", default=30)
+ADVICER_WEBHOOK_BEARER_TOKEN = env.str("ADVICER_WEBHOOK_BEARER_TOKEN", "")

@@ -16,6 +16,13 @@ from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 
 class AbstractCategory(models.Model):
     name = models.CharField(max_length=100, verbose_name=_("Name"))
+    active = models.BooleanField(default=True, verbose_name=_("Active"))
+    tag_helper = models.TextField(
+        verbose_name=_("Tag helper"),
+        null=True,
+        blank=True,
+        help_text=_("Helper text how to apply the tag."),
+    )
 
     def __str__(self):
         return self.name
@@ -167,14 +174,14 @@ class Advice(models.Model):
     objects = AdviceQuerySet.as_manager()
 
     def __str__(self):
-        return self.subject or _("Advice #%d") % (self.pk)
+        return self.subject or _("Tag #%d") % (self.pk)
 
     def get_absolute_url(self):
         return reverse("advicer:detail", kwargs={"pk": self.pk})
 
     def render_advice_link(self):
         url = self.get_absolute_url()
-        label = self.subject
+        label = self.subject or _("Tag #%d") % (self.pk)
         return f'<a href="{url}">{label}</a>'
 
     def render_helped(self):
@@ -192,8 +199,8 @@ class Advice(models.Model):
     class Meta:
         ordering = ["-created_on"]
         permissions = (("can_view_all_advices", _("Can view all advices")),)
-        verbose_name = _("Advice")
-        verbose_name_plural = _("Advices")
+        verbose_name = _("Tag")
+        verbose_name_plural = _("Tags")
 
 
 class Attachment(AttachmentBase):
