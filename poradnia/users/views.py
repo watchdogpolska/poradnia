@@ -245,6 +245,27 @@ class UserAjaxDatatableView(StaffuserRequiredMixin, PermissionMixin, AjaxDatatab
             "searchable": True,
             "orderable": True,
         },
+        {
+            "name": "case_assigned_moderated",
+            "title": _("Moderated"),
+            "visible": True,
+            "searchable": True,
+            "orderable": True,
+        },
+        {
+            "name": "case_assigned_active",
+            "title": _("Active_"),
+            "visible": True,
+            "searchable": True,
+            "orderable": True,
+        },
+        {
+            "name": "case_assigned_closed",
+            "title": _("Closed"),
+            "visible": True,
+            "searchable": True,
+            "orderable": True,
+        },
     ]
 
     def get_initial_queryset(self, request=None):
@@ -257,7 +278,17 @@ class UserAjaxDatatableView(StaffuserRequiredMixin, PermissionMixin, AjaxDatatab
         """
         Allow simple boolean expressions in case columns, e.g. >10.
         """
-        if column_name in ["case_count", "case_assigned_sum"] and search_value:
+        if (
+            column_name
+            in [
+                "case_count",
+                "case_assigned_sum",
+                "case_assigned_moderated",
+                "case_assigned_active",
+                "case_assigned_closed",
+            ]
+            and search_value
+        ):
             if (
                 self.search_values_separator
                 and self.search_values_separator in search_value
