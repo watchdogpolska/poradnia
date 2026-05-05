@@ -6,12 +6,12 @@
                 class="fas fa-pencil"></i> {% trans 'New case' %}</a></li>
         {% if request.user.is_authenticated %}
             <li class="block-list-item">
-                <a href="{% url 'cases:list' %}?status=0&amp;status=1&amp;status=3"><i
-                        class="fas fa-book"></i> {% trans 'Cases index' %}</a>
-            </li>
-            <li class="block-list-item">
                 <a href="{% url 'cases:table' %}"><i
                         class="fas fa-book"></i> {% trans 'Case table' %}</a>
+            </li>
+            <li class="block-list-item">
+                <a href="{% url 'cases:list' %}?status=0&amp;status=1&amp;status=3"><i
+                        class="fas fa-book"></i> {% trans 'Cases index' %}</a>
             </li>
         {% endif %}
         {% if request.user.is_staff %}
