@@ -27,12 +27,12 @@ repos:
         args:
           - --py3-only
   - repo: https://github.com/pycqa/isort
-    rev: 8.0.1
+    rev: 9.0.0a3
     hooks:
       - id: isort
         args: ["--profile", "black", "--filter-files"]
   - repo: https://github.com/sirosen/check-jsonschema
-    rev: 0.37.1
+    rev: 0.37.2
     hooks:
       - id: check-github-workflows
       - id: check-readthedocs

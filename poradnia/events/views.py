@@ -235,7 +235,7 @@ class EventAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         return qs.for_user(user=self.request.user)
 
     def get_latest_by(self, request):
-        return "record_max"
+        return "time"
 
 
 class CalendarEventView(

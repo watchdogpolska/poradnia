@@ -18,6 +18,8 @@ class UserFilter(CrispyFilterMixin, django_filters.FilterSet):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    nicename = django_filters.CharFilter(lookup_expr="icontains")
+
     sort = django_filters.OrderingFilter(
         fields=(
             ("case_assigned_moderated", "moderated"),
@@ -35,4 +37,4 @@ class UserFilter(CrispyFilterMixin, django_filters.FilterSet):
 
     class Meta:
         model = User
-        fields = ["is_superuser"]
+        fields = ["is_superuser", "is_staff"]
