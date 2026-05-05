@@ -10,10 +10,10 @@
             </li>
             {% if request.user.is_staff %}
                 <li class="block-list-item">
-                    <a href="{% url 'users:list' %}"><i class="fas fa-users"></i> {% trans "Users list" %}</a>
+                    <a href="{% url 'users:table' %}"><i class="fas fa-users"></i> {% trans "Users table" %}</a>
                 </li>
                 <li class="block-list-item">
-                    <a href="{% url 'users:table' %}"><i class="fas fa-users"></i> {% trans "Users table" %}</a>
+                    <a href="{% url 'users:list' %}"><i class="fas fa-users"></i> {% trans "Users list" %}</a>
                 </li>
             {% endif %}
             {% if request.user.is_superuser %}
