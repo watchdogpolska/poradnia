@@ -1,12 +1,17 @@
+import re
+
+from ajax_datatable import AjaxDatatableView
 from atom.views import ActionMessageMixin, ActionView
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin, UserFormKwargsMixin
 from dal import autocomplete
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, RedirectView, UpdateView
+from django.views.generic import DetailView, RedirectView, TemplateView, UpdateView
 from django_filters.views import FilterView
 
 from poradnia.cases.models import Case, CaseUserObjectPermission
@@ -165,4 +170,131 @@ class UserDeassignView(
     def get_success_message(self):
         return _("{object} deassigned from {count} cases").format(
             object=self.object, count=self.count
+        )
+
+
+class UserTableView(StaffuserRequiredMixin, PermissionMixin, TemplateView):
+    """
+    View for displaying template with Users table.
+    """
+
+    template_name = "users/user_table.html"
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["header_label"] = mark_safe(_("Users search table"))
+        context["ajax_datatable_url"] = reverse("users:users_table_ajax_data")
+        return context
+
+
+class UserAjaxDatatableView(StaffuserRequiredMixin, PermissionMixin, AjaxDatatableView):
+    """
+    View to provide table list of all Users with ajax data.
+    """
+
+    model = User
+    title = _("Users")
+    initial_order = [
+        ["username", "asc"],
+    ]
+    length_menu = [[20, 50, 100], [20, 50, 100]]
+    search_values_separator = "|"
+
+    column_defs = [
+        {"name": "pk", "title": "ID", "visible": False},
+        {
+            "name": "username",
+            "title": _("Username"),
+            "visible": True,
+            "searchable": True,
+            "orderable": True,
+        },
+        {
+            "name": "nicename",
+            "title": _("Nice Name"),
+            "visible": True,
+            "searchable": True,
+            "orderable": True,
+        },
+        {
+            "name": "email",
+            "title": _("Email"),
+            "visible": True,
+            "searchable": True,
+            "orderable": True,
+        },
+        {
+            "name": "is_staff",
+            "title": _("Staff"),
+            "visible": True,
+            "searchable": True,
+            # (value, label) pairs.
+            "choices": [(1, _("Yes")), (0, _("No"))],
+        },
+        {
+            "name": "case_count",
+            "title": _("Client cases") + " (e.g. x, >y)",
+            "visible": True,
+            "searchable": True,
+            "orderable": True,
+        },
+        {
+            "name": "case_assigned_sum",
+            "title": _("Assigned cases sum") + " (e.g. x, >y)",
+            "visible": True,
+            "searchable": True,
+            "orderable": True,
+        },
+    ]
+
+    def get_initial_queryset(self, request=None):
+        qs = super().get_initial_queryset(request)
+        qs = qs.with_case_count()
+        qs = qs.with_case_count_assigned()
+        return qs
+
+    def filter_queryset_by_column(self, column_name, search_value, qs):
+        """
+        Allow simple boolean expressions in case columns, e.g. >10.
+        """
+        if column_name in ["case_count", "case_assigned_sum"] and search_value:
+            if (
+                self.search_values_separator
+                and self.search_values_separator in search_value
+            ):
+                search_values = [
+                    t.strip() for t in search_value.split(self.search_values_separator)
+                ]
+            else:
+                search_values = [search_value.strip()]
+
+            column_filters = Q()
+            for val in search_values:
+                match = re.match(r"^(?P<operator>[<>!=]=?)?\s*(?P<value>\d+)$", val)
+                if match:
+                    operator = match.group("operator")
+                    value = int(match.group("value"))
+                    lookup = {
+                        ">": "__gt",
+                        ">=": "__gte",
+                        "<": "__lt",
+                        "<=": "__lte",
+                        "=": "",
+                        "!=": "",
+                    }.get(operator, "")
+
+                    # Handle `=` and `!=` separately - there's no builtin qs operator.
+                    if operator == "!=":
+                        column_filters |= ~Q(**{f"{column_name}{lookup}": value})
+                    else:
+                        column_filters |= Q(**{f"{column_name}{lookup}": value})
+
+            if column_filters:
+                return qs.filter(column_filters)
+
+        return super().filter_queryset_by_column(column_name, search_value, qs)
+
+    def customize_row(self, row, obj):
+        row["username"] = mark_safe(
+            f'<a href="{obj.get_absolute_url()}">{obj.username}</a>'
         )
