@@ -28,7 +28,7 @@ django-autoslug==1.9.9
 
 # Useful things
 # Time zones support
-pytz==2026.1.post1
+pytz==2026.2
 lxml==6.1.0
 cssselect==1.4.0
 # Your custom requirements go here
@@ -59,13 +59,13 @@ pyGravatar==0.0.6
 # django-bootstrap-pagination==1.7.1
 git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master
 
-sentry-sdk==2.58.0
+sentry-sdk==2.59.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
 django-teryt-tree==0.18.4
 django-mptt==0.18.0
-mistune==3.2.0
+mistune==3.2.1
 django-rosetta==0.10.3
 
 # Additional sanitizer until a completely safe markdown package is found.
