@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-15 12:14+0100\n"
+"POT-Creation-Date: 2026-05-05 19:53+0200\n"
 "PO-Revision-Date: 2017-09-16 00:18+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: \n"
@@ -23,14 +23,14 @@ msgstr ""
 msgid "Navigation search"
 msgstr "Nawigacyjna wyszukiwarka"
 
-#: poradnia/navsearch/views.py:46
+#: poradnia/navsearch/views.py:49
 msgid "Users"
 msgstr "Użytkownicy / użytkowniczki"
 
-#: poradnia/navsearch/views.py:52
+#: poradnia/navsearch/views.py:53
 msgid "Cases by ID"
 msgstr "Sprawy według numeru"
 
-#: poradnia/navsearch/views.py:58
+#: poradnia/navsearch/views.py:57
 msgid "Cases by name"
 msgstr "Sprawy według tytułu"
