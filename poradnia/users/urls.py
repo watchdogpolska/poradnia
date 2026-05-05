@@ -5,6 +5,12 @@ from poradnia.users import views
 urlpatterns = [
     path("", views.UserListView.as_view(), name="list"),
     re_path(r"^~przekieruj/$", views.UserRedirectView.as_view(), name="redirect"),
+    path("table/", views.UserTableView.as_view(), name="table"),
+    path(
+        "users_table_ajax_data/",
+        views.UserAjaxDatatableView.as_view(),
+        name="users_table_ajax_data",
+    ),
     re_path(
         r"^(?P<username>[\w.@+-]+)/$",
         views.UserDetailView.as_view(),
