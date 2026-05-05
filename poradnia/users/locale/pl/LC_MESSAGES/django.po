@@ -3,16 +3,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-26 21:59+0200\n"
-"PO-Revision-Date: 2026-03-01 22:26+0100\n"
+"POT-Creation-Date: 2026-05-05 19:53+0200\n"
+"PO-Revision-Date: 2026-05-05 20:01+0200\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
 "Language: pl_PL\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
-"|| n%100>=20) ? 1 : 2);\n"
+"Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 "X-Crowdin-File: /users/locale/en/LC_MESSAGES/django.po\n"
 "X-Crowdin-Language: pl\n"
 "X-Crowdin-Project: poradnia\n"
@@ -25,13 +24,13 @@ msgstr "Użytkownik ze SPAMu (brak logowania, spraw, listów)"
 
 #: poradnia/users/admin.py:20 poradnia/users/admin.py:51
 #: poradnia/users/admin.py:74 poradnia/users/admin.py:101
-#: poradnia/users/admin.py:124 poradnia/users/views.py:231
+#: poradnia/users/admin.py:124 poradnia/users/views.py:232
 msgid "Yes"
 msgstr "Tak"
 
 #: poradnia/users/admin.py:21 poradnia/users/admin.py:52
 #: poradnia/users/admin.py:75 poradnia/users/admin.py:102
-#: poradnia/users/admin.py:125 poradnia/users/views.py:231
+#: poradnia/users/admin.py:125 poradnia/users/views.py:232
 msgid "No"
 msgstr "Nie"
 
@@ -81,12 +80,13 @@ msgstr "Wymuś zmianę hasła przy następnym logowaniu."
 #: poradnia/users/apps.py:7 poradnia/users/forms/permissions.py:32
 #: poradnia/users/models.py:319
 #: poradnia/users/templates/users/user_filter.html:27
-#: poradnia/users/views.py:192
+#: poradnia/users/views.py:196
 msgid "Users"
 msgstr "Użytkownicy / użytkowniczki"
 
 #: poradnia/users/filters.py:32
 #: poradnia/users/templates/users/user_filter.html:45
+#: poradnia/users/views.py:250
 msgid "Moderated"
 msgstr "Moderowane"
 
@@ -96,6 +96,7 @@ msgstr "Aktywne"
 
 #: poradnia/users/filters.py:34
 #: poradnia/users/templates/users/user_filter.html:47
+#: poradnia/users/views.py:264
 msgid "Closed"
 msgstr "Zamknięte"
 
@@ -119,7 +120,7 @@ msgstr "Nazwa użytkownika / użytkowniczki lub e-mail"
 msgid "Codename"
 msgstr "Kryptonim"
 
-#: poradnia/users/models.py:224 poradnia/users/views.py:202
+#: poradnia/users/models.py:224 poradnia/users/views.py:214
 msgid "Nice Name"
 msgstr "Pełna nazwa"
 
@@ -228,12 +229,12 @@ msgid "%(user)s - profil i bezpieczeństwo"
 msgstr "%(user)s - profil i bezpieczeństwo"
 
 #: poradnia/users/templates/users/_sidebar.html:13
-msgid "Users list"
-msgstr "Wykaz użytkowników"
-
-#: poradnia/users/templates/users/_sidebar.html:16
 msgid "Users table"
 msgstr "Tabela użytkowników"
+
+#: poradnia/users/templates/users/_sidebar.html:16
+msgid "Users list"
+msgstr "Wykaz użytkowników"
 
 #: poradnia/users/templates/users/_sidebar.html:21
 msgid "App admin"
@@ -264,12 +265,12 @@ msgstr "Potwierdź odpisanie"
 #: poradnia/users/templates/users/user_deassign.html:8
 msgid ""
 "The operation will remove all permissions on cases for the user where they "
-"is not a client. This is an irreversible operation. Are you sure you want to "
-"do this?"
+"is not a client. This is an irreversible operation. Are you sure you want to"
+" do this?"
 msgstr ""
 "Operacja usunie wszystkie uprawnienia użytkownika, w których nie jest on "
-"klientem. Ta operacja jest nieodwracalna. Czy jesteś pewien/pewna, że chcesz "
-"to wykonać?"
+"klientem. Ta operacja jest nieodwracalna. Czy jesteś pewien/pewna, że chcesz"
+" to wykonać?"
 
 #: poradnia/users/templates/users/user_deassign.html:14
 #, python-format
@@ -281,7 +282,8 @@ msgid "Cancel"
 msgstr "Anuluj"
 
 #: poradnia/users/templates/users/user_detail.html:13
-#: poradnia/users/templates/users/user_info.html:13 poradnia/users/views.py:201
+#: poradnia/users/templates/users/user_info.html:13
+#: poradnia/users/views.py:207
 msgid "Username"
 msgstr "Użytkownik / użytkowniczka"
 
@@ -317,7 +319,7 @@ msgstr "Moje sprawy"
 
 #: poradnia/users/templates/users/user_detail.html:56
 #: poradnia/users/templates/users/user_filter.html:42
-#: poradnia/users/views.py:207
+#: poradnia/users/views.py:236
 msgid "Client cases"
 msgstr "Sprawy klienta"
 
@@ -338,11 +340,12 @@ msgstr ""
 "profilu członków zespołu i swojego."
 
 #: poradnia/users/templates/users/user_filter.html:43
-#: poradnia/users/views.py:214
+#: poradnia/users/views.py:243
 msgid "Assigned cases sum"
 msgstr "Przypisane sprawy"
 
 #: poradnia/users/templates/users/user_filter.html:46
+#: poradnia/users/views.py:257
 msgid "Active_"
 msgstr "Aktywne"
 
@@ -354,40 +357,40 @@ msgstr "Konto"
 msgid "Users Table"
 msgstr "Tabela użytkowników"
 
-#: poradnia/users/views.py:98
+#: poradnia/users/views.py:101
 msgid "All users"
 msgstr "Wszyscy użytkownicy"
 
-#: poradnia/users/views.py:99 poradnia/users/views.py:204
+#: poradnia/users/views.py:102 poradnia/users/views.py:228
 msgid "Staff"
 msgstr "Zespoł"
 
-#: poradnia/users/views.py:100
+#: poradnia/users/views.py:103
 msgid "Clients"
 msgstr "Klienci"
 
-#: poradnia/users/views.py:149
+#: poradnia/users/views.py:152
 #, python-brace-format
 msgid "{subject} deassigned"
 msgstr "{subject} odpisany"
 
-#: poradnia/users/views.py:168
+#: poradnia/users/views.py:171
 #, python-brace-format
 msgid "{object} deassigned from {count} cases"
 msgstr "{object} odpisany z {count} spraw"
 
-#: poradnia/users/views.py:181
+#: poradnia/users/views.py:185
 msgid "Users search table"
 msgstr "Tabela przeglądania użytkowników"
 
-#: poradnia/users/views.py:203
+#: poradnia/users/views.py:221
 msgid "Email"
-msgstr ""
+msgstr "E-mail"
 
 #~ msgid "Users with verified email can be deleted with user form only: "
 #~ msgstr ""
-#~ "Użytkowników ze zweryfikowanym adresem e-mail można usunąć tylko za "
-#~ "pomocą formularza użytkownika: "
+#~ "Użytkowników ze zweryfikowanym adresem e-mail można usunąć tylko za pomocą "
+#~ "formularza użytkownika: "
 
 #, python-format
 #~ msgid "%(user)s"
