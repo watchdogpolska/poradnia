@@ -105,6 +105,11 @@ def _validate_required_fields(payload, errors):
     elif not payload["subject"].strip():
         errors["subject"] = ["This field may not be blank."]
 
+    if "summary" not in payload or not isinstance(payload["summary"], str):
+        errors["summary"] = ["This field is required and must be string."]
+    elif not payload["summary"].strip():
+        errors["summary"] = ["This field may not be blank."]
+
     for field in ["institution_kind_id", "person_kind_id", "jst_id"]:
         if field not in payload or not _is_int(payload[field]):
             errors[field] = ["This field is required and must be integer."]
@@ -243,6 +248,7 @@ def _get_or_create_advice(resolved):
 
 def _apply_advice_payload(advice, payload, resolved):
     advice.subject = payload["subject"].strip()
+    advice.summary = payload["summary"].strip()
 
     for f in ["comment", "helped", "visible"]:
         if f in payload:
@@ -279,6 +285,7 @@ class AdviceWebhookUpsertView(View):
 
     Required payload fields:
     - ``subject``: non-empty string
+    - ``summary``: non-empty string
     - ``institution_kind_id``: integer, must reference an existing ``InstitutionKind``
     - ``person_kind_id``: integer, must reference an existing ``PersonKind``
     - ``jst_id``: integer, must reference an existing ``JST``
@@ -303,6 +310,7 @@ class AdviceWebhookUpsertView(View):
     {
       "case_id": 123,
       "subject": "DIP - urząd nie odpowiada",
+      "summary": "Urząd nie odpowiedział w terminie na wniosek o informację publiczną.",
       "comment": "Webhook upsert from assistant",
       "advicer_id": 7,
       "created_by_id": 7,

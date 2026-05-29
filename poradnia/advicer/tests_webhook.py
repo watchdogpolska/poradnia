@@ -222,6 +222,7 @@ class WebhookHelpersTestCase(SimpleTestCase):
             errors,
             {
                 "subject": ["This field is required and must be string."],
+                "summary": ["This field is required and must be string."],
                 "institution_kind_id": ["This field is required and must be integer."],
                 "person_kind_id": ["This field is required and must be integer."],
                 "jst_id": ["This field is required and must be integer."],
@@ -233,6 +234,7 @@ class WebhookHelpersTestCase(SimpleTestCase):
         webhook_module._validate_required_fields(
             {
                 "subject": "   ",
+                "summary": "Valid summary",
                 "institution_kind_id": 1,
                 "person_kind_id": 2,
                 "jst_id": 3,
@@ -241,6 +243,21 @@ class WebhookHelpersTestCase(SimpleTestCase):
         )
 
         self.assertEqual(errors, {"subject": ["This field may not be blank."]})
+
+    def test_validate_required_fields_blank_summary(self):
+        errors = {}
+        webhook_module._validate_required_fields(
+            {
+                "subject": "Valid subject",
+                "summary": "   ",
+                "institution_kind_id": 1,
+                "person_kind_id": 2,
+                "jst_id": 3,
+            },
+            errors,
+        )
+
+        self.assertEqual(errors, {"summary": ["This field may not be blank."]})
 
     def test_validate_optional_fields(self):
         errors = {}
@@ -272,6 +289,7 @@ class WebhookHelpersTestCase(SimpleTestCase):
             "advicer_id": 1,
             "created_by_id": 2,
             "subject": "Subject",
+            "summary": "Summary text",
             "institution_kind_id": 3,
             "person_kind_id": 4,
             "jst_id": 5,
@@ -592,6 +610,7 @@ class WebhookHelpersTestCase(SimpleTestCase):
 
         payload = {
             "subject": "  Subject  ",
+            "summary": "  Summary text  ",
             "comment": "Comment",
             "helped": True,
             "visible": False,
@@ -612,6 +631,7 @@ class WebhookHelpersTestCase(SimpleTestCase):
         webhook_module._apply_advice_payload(advice, payload, resolved)
 
         self.assertEqual(advice.subject, "Subject")
+        self.assertEqual(advice.summary, "Summary text")
         self.assertEqual(advice.comment, "Comment")
         self.assertTrue(advice.helped)
         self.assertFalse(advice.visible)
