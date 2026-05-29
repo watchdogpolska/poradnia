@@ -383,6 +383,8 @@ ANONYMOUS_USER_NAME = "AnonymousUser"
 GUARDIAN_MONKEY_PATCH_USER = False
 JUDGEMENT_BOT_USERNAME = env.str("JUDGEMENT_BOT_USERNAME", "JudgementBot")
 JUDGEMENT_BOT_EMAIL = env.str("JUDGEMENT_BOT_EMAIL", "judgementbot@judgement.bot")
+AI_ASSISTANT_USERNAME = env.str("AI_ASSISTANT_USERNAME", "AIAssistant")
+AI_ASSISTANT_EMAIL = env.str("AI_ASSISTANT_EMAIL", "aiassistant@ai.assistant")
 
 LANGUAGES = (("pl", _("Polish")), ("en", _("English")))
 

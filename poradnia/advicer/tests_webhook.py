@@ -208,9 +208,6 @@ class WebhookHelpersTestCase(SimpleTestCase):
             errors,
             {
                 "advicer_id": ["This field is required on create and must be integer."],
-                "created_by_id": [
-                    "This field is required on create and must be integer."
-                ],
             },
         )
 
@@ -745,8 +742,10 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
     @patch.object(webhook_module, "_validate_payload")
     @patch.object(webhook_module, "_parse_payload")
     @patch.object(webhook_module, "_check_token")
+    @patch.object(webhook_module, "_get_or_create_ai_assistant")
     def test_post_created(
         self,
+        get_or_create_ai_assistant,
         check_token,
         parse_payload,
         validate_payload,
@@ -756,7 +755,9 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
     ):
         payload = {"case_id": 10, "subject": "Subject"}
         advice = SimpleNamespace(pk=101, case_id=10)
+        bot = SimpleNamespace(username="AIAssistant")
 
+        get_or_create_ai_assistant.return_value = bot
         check_token.return_value = None
         parse_payload.return_value = (payload, None)
         validate_payload.return_value = ({}, [1], [2])
@@ -778,9 +779,11 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
         apply_advice_payload.assert_called_once_with(
             advice,
             payload,
-            {"issues": [], "area": []},
+            {"issues": [], "area": [], "created_by": bot, "modified_by": bot},
         )
-        get_or_create_advice.assert_called_once_with({"issues": [], "area": []})
+        get_or_create_advice.assert_called_once_with(
+            {"issues": [], "area": [], "created_by": bot, "modified_by": bot}
+        )
 
     @override_settings(ADVICER_WEBHOOK_BEARER_TOKEN="secret")
     @patch.object(webhook_module, "_apply_advice_payload")
@@ -789,8 +792,10 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
     @patch.object(webhook_module, "_validate_payload")
     @patch.object(webhook_module, "_parse_payload")
     @patch.object(webhook_module, "_check_token")
+    @patch.object(webhook_module, "_get_or_create_ai_assistant")
     def test_post_updated(
         self,
+        get_or_create_ai_assistant,
         check_token,
         parse_payload,
         validate_payload,
@@ -800,7 +805,9 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
     ):
         payload = {"case_id": 10, "subject": "Subject"}
         advice = SimpleNamespace(pk=88, case_id=10)
+        bot = SimpleNamespace(username="AIAssistant")
 
+        get_or_create_ai_assistant.return_value = bot
         check_token.return_value = None
         parse_payload.return_value = (payload, None)
         validate_payload.return_value = ({}, [1], [2])
@@ -822,6 +829,8 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
         apply_advice_payload.assert_called_once_with(
             advice,
             payload,
-            {"issues": [], "area": []},
+            {"issues": [], "area": [], "modified_by": bot},
         )
-        get_or_create_advice.assert_called_once_with({"issues": [], "area": []})
+        get_or_create_advice.assert_called_once_with(
+            {"issues": [], "area": [], "modified_by": bot}
+        )
