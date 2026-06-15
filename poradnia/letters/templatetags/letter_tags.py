@@ -10,6 +10,8 @@ register = template.Library()
 def letter2panel(obj):
     if obj.genre == obj.GENRE.comment:
         return "panel-info"
+    if obj.genre in (obj.GENRE.ai_message, obj.GENRE.ai_message_staff):
+        return "panel-success"
     return "panel-primary" if obj.created_by_is_staff else "panel-default"
 
 

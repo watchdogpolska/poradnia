@@ -68,7 +68,7 @@ class LetterQuerySet(
 
 class Letter(AbstractRecord):
     STATUS = Choices(("staff", _("Staff")), ("done", _("Done")))
-    GENRE = Choices("mail", "comment", "app_message")
+    GENRE = Choices("mail", "comment", "app_message", "ai_message", "ai_message_staff")
     genre = models.CharField(choices=GENRE, default=GENRE.comment, max_length=20)
     status = StatusField(db_index=True)
     status_changed = MonitorField(monitor="status")
