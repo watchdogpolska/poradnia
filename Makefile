@@ -25,7 +25,7 @@ gulp:
 
 test: wait_mysql
 	docker compose exec -t db mysql --user=root --password=password -e "DROP DATABASE IF EXISTS test_poradnia;"
-	docker compose run web python manage.py test --keepdb --verbosity=2 ${TEST}
+	docker compose run web python manage.py test --keepdb --verbosity=2 --exclude-tag=live ${TEST}
 
 e2e: wait_mysql
 	docker compose --file docker-compose.yml --file docker-compose.test.yml up --build --exit-code-from tests db web tests

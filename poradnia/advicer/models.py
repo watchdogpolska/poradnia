@@ -113,6 +113,7 @@ class Advice(models.Model):
     subject = models.CharField(
         max_length=100, verbose_name=_("Subject"), null=True, blank=True
     )
+    summary = models.TextField(verbose_name=_("Summary"), null=True, blank=True)
     issues = models.ManyToManyField(
         to=Issue, verbose_name=Issue._meta.verbose_name_plural, blank=True
     )
