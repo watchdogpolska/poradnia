@@ -150,5 +150,9 @@ class WSAWroclawParser(NSAETRParser):
 
 
 @register_parser("WSA_Gliwice")
-class GliwiceETRParser(BaseParser):
+class GliwiceEParser(NSAETRParser):
     URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/gliwice/"
+
+@register_parser("WSA_Warszawa")
+class WarsawParser(NSAETRParser):
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/warszawa/"
