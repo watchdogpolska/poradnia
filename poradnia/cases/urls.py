@@ -18,6 +18,16 @@ urlpatterns = [
     path("sprawa-<int:pk>/zamknij/", views.CaseCloseView.as_view(), name="close"),
     path("sprawa-<int:pk>/scal/", views.CaseMergeView.as_view(), name="merge"),
     path(
+        "sprawa-<int:pk>/szukaj-artykulow/",
+        views.CaseSearchArticlesView.as_view(direct_search=True),
+        name="search_articles",
+    ),
+    path(
+        "sprawa-<int:pk>/klasyfikuj-szukaj-artykulow/",
+        views.CaseSearchArticlesView.as_view(direct_search=False),
+        name="classify_and_search_articles",
+    ),
+    path(
         "sprawa-<int:pk>/uprawnienia/",
         views.UserPermissionCreateView.as_view(),
         name="permission_add",

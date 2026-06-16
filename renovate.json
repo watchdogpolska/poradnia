@@ -11,6 +11,7 @@
     "github-actions",
     "npm"
   ],
+  "minimumReleaseAge": "7 days",
   "packageRules": [
     {
       "matchManagers": ["pip_requirements"],
@@ -41,6 +42,10 @@
         "datatables.net-buttons-dt"
       ],
       "allowedVersions": "< 3.0.0"
+    },
+    {
+      "matchPackageNames": ["caniuse-lite"],
+      "minimumReleaseAge": null
     }
   ],
   "pip_requirements": {
