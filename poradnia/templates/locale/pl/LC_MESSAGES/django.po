@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-05-05 19:53+0200\n"
+"POT-Creation-Date: 2026-06-16 11:14+0200\n"
 "PO-Revision-Date: 2026-03-01 22:22+0100\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -19,11 +19,11 @@ msgstr ""
 "X-Generator: Poedit 2.4.1\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
-#: config/settings/common.py:387
+#: config/settings/common.py:390
 msgid "Polish"
 msgstr "Polski"
 
-#: config/settings/common.py:387
+#: config/settings/common.py:390
 msgid "English"
 msgstr "Angielski"
 
