@@ -379,7 +379,7 @@ class N8nArticlesSearchCallbackViewTestCase(TestCase):
         self.assertEqual(letter.status, Letter.STATUS.staff)
         self.assertEqual(letter.text, "Here are relevant articles...")
         self.assertTrue(letter.created_by_is_staff)
-        self.assertTrue(letter.name.startswith("AI: "))
+        self.assertTrue(letter.name.startswith("ASYSTENT AI: "))
         self.assertTrue(letter.html)
 
     @override_settings(**CALLBACK_SETTINGS)
@@ -398,7 +398,7 @@ class N8nArticlesSearchCallbackViewTestCase(TestCase):
         )
 
         letter = Letter.objects.filter(case=case).first()
-        self.assertEqual(letter.name, "AI: odpowiedź asystenta")
+        self.assertEqual(letter.name, "ASYSTENT AI: odpowiedź asystenta")
 
     @override_settings(**CALLBACK_SETTINGS)
     def test_letter_name_contains_question_preview(self):
