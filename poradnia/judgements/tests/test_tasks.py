@@ -10,7 +10,11 @@ from django.test import TestCase
 from poradnia.judgements.factories import CourtFactory
 from poradnia.judgements.models import Court
 from poradnia.judgements.settings import JUDGEMENT_BOT_USERNAME
-from poradnia.judgements.tasks import _get_courts_to_process, run_court_session_parser
+from poradnia.judgements.tasks import (
+    _get_courts_to_process,
+    monitor_court_parsers,
+    run_court_session_parser,
+)
 
 
 class RunCourtSessionParserTaskTestCase(TestCase):
@@ -191,3 +195,71 @@ class GetCourtsQuerysetTestCase(TestCase):
             courts = list(_get_courts_to_process())
             self.assertEqual(len(courts), 1)
             self.assertEqual(courts[0], self.court1)
+
+
+class MonitorCourtParsersTaskTestCase(TestCase):
+    """Tests for the monitor_court_parsers celery task."""
+
+    @patch("poradnia.judgements.tasks.mail_admins")
+    @patch("poradnia.judgements.tasks.unittest.TextTestRunner")
+    @patch("poradnia.judgements.tasks.unittest.TestLoader")
+    def test_sends_no_email_when_all_pass(
+        self, mock_loader_class, mock_runner_class, mock_mail_admins
+    ):
+        mock_result = MagicMock()
+        mock_result.wasSuccessful.return_value = True
+        mock_result.testsRun = 1
+        mock_runner_class.return_value.run.return_value = mock_result
+        mock_loader_class.return_value.loadTestsFromTestCase.return_value = MagicMock()
+
+        result = monitor_court_parsers()
+
+        self.assertEqual(result["status"], "ok")
+        self.assertEqual(result["tests_run"], 1)
+        mock_mail_admins.assert_not_called()
+
+    @patch("poradnia.judgements.tasks.mail_admins")
+    @patch("poradnia.judgements.tasks.unittest.TextTestRunner")
+    @patch("poradnia.judgements.tasks.unittest.TestLoader")
+    def test_sends_email_when_parsers_fail(
+        self, mock_loader_class, mock_runner_class, mock_mail_admins
+    ):
+        mock_result = MagicMock()
+        mock_result.wasSuccessful.return_value = False
+        mock_result.testsRun = 3
+        mock_result.failures = [("test1", "traceback1"), ("test2", "traceback2")]
+        mock_result.errors = []
+        mock_runner_class.return_value.run.return_value = mock_result
+        mock_loader_class.return_value.loadTestsFromTestCase.return_value = MagicMock()
+
+        result = monitor_court_parsers()
+
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(result["failures"], 2)
+        self.assertEqual(result["errors"], 0)
+        mock_mail_admins.assert_called_once()
+        subject = mock_mail_admins.call_args[1]["subject"]
+        self.assertIn("2", subject)
+
+    @patch("poradnia.judgements.tasks.mail_admins")
+    @patch("poradnia.judgements.tasks.unittest.TextTestRunner")
+    @patch("poradnia.judgements.tasks.unittest.TestLoader")
+    def test_errors_counted_in_email_subject(
+        self, mock_loader_class, mock_runner_class, mock_mail_admins
+    ):
+        mock_result = MagicMock()
+        mock_result.wasSuccessful.return_value = False
+        mock_result.testsRun = 2
+        mock_result.failures = []
+        mock_result.errors = [("test1", "error1")]
+        mock_runner_class.return_value.run.return_value = mock_result
+        mock_loader_class.return_value.loadTestsFromTestCase.return_value = MagicMock()
+
+        result = monitor_court_parsers()
+
+        self.assertEqual(result["status"], "failed")
+        self.assertEqual(result["failures"], 0)
+        self.assertEqual(result["errors"], 1)
+        mock_mail_admins.assert_called_once()
+        subject = mock_mail_admins.call_args[1]["subject"]
+        self.assertIn("1", subject)

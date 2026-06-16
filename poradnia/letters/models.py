@@ -68,7 +68,7 @@ class LetterQuerySet(
 
 class Letter(AbstractRecord):
     STATUS = Choices(("staff", _("Staff")), ("done", _("Done")))
-    GENRE = Choices("mail", "comment", "app_message")
+    GENRE = Choices("mail", "comment", "app_message", "ai_message", "ai_message_staff")
     genre = models.CharField(choices=GENRE, default=GENRE.comment, max_length=20)
     status = StatusField(db_index=True)
     status_changed = MonitorField(monitor="status")
@@ -148,7 +148,10 @@ class Letter(AbstractRecord):
     def is_done(self):
         return (
             True
-            if self.status == self.STATUS.done or self.genre == self.GENRE.comment
+            if self.status == self.STATUS.done
+            or self.genre == self.GENRE.comment
+            or self.genre == self.GENRE.ai_message
+            or self.genre == self.GENRE.ai_message_staff
             else False
         )
 
