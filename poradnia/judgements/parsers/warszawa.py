@@ -18,7 +18,7 @@
 #     URL = "https://bip.warszawa.wsa.gov.pl/183/elektroniczny-terminarz-rozpraw.html"
 #     POST_DATA = {
 #         "act": "szukaj",
-#         "data_posiedzenia": (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d"),
+#         "data_posiedzenia": (datetime.now() - timedelta(days=30)).strftime("%Y-%m-%d"),  # noqa: E501
 #         "data_posiedzenia_do": "",
 #         "get_csv": "1",
 #         "sygnatura": "",

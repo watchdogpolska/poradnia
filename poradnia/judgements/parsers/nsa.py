@@ -105,7 +105,6 @@ class WSAKielceParser(NSAETRParser):
 
 @register_parser("WSA_Krakow")
 class WSAKrakowParser(NSAETRParser):
-    # Also http://bip.krakow.wsa.gov.pl/71/177/elektroniczny-terminarz-rozpraw-etr.html
     URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/krakow/"
 
 
@@ -152,6 +151,7 @@ class WSAWroclawParser(NSAETRParser):
 @register_parser("WSA_Gliwice")
 class GliwiceEParser(NSAETRParser):
     URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/gliwice/"
+
 
 @register_parser("WSA_Warszawa")
 class WarsawParser(NSAETRParser):
