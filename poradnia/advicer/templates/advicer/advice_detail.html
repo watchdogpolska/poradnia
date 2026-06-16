@@ -76,7 +76,7 @@
 
                     <tr>
                         <td>{% trans 'Comment' %}</td>
-                        <td>{{ object.comment | linebreaks }}</td>
+                        <td>{{ object.comment|default_if_none:"---"|linebreaks }}</td>
                     </tr>
 
                     <tr>
@@ -91,14 +91,18 @@
             <div class="panel panel-default">
                 <div class="panel-heading">{% trans 'Details' %}</div>
                 <table class="table">
-                        <tr>
-                            <td>{% trans 'Grant on' %}</td>
-                            <td>
-                            {% if object.grant_on %}
-                                <time datetime="{{ object.grant_on|date:'Y-m-d h:m:sT' }}">{{ object.grant_on |naturaltime }}</time>
-                            {% endif %}
-                            </td>
-                        </tr>
+                    <tr>
+                        <td>{% trans 'Summary' %}</td>
+                        <td>{{ object.summary|default_if_none:"---"|linebreaks }}</td>
+                    </tr>
+                    <tr>
+                        <td>{% trans 'Grant on' %}</td>
+                        <td>
+                        {% if object.grant_on %}
+                            <time datetime="{{ object.grant_on|date:'Y-m-d h:m:sT' }}">{{ object.grant_on |naturaltime }}</time>
+                        {% endif %}
+                        </td>
+                    </tr>
                     <tr>
                         <td>{% trans 'Created' %}</td>
                         <td><img src="{% get_avatar_url object.created_by %}">

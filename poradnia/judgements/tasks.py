@@ -6,11 +6,14 @@ migrated from management commands to provide better error handling, retry logic,
 and monitoring capabilities.
 """
 
+import io
+import unittest
 from typing import Any, Dict, List, Optional, Sequence
 
 from celery import shared_task
 from celery.utils.log import get_task_logger
 from django.contrib.auth import get_user_model
+from django.core.mail import mail_admins
 
 from poradnia.judgements.models import Court, CourtSession
 from poradnia.judgements.registry import get_parser_keys
@@ -247,6 +250,63 @@ def _process_single_court(
 def _count_court_sessions(court: Court) -> int:
     """Count court sessions linked to the given court."""
     return CourtSession.objects.filter(courtcase__court=court).count()
+
+
+@shared_task(
+    bind=True,
+    ignore_result=False,
+    time_limit=900,
+    soft_time_limit=840,
+)
+def monitor_court_parsers(self) -> Dict[str, Any]:
+    """
+    Run LiveParserTestCase in-process and email ADMINS if any parsers fail.
+
+    Intended to run weekly (Sunday 06:00 Europe/Warsaw) to detect changes
+    in court website structure before the daily session parser breaks silently.
+    """
+    from poradnia.judgements.tests.test_live_parsers import LiveParserTestCase
+
+    task_id = self.request.id
+    logger.info("Starting court parser monitoring task_id=%s", task_id)
+
+    buffer = io.StringIO()
+    suite = unittest.TestLoader().loadTestsFromTestCase(LiveParserTestCase)
+    runner = unittest.TextTestRunner(stream=buffer, verbosity=2)
+    result = runner.run(suite)
+    output = buffer.getvalue()
+
+    failures_count = len(result.failures) + len(result.errors)
+
+    if not result.wasSuccessful():
+        mail_admins(
+            subject=f"Court parser monitoring: {failures_count} parser(s) failed",
+            message=output,
+        )
+        logger.error(
+            "Court parser monitoring task_id=%s: %s failure(s)/error(s)",
+            task_id,
+            failures_count,
+        )
+        return {
+            "status": "failed",
+            "task_id": task_id,
+            "tests_run": result.testsRun,
+            "failures": len(result.failures),
+            "errors": len(result.errors),
+            "output": output,
+        }
+
+    logger.info(
+        "Court parser monitoring task_id=%s: all %s test(s) passed",
+        task_id,
+        result.testsRun,
+    )
+    return {
+        "status": "ok",
+        "task_id": task_id,
+        "tests_run": result.testsRun,
+    }
 
 
 def _finalize_task_result(result: Dict[str, Any]) -> Dict[str, Any]:
