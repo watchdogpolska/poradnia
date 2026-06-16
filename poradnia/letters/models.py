@@ -148,7 +148,10 @@ class Letter(AbstractRecord):
     def is_done(self):
         return (
             True
-            if self.status == self.STATUS.done or self.genre == self.GENRE.comment
+            if self.status == self.STATUS.done
+            or self.genre == self.GENRE.comment
+            or self.genre == self.GENRE.ai_message
+            or self.genre == self.GENRE.ai_message_staff
             else False
         )
 
