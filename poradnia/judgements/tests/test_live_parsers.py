@@ -21,6 +21,4 @@ class LiveParserTestCase(SimpleTestCase):
                     self.assertIsNotNone(
                         row.datetime, f"{parser_key}: missing datetime"
                     )
-                    self.assertTrue(
-                        row.description, f"{parser_key}: empty description"
-                    )
+                    self.assertTrue(row.description, f"{parser_key}: empty description")
