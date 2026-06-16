@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-06-16 11:14+0200\n"
-"PO-Revision-Date: 2026-06-16 11:18+0200\n"
+"PO-Revision-Date: 2026-06-16 12:08+0200\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -327,7 +327,7 @@ msgstr "Asystent AI"
 #: poradnia/cases/templates/cases/case_detail.html:131
 #| msgid "Cases search table"
 msgid "Classify and search articles"
-msgstr "Klasyfikuj i przeszukuj artykuły"
+msgstr "Klasyfikuj i przeszukaj artykuły"
 
 #: poradnia/cases/templates/cases/case_detail.html:139
 msgid "Search articles"
@@ -601,13 +601,13 @@ msgstr "Pomyślnie połączono \"%(object)s”."
 #, python-format
 #| msgid "Successful updated \"%(object)s\"."
 msgid "Article search started for \"%(object)s\"."
-msgstr "Wyszukiwanie artykułu rozpoczęło się dla \"%(object)s\"."
+msgstr "Wyszukiwanie artykułów rozpoczęte dla \"%(object)s\"."
 
 #: poradnia/cases/views/cases.py:371
 #, python-format
 #| msgid "Advice classification response status"
 msgid "Article classification and search started for \"%(object)s\"."
-msgstr "Klasyfikacja artykułów i wyszukiwanie rozpoczęte są dla \"%(object)s\"."
+msgstr "Klasyfikacja i wyszukiwanie artykułów rozpoczęte dla \"%(object)s\"."
 
 #: poradnia/cases/views/permissions.py:62
 #, python-format
