@@ -122,6 +122,32 @@ def _render_article_li(art):
     return parts
 
 
+_ARTICLE_URL_LINE_RE = re.compile(r"^-\s+(?:\[.+?\]\(.+?\)|https?://\S+)\s*$")
+_BARE_URL_RE = re.compile(r"(https?://\S+)")
+
+
+def _has_articles_format(lines):
+    return any(_ARTICLE_URL_LINE_RE.match(line) for line in lines)
+
+
+def _linkify_text(text):
+    parts = _BARE_URL_RE.split(text)
+    result = []
+    for i, part in enumerate(parts):
+        if i % 2 == 0:
+            result.append(escape(part))
+        else:
+            url = part.rstrip(".,;:!?)]}")
+            tail = part[len(url) :]
+            escaped_url = escape(url)
+            result.append(
+                f'<a href="{escaped_url}" target="_blank" '
+                f'rel="noopener noreferrer">{escaped_url}</a>'
+            )
+            result.append(escape(tail))
+    return "".join(result)
+
+
 def _format_articles_html(response_text):
     """Convert n8n articles-search response to simple HTML for Letter.html."""
     stripped = (response_text or "").strip()
@@ -129,15 +155,21 @@ def _format_articles_html(response_text):
         return ""
 
     non_empty = [ln.strip() for ln in stripped.splitlines() if ln.strip()]
-    title = non_empty[0]
-    articles = _parse_articles(non_empty[1:])
 
-    parts = [f"<p><strong>ASYSTENT AI - {escape(title)}</strong></p>"]
-    if articles:
-        parts.append("<ul>")
-        for art in articles:
-            parts.extend(_render_article_li(art))
-        parts.append("</ul>")
+    if _has_articles_format(non_empty):
+        title = non_empty[0]
+        articles = _parse_articles(non_empty[1:])
+        parts = [f"<p><strong>ASYSTENT AI - {escape(title)}</strong></p>"]
+        if articles:
+            parts.append("<ul>")
+            for art in articles:
+                parts.extend(_render_article_li(art))
+            parts.append("</ul>")
+        return "\n".join(parts)
+
+    parts = ["<p><strong>ASYSTENT AI:</strong></p>"]
+    for line in non_empty:
+        parts.append(f"<p>{_linkify_text(line)}</p>")
     return "\n".join(parts)
 
 

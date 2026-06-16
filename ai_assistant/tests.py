@@ -49,6 +49,13 @@ Uzyteczne artykuly w sprawie:
 **Podsumowanie:** Pierwsze podsumowanie.
 """
 
+SAMPLE_PLAIN_TEXT = (
+    "Rozumiem, ze opisuje Pan sytuacje. "
+    "Ograniczenie wynika z regulaminu serwisu: "
+    "https://porady.siecobywatelska.pl/strony/regulamin-poradnictwa/. "
+    "Chetnie pomoge."
+)
+
 
 class FormatArticlesHtmlTestCase(SimpleTestCase):
     def _fmt(self, text):
@@ -60,9 +67,10 @@ class FormatArticlesHtmlTestCase(SimpleTestCase):
     def test_whitespace_only_returns_empty(self):
         self.assertEqual(self._fmt("   \n  "), "")
 
-    def test_title_only_no_articles(self):
+    def test_title_only_plain_text_headline(self):
         html = self._fmt("Tylko tytuł")
-        self.assertIn("<strong>ASYSTENT AI - Tylko tytuł</strong>", html)
+        self.assertIn("<strong>ASYSTENT AI:</strong>", html)
+        self.assertIn("Tylko tytuł", html)
         self.assertNotIn("<ul>", html)
 
     def test_full_sample_contains_title(self):
@@ -111,6 +119,37 @@ class FormatArticlesHtmlTestCase(SimpleTestCase):
         html = self._fmt(malicious)
         self.assertNotIn("<script>", html)
         self.assertIn("&lt;script&gt;", html)
+
+    def test_plain_text_has_asystent_ai_headline(self):
+        html = self._fmt(SAMPLE_PLAIN_TEXT)
+        self.assertIn("<strong>ASYSTENT AI:</strong>", html)
+
+    def test_plain_text_url_becomes_link(self):
+        html = self._fmt(SAMPLE_PLAIN_TEXT)
+        self.assertIn(
+            'href="https://porady.siecobywatelska.pl/strony/regulamin-poradnictwa/"',
+            html,
+        )
+        self.assertIn('target="_blank"', html)
+        self.assertIn('rel="noopener noreferrer"', html)
+
+    def test_plain_text_trailing_period_not_in_url(self):
+        html = self._fmt(SAMPLE_PLAIN_TEXT)
+        self.assertNotIn(
+            'href="https://porady.siecobywatelska.pl/strony/regulamin-poradnictwa/."',
+            html,
+        )
+
+    def test_plain_text_escapes_html(self):
+        html = self._fmt("Tekst <script>bad</script> i link https://safe.example.com.")
+        self.assertNotIn("<script>", html)
+        self.assertIn("&lt;script&gt;", html)
+        self.assertIn('href="https://safe.example.com"', html)
+
+    def test_plain_text_no_url_renders_as_paragraph(self):
+        html = self._fmt("Prosty tekst bez linków.")
+        self.assertIn("<p>Prosty tekst bez linków.</p>", html)
+        self.assertNotIn("<ul>", html)
 
 
 class N8nArticlesSearchHelpersTestCase(SimpleTestCase):
