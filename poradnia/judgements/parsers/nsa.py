@@ -11,7 +11,7 @@ logger = logging.getLogger(__name__)
 
 
 class NSAETRParser(BaseParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/"
     HOUR_FIELD = "Godz."
     POST_DATA = {
         "data": "",
@@ -80,70 +80,75 @@ register_parser("NSA")(NSAETRParser)
 
 @register_parser("WSA_Bialystok")
 class WSABialystokParser(NSAETRParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/bialystok/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/bialystok/"
 
 
 @register_parser("WSA_Bydgoszcz")
 class WSABydgoszczParser(NSAETRParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/bydgoszcz/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/bydgoszcz/"
 
 
 @register_parser("WSA_Gdansk")
 class WSAGdanskParser(NSAETRParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/gdansk/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/gdansk/"
 
 
 @register_parser("WSA_Gorzow")
 class WSAGorzowParser(NSAETRParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/gorzow/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/gorzow/"
 
 
 @register_parser("WSA_Kielce")
 class WSAKielceParser(NSAETRParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/kielce/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/kielce/"
 
 
 @register_parser("WSA_Krakow")
 class WSAKrakowParser(NSAETRParser):
     # Also http://bip.krakow.wsa.gov.pl/71/177/elektroniczny-terminarz-rozpraw-etr.html
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/krakow/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/krakow/"
 
 
 @register_parser("WSA_Lublin")
 class WSALublinParser(NSAETRParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/lublin/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/lublin/"
 
 
 @register_parser("WSA_Lodz")
 class WSALodzParser(NSAETRParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/lodz/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/lodz/"
 
 
 @register_parser("WSA_Olsztyn")
 class WSAOlsztynParser(NSAETRParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/olsztyn/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/olsztyn/"
 
 
 @register_parser("WSA_Opole")
 class WSAOpoleParser(NSAETRParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/opole/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/opole/"
 
 
 @register_parser("WSA_Poznan")
 class WSAPoznanParser(NSAETRParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/poznan/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/poznan/"
 
 
 @register_parser("WSA_Rzeszow")
 class WSARzeszowParser(NSAETRParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/rzeszow/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/rzeszow/"
 
 
 @register_parser("WSA_Szczecin")
 class WSASzczecinParser(NSAETRParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/szczecin/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/szczecin/"
 
 
 @register_parser("WSA_Wroclaw")
 class WSAWroclawParser(NSAETRParser):
-    URL = "https://bip.nsa.gov.pl/ewokanda/wsa/wroclaw/"
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/wroclaw/"
+
+
+@register_parser("WSA_Gliwice")
+class GliwiceETRParser(BaseParser):
+    URL = "https://ewokanda.nsa.gov.pl/ewokanda/wsa/gliwice/"
