@@ -151,6 +151,41 @@ class FormatArticlesHtmlTestCase(SimpleTestCase):
         self.assertIn("<p>Prosty tekst bez linków.</p>", html)
         self.assertNotIn("<ul>", html)
 
+    def test_plain_text_md_link_label_equals_url(self):
+        url = "https://example.com/page"
+        html = self._fmt(f"[{url}]({url})")
+        self.assertIn(f'href="{url}"', html)
+        self.assertIn(f">{url}<", html)
+        self.assertIn('target="_blank"', html)
+        self.assertIn('rel="noopener noreferrer"', html)
+
+    def test_plain_text_md_link_custom_label(self):
+        html = self._fmt("[link](https://example.com/page)")
+        self.assertIn('href="https://example.com/page"', html)
+        self.assertIn(">link<", html)
+        self.assertIn('target="_blank"', html)
+        self.assertIn('rel="noopener noreferrer"', html)
+
+    def test_plain_text_bold_temat_becomes_strong(self):
+        html = self._fmt("**Temat:** Tytuł artykułu")
+        self.assertIn("<strong>Temat:</strong>", html)
+        self.assertNotIn("**Temat:**", html)
+
+    def test_plain_text_bold_podsumowanie_becomes_strong(self):
+        html = self._fmt("**Podsumowanie:** Opis artykułu")
+        self.assertIn("<strong>Podsumowanie:</strong>", html)
+        self.assertNotIn("**Podsumowanie:**", html)
+
+    def test_plain_text_bold_with_url_both_converted(self):
+        html = self._fmt("**Temat:** Artykuł https://example.com/")
+        self.assertIn("<strong>Temat:</strong>", html)
+        self.assertIn('href="https://example.com/"', html)
+
+    def test_plain_text_bold_content_is_html_escaped(self):
+        html = self._fmt("**<script>alert(1)</script>**")
+        self.assertNotIn("<script>", html)
+        self.assertIn("<strong>&lt;script&gt;alert(1)&lt;/script&gt;</strong>", html)
+
 
 class N8nArticlesSearchHelpersTestCase(SimpleTestCase):
     def setUp(self):

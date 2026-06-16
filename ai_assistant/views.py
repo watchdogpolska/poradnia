@@ -123,7 +123,9 @@ def _render_article_li(art):
 
 
 _ARTICLE_URL_LINE_RE = re.compile(r"^-\s+(?:\[.+?\]\(.+?\)|https?://\S+)\s*$")
-_BARE_URL_RE = re.compile(r"(https?://\S+)")
+_LINKIFY_RE = re.compile(r"(\[[^\[\]]*\]\(https?://[^)]+\)|https?://\S+)")
+_MD_LINK_RE = re.compile(r"^\[([^\[\]]*)\]\((https?://[^)]+)\)$")
+_BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
 
 
 def _has_articles_format(lines):
@@ -131,20 +133,30 @@ def _has_articles_format(lines):
 
 
 def _linkify_text(text):
-    parts = _BARE_URL_RE.split(text)
+    parts = _LINKIFY_RE.split(text)
     result = []
     for i, part in enumerate(parts):
         if i % 2 == 0:
-            result.append(escape(part))
+            result.append(_BOLD_RE.sub(r"<strong>\1</strong>", escape(part)))
         else:
-            url = part.rstrip(".,;:!?)]}")
-            tail = part[len(url) :]
-            escaped_url = escape(url)
-            result.append(
-                f'<a href="{escaped_url}" target="_blank" '
-                f'rel="noopener noreferrer">{escaped_url}</a>'
-            )
-            result.append(escape(tail))
+            md = _MD_LINK_RE.match(part)
+            if md:
+                label, url = md.group(1), md.group(2)
+                escaped_url = escape(url)
+                display = escape(label) if label else escaped_url
+                result.append(
+                    f'<a href="{escaped_url}" target="_blank" '
+                    f'rel="noopener noreferrer">{display}</a>'
+                )
+            else:
+                url = part.rstrip(".,;:!?)]}")
+                tail = part[len(url) :]
+                escaped_url = escape(url)
+                result.append(
+                    f'<a href="{escaped_url}" target="_blank" '
+                    f'rel="noopener noreferrer">{escaped_url}</a>'
+                )
+                result.append(escape(tail))
     return "".join(result)
 
 
