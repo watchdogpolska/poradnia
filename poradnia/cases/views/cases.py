@@ -351,6 +351,28 @@ class CaseMergeView(RaisePermissionRequiredMixin, UserFormKwargsMixin, UpdateVie
         return redirect(obj)
 
 
+class CaseSearchArticlesView(SingleObjectPermissionMixin, DetailView):
+    model = Case
+    permission_required = ["cases.can_change_case"]
+    http_method_names = ["post"]
+    direct_search = False
+
+    def post(self, request, *args, **kwargs):
+        self.object.search_articles_for_case(direct_search=self.direct_search)
+        if self.direct_search:
+            messages.success(
+                request,
+                _('Article search started for "%(object)s".') % {"object": self.object},
+            )
+        else:
+            messages.success(
+                request,
+                _('Article classification and search started for "%(object)s".')
+                % {"object": self.object},
+            )
+        return redirect(self.object)
+
+
 class CaseAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = Case.objects.for_user(self.request.user).all()

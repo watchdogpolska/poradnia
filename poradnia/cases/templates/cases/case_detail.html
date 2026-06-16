@@ -118,6 +118,31 @@
                         <a class="btn btn-default" href="{% url 'cases:merge' pk=object.pk %}"><i
                                 class="fas fa-code-fork"></i> {% trans 'Merge' %}</a>
                     {% endif %}
+                    {% if 'change_case' in case_perms and request.user.is_staff %}
+                        <div>
+                            <button type="button" class="btn btn-default dropdown-toggle js-ai-dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-robot"></i> {% trans 'AI Assistant' %} <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <form method="post" action="{% url 'cases:classify_and_search_articles' pk=object.pk %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-link" style="width:100%;text-align:left;padding:3px 20px;">
+                                            {% trans 'Classify and search articles' %}
+                                        </button>
+                                    </form>
+                                </li>
+                                <li>
+                                    <form method="post" action="{% url 'cases:search_articles' pk=object.pk %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-link" style="width:100%;text-align:left;padding:3px 20px;">
+                                            {% trans 'Search articles' %}
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    {% endif %}
                 </div>
                 <h1 class="case-header-title{% if user.is_staff and object.handled %} success{% endif %}">{{ object.name }}
                     <span class="case-header-number">#{{ object.pk }}</span></h1>
