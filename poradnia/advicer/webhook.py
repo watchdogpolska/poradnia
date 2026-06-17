@@ -15,6 +15,7 @@ from poradnia.cases.models import Case
 from poradnia.teryt.models import JST
 
 from .models import Advice, Area, InstitutionKind, Issue, PersonKind
+from .settings import AI_ASSISTANT_EMAIL, AI_ASSISTANT_USERNAME
 
 
 def _json_error(code, message, status, fields=None):
@@ -94,9 +95,8 @@ def _validate_identifiers(payload, errors):
 
 
 def _validate_create_requirements(payload, errors):
-    for field in ["advicer_id", "created_by_id"]:
-        if field not in payload or not _is_int(payload[field]):
-            errors[field] = ["This field is required on create and must be integer."]
+    if "advicer_id" not in payload or not _is_int(payload["advicer_id"]):
+        errors["advicer_id"] = ["This field is required on create and must be integer."]
 
 
 def _validate_required_fields(payload, errors):
@@ -104,6 +104,11 @@ def _validate_required_fields(payload, errors):
         errors["subject"] = ["This field is required and must be string."]
     elif not payload["subject"].strip():
         errors["subject"] = ["This field may not be blank."]
+
+    if "summary" not in payload or not isinstance(payload["summary"], str):
+        errors["summary"] = ["This field is required and must be string."]
+    elif not payload["summary"].strip():
+        errors["summary"] = ["This field may not be blank."]
 
     for field in ["institution_kind_id", "person_kind_id", "jst_id"]:
         if field not in payload or not _is_int(payload[field]):
@@ -134,6 +139,9 @@ def _validate_optional_fields(payload, errors):
         or not parse_datetime(payload["grant_on"])
     ):
         errors["grant_on"] = ["Must be a valid non-empty ISO-8601 datetime string."]
+
+    if "created_by_id" in payload and not _is_int(payload["created_by_id"]):
+        errors["created_by_id"] = ["Must be an integer."]
 
     if "modified_by_id" in payload and not _is_int(payload["modified_by_id"]):
         errors["modified_by_id"] = ["Must be an integer."]
@@ -232,6 +240,15 @@ def _resolve_relations(payload, issue_ids, area_ids, errors):
     return resolved
 
 
+def _get_or_create_ai_assistant():
+    User = get_user_model()
+    bot, _ = User.objects.get_or_create(
+        username=AI_ASSISTANT_USERNAME,
+        defaults={"email": AI_ASSISTANT_EMAIL},
+    )
+    return bot
+
+
 def _get_or_create_advice(resolved):
     advice = Advice.objects.filter(case=resolved["case"]).first()
     if advice:
@@ -243,6 +260,7 @@ def _get_or_create_advice(resolved):
 
 def _apply_advice_payload(advice, payload, resolved):
     advice.subject = payload["subject"].strip()
+    advice.summary = payload["summary"].strip()
 
     for f in ["comment", "helped", "visible"]:
         if f in payload:
@@ -279,6 +297,7 @@ class AdviceWebhookUpsertView(View):
 
     Required payload fields:
     - ``subject``: non-empty string
+    - ``summary``: non-empty string
     - ``institution_kind_id``: integer, must reference an existing ``InstitutionKind``
     - ``person_kind_id``: integer, must reference an existing ``PersonKind``
     - ``jst_id``: integer, must reference an existing ``JST``
@@ -289,6 +308,8 @@ class AdviceWebhookUpsertView(View):
 
     Create additionally requires:
     - ``advicer_id``: integer, must point to a staff user
+
+    Optional on create (defaults to the AI assistant bot user):
     - ``created_by_id``: integer
 
     Optional fields:
@@ -303,6 +324,7 @@ class AdviceWebhookUpsertView(View):
     {
       "case_id": 123,
       "subject": "DIP - urząd nie odpowiada",
+      "summary": "Urząd nie odpowiedział w terminie na wniosek o informację publiczną.",
       "comment": "Webhook upsert from assistant",
       "advicer_id": 7,
       "created_by_id": 7,
@@ -347,6 +369,8 @@ class AdviceWebhookUpsertView(View):
         if errors:
             return _json_error("validation_error", "Invalid payload.", 400, errors)
 
+        ai_assistant = _get_or_create_ai_assistant()
+
         resolved = _resolve_relations(payload, issue_ids, area_ids, errors)
         if "case_id" in errors and errors["case_id"] == ["Case not found."]:
             return _json_error("case_not_found", "Case not found.", 404)
@@ -356,6 +380,10 @@ class AdviceWebhookUpsertView(View):
         advice, created = _get_or_create_advice(resolved)
         if isinstance(created, JsonResponse):
             return created
+
+        if created:
+            resolved.setdefault("created_by", ai_assistant)
+        resolved.setdefault("modified_by", ai_assistant)
 
         with transaction.atomic():
             _apply_advice_payload(advice, payload, resolved)

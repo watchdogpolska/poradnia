@@ -48,7 +48,14 @@ class AdviceForm(
                 "jst",
                 "helped",
             ),
-            Fieldset(_("Details"), "subject", "grant_on", "advicer", "comment"),
+            Fieldset(
+                _("Details"),
+                "subject",
+                "summary",
+                "grant_on",
+                "advicer",
+                "comment",
+            ),
         )
 
     class Meta:
@@ -56,6 +63,7 @@ class AdviceForm(
         fields = [
             "case",
             "subject",
+            "summary",
             "grant_on",
             "issues",
             "area",
