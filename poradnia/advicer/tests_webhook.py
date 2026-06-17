@@ -208,9 +208,6 @@ class WebhookHelpersTestCase(SimpleTestCase):
             errors,
             {
                 "advicer_id": ["This field is required on create and must be integer."],
-                "created_by_id": [
-                    "This field is required on create and must be integer."
-                ],
             },
         )
 
@@ -222,6 +219,7 @@ class WebhookHelpersTestCase(SimpleTestCase):
             errors,
             {
                 "subject": ["This field is required and must be string."],
+                "summary": ["This field is required and must be string."],
                 "institution_kind_id": ["This field is required and must be integer."],
                 "person_kind_id": ["This field is required and must be integer."],
                 "jst_id": ["This field is required and must be integer."],
@@ -233,6 +231,7 @@ class WebhookHelpersTestCase(SimpleTestCase):
         webhook_module._validate_required_fields(
             {
                 "subject": "   ",
+                "summary": "Valid summary",
                 "institution_kind_id": 1,
                 "person_kind_id": 2,
                 "jst_id": 3,
@@ -241,6 +240,21 @@ class WebhookHelpersTestCase(SimpleTestCase):
         )
 
         self.assertEqual(errors, {"subject": ["This field may not be blank."]})
+
+    def test_validate_required_fields_blank_summary(self):
+        errors = {}
+        webhook_module._validate_required_fields(
+            {
+                "subject": "Valid subject",
+                "summary": "   ",
+                "institution_kind_id": 1,
+                "person_kind_id": 2,
+                "jst_id": 3,
+            },
+            errors,
+        )
+
+        self.assertEqual(errors, {"summary": ["This field may not be blank."]})
 
     def test_validate_optional_fields(self):
         errors = {}
@@ -272,6 +286,7 @@ class WebhookHelpersTestCase(SimpleTestCase):
             "advicer_id": 1,
             "created_by_id": 2,
             "subject": "Subject",
+            "summary": "Summary text",
             "institution_kind_id": 3,
             "person_kind_id": 4,
             "jst_id": 5,
@@ -592,6 +607,7 @@ class WebhookHelpersTestCase(SimpleTestCase):
 
         payload = {
             "subject": "  Subject  ",
+            "summary": "  Summary text  ",
             "comment": "Comment",
             "helped": True,
             "visible": False,
@@ -612,6 +628,7 @@ class WebhookHelpersTestCase(SimpleTestCase):
         webhook_module._apply_advice_payload(advice, payload, resolved)
 
         self.assertEqual(advice.subject, "Subject")
+        self.assertEqual(advice.summary, "Summary text")
         self.assertEqual(advice.comment, "Comment")
         self.assertTrue(advice.helped)
         self.assertFalse(advice.visible)
@@ -725,8 +742,10 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
     @patch.object(webhook_module, "_validate_payload")
     @patch.object(webhook_module, "_parse_payload")
     @patch.object(webhook_module, "_check_token")
+    @patch.object(webhook_module, "_get_or_create_ai_assistant")
     def test_post_created(
         self,
+        get_or_create_ai_assistant,
         check_token,
         parse_payload,
         validate_payload,
@@ -736,7 +755,9 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
     ):
         payload = {"case_id": 10, "subject": "Subject"}
         advice = SimpleNamespace(pk=101, case_id=10)
+        bot = SimpleNamespace(username="AIAssistant")
 
+        get_or_create_ai_assistant.return_value = bot
         check_token.return_value = None
         parse_payload.return_value = (payload, None)
         validate_payload.return_value = ({}, [1], [2])
@@ -758,9 +779,11 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
         apply_advice_payload.assert_called_once_with(
             advice,
             payload,
-            {"issues": [], "area": []},
+            {"issues": [], "area": [], "created_by": bot, "modified_by": bot},
         )
-        get_or_create_advice.assert_called_once_with({"issues": [], "area": []})
+        get_or_create_advice.assert_called_once_with(
+            {"issues": [], "area": [], "created_by": bot, "modified_by": bot}
+        )
 
     @override_settings(ADVICER_WEBHOOK_BEARER_TOKEN="secret")
     @patch.object(webhook_module, "_apply_advice_payload")
@@ -769,8 +792,10 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
     @patch.object(webhook_module, "_validate_payload")
     @patch.object(webhook_module, "_parse_payload")
     @patch.object(webhook_module, "_check_token")
+    @patch.object(webhook_module, "_get_or_create_ai_assistant")
     def test_post_updated(
         self,
+        get_or_create_ai_assistant,
         check_token,
         parse_payload,
         validate_payload,
@@ -780,7 +805,9 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
     ):
         payload = {"case_id": 10, "subject": "Subject"}
         advice = SimpleNamespace(pk=88, case_id=10)
+        bot = SimpleNamespace(username="AIAssistant")
 
+        get_or_create_ai_assistant.return_value = bot
         check_token.return_value = None
         parse_payload.return_value = (payload, None)
         validate_payload.return_value = ({}, [1], [2])
@@ -802,6 +829,8 @@ class AdviceWebhookUpsertViewTestCase(TestCase):
         apply_advice_payload.assert_called_once_with(
             advice,
             payload,
-            {"issues": [], "area": []},
+            {"issues": [], "area": [], "modified_by": bot},
         )
-        get_or_create_advice.assert_called_once_with({"issues": [], "area": []})
+        get_or_create_advice.assert_called_once_with(
+            {"issues": [], "area": [], "modified_by": bot}
+        )
