@@ -684,6 +684,49 @@ class Case(models.Model):
             "advisor": serialize_user(advisor.user if advisor else None),
         }
 
+    def get_client_messages_content(self):
+        from poradnia.letters.models import Letter
+
+        parts = []
+        letters = (
+            Letter.objects.filter(record__case=self, created_by_is_staff=False)
+            .prefetch_related("attachment_set")
+            .order_by("id")
+        )
+        for letter in letters:
+            if letter.text:
+                parts.append(letter.text)
+            for attachment in letter.attachment_set.all().order_by("id"):
+                if attachment.text_content:
+                    parts.append(attachment.text_content)
+        return "\n\n".join(parts)
+
+    def search_articles_for_case(self, direct_search=False):
+        """
+        Send all client message content for this case to the n8n articles-search
+        webhook and persist the request as an N8nArticlesSearchRequest.
+
+        When direct_search=False (default), n8n classifies the question first:
+        FOI-related questions proceed to article search; out-of-scope questions
+        receive a redirect response without searching.
+
+        When direct_search=True, classification is skipped and article search
+        runs immediately. Use this when the caller has already established that
+        the question is FOI-related (e.g. a staff-triggered action).
+
+        The result is delivered asynchronously via the N8nArticlesSearchCallbackView
+        and stored as a Letter with genre ai_message_staff on this case.
+        """
+        from ai_assistant.models import N8nArticlesSearchRequest
+
+        question = self.get_client_messages_content()
+        obj = N8nArticlesSearchRequest(
+            question=question,
+            direct_search=direct_search,
+            case=self,
+        )
+        obj.search_articles()
+
 
 class DeleteCaseProxy(Case):
     class Meta:

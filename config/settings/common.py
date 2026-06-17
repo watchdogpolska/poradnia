@@ -80,6 +80,7 @@ LOCAL_APPS = (
     "poradnia.teryt",
     "poradnia.utils",
     "poradnia.celery_monitor",
+    "ai_assistant",
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -383,6 +384,8 @@ ANONYMOUS_USER_NAME = "AnonymousUser"
 GUARDIAN_MONKEY_PATCH_USER = False
 JUDGEMENT_BOT_USERNAME = env.str("JUDGEMENT_BOT_USERNAME", "JudgementBot")
 JUDGEMENT_BOT_EMAIL = env.str("JUDGEMENT_BOT_EMAIL", "judgementbot@judgement.bot")
+AI_ASSISTANT_USERNAME = env.str("AI_ASSISTANT_USERNAME", "AIAssistant")
+AI_ASSISTANT_EMAIL = env.str("AI_ASSISTANT_EMAIL", "aiassistant@ai.assistant")
 
 LANGUAGES = (("pl", _("Polish")), ("en", _("English")))
 
@@ -665,3 +668,12 @@ N8N_ADVICE_WEBHOOK_URL = env("N8N_ADVICE_WEBHOOK_URL", default="")
 N8N_ADVICE_WEBHOOK_TOKEN = env("N8N_ADVICE_WEBHOOK_TOKEN", default="")
 N8N_ADVICE_WEBHOOK_TIMEOUT = env.int("N8N_ADVICE_WEBHOOK_TIMEOUT", default=30)
 ADVICER_WEBHOOK_BEARER_TOKEN = env.str("ADVICER_WEBHOOK_BEARER_TOKEN", "")
+N8N_ARTICLES_SEARCH_WEBHOOK = env("N8N_ARTICLES_SEARCH_WEBHOOK", default="")
+N8N_ARTICLES_SEARCH_WEBHOOK_TOKEN = env("N8N_ARTICLES_SEARCH_WEBHOOK_TOKEN", default="")
+N8N_ARTICLES_SEARCH_CALLBACK = env("N8N_ARTICLES_SEARCH_CALLBACK", default="")
+N8N_ARTICLES_SEARCH_CALLBACK_TOKEN = env(
+    "N8N_ARTICLES_SEARCH_CALLBACK_TOKEN", default=""
+)
+N8N_ARTICLES_SEARCH_WEBHOOK_TIMEOUT = env.int(
+    "N8N_ARTICLES_SEARCH_WEBHOOK_TIMEOUT", default=10
+)
