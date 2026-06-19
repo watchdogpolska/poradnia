@@ -49,6 +49,16 @@ Uzyteczne artykuly w sprawie:
 **Podsumowanie:** Pierwsze podsumowanie.
 """
 
+SAMPLE_RESPONSE_BRACKET_URLS = (
+    "Uzyteczne artykuly w sprawie:\n"
+    "- [https://example.com/article-1]\\n\n"
+    "**Temat:** Tytuł pierwszego artykułu\\n\n"
+    "**Podsumowanie:** Pierwsze podsumowanie.\n"
+    "- [https://example.com/article-2]\\n\n"
+    "**Temat:** Tytuł drugiego artykułu\\n\n"
+    "**Podsumowanie:** Drugie podsumowanie.\n"
+)
+
 SAMPLE_PLAIN_TEXT = (
     "Rozumiem, ze opisuje Pan sytuacje. "
     "Ograniczenie wynika z regulaminu serwisu: "
@@ -108,6 +118,18 @@ class FormatArticlesHtmlTestCase(SimpleTestCase):
         html = self._fmt(SAMPLE_RESPONSE_MD_LINKS)
         self.assertIn('href="https://example.com/article-1"', html)
         self.assertIn("Tytuł pierwszego artykułu", html)
+
+    def test_bracket_url_format_also_works(self):
+        html = self._fmt(SAMPLE_RESPONSE_BRACKET_URLS)
+        self.assertIn('href="https://example.com/article-1"', html)
+        self.assertIn('href="https://example.com/article-2"', html)
+        self.assertIn("Tytuł pierwszego artykułu", html)
+        self.assertIn("<ul>", html)
+
+    def test_literal_backslash_n_stripped_from_url(self):
+        html = self._fmt(SAMPLE_RESPONSE_BRACKET_URLS)
+        self.assertNotIn(r"]\n", html)
+        self.assertNotIn(r"\n", html)
 
     def test_html_escapes_dangerous_content(self):
         malicious = (

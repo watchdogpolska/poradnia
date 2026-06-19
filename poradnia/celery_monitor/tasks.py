@@ -182,7 +182,8 @@ def healthcheck_task(self):
 
     start = time.monotonic()
     try:
-        with Connection(settings.CELERY_BROKER_URL, connect_timeout=5) as conn:
+        timeout = getattr(settings, "CELERY_BROKER_CONNECTION_TIMEOUT", 10)
+        with Connection(settings.CELERY_BROKER_URL, connect_timeout=timeout) as conn:
             conn.connect()
         broker_ok = True
         broker_latency_ms = round((time.monotonic() - start) * 1000, 2)
@@ -419,62 +420,73 @@ def worker_heartbeat(self):
 @shared_task(bind=True, ignore_result=True)
 def monitor_stale_workers(self):
     """
-    Marks workers stale if heartbeat is too old.
+    Alerts when the count of active workers drops below CELERY_MONITOR_MIN_WORKERS.
 
-    Containerized deployments often produce old worker rows after container
-    recreation because the Celery worker hostname changes. To avoid permanent
-    noise, very old worker rows are deleted automatically.
+    Per-worker row housekeeping (mark stale, delete old rows) is still performed
+    but does not trigger per-name alerts, so container replacements that change
+    the worker hostname do not produce false positives.
     """
     now = timezone.now()
 
     stale_after_seconds = int(_get_setting("CELERY_WORKER_STALE_AFTER_SECONDS", 180))
     cleanup_after_seconds = int(
-        _get_setting("CELERY_MONITOR_WORKER_CLEANUP_AFTER_SECONDS", 86400)
+        _get_setting("CELERY_MONITOR_WORKER_CLEANUP_AFTER_SECONDS", 3600)
     )
+    min_workers = int(_get_setting("CELERY_MONITOR_MIN_WORKERS", 1))
 
     stale_cutoff = now - timezone.timedelta(seconds=stale_after_seconds)
     cleanup_cutoff = now - timezone.timedelta(seconds=cleanup_after_seconds)
 
-    # 1. Hard-delete ancient worker rows from long-gone containers
-    deleted_count, _ = WorkerHeartbeat.objects.filter(
-        last_seen_at__lt=cleanup_cutoff
-    ).delete()
+    # 1. Hard-delete ancient worker rows and resolve any legacy per-name alerts
+    old_workers = WorkerHeartbeat.objects.filter(last_seen_at__lt=cleanup_cutoff)
+    for worker in old_workers:
+        _resolve_alert(f"worker:{worker.worker_name}:stale")
+    deleted_count, _ = old_workers.delete()
 
     # 2. Fresh workers remain OK
     WorkerHeartbeat.objects.filter(last_seen_at__gte=stale_cutoff).exclude(
         status=WorkerHeartbeat.STATUS_OK
     ).update(status=WorkerHeartbeat.STATUS_OK)
 
-    # 3. Recent-but-missed workers become stale
+    # 3. Recent-but-missed workers become stale (housekeeping only, no per-name alert)
     stale_workers = WorkerHeartbeat.objects.filter(
         last_seen_at__lt=stale_cutoff,
         last_seen_at__gte=cleanup_cutoff,
     )
 
     stale_count = 0
-
     for worker in stale_workers:
         if worker.status != WorkerHeartbeat.STATUS_STALE:
             worker.status = WorkerHeartbeat.STATUS_STALE
             worker.save(update_fields=["status", "updated_at"])
+        stale_count += 1
 
+    # 4. Alert based on active worker count, not individual worker names
+    active_count = WorkerHeartbeat.objects.filter(
+        last_seen_at__gte=stale_cutoff
+    ).count()
+
+    dedupe_key = "worker:count:below_minimum"
+    if active_count < min_workers:
         _create_or_touch_alert(
             source="monitor_stale_workers",
-            dedupe_key=f"worker:{worker.worker_name}:stale",
+            dedupe_key=dedupe_key,
             severity=MonitoringAlert.SEVERITY_CRIT,
-            title=f"Celery worker stale: {worker.worker_name}",
-            message=f"Last seen at {worker.last_seen_at.isoformat()}",
+            title="Active Celery workers below minimum",
+            message=f"active={active_count}, minimum={min_workers}",
             payload={
-                "worker_name": worker.worker_name,
-                "hostname": worker.hostname,
-                "pid": worker.pid,
-                "last_seen_at": worker.last_seen_at.isoformat(),
+                "active_workers": active_count,
+                "min_workers": min_workers,
+                "stale_workers": stale_count,
                 "stale_after_seconds": stale_after_seconds,
             },
         )
-        stale_count += 1
+    else:
+        _resolve_alert(dedupe_key)
 
     return {
+        "active_workers": active_count,
+        "min_workers": min_workers,
         "stale_workers": stale_count,
         "deleted_old_workers": deleted_count,
     }

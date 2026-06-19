@@ -360,21 +360,21 @@ Zarządzanie zadaniami w różnych środowiskach
 Migracja z cron
 ---------------
 
-Ta konfiguracja infrastruktury przygotowuje do migracji istniejących zadań cron:
+Migracja ze starszego systemu opartego na cron do Celery Beat została zakończona (Fazy 1–3).
+Stare skrypty cron (``.contrib/docker/cron/``) oraz pakiet ``cron`` z obrazu Docker zostały usunięte.
 
-1. **Aktualne zadania cron** (do migracji w Fazie 2):
+Wszystkie wcześniejsze zadania cron działają teraz jako zadania Celery Beat:
 
-   - ``send_event_reminders`` - Codziennie o 12:00
-   - ``send_old_cases_reminder`` - Miesięcznie 2. dnia o 06:00
-   - ``run_court_session_parser`` - Codziennie o 23:10
-   - ``clearsessions`` - Codziennie
+- ``send_event_reminders`` - Codziennie o 12:00
+- ``send_old_cases_reminder`` - Miesięcznie 2. dnia o 06:00
+- ``run_court_session_parser`` - Codziennie o 23:10
+- ``clear_expired_sessions`` - Codziennie o 03:00
 
-2. **Podejście do migracji**:
+Harmonogramy są zarządzane przez bazę danych (``django-celery-beat``) i widoczne w panelu
+administracyjnym Django pod adresem ``/admin/django_celery_beat/``.
 
-   - Konwersja poleceń zarządzania na zadania Celery
-   - Konfiguracja harmonogramów okresowych w panelu administracyjnym Django
-   - Równoległe uruchamianie obu systemów podczas przejścia
-   - Usunięcie systemu cron po weryfikacji
+Polecenia zarządzania (``send_event_reminders``, ``send_old_cases_reminder``, itp.) nadal istnieją
+i mogą być uruchamiane ręcznie z wiersza poleceń.
 
 Bezpieczeństwo
 --------------
@@ -393,22 +393,14 @@ Produkcja
 - Rozważ szyfrowanie TLS dla połączeń z brokerem
 - Wdróż właściwą autentykację dla interfejsów monitorowania
 
-Następne kroki
+Stan wdrożenia
 --------------
 
-Ta infrastruktura Fazy 1 umożliwia:
+Wszystkie trzy fazy migracji zostały zakończone:
 
-1. **Faza 2: Migracja zadań** (Issues #1829-1833)
-
-   - Konwersja istniejących poleceń zarządzania na zadania Celery
-   - Konfiguracja harmonogramów okresowych
-   - Testowanie równoległego wykonywania z systemem cron
-
-2. **Faza 3: Czyszczenie starego kodu** (Issue #1834)
-
-   - Usunięcie systemu opartego na cron
-   - Czyszczenie starych skryptów
-   - Finalizacja wdrożenia produkcyjnego
+1. **Faza 1: Infrastruktura Celery** (Issue #1828) ✓ — RabbitMQ, Celery worker i Beat skonfigurowane
+2. **Faza 2: Migracja zadań** (Issues #1829-1833) ✓ — Wszystkie zadania cron przekonwertowane na zadania Celery
+3. **Faza 3: Usunięcie starego systemu cron** (Issue #1834) ✓ — Skrypty cron i pakiet Docker usunięte
 
 Zobacz także
 ------------
