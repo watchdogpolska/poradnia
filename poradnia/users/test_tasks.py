@@ -11,6 +11,7 @@ def _create_session(expire_offset_seconds):
     store.set_expiry(expire_offset_seconds)
     store.save()
     from django.contrib.sessions.models import Session
+
     session = Session.objects.get(session_key=store.session_key)
     if expire_offset_seconds < 0:
         session.expire_date = timezone.now() + timezone.timedelta(
