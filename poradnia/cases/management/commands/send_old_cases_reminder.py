@@ -8,6 +8,4 @@ class Command(BaseCommand):
 
     def handle(self, **options):
         result = send_old_cases_reminder.apply().result
-        self.stdout.write(
-            f"sent={len(result['sent'])} failed={len(result['failed'])}"
-        )
+        self.stdout.write(f"sent={len(result['sent'])} failed={len(result['failed'])}")
