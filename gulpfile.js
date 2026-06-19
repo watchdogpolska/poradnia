@@ -75,11 +75,11 @@ const config = {
       path.npm + "/datatables.net-dt/js/dataTables.dataTables.js",
       path.npm + "/datatables.net-buttons/js/dataTables.buttons.js",
       path.staticfiles + "/ajax_datatable/js/utils.js",
-      path.app + "/cases/static/cases/case_datatbles.js",
-      path.app + "/advicer/static/advicer/advice_datatbles.js",
-      path.app + "/letters/static/letters/letters_datatbles.js",
-      path.app + "/events/static/events/events_datatbles.js",
-      path.app + "/users/static/users/users_datatbles.js",
+      path.app + "/cases/static/cases/case_datatables.js",
+      path.app + "/advicer/static/advicer/advice_datatables.js",
+      path.app + "/letters/static/letters/letters_datatables.js",
+      path.app + "/events/static/events/events_datatables.js",
+      path.app + "/users/static/users/users_datatables.js",
       ],
 
     output: {

@@ -72,6 +72,9 @@ def _extract_url(line):
     m = re.match(r"^-\s+\[.+?\]\((.+?)\)\s*$", line)
     if m:
         return m.group(1)
+    m = re.match(r"^-\s+\[(https?://[^\]]+)\]\s*$", line)
+    if m:
+        return m.group(1)
     m = re.match(r"^-\s+(https?://\S+)\s*$", line)
     if m:
         return m.group(1)
@@ -122,7 +125,9 @@ def _render_article_li(art):
     return parts
 
 
-_ARTICLE_URL_LINE_RE = re.compile(r"^-\s+(?:\[.+?\]\(.+?\)|https?://\S+)\s*$")
+_ARTICLE_URL_LINE_RE = re.compile(
+    r"^-\s+(?:\[.+?\]\(.+?\)|\[https?://[^\]]+\]|https?://\S+)\s*$"
+)
 _LINKIFY_RE = re.compile(r"(\[[^\[\]]*\]\(https?://[^)]+\)|https?://\S+)")
 _MD_LINK_RE = re.compile(r"^\[([^\[\]]*)\]\((https?://[^)]+)\)$")
 _BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
@@ -162,7 +167,7 @@ def _linkify_text(text):
 
 def _format_articles_html(response_text):
     """Convert n8n articles-search response to simple HTML for Letter.html."""
-    stripped = (response_text or "").strip()
+    stripped = (response_text or "").strip().replace("\\n", "\n")
     if not stripped:
         return ""
 

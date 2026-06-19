@@ -60,6 +60,9 @@ def send_event_reminders(self):
         .all()
     )
 
+    sent = []
+    skipped = []
+
     for event in events:
         user_notified = [
             reminder.user_id for reminder in event.reminder_set.all() if reminder.active
@@ -75,8 +78,6 @@ def send_event_reminders(self):
             )
 
         users = users.select_related("profile")
-        skipped = []
-        sent = []
 
         for user in users:
             if user.id in user_notified:
@@ -90,4 +91,5 @@ def send_event_reminders(self):
 
             _process_event_for_user(event, user, now)
             sent.append((user.email, event.id))
-        return {"sent": sent, "skipped": skipped}
+
+    return {"sent": sent, "skipped": skipped}

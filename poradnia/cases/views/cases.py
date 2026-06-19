@@ -251,7 +251,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "name": "letter_count_for_user",
             "visible": True,
             "searchable": False,
-            "orderable": True,
+            "orderable": False,
             "title": _("Letter count"),
         },
         {
