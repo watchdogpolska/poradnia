@@ -21,7 +21,6 @@ RUN apt-get update \
    curl \
    nano \
    htop \
-   cron \
    ca-certificates \
    gettext libgettextpo-dev wait-for-it
 RUN curl -o /usr/local/share/ca-certificates/certum-trusted-root-g2.crt \
