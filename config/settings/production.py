@@ -4,7 +4,6 @@ Production Configurations
 """
 
 import sentry_sdk
-from celery.schedules import crontab
 from dealer.auto import auto
 from sentry_sdk.integrations.django import DjangoIntegration
 
@@ -63,21 +62,3 @@ CELERY_BROKER_CONNECTION_MAX_RETRIES = 10
 # Worker monitoring and health checks
 CELERY_SEND_TASK_EVENTS = True
 CELERY_TASK_SEND_SENT_EVENT = True
-
-# Production periodic tasks schedule
-CELERY_BEAT_SCHEDULE = {
-    # Production periodic tasks are defined here (not in Django admin)
-    # Uncomment when migrating from cron in Phase 2:
-    # 'send-event-reminders': {
-    #     'task': 'poradnia.events.tasks.send_event_reminders',
-    #     'schedule': crontab(hour=12, minute=0),  # Daily at 12:00
-    # },
-    # 'send-old-cases-reminder': {
-    #     'task': 'poradnia.cases.tasks.send_old_cases_reminder',
-    #     'schedule': crontab(hour=6, minute=0, day_of_month=2),  # Monthly on 2nd at 06:00
-    # },
-    # 'run-court-session-parser': {
-    #     'task': 'poradnia.judgements.tasks.run_court_session_parser',
-    #     'schedule': crontab(hour=23, minute=10),  # Daily at 23:10
-    # },
-}

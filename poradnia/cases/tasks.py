@@ -17,7 +17,7 @@ logger = logging.getLogger(__name__)
     retry_jitter=True,
     max_retries=3,
 )
-def send_old_cases_reminder_task(self) -> None:
+def send_old_cases_reminder(self) -> None:
     """
     Send reminder emails to users when there are old cases eligible for deletion.
     """
@@ -25,7 +25,7 @@ def send_old_cases_reminder_task(self) -> None:
 
     if old_cases_count <= 0:
         logger.info("No old cases to delete")
-        return
+        return {"old_cases_count": 0, "sent": [], "failed": []}
 
     recipients = User.objects.filter(notify_old_cases=True).only("id", "email")
     template_key = TemplateKey.CASE_DELETE_OLD
