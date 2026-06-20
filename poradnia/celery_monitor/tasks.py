@@ -241,6 +241,7 @@ def healthcheck_task(self):
         "checked_at": obj.checked_at.isoformat(),
     }
 
+
 # Added in migration 0002_seed_monitor_periodic_tasks.py to celery beat db table
 @shared_task(bind=True, ignore_result=True)
 def queue_depth_check(self):

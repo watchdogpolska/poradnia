@@ -54,9 +54,7 @@ class HealthcheckTaskTest(TestCase):
             healthcheck_task.apply().get()
 
     def _run_db_fail(self, pool_mock, message="db gone"):
-        with patch.object(
-            db_connection, "cursor", side_effect=_db_fail_once(message)
-        ):
+        with patch.object(db_connection, "cursor", side_effect=_db_fail_once(message)):
             self._run(pool_mock)
 
     # --- happy path ---
