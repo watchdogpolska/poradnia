@@ -567,8 +567,14 @@ BLEACH_ALLOWED_ATTRIBUTES = ALLOWED_ATTRIBUTES = {
 # Using RabbitMQ as message broker and database for result backend
 
 CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = True
-CELERY_BROKER_CONNECTION_MAX_RETRIES = None
-CELERY_BROKER_CONNECTION_TIMEOUT = 15  # default is often too high
+# None = infinite retries on startup; override via env for finite retry count
+CELERY_BROKER_CONNECTION_MAX_RETRIES = env.int(
+    "CELERY_BROKER_CONNECTION_MAX_RETRIES", default=None
+)
+# Timeout (seconds) used by healthcheck_task when probing the broker
+CELERY_BROKER_CONNECTION_TIMEOUT = env.int(
+    "CELERY_BROKER_CONNECTION_TIMEOUT", default=15
+)
 CELERY_BROKER_HEARTBEAT = 30  # helps detect dead connections faster
 CELERY_BROKER_URL = env.str("CELERY_BROKER_URL", "amqp://guest:guest@localhost:5672//")
 CELERY_TIMEZONE = TIME_ZONE  # Use Django's timezone setting

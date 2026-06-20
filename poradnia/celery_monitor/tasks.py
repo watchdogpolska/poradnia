@@ -14,7 +14,6 @@ from django.core.mail import mail_admins
 from django.db import connection
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
-from kombu import Connection
 
 from .models import (
     MonitoringAlert,
@@ -180,15 +179,20 @@ def healthcheck_task(self):
         db_error = str(exc)
         logger.exception("Database healthcheck failed")
 
+    # Borrow a producer from the app's existing connection pool.
+    # The task executing at all already proves the consumer connection works;
+    # this additionally verifies the producer/publish path without opening a new
+    # connection.
     start = time.monotonic()
     try:
-        timeout = getattr(settings, "CELERY_BROKER_CONNECTION_TIMEOUT", 10)
-        with Connection(settings.CELERY_BROKER_URL, connect_timeout=timeout) as conn:
-            conn.connect()
+        timeout = getattr(settings, "CELERY_BROKER_CONNECTION_TIMEOUT", 15)
+        with self.app.pool.acquire(block=True, timeout=timeout) as conn:
+            _ = conn.default_channel
         broker_ok = True
         broker_latency_ms = round((time.monotonic() - start) * 1000, 2)
     except Exception as exc:
         broker_error = str(exc)
+        broker_latency_ms = round((time.monotonic() - start) * 1000, 2)
         logger.exception("Broker healthcheck failed")
 
     status = (
