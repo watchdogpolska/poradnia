@@ -8,11 +8,11 @@ from .tasks import healthcheck_task
 
 
 def _make_pool_mock():
-    """Pool mock whose acquire context manager yields a healthy producer."""
-    producer = MagicMock()
-    producer.connection.default_channel = MagicMock()
+    """Pool mock whose acquire context manager yields a healthy connection."""
+    conn = MagicMock()
+    conn.default_channel = MagicMock()
     pool = MagicMock()
-    pool.acquire.return_value.__enter__ = lambda s, *a, **kw: producer
+    pool.acquire.return_value.__enter__ = lambda s, *a, **kw: conn
     pool.acquire.return_value.__exit__ = MagicMock(return_value=False)
     return pool
 

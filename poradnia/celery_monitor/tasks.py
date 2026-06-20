@@ -186,8 +186,8 @@ def healthcheck_task(self):
     start = time.monotonic()
     try:
         timeout = getattr(settings, "CELERY_BROKER_CONNECTION_TIMEOUT", 15)
-        with self.app.pool.acquire(block=True, timeout=timeout) as producer:
-            _ = producer.connection.default_channel
+        with self.app.pool.acquire(block=True, timeout=timeout) as conn:
+            _ = conn.default_channel
         broker_ok = True
         broker_latency_ms = round((time.monotonic() - start) * 1000, 2)
     except Exception as exc:
