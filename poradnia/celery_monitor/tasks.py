@@ -181,7 +181,8 @@ def healthcheck_task(self):
 
     # Borrow a producer from the app's existing connection pool.
     # The task executing at all already proves the consumer connection works;
-    # this additionally verifies the producer/publish path without opening a new connection.
+    # this additionally verifies the producer/publish path without opening a new
+    # connection.
     start = time.monotonic()
     try:
         timeout = getattr(settings, "CELERY_BROKER_CONNECTION_TIMEOUT", 15)
