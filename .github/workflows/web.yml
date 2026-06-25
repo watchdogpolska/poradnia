@@ -20,7 +20,7 @@ jobs:
     #       #           - "==2.2.*"
     #       - "==4.2.*"
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       # Pull the latest image to build, and avoid caching pull-only images.
       # (docker pull is faster than caching in most cases.)
       # - run: |
