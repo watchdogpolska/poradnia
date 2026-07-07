@@ -47,6 +47,8 @@ class AdviceForm(
                 "institution_kind",
                 "jst",
                 "helped",
+                "interesting_case",
+                "for_knowledge_base",
             ),
             Fieldset(
                 _("Details"),
@@ -72,6 +74,8 @@ class AdviceForm(
             "advicer",
             "comment",
             "helped",
+            "interesting_case",
+            "for_knowledge_base",
             "jst",
         ]
         widgets = {

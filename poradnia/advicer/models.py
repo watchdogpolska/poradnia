@@ -121,7 +121,7 @@ class Advice(models.Model):
         to=Case, null=True, blank=True, on_delete=models.CASCADE, verbose_name=_("Case")
     )
     subject = models.CharField(
-        max_length=100, verbose_name=_("Subject"), null=True, blank=True
+        max_length=100, verbose_name=_("Tag subject"), null=True, blank=True
     )
     summary = models.TextField(verbose_name=_("Summary"), null=True, blank=True)
     issues = models.ManyToManyField(
