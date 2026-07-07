@@ -126,7 +126,9 @@ class CaseRequestAiTagsViewTestCase(TestCase):
         self.client.login(username="john", password="pass")
         response = self._post()
         mock_tag.assert_called_once()
-        self.assertRedirects(response, self.case.get_absolute_url(), fetch_redirect_response=False)
+        self.assertRedirects(
+            response, self.case.get_absolute_url(), fetch_redirect_response=False
+        )
 
     @patch("poradnia.cases.models.Case.request_ai_tags_for_case")
     def test_success_message_is_set(self, mock_tag):

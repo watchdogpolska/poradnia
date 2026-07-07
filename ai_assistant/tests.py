@@ -560,7 +560,10 @@ class N8nCaseTagsRequestModelTestCase(TestCase):
         self.assertEqual(kwargs["json"]["environment"], "TEST")
         self.assertEqual(
             kwargs["headers"],
-            {"Authorization": "Bearer case-tags-secret", "Content-Type": "application/json"},
+            {
+                "Authorization": "Bearer case-tags-secret",
+                "Content-Type": "application/json",
+            },
         )
         issue_names = [i["name"] for i in kwargs["json"]["issues_list"]]
         self.assertIn("Test Issue", issue_names)
