@@ -402,6 +402,7 @@ class Case(models.Model):
             ("can_add_record", _("Can add record")),
             ("can_change_own_record", _("Can change own records")),
             ("can_change_all_record", _("Can change all records")),
+            ("can_change_case", _("Can change case")),
             ("can_close_case", _("Can close case")),
             ("can_merge_case", _("Can merge case")),
             # Global permission

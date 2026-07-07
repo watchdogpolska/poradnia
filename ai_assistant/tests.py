@@ -6,7 +6,12 @@ from django.core.exceptions import ImproperlyConfigured
 from django.test import RequestFactory, SimpleTestCase, TestCase, override_settings
 
 from ai_assistant import views as views_module
-from ai_assistant.models import N8nArticlesSearchRequest
+from ai_assistant.models import N8nArticlesSearchRequest, N8nCaseTagsRequest
+from poradnia.advicer.factories import (
+    AreaFactory,
+    IssueFactory,
+    PersonKindFactory,
+)
 from poradnia.cases.factories import CaseFactory
 from poradnia.letters.models import Letter
 
@@ -513,3 +518,126 @@ class N8nArticlesSearchCallbackViewTestCase(TestCase):
 
         letter = Letter.objects.filter(case=case).first()
         self.assertIn("Will this appear in the name?", letter.name)
+
+
+CASE_TAGS_WEBHOOK_URL = "http://n8n.example.com/webhook/case-tags"
+CASE_TAGS_WEBHOOK_SETTINGS = {
+    "N8N_CASE_TAGS_WEBHOOK": CASE_TAGS_WEBHOOK_URL,
+    "N8N_CASE_TAGS_WEBHOOK_TOKEN": "case-tags-secret",
+    "APP_MODE": "TEST",
+}
+
+
+class N8nCaseTagsRequestModelTestCase(TestCase):
+    @override_settings(
+        N8N_CASE_TAGS_WEBHOOK="",
+        N8N_CASE_TAGS_WEBHOOK_TOKEN="",
+        APP_MODE="TEST",
+    )
+    def test_send_tags_request_raises_when_unconfigured(self):
+        obj = N8nCaseTagsRequest(question="test")
+        with self.assertRaises(ImproperlyConfigured):
+            obj.send_tags_request()
+
+    @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
+    @patch("ai_assistant.models.requests.post")
+    def test_send_tags_request_sends_correct_payload(self, mock_post):
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"request_id": "tag-req-1"}
+        mock_post.return_value = mock_response
+
+        issue = IssueFactory(name="Test Issue")
+        area = AreaFactory(name="Test Area")
+        person_kind = PersonKindFactory(name="Test Person Kind")
+
+        obj = N8nCaseTagsRequest(question="What is the question?")
+        obj.send_tags_request()
+
+        mock_post.assert_called_once()
+        args, kwargs = mock_post.call_args
+        self.assertEqual(args[0], CASE_TAGS_WEBHOOK_URL)
+        self.assertEqual(kwargs["json"]["question"], "What is the question?")
+        self.assertEqual(kwargs["json"]["environment"], "TEST")
+        self.assertEqual(
+            kwargs["headers"],
+            {"Authorization": "Bearer case-tags-secret", "Content-Type": "application/json"},
+        )
+        issue_names = [i["name"] for i in kwargs["json"]["issues_list"]]
+        self.assertIn("Test Issue", issue_names)
+        area_names = [a["name"] for a in kwargs["json"]["areas_list"]]
+        self.assertIn("Test Area", area_names)
+        person_kind_names = [p["name"] for p in kwargs["json"]["personkind_list"]]
+        self.assertIn("Test Person Kind", person_kind_names)
+
+    @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
+    @patch("ai_assistant.models.requests.post")
+    def test_send_tags_request_saves_instance(self, mock_post):
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"request_id": "tag-req-xyz"}
+        mock_post.return_value = mock_response
+
+        obj = N8nCaseTagsRequest(question="test question")
+        obj.send_tags_request()
+
+        self.assertEqual(obj.request_id, "tag-req-xyz")
+        self.assertEqual(obj.status, "pending")
+        self.assertEqual(obj.environment, "TEST")
+        self.assertIsNotNone(obj.pk)
+
+    @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
+    @patch("ai_assistant.models.requests.post")
+    def test_send_tags_request_propagates_http_error(self, mock_post):
+        mock_response = MagicMock()
+        mock_response.raise_for_status.side_effect = req_lib.HTTPError("500")
+        mock_post.return_value = mock_response
+
+        obj = N8nCaseTagsRequest(question="q")
+        with self.assertRaises(req_lib.HTTPError):
+            obj.send_tags_request()
+
+        self.assertIsNone(obj.pk)
+
+    @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
+    @patch("ai_assistant.models.requests.post")
+    def test_send_tags_request_excludes_inactive_tags(self, mock_post):
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"request_id": "tag-req-2"}
+        mock_post.return_value = mock_response
+
+        IssueFactory(name="Active Issue")
+        IssueFactory(name="Inactive Issue", active=False)
+
+        obj = N8nCaseTagsRequest(question="q")
+        obj.send_tags_request()
+
+        _, kwargs = mock_post.call_args
+        issue_names = [i["name"] for i in kwargs["json"]["issues_list"]]
+        self.assertIn("Active Issue", issue_names)
+        self.assertNotIn("Inactive Issue", issue_names)
+
+    @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
+    @patch("ai_assistant.models.requests.post")
+    def test_send_tags_request_links_to_case(self, mock_post):
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"request_id": "tag-req-case"}
+        mock_post.return_value = mock_response
+
+        case = CaseFactory()
+        obj = N8nCaseTagsRequest(question="q", case=case)
+        obj.send_tags_request()
+
+        saved = N8nCaseTagsRequest.objects.get(pk=obj.pk)
+        self.assertEqual(saved.case, case)
+
+    @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
+    @patch("ai_assistant.models.requests.post")
+    def test_send_tags_request_uses_default_timeout(self, mock_post):
+        mock_response = MagicMock()
+        mock_response.json.return_value = {"request_id": "tag-req-timeout"}
+        mock_post.return_value = mock_response
+
+        obj = N8nCaseTagsRequest(question="q")
+        obj.send_tags_request()
+
+        _, kwargs = mock_post.call_args
+        self.assertEqual(kwargs["timeout"], 10)
