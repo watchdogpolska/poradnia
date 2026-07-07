@@ -34,9 +34,7 @@ class AbstractCategory(models.Model):
 
     @classmethod
     def active_as_json(cls):
-        items = list(
-            cls.objects.filter(active=True).values("id", "name", "tag_helper")
-        )
+        items = list(cls.objects.filter(active=True).values("id", "name", "tag_helper"))
         return json.dumps(items)
 
 

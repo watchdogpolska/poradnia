@@ -218,7 +218,10 @@ class IssueActiveAsJsonTestCase(TestCase):
         issue = IssueFactory(active=True)
         data = json.loads(Issue.active_as_json())
         item = next(d for d in data if d["id"] == issue.pk)
-        self.assertEqual(set(item.keys()), {"id", "name", "tag_helper", "is_dip", "is_local_government"})
+        self.assertEqual(
+            set(item.keys()),
+            {"id", "name", "tag_helper", "is_dip", "is_local_government"},
+        )
 
 
 class AreaActiveAsJsonTestCase(TestCase):
@@ -236,7 +239,10 @@ class AreaActiveAsJsonTestCase(TestCase):
         area = AreaFactory(active=True)
         data = json.loads(Area.active_as_json())
         item = next(d for d in data if d["id"] == area.pk)
-        self.assertEqual(set(item.keys()), {"id", "name", "tag_helper", "is_dip", "is_local_government"})
+        self.assertEqual(
+            set(item.keys()),
+            {"id", "name", "tag_helper", "is_dip", "is_local_government"},
+        )
 
 
 def autocomplete_ids(autocomplete_response):

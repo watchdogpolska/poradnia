@@ -184,57 +184,49 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         row["visible"] = obj.render_visible()
         return
 
-    def get_initial_queryset(self, request=None):
-        qs = super().get_initial_queryset(request).select_related().prefetch_related()
-
+    def _apply_helped_filter(self, qs):
         helped_filter = []
-        for helped in [("helped_yes", True), ("helped_no", False)]:
-            if get_numeric_param(self.request, helped[0]):
-                helped_filter.append(helped[1])
-        if len(helped_filter) > 0:
+        for param, value in [("helped_yes", True), ("helped_no", False)]:
+            if get_numeric_param(self.request, param):
+                helped_filter.append(value)
+        if helped_filter:
             helped_query = Q(helped__in=helped_filter)
-            # qs = qs.filter(helped__in=helped_filter)
         else:
             helped_query = Q(helped__isnull=True)
-            # qs = qs.filter(helped__isnull=True)
         if get_numeric_param(self.request, "helped_blank"):
-            qs = qs.filter(helped_query | Q(helped__isnull=True))
-        else:
-            qs = qs.filter(helped_query & Q(helped__isnull=False))
+            return qs.filter(helped_query | Q(helped__isnull=True))
+        return qs.filter(helped_query & Q(helped__isnull=False))
 
+    def _apply_visible_filter(self, qs):
         visble_filter = []
-        for visible in [("visible_yes", True), ("visible_no", False)]:
-            if get_numeric_param(self.request, visible[0]):
-                visble_filter.append(visible[1])
-        if len(visble_filter) > 0:
-            qs = qs.filter(visible__in=visble_filter)
-        else:
-            qs = qs.filter(visible__isnull=True)
+        for param, value in [("visible_yes", True), ("visible_no", False)]:
+            if get_numeric_param(self.request, param):
+                visble_filter.append(value)
+        if visble_filter:
+            return qs.filter(visible__in=visble_filter)
+        return qs.filter(visible__isnull=True)
 
-        ic_yes = get_numeric_param(self.request, "interesting_case_yes")
-        ic_no = get_numeric_param(self.request, "interesting_case_no")
-        if ic_yes and ic_no:
-            pass
-        elif ic_yes:
-            qs = qs.filter(interesting_case=True)
-        elif ic_no:
-            qs = qs.filter(Q(interesting_case=False) | Q(interesting_case__isnull=True))
-        else:
-            qs = qs.none()
+    def _apply_nullable_bool_filter(self, qs, param_yes, param_no, field):
+        yes = get_numeric_param(self.request, param_yes)
+        no = get_numeric_param(self.request, param_no)
+        if yes and no:
+            return qs
+        if yes:
+            return qs.filter(**{field: True})
+        if no:
+            return qs.filter(Q(**{field: False}) | Q(**{f"{field}__isnull": True}))
+        return qs.none()
 
-        fkb_yes = get_numeric_param(self.request, "for_knowledge_base_yes")
-        fkb_no = get_numeric_param(self.request, "for_knowledge_base_no")
-        if fkb_yes and fkb_no:
-            pass
-        elif fkb_yes:
-            qs = qs.filter(for_knowledge_base=True)
-        elif fkb_no:
-            qs = qs.filter(
-                Q(for_knowledge_base=False) | Q(for_knowledge_base__isnull=True)
-            )
-        else:
-            qs = qs.none()
-
+    def get_initial_queryset(self, request=None):
+        qs = super().get_initial_queryset(request).select_related().prefetch_related()
+        qs = self._apply_helped_filter(qs)
+        qs = self._apply_visible_filter(qs)
+        qs = self._apply_nullable_bool_filter(
+            qs, "interesting_case_yes", "interesting_case_no", "interesting_case"
+        )
+        qs = self._apply_nullable_bool_filter(
+            qs, "for_knowledge_base_yes", "for_knowledge_base_no", "for_knowledge_base"
+        )
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_datetime("created_on", timezone.get_default_timezone())

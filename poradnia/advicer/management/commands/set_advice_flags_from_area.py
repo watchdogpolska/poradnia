@@ -37,6 +37,7 @@ class Command(BaseCommand):
                 qs.update(**{field_name: True})
             self.stdout.write(
                 self.style.SUCCESS(
-                    f"{label}issue='{issue_name}' → {field_name}: updated {count} advice(s)"
+                    f"{label}issue='{issue_name}' → "
+                    f"{field_name}: updated {count} advice(s)"
                 )
             )

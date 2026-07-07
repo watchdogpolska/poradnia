@@ -6,28 +6,32 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('advicer', '0025_advice_summary'),
+        ("advicer", "0025_advice_summary"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='advice',
-            name='for_knowledge_base',
-            field=models.BooleanField(blank=True, null=True, verbose_name='For knowledge base'),
+            model_name="advice",
+            name="for_knowledge_base",
+            field=models.BooleanField(
+                blank=True, null=True, verbose_name="For knowledge base"
+            ),
         ),
         migrations.AddField(
-            model_name='advice',
-            name='interesting_case',
-            field=models.BooleanField(blank=True, null=True, verbose_name='Interesting case'),
+            model_name="advice",
+            name="interesting_case",
+            field=models.BooleanField(
+                blank=True, null=True, verbose_name="Interesting case"
+            ),
         ),
         migrations.AddField(
-            model_name='area',
-            name='is_dip',
-            field=models.BooleanField(default=True, verbose_name='Is FOI area?'),
+            model_name="area",
+            name="is_dip",
+            field=models.BooleanField(default=True, verbose_name="Is FOI area?"),
         ),
         migrations.AddField(
-            model_name='issue',
-            name='is_dip',
-            field=models.BooleanField(default=True, verbose_name='Is FOI issue?'),
+            model_name="issue",
+            name="is_dip",
+            field=models.BooleanField(default=True, verbose_name="Is FOI issue?"),
         ),
     ]

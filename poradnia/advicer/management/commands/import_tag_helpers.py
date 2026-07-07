@@ -49,9 +49,7 @@ class Command(BaseCommand):
             stem = os.path.splitext(os.path.basename(path))[0]
             model = MODEL_MAP.get(stem)
             if model is None:
-                self.stderr.write(
-                    self.style.WARNING(f"Skipping unknown file: {path}")
-                )
+                self.stderr.write(self.style.WARNING(f"Skipping unknown file: {path}"))
                 continue
             self._process_file(path, model, dry_run)
 
@@ -71,45 +69,20 @@ class Command(BaseCommand):
             entry_id = entry.get("id")
 
             if entry_id is not None:
-                try:
-                    obj = model.objects.get(pk=entry_id)
-                except model.DoesNotExist:
-                    self.stderr.write(
-                        self.style.WARNING(
-                            f"{model.__name__} id={entry_id} not found, skipping."
-                        )
-                    )
-                    skipped += 1
-                    continue
-                changed = self._apply_changes(obj, name_value, tag_helper_value)
-                if changed:
-                    if not dry_run:
-                        obj.save(update_fields=["name", "tag_helper"])
-                    updated += 1
-                    self._log_change("updated", model, obj.pk, name_value, dry_run)
-                else:
-                    skipped += 1
-            else:
-                obj, was_created = model.objects.get_or_create(
-                    name=name_value,
-                    defaults={"tag_helper": tag_helper_value, "active": True},
+                result = self._process_entry_by_id(
+                    model, entry_id, name_value, tag_helper_value, dry_run
                 )
-                if was_created:
-                    if dry_run:
-                        obj.delete()
-                    created += 1
-                    self._log_change("created", model, obj.pk, name_value, dry_run)
-                else:
-                    changed = self._apply_changes(obj, name_value, tag_helper_value)
-                    if changed:
-                        if not dry_run:
-                            obj.save(update_fields=["name", "tag_helper"])
-                        updated += 1
-                        self._log_change(
-                            "updated", model, obj.pk, name_value, dry_run
-                        )
-                    else:
-                        skipped += 1
+            else:
+                result = self._process_entry_by_name(
+                    model, name_value, tag_helper_value, dry_run
+                )
+
+            if result == "created":
+                created += 1
+            elif result == "updated":
+                updated += 1
+            else:
+                skipped += 1
 
         label = "[DRY RUN] " if dry_run else ""
         self.stdout.write(
@@ -118,6 +91,44 @@ class Command(BaseCommand):
                 f"created={created}, updated={updated}, skipped={skipped}"
             )
         )
+
+    def _process_entry_by_id(
+        self, model, entry_id, name_value, tag_helper_value, dry_run
+    ):
+        try:
+            obj = model.objects.get(pk=entry_id)
+        except model.DoesNotExist:
+            self.stderr.write(
+                self.style.WARNING(
+                    f"{model.__name__} id={entry_id} not found, skipping."
+                )
+            )
+            return "skipped"
+        changed = self._apply_changes(obj, name_value, tag_helper_value)
+        if changed:
+            if not dry_run:
+                obj.save(update_fields=["name", "tag_helper"])
+            self._log_change("updated", model, obj.pk, name_value, dry_run)
+            return "updated"
+        return "skipped"
+
+    def _process_entry_by_name(self, model, name_value, tag_helper_value, dry_run):
+        obj, was_created = model.objects.get_or_create(
+            name=name_value,
+            defaults={"tag_helper": tag_helper_value, "active": True},
+        )
+        if was_created:
+            if dry_run:
+                obj.delete()
+            self._log_change("created", model, obj.pk, name_value, dry_run)
+            return "created"
+        changed = self._apply_changes(obj, name_value, tag_helper_value)
+        if changed:
+            if not dry_run:
+                obj.save(update_fields=["name", "tag_helper"])
+            self._log_change("updated", model, obj.pk, name_value, dry_run)
+            return "updated"
+        return "skipped"
 
     def _apply_changes(self, obj, name_value, tag_helper_value):
         changed = False

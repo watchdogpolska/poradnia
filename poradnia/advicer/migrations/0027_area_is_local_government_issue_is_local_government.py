@@ -6,18 +6,22 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('advicer', '0026_advice_for_knowledge_base_advice_interesting_case_and_more'),
+        ("advicer", "0026_advice_for_knowledge_base_advice_interesting_case_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='area',
-            name='is_local_government',
-            field=models.BooleanField(default=False, verbose_name='Is local government area?'),
+            model_name="area",
+            name="is_local_government",
+            field=models.BooleanField(
+                default=False, verbose_name="Is local government area?"
+            ),
         ),
         migrations.AddField(
-            model_name='issue',
-            name='is_local_government',
-            field=models.BooleanField(default=False, verbose_name='Is local government issue?'),
+            model_name="issue",
+            name="is_local_government",
+            field=models.BooleanField(
+                default=False, verbose_name="Is local government issue?"
+            ),
         ),
     ]
