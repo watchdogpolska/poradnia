@@ -373,6 +373,20 @@ class CaseSearchArticlesView(SingleObjectPermissionMixin, DetailView):
         return redirect(self.object)
 
 
+class CaseRequestAiTagsView(SingleObjectPermissionMixin, DetailView):
+    model = Case
+    permission_required = ["cases.can_change_case"]
+    http_method_names = ["post"]
+
+    def post(self, request, *args, **kwargs):
+        self.object.request_ai_tags_for_case()
+        messages.success(
+            request,
+            _('AI tagging started for "%(object)s".') % {"object": self.object},
+        )
+        return redirect(self.object)
+
+
 class CaseAutocomplete(autocomplete.Select2QuerySetView):
     def get_queryset(self):
         qs = Case.objects.for_user(self.request.user).all()

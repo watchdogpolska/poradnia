@@ -135,6 +135,9 @@ class N8nCaseTagsRequest(models.Model):
             "personkind_list": json.loads(PersonKind.active_as_json()),
             "institutionkind_list": json.loads(InstitutionKind.active_as_json()),
         }
+        # For debugging, you can uncomment the following line to log the payload being
+        #    sent to the webhook
+        # print(json.dumps(payload, indent=2))
         response = requests.post(
             webhook_url,
             json=payload,
