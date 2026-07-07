@@ -32,12 +32,22 @@ class AbstractCategory(models.Model):
 
 
 class Issue(AbstractCategory):
+    is_dip = models.BooleanField(default=True, verbose_name=_("Is FOI issue?"))
+    is_local_government = models.BooleanField(
+        default=False, verbose_name=_("Is local government issue?")
+    )
+
     class Meta:
         verbose_name = _("The thematic scope of the request")
         verbose_name_plural = _("Thematic scopes of requests")
 
 
 class Area(AbstractCategory):
+    is_dip = models.BooleanField(default=True, verbose_name=_("Is FOI area?"))
+    is_local_government = models.BooleanField(
+        default=False, verbose_name=_("Is local government area?")
+    )
+
     class Meta:
         verbose_name = _("Problem regarding the right to information")
         verbose_name_plural = _("Problems regarding the right to information")
@@ -150,6 +160,12 @@ class Advice(models.Model):
     )
     created_on = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Creation date")
+    )
+    interesting_case = models.BooleanField(
+        verbose_name=_("Interesting case"), null=True, blank=True
+    )
+    for_knowledge_base = models.BooleanField(
+        verbose_name=_("For knowledge base"), null=True, blank=True
     )
     helped = models.BooleanField(verbose_name=_("We helped?"), null=True, blank=True)
     modified_by = models.ForeignKey(
