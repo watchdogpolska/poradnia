@@ -211,6 +211,30 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         else:
             qs = qs.filter(visible__isnull=True)
 
+        ic_yes = get_numeric_param(self.request, "interesting_case_yes")
+        ic_no = get_numeric_param(self.request, "interesting_case_no")
+        if ic_yes and ic_no:
+            pass
+        elif ic_yes:
+            qs = qs.filter(interesting_case=True)
+        elif ic_no:
+            qs = qs.filter(Q(interesting_case=False) | Q(interesting_case__isnull=True))
+        else:
+            qs = qs.none()
+
+        fkb_yes = get_numeric_param(self.request, "for_knowledge_base_yes")
+        fkb_no = get_numeric_param(self.request, "for_knowledge_base_no")
+        if fkb_yes and fkb_no:
+            pass
+        elif fkb_yes:
+            qs = qs.filter(for_knowledge_base=True)
+        elif fkb_no:
+            qs = qs.filter(
+                Q(for_knowledge_base=False) | Q(for_knowledge_base__isnull=True)
+            )
+        else:
+            qs = qs.none()
+
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_datetime("created_on", timezone.get_default_timezone())

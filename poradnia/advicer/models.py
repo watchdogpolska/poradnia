@@ -161,6 +161,9 @@ class Advice(models.Model):
     created_on = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Creation date")
     )
+    # advice_table filters for interesting_case and for_knowledge_base:
+    # "Yes" → flag=True; "No" → flag=False or NULL
+    # (NULL treated as not set, i.e. negative)
     interesting_case = models.BooleanField(
         verbose_name=_("Interesting case"), null=True, blank=True
     )
