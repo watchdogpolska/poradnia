@@ -727,6 +727,22 @@ class Case(models.Model):
         )
         obj.search_articles()
 
+    def request_ai_tags_for_case(self):
+        """
+        Send client messages content and active tag lists for this case to the
+        n8n case-tags webhook and persist the request as an N8nCaseTagsRequest.
+
+        The result is delivered asynchronously via the n8n callback.
+        """
+        from ai_assistant.models import N8nCaseTagsRequest
+
+        question = self.get_client_messages_content()
+        obj = N8nCaseTagsRequest(
+            question=question,
+            case=self,
+        )
+        obj.send_tags_request()
+
 
 class DeleteCaseProxy(Case):
     class Meta:
