@@ -199,6 +199,12 @@ class Advice(models.Model):
     )
     objects = AdviceQuerySet.as_manager()
 
+    class Meta:
+        ordering = ["-created_on"]
+        permissions = (("can_view_all_advices", _("Can view all advices")),)
+        verbose_name = _("Tag")
+        verbose_name_plural = _("Tags")
+
     def __str__(self):
         return self.subject or _("Tag #%d") % (self.pk)
 
@@ -222,11 +228,42 @@ class Advice(models.Model):
             return '<span class="fas fa-check" style="color: green;"></span>'
         return '<span class="fas fa-xmark" style="color: red;"></span>'
 
-    class Meta:
-        ordering = ["-created_on"]
-        permissions = (("can_view_all_advices", _("Can view all advices")),)
-        verbose_name = _("Tag")
-        verbose_name_plural = _("Tags")
+    def _ai_tag(self, key):
+        if self.ai_assistant_tags:
+            return self.ai_assistant_tags.get(key)
+        return None
+
+    @property
+    def ai_subject(self):
+        return self._ai_tag("subject")
+
+    @property
+    def ai_summary(self):
+        return self._ai_tag("summary")
+
+    @property
+    def ai_issues(self):
+        return self._ai_tag("issues")
+
+    @property
+    def ai_area(self):
+        return self._ai_tag("area")
+
+    @property
+    def ai_person_kind(self):
+        return self._ai_tag("person_kind")
+
+    @property
+    def ai_institution_kind(self):
+        return self._ai_tag("institution_kind")
+
+    @property
+    def ai_jst(self):
+        return self._ai_tag("jst")
+
+    @property
+    def ai_comment(self):
+        return self._ai_tag("comment")
 
 
 class Attachment(AttachmentBase):

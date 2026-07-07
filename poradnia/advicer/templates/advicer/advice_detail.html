@@ -25,85 +25,117 @@
             <div class="panel panel-default">
                 <div class="panel-heading">{% trans 'Statistic data' %}</div>
                 <table class="table">
+                    <thead>
+                        <tr>
+                            <th>{% trans 'Field' %}</th>
+                            <th>{% trans 'Value' %}</th>
+                            <th>{% trans 'AI suggestion' %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>{% trans 'Case' %}</td>
+                            <td>
+                            {% if object.case %}
+                                <a href="{{ object.case.get_absolute_url }}">{{ object.case }}</a>
+                            {% endif %}
+                            </td>
+                            <td></td>
+                        </tr>
 
-                    <tr>
-                        <td>{% trans 'Case' %}</td>
-                        <td>
-                        {% if object.case %}
-                            <a href="{{ object.case.get_absolute_url }}">{{ object.case }}</a>
-                        {% endif %}
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{% trans 'Tag subject' %}</td>
+                            <td>{{ object.subject|default_if_none:"---"|linebreaks }}</td>
+                            <td>{{ object.ai_subject|default:"---" }}</td>
+                        </tr>
 
-                    <tr>
-                        <td>{% trans 'Tag subject' %}</td>
-                        <td>{{ object.subject|default_if_none:"---"|linebreaks }}</td>
-                    </tr>
+                        <tr>
+                            <td>{% trans 'Summary' %}</td>
+                            <td>{{ object.summary|default_if_none:"---"|linebreaks }}</td>
+                            <td>{{ object.ai_summary|default:"---"|linebreaks }}</td>
+                        </tr>
 
-                    <tr>
-                        <td>{% trans 'Summary' %}</td>
-                        <td>{{ object.summary|default_if_none:"---"|linebreaks }}</td>
-                    </tr>
-
-                    <tr>
-                        <td>{% trans 'Issues' %}</td>
-                        <td>
-                        {% if object.issues.all %}
-                            {% for obj in object.issues.all %}
-                                {{ obj }}{% if not forloop.last %}<br>{% endif %}
-                            {% endfor %}
-                        {% endif %}
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>{% trans 'Area' %}</td>
-                        <td>
-                            {% if object.area.all %}
-                                {% for obj in object.area.all %}
+                        <tr>
+                            <td>{% trans 'Issues' %}</td>
+                            <td>
+                            {% if object.issues.all %}
+                                {% for obj in object.issues.all %}
                                     {{ obj }}{% if not forloop.last %}<br>{% endif %}
                                 {% endfor %}
                             {% endif %}
-                        </td>
-                    </tr>
+                            </td>
+                            <td>
+                            {% if object.ai_issues %}
+                                {{ object.ai_issues|join:", " }}
+                            {% else %}
+                                ---
+                            {% endif %}
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td>{% trans 'Kind of person' %}</td>
-                        <td>
-                            {{ object.person_kind | default:"---" }}
-                        </td>
-                    </tr>
+                        <tr>
+                            <td>{% trans 'Area' %}</td>
+                            <td>
+                                {% if object.area.all %}
+                                    {% for obj in object.area.all %}
+                                        {{ obj }}{% if not forloop.last %}<br>{% endif %}
+                                    {% endfor %}
+                                {% endif %}
+                            </td>
+                            <td>
+                            {% if object.ai_area %}
+                                {{ object.ai_area|join:", " }}
+                            {% else %}
+                                ---
+                            {% endif %}
+                            </td>
+                        </tr>
 
-                    <tr>
-                        <td>{% trans 'Kind of istitution' %}</td>
-                        <td>{{ object.institution_kind | default:"---" }}</td>
-                    </tr>
+                        <tr>
+                            <td>{% trans 'Kind of person' %}</td>
+                            <td>
+                                {{ object.person_kind | default:"---" }}
+                            </td>
+                            <td>{{ object.ai_person_kind|default:"---" }}</td>
+                        </tr>
 
-                    <tr>
-                        <td>{% trans 'Unit of administrative division' %}</td>
-                        <td>{{ object.jst | default:"---" }}</td>
-                    </tr>
+                        <tr>
+                            <td>{% trans 'Kind of istitution' %}</td>
+                            <td>{{ object.institution_kind | default:"---" }}</td>
+                            <td>{{ object.ai_institution_kind|default:"---" }}</td>
+                        </tr>
 
-                    <tr>
-                        <td>{% trans 'Comment' %}</td>
-                        <td>{{ object.comment|default_if_none:"---"|linebreaks }}</td>
-                    </tr>
+                        <tr>
+                            <td>{% trans 'Unit of administrative division' %}</td>
+                            <td>{{ object.jst | default:"---" }}</td>
+                            <td>{{ object.ai_jst|default:"---" }}</td>
+                        </tr>
 
-                    <tr>
-                        <td>{% trans 'We helped?' %}</td>
-                        <td>{{ object.helped|yesno:_("Yes,No") }}</td>
-                    </tr>
+                        <tr>
+                            <td>{% trans 'Comment' %}</td>
+                            <td>{{ object.comment|default_if_none:"---"|linebreaks }}</td>
+                            <td>{{ object.ai_comment|default:"---"|linebreaks }}</td>
+                        </tr>
 
-                    <tr>
-                        <td>{% trans 'Interesting case' %}</td>
-                        <td>{{ object.interesting_case|yesno:_("Yes,No") }}</td>
-                    </tr>
+                        <tr>
+                            <td>{% trans 'We helped?' %}</td>
+                            <td>{{ object.helped|yesno:_("Yes,No") }}</td>
+                            <td></td>
+                        </tr>
 
-                    <tr>
-                        <td>{% trans 'For knowledge base' %}</td>
-                        <td>{{ object.for_knowledge_base|yesno:_("Yes,No") }}</td>
-                    </tr>
+                        <tr>
+                            <td>{% trans 'Interesting case' %}</td>
+                            <td>{{ object.interesting_case|yesno:_("Yes,No") }}</td>
+                            <td></td>
+                        </tr>
 
+                        <tr>
+                            <td>{% trans 'For knowledge base' %}</td>
+                            <td>{{ object.for_knowledge_base|yesno:_("Yes,No") }}</td>
+                            <td></td>
+                        </tr>
+
+                    </tbody>
                 </table>
             </div>
         </div>
