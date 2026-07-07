@@ -1,3 +1,5 @@
+import json
+
 from atom.models import AttachmentBase
 from django.conf import settings
 from django.db import models
@@ -24,11 +26,18 @@ class AbstractCategory(models.Model):
         help_text=_("Helper text how to apply the tag."),
     )
 
+    class Meta:
+        abstract = True
+
     def __str__(self):
         return self.name
 
-    class Meta:
-        abstract = True
+    @classmethod
+    def active_as_json(cls):
+        items = list(
+            cls.objects.filter(active=True).values("id", "name", "tag_helper")
+        )
+        return json.dumps(items)
 
 
 class Issue(AbstractCategory):
@@ -41,6 +50,15 @@ class Issue(AbstractCategory):
         verbose_name = _("The thematic scope of the request")
         verbose_name_plural = _("Thematic scopes of requests")
 
+    @classmethod
+    def active_as_json(cls):
+        items = list(
+            cls.objects.filter(active=True).values(
+                "id", "name", "tag_helper", "is_dip", "is_local_government"
+            )
+        )
+        return json.dumps(items)
+
 
 class Area(AbstractCategory):
     is_dip = models.BooleanField(default=True, verbose_name=_("Is FOI area?"))
@@ -51,6 +69,15 @@ class Area(AbstractCategory):
     class Meta:
         verbose_name = _("Problem regarding the right to information")
         verbose_name_plural = _("Problems regarding the right to information")
+
+    @classmethod
+    def active_as_json(cls):
+        items = list(
+            cls.objects.filter(active=True).values(
+                "id", "name", "tag_helper", "is_dip", "is_local_government"
+            )
+        )
+        return json.dumps(items)
 
 
 class PersonKind(AbstractCategory):
