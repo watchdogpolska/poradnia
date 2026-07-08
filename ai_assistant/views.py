@@ -201,6 +201,32 @@ def _get_or_create_ai_assistant():
 
 @method_decorator(csrf_exempt, name="dispatch")
 class N8nArticlesSearchCallbackView(View):
+    """Receive article-search results posted back by n8n.
+
+    Accepts POST requests from n8n containing the outcome of an AI-assisted
+    article search initiated via ``N8nArticlesSearchRequest``.  The view:
+
+    1. Authenticates the caller with a bearer token (``_check_token``).
+    2. Looks up the pending ``N8nArticlesSearchRequest`` by ``request_id``.
+    3. On error: marks the request as *failed* and stores the error message.
+    4. On success: marks the request as *completed*, stores the plain-text
+       response and the ``is_foi`` flag, then creates an
+       ``ai_message_staff`` ``Letter`` on the associated case so advisors
+       can see the answer inline in the case timeline.
+
+    Expected JSON payload::
+
+        {
+            "request_id": "<uuid>",
+            "response":   "<plain-text answer>",    # optional on error
+            "is_foi":     "<value>",                # optional
+            "error":      "<message>"               # present only on failure
+        }
+
+    Returns ``{"ok": true, "result": "completed"|"failed"}`` on success,
+    or a JSON error object with an appropriate HTTP status code.
+    """
+
     def post(self, request, *args, **kwargs):
         err = _check_token(request)
         if err:
