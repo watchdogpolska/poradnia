@@ -8,7 +8,9 @@ from django.test import RequestFactory, SimpleTestCase, TestCase, override_setti
 from ai_assistant import views as views_module
 from ai_assistant.models import N8nArticlesSearchRequest, N8nCaseTagsRequest
 from poradnia.advicer.factories import (
+    AdviceFactory,
     AreaFactory,
+    InstitutionKindFactory,
     IssueFactory,
     PersonKindFactory,
 )
@@ -644,3 +646,296 @@ class N8nCaseTagsRequestModelTestCase(TestCase):
 
         _, kwargs = mock_post.call_args
         self.assertEqual(kwargs["timeout"], 10)
+
+
+CASE_TAGS_CALLBACK_SETTINGS = {"N8N_CASE_TAGS_CALLBACK_TOKEN": "case-tags-callback-secret"}
+
+_JST_PATCH = "poradnia.teryt.models.JST.objects.filter"
+
+
+class N8nCaseTagsPayloadValidationTestCase(TestCase):
+    """Tests for _validate_case_tags_payload called directly."""
+
+    def setUp(self):
+        self.issue = IssueFactory()
+        self.area = AreaFactory()
+        self.person_kind = PersonKindFactory()
+        self.institution_kind = InstitutionKindFactory()
+
+    def _valid(self):
+        return {
+            "subject": "Temat",
+            "summary": "Podsumowanie",
+            "institution_kind_id": self.institution_kind.pk,
+            "person_kind_id": self.person_kind.pk,
+            "jst_id": "02",
+            "issue_ids": [self.issue.pk],
+            "area_ids": [self.area.pk],
+        }
+
+    def _validate(self, payload):
+        return views_module._validate_case_tags_payload(payload)
+
+    def test_missing_subject_returns_error(self):
+        p = self._valid()
+        del p["subject"]
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertIn("subject", _json(err)["error"]["message"])
+
+    def test_empty_subject_returns_error(self):
+        p = self._valid()
+        p["subject"] = "  "
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+
+    def test_missing_summary_returns_error(self):
+        p = self._valid()
+        del p["summary"]
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertIn("summary", _json(err)["error"]["message"])
+
+    def test_non_integer_institution_kind_id_returns_error(self):
+        p = self._valid()
+        p["institution_kind_id"] = "x"
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertEqual(_json(err)["error"]["code"], "missing_field")
+
+    def test_nonexistent_institution_kind_id_returns_error(self):
+        p = self._valid()
+        p["institution_kind_id"] = 99999
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertEqual(_json(err)["error"]["code"], "invalid_field")
+
+    def test_nonexistent_person_kind_id_returns_error(self):
+        p = self._valid()
+        p["person_kind_id"] = 99999
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertEqual(_json(err)["error"]["code"], "invalid_field")
+
+    def test_non_string_jst_id_returns_error(self):
+        p = self._valid()
+        p["jst_id"] = 2
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertEqual(_json(err)["error"]["code"], "missing_field")
+
+    def test_jst_id_too_short_returns_error(self):
+        p = self._valid()
+        p["jst_id"] = "1"
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertEqual(_json(err)["error"]["code"], "missing_field")
+
+    def test_jst_id_with_letters_returns_error(self):
+        p = self._valid()
+        p["jst_id"] = "02abc"
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertEqual(_json(err)["error"]["code"], "missing_field")
+
+    def test_nonexistent_jst_id_returns_error(self):
+        p = self._valid()
+        p["jst_id"] = "9999999"
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertEqual(_json(err)["error"]["code"], "invalid_field")
+
+    @patch(_JST_PATCH)
+    def test_empty_issue_ids_returns_error(self, mock_filter):
+        mock_filter.return_value.exists.return_value = True
+        p = self._valid()
+        p["issue_ids"] = []
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertIn("issue_ids", _json(err)["error"]["message"])
+
+    @patch(_JST_PATCH)
+    def test_nonexistent_issue_id_returns_error(self, mock_filter):
+        mock_filter.return_value.exists.return_value = True
+        p = self._valid()
+        p["issue_ids"] = [99999]
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertEqual(_json(err)["error"]["code"], "invalid_field")
+
+    @patch(_JST_PATCH)
+    def test_empty_area_ids_returns_error(self, mock_filter):
+        mock_filter.return_value.exists.return_value = True
+        p = self._valid()
+        p["area_ids"] = []
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertIn("area_ids", _json(err)["error"]["message"])
+
+    @patch(_JST_PATCH)
+    def test_nonexistent_area_id_returns_error(self, mock_filter):
+        mock_filter.return_value.exists.return_value = True
+        p = self._valid()
+        p["area_ids"] = [99999]
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertEqual(_json(err)["error"]["code"], "invalid_field")
+
+    @patch(_JST_PATCH)
+    def test_valid_payload_returns_none(self, mock_filter):
+        mock_filter.return_value.exists.return_value = True
+        err = self._validate(self._valid())
+        self.assertIsNone(err)
+
+
+class N8nCaseTagsCallbackViewTestCase(TestCase):
+    def setUp(self):
+        self.factory = RequestFactory()
+        self.view = views_module.N8nCaseTagsCallbackView.as_view()
+        self.issue = IssueFactory()
+        self.area = AreaFactory()
+        self.person_kind = PersonKindFactory()
+        self.institution_kind = InstitutionKindFactory()
+
+    def _post(self, payload, token="case-tags-callback-secret"):
+        body = json.dumps(payload).encode()
+        request = self.factory.post("/", data=body, content_type="application/json")
+        request.headers = {"Authorization": f"Bearer {token}"}
+        return request
+
+    def _make_tags_request(self, **kwargs):
+        defaults = {
+            "request_id": "tag-cb-req-1",
+            "question": "Sample question",
+            "environment": "TEST",
+            "status": "pending",
+        }
+        defaults.update(kwargs)
+        return N8nCaseTagsRequest.objects.create(**defaults)
+
+    def _valid_payload(self, request_id="tag-cb-req-1"):
+        return {
+            "request_id": request_id,
+            "subject": "Test subject",
+            "summary": "Test summary",
+            "institution_kind_id": self.institution_kind.pk,
+            "person_kind_id": self.person_kind.pk,
+            "jst_id": "02",
+            "issue_ids": [self.issue.pk],
+            "area_ids": [self.area.pk],
+        }
+
+    def test_get_not_allowed(self):
+        request = self.factory.get("/")
+        request.headers = {}
+        response = self.view(request)
+        self.assertEqual(response.status_code, 405)
+
+    @override_settings(N8N_CASE_TAGS_CALLBACK_TOKEN="")
+    def test_token_not_configured_returns_503(self):
+        response = self.view(self._post({}))
+        self.assertEqual(response.status_code, 503)
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    def test_missing_token_returns_401(self):
+        body = json.dumps({}).encode()
+        request = self.factory.post("/", data=body, content_type="application/json")
+        request.headers = {}
+        response = self.view(request)
+        self.assertEqual(response.status_code, 401)
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    def test_invalid_token_returns_401(self):
+        response = self.view(self._post({}, token="wrong"))
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(_json(response)["error"]["message"], "Invalid bearer token.")
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    def test_missing_request_id_returns_400(self):
+        response = self.view(self._post({"subject": "x"}))
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(_json(response)["error"]["code"], "missing_field")
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    def test_unknown_request_id_returns_404(self):
+        response = self.view(self._post({"request_id": "no-such-id"}))
+        self.assertEqual(response.status_code, 404)
+        self.assertEqual(_json(response)["error"]["code"], "not_found")
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    def test_error_payload_marks_request_failed(self):
+        tr = self._make_tags_request()
+
+        response = self.view(
+            self._post({"request_id": "tag-cb-req-1", "error": "n8n timed out"})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(_json(response)["result"], "failed")
+        tr.refresh_from_db()
+        self.assertEqual(tr.status, "failed")
+        self.assertEqual(tr.response, "n8n timed out")
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    @patch("ai_assistant.views._validate_case_tags_payload", return_value=None)
+    def test_success_without_case_marks_completed(self, _validate):
+        tr = self._make_tags_request()
+
+        response = self.view(self._post(self._valid_payload()))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(_json(response)["result"], "completed")
+        tr.refresh_from_db()
+        self.assertEqual(tr.status, "completed")
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    @patch("ai_assistant.views._validate_case_tags_payload", return_value=None)
+    def test_success_with_case_no_advice_creates_advice(self, _validate):
+        from poradnia.advicer.models import Advice
+
+        case = CaseFactory()
+        tr = self._make_tags_request(case=case)
+
+        response = self.view(self._post(self._valid_payload()))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(_json(response)["result"], "completed")
+        tr.refresh_from_db()
+        self.assertEqual(tr.status, "completed")
+        advice = Advice.objects.get(case=case)
+        self.assertEqual(advice.ai_assistant_tags["subject"], "Test subject")
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    @patch("ai_assistant.views._validate_case_tags_payload", return_value=None)
+    def test_success_updates_advice_ai_assistant_tags(self, _validate):
+        case = CaseFactory()
+        advice = AdviceFactory(case=case)
+        tr = self._make_tags_request(case=case)
+
+        response = self.view(self._post(self._valid_payload()))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(_json(response)["result"], "completed")
+
+        advice.refresh_from_db()
+        tags = advice.ai_assistant_tags
+        self.assertIsNotNone(tags)
+        self.assertEqual(tags["subject"], "Test subject")
+        self.assertEqual(tags["summary"], "Test summary")
+        self.assertEqual(tags["institution_kind"], self.institution_kind.pk)
+        self.assertEqual(tags["person_kind"], self.person_kind.pk)
+        self.assertEqual(tags["jst"], "02")
+        self.assertEqual(tags["issues"], [self.issue.pk])
+        self.assertEqual(tags["area"], [self.area.pk])
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    @patch("ai_assistant.views._validate_case_tags_payload", return_value=None)
+    def test_success_stores_response_json_on_request(self, _validate):
+        tr = self._make_tags_request()
+
+        self.view(self._post(self._valid_payload()))
+
+        tr.refresh_from_db()
+        stored = json.loads(tr.response)
+        self.assertEqual(stored["subject"], "Test subject")
+        self.assertEqual(stored["issues"], [self.issue.pk])
