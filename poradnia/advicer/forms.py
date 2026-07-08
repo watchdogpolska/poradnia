@@ -2,7 +2,6 @@ from atom.forms import AuthorMixin
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.layout import Fieldset, Layout
 from dal import autocomplete
-from django import forms
 from django.forms import ModelForm
 from django.utils.timezone import now
 from django.utils.translation import gettext as _
