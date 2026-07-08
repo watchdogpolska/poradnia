@@ -47,6 +47,10 @@ msgstr "Rejestr tagów spraw"
 msgid "Subject"
 msgstr "Przedmiot"
 
+#: poradnia/advicer/models.py:149
+msgid "Tag subject"
+msgstr "Przedmiot tagu"
+
 #: poradnia/advicer/filters.py:42 poradnia/advicer/filters.py:70
 #: poradnia/advicer/models.py:139
 #: poradnia/advicer/templates/advicer/advice_detail.html:127
