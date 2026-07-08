@@ -25,12 +25,14 @@
             <div class="panel panel-default">
                 <div class="panel-heading" style="display:flex;align-items:center;justify-content:space-between;">
                     <span>{% trans 'Statistic data' %}</span>
+                    {% if object.case %}
                     <form method="post" action="{% url 'cases:request_ai_tags' pk=object.case.pk %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-default">
                             <i class="fas fa-robot"></i> {% trans 'Request fresh AI Tag suggestions' %}
                         </button>
                     </form>
+                    {% endif %}
                 </div>
                 <table class="table">
                     <thead>
