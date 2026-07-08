@@ -38,6 +38,15 @@ class CaseAdmin(GuardedModelAdmin):
         qs = super().get_queryset(*args, **kwargs)
         return qs.with_record_count()
 
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(DeleteCaseProxy)
 class DeleteOldCasesAdmin(CaseAdmin):
@@ -45,6 +54,9 @@ class DeleteOldCasesAdmin(CaseAdmin):
         "last_action",
     ]
     actions = ["delete_selected"]
+
+    def has_delete_permission(self, request, obj=None):
+        return super(CaseAdmin, self).has_delete_permission(request, obj)
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
