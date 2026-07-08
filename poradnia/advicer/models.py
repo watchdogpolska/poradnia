@@ -1,6 +1,5 @@
 import json
 
-from atom.models import AttachmentBase
 from django.conf import settings
 from django.db import models
 from django.db.models import Case as djCase
@@ -289,11 +288,3 @@ class Advice(models.Model):
     @property
     def ai_comment(self):
         return self._ai_tag("comment")
-
-
-class Attachment(AttachmentBase):
-    advice = models.ForeignKey(to=Advice, on_delete=models.CASCADE)
-
-    class Meta:
-        verbose_name = _("Attachment")
-        verbose_name_plural = _("Attachments")

@@ -10,11 +10,10 @@ from django.utils.translation import gettext as _
 from poradnia.cases.models import Case
 from poradnia.utils.crispy_forms import (
     FormHorizontalMixin,
-    HelperMixin,
     SingleButtonMixin,
 )
 
-from .models import Advice, Attachment
+from .models import Advice
 
 
 class AdviceForm(
@@ -85,14 +84,3 @@ class AdviceForm(
             ),
             "area": autocomplete.ModelSelect2Multiple(url="advicer:area-autocomplete"),
         }
-
-
-class AttachmentForm(HelperMixin, forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper.form_tag = False
-        self.helper.form_method = "post"
-
-    class Meta:
-        model = Attachment
-        fields = ["attachment"]

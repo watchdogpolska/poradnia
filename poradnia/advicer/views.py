@@ -20,13 +20,12 @@ from django_filters.views import FilterView
 from poradnia.cases.models import Case
 from poradnia.users.models import User
 from poradnia.users.utils import PermissionMixin
-from poradnia.utils.crispy_forms import FormSetMixin
 from poradnia.utils.mixins import ExprAutocompleteMixin
 from poradnia.utils.utils import get_numeric_param
 
 from .filters import AdviceFilter
-from .forms import AdviceForm, AttachmentForm
-from .models import Advice, Area, Attachment, Issue
+from .forms import AdviceForm
+from .models import Advice, Area, Issue
 
 ORDERING_TEXT = _("Ordering")
 
@@ -254,7 +253,6 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
 class AdviceUpdate(
     StaffuserRequiredMixin,
-    FormSetMixin,
     PermissionMixin,
     FormValidMessageMixin,
     UserFormKwargsMixin,
@@ -263,20 +261,14 @@ class AdviceUpdate(
 ):
     model = Advice
     form_class = AdviceForm
-    inline_model = Attachment
-    inline_form_cls = AttachmentForm
     raise_exception = True
 
     def get_form_valid_message(self):
         return _("{0} updated!").format(self.object)
 
-    def get_instance(self):
-        return self.object
-
 
 class AdviceCreate(
     StaffuserRequiredMixin,
-    FormSetMixin,
     FormInitialMixin,
     UserFormKwargsMixin,
     LoginRequiredMixin,
@@ -284,8 +276,6 @@ class AdviceCreate(
 ):
     model = Advice
     form_class = AdviceForm
-    inline_model = Attachment
-    inline_form_cls = AttachmentForm
     raise_exception = True
 
     def get_initial(self, *args, **kwargs):

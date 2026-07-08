@@ -116,10 +116,6 @@ class AdviceCreateTestCase(PermissionMixin, TemplateUsedMixin, TestCase):
                 "issues": [self.issue.pk],
                 "advicer": self.user.pk,
                 "grant_on": datetime.datetime.now(),
-                "attachment_set-INITIAL_FORMS": "0",
-                "attachment_set-MAX_NUM_FORMS": "1000",
-                "attachment_set-MIN_NUM_FORMS": "0",
-                "attachment_set-TOTAL_FORMS": "3",
             },
         )
         self.assertEqual(resp.status_code, 302)
