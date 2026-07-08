@@ -346,39 +346,59 @@ def _check_case_tags_token(request):
     return None
 
 
+def _validate_nonempty_string(payload, name):
+    value = payload.get(name)
+    if not isinstance(value, str) or not value.strip():
+        return _json_error("missing_field", f"{name} must be a non-empty string.", 400)
+    return None
+
+
+def _validate_fk_int(payload, name, model):
+    value = payload.get(name)
+    if not isinstance(value, int):
+        return _json_error("missing_field", f"{name} must be an integer.", 400)
+    if not model.objects.filter(pk=value).exists():
+        return _json_error(
+            "invalid_field", f"{model.__name__} {value} does not exist.", 400
+        )
+    return None
+
+
+def _validate_int_list(payload, name, model):
+    ids = payload.get(name)
+    if not isinstance(ids, list) or not ids:
+        return _json_error("missing_field", f"{name} must be a non-empty list.", 400)
+    if not all(isinstance(i, int) for i in ids):
+        return _json_error("missing_field", f"{name} must contain only integers.", 400)
+    existing = set(model.objects.filter(pk__in=ids).values_list("pk", flat=True))
+    missing = set(ids) - existing
+    if missing:
+        label = model.__name__ + "s"
+        return _json_error(
+            "invalid_field", f"{label} do not exist: {sorted(missing)}.", 400
+        )
+    return None
+
+
 def _validate_case_tags_payload(payload):
     from poradnia.advicer.models import Area, InstitutionKind, Issue, PersonKind
     from poradnia.teryt.models import JST
 
-    subject = payload.get("subject")
-    if not isinstance(subject, str) or not subject.strip():
-        return _json_error("missing_field", "subject must be a non-empty string.", 400)
+    err = _validate_nonempty_string(payload, "subject")
+    if err:
+        return err
 
-    summary = payload.get("summary")
-    if not isinstance(summary, str) or not summary.strip():
-        return _json_error("missing_field", "summary must be a non-empty string.", 400)
+    err = _validate_nonempty_string(payload, "summary")
+    if err:
+        return err
 
-    institution_kind_id = payload.get("institution_kind_id")
-    if not isinstance(institution_kind_id, int):
-        return _json_error(
-            "missing_field", "institution_kind_id must be an integer.", 400
-        )
-    if not InstitutionKind.objects.filter(pk=institution_kind_id).exists():
-        return _json_error(
-            "invalid_field",
-            f"InstitutionKind {institution_kind_id} does not exist.",
-            400,
-        )
+    err = _validate_fk_int(payload, "institution_kind_id", InstitutionKind)
+    if err:
+        return err
 
-    person_kind_id = payload.get("person_kind_id")
-    if not isinstance(person_kind_id, int):
-        return _json_error("missing_field", "person_kind_id must be an integer.", 400)
-    if not PersonKind.objects.filter(pk=person_kind_id).exists():
-        return _json_error(
-            "invalid_field",
-            f"PersonKind {person_kind_id} does not exist.",
-            400,
-        )
+    err = _validate_fk_int(payload, "person_kind_id", PersonKind)
+    if err:
+        return err
 
     jst_id = payload.get("jst_id")
     if not isinstance(jst_id, str) or not re.fullmatch(r"\d{2,7}", jst_id):
@@ -388,38 +408,17 @@ def _validate_case_tags_payload(payload):
     if not JST.objects.filter(pk=jst_id).exists():
         return _json_error("invalid_field", f"JST {jst_id!r} does not exist.", 400)
 
-    issue_ids = payload.get("issue_ids")
-    if not isinstance(issue_ids, list) or not issue_ids:
-        return _json_error("missing_field", "issue_ids must be a non-empty list.", 400)
-    if not all(isinstance(i, int) for i in issue_ids):
-        return _json_error(
-            "missing_field", "issue_ids must contain only integers.", 400
-        )
-    existing = set(Issue.objects.filter(pk__in=issue_ids).values_list("pk", flat=True))
-    missing = set(issue_ids) - existing
-    if missing:
-        return _json_error(
-            "invalid_field", f"Issues do not exist: {sorted(missing)}.", 400
-        )
+    err = _validate_int_list(payload, "issue_ids", Issue)
+    if err:
+        return err
 
-    area_ids = payload.get("area_ids")
-    if not isinstance(area_ids, list) or not area_ids:
-        return _json_error("missing_field", "area_ids must be a non-empty list.", 400)
-    if not all(isinstance(i, int) for i in area_ids):
-        return _json_error("missing_field", "area_ids must contain only integers.", 400)
-    existing = set(Area.objects.filter(pk__in=area_ids).values_list("pk", flat=True))
-    missing = set(area_ids) - existing
-    if missing:
-        return _json_error(
-            "invalid_field", f"Areas do not exist: {sorted(missing)}.", 400
-        )
-
-    return None
+    return _validate_int_list(payload, "area_ids", Area)
 
 
 @method_decorator(csrf_exempt, name="dispatch")
 class N8nCaseTagsCallbackView(View):
-    """Receive the AI-tagging result posted back by n8n after N8nCaseTagsRequest.send_tags_request().
+    """Receive the AI-tagging result posted back by n8n after
+    N8nCaseTagsRequest.send_tags_request().
 
     Authentication
     --------------

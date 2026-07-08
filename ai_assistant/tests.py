@@ -648,7 +648,9 @@ class N8nCaseTagsRequestModelTestCase(TestCase):
         self.assertEqual(kwargs["timeout"], 10)
 
 
-CASE_TAGS_CALLBACK_SETTINGS = {"N8N_CASE_TAGS_CALLBACK_TOKEN": "case-tags-callback-secret"}
+CASE_TAGS_CALLBACK_SETTINGS = {
+    "N8N_CASE_TAGS_CALLBACK_TOKEN": "case-tags-callback-secret"
+}
 
 _JST_PATCH = "poradnia.teryt.models.JST.objects.filter"
 
