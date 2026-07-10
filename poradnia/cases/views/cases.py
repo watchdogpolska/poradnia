@@ -384,7 +384,7 @@ class CaseRequestAiTagsView(SingleObjectPermissionMixin, DetailView):
             request,
             _('AI tagging started for "%(object)s".') % {"object": self.object},
         )
-        return redirect(self.object)
+        return redirect(self.object.advice if self.object.advice else self.object)
 
 
 class CaseAutocomplete(autocomplete.Select2QuerySetView):
