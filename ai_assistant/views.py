@@ -428,16 +428,17 @@ class N8nCaseTagsCallbackView(View):
 
     Request body (JSON)
     -------------------
-    ``request_id``        - str, matches an existing N8nCaseTagsRequest.
-    ``error``             - str (optional).  If present the request is marked
-                            failed and no further processing occurs.
-    ``subject``           - non-empty str.
-    ``summary``           - non-empty str.
+    ``request_id``          - str, matches an existing N8nCaseTagsRequest.
+    ``error``               - str (optional).  If present the request is marked
+                              failed and no further processing occurs.
+    ``subject``             - non-empty str.
+    ``summary``             - non-empty str.
     ``institution_kind_id`` - int, must reference an existing InstitutionKind.
-    ``person_kind_id``    - int, must reference an existing PersonKind.
-    ``jst_id``            - str of 2-7 digits, must reference an existing JST.
-    ``issue_ids``         - non-empty list[int], all must reference existing Issues.
-    ``area_ids``          - non-empty list[int], all must reference existing Areas.
+    ``person_kind_id``      - int, must reference an existing PersonKind.
+    ``jst_id``              - str of 2-7 digits (optional), must reference an existing
+                              JST if provided.
+    ``issue_ids``           - non-empty list[int], all must reference existing Issues.
+    ``area_ids``            - non-empty list[int], all must reference existing Areas.
 
     On success the view upserts ``Advice.ai_assistant_tags`` on the advice
     linked to the request's case and marks the request as completed.  If no
