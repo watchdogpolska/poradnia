@@ -28,6 +28,11 @@ urlpatterns = [
         name="classify_and_search_articles",
     ),
     path(
+        "sprawa-<int:pk>/taguj-sprawa/",
+        views.CaseRequestAiTagsView.as_view(),
+        name="request_ai_tags",
+    ),
+    path(
         "sprawa-<int:pk>/uprawnienia/",
         views.UserPermissionCreateView.as_view(),
         name="permission_add",

@@ -20,13 +20,12 @@ from django_filters.views import FilterView
 from poradnia.cases.models import Case
 from poradnia.users.models import User
 from poradnia.users.utils import PermissionMixin
-from poradnia.utils.crispy_forms import FormSetMixin
 from poradnia.utils.mixins import ExprAutocompleteMixin
 from poradnia.utils.utils import get_numeric_param
 
 from .filters import AdviceFilter
-from .forms import AdviceForm, AttachmentForm
-from .models import Advice, Area, Attachment, Issue
+from .forms import AdviceForm
+from .models import Advice, Area, Issue
 
 ORDERING_TEXT = _("Ordering")
 
@@ -184,33 +183,49 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         row["visible"] = obj.render_visible()
         return
 
-    def get_initial_queryset(self, request=None):
-        qs = super().get_initial_queryset(request).select_related().prefetch_related()
-
+    def _apply_helped_filter(self, qs):
         helped_filter = []
-        for helped in [("helped_yes", True), ("helped_no", False)]:
-            if get_numeric_param(self.request, helped[0]):
-                helped_filter.append(helped[1])
-        if len(helped_filter) > 0:
+        for param, value in [("helped_yes", True), ("helped_no", False)]:
+            if get_numeric_param(self.request, param):
+                helped_filter.append(value)
+        if helped_filter:
             helped_query = Q(helped__in=helped_filter)
-            # qs = qs.filter(helped__in=helped_filter)
         else:
             helped_query = Q(helped__isnull=True)
-            # qs = qs.filter(helped__isnull=True)
         if get_numeric_param(self.request, "helped_blank"):
-            qs = qs.filter(helped_query | Q(helped__isnull=True))
-        else:
-            qs = qs.filter(helped_query & Q(helped__isnull=False))
+            return qs.filter(helped_query | Q(helped__isnull=True))
+        return qs.filter(helped_query & Q(helped__isnull=False))
 
+    def _apply_visible_filter(self, qs):
         visble_filter = []
-        for visible in [("visible_yes", True), ("visible_no", False)]:
-            if get_numeric_param(self.request, visible[0]):
-                visble_filter.append(visible[1])
-        if len(visble_filter) > 0:
-            qs = qs.filter(visible__in=visble_filter)
-        else:
-            qs = qs.filter(visible__isnull=True)
+        for param, value in [("visible_yes", True), ("visible_no", False)]:
+            if get_numeric_param(self.request, param):
+                visble_filter.append(value)
+        if visble_filter:
+            return qs.filter(visible__in=visble_filter)
+        return qs.filter(visible__isnull=True)
 
+    def _apply_nullable_bool_filter(self, qs, param_yes, param_no, field):
+        yes = get_numeric_param(self.request, param_yes)
+        no = get_numeric_param(self.request, param_no)
+        if yes and no:
+            return qs
+        if yes:
+            return qs.filter(**{field: True})
+        if no:
+            return qs.filter(Q(**{field: False}) | Q(**{f"{field}__isnull": True}))
+        return qs.none()
+
+    def get_initial_queryset(self, request=None):
+        qs = super().get_initial_queryset(request).select_related().prefetch_related()
+        qs = self._apply_helped_filter(qs)
+        qs = self._apply_visible_filter(qs)
+        qs = self._apply_nullable_bool_filter(
+            qs, "interesting_case_yes", "interesting_case_no", "interesting_case"
+        )
+        qs = self._apply_nullable_bool_filter(
+            qs, "for_knowledge_base_yes", "for_knowledge_base_no", "for_knowledge_base"
+        )
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_datetime("created_on", timezone.get_default_timezone())
@@ -238,7 +253,6 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
 class AdviceUpdate(
     StaffuserRequiredMixin,
-    FormSetMixin,
     PermissionMixin,
     FormValidMessageMixin,
     UserFormKwargsMixin,
@@ -247,20 +261,14 @@ class AdviceUpdate(
 ):
     model = Advice
     form_class = AdviceForm
-    inline_model = Attachment
-    inline_form_cls = AttachmentForm
     raise_exception = True
 
     def get_form_valid_message(self):
         return _("{0} updated!").format(self.object)
 
-    def get_instance(self):
-        return self.object
-
 
 class AdviceCreate(
     StaffuserRequiredMixin,
-    FormSetMixin,
     FormInitialMixin,
     UserFormKwargsMixin,
     LoginRequiredMixin,
@@ -268,8 +276,6 @@ class AdviceCreate(
 ):
     model = Advice
     form_class = AdviceForm
-    inline_model = Attachment
-    inline_form_cls = AttachmentForm
     raise_exception = True
 
     def get_initial(self, *args, **kwargs):
