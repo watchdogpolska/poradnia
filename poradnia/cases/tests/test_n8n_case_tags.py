@@ -1,5 +1,6 @@
 from unittest.mock import MagicMock, patch
 
+import requests as requests_lib
 from django.contrib.messages import get_messages
 from django.core.exceptions import ImproperlyConfigured
 from django.test.utils import override_settings
@@ -91,6 +92,23 @@ class CaseRequestAiTagsTestCase(TestCase):
         with self.assertRaises(ImproperlyConfigured):
             case.request_ai_tags_for_case()
 
+    @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
+    @patch("ai_assistant.models.requests.post")
+    def test_returns_false_and_saves_error_status_on_http_error(self, mock_post):
+        case = CaseFactory()
+        mock_response = MagicMock()
+        mock_response.raise_for_status.side_effect = requests_lib.HTTPError("500")
+        mock_post.return_value = mock_response
+
+        result = case.request_ai_tags_for_case()
+
+        self.assertFalse(result)
+        from ai_assistant.models import N8nCaseTagsRequest
+
+        obj = N8nCaseTagsRequest.objects.filter(case=case, status="error").first()
+        self.assertIsNotNone(obj)
+        self.assertEqual(obj.environment, "TEST")
+
 
 class CaseRequestAiTagsViewTestCase(TestCase):
     def setUp(self):
@@ -130,11 +148,20 @@ class CaseRequestAiTagsViewTestCase(TestCase):
             response, self.case.get_absolute_url(), fetch_redirect_response=False
         )
 
-    @patch("poradnia.cases.models.Case.request_ai_tags_for_case")
+    @patch("poradnia.cases.models.Case.request_ai_tags_for_case", return_value=True)
     def test_success_message_is_set(self, mock_tag):
         self._grant_permission()
         self.client.login(username="john", password="pass")
         response = self._post()
-        messages = list(get_messages(response.wsgi_request))
-        self.assertEqual(len(messages), 1)
-        self.assertIn(self.case.name, str(messages[0]))
+        msgs = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(msgs), 1)
+        self.assertIn(self.case.name, str(msgs[0]))
+
+    @patch("poradnia.cases.models.Case.request_ai_tags_for_case", return_value=False)
+    def test_error_message_is_set_when_tagging_fails(self, mock_tag):
+        self._grant_permission()
+        self.client.login(username="john", password="pass")
+        response = self._post()
+        msgs = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(msgs), 1)
+        self.assertIn(self.case.name, str(msgs[0]))

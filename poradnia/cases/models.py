@@ -742,7 +742,7 @@ class Case(models.Model):
             question=question,
             case=self,
         )
-        obj.send_tags_request()
+        return obj.send_tags_request()
 
 
 class DeleteCaseProxy(Case):

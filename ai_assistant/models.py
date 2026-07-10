@@ -1,5 +1,6 @@
 import json
 import logging
+import uuid
 
 import requests
 from django.conf import settings
@@ -142,19 +143,27 @@ class N8nCaseTagsRequest(models.Model):
         # For debugging, you can uncomment the following line to log the payload being
         #    sent to the webhook
         # print(json.dumps(payload, indent=2))
-        response = requests.post(
-            webhook_url,
-            json=payload,
-            headers=headers,
-            timeout=getattr(settings, "N8N_CASE_TAGS_WEBHOOK_TIMEOUT", 10),
-        )
-        response.raise_for_status()
+        try:
+            response = requests.post(
+                webhook_url,
+                json=payload,
+                headers=headers,
+                timeout=getattr(settings, "N8N_CASE_TAGS_WEBHOOK_TIMEOUT", 10),
+            )
+            response.raise_for_status()
+            data = response.json()
+            self.request_id = data["request_id"]
+            self.status = "pending"
+        except requests.RequestException as exc:
+            logger.error("Case tags request failed: %s", exc)
+            self.request_id = str(uuid.uuid4())
+            self.status = "error"
 
-        data = response.json()
-        self.request_id = data["request_id"]
         self.environment = environment
-        self.status = "pending"
         self.save()
 
+        if self.status == "error":
+            return False
+
         logger.info("Case tags request accepted: request_id=%s", self.request_id)
-        return self.request_id
+        return True

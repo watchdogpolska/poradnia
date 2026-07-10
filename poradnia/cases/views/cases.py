@@ -379,12 +379,20 @@ class CaseRequestAiTagsView(SingleObjectPermissionMixin, DetailView):
     http_method_names = ["post"]
 
     def post(self, request, *args, **kwargs):
-        self.object.request_ai_tags_for_case()
-        messages.success(
-            request,
-            _('AI tagging started for "%(object)s".') % {"object": self.object},
-        )
-        return redirect(self.object.advice if self.object.advice else self.object)
+        success = self.object.request_ai_tags_for_case()
+        if success:
+            messages.success(
+                request,
+                _('AI tagging started for "%(object)s".') % {"object": self.object},
+            )
+        else:
+            messages.error(
+                request,
+                _('AI tagging request failed for "%(object)s". Please try again later.')
+                % {"object": self.object},
+            )
+        advice = getattr(self.object, "advice", None)
+        return redirect(advice if advice else self.object)
 
 
 class CaseAutocomplete(autocomplete.Select2QuerySetView):
