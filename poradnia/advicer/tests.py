@@ -1,4 +1,5 @@
 import datetime
+import json
 
 from atom.mixins import AdminTestCaseMixin
 from django.test import RequestFactory
@@ -6,7 +7,7 @@ from django.urls import reverse, reverse_lazy
 from guardian.shortcuts import assign_perm
 from test_plus.test import TestCase
 
-from poradnia.advicer.models import Advice
+from poradnia.advicer.models import Advice, Area, Issue
 from poradnia.users.factories import StaffFactory, UserFactory
 
 from .factories import AdviceFactory, AreaFactory, IssueFactory
@@ -115,10 +116,6 @@ class AdviceCreateTestCase(PermissionMixin, TemplateUsedMixin, TestCase):
                 "issues": [self.issue.pk],
                 "advicer": self.user.pk,
                 "grant_on": datetime.datetime.now(),
-                "attachment_set-INITIAL_FORMS": "0",
-                "attachment_set-MAX_NUM_FORMS": "1000",
-                "attachment_set-MIN_NUM_FORMS": "0",
-                "attachment_set-TOTAL_FORMS": "3",
             },
         )
         self.assertEqual(resp.status_code, 302)
@@ -200,6 +197,48 @@ class AdviceAdminTestCase(AdminTestCaseMixin, TestCase):
     user_factory_cls = UserFactory
     factory_cls = AdviceFactory
     model = Advice
+
+
+class IssueActiveAsJsonTestCase(TestCase):
+    def test_excludes_inactive(self):
+        inactive = IssueFactory(active=False)
+        data = json.loads(Issue.active_as_json())
+        self.assertNotIn(inactive.pk, [item["id"] for item in data])
+
+    def test_includes_active(self):
+        issue = IssueFactory(active=True)
+        data = json.loads(Issue.active_as_json())
+        self.assertIn(issue.pk, [item["id"] for item in data])
+
+    def test_fields(self):
+        issue = IssueFactory(active=True)
+        data = json.loads(Issue.active_as_json())
+        item = next(d for d in data if d["id"] == issue.pk)
+        self.assertEqual(
+            set(item.keys()),
+            {"id", "name", "tag_helper", "is_dip", "is_local_government"},
+        )
+
+
+class AreaActiveAsJsonTestCase(TestCase):
+    def test_excludes_inactive(self):
+        inactive = AreaFactory(active=False)
+        data = json.loads(Area.active_as_json())
+        self.assertNotIn(inactive.pk, [item["id"] for item in data])
+
+    def test_includes_active(self):
+        area = AreaFactory(active=True)
+        data = json.loads(Area.active_as_json())
+        self.assertIn(area.pk, [item["id"] for item in data])
+
+    def test_fields(self):
+        area = AreaFactory(active=True)
+        data = json.loads(Area.active_as_json())
+        item = next(d for d in data if d["id"] == area.pk)
+        self.assertEqual(
+            set(item.keys()),
+            {"id", "name", "tag_helper", "is_dip", "is_local_government"},
+        )
 
 
 def autocomplete_ids(autocomplete_response):

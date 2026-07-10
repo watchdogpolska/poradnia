@@ -66,6 +66,30 @@
             </label><br>
             <br><br>
         </div>
+        <div class="row">
+            <label>{% trans 'Interesting case' %}:</label><br>
+            <input type="checkbox" id="interesting_case_yes" name="check_interesting_case_yes" checked>
+            <label for="interesting_case_yes" class="small">{% trans 'Yes' %} &nbsp;
+                <span class="fas fa-check" style="color: green;"></span>
+            </label><br>
+            <input type="checkbox" id="interesting_case_no" name="check_interesting_case_no" checked>
+            <label for="interesting_case_no" class="small">{% trans 'No' %} &nbsp;
+                <span class="fas fa-xmark" style="color: red;"></span>
+            </label><br>
+            <br><br>
+        </div>
+        <div class="row">
+            <label>{% trans 'For knowledge base' %}:</label><br>
+            <input type="checkbox" id="for_knowledge_base_yes" name="check_for_knowledge_base_yes" checked>
+            <label for="for_knowledge_base_yes" class="small">{% trans 'Yes' %} &nbsp;
+                <span class="fas fa-check" style="color: green;"></span>
+            </label><br>
+            <input type="checkbox" id="for_knowledge_base_no" name="check_for_knowledge_base_no" checked>
+            <label for="for_knowledge_base_no" class="small">{% trans 'No' %} &nbsp;
+                <span class="fas fa-xmark" style="color: red;"></span>
+            </label><br>
+            <br><br>
+        </div>
     </div>
     <div class="table-responsive">
         <table id="datatable_advices" width="100%" class="table table-bordered compact">

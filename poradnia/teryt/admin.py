@@ -10,6 +10,15 @@ class JednostkaAdministracyjnaAdmin(MPTTModelAdmin):
     search_fields = ["id", "name", "slug"]
     actions = None
 
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    def has_delete_permission(self, request, obj=None):
+        return False
+
 
 admin.site.unregister(JednostkaAdministracyjna)  # unregister original
 admin.site.register(JednostkaAdministracyjna, JednostkaAdministracyjnaAdmin)

@@ -38,6 +38,12 @@ class CaseAdmin(GuardedModelAdmin):
         qs = super().get_queryset(*args, **kwargs)
         return qs.with_record_count()
 
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
 
 @admin.register(DeleteCaseProxy)
 class DeleteOldCasesAdmin(CaseAdmin):

@@ -2,7 +2,6 @@ from atom.forms import AuthorMixin
 from braces.forms import UserKwargModelFormMixin
 from crispy_forms.layout import Fieldset, Layout
 from dal import autocomplete
-from django import forms
 from django.forms import ModelForm
 from django.utils.timezone import now
 from django.utils.translation import gettext as _
@@ -10,11 +9,10 @@ from django.utils.translation import gettext as _
 from poradnia.cases.models import Case
 from poradnia.utils.crispy_forms import (
     FormHorizontalMixin,
-    HelperMixin,
     SingleButtonMixin,
 )
 
-from .models import Advice, Attachment
+from .models import Advice
 
 
 class AdviceForm(
@@ -47,6 +45,8 @@ class AdviceForm(
                 "institution_kind",
                 "jst",
                 "helped",
+                "interesting_case",
+                "for_knowledge_base",
             ),
             Fieldset(
                 _("Details"),
@@ -72,6 +72,8 @@ class AdviceForm(
             "advicer",
             "comment",
             "helped",
+            "interesting_case",
+            "for_knowledge_base",
             "jst",
         ]
         widgets = {
@@ -81,14 +83,3 @@ class AdviceForm(
             ),
             "area": autocomplete.ModelSelect2Multiple(url="advicer:area-autocomplete"),
         }
-
-
-class AttachmentForm(HelperMixin, forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.helper.form_tag = False
-        self.helper.form_method = "post"
-
-    class Meta:
-        model = Attachment
-        fields = ["attachment"]

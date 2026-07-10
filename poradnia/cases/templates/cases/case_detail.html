@@ -140,6 +140,14 @@
                                         </button>
                                     </form>
                                 </li>
+                                <li>
+                                    <form method="post" action="{% url 'cases:request_ai_tags' pk=object.pk %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-link" style="width:100%;text-align:left;padding:3px 20px;">
+                                            {% trans 'Tag the case' %}
+                                        </button>
+                                    </form>
+                                </li>
                             </ul>
                         </div>
                     {% endif %}

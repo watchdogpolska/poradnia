@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-16 11:14+0200\n"
-"PO-Revision-Date: 2026-06-16 12:08+0200\n"
+"POT-Creation-Date: 2026-07-10 12:11+0200\n"
+"PO-Revision-Date: 2026-07-10 12:13+0200\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -36,14 +36,14 @@ msgstr "Osoba przypisana"
 #: poradnia/cases/filters.py:41 poradnia/cases/filters.py:95
 #: poradnia/cases/models.py:249
 #: poradnia/cases/templates/cases/case_filter.html:41
-#: poradnia/cases/views/cases.py:210 poradnia/cases/views/cases.py:225
+#: poradnia/cases/views/cases.py:209 poradnia/cases/views/cases.py:224
 msgid "Subject"
 msgstr "Przedmiot"
 
 #: poradnia/cases/filters.py:42 poradnia/cases/filters.py:63
 #: poradnia/cases/models.py:256
 #: poradnia/cases/templates/cases/case_filter.html:40
-#: poradnia/cases/views/cases.py:243
+#: poradnia/cases/views/cases.py:242
 msgid "Client"
 msgstr "Klient"
 
@@ -62,7 +62,7 @@ msgstr "Sprawa otagowana"
 
 # msgstr "Zarejestrowana porada" # GH issue 1312
 #: poradnia/cases/filters.py:61 poradnia/cases/models.py:272
-#: poradnia/cases/templates/cases/case_detail.html:191
+#: poradnia/cases/templates/cases/case_detail.html:199
 #: poradnia/cases/templates/cases/case_filter.html:41
 msgid "Dead-line"
 msgstr "Termin"
@@ -73,7 +73,7 @@ msgstr "Numer"
 
 #: poradnia/cases/filters.py:64 poradnia/cases/filters.py:96
 #: poradnia/cases/filters.py:105 poradnia/cases/models.py:281
-#: poradnia/cases/views/cases.py:261
+#: poradnia/cases/views/cases.py:260
 msgid "Created on"
 msgstr "Utworzone o"
 
@@ -150,11 +150,11 @@ msgstr "zamknięta"
 msgid "Case number"
 msgstr "Numer sprawy"
 
-#: poradnia/cases/models.py:258 poradnia/cases/views/cases.py:256
+#: poradnia/cases/models.py:258 poradnia/cases/views/cases.py:255
 msgid "Letter count"
 msgstr "Liczba listów"
 
-#: poradnia/cases/models.py:261 poradnia/cases/views/cases.py:248
+#: poradnia/cases/models.py:261 poradnia/cases/views/cases.py:247
 msgid "Last action"
 msgstr "Ostatnia czynność"
 
@@ -170,7 +170,7 @@ msgstr "Zmodyfikowane przez"
 msgid "Modified on"
 msgstr "Zmodyfikowane o"
 
-#: poradnia/cases/models.py:292 poradnia/cases/views/cases.py:217
+#: poradnia/cases/models.py:292 poradnia/cases/views/cases.py:216
 msgid "Handled"
 msgstr "Obsłużona"
 
@@ -194,7 +194,7 @@ msgstr "Odpowiedź do klienta, aby usunąć oznaczenie"
 
 #: poradnia/cases/models.py:335
 #: poradnia/cases/templates/cases/_project_badge.html:3
-#: poradnia/cases/views/cases.py:269
+#: poradnia/cases/views/cases.py:268
 msgid "Project"
 msgstr "Projekt"
 
@@ -231,32 +231,36 @@ msgid "Can change all records"
 msgstr "Może zmieniać wszystkie wpisy"
 
 #: poradnia/cases/models.py:405
+msgid "Can change case"
+msgstr "Może zmienić sprawę"
+
+#: poradnia/cases/models.py:406
 msgid "Can close case"
 msgstr "Może zamknąć sprawę"
 
-#: poradnia/cases/models.py:406
+#: poradnia/cases/models.py:407
 msgid "Can merge case"
 msgstr "Może połączyć sprawy"
 
-#: poradnia/cases/models.py:408
+#: poradnia/cases/models.py:409
 msgid "Can select client"
 msgstr "Może wybierać klienta"
 
-#: poradnia/cases/models.py:734 poradnia/cases/models.py:735
+#: poradnia/cases/models.py:751 poradnia/cases/models.py:752
 msgid "Cases to delete"
 msgstr "Sprawy do usunięcia"
 
-#: poradnia/cases/models.py:762
+#: poradnia/cases/models.py:779
 msgid "Name"
 msgstr "Nazwa"
 
-#: poradnia/cases/models.py:764
+#: poradnia/cases/models.py:781
 #: poradnia/cases/templates/cases/_case_form_permission.html:10
 msgid "Permissions"
 msgstr "Uprawnienia"
 
 #: poradnia/cases/templates/cases/_case_form_permission.html:29
-#: poradnia/cases/templates/cases/case_detail.html:177
+#: poradnia/cases/templates/cases/case_detail.html:185
 msgid "Involved in"
 msgstr "Zaangażowani"
 
@@ -325,7 +329,6 @@ msgid "AI Assistant"
 msgstr "Asystent AI"
 
 #: poradnia/cases/templates/cases/case_detail.html:131
-#| msgid "Cases search table"
 msgid "Classify and search articles"
 msgstr "Klasyfikuj i przeszukaj artykuły"
 
@@ -333,7 +336,11 @@ msgstr "Klasyfikuj i przeszukaj artykuły"
 msgid "Search articles"
 msgstr "Wyszukaj artykuły"
 
-#: poradnia/cases/templates/cases/case_detail.html:161
+#: poradnia/cases/templates/cases/case_detail.html:147
+msgid "Tag the case"
+msgstr "Otaguj sprawę"
+
+#: poradnia/cases/templates/cases/case_detail.html:169
 #, python-format
 msgid ""
 "\n"
@@ -344,15 +351,15 @@ msgstr ""
 "                        Utworzona przez <a href=\"%(created_url)s\">%(created_user)s</a> o \n"
 "                        %(created_on)s dla <a href=\"%(client_url)s\">%(client_user)s</a>"
 
-#: poradnia/cases/templates/cases/case_detail.html:174
+#: poradnia/cases/templates/cases/case_detail.html:182
 msgid "Workflow"
 msgstr "Przepływ pracy"
 
-#: poradnia/cases/templates/cases/case_detail.html:182
+#: poradnia/cases/templates/cases/case_detail.html:190
 msgid "Last update"
 msgstr "Ostatnia aktualizacja"
 
-#: poradnia/cases/templates/cases/case_detail.html:193
+#: poradnia/cases/templates/cases/case_detail.html:201
 #, python-format
 msgid ""
 "\n"
@@ -361,47 +368,47 @@ msgstr ""
 "\n"
 "                                    %(deadline)s o %(naturaltime)s"
 
-#: poradnia/cases/templates/cases/case_detail.html:201
+#: poradnia/cases/templates/cases/case_detail.html:209
 msgid "Metrical data"
 msgstr "Dane statystyczne"
 
 # msgstr "Dane metrykalne" # GH issue 1351
-#: poradnia/cases/templates/cases/case_detail.html:204
+#: poradnia/cases/templates/cases/case_detail.html:212
 msgid "Advice tags"
 msgstr "TAGI"
 
 # msgstr "Porada" # GH issue 1351
-#: poradnia/cases/templates/cases/case_detail.html:210
+#: poradnia/cases/templates/cases/case_detail.html:218
 msgid "Create new advice tags"
 msgstr "Otaguj sprawę"
 
 # msgstr "Utwórz nową porade" # GH issue 1351
-#: poradnia/cases/templates/cases/case_detail.html:224
+#: poradnia/cases/templates/cases/case_detail.html:232
 msgid "Assign permissions"
 msgstr "Przyznaj uprawnienia"
 
-#: poradnia/cases/templates/cases/case_detail.html:226
+#: poradnia/cases/templates/cases/case_detail.html:234
 msgid "..."
 msgstr "..."
 
-#: poradnia/cases/templates/cases/case_detail.html:250
+#: poradnia/cases/templates/cases/case_detail.html:258
 msgid "No records"
 msgstr "Brak wpisów"
 
-#: poradnia/cases/templates/cases/case_detail.html:290
+#: poradnia/cases/templates/cases/case_detail.html:298
 msgid "Clear Files"
 msgstr "Wyczyść wybrane"
 
-#: poradnia/cases/templates/cases/case_detail.html:301
+#: poradnia/cases/templates/cases/case_detail.html:309
 msgid "Select multiple files with ctr or shift."
 msgstr ""
 "Pliki można wybierać/upuszczać wielokrotnie - zostaną dodane do listy."
 
-#: poradnia/cases/templates/cases/case_detail.html:303
+#: poradnia/cases/templates/cases/case_detail.html:311
 msgid "Selected files:"
 msgstr "Wybrane pliki:"
 
-#: poradnia/cases/templates/cases/case_detail.html:316
+#: poradnia/cases/templates/cases/case_detail.html:324
 #, python-format
 msgid ""
 "The letter can also be sent via <a href=\"mailto:%(email)s\">e-mail "
@@ -502,7 +509,7 @@ msgid "Cases that have selected user in involved staff."
 msgstr "Sprawy, w których w zaangażowanym personelu jest wybrany użytkownik."
 
 #: poradnia/cases/templates/cases/case_table.html:49
-#: poradnia/cases/views/cases.py:229
+#: poradnia/cases/views/cases.py:228
 msgid "Involved staff"
 msgstr "Zaangażowani z zespołu"
 
@@ -546,68 +553,87 @@ msgstr "Ma termin"
 msgid "Cases that have letter project."
 msgstr "Sprawy, które mają projekt listu."
 
-#: poradnia/cases/views/cases.py:91
+#: poradnia/cases/views/cases.py:90
 msgid "Letter"
 msgstr "List"
 
-#: poradnia/cases/views/cases.py:98
+#: poradnia/cases/views/cases.py:97
 msgid "Event"
 msgstr "Wydarzenie"
 
-#: poradnia/cases/views/cases.py:102
+#: poradnia/cases/views/cases.py:101
 msgid "Court Case"
 msgstr "Sprawa sądowa"
 
-#: poradnia/cases/views/cases.py:172
+#: poradnia/cases/views/cases.py:171
 msgid "Cases search table"
 msgstr "Tabela wyszukiwania spraw"
 
-#: poradnia/cases/views/cases.py:176
+#: poradnia/cases/views/cases.py:175
 msgid "All"
 msgstr "Wszystko"
 
-#: poradnia/cases/views/cases.py:198
+#: poradnia/cases/views/cases.py:197
 msgid "Number"
 msgstr "Numer"
 
-#: poradnia/cases/views/cases.py:205
+#: poradnia/cases/views/cases.py:204
 msgid "S"
 msgstr "S"
 
-#: poradnia/cases/views/cases.py:225
+#: poradnia/cases/views/cases.py:224
 msgid "Tag"
 msgstr "Tag"
 
-#: poradnia/cases/views/cases.py:238
+#: poradnia/cases/views/cases.py:237
 msgid "Deadline date"
 msgstr "Data terminu"
 
-#: poradnia/cases/views/cases.py:322
+#: poradnia/cases/views/cases.py:321
 #, python-format
 msgid "Successful updated \"%(object)s\"."
 msgstr "Pomyślnie zaktualizowano \"%(object)s”."
 
-#: poradnia/cases/views/cases.py:336
+#: poradnia/cases/views/cases.py:335
 #, python-format
 msgid "Successfully closed \"%(object)s\"."
 msgstr "Pomyślnie zamknięto \"%(object)s”."
 
-#: poradnia/cases/views/cases.py:350
+#: poradnia/cases/views/cases.py:349
 #, python-format
 msgid "Successfully merged \"%(object)s\"."
 msgstr "Pomyślnie połączono \"%(object)s”."
 
 #: poradnia/cases/views/cases.py:366
 #, python-format
-#| msgid "Successful updated \"%(object)s\"."
 msgid "Article search started for \"%(object)s\"."
 msgstr "Wyszukiwanie artykułów rozpoczęte dla \"%(object)s\"."
 
-#: poradnia/cases/views/cases.py:371
+#: poradnia/cases/views/cases.py:372
 #, python-format
-#| msgid "Advice classification response status"
 msgid "Article classification and search started for \"%(object)s\"."
 msgstr "Klasyfikacja i wyszukiwanie artykułów rozpoczęte dla \"%(object)s\"."
+
+#: poradnia/cases/views/cases.py:379
+#, python-format
+#| msgid "Article search started for \"%(object)s\"."
+msgid "Article search request failed for \"%(object)s\". Please try again later."
+msgstr ""
+"Prośba o wyszukiwanie artykułu dla \"%(object)s\" zakończyła się "
+"niepowodzeniem. Proszę, spróbuj ponownie później."
+
+#: poradnia/cases/views/cases.py:397
+#, python-format
+msgid "AI tagging started for \"%(object)s\"."
+msgstr "Tagowanie AI rozpoczęte dla \"%(object)s\"."
+
+#: poradnia/cases/views/cases.py:402
+#, python-format
+#| msgid "AI tagging started for \"%(object)s\"."
+msgid "AI tagging request failed for \"%(object)s\". Please try again later."
+msgstr ""
+"Żądanie tagowania przez AI nie powiodło się dla \"%(object)s\". Proszę, "
+"spróbuj ponownie później."
 
 #: poradnia/cases/views/permissions.py:62
 #, python-format
@@ -668,9 +694,6 @@ msgstr "Usunięto wszystkie uprawnienia \"{user}\" w sprawie \"{case}\""
 
 #~ msgid "Can add Case"
 #~ msgstr "Może dodać sprawę"
-
-#~ msgid "Can change Case"
-#~ msgstr "Może zmienić sprawę"
 
 #~ msgid "Can delete Case"
 #~ msgstr "Może usunąć sprawę"

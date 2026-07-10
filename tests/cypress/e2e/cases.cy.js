@@ -144,7 +144,9 @@ describe("cases", () => {
     });
 
     // Add an advice.
-    cy.contains("Otaguj sprawę").click();
+    cy.contains(".panel", "Dane statystyczne")
+      .contains("Otaguj sprawę")
+      .click();
     cy.contains("form", "Dane statystyczne").within(($form) => {
       submitAdviceForm(cy)($form, advice);
     });
