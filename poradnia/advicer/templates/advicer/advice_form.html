@@ -1,21 +1,6 @@
 {% extends 'advicer/base.html' %}
 {% load crispy_forms_tags i18n %}
 
-{% block javascript %}
-    {{ block.super }}
-    <script type="text/javascript">
-        ;(function($) {
-            $(function () {
-                $('form tbody tr').formset({
-                    'deleteText': '{% trans "remove"%}',
-                    'addText': '{% trans "add another"%}',
-                    prefix: 'attachment_set'
-                });
-            })
-        })(jQuery);
-    </script>
-{% endblock %}
-
 {% block breadcrumbs_rows %}
     {% if object %}
         <li><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
@@ -30,9 +15,8 @@
         <div class="col-lg-12 col-md-12 col-sm-12">
             {% if object %}<h1>{{ object }}</h1>{% endif %}
             {% block form %}
-                <form class="{{ form.helper.form_class }}" enctype="multipart/form-data" method="POST">
+                <form class="{{ form.helper.form_class }}" method="POST">
                     {% crispy form %}
-                    {% crispy formset %}
                 </form>
             {% endblock %}
         </div>

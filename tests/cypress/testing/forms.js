@@ -126,7 +126,7 @@ const submitAdviceForm = (cy) => (
     );
   });
 
-  cy.contains("div", "Przedmiot").within(($div) => {
+  cy.contains("div", "Przedmiot tagu").within(($div) => {
     cy.get('input[type="text"]').clear().type(subject);
   });
 

@@ -402,6 +402,7 @@ class Case(models.Model):
             ("can_add_record", _("Can add record")),
             ("can_change_own_record", _("Can change own records")),
             ("can_change_all_record", _("Can change all records")),
+            ("can_change_case", _("Can change case")),
             ("can_close_case", _("Can close case")),
             ("can_merge_case", _("Can merge case")),
             # Global permission
@@ -725,7 +726,23 @@ class Case(models.Model):
             direct_search=direct_search,
             case=self,
         )
-        obj.search_articles()
+        return obj.search_articles()
+
+    def request_ai_tags_for_case(self):
+        """
+        Send client messages content and active tag lists for this case to the
+        n8n case-tags webhook and persist the request as an N8nCaseTagsRequest.
+
+        The result is delivered asynchronously via the n8n callback.
+        """
+        from ai_assistant.models import N8nCaseTagsRequest
+
+        question = self.get_client_messages_content()
+        obj = N8nCaseTagsRequest(
+            question=question,
+            case=self,
+        )
+        return obj.send_tags_request()
 
 
 class DeleteCaseProxy(Case):

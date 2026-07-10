@@ -71,6 +71,10 @@ document.addEventListener('DOMContentLoaded', function () {
             helped_blank: function() { return document.querySelector("input[name='check_helped_blank']").checked ? 1 : 0; },
             visible_yes: function() { return document.querySelector("input[name='check_visible_yes']").checked ? 1 : 0; },
             visible_no: function() { return document.querySelector("input[name='check_visible_no']").checked ? 1 : 0; },
+            interesting_case_yes: function() { return document.querySelector("input[name='check_interesting_case_yes']").checked ? 1 : 0; },
+            interesting_case_no: function() { return document.querySelector("input[name='check_interesting_case_no']").checked ? 1 : 0; },
+            for_knowledge_base_yes: function() { return document.querySelector("input[name='check_for_knowledge_base_yes']").checked ? 1 : 0; },
+            for_knowledge_base_no: function() { return document.querySelector("input[name='check_for_knowledge_base_no']").checked ? 1 : 0; },
         },
     );
     const filtersContainer = document.querySelector('.filters');
