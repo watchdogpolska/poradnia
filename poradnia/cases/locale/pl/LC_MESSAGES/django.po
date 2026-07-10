@@ -3,8 +3,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-08 18:13+0200\n"
-"PO-Revision-Date: 2026-07-10 11:08+0200\n"
+"POT-Creation-Date: 2026-07-10 12:11+0200\n"
+"PO-Revision-Date: 2026-07-10 12:13+0200\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -231,7 +231,6 @@ msgid "Can change all records"
 msgstr "Może zmieniać wszystkie wpisy"
 
 #: poradnia/cases/models.py:405
-#| msgid "Can change Case"
 msgid "Can change case"
 msgstr "Może zmienić sprawę"
 
@@ -338,7 +337,6 @@ msgid "Search articles"
 msgstr "Wyszukaj artykuły"
 
 #: poradnia/cases/templates/cases/case_detail.html:147
-#| msgid "Can close case"
 msgid "Tag the case"
 msgstr "Otaguj sprawę"
 
@@ -606,21 +604,36 @@ msgstr "Pomyślnie zamknięto \"%(object)s”."
 msgid "Successfully merged \"%(object)s\"."
 msgstr "Pomyślnie połączono \"%(object)s”."
 
-#: poradnia/cases/views/cases.py:365
+#: poradnia/cases/views/cases.py:366
 #, python-format
 msgid "Article search started for \"%(object)s\"."
 msgstr "Wyszukiwanie artykułów rozpoczęte dla \"%(object)s\"."
 
-#: poradnia/cases/views/cases.py:370
+#: poradnia/cases/views/cases.py:372
 #, python-format
 msgid "Article classification and search started for \"%(object)s\"."
 msgstr "Klasyfikacja i wyszukiwanie artykułów rozpoczęte dla \"%(object)s\"."
 
-#: poradnia/cases/views/cases.py:385
+#: poradnia/cases/views/cases.py:379
 #, python-format
 #| msgid "Article search started for \"%(object)s\"."
+msgid "Article search request failed for \"%(object)s\". Please try again later."
+msgstr ""
+"Prośba o wyszukiwanie artykułu dla \"%(object)s\" zakończyła się "
+"niepowodzeniem. Proszę, spróbuj ponownie później."
+
+#: poradnia/cases/views/cases.py:397
+#, python-format
 msgid "AI tagging started for \"%(object)s\"."
 msgstr "Tagowanie AI rozpoczęte dla \"%(object)s\"."
+
+#: poradnia/cases/views/cases.py:402
+#, python-format
+#| msgid "AI tagging started for \"%(object)s\"."
+msgid "AI tagging request failed for \"%(object)s\". Please try again later."
+msgstr ""
+"Żądanie tagowania przez AI nie powiodło się dla \"%(object)s\". Proszę, "
+"spróbuj ponownie później."
 
 #: poradnia/cases/views/permissions.py:62
 #, python-format

@@ -291,7 +291,9 @@ class Advice(models.Model):
         pk = self._ai_tag("institution_kind")
         if pk is None:
             return None
-        return InstitutionKind.objects.filter(pk=pk).values_list("name", flat=True).first()
+        return (
+            InstitutionKind.objects.filter(pk=pk).values_list("name", flat=True).first()
+        )
 
     @property
     def ai_jst(self):
