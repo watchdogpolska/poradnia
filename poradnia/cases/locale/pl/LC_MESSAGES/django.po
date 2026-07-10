@@ -4,7 +4,7 @@ msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2026-07-08 18:13+0200\n"
-"PO-Revision-Date: 2026-07-08 18:32+0200\n"
+"PO-Revision-Date: 2026-07-10 11:08+0200\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: \n"
 "Language: pl\n"
@@ -340,7 +340,7 @@ msgstr "Wyszukaj artykuły"
 #: poradnia/cases/templates/cases/case_detail.html:147
 #| msgid "Can close case"
 msgid "Tag the case"
-msgstr "Może zamknąć sprawę"
+msgstr "Otaguj sprawę"
 
 #: poradnia/cases/templates/cases/case_detail.html:169
 #, python-format
@@ -620,7 +620,7 @@ msgstr "Klasyfikacja i wyszukiwanie artykułów rozpoczęte dla \"%(object)s\"."
 #, python-format
 #| msgid "Article search started for \"%(object)s\"."
 msgid "AI tagging started for \"%(object)s\"."
-msgstr "Wyszukiwanie artykułów rozpoczęte dla \"%(object)s\"."
+msgstr "Tagowanie AI rozpoczęte dla \"%(object)s\"."
 
 #: poradnia/cases/views/permissions.py:62
 #, python-format
