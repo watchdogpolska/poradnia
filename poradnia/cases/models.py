@@ -726,7 +726,7 @@ class Case(models.Model):
             direct_search=direct_search,
             case=self,
         )
-        obj.search_articles()
+        return obj.search_articles()
 
     def request_ai_tags_for_case(self):
         """

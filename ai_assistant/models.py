@@ -58,29 +58,37 @@ class N8nArticlesSearchRequest(models.Model):
             self.direct_search,
         )
 
-        response = requests.post(
-            webhook_url,
-            json={
-                "chatInput": self.question,
-                "environment": environment,
-                "direct_search": self.direct_search,
-            },
-            headers={
-                "Authorization": f"Bearer {webhook_token}",
-                "Content-Type": "application/json",
-            },
-            timeout=getattr(settings, "N8N_ARTICLES_SEARCH_WEBHOOK_TIMEOUT", 10),
-        )
-        response.raise_for_status()
+        try:
+            response = requests.post(
+                webhook_url,
+                json={
+                    "chatInput": self.question,
+                    "environment": environment,
+                    "direct_search": self.direct_search,
+                },
+                headers={
+                    "Authorization": f"Bearer {webhook_token}",
+                    "Content-Type": "application/json",
+                },
+                timeout=getattr(settings, "N8N_ARTICLES_SEARCH_WEBHOOK_TIMEOUT", 10),
+            )
+            response.raise_for_status()
+            data = response.json()
+            self.request_id = data["request_id"]
+            self.status = "pending"
+        except requests.RequestException as exc:
+            logger.error("Articles search request failed: %s", exc)
+            self.request_id = str(uuid.uuid4())
+            self.status = "error"
 
-        data = response.json()
-        self.request_id = data["request_id"]
         self.environment = environment
-        self.status = "pending"
         self.save()
 
+        if self.status == "error":
+            return False
+
         logger.info("Articles search request accepted: request_id=%s", self.request_id)
-        return self.request_id
+        return True
 
 
 class N8nCaseTagsRequest(models.Model):
