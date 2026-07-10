@@ -363,7 +363,8 @@ class CaseSearchArticlesView(SingleObjectPermissionMixin, DetailView):
             if self.direct_search:
                 messages.success(
                     request,
-                    _('Article search started for "%(object)s".') % {"object": self.object},
+                    _('Article search started for "%(object)s".')
+                    % {"object": self.object},
                 )
             else:
                 messages.success(
@@ -374,7 +375,9 @@ class CaseSearchArticlesView(SingleObjectPermissionMixin, DetailView):
         else:
             messages.error(
                 request,
-                _('Article search request failed for "%(object)s". Please try again later.')
+                _(
+                    'Article search request failed for "%(object)s". Please try again later.'
+                )
                 % {"object": self.object},
             )
         return redirect(self.object)

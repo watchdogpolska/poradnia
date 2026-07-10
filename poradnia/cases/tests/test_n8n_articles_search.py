@@ -127,9 +127,7 @@ class CaseSearchArticlesViewTestCase(TestCase):
         response = self.client.get(self.search_url)
         self.assertEqual(response.status_code, 405)
 
-    @patch(
-        "poradnia.cases.models.Case.search_articles_for_case", return_value=True
-    )
+    @patch("poradnia.cases.models.Case.search_articles_for_case", return_value=True)
     def test_direct_search_success_message(self, mock_search):
         self._grant_permission()
         self.client.login(username="john", password="pass")
@@ -141,9 +139,7 @@ class CaseSearchArticlesViewTestCase(TestCase):
             response, self.case.get_absolute_url(), fetch_redirect_response=False
         )
 
-    @patch(
-        "poradnia.cases.models.Case.search_articles_for_case", return_value=True
-    )
+    @patch("poradnia.cases.models.Case.search_articles_for_case", return_value=True)
     def test_classify_and_search_success_message(self, mock_search):
         self._grant_permission()
         self.client.login(username="john", password="pass")
@@ -152,9 +148,7 @@ class CaseSearchArticlesViewTestCase(TestCase):
         self.assertEqual(len(msgs), 1)
         self.assertIn(self.case.name, str(msgs[0]))
 
-    @patch(
-        "poradnia.cases.models.Case.search_articles_for_case", return_value=False
-    )
+    @patch("poradnia.cases.models.Case.search_articles_for_case", return_value=False)
     def test_error_message_is_set_when_search_fails(self, mock_search):
         self._grant_permission()
         self.client.login(username="john", password="pass")
