@@ -267,23 +267,39 @@ class Advice(models.Model):
 
     @property
     def ai_issues(self):
-        return self._ai_tag("issues")
+        ids = self._ai_tag("issues")
+        if not ids:
+            return None
+        return list(Issue.objects.filter(pk__in=ids).values_list("name", flat=True))
 
     @property
     def ai_area(self):
-        return self._ai_tag("area")
+        ids = self._ai_tag("area")
+        if not ids:
+            return None
+        return list(Area.objects.filter(pk__in=ids).values_list("name", flat=True))
 
     @property
     def ai_person_kind(self):
-        return self._ai_tag("person_kind")
+        pk = self._ai_tag("person_kind")
+        if pk is None:
+            return None
+        return PersonKind.objects.filter(pk=pk).values_list("name", flat=True).first()
 
     @property
     def ai_institution_kind(self):
-        return self._ai_tag("institution_kind")
+        pk = self._ai_tag("institution_kind")
+        if pk is None:
+            return None
+        return InstitutionKind.objects.filter(pk=pk).values_list("name", flat=True).first()
 
     @property
     def ai_jst(self):
-        return self._ai_tag("jst")
+        jst_id = self._ai_tag("jst")
+        if jst_id is None:
+            return None
+        jst = JST.objects.filter(pk=jst_id).first()
+        return str(jst) if jst else None
 
     @property
     def ai_comment(self):
