@@ -401,12 +401,13 @@ def _validate_case_tags_payload(payload):
         return err
 
     jst_id = payload.get("jst_id")
-    if not isinstance(jst_id, str) or not re.fullmatch(r"\d{2,7}", jst_id):
-        return _json_error(
-            "missing_field", "jst_id must be a string of 2–7 digits.", 400
-        )
-    if not JST.objects.filter(pk=jst_id).exists():
-        return _json_error("invalid_field", f"JST {jst_id!r} does not exist.", 400)
+    if jst_id is not None:
+        if not isinstance(jst_id, str) or not re.fullmatch(r"\d{2,7}", jst_id):
+            return _json_error(
+                "invalid_field", "jst_id must be a string of 2–7 digits.", 400
+            )
+        if not JST.objects.filter(pk=jst_id).exists():
+            return _json_error("invalid_field", f"JST {jst_id!r} does not exist.", 400)
 
     err = _validate_int_list(payload, "issue_ids", Issue)
     if err:
@@ -487,10 +488,12 @@ class N8nCaseTagsCallbackView(View):
                 "summary": payload["summary"],
                 "institution_kind": payload["institution_kind_id"],
                 "person_kind": payload["person_kind_id"],
-                "jst": payload["jst_id"],
                 "issues": payload["issue_ids"],
                 "area": payload["area_ids"],
             }
+            jst_id = payload.get("jst_id")
+            if jst_id is not None:
+                ai_tags["jst"] = jst_id
 
             tags_request.response = json.dumps(ai_tags)
             tags_request.status = "completed"

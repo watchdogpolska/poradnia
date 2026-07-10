@@ -719,26 +719,38 @@ class N8nCaseTagsPayloadValidationTestCase(TestCase):
         self.assertIsNotNone(err)
         self.assertEqual(_json(err)["error"]["code"], "invalid_field")
 
+    def test_missing_jst_id_is_allowed(self):
+        p = self._valid()
+        del p["jst_id"]
+        err = self._validate(p)
+        self.assertIsNone(err)
+
+    def test_null_jst_id_is_allowed(self):
+        p = self._valid()
+        p["jst_id"] = None
+        err = self._validate(p)
+        self.assertIsNone(err)
+
     def test_non_string_jst_id_returns_error(self):
         p = self._valid()
         p["jst_id"] = 2
         err = self._validate(p)
         self.assertIsNotNone(err)
-        self.assertEqual(_json(err)["error"]["code"], "missing_field")
+        self.assertEqual(_json(err)["error"]["code"], "invalid_field")
 
     def test_jst_id_too_short_returns_error(self):
         p = self._valid()
         p["jst_id"] = "1"
         err = self._validate(p)
         self.assertIsNotNone(err)
-        self.assertEqual(_json(err)["error"]["code"], "missing_field")
+        self.assertEqual(_json(err)["error"]["code"], "invalid_field")
 
     def test_jst_id_with_letters_returns_error(self):
         p = self._valid()
         p["jst_id"] = "02abc"
         err = self._validate(p)
         self.assertIsNotNone(err)
-        self.assertEqual(_json(err)["error"]["code"], "missing_field")
+        self.assertEqual(_json(err)["error"]["code"], "invalid_field")
 
     def test_nonexistent_jst_id_returns_error(self):
         p = self._valid()
@@ -941,3 +953,30 @@ class N8nCaseTagsCallbackViewTestCase(TestCase):
         stored = json.loads(tr.response)
         self.assertEqual(stored["subject"], "Test subject")
         self.assertEqual(stored["issues"], [self.issue.pk])
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    def test_success_without_jst_id_omits_jst_from_tags(self):
+        from poradnia.advicer.models import Advice
+
+        case = CaseFactory()
+        tr = self._make_tags_request(case=case)
+        payload = self._valid_payload()
+        del payload["jst_id"]
+
+        response = self.view(self._post(payload))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(_json(response)["result"], "completed")
+        advice = Advice.objects.get(case=case)
+        self.assertNotIn("jst", advice.ai_assistant_tags)
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    def test_invalid_jst_id_format_when_present_returns_400(self):
+        tr = self._make_tags_request()  # noqa: F841
+        payload = self._valid_payload()
+        payload["jst_id"] = "bad"
+
+        response = self.view(self._post(payload))
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(_json(response)["error"]["code"], "invalid_field")
