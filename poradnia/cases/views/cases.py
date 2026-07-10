@@ -358,19 +358,52 @@ class CaseSearchArticlesView(SingleObjectPermissionMixin, DetailView):
     direct_search = False
 
     def post(self, request, *args, **kwargs):
-        self.object.search_articles_for_case(direct_search=self.direct_search)
-        if self.direct_search:
-            messages.success(
-                request,
-                _('Article search started for "%(object)s".') % {"object": self.object},
-            )
+        success = self.object.search_articles_for_case(direct_search=self.direct_search)
+        if success:
+            if self.direct_search:
+                messages.success(
+                    request,
+                    _('Article search started for "%(object)s".')
+                    % {"object": self.object},
+                )
+            else:
+                messages.success(
+                    request,
+                    _('Article classification and search started for "%(object)s".')
+                    % {"object": self.object},
+                )
         else:
-            messages.success(
+            messages.error(
                 request,
-                _('Article classification and search started for "%(object)s".')
+                _(
+                    'Article search request failed for "%(object)s".'
+                    " Please try again later."
+                )
                 % {"object": self.object},
             )
         return redirect(self.object)
+
+
+class CaseRequestAiTagsView(SingleObjectPermissionMixin, DetailView):
+    model = Case
+    permission_required = ["cases.can_change_case"]
+    http_method_names = ["post"]
+
+    def post(self, request, *args, **kwargs):
+        success = self.object.request_ai_tags_for_case()
+        if success:
+            messages.success(
+                request,
+                _('AI tagging started for "%(object)s".') % {"object": self.object},
+            )
+        else:
+            messages.error(
+                request,
+                _('AI tagging request failed for "%(object)s". Please try again later.')
+                % {"object": self.object},
+            )
+        advice = getattr(self.object, "advice", None)
+        return redirect(advice if advice else self.object)
 
 
 class CaseAutocomplete(autocomplete.Select2QuerySetView):

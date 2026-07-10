@@ -6,8 +6,8 @@ from . import views
 
 urlpatterns = [
     re_path(_(r"^(?P<slug>[\w-]+)$"), views.JSTDetailView.as_view(), name="details"),
-    path(_(""), views.JSTListView.as_view(), name="list"),
-    path(_(""), views.JSTListView.as_view(), name="voivodeship"),
+    path("", views.JSTListView.as_view(), name="list"),
+    path("", views.JSTListView.as_view(), name="voivodeship"),
     path(
         _("voivodeship-autocomplete/"),
         VoivodeshipAutocomplete.as_view(),
