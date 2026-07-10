@@ -331,16 +331,17 @@ class N8nArticlesSearchRequestModelTestCase(TestCase):
 
     @override_settings(**WEBHOOK_SETTINGS)
     @patch("ai_assistant.models.requests.post")
-    def test_search_articles_propagates_http_error(self, mock_post):
+    def test_search_articles_handles_http_error(self, mock_post):
         mock_response = MagicMock()
         mock_response.raise_for_status.side_effect = req_lib.HTTPError("500")
         mock_post.return_value = mock_response
 
         obj = N8nArticlesSearchRequest(question="q")
-        with self.assertRaises(req_lib.HTTPError):
-            obj.search_articles()
+        result = obj.search_articles()
 
-        self.assertIsNone(obj.pk)
+        self.assertFalse(result)
+        self.assertEqual(obj.status, "error")
+        self.assertIsNotNone(obj.pk)
 
 
 class N8nArticlesSearchCallbackViewTestCase(TestCase):
@@ -591,16 +592,16 @@ class N8nCaseTagsRequestModelTestCase(TestCase):
 
     @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
     @patch("ai_assistant.models.requests.post")
-    def test_send_tags_request_propagates_http_error(self, mock_post):
+    def test_send_tags_request_handles_http_error(self, mock_post):
         mock_response = MagicMock()
         mock_response.raise_for_status.side_effect = req_lib.HTTPError("500")
         mock_post.return_value = mock_response
 
         obj = N8nCaseTagsRequest(question="q")
-        with self.assertRaises(req_lib.HTTPError):
-            obj.send_tags_request()
+        obj.send_tags_request()
 
-        self.assertIsNone(obj.pk)
+        self.assertEqual(obj.status, "error")
+        self.assertIsNotNone(obj.pk)
 
     @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
     @patch("ai_assistant.models.requests.post")
