@@ -496,7 +496,7 @@ class N8nCaseTagsCallbackView(View):
             if jst_id is not None:
                 ai_tags["jst"] = jst_id
 
-            tags_request.response = json.dumps(ai_tags)
+            tags_request.response = json.dumps(ai_tags, ensure_ascii=False, indent=2)
             tags_request.status = "completed"
             tags_request.save(update_fields=["response", "status", "updated_at"])
 
