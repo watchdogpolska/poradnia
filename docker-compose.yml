@@ -49,6 +49,10 @@ x-django-service: &django-service
   build:
     context: .
     dockerfile: .contrib/docker/Dockerfile.web
+    args:
+      UID: ${UID:-1000}
+      GID: ${GID:-1000}
+  user: "${UID:-1000}:${GID:-1000}"
   volumes:
     - .:/code
   environment:

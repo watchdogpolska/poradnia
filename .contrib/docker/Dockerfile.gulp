@@ -12,5 +12,6 @@ RUN apt-get update \
  && apt-get purge -y jq \
  && rm -rf /var/lib/apt/lists/*
 
+USER node
 CMD ["bash","-c", "npm install && npx gulp build"]
 #CMD ["bash","-c", " npm install ; npx gulp build ; sleep infinity "]
