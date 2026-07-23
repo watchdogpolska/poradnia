@@ -381,9 +381,7 @@ LOGGING = {
     "loggers": {
         # "django.request": {"handlers": [], "level": "ERROR", "propagate": True},
         "": {
-            "handlers": (
-                ["file", "console"] if FILE_LOGGING_ENABLED else ["console"]
-            ),
+            "handlers": (["file", "console"] if FILE_LOGGING_ENABLED else ["console"]),
             "level": "INFO",
             "propagate": True,
         },
