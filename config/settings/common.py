@@ -469,6 +469,12 @@ LETTER_RECEIVE_WHITELISTED_ADDRESS = env.str(
     "LETTER_RECEIVE_WHITELISTED_ADDRESS", "porady@siecobywatelska.pl,"
 ).split(",")
 
+# IPs allowed to call the inbound-mail webhook (e.g. the imap-to-webhook host).
+# Empty means no IP restriction is enforced (only the shared secret gates access).
+LETTER_RECEIVE_ALLOWED_IPS = [
+    ip for ip in env.str("LETTER_RECEIVE_ALLOWED_IPS", "").split(",") if ip
+]
+
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
 TINYMCE_DEFAULT_CONFIG = {

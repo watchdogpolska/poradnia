@@ -333,6 +333,20 @@ class ReceiveEmailView(View):
     def is_autoreply(self, manifest):
         return manifest["headers"].get("auto_reply_type", False)
 
+    def get_client_ip(self, request):
+        return request.headers.get("x-real-ip") or request.META.get("REMOTE_ADDR")
+
+    def check_access(self, request, client_ip):
+        if settings.LETTER_RECEIVE_ALLOWED_IPS and (
+            client_ip not in settings.LETTER_RECEIVE_ALLOWED_IPS
+        ):
+            logger.error(f"Rejected webhook request from disallowed IP {client_ip}.")
+            raise PermissionDenied
+        if not hmac.compare_digest(
+            request.GET.get("secret", ""), LETTER_RECEIVE_SECRET
+        ):
+            raise PermissionDenied
+
     def create_user(self, manifest):
         from_emails = manifest["headers"].get("from", [])
         if not from_emails:
@@ -430,18 +444,16 @@ class ReceiveEmailView(View):
             "to": headers.get("to"),
             "cc": headers.get("cc"),
             "autoreply": self.is_autoreply(manifest),
-            "remote_ip": request.META.get("REMOTE_ADDR"),
+            "remote_ip": self.get_client_ip(request),
         }
 
     def post(self, request):
-        logger.info(f"Received a new letter from {request.META['REMOTE_ADDR']}.")
+        client_ip = self.get_client_ip(request)
+        logger.info(f"Received a new letter from {client_ip}.")
         logger.info(f"Request content type: {request.content_type}")
         logger.info(f"Request headers: {request.headers}")
         logger.info(f"Request files: {request.FILES}")
-        if not hmac.compare_digest(
-            request.GET.get("secret", ""), LETTER_RECEIVE_SECRET
-        ):
-            raise PermissionDenied
+        self.check_access(request, client_ip)
         if request.content_type != self.required_content_type:
             logger.error(
                 f"Request content type is {request.content_type}, "

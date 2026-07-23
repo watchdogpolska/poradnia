@@ -587,6 +587,20 @@ class ReceiveEmailTestCase(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 405)
 
+    @override_settings(LETTER_RECEIVE_ALLOWED_IPS=["203.0.113.1"])
+    def test_refuse_request_from_disallowed_ip(self):
+        response = self.client.post(path=self.authenticated_url, data=self._get_body())
+        self.assertEqual(response.status_code, 403)
+
+    @override_settings(LETTER_RECEIVE_ALLOWED_IPS=["203.0.113.1"])
+    def test_accept_request_from_allowed_ip_via_x_real_ip(self):
+        response = self.client.post(
+            path=self.authenticated_url,
+            data=self._get_body(),
+            headers={"x-real-ip": "203.0.113.1"},
+        )
+        self.assertEqual(response.json()["status"], "OK")
+
     def test_sample_request(self):
         case = CaseFactory()
         data_body = self._get_body(case)
