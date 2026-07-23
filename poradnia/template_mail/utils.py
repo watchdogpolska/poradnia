@@ -47,6 +47,7 @@ class TemplateKey(Enum):
     LETTER_UPDATED = auto()
 
     USER_NEW = auto()
+    USER_EXISTING_CASE_ATTEMPT = auto()
 
     @classmethod
     def get_by_target_verb(cls, target, verb):
@@ -118,6 +119,9 @@ class TemplateMailManager:
             "letters/email/letter_updated"
         ),
         TemplateKey.USER_NEW: MailTemplate.from_prefix("users/email/new_user"),
+        TemplateKey.USER_EXISTING_CASE_ATTEMPT: MailTemplate.from_prefix(
+            "users/email/existing_case_attempt"
+        ),
     }
 
     @classmethod

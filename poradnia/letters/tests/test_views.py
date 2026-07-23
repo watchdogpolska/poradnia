@@ -107,11 +107,26 @@ class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
         self.assertEqual(obj.case.client, obj.created_by)
         self.assertEqual(obj.case.client.email, "my_email@oh-noes.pl")
 
-    def test_user_registered_fail(self, mock: MagicMock):
+    def test_new_case_redirects_to_generic_page(self, mock: MagicMock):
+        """The response for a brand-new e-mail must look identical to the
+        one for an already-registered e-mail (see the test below) - both
+        redirect anonymous submitters to the generic homepage, never to the
+        case they can't view anyway."""
+        resp = self.post()
+        self.assertRedirects(resp, reverse("home"))
+
+    def test_existing_account_does_not_disclose_account_or_create_case(
+        self, mock: MagicMock
+    ):
         UserFactory(email=self.post_data["email_registration"])
         resp = self.post()
-        self.assertFalse(resp.context_data["form"].is_valid())
-        self.assertIn("email_registration", resp.context_data["form"].errors)
+        self.assertRedirects(resp, reverse("home"))
+        self.assertEqual(self.get_case().count(), 0)
+        self.assertEqual(self.get_letter().count(), 0)
+        self.assertMailSend(
+            template="users/email/existing_case_attempt.txt",
+            to=self.post_data["email_registration"],
+        )
 
 
 @patch("turnstile.fields.TurnstileField.validate", return_value=True)

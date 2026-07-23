@@ -52,7 +52,7 @@ from poradnia.utils.crispy_forms import FormSetMixin
 
 from ..forms import AttachmentForm, LetterForm, NewCaseForm
 from ..models import Attachment, Letter
-from .fbv import REGISTRATION_TEXT
+from .fbv import NEW_CASE_ANONYMOUS_TEXT
 
 logger = logging.getLogger(__name__)
 
@@ -67,12 +67,24 @@ class NewCaseCreateView(
     inline_model = Attachment
     inline_form_cls = AttachmentForm
 
+    def form_valid(self, form):
+        if getattr(form, "existing_account", False):
+            # The submitted e-mail already belongs to a client account.
+            # Don't create a case for it (that would attach anonymous,
+            # unverified content to someone else's account) and don't
+            # reveal that the account exists either: notify the account
+            # holder by e-mail and show the anonymous submitter the exact
+            # same generic response as a genuinely new submission.
+            TemplateMailManager.send(
+                TemplateKey.USER_EXISTING_CASE_ATTEMPT,
+                recipient_list=[form.cleaned_data["email_registration"]],
+            )
+            messages.success(self.request, NEW_CASE_ANONYMOUS_TEXT)
+            return HttpResponseRedirect(reverse("home"))
+        return super().form_valid(form)
+
     def formset_valid(self, form, formset, *args, **kwargs):
         formset.save()
-        messages.success(
-            self.request,
-            _("Case about {object} created!").format(object=self.object.name),
-        )
         self.object.client.notify(
             actor=self.object.created_by,
             verb="registered",
@@ -80,9 +92,16 @@ class NewCaseCreateView(
             from_email=self.object.case.get_email(),
         )
         if self.request.user.is_anonymous:
-            messages.success(
-                self.request, _(REGISTRATION_TEXT) % {"user": self.object.created_by}
-            )
+            # Anonymous submitters never get to see the case (they have no
+            # session for it), and the redirect target/message must be
+            # identical regardless of whether the e-mail was new or already
+            # registered - see form_valid() above.
+            messages.success(self.request, NEW_CASE_ANONYMOUS_TEXT)
+            return HttpResponseRedirect(reverse("home"))
+        messages.success(
+            self.request,
+            _("Case about {object} created!").format(object=self.object.name),
+        )
         return HttpResponseRedirect(self.object.case.get_absolute_url())
 
     def form_invalid(self, form, formset=None):
