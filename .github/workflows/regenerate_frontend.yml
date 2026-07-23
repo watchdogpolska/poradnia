@@ -18,6 +18,14 @@ jobs:
         with:
           # Ensure you fetch the PR branch
           fetch-depth: 0
+      - name: Align container user with runner UID/GID
+        # docker-compose.yml defaults UID/GID to 1000, which only matches the
+        # checked-out file ownership by coincidence on dev machines. Without
+        # this, containers can't write to the bind-mounted repo (logs/,
+        # staticfiles/, poradnia/static/).
+        run: |
+          echo "UID=$(id -u)" >> .env
+          echo "GID=$(id -g)" >> .env
       - run: |
           docker compose --file docker-compose.yml --file docker-compose.test.yml pull
           docker pull python:${{matrix.python}}-slim
