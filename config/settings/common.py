@@ -8,6 +8,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
+import os
 import sys
 from urllib.parse import unquote, urlparse
 
@@ -340,6 +341,21 @@ AUTOSLUG_SLUGIFY_FUNCTION = "slugify.slugify"
 #   as for now all stdout and stderr captured by gunicorn logs
 LOG_FILE_ENV = env("LOG_FILE_ENV", default="logs/poradnia.log")
 LOG_FILE = str(ROOT_DIR(LOG_FILE_ENV))
+
+# Auto-create the log directory (e.g. a fresh checkout) and fall back to
+# console-only logging if it isn't writable, instead of crashing on startup.
+LOG_DIR = os.path.dirname(LOG_FILE)
+try:
+    os.makedirs(LOG_DIR, exist_ok=True)
+except OSError:
+    pass
+FILE_LOGGING_ENABLED = os.access(LOG_DIR, os.W_OK)
+if not FILE_LOGGING_ENABLED:
+    sys.stderr.write(
+        f"WARNING: log directory {LOG_DIR} is not writable; "
+        "file logging disabled, using console only.\n"
+    )
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -349,16 +365,28 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "app",
         },
-        "file": {
-            # "level": "INFO",
-            "class": "logging.FileHandler",
-            "filename": LOG_FILE,
-            "formatter": "app",
-        },
+        **(
+            {
+                "file": {
+                    # "level": "INFO",
+                    "class": "logging.FileHandler",
+                    "filename": LOG_FILE,
+                    "formatter": "app",
+                },
+            }
+            if FILE_LOGGING_ENABLED
+            else {}
+        ),
     },
     "loggers": {
         # "django.request": {"handlers": [], "level": "ERROR", "propagate": True},
-        "": {"handlers": ["file", "console"], "level": "INFO", "propagate": True},
+        "": {
+            "handlers": (
+                ["file", "console"] if FILE_LOGGING_ENABLED else ["console"]
+            ),
+            "level": "INFO",
+            "propagate": True,
+        },
         "feder.letters.models": {
             "handlers": ["console"] if "test" not in environ.sys.argv else [],
             "level": "INFO",
