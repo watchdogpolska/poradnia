@@ -1,4 +1,5 @@
 import datetime
+import email.utils
 import hmac
 import json
 import logging
@@ -310,17 +311,22 @@ class ReceiveEmailView(View):
     required_content_type = "multipart/form-data"
 
     def is_allowed_recipient(self, manifest):
-        domain = Site.objects.get_current().domain
+        domain = Site.objects.get_current().domain.lower()
         logger.info(f"domain: {domain}")
         logger.info(f"email to: {manifest['headers']['to']}")
         logger.info(f"whitelisted: {settings.LETTER_RECEIVE_WHITELISTED_ADDRESS}")
-        cond = [
-            (addr.lower() in x.lower() or domain.lower() in x.lower())
-            and addr != ""
-            and domain != ""
-            for x in manifest["headers"]["to"]
-            for addr in settings.LETTER_RECEIVE_WHITELISTED_ADDRESS
-        ]
+        cond = []
+        for x in manifest["headers"]["to"]:
+            _, x_addr = email.utils.parseaddr(x)
+            x_addr = x_addr.lower()
+            x_domain = x_addr.rsplit("@", 1)[-1] if "@" in x_addr else ""
+            for addr in settings.LETTER_RECEIVE_WHITELISTED_ADDRESS:
+                addr = addr.lower()
+                cond.append(
+                    (addr == x_addr or x_domain == domain)
+                    and addr != ""
+                    and domain != ""
+                )
         logger.info(f"cond: {cond}")
         return any(cond)
 
