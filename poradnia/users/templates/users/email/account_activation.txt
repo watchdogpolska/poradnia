@@ -1,0 +1,12 @@
+{% load cases_tags %}Aktywacja konta w Poradni Sieci Obywatelskiej - Watchdog Polska
+Szanowny/-a {{ user }}!
+
+Ten adres e-mail został powiązany z nowym zgłoszeniem w serwisie poradnictwa Stowarzyszenia Sieć Obywatelska - Watchdog Polska. Zgłoszenie zostanie zarejestrowane dopiero po potwierdzeniu adresu e-mail.
+
+Aby potwierdzić adres e-mail, ustawić hasło i zobaczyć szczegóły zgłoszenia, kliknij w poniższy link:
+{% full_link activation_path %}
+
+Jeśli to nie Ty zgłaszałeś/-aś sprawę, zignoruj tę wiadomość - konto i zgłoszenie pozostaną nieaktywne.
+
+Z wyrazami szacunku,
+Sieć Obywatelska - Watchdog Polska

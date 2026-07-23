@@ -74,17 +74,19 @@ class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
         return self.post_data
 
     def test_user_registration(self, mock: MagicMock):
+        """A brand-new anonymous submitter gets only a neutral activation
+        e-mail - no password, no case content - until they prove mailbox
+        ownership by activating."""
         self.post()
         self.assertMailSend(
-            template="users/email/new_user.txt",
-            subject="Rejestracja w Poradni Sieci Obywatelskiej - Watchdog Polska",
+            template="users/email/account_activation.txt",
+            subject="Aktywacja konta w Poradni Sieci Obywatelskiej - Watchdog Polska",
         )
 
-    def test_user_notification(self, mock: MagicMock):
+    def test_user_notification_withheld_until_activated(self, mock: MagicMock):
         self.post()
         self.assertMailSend(
-            template="cases/email/case_registered.txt",
-            subject="Sprawa  zarejestrowana w systemie",
+            template="cases/email/case_registered.txt", expected_count=0
         )
 
     def test_case_exists(self, mock: MagicMock):
@@ -166,11 +168,17 @@ class AdminNewCaseTestCase(NewCaseMixin, TestCase):
 
     def test_user_registration(self, mock: MagicMock):
         self.post()
-        self.assertMailSend(template="users/email/new_user.txt", to=self.email)
+        self.assertMailSend(
+            template="users/email/account_activation.txt", to=self.email
+        )
 
-    def test_user_notification(self, mock: MagicMock):
+    def test_user_notification_withheld_until_activated(self, mock: MagicMock):
         self.post()
-        self.assertMailSend(template="cases/email/case_registered.txt", to=self.email)
+        self.assertMailSend(
+            template="cases/email/case_registered.txt",
+            to=self.email,
+            expected_count=0,
+        )
 
 
 @patch("turnstile.fields.TurnstileField.validate", return_value=True)

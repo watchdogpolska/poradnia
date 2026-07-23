@@ -46,7 +46,7 @@ class TemplateKey(Enum):
     LETTER_SEND_TO_CLIENT = auto()
     LETTER_UPDATED = auto()
 
-    USER_NEW = auto()
+    USER_ACTIVATION = auto()
     USER_EXISTING_CASE_ATTEMPT = auto()
 
     @classmethod
@@ -118,7 +118,9 @@ class TemplateMailManager:
         TemplateKey.LETTER_UPDATED: MailTemplate.from_prefix(
             "letters/email/letter_updated"
         ),
-        TemplateKey.USER_NEW: MailTemplate.from_prefix("users/email/new_user"),
+        TemplateKey.USER_ACTIVATION: MailTemplate.from_prefix(
+            "users/email/account_activation"
+        ),
         TemplateKey.USER_EXISTING_CASE_ATTEMPT: MailTemplate.from_prefix(
             "users/email/existing_case_attempt"
         ),

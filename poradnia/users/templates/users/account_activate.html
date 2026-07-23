@@ -1,0 +1,25 @@
+{% extends "account/base.html" %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block head_title %}{% trans "Aktywacja konta" %}{% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+            {% if token_valid %}
+                <h2>{% trans "Aktywacja konta" %}</h2>
+                <p>{% trans "Ustaw hasło, aby aktywować konto i zobaczyć szczegóły zgłoszonej sprawy." %}</p>
+                <form method="POST" action="">
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <button type="submit" class="btn btn-primary">{% trans "Aktywuj konto" %}</button>
+                </form>
+            {% else %}
+                <h2>{% trans "Nieprawidłowy link aktywacyjny" %}</h2>
+                <p>{% trans "Ten link aktywacyjny jest nieprawidłowy lub wygasł." %}</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

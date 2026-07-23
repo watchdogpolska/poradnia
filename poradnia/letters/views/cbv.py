@@ -85,12 +85,17 @@ class NewCaseCreateView(
 
     def formset_valid(self, form, formset, *args, **kwargs):
         formset.save()
-        self.object.client.notify(
-            actor=self.object.created_by,
-            verb="registered",
-            target=self.object.case,
-            from_email=self.object.case.get_email(),
-        )
+        if self.object.client.has_usable_password():
+            # An unverified/auto-created client (unusable password) already
+            # got a neutral activation e-mail from register_by_email(); the
+            # case-registered content itself is withheld until they confirm
+            # ownership of the mailbox by activating.
+            self.object.client.notify(
+                actor=self.object.created_by,
+                verb="registered",
+                target=self.object.case,
+                from_email=self.object.case.get_email(),
+            )
         if self.request.user.is_anonymous:
             # Anonymous submitters never get to see the case (they have no
             # session for it), and the redirect target/message must be
@@ -508,9 +513,16 @@ class ReceiveEmailView(View):
             case = Case.objects.create(
                 name=subject[:NAME_MAX_LENGTH], created_by=actor, client=actor
             )
-            actor.notify(
-                actor=actor, verb="registered", target=case, from_email=case.get_email()
-            )
+            if actor.has_usable_password():
+                # See NewCaseCreateView.formset_valid(): don't disclose case
+                # content to a mailbox that hasn't proven ownership yet (the
+                # From: header on inbound mail is trivially spoofable).
+                actor.notify(
+                    actor=actor,
+                    verb="registered",
+                    target=case,
+                    from_email=case.get_email(),
+                )
         except Case.MultipleObjectsReturned:
             case = Case.objects.by_addresses(addresses).first()
             logger.warning(
