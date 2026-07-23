@@ -83,6 +83,9 @@ services:
     build:
       context: .
       dockerfile: .contrib/docker/Dockerfile.gulp
+      args:
+        UID: ${UID:-1000}
+        GID: ${GID:-1000}
     user: "${UID:-1000}:${GID:-1000}"
     ports:
       - "35729:35729"

@@ -2,6 +2,8 @@ FROM node:24
 RUN npm --version
 WORKDIR /app
 VOLUME /app
+ARG UID=1000
+ARG GID=1000
 
 # Install jq just for reading engines.npm, then remove it
 COPY package.json package-lock.json ./
@@ -11,6 +13,15 @@ RUN apt-get update \
  && npm install -g "npm@${NPMV}" \
  && apt-get purge -y jq \
  && rm -rf /var/lib/apt/lists/*
+
+# Align the baked-in "node" user (uid/gid 1000) with the host UID/GID passed
+# at build time (see docker-compose.yml), so the "user:" override at runtime
+# resolves to a real /etc/passwd entry with a writable $HOME. Without this,
+# an arbitrary runtime UID (e.g. the CI runner's) can't resolve $HOME, so
+# npm falls back to the root-owned /.npm cache and fails with EACCES.
+RUN if [ "$(id -g node)" != "${GID}" ]; then groupmod -g "${GID}" node; fi \
+ && if [ "$(id -u node)" != "${UID}" ]; then usermod -u "${UID}" node; fi \
+ && chown -R node:node /home/node
 
 USER node
 CMD ["bash","-c", "npm install && npx gulp build"]
