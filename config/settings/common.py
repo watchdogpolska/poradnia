@@ -162,6 +162,7 @@ ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 ACCOUNT_LOGIN_METHODS = {"username", "email"}
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_NOTIFICATIONS = True  # alert users on password/email/MFA changes
 ACCOUNT_SESSION_REMEMBER = None
 MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
 MFA_SUPPORTED_TYPES = ["totp", "recovery_codes"]

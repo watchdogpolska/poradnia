@@ -1,0 +1,11 @@
+Szanowny/-a Użytkowniku!
+
+Ktoś (być może Ty) spróbował skorzystać z tego adresu e-mail ({{ email }}) w serwisie poradnictwa Stowarzyszenia Sieć Obywatelska - Watchdog Polska, np. resetując hasło. Nie znaleźliśmy jednak konta powiązanego z tym adresem.
+
+Jeśli to nie Ty, możesz bezpiecznie zignorować tę wiadomość.
+
+Jeśli to Ty i chcesz założyć konto, skorzystaj z poniższego linku:
+{{ signup_url }}
+
+Z wyrazami szacunku,
+Sieć Obywatelska - Watchdog Polska

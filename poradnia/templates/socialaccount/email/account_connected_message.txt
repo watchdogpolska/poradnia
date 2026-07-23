@@ -1,0 +1,13 @@
+Szanowny/-a {{ user }}!
+
+Informujemy, że do Twojego konta w serwisie poradnictwa Stowarzyszenia Sieć Obywatelska - Watchdog Polska zostało połączone konto zewnętrzne ({{ provider }}). Od teraz możesz logować się za jego pomocą.
+
+Jeśli to nie Ty dokonałeś/-aś tej zmiany, skontaktuj się z nami niezwłocznie - Twoje konto mogło zostać przejęte.
+
+Zmiana została dokonana z:
+- adres IP: {{ ip }}
+- przeglądarka: {{ user_agent }}
+- data: {{ timestamp }}
+
+Z wyrazami szacunku,
+Sieć Obywatelska - Watchdog Polska
