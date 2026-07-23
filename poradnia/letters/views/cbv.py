@@ -1,4 +1,5 @@
 import datetime
+import hmac
 import json
 import logging
 import mimetypes
@@ -431,7 +432,9 @@ class ReceiveEmailView(View):
         logger.info(f"Request content type: {request.content_type}")
         logger.info(f"Request headers: {request.headers}")
         logger.info(f"Request files: {request.FILES}")
-        if request.GET.get("secret") != LETTER_RECEIVE_SECRET:
+        if not hmac.compare_digest(
+            request.GET.get("secret", ""), LETTER_RECEIVE_SECRET
+        ):
             raise PermissionDenied
         if request.content_type != self.required_content_type:
             logger.error(
