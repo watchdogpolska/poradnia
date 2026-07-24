@@ -1,5 +1,3 @@
-import logging
-
 from django.conf import settings
 from django.contrib import admin
 from django.http import HttpResponseServerError
@@ -9,8 +7,6 @@ from django.views.generic import TemplateView
 
 from poradnia.letters.views.cbv import ProtectedMediaView
 from poradnia.template_mail.views import email_catalog_view
-
-logger = logging.getLogger(__name__)
 
 admin.autodiscover()
 
@@ -50,13 +46,10 @@ urlpatterns = [
 if "rosetta" in settings.INSTALLED_APPS:
     urlpatterns += [path("rosetta/", include("rosetta.urls"))]
 
-if settings.DEBUG:
-    try:
-        import debug_toolbar
+if "debug_toolbar" in settings.INSTALLED_APPS:
+    import debug_toolbar
 
-        urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
-    except ImportError:
-        logger.warning("Could not import debug_toolbar.")
+    urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
 
 
 def handler500(request):
