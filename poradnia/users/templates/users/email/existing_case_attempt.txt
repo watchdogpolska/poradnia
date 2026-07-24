@@ -9,3 +9,5 @@ Jeśli to nie Ty, możesz zignorować tę wiadomość.
 
 Z wyrazami szacunku,
 Sieć Obywatelska - Watchdog Polska
+
+{% include '_email_signature.txt' %}

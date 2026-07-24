@@ -10,3 +10,5 @@ Jeśli to nie Ty zgłaszałeś/-aś sprawę, zignoruj tę wiadomość - konto i 
 
 Z wyrazami szacunku,
 Sieć Obywatelska - Watchdog Polska
+
+{% include '_email_signature.txt' %}
