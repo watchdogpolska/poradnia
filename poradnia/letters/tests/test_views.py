@@ -216,7 +216,7 @@ class UserNewCaseTestCase(NewCaseMixin, TestCase):
         self.post()
         self.assertMailSend(
             template="cases/email/case_registered.txt",
-            subject="Sprawa  zarejestrowana w systemie",
+            subject="Sprawa Lorem ipsum subject example zarejestrowana w systemie",
             to=self.user.email,
         )
 

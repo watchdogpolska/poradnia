@@ -129,17 +129,9 @@ CATALOG = [
         context=lambda: {
             "target": _case(),
             "actor": _actor(is_staff=True),
+            "user": Mock("Jan Kowalski"),
             "email": "sprawa-123@example.poradnia.pl",
         },
-        note=(
-            "Kod wysyłający ten e-mail przekazuje zmienne target/actor "
-            "(przez User.notify()), a szablon odwołuje się do {{ case }} i "
-            "{{ user }} - te dwie nazwy się nie zgadzają, więc w produkcji "
-            "powitanie i link do sprawy renderują się jako puste/błędne. "
-            "Ten podgląd celowo używa prawdziwego kontekstu produkcyjnego, "
-            'żeby to pokazać - nie "naprawiono" go na potrzeby ładnego '
-            "podglądu."
-        ),
     ),
     EmailCatalogEntry(
         group="Sprawy",

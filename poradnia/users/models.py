@@ -301,6 +301,7 @@ class User(GuardianUserMixin, AbstractUser):
         context = kwargs
         context["email"] = from_email  # TODO: Drop this alias
         context["actor"] = actor
+        context["user"] = self
         logger.info(
             f"Sending notification email {template_key} "
             f"from {email_name} to {self.email} with context: {context}"
