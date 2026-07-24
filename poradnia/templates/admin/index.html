@@ -1,0 +1,13 @@
+{% extends "admin/index.html" %}
+{% load i18n %}
+
+{% block content %}
+<div class="app-email_catalog module" id="email-catalog-content">
+  <table style="width: 100%;">
+    <caption>
+      <a href="{% url 'email_catalog' %}" class="section" title="{% translate 'Katalog e-maili wysyłanych przez aplikację' %}">{% translate "Katalog e-maili wysyłanych przez aplikację" %}</a>
+    </caption>
+  </table>
+</div>
+{{ block.super }}
+{% endblock %}
