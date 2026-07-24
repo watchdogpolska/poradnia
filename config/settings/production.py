@@ -47,6 +47,15 @@ CSRF_COOKIE_SECURE = env.bool("DJANGO_CSRF_COOKIE_SECURE", default=True)
 CSRF_COOKIE_DOMAIN = env.str("DJANGO_CSRF_COOKIE_DOMAIN", default="")
 CSRF_COOKIE_SAMESITE = env.str("DJANGO_CSRF_COOKIE_SAMESITE", default="Strict")
 
+# The "gw" nginx in front of this app unconditionally sets X-Real-IP to the
+# real caller's address (unspoofable by the client) - REMOTE_ADDR as seen by
+# Django is just the app-nginx's own connecting IP, the same for every
+# request. Without this, allauth's rate limiting (login, signup, password
+# reset, account activation) would key off that constant value instead of
+# the real client. Only set in production - dev/tests don't sit behind that
+# proxy, so the header would be absent and allauth would raise PermissionDenied.
+ALLAUTH_TRUSTED_CLIENT_IP_HEADER = "X-Real-IP"
+
 # CELERY PRODUCTION SETTINGS
 # Production-specific Celery configuration with enhanced monitoring and reliability
 CELERY_BROKER_URL = env(

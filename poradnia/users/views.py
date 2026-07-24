@@ -1,6 +1,7 @@
 import re
 
 from ajax_datatable import AjaxDatatableView
+from allauth.core import ratelimit
 from atom.views import ActionMessageMixin, ActionView
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin, UserFormKwargsMixin
 from dal import autocomplete
@@ -85,6 +86,11 @@ class AccountActivationView(FormView):
     form_class = SetPasswordForm
 
     def dispatch(self, request, *args, **kwargs):
+        rate_limited_response = ratelimit.consume_or_429(
+            request, action="account_activation"
+        )
+        if rate_limited_response:
+            return rate_limited_response
         self.activation_user = self._get_user(kwargs["uidb64"])
         self.token_valid = (
             self.activation_user is not None

@@ -164,6 +164,11 @@ ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 ACCOUNT_EMAIL_NOTIFICATIONS = True  # alert users on password/email/MFA changes
 ACCOUNT_SESSION_REMEMBER = None
+# poradnia.users.views.AccountActivationView is a hand-rolled equivalent of
+# allauth's own token-in-URL password views, so it needs its own entry here
+# to get the same brute-force throttling those get automatically; matches
+# allauth's default "reset_password_from_key" rate (same risk shape).
+ACCOUNT_RATE_LIMITS = {"account_activation": "20/m/ip"}
 MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
 MFA_SUPPORTED_TYPES = ["totp", "recovery_codes"]
 MFA_TOTP_ISSUER = f"Poradnia {APP_MODE} SO MFA"  # shown in authenticator app

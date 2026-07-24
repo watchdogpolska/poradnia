@@ -2,7 +2,8 @@ import json
 
 from atom.mixins import AdminTestCaseMixin
 from django.core import mail
-from django.test import RequestFactory
+from django.core.cache import cache
+from django.test import RequestFactory, override_settings
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.encoding import force_bytes
@@ -476,6 +477,7 @@ class UserDeassignViewTestCase(ObjectMixin, TestCase):
 
 class AccountActivationViewTestCase(TestCase):
     def setUp(self):
+        cache.clear()  # rate-limit counters live in the cache, not the DB
         self.user = User.objects.register_by_email(
             email="unverified@example.com", notify=False
         )
@@ -524,3 +526,18 @@ class AccountActivationViewTestCase(TestCase):
         self.client.logout()
         resp = self.client.get(url)
         self.assertNotContains(resp, "<form")
+
+    @override_settings(ACCOUNT_RATE_LIMITS={"account_activation": "2/m/ip"})
+    def test_post_beyond_rate_limit_returns_429(self):
+        url = self.get_url(token="bogus-token")
+        data = {"new_password1": "x", "new_password2": "x"}
+        self.client.post(url, data=data)
+        self.client.post(url, data=data)
+        resp = self.client.post(url, data=data)
+        self.assertEqual(resp.status_code, 429)
+
+    @override_settings(ACCOUNT_RATE_LIMITS={"account_activation": "1/m/ip"})
+    def test_get_requests_are_not_rate_limited(self):
+        for _ in range(5):
+            resp = self.client.get(self.get_url())
+        self.assertContains(resp, "<form")
