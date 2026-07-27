@@ -1,0 +1,28 @@
+{% load i18n querystring_tags poradnia_tags %}
+{% if page_obj.paginator.num_pages > 1 %}
+    <ul class="pagination">
+        {% if page_obj.has_previous %}
+            <li><a href="?{% query_update page=1 %}" aria-label="{% trans 'First' %}">&laquo;</a></li>
+            <li><a href="?{% query_update page=page_obj.previous_page_number %}" aria-label="{% trans 'Previous' %}">&lsaquo;</a></li>
+        {% else %}
+            <li class="disabled"><span>&laquo;</span></li>
+            <li class="disabled"><span>&lsaquo;</span></li>
+        {% endif %}
+        {% for i in page_obj|elided_page_range %}
+            {% if i == page_obj.paginator.ELLIPSIS %}
+                <li class="disabled"><span>{{ i }}</span></li>
+            {% elif i == page_obj.number %}
+                <li class="active"><span>{{ i }}</span></li>
+            {% else %}
+                <li><a href="?{% query_update page=i %}">{{ i }}</a></li>
+            {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+            <li><a href="?{% query_update page=page_obj.next_page_number %}" aria-label="{% trans 'Next' %}">&rsaquo;</a></li>
+            <li><a href="?{% query_update page=page_obj.paginator.num_pages %}" aria-label="{% trans 'Last' %}">&raquo;</a></li>
+        {% else %}
+            <li class="disabled"><span>&rsaquo;</span></li>
+            <li class="disabled"><span>&raquo;</span></li>
+        {% endif %}
+    </ul>
+{% endif %}

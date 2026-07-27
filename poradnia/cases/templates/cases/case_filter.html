@@ -1,5 +1,5 @@
 {% extends "cases/base.html" %}
-{% load crispy_forms_tags humanize i18n cases_tags bootstrap_pagination %}
+{% load crispy_forms_tags humanize i18n cases_tags %}
 
 {% block extra_css %}
     <style>
@@ -118,7 +118,7 @@
                 {% for status in statuses %}<i class="{{ status.0|status2css }}"></i>
                     {{ status.0|status2display }} {% endfor %}</p>
             <div class="text-center">
-                {% bootstrap_paginate page_obj show_first_last="true" %}
+                {% include "_pagination.html" %}
             </div>
 
         {% else %}
