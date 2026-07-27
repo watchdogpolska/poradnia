@@ -20,7 +20,6 @@
 services:
   web:
     command: >
-      bash -c "git config --global --add safe.directory /code &&
-               python manage.py collectstatic --no-input &&
+      bash -c "python manage.py collectstatic --no-input &&
                python manage.py migrate &&
                sleep infinity"

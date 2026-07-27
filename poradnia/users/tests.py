@@ -2,9 +2,12 @@ import json
 
 from atom.mixins import AdminTestCaseMixin
 from django.core import mail
-from django.test import RequestFactory
+from django.core.cache import cache
+from django.test import RequestFactory, override_settings
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from guardian.shortcuts import assign_perm, get_perms
 from test_plus.test import TestCase
 
@@ -17,6 +20,7 @@ from poradnia.users.forms import (
     UserForm,
 )
 from poradnia.users.models import User
+from poradnia.users.tokens import account_activation_token
 from poradnia.users.views import UserAutocomplete
 
 from .factories import UserFactory
@@ -469,3 +473,71 @@ class UserDeassignViewTestCase(ObjectMixin, TestCase):
         self.client.post(self.get_url())
         # Then
         self.assertIn("can_view", case.client.get_all_permissions(case))
+
+
+class AccountActivationViewTestCase(TestCase):
+    def setUp(self):
+        cache.clear()  # rate-limit counters live in the cache, not the DB
+        self.user = User.objects.register_by_email(
+            email="unverified@example.com", notify=False
+        )
+
+    def get_url(self, user=None, token=None):
+        user = user or self.user
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        token = (
+            token if token is not None else account_activation_token.make_token(user)
+        )
+        return reverse("users:activate", kwargs={"uidb64": uidb64, "token": token})
+
+    def test_unverified_account_has_no_usable_password(self):
+        self.assertFalse(self.user.has_usable_password())
+
+    def test_valid_token_shows_form(self):
+        resp = self.client.get(self.get_url())
+        self.assertContains(resp, "<form")
+
+    def test_invalid_token_rejected(self):
+        resp = self.client.get(self.get_url(token="bogus-token"))
+        self.assertNotContains(resp, "<form")
+
+    def test_activation_sets_password_and_logs_in(self):
+        resp = self.client.post(
+            self.get_url(),
+            data={
+                "new_password1": "a-Very-Str0ng-Pass",
+                "new_password2": "a-Very-Str0ng-Pass",
+            },
+        )
+        self.assertRedirects(resp, reverse("cases:list"))
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.has_usable_password())
+        self.assertEqual(int(self.client.session["_auth_user_id"]), self.user.pk)
+
+    def test_token_is_single_use(self):
+        url = self.get_url()
+        self.client.post(
+            url,
+            data={
+                "new_password1": "a-Very-Str0ng-Pass",
+                "new_password2": "a-Very-Str0ng-Pass",
+            },
+        )
+        self.client.logout()
+        resp = self.client.get(url)
+        self.assertNotContains(resp, "<form")
+
+    @override_settings(ACCOUNT_RATE_LIMITS={"account_activation": "2/m/ip"})
+    def test_post_beyond_rate_limit_returns_429(self):
+        url = self.get_url(token="bogus-token")
+        data = {"new_password1": "x", "new_password2": "x"}
+        self.client.post(url, data=data)
+        self.client.post(url, data=data)
+        resp = self.client.post(url, data=data)
+        self.assertEqual(resp.status_code, 429)
+
+    @override_settings(ACCOUNT_RATE_LIMITS={"account_activation": "1/m/ip"})
+    def test_get_requests_are_not_rate_limited(self):
+        for _ in range(5):
+            resp = self.client.get(self.get_url())
+        self.assertContains(resp, "<form")

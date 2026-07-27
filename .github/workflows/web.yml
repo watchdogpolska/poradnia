@@ -26,6 +26,13 @@ jobs:
       # - run: |
       #     docker compose --file docker-compose.yml --file docker-compose.test.yml pull
       #     docker pull python:${{matrix.python}}-slim
+      - name: Align container user with runner UID/GID
+        # docker-compose.yml defaults UID/GID to 1000, which only matches the
+        # checked-out file ownership by coincidence on dev machines. Without
+        # this, the "web" container can't write to the bind-mounted logs/ dir.
+        run: |
+          echo "UID=$(id -u)" >> .env
+          echo "GID=$(id -g)" >> .env
       - name: Start database early
         run: docker compose up -d db
       - name: Build application

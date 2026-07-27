@@ -19,7 +19,8 @@ from django.db.models import (
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils import timezone
-from django.utils.crypto import get_random_string
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_encode
 from django.utils.translation import gettext_lazy as _
 from guardian.mixins import GuardianUserMixin
 from guardian.utils import get_anonymous_user
@@ -28,6 +29,7 @@ from sorl.thumbnail import ImageField
 
 from poradnia.cases.models import Case as CaseModel
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
+from poradnia.users.tokens import account_activation_token
 
 _("Username or e-mail")  # Hack to overwrite django translation
 _("Login")
@@ -178,15 +180,26 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
 
     def register_by_email(self, email, notify=True, **extra_fields):
         email = self.normalize_email(email)
-        password = self.make_random_password()
         username = self.email_to_unique_username(email)
-        user = self.create_user(username, email, password)
+        # password=None leaves the account with an unusable password: nobody
+        # has proven they own this mailbox yet, so no credential is created
+        # or e-mailed until they follow the activation link and set one.
+        user = self.create_user(username, email, password=None, **extra_fields)
         if notify:
-            context = {"user": user, "password": password}
-            TemplateMailManager.send(
-                TemplateKey.USER_NEW, recipient_list=[email], context=context
-            )
+            self.send_activation_email(user)
         return user
+
+    def send_activation_email(self, user):
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        token = account_activation_token.make_token(user)
+        activation_path = reverse(
+            "users:activate", kwargs={"uidb64": uid, "token": token}
+        )
+        TemplateMailManager.send(
+            TemplateKey.USER_ACTIVATION,
+            recipient_list=[user.email],
+            context={"user": user, "activation_path": activation_path},
+        )
 
     def with_verified_email(self):
         subquery = EmailAddress.objects.filter(user=OuterRef("pk"), verified=True)
@@ -199,17 +212,6 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
         return self.annotate(has_unverified_email=~Exists(subquery)).filter(
             has_unverified_email=True
         )
-
-    def make_random_password(
-        self,
-        length=10,
-        allowed_chars="abcdefghjkmnpqrstuvwxyzABCDEFGHJKLMNPQRSTUVWXYZ23456789",
-    ):
-        """
-        Replacement for Django <5.0 BaseUserManager.make_random_password().
-        Generates a cryptographically secure random password.
-        """
-        return get_random_string(length, allowed_chars)
 
 
 class User(GuardianUserMixin, AbstractUser):
@@ -299,6 +301,7 @@ class User(GuardianUserMixin, AbstractUser):
         context = kwargs
         context["email"] = from_email  # TODO: Drop this alias
         context["actor"] = actor
+        context["user"] = self
         logger.info(
             f"Sending notification email {template_key} "
             f"from {email_name} to {self.email} with context: {context}"

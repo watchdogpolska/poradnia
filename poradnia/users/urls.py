@@ -17,6 +17,11 @@ urlpatterns = [
         name="detail",
     ),
     path("info/<username>/", views.UserInfoView.as_view(), name="user_info"),
+    path(
+        "aktywuj/<uidb64>/<token>/",
+        views.AccountActivationView.as_view(),
+        name="activate",
+    ),
     re_path(
         r"^(?P<username>[\w.@+-]+)/~deassign/$",
         views.UserDeassignView.as_view(),

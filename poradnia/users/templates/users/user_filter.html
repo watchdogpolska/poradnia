@@ -1,5 +1,5 @@
 {% extends "users/base.html" %}
-{% load static i18n users_tags crispy_forms_tags querystring_tags bootstrap_pagination %}
+{% load static i18n users_tags crispy_forms_tags %}
 
 {% block title %}{% trans 'Users index' %}{% endblock %}
 
@@ -82,7 +82,7 @@
         </table>
 
         <div class="row text-center">
-            {% bootstrap_paginate page_obj show_first_last="true" %}
+            {% include "_pagination.html" %}
         </div>
     </div>
 </div>
