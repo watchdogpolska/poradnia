@@ -85,10 +85,16 @@ class AnonymousNewCaseFormMyTests(TestCase):
         self.assertEqual(list(self.get_bound().fields.keys()), self.fields)
 
     def test_login_required(self, mock: MagicMock):
+        """A pre-existing account must not surface as a form error - that
+        would let an anonymous visitor probe whether an e-mail is a client."""
         UserFactory(email=self.data["email_registration"])
         form = self.get_bound()
-        self.assertIn("email_registration", form.errors)
+        self.assertTrue(form.is_valid())
+        self.assertNotIn("email_registration", form.errors)
+        self.assertTrue(form.existing_account)
 
     def test_login_not_required(self, mock: MagicMock):
         form = self.get_bound()
+        self.assertTrue(form.is_valid())
         self.assertNotIn("email_registration", form.errors)
+        self.assertFalse(form.existing_account)

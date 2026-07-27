@@ -1,4 +1,6 @@
 import datetime
+import email.utils
+import hmac
 import json
 import logging
 import mimetypes
@@ -52,7 +54,7 @@ from poradnia.utils.crispy_forms import FormSetMixin
 
 from ..forms import AttachmentForm, LetterForm, NewCaseForm
 from ..models import Attachment, Letter
-from .fbv import REGISTRATION_TEXT
+from .fbv import NEW_CASE_ANONYMOUS_TEXT
 
 logger = logging.getLogger(__name__)
 
@@ -67,22 +69,46 @@ class NewCaseCreateView(
     inline_model = Attachment
     inline_form_cls = AttachmentForm
 
+    def form_valid(self, form):
+        if getattr(form, "existing_account", False):
+            # The submitted e-mail already belongs to a client account.
+            # Don't create a case for it (that would attach anonymous,
+            # unverified content to someone else's account) and don't
+            # reveal that the account exists either: notify the account
+            # holder by e-mail and show the anonymous submitter the exact
+            # same generic response as a genuinely new submission.
+            TemplateMailManager.send(
+                TemplateKey.USER_EXISTING_CASE_ATTEMPT,
+                recipient_list=[form.cleaned_data["email_registration"]],
+            )
+            messages.success(self.request, NEW_CASE_ANONYMOUS_TEXT)
+            return HttpResponseRedirect(reverse("home"))
+        return super().form_valid(form)
+
     def formset_valid(self, form, formset, *args, **kwargs):
         formset.save()
+        if self.object.client.has_usable_password():
+            # An unverified/auto-created client (unusable password) already
+            # got a neutral activation e-mail from register_by_email(); the
+            # case-registered content itself is withheld until they confirm
+            # ownership of the mailbox by activating.
+            self.object.client.notify(
+                actor=self.object.created_by,
+                verb="registered",
+                target=self.object.case,
+                from_email=self.object.case.get_email(),
+            )
+        if self.request.user.is_anonymous:
+            # Anonymous submitters never get to see the case (they have no
+            # session for it), and the redirect target/message must be
+            # identical regardless of whether the e-mail was new or already
+            # registered - see form_valid() above.
+            messages.success(self.request, NEW_CASE_ANONYMOUS_TEXT)
+            return HttpResponseRedirect(reverse("home"))
         messages.success(
             self.request,
             _("Case about {object} created!").format(object=self.object.name),
         )
-        self.object.client.notify(
-            actor=self.object.created_by,
-            verb="registered",
-            target=self.object.case,
-            from_email=self.object.case.get_email(),
-        )
-        if self.request.user.is_anonymous:
-            messages.success(
-                self.request, _(REGISTRATION_TEXT) % {"user": self.object.created_by}
-            )
         return HttpResponseRedirect(self.object.case.get_absolute_url())
 
     def form_invalid(self, form, formset=None):
@@ -285,22 +311,41 @@ class ReceiveEmailView(View):
     required_content_type = "multipart/form-data"
 
     def is_allowed_recipient(self, manifest):
-        domain = Site.objects.get_current().domain
+        domain = Site.objects.get_current().domain.lower()
         logger.info(f"domain: {domain}")
         logger.info(f"email to: {manifest['headers']['to']}")
         logger.info(f"whitelisted: {settings.LETTER_RECEIVE_WHITELISTED_ADDRESS}")
-        cond = [
-            (addr.lower() in x.lower() or domain.lower() in x.lower())
-            and addr != ""
-            and domain != ""
-            for x in manifest["headers"]["to"]
-            for addr in settings.LETTER_RECEIVE_WHITELISTED_ADDRESS
-        ]
+        cond = []
+        for x in manifest["headers"]["to"]:
+            _, x_addr = email.utils.parseaddr(x)
+            x_addr = x_addr.lower()
+            x_domain = x_addr.rsplit("@", 1)[-1] if "@" in x_addr else ""
+            for addr in settings.LETTER_RECEIVE_WHITELISTED_ADDRESS:
+                addr = addr.lower()
+                cond.append(
+                    (addr == x_addr or x_domain == domain)
+                    and addr != ""
+                    and domain != ""
+                )
         logger.info(f"cond: {cond}")
         return any(cond)
 
     def is_autoreply(self, manifest):
         return manifest["headers"].get("auto_reply_type", False)
+
+    def get_client_ip(self, request):
+        return request.headers.get("x-real-ip") or request.META.get("REMOTE_ADDR")
+
+    def check_access(self, request, client_ip):
+        if settings.LETTER_RECEIVE_ALLOWED_IPS and (
+            client_ip not in settings.LETTER_RECEIVE_ALLOWED_IPS
+        ):
+            logger.error(f"Rejected webhook request from disallowed IP {client_ip}.")
+            raise PermissionDenied
+        if not hmac.compare_digest(
+            request.GET.get("secret", ""), LETTER_RECEIVE_SECRET
+        ):
+            raise PermissionDenied
 
     def create_user(self, manifest):
         from_emails = manifest["headers"].get("from", [])
@@ -399,16 +444,16 @@ class ReceiveEmailView(View):
             "to": headers.get("to"),
             "cc": headers.get("cc"),
             "autoreply": self.is_autoreply(manifest),
-            "remote_ip": request.META.get("REMOTE_ADDR"),
+            "remote_ip": self.get_client_ip(request),
         }
 
     def post(self, request):
-        logger.info(f"Received a new letter from {request.META['REMOTE_ADDR']}.")
+        client_ip = self.get_client_ip(request)
+        logger.info(f"Received a new letter from {client_ip}.")
         logger.info(f"Request content type: {request.content_type}")
         logger.info(f"Request headers: {request.headers}")
         logger.info(f"Request files: {request.FILES}")
-        if request.GET.get("secret") != LETTER_RECEIVE_SECRET:
-            raise PermissionDenied
+        self.check_access(request, client_ip)
         if request.content_type != self.required_content_type:
             logger.error(
                 f"Request content type is {request.content_type}, "
@@ -489,9 +534,16 @@ class ReceiveEmailView(View):
             case = Case.objects.create(
                 name=subject[:NAME_MAX_LENGTH], created_by=actor, client=actor
             )
-            actor.notify(
-                actor=actor, verb="registered", target=case, from_email=case.get_email()
-            )
+            if actor.has_usable_password():
+                # See NewCaseCreateView.formset_valid(): don't disclose case
+                # content to a mailbox that hasn't proven ownership yet (the
+                # From: header on inbound mail is trivially spoofable).
+                actor.notify(
+                    actor=actor,
+                    verb="registered",
+                    target=case,
+                    from_email=case.get_email(),
+                )
         except Case.MultipleObjectsReturned:
             case = Case.objects.by_addresses(addresses).first()
             logger.warning(

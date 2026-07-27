@@ -1,5 +1,5 @@
 {% extends 'tasty_feedback/base.html' %}
-{% load humanize i18n crispy_forms_tags bootstrap_pagination %}
+{% load humanize i18n crispy_forms_tags %}
 
 {% block javascript %}
     {{ block.super }}
@@ -41,7 +41,7 @@
             {% endfor %}
             </tbody>
         </table>
-        <div class="text-center">{% bootstrap_paginate page_obj show_first_last="true" %}</div>
+        <div class="text-center">{% include "_pagination.html" %}</div>
         {% else %}
             <p>{% trans 'There is no any feedbacks.' %}</p>
         {% endif %}

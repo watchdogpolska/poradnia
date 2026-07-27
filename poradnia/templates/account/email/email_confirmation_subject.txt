@@ -1,0 +1,1 @@
+Potwierdź adres e-mail

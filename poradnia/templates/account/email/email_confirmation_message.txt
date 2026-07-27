@@ -1,0 +1,15 @@
+Szanowny/-a {{ user }}!
+
+Otrzymujesz tę wiadomość, ponieważ ten adres e-mail został użyty do rejestracji konta w serwisie poradnictwa Stowarzyszenia Sieć Obywatelska - Watchdog Polska.
+
+{% if code %}Twój kod weryfikacyjny: {{ code }}
+
+Wpisz go w oknie przeglądarki, w którym rozpoczęto rejestrację, aby potwierdzić adres e-mail.{% else %}Aby potwierdzić ten adres e-mail, kliknij w poniższy link:
+{{ activate_url }}{% endif %}
+
+Jeśli to nie Ty rejestrowałeś/-aś się w naszym serwisie, zignoruj tę wiadomość - konto pozostanie nieaktywne.
+
+Z wyrazami szacunku,
+Sieć Obywatelska - Watchdog Polska
+
+{% include '_email_signature.txt' %}

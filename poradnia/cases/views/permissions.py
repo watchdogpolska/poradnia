@@ -59,9 +59,8 @@ class UserPermissionCreateView(CasePermissionTestMixin, FormView):
             )
             messages.success(
                 self.request,
-                _("Success granted permission of %(user)s to %(case)s").format(
-                    user=user, case=self.case
-                ),
+                _("Success granted permission of %(user)s to %(case)s")
+                % {"user": user, "case": self.case},
             )
         self.case.update_status()
         return super().form_valid(form)
@@ -105,9 +104,10 @@ class UserPermissionUpdateView(
         return super().form_valid(form)
 
     def get_form_valid_message(self):
-        return _("Updated permission %(user)s to %(case)s!").format(
-            user=self.action_user, case=self.case
-        )
+        return _("Updated permission %(user)s to %(case)s!") % {
+            "user": self.action_user,
+            "case": self.case,
+        }
 
     def get_success_url(self):
         return self.case.get_absolute_url()
