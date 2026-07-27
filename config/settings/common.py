@@ -52,7 +52,6 @@ THIRD_PARTY_APPS = (
     "sorl.thumbnail",
     "atom",
     "django_filters",
-    "bootstrap_pagination",
     "github_revision",
     "mptt",
     "teryt_tree",

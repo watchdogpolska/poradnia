@@ -12,6 +12,16 @@ from poradnia import get_version
 register = template.Library()
 
 
+@register.filter
+def elided_page_range(page_obj):
+    """
+    elided_page_range filter wraps Paginator.get_elided_page_range so it can
+    be used from a template {% for %} tag, which cannot pass arguments to
+    a method call directly.
+    """
+    return page_obj.paginator.get_elided_page_range(page_obj.number)
+
+
 @register.simple_tag
 def poradnia_version():
     return get_version()

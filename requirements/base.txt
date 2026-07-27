@@ -60,10 +60,6 @@ icalendar==7.2.0
 html2text==2025.4.15
 pyGravatar==0.0.6
 
-# replacing unmaintained django-bootstrap-pagination with updated fork
-# django-bootstrap-pagination==1.7.1
-git+https://github.com/PiotrIw/django-bootstrap-pagination.git@master
-
 sentry-sdk==2.66.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
