@@ -280,7 +280,9 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         updated = qs.update(must_change_password=True)
 
         messages.success(
-            request, _(f"Marked {updated} user(s) to change password on next login.")
+            request,
+            _("Marked %(updated)s user(s) to change password on next login.")
+            % {"updated": updated},
         )
 
 

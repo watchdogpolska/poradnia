@@ -127,13 +127,7 @@ CATALOG = [
         trigger="UserPermissionCreateView.form_valid (cases/views/permissions.py).",
         level="success",
         msgid="Success granted permission of %(user)s to %(case)s",
-        render=lambda t: t.format(user="Jan Kowalski", case=_CASE),
-        note=(
-            "Błąd w kodzie: napis ma placeholdery w stylu %(user)s/%(case)s, ale "
-            "jest podstawiany przez .format() (który obsługuje tylko {tak}), "
-            "więc użytkownik naprawdę widzi tekst bez podstawionych wartości - "
-            "tak jak w podglądzie poniżej."
-        ),
+        render=lambda t: t % {"user": "Jan Kowalski", "case": _CASE},
     ),
     MessageCatalogEntry(
         group="Sprawy",
@@ -145,12 +139,7 @@ CATALOG = [
         ),
         level="success",
         msgid="Updated permission %(user)s to %(case)s!",
-        render=lambda t: t.format(user="Jan Kowalski", case=_CASE),
-        note=(
-            "Ten sam rodzaj błędu co w „Nadano uprawnienia do sprawy” - "
-            "placeholdery %(user)s/%(case)s nigdy nie są podstawiane przez "
-            ".format()."
-        ),
+        render=lambda t: t % {"user": "Jan Kowalski", "case": _CASE},
     ),
     MessageCatalogEntry(
         group="Sprawy",
@@ -399,14 +388,8 @@ CATALOG = [
             "(users/admin.py)."
         ),
         level="success",
-        msgid="Marked 7 user(s) to change password on next login.",
-        note=(
-            "Błąd w kodzie: f-string jest podstawiany PRZED przekazaniem do "
-            "_(), więc gettext() dostaje już gotowy, zmienny tekst (z "
-            "konkretną liczbą użytkowników) zamiast stałego msgid - taki "
-            "komunikat nigdy nie znajdzie dopasowania w pliku .po i zawsze "
-            "wyświetli się po angielsku, niezależnie od języka interfejsu."
-        ),
+        msgid="Marked %(updated)s user(s) to change password on next login.",
+        render=lambda t: t % {"updated": 7},
     ),
     MessageCatalogEntry(
         group="Panel administracyjny",
