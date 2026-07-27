@@ -57,17 +57,36 @@ def _attachment_set():
 
 
 def _letter(actor_is_staff=False):
+    if actor_is_staff:
+        return Mock(
+            "Odpowiedź na pytanie",
+            name="Odpowiedź na pytanie",
+            text=(
+                "Szanowni Państwo,\n\nw odpowiedzi na pytanie uprzejmie informujemy..."
+            ),
+            created_by=Mock("Anna Nowak (Poradnia)"),
+            case=_case(),
+            get_absolute_url=lambda: "/sprawy/123/#pismo-456",
+            attachment_set=_attachment_set(),
+            render_as_html=lambda: (
+                "<p>Szanowni Państwo,</p><p>w odpowiedzi na pytanie uprzejmie "
+                "informujemy...</p>"
+            ),
+        )
     return Mock(
-        "Odpowiedź na wniosek",
-        name="Odpowiedź na wniosek",
-        text="Szanowni Państwo,\n\nw odpowiedzi na wniosek uprzejmie informujemy...",
-        created_by=Mock("Anna Nowak (Poradnia)"),
+        "Pytanie w sprawie o dostęp do informacji publicznej",
+        name="Pytanie w sprawie o dostęp do informacji publicznej",
+        text=(
+            "Szanowni Państwo,\n\nzwracam się z pytaniem w sprawie o udostępnienie "
+            "informacji publicznej..."
+        ),
+        created_by=Mock("Jan Kowalski"),
         case=_case(),
         get_absolute_url=lambda: "/sprawy/123/#pismo-456",
         attachment_set=_attachment_set(),
         render_as_html=lambda: (
-            "<p>Szanowni Państwo,</p><p>w odpowiedzi na wniosek uprzejmie "
-            "informujemy...</p>"
+            "<p>Szanowni Państwo,</p><p>zwracam się z pytaniem w sprawie o "
+            "udostępnienie informacji publicznej...</p>"
         ),
     )
 
@@ -261,7 +280,10 @@ CATALOG = [
         txt_template="letters/email/letter_created.txt",
         html_template="letters/email/letter_created.html",
         split_subject=True,
-        context=lambda: {"target": _letter(), "actor": _actor(is_staff=False)},
+        context=lambda: {
+            "target": _letter(actor_is_staff=False),
+            "actor": _actor(is_staff=False),
+        },
     ),
     EmailCatalogEntry(
         group="Pisma",
@@ -274,7 +296,10 @@ CATALOG = [
         txt_template="letters/email/letter_updated.txt",
         html_template="letters/email/letter_updated.html",
         split_subject=True,
-        context=lambda: {"target": _letter(), "actor": _actor(is_staff=True)},
+        context=lambda: {
+            "target": _letter(actor_is_staff=True),
+            "actor": _actor(is_staff=True),
+        },
     ),
     EmailCatalogEntry(
         group="Pisma",
@@ -287,7 +312,10 @@ CATALOG = [
         txt_template="letters/email/letter_drop_a_note.txt",
         html_template="letters/email/letter_drop_a_note.html",
         split_subject=True,
-        context=lambda: {"target": _letter(), "actor": _actor(is_staff=True)},
+        context=lambda: {
+            "target": _letter(actor_is_staff=True),
+            "actor": _actor(is_staff=True),
+        },
     ),
     EmailCatalogEntry(
         group="Pisma",
@@ -300,7 +328,10 @@ CATALOG = [
         txt_template="letters/email/letter_send_to_client.txt",
         html_template="letters/email/letter_send_to_client.html",
         split_subject=True,
-        context=lambda: {"target": _letter(), "actor": _actor(is_staff=True)},
+        context=lambda: {
+            "target": _letter(actor_is_staff=True),
+            "actor": _actor(is_staff=True),
+        },
     ),
     EmailCatalogEntry(
         group="Pisma",
@@ -313,7 +344,10 @@ CATALOG = [
         txt_template="letters/email/letter_accepted.txt",
         html_template="letters/email/letter_accepted.html",
         split_subject=True,
-        context=lambda: {"target": _letter(), "actor": _actor(is_staff=True)},
+        context=lambda: {
+            "target": _letter(actor_is_staff=True),
+            "actor": _actor(is_staff=True),
+        },
         note=(
             "Martwy kod: nie znaleziono żadnego wywołania "
             "TemplateKey.LETTER_ACCEPTED poza samą mapą szablonów."
