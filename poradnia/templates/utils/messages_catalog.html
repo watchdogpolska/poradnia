@@ -1,0 +1,48 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+
+{% block content %}
+<p>
+  Podgląd wszystkich komunikatów django.contrib.messages wyświetlanych w aplikacji
+  (pasek komunikatów w <code>base.html</code>), wraz z opisem co je wyzwala. Tekst
+  jest generowany przez prawdziwe wywołanie <code>gettext()</code> z przykładowymi
+  danymi, więc pokazuje dokładnie to, co zobaczy użytkownik - łącznie z ewentualnymi
+  błędami w podstawianiu placeholderów. Lista jest utrzymywana ręcznie w
+  <code>poradnia/utils/messages_catalog.py</code>.
+</p>
+
+<div class="module">
+  <table>
+    <caption>Spis treści</caption>
+    <tbody>
+      <tr>
+        <td>
+          {% for group, items in groups.items %}
+            <a href="#group-{{ forloop.counter }}">{{ group }} ({{ items|length }})</a>{% if not forloop.last %} &middot; {% endif %}
+          {% endfor %}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+{% for group, items in groups.items %}
+<div class="module" id="group-{{ forloop.counter }}">
+  <h2>{{ group }}</h2>
+
+  {% for item in items %}
+  <fieldset class="module aligned" style="margin-bottom: 25px;">
+    <h3>{{ item.entry.title }}</h3>
+    <p><strong>Co wyzwala komunikat:</strong> {{ item.entry.trigger }}</p>
+    {% if item.entry.note %}
+    <p style="background:#fff3cd; border:1px solid #ffe08a; padding:8px 12px; color:#664d03;">
+      <strong>Uwaga:</strong> {{ item.entry.note }}
+    </p>
+    {% endif %}
+    <p><strong>Poziom:</strong> <code>{{ item.entry.level }}</code></p>
+    <div class="alert alert-{{ item.entry.level }}" style="padding:10px 15px; border:1px solid #ddd; max-width:600px;">{{ item.text }}</div>
+  </fieldset>
+  {% endfor %}
+</div>
+{% endfor %}
+{% endblock %}

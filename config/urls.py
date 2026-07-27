@@ -7,6 +7,7 @@ from django.views.generic import TemplateView
 
 from poradnia.letters.views.cbv import ProtectedMediaView
 from poradnia.template_mail.views import email_catalog_view
+from poradnia.utils.views import messages_catalog_view
 
 admin.autodiscover()
 
@@ -14,6 +15,7 @@ urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
     # Must precede admin.site.urls to take priority over its catch-all.
     path("admin/email-catalog/", email_catalog_view, name="email_catalog"),
+    path("admin/messages-catalog/", messages_catalog_view, name="messages_catalog"),
     path("admin/", admin.site.urls),
     path("navsearch/", include("poradnia.navsearch.urls", namespace="navsearch")),
     # User management

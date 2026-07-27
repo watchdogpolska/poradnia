@@ -9,5 +9,12 @@
     </caption>
   </table>
 </div>
+<div class="app-messages_catalog module" id="messages-catalog-content">
+  <table style="width: 100%;">
+    <caption>
+      <a href="{% url 'messages_catalog' %}" class="section" title="{% translate 'Katalog komunikatów wyświetlanych przez aplikację' %}">{% translate "Katalog komunikatów wyświetlanych przez aplikację" %}</a>
+    </caption>
+  </table>
+</div>
 {{ block.super }}
 {% endblock %}
