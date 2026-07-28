@@ -56,7 +56,7 @@ icalendar==7.2.0
 html2text==2025.4.15
 pyGravatar==0.0.6
 
-sentry-sdk==2.66.0
+sentry-sdk==2.66.1
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 zipstream-new==1.1.8
