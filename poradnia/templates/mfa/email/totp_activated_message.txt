@@ -1,0 +1,15 @@
+Szanowny/-a {{ user }}!
+
+Informujemy, że w Twoim koncie w serwisie poradnictwa Stowarzyszenia Sieć Obywatelska - Watchdog Polska aktywowano logowanie dwuskładnikowe (aplikacja uwierzytelniająca).
+
+Jeśli to nie Ty dokonałeś/-aś tej zmiany, skontaktuj się z nami niezwłocznie - Twoje konto mogło zostać przejęte.
+
+Zmiana została dokonana z:
+- adres IP: {{ ip }}
+- przeglądarka: {{ user_agent }}
+- data: {{ timestamp }}
+
+Z wyrazami szacunku,
+Sieć Obywatelska - Watchdog Polska
+
+{% include '_email_signature.txt' %}

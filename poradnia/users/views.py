@@ -1,17 +1,29 @@
 import re
 
 from ajax_datatable import AjaxDatatableView
+from allauth.core import ratelimit
 from atom.views import ActionMessageMixin, ActionView
 from braces.views import LoginRequiredMixin, StaffuserRequiredMixin, UserFormKwargsMixin
 from dal import autocomplete
+from django.contrib import messages
+from django.contrib.auth import login
+from django.contrib.auth.forms import SetPasswordForm
 from django.contrib.auth.mixins import PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.utils.encoding import force_str
+from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import DetailView, RedirectView, TemplateView, UpdateView
+from django.views.generic import (
+    DetailView,
+    FormView,
+    RedirectView,
+    TemplateView,
+    UpdateView,
+)
 from django_filters.views import FilterView
 
 from poradnia.cases.models import Case, CaseUserObjectPermission
@@ -20,6 +32,7 @@ from poradnia.utils.mixins import ExprAutocompleteMixin
 from .filters import UserFilter
 from .forms import ProfileForm, UserForm
 from .models import Profile, User
+from .tokens import account_activation_token
 from .utils import PermissionMixin
 
 
@@ -62,6 +75,69 @@ class UserRedirectView(LoginRequiredMixin, RedirectView):
 
     def get_redirect_url(self):
         return reverse("users:detail", kwargs={"username": self.request.user.username})
+
+
+class AccountActivationView(FormView):
+    """Lets the holder of an auto-created, unverified mailbox (from an
+    anonymous case submission or inbound e-mail) prove ownership by setting
+    a password - nothing case-related is shown or e-mailed before this."""
+
+    template_name = "users/account_activate.html"
+    form_class = SetPasswordForm
+
+    def dispatch(self, request, *args, **kwargs):
+        rate_limited_response = ratelimit.consume_or_429(
+            request, action="account_activation"
+        )
+        if rate_limited_response:
+            return rate_limited_response
+        self.activation_user = self._get_user(kwargs["uidb64"])
+        self.token_valid = (
+            self.activation_user is not None
+            and account_activation_token.check_token(
+                self.activation_user, kwargs["token"]
+            )
+        )
+        return super().dispatch(request, *args, **kwargs)
+
+    def _get_user(self, uidb64):
+        try:
+            uid = force_str(urlsafe_base64_decode(uidb64))
+            return User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+            return None
+
+    def get(self, request, *args, **kwargs):
+        if not self.token_valid:
+            return self.render_to_response(self.get_context_data())
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        if not self.token_valid:
+            return self.render_to_response(self.get_context_data())
+        return super().post(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["user"] = self.activation_user
+        return kwargs
+
+    def form_valid(self, form):
+        form.save()
+        login(
+            self.request,
+            self.activation_user,
+            backend="django.contrib.auth.backends.ModelBackend",
+        )
+        messages.success(
+            self.request, _("Your account is now active and your password is set.")
+        )
+        return HttpResponseRedirect(reverse("cases:list"))
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["token_valid"] = self.token_valid
+        return context
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):

@@ -66,18 +66,6 @@ class SimpleSubmit(BaseInput):
     field_classes = "btn"
 
 
-class UserEmailField(forms.EmailField):
-    def validate(self, value):
-        "Check if value consists only of unique user emails."
-        super().validate(value)
-        if get_user_model().objects.filter(email=value).exists():
-            raise ValidationError(
-                _("E-mail %(email)s are already used. Please log in."),
-                code="invalid",
-                params={"email": value},
-            )
-
-
 class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
     attachment_cls = Attachment
     attachment_rel_field = "letter"
@@ -92,7 +80,7 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
         widget=autocomplete.ModelSelect2("users:autocomplete"),
     )
     email = forms.EmailField(required=False, label=_("User e-mail"))
-    email_registration = UserEmailField(
+    email_registration = forms.EmailField(
         required=True, help_text=EMAIL_TEXT, label=_("E-mail")
     )
     turnstile = TurnstileField(
@@ -101,6 +89,7 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
 
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
+        self.existing_account = False
         super().__init__(*args, **kwargs)
         # TODO refactor form to avoid crispy forms warnings like:
         # KeyError: "Key 'giodo' not found in 'NewCaseForm'. Choices are: name, text."
@@ -146,6 +135,15 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
 
         if self.user.has_perm("cases.can_select_client") and not client_or_email:
             raise ValidationError(_("Have to enter user email or select a client"))
+
+        email_registration = self.cleaned_data.get("email_registration")
+        # Never raise a validation error based on this: doing so would let an
+        # anonymous visitor probe whether an e-mail belongs to a client.
+        self.existing_account = bool(
+            self.user.is_anonymous
+            and email_registration
+            and get_user_model().objects.by_email(email_registration).exists()
+        )
         return super().clean()
 
     def get_user(self):

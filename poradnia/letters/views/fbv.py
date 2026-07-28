@@ -15,9 +15,9 @@ from ..forms import AddLetterForm, AttachmentsFieldForm, SendLetterForm
 from ..helpers import AttachmentFormSet
 from ..models import Letter
 
-REGISTRATION_TEXT = _(
-    "User  %(user)s registered! You will receive a password by mail. "
-    + "Log in to get access to archive"
+NEW_CASE_ANONYMOUS_TEXT = _(
+    "Thank you for submitting your case. Please check your e-mail for "
+    "further instructions on how to proceed."
 )
 
 logger = logging.getLogger(__name__)

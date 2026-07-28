@@ -1,0 +1,13 @@
+Szanowny/-a Użytkowniku!
+
+Ktoś (być może Ty) spróbował założyć nowe konto w serwisie poradnictwa Stowarzyszenia Sieć Obywatelska - Watchdog Polska, używając adresu e-mail {{ email }}. Konto powiązane z tym adresem już jednak istnieje.
+
+Jeśli to Ty próbowałeś/-aś się zarejestrować i nie pamiętasz hasła, możesz je zresetować, korzystając z poniższego linku:
+{{ password_reset_url }}
+
+Jeśli to nie Ty, możesz zignorować tę wiadomość - nowe konto nie zostało założone.
+
+Z wyrazami szacunku,
+Sieć Obywatelska - Watchdog Polska
+
+{% include '_email_signature.txt' %}

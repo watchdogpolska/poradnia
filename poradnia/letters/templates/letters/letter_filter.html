@@ -1,5 +1,5 @@
 {% extends 'letters/base.html' %}
-{% load i18n crispy_forms_tags bootstrap_pagination %}
+{% load i18n crispy_forms_tags %}
 {% block content %}
     <ol class="breadcrumb">
         <li><a href="{% url 'letters:list' %}">{% trans 'Letter list' %}</a></li>
@@ -17,7 +17,7 @@
                     {% include object.get_template_list with object=object %}
                 </div>
             {% endfor %}
-            <div class="text-center">{% bootstrap_paginate page_obj show_first_last="true" %}</div>
+            <div class="text-center">{% include "_pagination.html" %}</div>
         </div>
     </div>
 
