@@ -714,7 +714,7 @@ class Case(models.Model):
         The result is delivered asynchronously via the N8nArticlesSearchCallbackView
         and stored as a Letter with genre ai_message_staff on this case.
         """
-        from ai_assistant.models import N8nArticlesSearchRequest
+        from poradnia.ai_assistant.models import N8nArticlesSearchRequest
 
         question = self.get_client_messages_content()
         obj = N8nArticlesSearchRequest(
@@ -731,7 +731,7 @@ class Case(models.Model):
 
         The result is delivered asynchronously via the n8n callback.
         """
-        from ai_assistant.models import N8nCaseTagsRequest
+        from poradnia.ai_assistant.models import N8nCaseTagsRequest
 
         question = self.get_client_messages_content()
         obj = N8nCaseTagsRequest(
