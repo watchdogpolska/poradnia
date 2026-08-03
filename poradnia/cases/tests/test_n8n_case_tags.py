@@ -8,8 +8,8 @@ from django.urls import reverse
 from guardian.shortcuts import assign_perm
 from test_plus.test import TestCase
 
-from ai_assistant.models import N8nCaseTagsRequest
 from poradnia.advicer.factories import AreaFactory, IssueFactory
+from poradnia.ai_assistant.models import N8nCaseTagsRequest
 from poradnia.cases.factories import CaseFactory
 from poradnia.letters.factories import AttachmentFactory, LetterFactory
 from poradnia.users.factories import UserFactory
@@ -23,7 +23,7 @@ CASE_TAGS_WEBHOOK_SETTINGS = {
 
 class CaseRequestAiTagsTestCase(TestCase):
     @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_client_letters_and_attachments_form_question(self, mock_post):
         client = UserFactory(is_staff=False)
         advisor = UserFactory(is_staff=True)
@@ -50,7 +50,7 @@ class CaseRequestAiTagsTestCase(TestCase):
         self.assertNotIn("staff text", question)
 
     @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_saves_n8n_case_tags_request_linked_to_case(self, mock_post):
         case = CaseFactory()
         mock_response = MagicMock()
@@ -65,7 +65,7 @@ class CaseRequestAiTagsTestCase(TestCase):
         self.assertEqual(obj.environment, "TEST")
 
     @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_sends_only_active_tags_in_payload(self, mock_post):
         case = CaseFactory()
         IssueFactory(name="Active Issue")
@@ -93,7 +93,7 @@ class CaseRequestAiTagsTestCase(TestCase):
             case.request_ai_tags_for_case()
 
     @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_returns_false_and_saves_error_status_on_http_error(self, mock_post):
         case = CaseFactory()
         mock_response = MagicMock()
@@ -103,7 +103,7 @@ class CaseRequestAiTagsTestCase(TestCase):
         result = case.request_ai_tags_for_case()
 
         self.assertFalse(result)
-        from ai_assistant.models import N8nCaseTagsRequest
+        from poradnia.ai_assistant.models import N8nCaseTagsRequest
 
         obj = N8nCaseTagsRequest.objects.filter(case=case, status="error").first()
         self.assertIsNotNone(obj)

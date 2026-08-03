@@ -81,7 +81,7 @@ LOCAL_APPS = (
     "poradnia.teryt",
     "poradnia.utils",
     "poradnia.celery_monitor",
-    "ai_assistant",
+    "poradnia.ai_assistant",
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
