@@ -81,7 +81,7 @@ LOCAL_APPS = (
     "poradnia.teryt",
     "poradnia.utils",
     "poradnia.celery_monitor",
-    "ai_assistant",
+    "poradnia.ai_assistant",
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -712,7 +712,6 @@ FILE_TO_TEXT_REQUEST_TIMEOUTS = (
 N8N_ADVICE_WEBHOOK_URL = env("N8N_ADVICE_WEBHOOK_URL", default="")
 N8N_ADVICE_WEBHOOK_TOKEN = env("N8N_ADVICE_WEBHOOK_TOKEN", default="")
 N8N_ADVICE_WEBHOOK_TIMEOUT = env.int("N8N_ADVICE_WEBHOOK_TIMEOUT", default=30)
-ADVICER_WEBHOOK_BEARER_TOKEN = env.str("ADVICER_WEBHOOK_BEARER_TOKEN", "")
 N8N_ARTICLES_SEARCH_WEBHOOK = env("N8N_ARTICLES_SEARCH_WEBHOOK", default="")
 N8N_ARTICLES_SEARCH_WEBHOOK_TOKEN = env("N8N_ARTICLES_SEARCH_WEBHOOK_TOKEN", default="")
 N8N_ARTICLES_SEARCH_CALLBACK = env("N8N_ARTICLES_SEARCH_CALLBACK", default="")

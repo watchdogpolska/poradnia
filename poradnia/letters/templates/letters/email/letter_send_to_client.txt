@@ -1,8 +1,14 @@
 {% load format_text%}
+{% load cases_tags %}
 {{target.created_by}}: {{target.name}}
 {{target.text|format_text}}
 
 Sporządził/-a: {{target.created_by}}
 Zatwierdził/-a: {{actor}}
 
+{% if user == target.case.client and not user.has_usable_password %}
+Aby zalogować się do Poradni i zobaczyć akta swojej sprawy, dokończ zakładanie konta i ustaw hasło pod adresem:
+{% full_link user.get_activation_path %}
+
+{% endif %}
 {% include 'letters/email/_footer.txt' %}

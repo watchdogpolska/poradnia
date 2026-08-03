@@ -8,7 +8,7 @@ from django.urls import reverse
 from guardian.shortcuts import assign_perm
 from test_plus.test import TestCase
 
-from ai_assistant.models import N8nArticlesSearchRequest
+from poradnia.ai_assistant.models import N8nArticlesSearchRequest
 from poradnia.cases.factories import CaseFactory
 from poradnia.letters.factories import AttachmentFactory, LetterFactory
 from poradnia.users.factories import UserFactory
@@ -22,7 +22,7 @@ ARTICLES_SEARCH_WEBHOOK_SETTINGS = {
 
 class ArticlesSearchRequestTestCase(TestCase):
     @override_settings(**ARTICLES_SEARCH_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_client_letters_and_attachments_form_question(self, mock_post):
         client = UserFactory(is_staff=False)
         advisor = UserFactory(is_staff=True)
@@ -49,7 +49,7 @@ class ArticlesSearchRequestTestCase(TestCase):
         self.assertNotIn("staff text", question)
 
     @override_settings(**ARTICLES_SEARCH_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_saves_n8n_articles_search_request_linked_to_case(self, mock_post):
         case = CaseFactory()
         mock_response = MagicMock()
@@ -72,7 +72,7 @@ class ArticlesSearchRequestTestCase(TestCase):
             case.search_articles_for_case()
 
     @override_settings(**ARTICLES_SEARCH_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_returns_false_and_saves_error_status_on_http_error(self, mock_post):
         case = CaseFactory()
         mock_response = MagicMock()
@@ -87,7 +87,7 @@ class ArticlesSearchRequestTestCase(TestCase):
         self.assertEqual(obj.environment, "TEST")
 
     @override_settings(**ARTICLES_SEARCH_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_returns_true_on_success(self, mock_post):
         case = CaseFactory()
         mock_response = MagicMock()
