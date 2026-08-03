@@ -22,7 +22,6 @@ from django.contrib.admin.models import ADDITION, LogEntry
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.sites.models import Site
 from django.core.exceptions import PermissionDenied
 from django.core.files.base import File
 from django.forms.models import model_to_dict
@@ -311,7 +310,7 @@ class ReceiveEmailView(View):
     required_content_type = "multipart/form-data"
 
     def is_allowed_recipient(self, manifest):
-        domain = Site.objects.get_current().domain.lower()
+        domain = settings.PORADNIA_EMAIL_DOMAIN.lower()
         logger.info(f"domain: {domain}")
         logger.info(f"email to: {manifest['headers']['to']}")
         logger.info(f"whitelisted: {settings.LETTER_RECEIVE_WHITELISTED_ADDRESS}")
