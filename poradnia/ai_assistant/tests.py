@@ -5,8 +5,6 @@ import requests as req_lib
 from django.core.exceptions import ImproperlyConfigured
 from django.test import RequestFactory, SimpleTestCase, TestCase, override_settings
 
-from ai_assistant import views as views_module
-from ai_assistant.models import N8nArticlesSearchRequest, N8nCaseTagsRequest
 from poradnia.advicer.factories import (
     AdviceFactory,
     AreaFactory,
@@ -14,6 +12,8 @@ from poradnia.advicer.factories import (
     IssueFactory,
     PersonKindFactory,
 )
+from poradnia.ai_assistant import views as views_module
+from poradnia.ai_assistant.models import N8nArticlesSearchRequest, N8nCaseTagsRequest
 from poradnia.cases.factories import CaseFactory
 from poradnia.letters.models import Letter
 
@@ -297,7 +297,7 @@ class N8nArticlesSearchRequestModelTestCase(TestCase):
             obj.search_articles()
 
     @override_settings(**WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_search_articles_sends_correct_payload(self, mock_post):
         mock_response = MagicMock()
         mock_response.json.return_value = {"request_id": "abc-123"}
@@ -315,7 +315,7 @@ class N8nArticlesSearchRequestModelTestCase(TestCase):
         self.assertEqual(kwargs["headers"]["Authorization"], "Bearer webhook-secret")
 
     @override_settings(**WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_search_articles_saves_instance(self, mock_post):
         mock_response = MagicMock()
         mock_response.json.return_value = {"request_id": "req-xyz"}
@@ -330,7 +330,7 @@ class N8nArticlesSearchRequestModelTestCase(TestCase):
         self.assertIsNotNone(obj.pk)
 
     @override_settings(**WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_search_articles_handles_http_error(self, mock_post):
         mock_response = MagicMock()
         mock_response.raise_for_status.side_effect = req_lib.HTTPError("500")
@@ -543,7 +543,7 @@ class N8nCaseTagsRequestModelTestCase(TestCase):
             obj.send_tags_request()
 
     @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_send_tags_request_sends_correct_payload(self, mock_post):
         mock_response = MagicMock()
         mock_response.json.return_value = {"request_id": "tag-req-1"}
@@ -576,7 +576,7 @@ class N8nCaseTagsRequestModelTestCase(TestCase):
         self.assertIn("Test Person Kind", person_kind_names)
 
     @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_send_tags_request_saves_instance(self, mock_post):
         mock_response = MagicMock()
         mock_response.json.return_value = {"request_id": "tag-req-xyz"}
@@ -591,7 +591,7 @@ class N8nCaseTagsRequestModelTestCase(TestCase):
         self.assertIsNotNone(obj.pk)
 
     @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_send_tags_request_handles_http_error(self, mock_post):
         mock_response = MagicMock()
         mock_response.raise_for_status.side_effect = req_lib.HTTPError("500")
@@ -604,7 +604,7 @@ class N8nCaseTagsRequestModelTestCase(TestCase):
         self.assertIsNotNone(obj.pk)
 
     @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_send_tags_request_excludes_inactive_tags(self, mock_post):
         mock_response = MagicMock()
         mock_response.json.return_value = {"request_id": "tag-req-2"}
@@ -622,7 +622,7 @@ class N8nCaseTagsRequestModelTestCase(TestCase):
         self.assertNotIn("Inactive Issue", issue_names)
 
     @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_send_tags_request_links_to_case(self, mock_post):
         mock_response = MagicMock()
         mock_response.json.return_value = {"request_id": "tag-req-case"}
@@ -636,7 +636,7 @@ class N8nCaseTagsRequestModelTestCase(TestCase):
         self.assertEqual(saved.case, case)
 
     @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
-    @patch("ai_assistant.models.requests.post")
+    @patch("poradnia.ai_assistant.models.requests.post")
     def test_send_tags_request_uses_default_timeout(self, mock_post):
         mock_response = MagicMock()
         mock_response.json.return_value = {"request_id": "tag-req-timeout"}
@@ -892,7 +892,7 @@ class N8nCaseTagsCallbackViewTestCase(TestCase):
         self.assertEqual(tr.response, "n8n timed out")
 
     @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
-    @patch("ai_assistant.views._validate_case_tags_payload", return_value=None)
+    @patch("poradnia.ai_assistant.views._validate_case_tags_payload", return_value=None)
     def test_success_without_case_marks_completed(self, _validate):
         tr = self._make_tags_request()
 
@@ -904,7 +904,7 @@ class N8nCaseTagsCallbackViewTestCase(TestCase):
         self.assertEqual(tr.status, "completed")
 
     @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
-    @patch("ai_assistant.views._validate_case_tags_payload", return_value=None)
+    @patch("poradnia.ai_assistant.views._validate_case_tags_payload", return_value=None)
     def test_success_with_case_no_advice_creates_advice(self, _validate):
         from poradnia.advicer.models import Advice
 
@@ -921,7 +921,7 @@ class N8nCaseTagsCallbackViewTestCase(TestCase):
         self.assertEqual(advice.ai_assistant_tags["subject"], "Test subject")
 
     @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
-    @patch("ai_assistant.views._validate_case_tags_payload", return_value=None)
+    @patch("poradnia.ai_assistant.views._validate_case_tags_payload", return_value=None)
     def test_success_updates_advice_ai_assistant_tags(self, _validate):
         case = CaseFactory()
         advice = AdviceFactory(case=case)
@@ -944,7 +944,7 @@ class N8nCaseTagsCallbackViewTestCase(TestCase):
         self.assertEqual(tags["area"], [self.area.pk])
 
     @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
-    @patch("ai_assistant.views._validate_case_tags_payload", return_value=None)
+    @patch("poradnia.ai_assistant.views._validate_case_tags_payload", return_value=None)
     def test_success_stores_response_json_on_request(self, _validate):
         tr = self._make_tags_request()
 

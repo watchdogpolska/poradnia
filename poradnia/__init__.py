@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 __version__ = "1.7.31"
+=======
+__version__ = "1.7.29"
+>>>>>>> origin/fix_issues
 
 
 # Compatibility to eg. django-rest-framework
