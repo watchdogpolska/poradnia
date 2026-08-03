@@ -3,7 +3,7 @@ from django.contrib import admin
 from django.http import HttpResponseServerError
 from django.template import loader
 from django.urls import include, path, re_path
-from django.views.generic import TemplateView
+from django.views.generic import RedirectView, TemplateView
 
 from poradnia.letters.views.cbv import ProtectedMediaView
 from poradnia.template_mail.views import email_catalog_view
@@ -32,6 +32,12 @@ urlpatterns = [
     path("ai-assistant/", include("ai_assistant.urls", namespace="ai_assistant")),
     path("teryt/", include("poradnia.teryt.urls", namespace="teryt")),
     path("robots.txt", TemplateView.as_view(template_name="robots.txt")),
+    path(
+        "favicon.ico",
+        RedirectView.as_view(
+            url=settings.STATIC_URL + "images/favicon-32x26.png", permanent=True
+        ),
+    ),
     path(
         "strony/regulamin-poradnictwa/",
         TemplateView.as_view(template_name="pages/terms.html"),
