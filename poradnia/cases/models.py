@@ -44,10 +44,6 @@ from poradnia.utils.constants import NAME_MAX_LENGTH
 from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 from poradnia.utils.utils import get_numeric_param
 
-# TODO: move to settings and fix for DEV and DEMO modes
-CASE_PK_RE = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
-
-
 logger = logging.getLogger(__name__)
 
 
@@ -119,7 +115,7 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
         if not envelope:
             return self.none()
 
-        result = re.search(CASE_PK_RE, envelope)
+        result = re.search(settings.PORADNIA_EMAIL_INPUT, envelope)
 
         if not result:
             return self.none()
@@ -127,9 +123,9 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
 
     def by_addresses(self, addresses):
         pks = [
-            re.match(CASE_PK_RE, address).group("pk")
+            match.group("pk")
             for address in addresses
-            if re.match(CASE_PK_RE, address)
+            if (match := re.match(settings.PORADNIA_EMAIL_INPUT, address))
         ]
         return self.filter(pk__in=pks)
 

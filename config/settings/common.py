@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
 import os
+import re
 import sys
 from urllib.parse import unquote, urlparse
 
@@ -431,15 +432,15 @@ E2E_MFA_BYPASS_ENABLED = TESTING
 E2E_MFA_BYPASS_SECRET = env.str("E2E_MFA_BYPASS_SECRET", "")
 
 # Email settings for cases. Uses different email addresses in different environments
-# to avoid sending emails to real users.
-PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
-PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
+# to avoid sending emails to real users. PORADNIA_EMAIL_DOMAIN is also the domain
+# ReceiveEmailView.is_allowed_recipient() accepts inbound mail for.
+PORADNIA_EMAIL_DOMAIN = "porady.siecobywatelska.pl"
 if APP_MODE == "DEV" and not TESTING:
-    PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@dev.porady.siecobywatelska.pl"
-    PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@dev.porady.siecobywatelska.pl"
+    PORADNIA_EMAIL_DOMAIN = "dev.porady.siecobywatelska.pl"
 elif APP_MODE == "DEMO" and not TESTING:
-    PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@staging.porady.siecobywatelska.pl"
-    PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@staging.porady.siecobywatelska.pl"
+    PORADNIA_EMAIL_DOMAIN = "staging.porady.siecobywatelska.pl"
+PORADNIA_EMAIL_OUTPUT = f"sprawa-%(id)s@{PORADNIA_EMAIL_DOMAIN}"
+PORADNIA_EMAIL_INPUT = rf"sprawa-(?P<pk>\d+)@{re.escape(PORADNIA_EMAIL_DOMAIN)}"
 
 # Other Poradnia settings
 ATOMIC_REQUESTS = True

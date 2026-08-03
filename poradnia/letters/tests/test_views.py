@@ -7,7 +7,6 @@ from unittest.mock import MagicMock, patch
 
 import bleach
 from django.conf import settings
-from django.contrib.sites.models import Site
 from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
@@ -723,7 +722,7 @@ class ReceiveEmailTestCase(TestCase):
         self.assertIn(user.email, emails)
 
     def _get_body(self, case=None, from_=None, headers=None):
-        domain = Site.objects.get_current().domain
+        domain = settings.PORADNIA_EMAIL_DOMAIN
         manifest = {
             "headers": {
                 "cc": [],
