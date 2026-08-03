@@ -190,11 +190,7 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
         return user
 
     def send_activation_email(self, user):
-        uid = urlsafe_base64_encode(force_bytes(user.pk))
-        token = account_activation_token.make_token(user)
-        activation_path = reverse(
-            "users:activate", kwargs={"uidb64": uid, "token": token}
-        )
+        activation_path = user.get_activation_path()
         TemplateMailManager.send(
             TemplateKey.USER_ACTIVATION,
             recipient_list=[user.email],
@@ -310,6 +306,11 @@ class User(GuardianUserMixin, AbstractUser):
 
     def get_absolute_url(self):
         return reverse("users:detail", kwargs={"username": self.username})
+
+    def get_activation_path(self):
+        uid = urlsafe_base64_encode(force_bytes(self.pk))
+        token = account_activation_token.make_token(self)
+        return reverse("users:activate", kwargs={"uidb64": uid, "token": token})
 
     @property
     def has_verified_email(self):

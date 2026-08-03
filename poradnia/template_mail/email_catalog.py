@@ -38,10 +38,10 @@ class EmailCatalogEntry:
     raw_example: Optional[str] = None  # for entries with no Django template at all
 
 
-def _case():
+def _case(client=None):
     return Mock(
         "#123 Wniosek o dostęp do informacji publicznej",
-        client=Mock("Jan Kowalski"),
+        client=client or Mock("Jan Kowalski"),
         get_absolute_url=lambda: "/sprawy/123/",
     )
 
@@ -56,7 +56,7 @@ def _attachment_set():
     return Mock(all=lambda: [attachment])
 
 
-def _letter(actor_is_staff=False):
+def _letter(actor_is_staff=False, client=None):
     if actor_is_staff:
         return Mock(
             "Odpowiedź na pytanie",
@@ -65,7 +65,7 @@ def _letter(actor_is_staff=False):
                 "Szanowni Państwo,\n\nw odpowiedzi na pytanie uprzejmie informujemy..."
             ),
             created_by=Mock("Anna Nowak (Poradnia)"),
-            case=_case(),
+            case=_case(client=client),
             get_absolute_url=lambda: "/sprawy/123/#pismo-456",
             attachment_set=_attachment_set(),
             render_as_html=lambda: (
@@ -81,7 +81,7 @@ def _letter(actor_is_staff=False):
             "informacji publicznej..."
         ),
         created_by=Mock("Jan Kowalski"),
-        case=_case(),
+        case=_case(client=client),
         get_absolute_url=lambda: "/sprawy/123/#pismo-456",
         attachment_set=_attachment_set(),
         render_as_html=lambda: (
@@ -95,6 +95,26 @@ def _actor(is_staff=False):
     return Mock(
         "Anna Nowak (Poradnia)" if is_staff else "Jan Kowalski", is_staff=is_staff
     )
+
+
+def _unactivated_client():
+    """A client whose account has no usable password yet (e.g. auto-created
+    from an inbound e-mail) - used to preview the activation-link block in
+    letter_send_to_client."""
+    return Mock(
+        "Jan Kowalski",
+        has_usable_password=lambda: False,
+        get_activation_path=lambda: "/uzytkownik/aktywuj/MQ/abc123-token/",
+    )
+
+
+def _letter_send_to_client_unactivated_context():
+    client = _unactivated_client()
+    return {
+        "target": _letter(actor_is_staff=True, client=client),
+        "actor": _actor(is_staff=True),
+        "user": client,
+    }
 
 
 def _event():
@@ -322,8 +342,11 @@ CATALOG = [
         key="letter_send_to_client",
         title="Pismo wysłane do klienta",
         trigger=(
-            "LetterSendToClientForm.save() (letters/forms.py) - wysyłane do "
-            "klienta, gdy pracownik zatwierdzi i wyśle przygotowaną odpowiedź."
+            "SendLetterForm.save() (letters/forms.py) - wysyłane do klienta, "
+            "gdy pracownik zatwierdzi i wyśle przygotowaną odpowiedź. Jeżeli "
+            "konto klienta nie ma jeszcze ustawionego hasła, szablon dokleja "
+            "wcześniej dodatkowy link do dokończenia aktywacji konta - zob. "
+            "wpis niżej."
         ),
         txt_template="letters/email/letter_send_to_client.txt",
         html_template="letters/email/letter_send_to_client.html",
@@ -332,6 +355,23 @@ CATALOG = [
             "target": _letter(actor_is_staff=True),
             "actor": _actor(is_staff=True),
         },
+    ),
+    EmailCatalogEntry(
+        group="Pisma",
+        key="letter_send_to_client_unactivated",
+        title="Pismo wysłane do klienta (konto nieaktywowane)",
+        trigger=(
+            "Ten sam szablon co wyżej, ale odbiorcą jest klient, którego konto "
+            "nie ma jeszcze ustawionego hasła (np. utworzone automatycznie z "
+            "przychodzącego e-maila, zanim klient dokończył aktywację - zob. "
+            "account_activation poniżej). Ponieważ klient nie może się jeszcze "
+            "zalogować, przed odnośnikiem do akt sprawy pojawia się dodatkowy "
+            "link do dokończenia aktywacji konta (User.get_activation_path())."
+        ),
+        txt_template="letters/email/letter_send_to_client.txt",
+        html_template="letters/email/letter_send_to_client.html",
+        split_subject=True,
+        context=_letter_send_to_client_unactivated_context,
     ),
     EmailCatalogEntry(
         group="Pisma",
