@@ -17892,6 +17892,17 @@ table.month li.deadline {
   max-width: 200px;
 }
 
+.dashboard-page-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.dashboard-page-header h3 {
+  margin: 0;
+}
+
 .dashboard-table-wrapper {
   margin-top: 30px;
   margin-bottom: 25px;

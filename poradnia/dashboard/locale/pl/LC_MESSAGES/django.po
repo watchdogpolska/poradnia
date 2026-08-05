@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-05 14:02+0200\n"
+"POT-Creation-Date: 2026-08-05 15:19+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -164,6 +164,9 @@ msgstr "Panel raportów"
 msgid "Year"
 msgstr "Rok"
 
+msgid "Download Excel"
+msgstr "Pobierz Excel"
+
 msgid "Summary"
 msgstr "Podsumowanie"
 
@@ -175,6 +178,28 @@ msgstr "Tagi"
 
 msgid "Courts"
 msgstr "Sądy"
+
+msgid "Choose a year for the export"
+msgstr "Wybierz rok eksportu"
+
+msgid ""
+"The \"Cases\" and \"Tags\" tabs currently have different years selected. "
+"Choose which year to use for the whole Excel export:"
+msgstr ""
+"Zakładki „Sprawy” i „Tagi” mają obecnie wybrane różne lata. Wybierz, który "
+"rok ma zostać użyty w całym eksporcie do Excela:"
+
+msgid "Cases tab year:"
+msgstr "Rok z zakładki Sprawy:"
+
+msgid "Tags tab year:"
+msgstr "Rok z zakładki Tagi:"
+
+msgid "Cancel"
+msgstr "Anuluj"
+
+msgid "Download"
+msgstr "Pobierz"
 
 #~ msgid "Advices"
 #~ msgstr "Porady"

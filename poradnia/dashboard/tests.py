@@ -1,7 +1,9 @@
 import datetime
+from io import BytesIO
 
 from django.urls import reverse
 from django.utils import timezone
+from openpyxl import load_workbook
 from test_plus.test import TestCase
 
 from poradnia.advicer.factories import (
@@ -21,7 +23,7 @@ from poradnia.judgements.factories import (
 from poradnia.letters.factories import AttachmentFactory, LetterFactory
 from poradnia.users.factories import StaffFactory, UserFactory
 
-from . import reports
+from . import excel, reports
 
 
 def set_created_on(obj, date_str, field="created_on"):
@@ -321,7 +323,13 @@ class DashboardViewsTestCase(TestCase):
         self.client.login(username=self.staff.username, password="pass")
 
     def test_anonymous_denied(self):
-        for url_name in ("index", "cases_tab", "advices_tab", "judgements_tab"):
+        for url_name in (
+            "index",
+            "cases_tab",
+            "advices_tab",
+            "judgements_tab",
+            "export_excel",
+        ):
             resp = self.client.get(reverse(f"dashboard:{url_name}"))
             self.assertEqual(resp.status_code, 403, url_name)
 
@@ -377,3 +385,131 @@ class DashboardViewsTestCase(TestCase):
         resp = self.client.get(reverse("dashboard:judgements_tab"))
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(len(resp.context["judgements_reports"]), 2)
+
+
+def _sheet_values(sheet):
+    return [
+        cell.value
+        for row in sheet.iter_rows()
+        for cell in row
+        if cell.value is not None
+    ]
+
+
+class BuildWorkbookTestCase(TestCase):
+    def test_sheet_order_matches_tab_order_and_titles(self):
+        workbook = excel.build_workbook(2024)
+        report_titles = [
+            reports.summary_report()["title"],
+            reports.users_report(2024)["title"],
+            reports.cases_report(2024)["title"],
+            reports.staff_letters_report(2024)["title"],
+            reports.issues_report(2024)["title"],
+            reports.areas_report(2024)["title"],
+            reports.institution_kind_report(2024)["title"],
+            reports.person_kind_report(2024)["title"],
+            reports.courtsessions_report()["title"],
+            reports.courtcase_report()["title"],
+        ]
+        # Some Polish titles exceed Excel's 31-char sheet-name limit (e.g.
+        # "Raport rodzajów podmiotów zobowiązanych"), so expected names must
+        # go through the same sanitizer the workbook builder uses.
+        used_titles = set()
+        expected_titles = [
+            excel._unique_sheet_title(title, used_titles) for title in report_titles
+        ]
+        self.assertEqual(workbook.sheetnames, expected_titles)
+
+    def test_sheet_has_title_description_and_header_row(self):
+        workbook = excel.build_workbook(2024)
+        summary_report = reports.summary_report()
+        sheet = workbook[str(summary_report["title"])]
+
+        self.assertEqual(sheet["A1"].value, str(summary_report["title"]))
+        self.assertTrue(sheet["A1"].font.bold)
+        self.assertEqual(sheet["A2"].value, summary_report["description"])
+        header_values = [cell.value for cell in sheet[3]]
+        self.assertEqual(
+            header_values, [str(col["label"]) for col in summary_report["columns"]]
+        )
+
+    def test_pinned_row_is_bold_and_filled(self):
+        workbook = excel.build_workbook(2024)
+        cases_report = reports.cases_report(2024)
+        sheet = workbook[str(cases_report["title"])]
+
+        last_row = sheet.max_row
+        self.assertEqual(
+            sheet.cell(row=last_row, column=1).value, str(reports.TOTAL_LABEL)
+        )
+        self.assertTrue(sheet.cell(row=last_row, column=1).font.bold)
+
+    def test_year_scopes_case_report_rows(self):
+        case = CaseFactory(letter_count=1)
+        set_created_on(case, "2019-01-15")
+
+        workbook = excel.build_workbook(2019)
+        sheet = workbook[str(reports.cases_report(2019)["title"])]
+        self.assertIn("2019-01", _sheet_values(sheet))
+
+    def test_sheet_title_collisions_are_deduplicated(self):
+        used_titles = set()
+        first = excel._unique_sheet_title("A" * 40, used_titles)
+        second = excel._unique_sheet_title("A" * 40, used_titles)
+
+        self.assertNotEqual(first, second)
+        self.assertLessEqual(len(first), 31)
+        self.assertLessEqual(len(second), 31)
+
+
+class ExcelExportViewTestCase(TestCase):
+    def setUp(self):
+        self.staff = StaffFactory()
+        self.current_year = timezone.now().year
+
+    def login_staff(self):
+        self.client.login(username=self.staff.username, password="pass")
+
+    def test_normal_user_denied(self):
+        user = UserFactory()
+        self.client.login(username=user.username, password="pass")
+        resp = self.client.get(reverse("dashboard:export_excel"))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_download_headers_default_to_current_year(self):
+        self.login_staff()
+        resp = self.client.get(reverse("dashboard:export_excel"))
+
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            resp["Content-Type"],
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
+        self.assertIn(
+            f"dashboard_{self.current_year}.xlsx", resp["Content-Disposition"]
+        )
+
+    def test_workbook_has_ten_sheets(self):
+        self.login_staff()
+        resp = self.client.get(reverse("dashboard:export_excel"))
+        workbook = load_workbook(BytesIO(resp.content))
+        self.assertEqual(len(workbook.sheetnames), 10)
+
+    def test_year_param_scopes_report_content(self):
+        self.login_staff()
+        case = CaseFactory(letter_count=1)
+        set_created_on(case, "2019-01-15")
+
+        resp = self.client.get(reverse("dashboard:export_excel"), {"year": 2019})
+        workbook = load_workbook(BytesIO(resp.content))
+        sheet = workbook[str(reports.cases_report(2019)["title"])]
+        self.assertIn("2019-01", _sheet_values(sheet))
+
+    def test_year_out_of_range_falls_back_to_current_year(self):
+        self.login_staff()
+        resp = self.client.get(reverse("dashboard:export_excel"), {"year": 1999})
+
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(
+            f"dashboard_{self.current_year}.xlsx", resp["Content-Disposition"]
+        )

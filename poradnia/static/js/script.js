@@ -45495,4 +45495,56 @@ document.addEventListener('DOMContentLoaded', function () {
 
         sortTable(table, columnIndex, ascending);
     });
+
+    function yearSelectValue(id) {
+        var el = document.getElementById(id);
+        return el ? el.value : null;
+    }
+
+    function startExport(baseUrl, year) {
+        window.location.href = baseUrl + "?year=" + encodeURIComponent(year);
+    }
+
+    var pendingExportUrl = null;
+
+    function openYearMismatchModal(exportUrl, casesYear, tagsYear) {
+        pendingExportUrl = exportUrl;
+
+        var casesRadio = document.getElementById("dashboard-export-year-cases");
+        var tagsRadio = document.getElementById("dashboard-export-year-tags");
+        casesRadio.value = casesYear;
+        tagsRadio.value = tagsYear;
+        casesRadio.checked = true;
+        document.getElementById("dashboard-export-year-cases-value").textContent = casesYear;
+        document.getElementById("dashboard-export-year-tags-value").textContent = tagsYear;
+
+        window.jQuery("#dashboard-export-year-modal").modal("show");
+    }
+
+    document.addEventListener("click", function (event) {
+        var exportBtn = event.target.closest("#dashboard-export-btn");
+        if (exportBtn) {
+            var exportUrl = exportBtn.dataset.exportUrl;
+            var casesYear = yearSelectValue("cases-year");
+            var tagsYear = yearSelectValue("advices-year");
+
+            if (casesYear && tagsYear && casesYear !== tagsYear) {
+                openYearMismatchModal(exportUrl, casesYear, tagsYear);
+            } else {
+                startExport(exportUrl, casesYear || tagsYear || exportBtn.dataset.currentYear);
+            }
+            return;
+        }
+
+        var confirmBtn = event.target.closest("#dashboard-export-year-confirm");
+        if (confirmBtn && pendingExportUrl) {
+            var checked = document.querySelector(
+                'input[name="dashboard-export-year-choice"]:checked'
+            );
+            window.jQuery("#dashboard-export-year-modal").modal("hide");
+            if (checked) {
+                startExport(pendingExportUrl, checked.value);
+            }
+        }
+    });
 })();

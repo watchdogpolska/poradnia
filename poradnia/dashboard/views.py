@@ -1,8 +1,9 @@
 from braces.views import StaffuserRequiredMixin
+from django.http import HttpResponse
 from django.utils import timezone
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, View
 
-from . import reports
+from . import excel, reports
 
 
 class StaffDashboardMixin(StaffuserRequiredMixin):
@@ -81,3 +82,20 @@ class JudgementsTabView(StaffDashboardMixin, TemplateView):
             reports.courtcase_report(),
         ]
         return context
+
+
+class ExcelExportView(StaffDashboardMixin, YearMixin, View):
+    def get(self, request, *args, **kwargs):
+        year = self.get_selected_year()
+        workbook = excel.build_workbook(year)
+
+        response = HttpResponse(
+            content_type=(
+                "application/vnd.openxmlformats-officedocument" ".spreadsheetml.sheet"
+            )
+        )
+        response["Content-Disposition"] = (
+            f'attachment; filename="dashboard_{year}.xlsx"'
+        )
+        workbook.save(response)
+        return response

@@ -2,7 +2,15 @@
 {% load i18n %}
 
 {% block content %}
-    <h3>{% trans 'Dashboard' %}</h3>
+    <div class="dashboard-page-header">
+        <h3>{% trans 'Dashboard' %}</h3>
+        <button type="button" class="btn btn-default" id="dashboard-export-btn"
+                data-export-url="{% url 'dashboard:export_excel' %}"
+                data-current-year="{{ current_year }}">
+            <i class="fas fa-file-excel" aria-hidden="true"></i>
+            {% trans 'Download Excel' %}
+        </button>
+    </div>
 
     <ul class="nav nav-tabs" role="tablist" id="dashboard-tabs">
         <li role="presentation" class="active">
@@ -50,6 +58,49 @@
 
         <div role="tabpanel" class="tab-pane" id="dashboard-tab-judgements">
             <div id="judgements-tables"></div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="dashboard-export-year-modal" tabindex="-1" role="dialog"
+         aria-labelledby="dashboard-export-year-modal-label">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="dashboard-export-year-modal-label">
+                        {% trans 'Choose a year for the export' %}
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        {% trans 'The "Cases" and "Tags" tabs currently have different years selected. Choose which year to use for the whole Excel export:' %}
+                    </p>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="dashboard-export-year-choice"
+                                   id="dashboard-export-year-cases" checked>
+                            {% trans 'Cases tab year:' %} <strong id="dashboard-export-year-cases-value"></strong>
+                        </label>
+                    </div>
+                    <div class="radio">
+                        <label>
+                            <input type="radio" name="dashboard-export-year-choice"
+                                   id="dashboard-export-year-tags">
+                            {% trans 'Tags tab year:' %} <strong id="dashboard-export-year-tags-value"></strong>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                        {% trans 'Cancel' %}
+                    </button>
+                    <button type="button" class="btn btn-primary" id="dashboard-export-year-confirm">
+                        {% trans 'Download' %}
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 {% endblock %}
