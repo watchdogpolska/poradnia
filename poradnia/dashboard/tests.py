@@ -278,6 +278,17 @@ class SummaryReportTestCase(TestCase):
 
         self.assertEqual(rows[str(reports.NEW_CASES_LABEL)]["y_2024"], 2)
         self.assertEqual(rows[str(reports.NEW_CASES_LABEL)]["y_2025"], 1)
+
+        # "total" sums the row across all its year columns. Other factories
+        # used above (Letter/Event/CourtCase/CourtSession) implicitly create
+        # their own Case via SubFactory with created_on defaulting to "now",
+        # so exact totals aren't asserted here - only that the column adds up.
+        year_keys = [col["key"] for col in report["columns"] if col["key"] != "total"]
+        year_keys.remove("metric")
+        for row in report["rows"]:
+            self.assertEqual(
+                row["total"], sum(row[key] for key in year_keys), row["metric"]
+            )
         # Client A registered in 2022 (dedup across their 2 cases); their
         # cases being created in 2024 must not shift them into y_2024.
         self.assertEqual(rows[str(reports.NEW_USERS_WITH_CASES_LABEL)]["y_2022"], 1)
@@ -330,7 +341,8 @@ class DashboardViewsTestCase(TestCase):
 
         summary_report = resp.context["summary_report"]
         self.assertEqual(len(summary_report["rows"]), 7)
-        self.assertEqual(summary_report["columns"][-1]["key"], f"y_{self.current_year}")
+        self.assertEqual(summary_report["columns"][-2]["key"], f"y_{self.current_year}")
+        self.assertEqual(summary_report["columns"][-1]["key"], "total")
 
         # Summary is the only table rendered eagerly on the index page (Cases,
         # Advices, Judgements all lazy-load via htmx) and must stay unsortable.

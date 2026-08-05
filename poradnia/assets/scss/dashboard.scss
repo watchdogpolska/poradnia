@@ -29,3 +29,40 @@
 .dashboard-year-select {
     max-width: 200px;
 }
+
+.dashboard-table-wrapper {
+    margin-top: 30px;
+    margin-bottom: 25px;
+
+    .dashboard-table-header {
+        margin-bottom: 10px;
+    }
+
+    .dashboard-table-title {
+        margin: 0 0 4px;
+    }
+
+    .dashboard-table-description {
+        margin: 0;
+        font-size: 0.85em;
+        color: #666;
+    }
+
+    @media (min-width: $screen-sm-min) {
+        .dashboard-table-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 20px;
+        }
+
+        .dashboard-table-title {
+            margin: 0;
+            flex: 0 0 auto;
+        }
+
+        .dashboard-table-description {
+            text-align: right;
+        }
+    }
+}

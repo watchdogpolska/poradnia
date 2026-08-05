@@ -99,7 +99,16 @@ def users_report(year):
     total_row["pinned"] = True
     rows.append(total_row)
 
-    return {"title": _("Users report"), "columns": columns, "rows": rows}
+    return {
+        "title": _("Users report"),
+        "description": (
+            "Liczba klientów, którzy założyli nową sprawę w danym miesiącu, "
+            "pogrupowana według tego, ile spraw założył każdy z nich w tym "
+            "samym miesiącu."
+        ),
+        "columns": columns,
+        "rows": rows,
+    }
 
 
 def cases_report(year):
@@ -139,7 +148,15 @@ def cases_report(year):
     total_row = {"month": str(TOTAL_LABEL), **totals, "pinned": True}
     rows.append(total_row)
 
-    return {"title": _("Cases report"), "columns": columns, "rows": rows}
+    return {
+        "title": _("Cases report"),
+        "description": (
+            "Liczba spraw założonych w danym miesiącu, pogrupowana według "
+            "liczby listów zgromadzonych w każdej z tych spraw."
+        ),
+        "columns": columns,
+        "rows": rows,
+    }
 
 
 def staff_letters_report(year):
@@ -183,10 +200,20 @@ def staff_letters_report(year):
         }
     )
 
-    return {"title": _("Staff letters report"), "columns": columns, "rows": rows}
+    return {
+        "title": _("Staff letters report"),
+        "description": (
+            "Liczba listów wysłanych przez zespół oraz liczba załączników "
+            "dodanych do tych listów w poszczególnych miesiącach."
+        ),
+        "columns": columns,
+        "rows": rows,
+    }
 
 
-def _m2m_case_breakdown(year, m2m_field, related_model, id_column, name_column, title):
+def _m2m_case_breakdown(
+    year, m2m_field, related_model, id_column, name_column, title, description
+):
     total_cases = Case.objects.filter(created_on__year=year).count()
 
     pairs = (
@@ -239,10 +266,17 @@ def _m2m_case_breakdown(year, m2m_field, related_model, id_column, name_column, 
         }
     )
 
-    return {"title": title, "columns": columns, "rows": rows}
+    return {
+        "title": title,
+        "description": description,
+        "columns": columns,
+        "rows": rows,
+    }
 
 
-def _fk_case_breakdown(year, fk_field, related_model, id_column, name_column, title):
+def _fk_case_breakdown(
+    year, fk_field, related_model, id_column, name_column, title, description
+):
     total_cases = Case.objects.filter(created_on__year=year).count()
 
     grouped = (
@@ -295,18 +329,41 @@ def _fk_case_breakdown(year, fk_field, related_model, id_column, name_column, ti
         }
     )
 
-    return {"title": title, "columns": columns, "rows": rows}
+    return {
+        "title": title,
+        "description": description,
+        "columns": columns,
+        "rows": rows,
+    }
 
 
 def issues_report(year):
     return _m2m_case_breakdown(
-        year, "issues", Issue, "issue_id", "issue_name", _("Issues report")
+        year,
+        "issues",
+        Issue,
+        "issue_id",
+        "issue_name",
+        _("Issues report"),
+        (
+            "Liczba spraw przypisanych do poszczególnych zagadnień oraz "
+            "liczba spraw, do których nie przypisano żadnego zagadnienia."
+        ),
     )
 
 
 def areas_report(year):
     return _m2m_case_breakdown(
-        year, "area", Area, "area_id", "area_name", _("Areas report")
+        year,
+        "area",
+        Area,
+        "area_id",
+        "area_name",
+        _("Areas report"),
+        (
+            "Liczba spraw przypisanych do poszczególnych obszarów "
+            "tematycznych oraz liczba spraw bez przypisanego obszaru."
+        ),
     )
 
 
@@ -318,12 +375,26 @@ def institution_kind_report(year):
         "kind_id",
         "kind_name",
         _("Institution kind report"),
+        (
+            "Liczba spraw przypisanych do poszczególnych rodzajów podmiotów "
+            "zobowiązanych oraz liczba spraw bez takiego przypisania."
+        ),
     )
 
 
 def person_kind_report(year):
     return _fk_case_breakdown(
-        year, "person_kind", PersonKind, "kind_id", "kind_name", _("Person kind report")
+        year,
+        "person_kind",
+        PersonKind,
+        "kind_id",
+        "kind_name",
+        _("Person kind report"),
+        (
+            "Liczba spraw przypisanych do poszczególnych rodzajów osób, "
+            "których dotyczyła porada, oraz liczba spraw bez takiego "
+            "przypisania."
+        ),
     )
 
 
@@ -367,7 +438,15 @@ def courtsessions_report():
 
     rows.append({"parser_key": str(TOTAL_LABEL), **totals, "pinned": True})
 
-    return {"title": _("Court sessions report"), "columns": columns, "rows": rows}
+    return {
+        "title": _("Court sessions report"),
+        "description": (
+            "Liczba rozpraw sądowych zarejestrowanych dla poszczególnych "
+            "sądów, w podziale na lata."
+        ),
+        "columns": columns,
+        "rows": rows,
+    }
 
 
 def _per_year_counts(queryset, date_field, years, id_field="id", distinct=False):
@@ -432,12 +511,27 @@ def summary_report():
         ),
     )
 
-    columns = [{"key": "metric", "label": _("Metric")}] + [
-        {"key": f"y_{year}", "label": str(year)} for year in years
+    columns = (
+        [{"key": "metric", "label": _("Metric")}]
+        + [{"key": f"y_{year}", "label": str(year)} for year in years]
+        + [{"key": "total", "label": _("total")}]
+    )
+    rows = [
+        {"metric": str(label), **counts, "total": sum(counts.values())}
+        for label, counts in metrics
     ]
-    rows = [{"metric": str(label), **counts} for label, counts in metrics]
 
-    return {"title": _("Summary report"), "columns": columns, "rows": rows}
+    return {
+        "title": _("Summary report"),
+        "description": (
+            "Zestawienie najważniejszych liczb poradni w rozbiciu na "
+            "kolejne lata – nowe sprawy, nowi użytkownicy ze sprawami, "
+            "listy i załączniki zespołu, sprawy i rozprawy sądowe oraz "
+            "wydarzenia."
+        ),
+        "columns": columns,
+        "rows": rows,
+    }
 
 
 def courtcase_report():
@@ -466,4 +560,9 @@ def courtcase_report():
     total = sum(count for _name, count in named_rows) + none_count
     rows.append({"court_name": str(TOTAL_LABEL), "count": total, "pinned": True})
 
-    return {"title": _("Court cases report"), "columns": columns, "rows": rows}
+    return {
+        "title": _("Court cases report"),
+        "description": "Liczba spraw sądowych prowadzonych w poszczególnych sądach.",
+        "columns": columns,
+        "rows": rows,
+    }

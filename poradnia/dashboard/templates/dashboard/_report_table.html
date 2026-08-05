@@ -1,22 +1,29 @@
 {% load dashboard_tags %}
-<div class="table-responsive dashboard-table-wrapper">
-    <h4>{{ report.title }}</h4>
-    <table class="table table-bordered table-striped{% if not unsortable %} sortable-table{% endif %}">
-        <thead>
-            <tr>
-                {% for col in report.columns %}
-                    <th{% if not unsortable %} data-sort-key="{{ col.key }}"{% endif %}>{{ col.label }}</th>
-                {% endfor %}
-            </tr>
-        </thead>
-        <tbody>
-            {% for row in report.rows %}
-                <tr{% if row.pinned %} data-pinned="1" class="dashboard-total-row"{% endif %}>
+<div class="dashboard-table-wrapper">
+    <div class="dashboard-table-header">
+        <h4 class="dashboard-table-title">{{ report.title }}</h4>
+        {% if report.description %}
+            <p class="dashboard-table-description">{{ report.description }}</p>
+        {% endif %}
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped{% if not unsortable %} sortable-table{% endif %}">
+            <thead>
+                <tr>
                     {% for col in report.columns %}
-                        <td>{{ row|get_item:col.key }}</td>
+                        <th{% if not unsortable %} data-sort-key="{{ col.key }}"{% endif %}>{{ col.label }}</th>
                     {% endfor %}
                 </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+                {% for row in report.rows %}
+                    <tr{% if row.pinned %} data-pinned="1" class="dashboard-total-row"{% endif %}>
+                        {% for col in report.columns %}
+                            <td>{{ row|get_item:col.key }}</td>
+                        {% endfor %}
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 </div>
