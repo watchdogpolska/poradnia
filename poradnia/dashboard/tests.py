@@ -12,6 +12,7 @@ from poradnia.advicer.factories import (
     PersonKindFactory,
 )
 from poradnia.cases.factories import CaseFactory
+from poradnia.events.factories import EventFactory
 from poradnia.judgements.factories import (
     CourtCaseFactory,
     CourtFactory,
@@ -237,6 +238,40 @@ class CourtCaseReportTestCase(TestCase):
         self.assertEqual(total["count"], 3)
 
 
+class SummaryReportTestCase(TestCase):
+    def test_yearly_metrics(self):
+        client_a = UserFactory()
+        case_2024 = CaseFactory(client=client_a)
+        set_created_on(case_2024, "2024-03-01")
+        case_2025 = CaseFactory(client=client_a)
+        set_created_on(case_2025, "2025-01-10")
+
+        staff_letter = LetterFactory(created_by_is_staff=True)
+        set_created_on(staff_letter, "2024-05-01")
+        AttachmentFactory(letter=staff_letter)
+
+        court_case = CourtCaseFactory()
+        set_created_on(court_case.record_general.get(), "2024-06-01")
+
+        session = CourtSessionFactory()
+        set_created_on(session, "2024-07-01", "created")
+
+        event = EventFactory()
+        set_created_on(event, "2024-08-01")
+
+        report = reports.summary_report()
+        rows = {row["metric"]: row for row in report["rows"]}
+
+        self.assertEqual(rows[str(reports.NEW_CASES_LABEL)]["y_2024"], 1)
+        self.assertEqual(rows[str(reports.NEW_CASES_LABEL)]["y_2025"], 1)
+        self.assertEqual(rows[str(reports.NEW_USERS_WITH_CASES_LABEL)]["y_2024"], 1)
+        self.assertEqual(rows[str(reports.STAFF_LETTERS_LABEL)]["y_2024"], 1)
+        self.assertEqual(rows[str(reports.STAFF_ATTACHMENTS_LABEL)]["y_2024"], 1)
+        self.assertEqual(rows[str(reports.COURT_CASES_LABEL)]["y_2024"], 1)
+        self.assertEqual(rows[str(reports.COURT_SESSIONS_LABEL)]["y_2024"], 1)
+        self.assertEqual(rows[str(reports.EVENTS_LABEL)]["y_2024"], 1)
+
+
 class DashboardViewsTestCase(TestCase):
     def setUp(self):
         self.staff = StaffFactory()
@@ -256,14 +291,17 @@ class DashboardViewsTestCase(TestCase):
         resp = self.client.get(reverse("dashboard:index"))
         self.assertEqual(resp.status_code, 403)
 
-    def test_index_default_year_and_cases_reports(self):
+    def test_index_default_year_and_summary_report(self):
         self.login_staff()
         resp = self.client.get(reverse("dashboard:index"))
         self.assertEqual(resp.status_code, 200)
         self.assertEqual(resp.context["current_year"], self.current_year)
-        self.assertEqual(len(resp.context["cases_reports"]), 3)
         self.assertEqual(resp.context["years"][0], self.current_year)
         self.assertEqual(resp.context["years"][-1], 2018)
+
+        summary_report = resp.context["summary_report"]
+        self.assertEqual(len(summary_report["rows"]), 7)
+        self.assertEqual(summary_report["columns"][-1]["key"], f"y_{self.current_year}")
 
     def test_cases_tab_year_param(self):
         self.login_staff()

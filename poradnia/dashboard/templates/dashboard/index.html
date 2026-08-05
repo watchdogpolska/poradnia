@@ -6,7 +6,14 @@
 
     <ul class="nav nav-tabs" role="tablist" id="dashboard-tabs">
         <li role="presentation" class="active">
-            <a href="#dashboard-tab-cases" aria-controls="dashboard-tab-cases" role="tab" data-toggle="tab">
+            <a href="#dashboard-tab-summary" aria-controls="dashboard-tab-summary" role="tab" data-toggle="tab">
+                {% trans 'Summary' %}
+            </a>
+        </li>
+        <li role="presentation">
+            <a href="#dashboard-tab-cases" aria-controls="dashboard-tab-cases" role="tab" data-toggle="tab"
+               hx-get="{% url 'dashboard:cases_tab' %}" hx-target="#cases-tables"
+               hx-trigger="click once" hx-swap="innerHTML">
                 {% trans 'Cases' %}
             </a>
         </li>
@@ -27,11 +34,13 @@
     </ul>
 
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active" id="dashboard-tab-cases">
+        <div role="tabpanel" class="tab-pane active" id="dashboard-tab-summary">
+            {% include 'dashboard/_report_table.html' with report=summary_report unsortable=True %}
+        </div>
+
+        <div role="tabpanel" class="tab-pane" id="dashboard-tab-cases">
             {% include 'dashboard/_year_select.html' with select_id="cases-year" hx_url_name="dashboard:cases_tab" target_id="cases-tables" years=years current_year=current_year %}
-            <div id="cases-tables">
-                {% include 'dashboard/_cases_tables.html' %}
-            </div>
+            <div id="cases-tables"></div>
         </div>
 
         <div role="tabpanel" class="tab-pane" id="dashboard-tab-advices">

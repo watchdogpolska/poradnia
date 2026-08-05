@@ -2,16 +2,28 @@ from collections import defaultdict
 
 from django.db.models import Count, Q
 from django.db.models.functions import ExtractYear, TruncMonth
+from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
 from poradnia.advicer.models import Advice, Area, InstitutionKind, Issue, PersonKind
 from poradnia.cases.models import Case
+from poradnia.events.models import Event
 from poradnia.judgements.models import CourtCase, CourtSession
-from poradnia.letters.models import Letter
+from poradnia.letters.models import Attachment, Letter
+
+MIN_YEAR = 2018
 
 TOTAL_LABEL = _("TOTAL")
 ANY_TOTAL_LABEL = _("ANY / TOTAL")
 NONE_LABEL = _("None")
+
+NEW_CASES_LABEL = _("New cases")
+NEW_USERS_WITH_CASES_LABEL = _("New users with cases")
+STAFF_LETTERS_LABEL = _("Letters created by staff")
+STAFF_ATTACHMENTS_LABEL = _("Attachments created by staff")
+COURT_CASES_LABEL = _("Court cases")
+COURT_SESSIONS_LABEL = _("Court sessions")
+EVENTS_LABEL = _("Events")
 
 CASE_LETTER_BUCKETS = (
     ("cases_le_5", _("cases <= 5"), 0, 5),
@@ -355,6 +367,75 @@ def courtsessions_report():
     rows.append({"parser_key": str(TOTAL_LABEL), **totals, "pinned": True})
 
     return {"title": _("Court sessions report"), "columns": columns, "rows": rows}
+
+
+def _per_year_counts(queryset, date_field, years, id_field="id", distinct=False):
+    annotations = {
+        f"y_{year}": Count(
+            id_field, filter=Q(**{f"{date_field}__year": year}), distinct=distinct
+        )
+        for year in years
+    }
+    return queryset.aggregate(**annotations)
+
+
+def summary_report():
+    """One row per headline metric, one column per year (MIN_YEAR..current),
+    giving management a single at-a-glance overview table."""
+    current_year = timezone.now().year
+    years = list(range(MIN_YEAR, current_year + 1))
+
+    metrics = (
+        (
+            NEW_CASES_LABEL,
+            _per_year_counts(Case.objects.all(), "created_on", years),
+        ),
+        (
+            NEW_USERS_WITH_CASES_LABEL,
+            _per_year_counts(
+                Case.objects.filter(client_id__isnull=False),
+                "created_on",
+                years,
+                id_field="client_id",
+                distinct=True,
+            ),
+        ),
+        (
+            STAFF_LETTERS_LABEL,
+            _per_year_counts(
+                Letter.objects.filter(created_by_is_staff=True), "created_on", years
+            ),
+        ),
+        (
+            STAFF_ATTACHMENTS_LABEL,
+            _per_year_counts(
+                Attachment.objects.filter(letter__created_by_is_staff=True),
+                "letter__created_on",
+                years,
+            ),
+        ),
+        (
+            COURT_CASES_LABEL,
+            _per_year_counts(
+                CourtCase.objects.all(), "record_general__created_on", years
+            ),
+        ),
+        (
+            COURT_SESSIONS_LABEL,
+            _per_year_counts(CourtSession.objects.all(), "created", years),
+        ),
+        (
+            EVENTS_LABEL,
+            _per_year_counts(Event.objects.all(), "created_on", years),
+        ),
+    )
+
+    columns = [{"key": "metric", "label": _("Metric")}] + [
+        {"key": f"y_{year}", "label": str(year)} for year in years
+    ]
+    rows = [{"metric": str(label), **counts} for label, counts in metrics]
+
+    return {"title": _("Summary report"), "columns": columns, "rows": rows}
 
 
 def courtcase_report():

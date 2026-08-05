@@ -1,11 +1,11 @@
 {% load dashboard_tags %}
 <div class="table-responsive dashboard-table-wrapper">
     <h4>{{ report.title }}</h4>
-    <table class="table table-bordered table-striped sortable-table">
+    <table class="table table-bordered table-striped{% if not unsortable %} sortable-table{% endif %}">
         <thead>
             <tr>
                 {% for col in report.columns %}
-                    <th data-sort-key="{{ col.key }}">{{ col.label }}</th>
+                    <th{% if not unsortable %} data-sort-key="{{ col.key }}"{% endif %}>{{ col.label }}</th>
                 {% endfor %}
             </tr>
         </thead>
