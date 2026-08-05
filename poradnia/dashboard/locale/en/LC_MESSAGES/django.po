@@ -1,0 +1,175 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-05 14:02+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+msgid "Dashboard"
+msgstr ""
+
+msgid "TOTAL"
+msgstr ""
+
+msgid "ANY / TOTAL"
+msgstr ""
+
+msgid "None"
+msgstr ""
+
+msgid "New cases"
+msgstr ""
+
+msgid "New users with cases"
+msgstr ""
+
+msgid "Letters created by staff"
+msgstr ""
+
+msgid "Attachments created by staff"
+msgstr ""
+
+msgid "Court cases"
+msgstr ""
+
+msgid "Court sessions"
+msgstr ""
+
+msgid "Events"
+msgstr ""
+
+msgid "cases <= 5"
+msgstr ""
+
+msgid "cases 6-10"
+msgstr ""
+
+msgid "cases 11-20"
+msgstr ""
+
+msgid "cases 21-50"
+msgstr ""
+
+msgid "cases > 50"
+msgstr ""
+
+msgid "case letters count <=5"
+msgstr ""
+
+msgid "case letters count 6-10"
+msgstr ""
+
+msgid "case letters count 11-20"
+msgstr ""
+
+msgid "case letters count 21-50"
+msgstr ""
+
+msgid "case letters count 51-100"
+msgstr ""
+
+msgid "case letters count 100+"
+msgstr ""
+
+msgid "Month"
+msgstr ""
+
+msgid "users with new case"
+msgstr ""
+
+msgid "Users report"
+msgstr ""
+
+msgid "cases created"
+msgstr ""
+
+msgid "Cases report"
+msgstr ""
+
+msgid "letters by staff"
+msgstr ""
+
+msgid "attachments by staff"
+msgstr ""
+
+msgid "Staff letters report"
+msgstr ""
+
+msgid "id"
+msgstr ""
+
+msgid "name"
+msgstr ""
+
+msgid "cases assigned"
+msgstr ""
+
+msgid "cases missing"
+msgstr ""
+
+msgid "Issues report"
+msgstr ""
+
+msgid "Areas report"
+msgstr ""
+
+msgid "Institution kind report"
+msgstr ""
+
+msgid "Person kind report"
+msgstr ""
+
+msgid "parser key"
+msgstr ""
+
+msgid "total"
+msgstr ""
+
+msgid "Court sessions report"
+msgstr ""
+
+msgid "Metric"
+msgstr ""
+
+msgid "Summary report"
+msgstr ""
+
+msgid "court"
+msgstr ""
+
+msgid "count"
+msgstr ""
+
+msgid "Court cases report"
+msgstr ""
+
+msgid "Reports dashboard"
+msgstr ""
+
+msgid "Year"
+msgstr ""
+
+msgid "Summary"
+msgstr ""
+
+msgid "Cases"
+msgstr ""
+
+msgid "Tags"
+msgstr ""
+
+msgid "Courts"
+msgstr ""

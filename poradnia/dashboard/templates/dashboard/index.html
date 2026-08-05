@@ -21,14 +21,14 @@
             <a href="#dashboard-tab-advices" aria-controls="dashboard-tab-advices" role="tab" data-toggle="tab"
                hx-get="{% url 'dashboard:advices_tab' %}" hx-target="#advices-tables"
                hx-trigger="click once" hx-swap="innerHTML">
-                {% trans 'Advices' %}
+                {% trans 'Tags' %}
             </a>
         </li>
         <li role="presentation">
             <a href="#dashboard-tab-judgements" aria-controls="dashboard-tab-judgements" role="tab" data-toggle="tab"
                hx-get="{% url 'dashboard:judgements_tab' %}" hx-target="#judgements-tables"
                hx-trigger="click once" hx-swap="innerHTML">
-                {% trans 'Judgements' %}
+                {% trans 'Courts' %}
             </a>
         </li>
     </ul>
