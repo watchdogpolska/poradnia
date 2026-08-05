@@ -10,6 +10,7 @@ from poradnia.cases.models import Case
 from poradnia.events.models import Event
 from poradnia.judgements.models import CourtCase, CourtSession
 from poradnia.letters.models import Attachment, Letter
+from poradnia.users.models import User
 
 MIN_YEAR = 2018
 
@@ -391,12 +392,13 @@ def summary_report():
             _per_year_counts(Case.objects.all(), "created_on", years),
         ),
         (
+            # Users whose account was created that year and who have a case
+            # (in any year, not necessarily the same one).
             NEW_USERS_WITH_CASES_LABEL,
             _per_year_counts(
-                Case.objects.filter(client_id__isnull=False),
-                "created_on",
+                User.objects.filter(case_client__isnull=False),
+                "date_joined",
                 years,
-                id_field="client_id",
                 distinct=True,
             ),
         ),

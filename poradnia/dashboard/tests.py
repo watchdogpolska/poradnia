@@ -240,15 +240,29 @@ class CourtCaseReportTestCase(TestCase):
 
 class SummaryReportTestCase(TestCase):
     def test_yearly_metrics(self):
+        # "New users with cases" buckets by the user's registration year
+        # (date_joined), not by when their case(s) were created, and only
+        # counts users who have at least one case (in any year).
         client_a = UserFactory()
-        case_2024 = CaseFactory(client=client_a)
-        set_created_on(case_2024, "2024-03-01")
-        case_2025 = CaseFactory(client=client_a)
-        set_created_on(case_2025, "2025-01-10")
+        set_created_on(client_a, "2022-01-01", "date_joined")
+        set_created_on(CaseFactory(client=client_a), "2024-03-01")
+        set_created_on(CaseFactory(client=client_a), "2024-09-01")
+
+        client_b = UserFactory()
+        set_created_on(client_b, "2025-01-05", "date_joined")
+        set_created_on(CaseFactory(client=client_b), "2025-01-10")
+
+        # Registered in 2024 but never got a case - must not be counted.
+        client_c = UserFactory()
+        set_created_on(client_c, "2024-06-01", "date_joined")
 
         staff_letter = LetterFactory(created_by_is_staff=True)
         set_created_on(staff_letter, "2024-05-01")
         AttachmentFactory(letter=staff_letter)
+        # Non-staff letter/attachment must be excluded from the staff counts.
+        client_letter = LetterFactory(created_by_is_staff=False)
+        set_created_on(client_letter, "2024-05-02")
+        AttachmentFactory(letter=client_letter)
 
         court_case = CourtCaseFactory()
         set_created_on(court_case.record_general.get(), "2024-06-01")
@@ -262,14 +276,29 @@ class SummaryReportTestCase(TestCase):
         report = reports.summary_report()
         rows = {row["metric"]: row for row in report["rows"]}
 
-        self.assertEqual(rows[str(reports.NEW_CASES_LABEL)]["y_2024"], 1)
+        self.assertEqual(rows[str(reports.NEW_CASES_LABEL)]["y_2024"], 2)
         self.assertEqual(rows[str(reports.NEW_CASES_LABEL)]["y_2025"], 1)
-        self.assertEqual(rows[str(reports.NEW_USERS_WITH_CASES_LABEL)]["y_2024"], 1)
+        # Client A registered in 2022 (dedup across their 2 cases); their
+        # cases being created in 2024 must not shift them into y_2024.
+        self.assertEqual(rows[str(reports.NEW_USERS_WITH_CASES_LABEL)]["y_2022"], 1)
+        self.assertEqual(rows[str(reports.NEW_USERS_WITH_CASES_LABEL)]["y_2024"], 0)
+        self.assertEqual(rows[str(reports.NEW_USERS_WITH_CASES_LABEL)]["y_2025"], 1)
         self.assertEqual(rows[str(reports.STAFF_LETTERS_LABEL)]["y_2024"], 1)
         self.assertEqual(rows[str(reports.STAFF_ATTACHMENTS_LABEL)]["y_2024"], 1)
         self.assertEqual(rows[str(reports.COURT_CASES_LABEL)]["y_2024"], 1)
         self.assertEqual(rows[str(reports.COURT_SESSIONS_LABEL)]["y_2024"], 1)
         self.assertEqual(rows[str(reports.EVENTS_LABEL)]["y_2024"], 1)
+
+        # No leakage into an adjacent year for the metrics only fixtured in 2024.
+        for label in (
+            reports.STAFF_LETTERS_LABEL,
+            reports.STAFF_ATTACHMENTS_LABEL,
+            reports.COURT_CASES_LABEL,
+            reports.COURT_SESSIONS_LABEL,
+            reports.EVENTS_LABEL,
+        ):
+            self.assertEqual(rows[str(label)]["y_2023"], 0, label)
+            self.assertEqual(rows[str(label)]["y_2025"], 0, label)
 
 
 class DashboardViewsTestCase(TestCase):
@@ -302,6 +331,12 @@ class DashboardViewsTestCase(TestCase):
         summary_report = resp.context["summary_report"]
         self.assertEqual(len(summary_report["rows"]), 7)
         self.assertEqual(summary_report["columns"][-1]["key"], f"y_{self.current_year}")
+
+        # Summary is the only table rendered eagerly on the index page (Cases,
+        # Advices, Judgements all lazy-load via htmx) and must stay unsortable.
+        content = resp.content.decode()
+        self.assertNotIn("sortable-table", content)
+        self.assertNotIn("data-sort-key", content)
 
     def test_cases_tab_year_param(self):
         self.login_staff()
