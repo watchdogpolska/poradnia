@@ -1,0 +1,22 @@
+{% load dashboard_tags %}
+<div class="table-responsive dashboard-table-wrapper">
+    <h4>{{ report.title }}</h4>
+    <table class="table table-bordered table-striped sortable-table">
+        <thead>
+            <tr>
+                {% for col in report.columns %}
+                    <th data-sort-key="{{ col.key }}">{{ col.label }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in report.rows %}
+                <tr{% if row.pinned %} data-pinned="1" class="dashboard-total-row"{% endif %}>
+                    {% for col in report.columns %}
+                        <td>{{ row|get_item:col.key }}</td>
+                    {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -17864,6 +17864,34 @@ table.month li.deadline {
   padding: 0;
 }
 
+.sortable-table th[data-sort-key] {
+  cursor: pointer;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+          user-select: none;
+}
+.sortable-table th[data-sort-key]::after {
+  content: "↕";
+  opacity: 0.35;
+  margin-left: 4px;
+}
+.sortable-table th[data-sort-key][aria-sort=ascending]::after {
+  content: "↑";
+  opacity: 1;
+}
+.sortable-table th[data-sort-key][aria-sort=descending]::after {
+  content: "↓";
+  opacity: 1;
+}
+.sortable-table .dashboard-total-row {
+  font-weight: bold;
+  background-color: #f5f5f5;
+}
+
+.dashboard-year-select {
+  max-width: 200px;
+}
+
 .logo {
   display: inline-block;
   width: 160px;

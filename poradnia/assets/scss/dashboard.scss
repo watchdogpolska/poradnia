@@ -1,0 +1,31 @@
+.sortable-table {
+    th[data-sort-key] {
+        cursor: pointer;
+        user-select: none;
+
+        &::after {
+            content: "\2195";
+            opacity: 0.35;
+            margin-left: 4px;
+        }
+
+        &[aria-sort="ascending"]::after {
+            content: "\2191";
+            opacity: 1;
+        }
+
+        &[aria-sort="descending"]::after {
+            content: "\2193";
+            opacity: 1;
+        }
+    }
+
+    .dashboard-total-row {
+        font-weight: bold;
+        background-color: #f5f5f5;
+    }
+}
+
+.dashboard-year-select {
+    max-width: 200px;
+}

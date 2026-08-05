@@ -1,0 +1,90 @@
+from braces.views import StaffuserRequiredMixin
+from django.utils import timezone
+from django.views.generic import TemplateView
+
+from . import reports
+
+MIN_YEAR = 2018
+
+
+class StaffDashboardMixin(StaffuserRequiredMixin):
+    raise_exception = True
+
+
+class YearMixin:
+    def get_current_year(self):
+        return timezone.now().year
+
+    def get_years(self):
+        return range(self.get_current_year(), MIN_YEAR - 1, -1)
+
+    def get_selected_year(self):
+        current_year = self.get_current_year()
+        try:
+            year = int(self.request.GET.get("year", current_year))
+        except ValueError:
+            year = current_year
+        if year < MIN_YEAR or year > current_year:
+            year = current_year
+        return year
+
+
+class DashboardView(StaffDashboardMixin, YearMixin, TemplateView):
+    template_name = "dashboard/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        current_year = self.get_current_year()
+        context.update(
+            {
+                "years": self.get_years(),
+                "current_year": current_year,
+                "cases_reports": [
+                    reports.users_report(current_year),
+                    reports.cases_report(current_year),
+                    reports.staff_letters_report(current_year),
+                ],
+            }
+        )
+        return context
+
+
+class CasesTabView(StaffDashboardMixin, YearMixin, TemplateView):
+    template_name = "dashboard/_cases_tables.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        year = self.get_selected_year()
+        context["cases_reports"] = [
+            reports.users_report(year),
+            reports.cases_report(year),
+            reports.staff_letters_report(year),
+        ]
+        return context
+
+
+class AdvicesTabView(StaffDashboardMixin, YearMixin, TemplateView):
+    template_name = "dashboard/_advices_tables.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        year = self.get_selected_year()
+        context["advices_reports"] = [
+            reports.issues_report(year),
+            reports.areas_report(year),
+            reports.institution_kind_report(year),
+            reports.person_kind_report(year),
+        ]
+        return context
+
+
+class JudgementsTabView(StaffDashboardMixin, TemplateView):
+    template_name = "dashboard/_judgements_tables.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["judgements_reports"] = [
+            reports.courtsessions_report(),
+            reports.courtcase_report(),
+        ]
+        return context

@@ -80,6 +80,7 @@ const config = {
       path.app + "/letters/static/letters/letters_datatables.js",
       path.app + "/events/static/events/events_datatables.js",
       path.app + "/users/static/users/users_datatables.js",
+      path.app + "/dashboard/static/dashboard/dashboard.js",
       ],
 
     output: {
