@@ -29,6 +29,7 @@ urlpatterns = [
     path("porady/", include("poradnia.advicer.urls", namespace="advicer")),
     path("uwagi/", include("poradnia.tasty_feedback.urls", namespace="tasty_feedback")),
     path("sprawy_sadowe/", include("poradnia.judgements.urls", namespace="judgements")),
+    path("dashboard/", include("poradnia.dashboard.urls", namespace="dashboard")),
     path(
         "ai-assistant/", include("poradnia.ai_assistant.urls", namespace="ai_assistant")
     ),
