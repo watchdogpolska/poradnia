@@ -78,6 +78,7 @@ LOCAL_APPS = (
     "poradnia.tasty_feedback",
     "poradnia.navsearch",
     "poradnia.judgements",
+    "poradnia.dashboard",
     "poradnia.teryt",
     "poradnia.utils",
     "poradnia.celery_monitor",
