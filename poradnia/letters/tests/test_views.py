@@ -7,7 +7,6 @@ from unittest.mock import MagicMock, patch
 
 import bleach
 from django.conf import settings
-from django.contrib.sites.models import Site
 from django.core import mail
 from django.core.files.uploadedfile import SimpleUploadedFile
 from django.test import TestCase, override_settings
@@ -74,17 +73,19 @@ class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
         return self.post_data
 
     def test_user_registration(self, mock: MagicMock):
+        """A brand-new anonymous submitter gets only a neutral activation
+        e-mail - no password, no case content - until they prove mailbox
+        ownership by activating."""
         self.post()
         self.assertMailSend(
-            template="users/email/new_user.txt",
-            subject="Rejestracja w Poradni Sieci Obywatelskiej - Watchdog Polska",
+            template="users/email/account_activation.txt",
+            subject="Aktywacja konta w Poradni Sieci Obywatelskiej - Watchdog Polska",
         )
 
-    def test_user_notification(self, mock: MagicMock):
+    def test_user_notification_withheld_until_activated(self, mock: MagicMock):
         self.post()
         self.assertMailSend(
-            template="cases/email/case_registered.txt",
-            subject="Sprawa  zarejestrowana w systemie",
+            template="cases/email/case_registered.txt", expected_count=0
         )
 
     def test_case_exists(self, mock: MagicMock):
@@ -107,11 +108,26 @@ class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
         self.assertEqual(obj.case.client, obj.created_by)
         self.assertEqual(obj.case.client.email, "my_email@oh-noes.pl")
 
-    def test_user_registered_fail(self, mock: MagicMock):
+    def test_new_case_redirects_to_generic_page(self, mock: MagicMock):
+        """The response for a brand-new e-mail must look identical to the
+        one for an already-registered e-mail (see the test below) - both
+        redirect anonymous submitters to the generic homepage, never to the
+        case they can't view anyway."""
+        resp = self.post()
+        self.assertRedirects(resp, reverse("home"))
+
+    def test_existing_account_does_not_disclose_account_or_create_case(
+        self, mock: MagicMock
+    ):
         UserFactory(email=self.post_data["email_registration"])
         resp = self.post()
-        self.assertFalse(resp.context_data["form"].is_valid())
-        self.assertIn("email_registration", resp.context_data["form"].errors)
+        self.assertRedirects(resp, reverse("home"))
+        self.assertEqual(self.get_case().count(), 0)
+        self.assertEqual(self.get_letter().count(), 0)
+        self.assertMailSend(
+            template="users/email/existing_case_attempt.txt",
+            to=self.post_data["email_registration"],
+        )
 
 
 @patch("turnstile.fields.TurnstileField.validate", return_value=True)
@@ -151,11 +167,17 @@ class AdminNewCaseTestCase(NewCaseMixin, TestCase):
 
     def test_user_registration(self, mock: MagicMock):
         self.post()
-        self.assertMailSend(template="users/email/new_user.txt", to=self.email)
+        self.assertMailSend(
+            template="users/email/account_activation.txt", to=self.email
+        )
 
-    def test_user_notification(self, mock: MagicMock):
+    def test_user_notification_withheld_until_activated(self, mock: MagicMock):
         self.post()
-        self.assertMailSend(template="cases/email/case_registered.txt", to=self.email)
+        self.assertMailSend(
+            template="cases/email/case_registered.txt",
+            to=self.email,
+            expected_count=0,
+        )
 
 
 @patch("turnstile.fields.TurnstileField.validate", return_value=True)
@@ -193,7 +215,7 @@ class UserNewCaseTestCase(NewCaseMixin, TestCase):
         self.post()
         self.assertMailSend(
             template="cases/email/case_registered.txt",
-            subject="Sprawa  zarejestrowana w systemie",
+            subject="Sprawa Lorem ipsum subject example zarejestrowana w systemie",
             to=self.user.email,
         )
 
@@ -564,6 +586,20 @@ class ReceiveEmailTestCase(TestCase):
         response = self.client.get(self.url)
         self.assertEqual(response.status_code, 405)
 
+    @override_settings(LETTER_RECEIVE_ALLOWED_IPS=["203.0.113.1"])
+    def test_refuse_request_from_disallowed_ip(self):
+        response = self.client.post(path=self.authenticated_url, data=self._get_body())
+        self.assertEqual(response.status_code, 403)
+
+    @override_settings(LETTER_RECEIVE_ALLOWED_IPS=["203.0.113.1"])
+    def test_accept_request_from_allowed_ip_via_x_real_ip(self):
+        response = self.client.post(
+            path=self.authenticated_url,
+            data=self._get_body(),
+            headers={"x-real-ip": "203.0.113.1"},
+        )
+        self.assertEqual(response.json()["status"], "OK")
+
     def test_sample_request(self):
         case = CaseFactory()
         data_body = self._get_body(case)
@@ -686,7 +722,7 @@ class ReceiveEmailTestCase(TestCase):
         self.assertIn(user.email, emails)
 
     def _get_body(self, case=None, from_=None, headers=None):
-        domain = Site.objects.get_current().domain
+        domain = settings.PORADNIA_EMAIL_DOMAIN
         manifest = {
             "headers": {
                 "cc": [],

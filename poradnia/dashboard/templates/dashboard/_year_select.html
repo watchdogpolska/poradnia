@@ -1,0 +1,10 @@
+{% load i18n %}
+<div class="form-group dashboard-year-select">
+    <label for="{{ select_id }}">{% trans 'Year' %}</label>
+    <select id="{{ select_id }}" name="year" class="form-control"
+            hx-get="{% url hx_url_name %}" hx-target="#{{ target_id }}" hx-trigger="change" hx-swap="innerHTML">
+        {% for year in years %}
+            <option value="{{ year }}"{% if year == current_year %} selected{% endif %}>{{ year }}</option>
+        {% endfor %}
+    </select>
+</div>

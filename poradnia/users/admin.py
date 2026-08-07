@@ -2,7 +2,7 @@ from django import forms
 from django.contrib import admin, messages
 from django.contrib.admin import helpers
 from django.contrib.auth.admin import UserAdmin as AuthUserAdmin
-from django.contrib.auth.forms import UserChangeForm, UserCreationForm
+from django.contrib.auth.forms import AdminUserCreationForm, UserChangeForm
 from django.utils.translation import gettext_lazy as _
 from sorl.thumbnail.admin import AdminImageMixin
 
@@ -143,8 +143,8 @@ class MyUserChangeForm(UserChangeForm):
         model = User
 
 
-class MyUserCreationForm(UserCreationForm):
-    class Meta(UserCreationForm.Meta):
+class MyUserCreationForm(AdminUserCreationForm):
+    class Meta(AdminUserCreationForm.Meta):
         model = User
 
     def clean_username(self):
@@ -280,7 +280,9 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         updated = qs.update(must_change_password=True)
 
         messages.success(
-            request, _(f"Marked {updated} user(s) to change password on next login.")
+            request,
+            _("Marked %(updated)s user(s) to change password on next login.")
+            % {"updated": updated},
         )
 
 

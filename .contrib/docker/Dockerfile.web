@@ -1,6 +1,8 @@
 # This is Dockerfile for development purposes only.
 ARG PYTHON_VERSION='3.13'
 FROM python:${PYTHON_VERSION}-slim
+ARG UID=1000
+ARG GID=1000
 RUN mkdir /code /code/production
 WORKDIR /code
 
@@ -25,4 +27,7 @@ RUN update-ca-certificates
 COPY requirements/*.txt ./requirements/
 RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements/dev.txt
+RUN groupadd -g ${GID} appuser \
+ && useradd -u ${UID} -g ${GID} -m -s /bin/bash appuser
+USER appuser
 CMD ["bash", "-c", "python manage.py collectstatic --no-input && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]

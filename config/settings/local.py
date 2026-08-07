@@ -19,8 +19,12 @@ TEMPLATES[0]["OPTIONS"]["debug"] = DEBUG
 INSTALLED_APPS += ("django_extensions",)
 
 # django-debug-toolbar
+#
+# Gated on TESTING (not just "test" in sys.argv) so it also stays off for
+# the Cypress e2e web server, which runs via `runserver` with TEST=1 set
+# rather than through `manage.py test`.
 
-if "test" not in sys.argv:
+if not TESTING:
     INSTALLED_APPS += ("debug_toolbar",)
     MIDDLEWARE += ("debug_toolbar.middleware.DebugToolbarMiddleware",)
     DEBUG_TOOLBAR_PANELS = [
@@ -37,10 +41,6 @@ if "test" not in sys.argv:
         "debug_toolbar.panels.logging.LoggingPanel",
         "debug_toolbar.panels.redirects.RedirectsPanel",
     ]
-    DEBUG_TOOLBAR_CONFIG = {
-        "SHOW_TEMPLATE_CONTEXT": True,
-        "SHOW_TOOLBAR_CALLBACK": lambda x: "test" not in sys.argv,
-    }
     ROSETTA_EXCLUDED_APPLICATIONS += ("debug_toolbar",)
 
 MY_INTERNAL_IP = env("MY_INTERNAL_IP", default="")
@@ -50,6 +50,7 @@ DEBUG_TOOLBAR_CONFIG = {
     "DISABLE_PANELS": ["debug_toolbar.panels.redirects.RedirectsPanel"],
     "SHOW_TOOLBAR_CALLBACK": lambda x: not TESTING,
     "SHOW_TEMPLATE_CONTEXT": True,
+    "SHOW_COLLAPSED": True,
 }
 
 ACCOUNT_EMAIL_VERIFICATION = env("ACCOUNT_EMAIL_VERIFICATION", default="mandatory")

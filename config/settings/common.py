@@ -8,6 +8,8 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
+import os
+import re
 import sys
 from urllib.parse import unquote, urlparse
 
@@ -51,7 +53,6 @@ THIRD_PARTY_APPS = (
     "sorl.thumbnail",
     "atom",
     "django_filters",
-    "bootstrap_pagination",
     "github_revision",
     "mptt",
     "teryt_tree",
@@ -77,10 +78,11 @@ LOCAL_APPS = (
     "poradnia.tasty_feedback",
     "poradnia.navsearch",
     "poradnia.judgements",
+    "poradnia.dashboard",
     "poradnia.teryt",
     "poradnia.utils",
     "poradnia.celery_monitor",
-    "ai_assistant",
+    "poradnia.ai_assistant",
 )
 
 # See: https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -161,7 +163,13 @@ ACCOUNT_SIGNUP_FIELDS = ["email*", "username*", "password1*", "password2*"]
 ACCOUNT_LOGIN_METHODS = {"username", "email"}
 ACCOUNT_UNIQUE_EMAIL = True
 ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+ACCOUNT_EMAIL_NOTIFICATIONS = True  # alert users on password/email/MFA changes
 ACCOUNT_SESSION_REMEMBER = None
+# poradnia.users.views.AccountActivationView is a hand-rolled equivalent of
+# allauth's own token-in-URL password views, so it needs its own entry here
+# to get the same brute-force throttling those get automatically; matches
+# allauth's default "reset_password_from_key" rate (same risk shape).
+ACCOUNT_RATE_LIMITS = {"account_activation": "20/m/ip"}
 MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
 MFA_SUPPORTED_TYPES = ["totp", "recovery_codes"]
 MFA_TOTP_ISSUER = f"Poradnia {APP_MODE} SO MFA"  # shown in authenticator app
@@ -340,6 +348,21 @@ AUTOSLUG_SLUGIFY_FUNCTION = "slugify.slugify"
 #   as for now all stdout and stderr captured by gunicorn logs
 LOG_FILE_ENV = env("LOG_FILE_ENV", default="logs/poradnia.log")
 LOG_FILE = str(ROOT_DIR(LOG_FILE_ENV))
+
+# Auto-create the log directory (e.g. a fresh checkout) and fall back to
+# console-only logging if it isn't writable, instead of crashing on startup.
+LOG_DIR = os.path.dirname(LOG_FILE)
+try:
+    os.makedirs(LOG_DIR, exist_ok=True)
+except OSError:
+    pass
+FILE_LOGGING_ENABLED = os.access(LOG_DIR, os.W_OK)
+if not FILE_LOGGING_ENABLED:
+    sys.stderr.write(
+        f"WARNING: log directory {LOG_DIR} is not writable; "
+        "file logging disabled, using console only.\n"
+    )
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -349,16 +372,26 @@ LOGGING = {
             "class": "logging.StreamHandler",
             "formatter": "app",
         },
-        "file": {
-            # "level": "INFO",
-            "class": "logging.FileHandler",
-            "filename": LOG_FILE,
-            "formatter": "app",
-        },
+        **(
+            {
+                "file": {
+                    # "level": "INFO",
+                    "class": "logging.FileHandler",
+                    "filename": LOG_FILE,
+                    "formatter": "app",
+                },
+            }
+            if FILE_LOGGING_ENABLED
+            else {}
+        ),
     },
     "loggers": {
         # "django.request": {"handlers": [], "level": "ERROR", "propagate": True},
-        "": {"handlers": ["file", "console"], "level": "INFO", "propagate": True},
+        "": {
+            "handlers": (["file", "console"] if FILE_LOGGING_ENABLED else ["console"]),
+            "level": "INFO",
+            "propagate": True,
+        },
         "feder.letters.models": {
             "handlers": ["console"] if "test" not in environ.sys.argv else [],
             "level": "INFO",
@@ -400,15 +433,15 @@ E2E_MFA_BYPASS_ENABLED = TESTING
 E2E_MFA_BYPASS_SECRET = env.str("E2E_MFA_BYPASS_SECRET", "")
 
 # Email settings for cases. Uses different email addresses in different environments
-# to avoid sending emails to real users.
-PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@porady.siecobywatelska.pl"
-PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@porady.siecobywatelska.pl"
+# to avoid sending emails to real users. PORADNIA_EMAIL_DOMAIN is also the domain
+# ReceiveEmailView.is_allowed_recipient() accepts inbound mail for.
+PORADNIA_EMAIL_DOMAIN = "porady.siecobywatelska.pl"
 if APP_MODE == "DEV" and not TESTING:
-    PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@dev.porady.siecobywatelska.pl"
-    PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@dev.porady.siecobywatelska.pl"
+    PORADNIA_EMAIL_DOMAIN = "dev.porady.siecobywatelska.pl"
 elif APP_MODE == "DEMO" and not TESTING:
-    PORADNIA_EMAIL_OUTPUT = "sprawa-%(id)s@staging.porady.siecobywatelska.pl"
-    PORADNIA_EMAIL_INPUT = r"sprawa-(?P<pk>\d+)@staging.porady.siecobywatelska.pl"
+    PORADNIA_EMAIL_DOMAIN = "staging.porady.siecobywatelska.pl"
+PORADNIA_EMAIL_OUTPUT = f"sprawa-%(id)s@{PORADNIA_EMAIL_DOMAIN}"
+PORADNIA_EMAIL_INPUT = rf"sprawa-(?P<pk>\d+)@{re.escape(PORADNIA_EMAIL_DOMAIN)}"
 
 # Other Poradnia settings
 ATOMIC_REQUESTS = True
@@ -468,6 +501,12 @@ LETTER_RECEIVE_SECRET = env.str("LETTER_RECEIVE_SECRET", "")
 LETTER_RECEIVE_WHITELISTED_ADDRESS = env.str(
     "LETTER_RECEIVE_WHITELISTED_ADDRESS", "porady@siecobywatelska.pl,"
 ).split(",")
+
+# IPs allowed to call the inbound-mail webhook (e.g. the imap-to-webhook host).
+# Empty means no IP restriction is enforced (only the shared secret gates access).
+LETTER_RECEIVE_ALLOWED_IPS = [
+    ip for ip in env.str("LETTER_RECEIVE_ALLOWED_IPS", "").split(",") if ip
+]
 
 DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 
@@ -674,7 +713,6 @@ FILE_TO_TEXT_REQUEST_TIMEOUTS = (
 N8N_ADVICE_WEBHOOK_URL = env("N8N_ADVICE_WEBHOOK_URL", default="")
 N8N_ADVICE_WEBHOOK_TOKEN = env("N8N_ADVICE_WEBHOOK_TOKEN", default="")
 N8N_ADVICE_WEBHOOK_TIMEOUT = env.int("N8N_ADVICE_WEBHOOK_TIMEOUT", default=30)
-ADVICER_WEBHOOK_BEARER_TOKEN = env.str("ADVICER_WEBHOOK_BEARER_TOKEN", "")
 N8N_ARTICLES_SEARCH_WEBHOOK = env("N8N_ARTICLES_SEARCH_WEBHOOK", default="")
 N8N_ARTICLES_SEARCH_WEBHOOK_TOKEN = env("N8N_ARTICLES_SEARCH_WEBHOOK_TOKEN", default="")
 N8N_ARTICLES_SEARCH_CALLBACK = env("N8N_ARTICLES_SEARCH_CALLBACK", default="")

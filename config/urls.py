@@ -1,20 +1,21 @@
-import logging
-
 from django.conf import settings
 from django.contrib import admin
 from django.http import HttpResponseServerError
 from django.template import loader
 from django.urls import include, path, re_path
-from django.views.generic import TemplateView
+from django.views.generic import RedirectView, TemplateView
 
 from poradnia.letters.views.cbv import ProtectedMediaView
-
-logger = logging.getLogger(__name__)
+from poradnia.template_mail.views import email_catalog_view
+from poradnia.utils.views import messages_catalog_view
 
 admin.autodiscover()
 
 urlpatterns = [
     path("", TemplateView.as_view(template_name="pages/home.html"), name="home"),
+    # Must precede admin.site.urls to take priority over its catch-all.
+    path("admin/email-catalog/", email_catalog_view, name="email_catalog"),
+    path("admin/messages-catalog/", messages_catalog_view, name="messages_catalog"),
     path("admin/", admin.site.urls),
     path("navsearch/", include("poradnia.navsearch.urls", namespace="navsearch")),
     # User management
@@ -28,9 +29,18 @@ urlpatterns = [
     path("porady/", include("poradnia.advicer.urls", namespace="advicer")),
     path("uwagi/", include("poradnia.tasty_feedback.urls", namespace="tasty_feedback")),
     path("sprawy_sadowe/", include("poradnia.judgements.urls", namespace="judgements")),
-    path("ai-assistant/", include("ai_assistant.urls", namespace="ai_assistant")),
+    path("dashboard/", include("poradnia.dashboard.urls", namespace="dashboard")),
+    path(
+        "ai-assistant/", include("poradnia.ai_assistant.urls", namespace="ai_assistant")
+    ),
     path("teryt/", include("poradnia.teryt.urls", namespace="teryt")),
     path("robots.txt", TemplateView.as_view(template_name="robots.txt")),
+    path(
+        "favicon.ico",
+        RedirectView.as_view(
+            url=settings.STATIC_URL + "images/favicon-32x26.png", permanent=True
+        ),
+    ),
     path(
         "strony/regulamin-poradnictwa/",
         TemplateView.as_view(template_name="pages/terms.html"),
@@ -47,13 +57,10 @@ urlpatterns = [
 if "rosetta" in settings.INSTALLED_APPS:
     urlpatterns += [path("rosetta/", include("rosetta.urls"))]
 
-if settings.DEBUG:
-    try:
-        import debug_toolbar
+if "debug_toolbar" in settings.INSTALLED_APPS:
+    import debug_toolbar
 
-        urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
-    except ImportError:
-        logger.warning("Could not import debug_toolbar.")
+    urlpatterns += [path("__debug__/", include(debug_toolbar.urls))]
 
 
 def handler500(request):
