@@ -7,7 +7,7 @@ django-extensions==4.1
 graphviz==0.21
 factory-boy==3.3.3
 django-coverage-plugin==3.2.2
-django-test-plus==2.6.0
+django-test-plus==2.6.1
 vcrpy==8.3.0
 ipdb==0.13.13
 
