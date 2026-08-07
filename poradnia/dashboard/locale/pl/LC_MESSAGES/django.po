@@ -1,0 +1,208 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-08-05 15:19+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
+"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+msgid "Dashboard"
+msgstr "Panel raportów"
+
+msgid "TOTAL"
+msgstr "SUMA"
+
+msgid "ANY / TOTAL"
+msgstr "DOWOLNA / SUMA"
+
+msgid "None"
+msgstr "Brak"
+
+msgid "New cases"
+msgstr "Nowe sprawy"
+
+msgid "New users with cases"
+msgstr "Nowi użytkownicy ze sprawami"
+
+msgid "Letters created by staff"
+msgstr "Listy utworzone przez zespół"
+
+msgid "Attachments created by staff"
+msgstr "Załączniki utworzone przez zespół"
+
+msgid "Court cases"
+msgstr "Sprawy sądowe"
+
+msgid "Court sessions"
+msgstr "Rozprawy sądowe"
+
+msgid "Events"
+msgstr "Wydarzenia"
+
+msgid "cases <= 5"
+msgstr "sprawy <= 5"
+
+msgid "cases 6-10"
+msgstr "sprawy 6-10"
+
+msgid "cases 11-20"
+msgstr "sprawy 11-20"
+
+msgid "cases 21-50"
+msgstr "sprawy 21-50"
+
+msgid "cases > 50"
+msgstr "sprawy > 50"
+
+msgid "case letters count <=5"
+msgstr "listy w sprawie <=5"
+
+msgid "case letters count 6-10"
+msgstr "listy w sprawie 6-10"
+
+msgid "case letters count 11-20"
+msgstr "listy w sprawie 11-20"
+
+msgid "case letters count 21-50"
+msgstr "listy w sprawie 21-50"
+
+msgid "case letters count 51-100"
+msgstr "listy w sprawie 51-100"
+
+msgid "case letters count 100+"
+msgstr "listy w sprawie 100+"
+
+msgid "Month"
+msgstr "Miesiąc"
+
+msgid "users with new case"
+msgstr "użytkownicy z nową sprawą"
+
+msgid "Users report"
+msgstr "Raport użytkowników"
+
+msgid "cases created"
+msgstr "utworzone sprawy"
+
+msgid "Cases report"
+msgstr "Raport spraw"
+
+msgid "letters by staff"
+msgstr "listy zespołu"
+
+msgid "attachments by staff"
+msgstr "załączniki zespołu"
+
+msgid "Staff letters report"
+msgstr "Raport listów zespołu"
+
+msgid "id"
+msgstr "id"
+
+msgid "name"
+msgstr "nazwa"
+
+msgid "cases assigned"
+msgstr "przypisane sprawy"
+
+msgid "cases missing"
+msgstr "sprawy bez przypisania"
+
+msgid "Issues report"
+msgstr "Raport zagadnień"
+
+msgid "Areas report"
+msgstr "Raport obszarów"
+
+msgid "Institution kind report"
+msgstr "Raport rodzajów podmiotów zobowiązanych"
+
+msgid "Person kind report"
+msgstr "Raport rodzajów osób"
+
+msgid "parser key"
+msgstr "klucz parsera"
+
+msgid "total"
+msgstr "suma"
+
+msgid "Court sessions report"
+msgstr "Raport rozpraw sądowych"
+
+msgid "Metric"
+msgstr "Wskaźnik"
+
+msgid "Summary report"
+msgstr "Raport podsumowujący"
+
+msgid "court"
+msgstr "sąd"
+
+msgid "count"
+msgstr "liczba"
+
+msgid "Court cases report"
+msgstr "Raport spraw sądowych"
+
+msgid "Reports dashboard"
+msgstr "Panel raportów"
+
+msgid "Year"
+msgstr "Rok"
+
+msgid "Download Excel"
+msgstr "Pobierz Excel"
+
+msgid "Summary"
+msgstr "Podsumowanie"
+
+msgid "Cases"
+msgstr "Sprawy"
+
+msgid "Tags"
+msgstr "Tagi"
+
+msgid "Courts"
+msgstr "Sądy"
+
+msgid "Choose a year for the export"
+msgstr "Wybierz rok eksportu"
+
+msgid ""
+"The \"Cases\" and \"Tags\" tabs currently have different years selected. "
+"Choose which year to use for the whole Excel export:"
+msgstr ""
+"Zakładki „Sprawy” i „Tagi” mają obecnie wybrane różne lata. Wybierz, który "
+"rok ma zostać użyty w całym eksporcie do Excela:"
+
+msgid "Cases tab year:"
+msgstr "Rok z zakładki Sprawy:"
+
+msgid "Tags tab year:"
+msgstr "Rok z zakładki Tagi:"
+
+msgid "Cancel"
+msgstr "Anuluj"
+
+msgid "Download"
+msgstr "Pobierz"
+
+#~ msgid "Advices"
+#~ msgstr "Porady"
+
+#~ msgid "Judgements"
+#~ msgstr "Orzecznictwo"
