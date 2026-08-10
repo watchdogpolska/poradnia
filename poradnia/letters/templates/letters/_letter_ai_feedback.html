@@ -1,17 +1,15 @@
 {% load i18n %}
 {% with search_request=object.get_ai_search_request %}
 {% if search_request %}
-    {% if not search_request.rejected_at %}
+    {% if not search_request.accepted_at and not search_request.rejected_at %}
     <button type="button"
-        class="btn btn-link btn-xs ai-thumb ai-thumb-up{% if search_request.accepted_at %} ai-thumb-active{% endif %}"
+        class="btn btn-link btn-xs ai-thumb ai-thumb-up"
         title="{% trans 'Accept AI answer' %}"
         hx-post="{% url 'letters:ai_search_accept' pk=object.pk %}"
         hx-target="#ai-feedback-{{ object.pk }}"
         hx-swap="innerHTML"
         hx-indicator="#htmx-spinner"
     ><i class="fas fa-thumbs-up"></i></button>
-    {% endif %}
-    {% if not search_request.accepted_at %}
     <button type="button"
         class="btn btn-link btn-xs ai-thumb ai-thumb-down"
         title="{% trans 'Reject AI answer' %}"
@@ -19,11 +17,14 @@
         data-target="#aiSearchRejectModal-{{ object.pk }}"
     ><i class="fas fa-thumbs-down"></i></button>
     {% include "letters/_letter_ai_reject_modal.html" %}
-    {% endif %}
-    {% if search_request.rejected_at %}
-    <span class="ai-thumb ai-thumb-active ai-suggestion-rejected" title="{{ search_request.rejection_reason }}">
-        <i class="fas fa-thumbs-down"></i>
-    </span>
+    {% elif search_request.accepted_at %}
+    <span class="ai-thumb ai-thumb-up ai-thumb-active"
+        title="{% blocktrans with search_request.accepted_by as user and search_request.accepted_at|date:'Y-m-d H:i' as when %}Accepted by {{ user }} on {{ when }}{% endblocktrans %}"
+    ><i class="fas fa-thumbs-up"></i></span>
+    {% elif search_request.rejected_at %}
+    <span class="ai-thumb ai-thumb-down ai-thumb-active"
+        title="{% blocktrans with search_request.rejected_by as user and search_request.rejected_at|date:'Y-m-d H:i' as when and search_request.rejection_reason as reason %}Rejected by {{ user }} on {{ when }}: {{ reason }}{% endblocktrans %}"
+    ><i class="fas fa-thumbs-down"></i></span>
     {% endif %}
 {% endif %}
 {% endwith %}

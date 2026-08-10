@@ -295,10 +295,20 @@ msgstr "Wyślij"
 msgid "Accept AI answer"
 msgstr "Zaakceptuj odpowiedź AI"
 
-#: poradnia/letters/templates/letters/_letter_ai_feedback.html:17
+#: poradnia/letters/templates/letters/_letter_ai_feedback.html:15
 #: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:11
 msgid "Reject AI answer"
 msgstr "Odrzuć odpowiedź AI"
+
+#: poradnia/letters/templates/letters/_letter_ai_feedback.html:22
+#, python-format
+msgid "Accepted by %(user)s on %(when)s"
+msgstr "Zaakceptowane przez %(user)s dnia %(when)s"
+
+#: poradnia/letters/templates/letters/_letter_ai_feedback.html:26
+#, python-format
+msgid "Rejected by %(user)s on %(when)s: %(reason)s"
+msgstr "Odrzucone przez %(user)s dnia %(when)s: %(reason)s"
 
 #: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:16
 msgid "Reason for rejection"
