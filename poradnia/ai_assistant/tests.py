@@ -945,6 +945,37 @@ class N8nCaseTagsCallbackViewTestCase(TestCase):
 
     @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
     @patch("poradnia.ai_assistant.views._validate_case_tags_payload", return_value=None)
+    def test_success_links_advice_to_tags_request(self, _validate):
+        case = CaseFactory()
+        advice = AdviceFactory(case=case)
+        tr = self._make_tags_request(case=case)
+
+        response = self.view(self._post(self._valid_payload()))
+
+        self.assertEqual(response.status_code, 200)
+        advice.refresh_from_db()
+        self.assertEqual(advice.ai_tags_request_id, tr.id)
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    @patch("poradnia.ai_assistant.views._validate_case_tags_payload", return_value=None)
+    def test_success_relinks_advice_to_new_request_on_repeat(self, _validate):
+        case = CaseFactory()
+        advice = AdviceFactory(case=case)
+        first = self._make_tags_request(case=case)
+        self.view(self._post(self._valid_payload()))
+        advice.refresh_from_db()
+        self.assertEqual(advice.ai_tags_request_id, first.id)
+
+        second = self._make_tags_request(request_id="tag-cb-req-2", case=case)
+        self.view(self._post(self._valid_payload(request_id="tag-cb-req-2")))
+
+        advice.refresh_from_db()
+        self.assertEqual(advice.ai_tags_request_id, second.id)
+        self.assertIsNone(advice.ai_tags_request.accepted_at)
+        self.assertIsNone(advice.ai_tags_request.rejected_at)
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    @patch("poradnia.ai_assistant.views._validate_case_tags_payload", return_value=None)
     def test_success_stores_response_json_on_request(self, _validate):
         tr = self._make_tags_request()
 

@@ -515,7 +515,8 @@ class N8nCaseTagsCallbackView(View):
                     defaults={"advicer": bot, "created_by": bot},
                 )
                 advice.ai_assistant_tags = ai_tags
-                advice.save(update_fields=["ai_assistant_tags"])
+                advice.ai_tags_request = tags_request
+                advice.save(update_fields=["ai_assistant_tags", "ai_tags_request"])
                 logger.info(
                     "%s ai_assistant_tags for case %s (request_id=%s)",
                     "Created advice with" if created else "Updated",

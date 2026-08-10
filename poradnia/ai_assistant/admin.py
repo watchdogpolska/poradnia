@@ -39,6 +39,8 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
         "environment",
         "status",
         "case",
+        "accepted_by",
+        "rejected_by",
         "created_at",
         "updated_at",
     )
