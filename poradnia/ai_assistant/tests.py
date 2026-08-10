@@ -540,7 +540,9 @@ class N8nArticlesSearchCallbackViewTestCase(TestCase):
         case = CaseFactory()
         sr = self._make_search_request(case=case)
 
-        self.view(self._post({"request_id": "test-req-1", "response": "", "is_foi": "NIE"}))
+        self.view(
+            self._post({"request_id": "test-req-1", "response": "", "is_foi": "NIE"})
+        )
 
         sr.refresh_from_db()
         self.assertIsNone(sr.letter)

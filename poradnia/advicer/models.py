@@ -2,8 +2,9 @@ import json
 
 from django.conf import settings
 from django.db import models
+from django.db.models import BooleanField
 from django.db.models import Case as djCase
-from django.db.models import BooleanField, CharField, F, Q, Value, When
+from django.db.models import CharField, F, Q, Value, When
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.timezone import now

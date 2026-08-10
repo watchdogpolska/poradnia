@@ -155,9 +155,7 @@ class CaseAiReviewFlagsQuerySetTestCase(TestCase):
         self.assertFalse(obj.has_ai_tag_suggestion)
 
     def test_has_ai_articles_true_once_letter_linked(self):
-        letter = LetterFactory(
-            case=self.case, genre="ai_message_staff", status="staff"
-        )
+        letter = LetterFactory(case=self.case, genre="ai_message_staff", status="staff")
         N8nArticlesSearchRequest.objects.create(
             request_id="req-1",
             environment="TEST",
@@ -184,9 +182,7 @@ class CaseAiReviewFlagsQuerySetTestCase(TestCase):
         self.assertFalse(obj.has_ai_articles_to_review)
 
     def test_has_ai_articles_to_review_true_when_undecided_with_letter(self):
-        letter = LetterFactory(
-            case=self.case, genre="ai_message_staff", status="staff"
-        )
+        letter = LetterFactory(case=self.case, genre="ai_message_staff", status="staff")
         N8nArticlesSearchRequest.objects.create(
             request_id="req-3b",
             environment="TEST",
@@ -198,9 +194,7 @@ class CaseAiReviewFlagsQuerySetTestCase(TestCase):
         self.assertTrue(obj.has_ai_articles_to_review)
 
     def test_has_ai_articles_to_review_false_once_accepted(self):
-        letter = LetterFactory(
-            case=self.case, genre="ai_message_staff", status="staff"
-        )
+        letter = LetterFactory(case=self.case, genre="ai_message_staff", status="staff")
         N8nArticlesSearchRequest.objects.create(
             request_id="req-4",
             environment="TEST",

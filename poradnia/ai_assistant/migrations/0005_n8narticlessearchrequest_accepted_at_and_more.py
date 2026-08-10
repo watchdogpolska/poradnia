@@ -8,40 +8,65 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ai_assistant', '0004_n8ncasetagsrequest_accepted_at_and_more'),
-        ('letters', '0020_alter_letter_genre'),
+        ("ai_assistant", "0004_n8ncasetagsrequest_accepted_at_and_more"),
+        ("letters", "0020_alter_letter_genre"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='n8narticlessearchrequest',
-            name='accepted_at',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Accepted at'),
+            model_name="n8narticlessearchrequest",
+            name="accepted_at",
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="Accepted at"
+            ),
         ),
         migrations.AddField(
-            model_name='n8narticlessearchrequest',
-            name='accepted_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='accepted_ai_search_requests', to=settings.AUTH_USER_MODEL, verbose_name='Accepted by'),
+            model_name="n8narticlessearchrequest",
+            name="accepted_by",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="accepted_ai_search_requests",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Accepted by",
+            ),
         ),
         migrations.AddField(
-            model_name='n8narticlessearchrequest',
-            name='letter',
-            field=models.OneToOneField(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='ai_search_request', to='letters.letter', verbose_name='Letter'),
+            model_name="n8narticlessearchrequest",
+            name="letter",
+            field=models.OneToOneField(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="ai_search_request",
+                to="letters.letter",
+                verbose_name="Letter",
+            ),
         ),
         migrations.AddField(
-            model_name='n8narticlessearchrequest',
-            name='rejected_at',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Rejected at'),
+            model_name="n8narticlessearchrequest",
+            name="rejected_at",
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="Rejected at"
+            ),
         ),
         migrations.AddField(
-            model_name='n8narticlessearchrequest',
-            name='rejected_by',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.SET_NULL, related_name='rejected_ai_search_requests', to=settings.AUTH_USER_MODEL, verbose_name='Rejected by'),
+            model_name="n8narticlessearchrequest",
+            name="rejected_by",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.SET_NULL,
+                related_name="rejected_ai_search_requests",
+                to=settings.AUTH_USER_MODEL,
+                verbose_name="Rejected by",
+            ),
         ),
         migrations.AddField(
-            model_name='n8narticlessearchrequest',
-            name='rejection_reason',
-            field=models.TextField(blank=True, verbose_name='Rejection reason'),
+            model_name="n8narticlessearchrequest",
+            name="rejection_reason",
+            field=models.TextField(blank=True, verbose_name="Rejection reason"),
         ),
     ]

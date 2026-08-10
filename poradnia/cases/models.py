@@ -176,7 +176,9 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
                 )
             ),
             has_ai_tag_suggestion=Exists(
-                Advice.objects.filter(case=OuterRef("pk"), ai_tags_request__isnull=False)
+                Advice.objects.filter(
+                    case=OuterRef("pk"), ai_tags_request__isnull=False
+                )
             ),
         )
 
