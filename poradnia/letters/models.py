@@ -182,7 +182,7 @@ class Letter(AbstractRecord):
 
         user_qs = self.get_users_with_perms()
 
-        if self.status is not Letter.STATUS.done:
+        if self.status != Letter.STATUS.done:
             user_qs = User.objects.filter(is_staff=True).distinct() & user_qs
 
         if senders.count() == 0:
