@@ -99,8 +99,9 @@ def _actor(is_staff=False):
 
 def _unactivated_client():
     """A client whose account has no usable password yet (e.g. auto-created
-    from an inbound e-mail) - used to preview the activation-link block in
-    letter_send_to_client."""
+    from an inbound e-mail) - used to preview the activation-link block
+    shared by letter_created/letter_updated/letter_send_to_client (see
+    _activation_link.html/.txt)."""
     return Mock(
         "Jan Kowalski",
         has_usable_password=lambda: False,
@@ -108,7 +109,7 @@ def _unactivated_client():
     )
 
 
-def _letter_send_to_client_unactivated_context():
+def _unactivated_client_context():
     client = _unactivated_client()
     return {
         "target": _letter(actor_is_staff=True, client=client),
@@ -293,9 +294,14 @@ CATALOG = [
         key="letter_created",
         title="Nowe pismo w sprawie",
         trigger=(
-            "LetterFromMailView / NewCaseCreateView (letters/views/cbv.py) - "
-            "wysyłane, gdy w sprawie pojawi się nowe pismo (np. e-mail od "
-            "klienta przychodzący przez IMAP/webhook)."
+            "ReceiveEmailView.post (letters/views/cbv.py) - wysyłane, gdy w "
+            "sprawie pojawi się nowe pismo przychodzące przez IMAP/webhook "
+            "(zwykle e-mail od klienta, ale też odpowiedź pracownika "
+            "wysłana zwykłą pocztą zamiast przyciskiem „Wyślij”). Jeśli "
+            "nadawcą jest pracownik z uprawnieniem can_send_to_client, "
+            "pismo od razu ma status „done” i trafia też do klienta - "
+            "wtedy pojawia się ten sam dopisek o aktywacji konta co w "
+            "letter_send_to_client, zob. wpis niżej."
         ),
         txt_template="letters/email/letter_created.txt",
         html_template="letters/email/letter_created.html",
@@ -307,11 +313,29 @@ CATALOG = [
     ),
     EmailCatalogEntry(
         group="Pisma",
+        key="letter_created_unactivated",
+        title="Nowe pismo w sprawie (konto klienta nieaktywowane)",
+        trigger=(
+            "Ten sam szablon co wyżej, ale odbiorcą jest klient, którego "
+            "konto nie ma jeszcze ustawionego hasła - patrz "
+            "letter_send_to_client_unactivated poniżej po wyjaśnienie."
+        ),
+        txt_template="letters/email/letter_created.txt",
+        html_template="letters/email/letter_created.html",
+        split_subject=True,
+        context=_unactivated_client_context,
+    ),
+    EmailCatalogEntry(
+        group="Pisma",
         key="letter_updated",
         title="Pismo zaktualizowane",
         trigger=(
-            "LetterUpdateForm.save() (letters/views/cbv.py) - wysyłane po "
-            "edycji pisma."
+            "LetterUpdateView.formset_valid (letters/views/cbv.py) - "
+            "wysyłane po edycji dowolnego pisma, także takiego które ma "
+            "już status „done” (np. poprawka literówki w odpowiedzi "
+            "wcześniej wysłanej do klienta) - wtedy klient też dostaje tę "
+            "wiadomość i obowiązuje ten sam dopisek o aktywacji konta co w "
+            "letter_send_to_client, zob. wpis niżej."
         ),
         txt_template="letters/email/letter_updated.txt",
         html_template="letters/email/letter_updated.html",
@@ -320,6 +344,20 @@ CATALOG = [
             "target": _letter(actor_is_staff=True),
             "actor": _actor(is_staff=True),
         },
+    ),
+    EmailCatalogEntry(
+        group="Pisma",
+        key="letter_updated_unactivated",
+        title="Pismo zaktualizowane (konto klienta nieaktywowane)",
+        trigger=(
+            "Ten sam szablon co wyżej, ale odbiorcą jest klient, którego "
+            "konto nie ma jeszcze ustawionego hasła - patrz "
+            "letter_send_to_client_unactivated poniżej po wyjaśnienie."
+        ),
+        txt_template="letters/email/letter_updated.txt",
+        html_template="letters/email/letter_updated.html",
+        split_subject=True,
+        context=_unactivated_client_context,
     ),
     EmailCatalogEntry(
         group="Pisma",
@@ -345,8 +383,9 @@ CATALOG = [
             "SendLetterForm.save() (letters/forms.py) - wysyłane do klienta, "
             "gdy pracownik zatwierdzi i wyśle przygotowaną odpowiedź. Jeżeli "
             "konto klienta nie ma jeszcze ustawionego hasła, szablon dokleja "
-            "wcześniej dodatkowy link do dokończenia aktywacji konta - zob. "
-            "wpis niżej."
+            "wcześniej dodatkowy link do dokończenia aktywacji konta (blok "
+            "_activation_link.html/.txt, współdzielony też przez "
+            "letter_created i letter_updated) - zob. wpis niżej."
         ),
         txt_template="letters/email/letter_send_to_client.txt",
         html_template="letters/email/letter_send_to_client.html",
@@ -371,7 +410,7 @@ CATALOG = [
         txt_template="letters/email/letter_send_to_client.txt",
         html_template="letters/email/letter_send_to_client.html",
         split_subject=True,
-        context=_letter_send_to_client_unactivated_context,
+        context=_unactivated_client_context,
     ),
     EmailCatalogEntry(
         group="Pisma",
@@ -398,7 +437,7 @@ CATALOG = [
         key="letter_refused",
         title="Odrzucona wiadomość e-mail spoza Poradni",
         trigger=(
-            "LetterFromMailView.refuse_letter (letters/views/cbv.py) - wysyłane "
+            "ReceiveEmailView.refuse_letter (letters/views/cbv.py) - wysyłane "
             "do nadawcy, gdy wiadomość przychodząca webhookiem pocztowym nie "
             "była zaadresowana do Poradni (nie pasuje do żadnej znanej sprawy)."
         ),
