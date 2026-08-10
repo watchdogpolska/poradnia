@@ -501,7 +501,6 @@ class Case(models.Model):
             assign_perm("can_view", self.client, self)  # assign client
             assign_perm("can_add_record", self.client, self)  # assign client
 
-    # TODO: Remove
     def send_notification(self, actor, user_qs, target=None, **context):
         if target is None:
             target = self
