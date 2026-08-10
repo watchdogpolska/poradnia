@@ -45100,8 +45100,6 @@ document.addEventListener('DOMContentLoaded', function () {
             handled_no: function() { return document.querySelector("input[name='check_handled_no']").checked ? 1 : 0; },
             has_tag_yes: function() { return document.querySelector("input[name='check_has_tag_yes']").checked ? 1 : 0; },
             has_tag_no: function() { return document.querySelector("input[name='check_has_tag_no']").checked ? 1 : 0; },
-            has_project_yes: function() { return document.querySelector("input[name='check_has_project_yes']").checked ? 1 : 0; },
-            has_project_no: function() { return document.querySelector("input[name='check_has_project_no']").checked ? 1 : 0; },
             has_deadline_yes: function() { return document.querySelector("input[name='check_has_deadline_yes']").checked ? 1 : 0; },
             has_deadline_no: function() { return document.querySelector("input[name='check_has_deadline_no']").checked ? 1 : 0; },
             involved_staff_filter: function() { return document.querySelector("select[name='involved_staff_select']").value; },
