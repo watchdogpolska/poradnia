@@ -8,23 +8,29 @@
             <th>
                 {% trans 'AI suggestion' %}
                 {% if object.ai_tags_request %}
-                    {% if not object.ai_tags_request.rejected_at %}
+                    {% if not object.ai_tags_request.accepted_at and not object.ai_tags_request.rejected_at %}
                     <button type="button"
-                        class="btn btn-link btn-xs ai-thumb ai-thumb-up{% if object.ai_tags_request.accepted_at %} ai-thumb-active{% endif %}"
+                        class="btn btn-link btn-xs ai-thumb ai-thumb-up"
                         title="{% trans 'Accept AI suggestion' %}"
                         hx-post="{% url 'advicer:ai_tags_accept' pk=object.pk %}"
                         hx-target="#advice-ai-table-wrap"
                         hx-swap="outerHTML"
                         hx-indicator="#htmx-spinner"
                     ><i class="fas fa-thumbs-up"></i></button>
-                    {% endif %}
-                    {% if not object.ai_tags_request.accepted_at %}
                     <button type="button"
-                        class="btn btn-link btn-xs ai-thumb ai-thumb-down{% if object.ai_tags_request.rejected_at %} ai-thumb-active{% endif %}"
+                        class="btn btn-link btn-xs ai-thumb ai-thumb-down"
                         title="{% trans 'Reject AI suggestion' %}"
                         data-toggle="modal"
                         data-target="#aiRejectModal"
                     ><i class="fas fa-thumbs-down"></i></button>
+                    {% elif object.ai_tags_request.accepted_at %}
+                    <span class="ai-thumb ai-thumb-active"
+                        title="{% blocktrans with object.ai_tags_request.accepted_by as user and object.ai_tags_request.accepted_at|date:'Y-m-d H:i' as when %}Accepted by {{ user }} on {{ when }}{% endblocktrans %}"
+                    ><i class="fas fa-thumbs-up"></i></span>
+                    {% elif object.ai_tags_request.rejected_at %}
+                    <span class="ai-thumb ai-thumb-active"
+                        title="{% blocktrans with object.ai_tags_request.rejected_by as user and object.ai_tags_request.rejected_at|date:'Y-m-d H:i' as when and object.ai_tags_request.rejection_reason as reason %}Rejected by {{ user }} on {{ when }}: {{ reason }}{% endblocktrans %}"
+                    ><i class="fas fa-thumbs-down"></i></span>
                     {% endif %}
                 {% endif %}
             </th>

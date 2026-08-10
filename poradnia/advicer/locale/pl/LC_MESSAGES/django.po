@@ -355,10 +355,20 @@ msgstr "Sugestia AI"
 msgid "Accept AI suggestion"
 msgstr "Zaakceptuj sugestię AI"
 
-#: poradnia/advicer/templates/advicer/_ai_suggestion_table.html:24
+#: poradnia/advicer/templates/advicer/_ai_suggestion_table.html:22
 #: poradnia/advicer/templates/advicer/advice_detail.html:88
 msgid "Reject AI suggestion"
 msgstr "Odrzuć sugestię AI"
+
+#: poradnia/advicer/templates/advicer/_ai_suggestion_table.html:28
+#, python-format
+msgid "Accepted by %(user)s on %(when)s"
+msgstr "Zaakceptowane przez %(user)s dnia %(when)s"
+
+#: poradnia/advicer/templates/advicer/_ai_suggestion_table.html:32
+#, python-format
+msgid "Rejected by %(user)s on %(when)s: %(reason)s"
+msgstr "Odrzucone przez %(user)s dnia %(when)s: %(reason)s"
 
 #: poradnia/advicer/templates/advicer/advice_detail.html:69
 msgid "Issues"
