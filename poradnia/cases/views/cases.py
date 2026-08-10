@@ -290,6 +290,14 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         qs = qs.ajax_has_tag_filter(self.request)
         qs = qs.ajax_has_deadline_filter(self.request)
         qs = qs.ajax_involved_staff_filter(self.request)
+        qs = qs.with_ai_review_flags()
+        qs = qs.ajax_boolean_filter(self.request, "has_ai_articles_", "has_ai_articles")
+        qs = qs.ajax_boolean_filter(
+            self.request, "has_ai_articles_to_review_", "has_ai_articles_to_review"
+        )
+        qs = qs.ajax_boolean_filter(
+            self.request, "has_ai_tag_suggestion_", "has_ai_tag_suggestion"
+        )
         return (
             qs.for_user(user=self.request.user)
             .with_involved_staff()

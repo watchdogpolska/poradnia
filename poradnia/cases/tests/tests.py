@@ -14,6 +14,8 @@ from django.utils import timezone
 from guardian.shortcuts import assign_perm, remove_perm
 from test_plus.test import TestCase
 
+from poradnia.advicer.factories import AdviceFactory
+from poradnia.ai_assistant.models import N8nArticlesSearchRequest, N8nCaseTagsRequest
 from poradnia.cases.admin import CaseAdmin
 from poradnia.cases.factories import (
     CaseFactory,
@@ -137,6 +139,91 @@ class CaseQuerySetTestCase(TestCase):
             [repr(obj) for obj in Case.objects.order_for_user(user, False).all()],
             [c, a, b],
         )
+
+
+class CaseAiReviewFlagsQuerySetTestCase(TestCase):
+    def setUp(self):
+        self.case = CaseFactory()
+
+    def _flags(self):
+        return Case.objects.with_ai_review_flags().get(pk=self.case.pk)
+
+    def test_no_ai_data_all_flags_false(self):
+        obj = self._flags()
+        self.assertFalse(obj.has_ai_articles)
+        self.assertFalse(obj.has_ai_articles_to_review)
+        self.assertFalse(obj.has_ai_tag_suggestion)
+
+    def test_has_ai_articles_true_once_letter_linked(self):
+        letter = LetterFactory(
+            case=self.case, genre="ai_message_staff", status="staff"
+        )
+        N8nArticlesSearchRequest.objects.create(
+            request_id="req-1",
+            environment="TEST",
+            question="q",
+            case=self.case,
+            letter=letter,
+        )
+        obj = self._flags()
+        self.assertTrue(obj.has_ai_articles)
+
+    def test_has_ai_articles_false_without_letter(self):
+        N8nArticlesSearchRequest.objects.create(
+            request_id="req-2", environment="TEST", question="q", case=self.case
+        )
+        obj = self._flags()
+        self.assertFalse(obj.has_ai_articles)
+
+    def test_has_ai_articles_to_review_true_when_undecided(self):
+        N8nArticlesSearchRequest.objects.create(
+            request_id="req-3", environment="TEST", question="q", case=self.case
+        )
+        obj = self._flags()
+        self.assertTrue(obj.has_ai_articles_to_review)
+
+    def test_has_ai_articles_to_review_false_once_accepted(self):
+        N8nArticlesSearchRequest.objects.create(
+            request_id="req-4",
+            environment="TEST",
+            question="q",
+            case=self.case,
+            accepted_at=timezone.now(),
+        )
+        obj = self._flags()
+        self.assertFalse(obj.has_ai_articles_to_review)
+
+    def test_mixed_requests_are_tracked_independently(self):
+        accepted_letter = LetterFactory(
+            case=self.case, genre="ai_message_staff", status="staff"
+        )
+        N8nArticlesSearchRequest.objects.create(
+            request_id="req-5",
+            environment="TEST",
+            question="q",
+            case=self.case,
+            letter=accepted_letter,
+            accepted_at=timezone.now(),
+        )
+        N8nArticlesSearchRequest.objects.create(
+            request_id="req-6", environment="TEST", question="q", case=self.case
+        )
+        obj = self._flags()
+        self.assertTrue(obj.has_ai_articles)
+        self.assertTrue(obj.has_ai_articles_to_review)
+
+    def test_has_ai_tag_suggestion_true_when_set(self):
+        tags_request = N8nCaseTagsRequest.objects.create(
+            request_id="tags-1", environment="TEST", question="q", case=self.case
+        )
+        AdviceFactory(case=self.case, ai_tags_request=tags_request)
+        obj = self._flags()
+        self.assertTrue(obj.has_ai_tag_suggestion)
+
+    def test_has_ai_tag_suggestion_false_without_request(self):
+        AdviceFactory(case=self.case)
+        obj = self._flags()
+        self.assertFalse(obj.has_ai_tag_suggestion)
 
 
 class CaseTestCase(TestCase):

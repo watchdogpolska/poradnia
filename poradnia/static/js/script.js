@@ -45102,6 +45102,12 @@ document.addEventListener('DOMContentLoaded', function () {
             has_tag_no: function() { return document.querySelector("input[name='check_has_tag_no']").checked ? 1 : 0; },
             has_deadline_yes: function() { return document.querySelector("input[name='check_has_deadline_yes']").checked ? 1 : 0; },
             has_deadline_no: function() { return document.querySelector("input[name='check_has_deadline_no']").checked ? 1 : 0; },
+            has_ai_articles_yes: function() { return document.querySelector("input[name='check_has_ai_articles_yes']").checked ? 1 : 0; },
+            has_ai_articles_no: function() { return document.querySelector("input[name='check_has_ai_articles_no']").checked ? 1 : 0; },
+            has_ai_articles_to_review_yes: function() { return document.querySelector("input[name='check_has_ai_articles_to_review_yes']").checked ? 1 : 0; },
+            has_ai_articles_to_review_no: function() { return document.querySelector("input[name='check_has_ai_articles_to_review_no']").checked ? 1 : 0; },
+            has_ai_tag_suggestion_yes: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_yes']").checked ? 1 : 0; },
+            has_ai_tag_suggestion_no: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_no']").checked ? 1 : 0; },
             involved_staff_filter: function() { return document.querySelector("select[name='involved_staff_select']").value; },
         },
     );

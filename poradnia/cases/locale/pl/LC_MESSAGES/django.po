@@ -175,7 +175,6 @@ msgid "Handled"
 msgstr "Obsłużona"
 
 #: poradnia/cases/models.py:293
-#: poradnia/cases/templates/cases/case_table.html:93
 msgid "Has project"
 msgstr "Posiada projekt"
 
@@ -523,6 +522,8 @@ msgstr ""
 #: poradnia/cases/templates/cases/case_table.html:73
 #: poradnia/cases/templates/cases/case_table.html:84
 #: poradnia/cases/templates/cases/case_table.html:95
+#: poradnia/cases/templates/cases/case_table.html:106
+#: poradnia/cases/templates/cases/case_table.html:117
 msgid "Yes"
 msgstr "Tak"
 
@@ -530,6 +531,8 @@ msgstr "Tak"
 #: poradnia/cases/templates/cases/case_table.html:75
 #: poradnia/cases/templates/cases/case_table.html:86
 #: poradnia/cases/templates/cases/case_table.html:97
+#: poradnia/cases/templates/cases/case_table.html:108
+#: poradnia/cases/templates/cases/case_table.html:119
 msgid "No"
 msgstr "Nie"
 
@@ -550,8 +553,30 @@ msgid "Has deadline"
 msgstr "Ma termin"
 
 #: poradnia/cases/templates/cases/case_table.html:91
-msgid "Cases that have letter project."
-msgstr "Sprawy, które mają projekt listu."
+msgid "Cases that have an AI-generated article suggestion letter."
+msgstr "Sprawy, które mają list z sugestią artykułów wygenerowaną przez AI."
+
+#: poradnia/cases/templates/cases/case_table.html:93
+msgid "Has AI articles"
+msgstr "Posiada artykuły AI"
+
+#: poradnia/cases/templates/cases/case_table.html:102
+msgid "Cases with an AI article suggestion not yet accepted or rejected by staff."
+msgstr ""
+"Sprawy z sugestią artykułów AI jeszcze niezaakceptowaną ani odrzuconą "
+"przez pracownika."
+
+#: poradnia/cases/templates/cases/case_table.html:104
+msgid "AI articles to review"
+msgstr "Pomocne artykuły AI do oceny"
+
+#: poradnia/cases/templates/cases/case_table.html:113
+msgid "Cases whose tag has an AI-generated tag suggestion."
+msgstr "Sprawy, których tag ma sugestię tagów wygenerowaną przez AI."
+
+#: poradnia/cases/templates/cases/case_table.html:115
+msgid "Has AI tag suggestion"
+msgstr "Posiada sugestie tagów AI"
 
 #: poradnia/cases/views/cases.py:90
 msgid "Letter"
