@@ -27,7 +27,7 @@
                     hx-target="#ai-feedback-{{ object.pk }}"
                     hx-swap="innerHTML"
                     hx-indicator="#htmx-spinner"
-                    hx-vals="js:{rejection_reason: document.getElementById('aiSearchRejectReason-{{ object.pk }}').value}"
+                    hx-vals="js:{rejection_reason: document.getElementById('aiSearchRejectReason-{{ object.pk }}').dataset.pendingValue}"
                     hx-trigger="click[validateAiSearchRejectReason({{ object.pk }})]"
                 >{% trans 'Reject' %}</button>
             </div>
