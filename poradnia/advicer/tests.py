@@ -417,6 +417,56 @@ class AdviceQuerySetTestCase(TestCase):
         )
 
 
+class AdviceAiReviewFlagsQuerySetTestCase(TestCase):
+    def setUp(self):
+        self.advice = AdviceFactory()
+
+    def _flags(self):
+        return Advice.objects.with_ai_review_flags().get(pk=self.advice.pk)
+
+    def test_no_ai_data_all_flags_false(self):
+        obj = self._flags()
+        self.assertFalse(obj.has_ai_tag_suggestion)
+        self.assertFalse(obj.has_ai_tag_suggestion_to_review)
+
+    def test_has_ai_tag_suggestion_true_when_linked(self):
+        tags_request = N8nCaseTagsRequest.objects.create(
+            request_id="tags-1", environment="TEST", question="q"
+        )
+        self.advice.ai_tags_request = tags_request
+        self.advice.save(update_fields=["ai_tags_request"])
+        obj = self._flags()
+        self.assertTrue(obj.has_ai_tag_suggestion)
+        self.assertTrue(obj.has_ai_tag_suggestion_to_review)
+
+    def test_has_ai_tag_suggestion_to_review_false_once_accepted(self):
+        tags_request = N8nCaseTagsRequest.objects.create(
+            request_id="tags-2",
+            environment="TEST",
+            question="q",
+            accepted_at=timezone.now(),
+        )
+        self.advice.ai_tags_request = tags_request
+        self.advice.save(update_fields=["ai_tags_request"])
+        obj = self._flags()
+        self.assertTrue(obj.has_ai_tag_suggestion)
+        self.assertFalse(obj.has_ai_tag_suggestion_to_review)
+
+    def test_has_ai_tag_suggestion_to_review_false_once_rejected(self):
+        tags_request = N8nCaseTagsRequest.objects.create(
+            request_id="tags-3",
+            environment="TEST",
+            question="q",
+            rejected_at=timezone.now(),
+            rejection_reason="not relevant",
+        )
+        self.advice.ai_tags_request = tags_request
+        self.advice.save(update_fields=["ai_tags_request"])
+        obj = self._flags()
+        self.assertTrue(obj.has_ai_tag_suggestion)
+        self.assertFalse(obj.has_ai_tag_suggestion_to_review)
+
+
 class AdviceAdminTestCase(AdminTestCaseMixin, TestCase):
     user_factory_cls = UserFactory
     factory_cls = AdviceFactory

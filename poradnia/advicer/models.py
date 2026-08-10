@@ -3,7 +3,7 @@ import json
 from django.conf import settings
 from django.db import models
 from django.db.models import Case as djCase
-from django.db.models import CharField, F, Q, Value, When
+from django.db.models import BooleanField, CharField, F, Q, Value, When
 from django.db.models.query import QuerySet
 from django.urls import reverse
 from django.utils.timezone import now
@@ -136,6 +136,25 @@ class AdviceQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
                 When(jst__name__isnull=False, then=F("jst__name")),
                 default=Value("-"),
                 output_field=CharField(),
+            ),
+        )
+
+    def with_ai_review_flags(self):
+        return self.annotate(
+            has_ai_tag_suggestion=djCase(
+                When(ai_tags_request__isnull=False, then=Value(True)),
+                default=Value(False),
+                output_field=BooleanField(),
+            ),
+            has_ai_tag_suggestion_to_review=djCase(
+                When(
+                    ai_tags_request__isnull=False,
+                    ai_tags_request__accepted_at__isnull=True,
+                    ai_tags_request__rejected_at__isnull=True,
+                    then=Value(True),
+                ),
+                default=Value(False),
+                output_field=BooleanField(),
             ),
         )
 

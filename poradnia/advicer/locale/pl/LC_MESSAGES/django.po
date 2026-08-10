@@ -28,6 +28,8 @@ msgstr "Sprawa jest pusta"
 #: poradnia/advicer/templates/advicer/advice_table.html:60
 #: poradnia/advicer/templates/advicer/advice_table.html:72
 #: poradnia/advicer/templates/advicer/advice_table.html:84
+#: poradnia/advicer/templates/advicer/advice_table.html:96
+#: poradnia/advicer/templates/advicer/advice_table.html:108
 msgid "Yes"
 msgstr "Tak"
 
@@ -37,6 +39,8 @@ msgstr "Tak"
 #: poradnia/advicer/templates/advicer/advice_table.html:64
 #: poradnia/advicer/templates/advicer/advice_table.html:76
 #: poradnia/advicer/templates/advicer/advice_table.html:88
+#: poradnia/advicer/templates/advicer/advice_table.html:100
+#: poradnia/advicer/templates/advicer/advice_table.html:112
 msgid "No"
 msgstr "Nie"
 
@@ -216,6 +220,14 @@ msgstr "Ciekawa sprawa"
 #: poradnia/advicer/templates/advicer/advice_table.html:82
 msgid "For knowledge base"
 msgstr "Do poradnika"
+
+#: poradnia/advicer/templates/advicer/advice_table.html:94
+msgid "Has AI tag suggestion"
+msgstr "Posiada sugestie tagów AI"
+
+#: poradnia/advicer/templates/advicer/advice_table.html:106
+msgid "AI tag suggestions to review"
+msgstr "Sugestie tagów AI do oceny"
 
 #: poradnia/advicer/models.py:197
 #: poradnia/advicer/templates/advicer/advice_detail.html:131

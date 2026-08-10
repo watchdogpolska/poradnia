@@ -230,6 +230,19 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         qs = self._apply_nullable_bool_filter(
             qs, "for_knowledge_base_yes", "for_knowledge_base_no", "for_knowledge_base"
         )
+        qs = qs.with_ai_review_flags()
+        qs = self._apply_nullable_bool_filter(
+            qs,
+            "has_ai_tag_suggestion_yes",
+            "has_ai_tag_suggestion_no",
+            "has_ai_tag_suggestion",
+        )
+        qs = self._apply_nullable_bool_filter(
+            qs,
+            "has_ai_tag_suggestion_to_review_yes",
+            "has_ai_tag_suggestion_to_review_no",
+            "has_ai_tag_suggestion_to_review",
+        )
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_datetime("created_on", timezone.get_default_timezone())
