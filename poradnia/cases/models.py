@@ -170,6 +170,7 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
             has_ai_articles_to_review=Exists(
                 N8nArticlesSearchRequest.objects.filter(
                     case=OuterRef("pk"),
+                    letter__isnull=False,
                     accepted_at__isnull=True,
                     rejected_at__isnull=True,
                 )

@@ -175,22 +175,42 @@ class CaseAiReviewFlagsQuerySetTestCase(TestCase):
         obj = self._flags()
         self.assertFalse(obj.has_ai_articles)
 
-    def test_has_ai_articles_to_review_true_when_undecided(self):
+    def test_has_ai_articles_to_review_false_without_letter(self):
+        # Still waiting on n8n: nothing produced yet, so nothing to review.
         N8nArticlesSearchRequest.objects.create(
             request_id="req-3", environment="TEST", question="q", case=self.case
+        )
+        obj = self._flags()
+        self.assertFalse(obj.has_ai_articles_to_review)
+
+    def test_has_ai_articles_to_review_true_when_undecided_with_letter(self):
+        letter = LetterFactory(
+            case=self.case, genre="ai_message_staff", status="staff"
+        )
+        N8nArticlesSearchRequest.objects.create(
+            request_id="req-3b",
+            environment="TEST",
+            question="q",
+            case=self.case,
+            letter=letter,
         )
         obj = self._flags()
         self.assertTrue(obj.has_ai_articles_to_review)
 
     def test_has_ai_articles_to_review_false_once_accepted(self):
+        letter = LetterFactory(
+            case=self.case, genre="ai_message_staff", status="staff"
+        )
         N8nArticlesSearchRequest.objects.create(
             request_id="req-4",
             environment="TEST",
             question="q",
             case=self.case,
+            letter=letter,
             accepted_at=timezone.now(),
         )
         obj = self._flags()
+        self.assertTrue(obj.has_ai_articles)
         self.assertFalse(obj.has_ai_articles_to_review)
 
     def test_mixed_requests_are_tracked_independently(self):
@@ -205,8 +225,15 @@ class CaseAiReviewFlagsQuerySetTestCase(TestCase):
             letter=accepted_letter,
             accepted_at=timezone.now(),
         )
+        pending_letter = LetterFactory(
+            case=self.case, genre="ai_message_staff", status="staff"
+        )
         N8nArticlesSearchRequest.objects.create(
-            request_id="req-6", environment="TEST", question="q", case=self.case
+            request_id="req-6",
+            environment="TEST",
+            question="q",
+            case=self.case,
+            letter=pending_letter,
         )
         obj = self._flags()
         self.assertTrue(obj.has_ai_articles)

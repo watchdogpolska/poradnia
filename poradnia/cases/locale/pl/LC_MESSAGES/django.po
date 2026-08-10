@@ -561,10 +561,10 @@ msgid "Has AI articles"
 msgstr "Posiada artykuły AI"
 
 #: poradnia/cases/templates/cases/case_table.html:102
-msgid "Cases with an AI article suggestion not yet accepted or rejected by staff."
+msgid "Cases with an AI-generated article letter not yet accepted or rejected by staff."
 msgstr ""
-"Sprawy z sugestią artykułów AI jeszcze niezaakceptowaną ani odrzuconą "
-"przez pracownika."
+"Sprawy z listem z artykułami wygenerowanym przez AI, jeszcze "
+"niezaakceptowanym ani nieodrzuconym przez pracownika."
 
 #: poradnia/cases/templates/cases/case_table.html:104
 msgid "AI articles to review"
