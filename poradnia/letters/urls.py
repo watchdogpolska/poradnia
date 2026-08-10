@@ -29,6 +29,16 @@ urlpatterns = [
     ),
     path("<int:pk>/wyslij/", views.send, name="send"),
     path("<int:pk>/edytuj/", views.LetterUpdateView.as_view(), name="edit"),
+    path(
+        "<int:pk>/ai-akceptuj/",
+        views.LetterAiSearchAcceptView.as_view(),
+        name="ai_search_accept",
+    ),
+    path(
+        "<int:pk>/ai-odrzuc/",
+        views.LetterAiSearchRejectView.as_view(),
+        name="ai_search_reject",
+    ),
     path("<int:pk>/", views.send, name="detail"),
     path("", views.NewCaseCreateView.as_view(), name="home"),
     path("", views.NewCaseCreateView.as_view(), name="add"),

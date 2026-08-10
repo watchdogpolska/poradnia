@@ -1,0 +1,29 @@
+{% load i18n %}
+{% with search_request=object.get_ai_search_request %}
+{% if search_request %}
+    {% if not search_request.rejected_at %}
+    <button type="button"
+        class="btn btn-link btn-xs ai-thumb ai-thumb-up{% if search_request.accepted_at %} ai-thumb-active{% endif %}"
+        title="{% trans 'Accept AI answer' %}"
+        hx-post="{% url 'letters:ai_search_accept' pk=object.pk %}"
+        hx-target="#ai-feedback-{{ object.pk }}"
+        hx-swap="innerHTML"
+        hx-indicator="#htmx-spinner"
+    ><i class="fas fa-thumbs-up"></i></button>
+    {% endif %}
+    {% if not search_request.accepted_at %}
+    <button type="button"
+        class="btn btn-link btn-xs ai-thumb ai-thumb-down"
+        title="{% trans 'Reject AI answer' %}"
+        data-toggle="modal"
+        data-target="#aiSearchRejectModal-{{ object.pk }}"
+    ><i class="fas fa-thumbs-down"></i></button>
+    {% include "letters/_letter_ai_reject_modal.html" %}
+    {% endif %}
+    {% if search_request.rejected_at %}
+    <span class="ai-thumb ai-thumb-active ai-suggestion-rejected" title="{{ search_request.rejection_reason }}">
+        <i class="fas fa-thumbs-down"></i>
+    </span>
+    {% endif %}
+{% endif %}
+{% endwith %}

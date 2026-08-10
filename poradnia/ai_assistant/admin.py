@@ -13,13 +13,16 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
         "is_foi",
         "direct_search",
         "case",
+        "letter",
+        "accepted_by",
+        "rejected_by",
         "created_at",
         "updated_at",
     )
     list_filter = ("environment", "status", "is_foi", "direct_search")
     search_fields = ("request_id", "question", "response")
     date_hierarchy = "created_at"
-    raw_id_fields = ("case",)
+    raw_id_fields = ("case", "letter")
 
     def get_readonly_fields(self, request, obj=None):
         return [f.name for f in self.model._meta.fields]

@@ -19,11 +19,40 @@
             });
             $('#form-tab a:first').tab('show')
         })(jQuery);
+
+        function validateAiSearchRejectReason(pk) {
+            var textarea = document.getElementById('aiSearchRejectReason-' + pk);
+            var error = document.getElementById('aiSearchRejectReasonError-' + pk);
+            var ok = !!textarea.value.trim();
+            error.style.display = ok ? 'none' : 'block';
+            return ok;
+        }
+
+        document.body.addEventListener('htmx:afterSwap', function (event) {
+            if (event.target.id && event.target.id.indexOf('ai-feedback-') === 0) {
+                var pk = event.target.id.replace('ai-feedback-', '');
+                $('#aiSearchRejectModal-' + pk).modal('hide');
+            }
+        });
+
+        $(document).on('hidden.bs.modal', '[id^="aiSearchRejectModal-"]', function () {
+            var pk = this.id.replace('aiSearchRejectModal-', '');
+            var ta = document.getElementById('aiSearchRejectReason-' + pk);
+            var err = document.getElementById('aiSearchRejectReasonError-' + pk);
+            if (ta) { ta.value = ''; }
+            if (err) { err.style.display = 'none'; }
+        });
     </script>
 {% endblock %}
 
 {% block extra_css %}
     {{ casegroup_form.media.css }}
+    <style>
+        .ai-thumb { color: #999; opacity: 0.6; font-size: 1.25em; }
+        .ai-thumb:hover { opacity: 1; }
+        .ai-thumb-active { color: #f0ad4e; opacity: 1; }
+        .ai-suggestion-rejected { cursor: help; }
+    </style>
 {% endblock %}
 {# {% block breadcrumbs %} #}
 {#    <ol class="breadcrumb"> #}

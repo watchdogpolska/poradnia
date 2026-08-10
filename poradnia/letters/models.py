@@ -155,6 +155,9 @@ class Letter(AbstractRecord):
             else False
         )
 
+    def get_ai_search_request(self):
+        return getattr(self, "ai_search_request", None)
+
     def is_html(self):
         return bool(self.html)
 
