@@ -568,7 +568,7 @@ msgstr ""
 
 #: poradnia/cases/templates/cases/case_table.html:104
 msgid "AI articles to review"
-msgstr "Pomocne artykuły AI do oceny"
+msgstr "Artykuły AI do oceny"
 
 #: poradnia/cases/templates/cases/case_table.html:113
 msgid "Cases whose tag has an AI-generated tag suggestion."
