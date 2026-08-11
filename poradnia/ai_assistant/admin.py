@@ -3,6 +3,7 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from openpyxl import Workbook
+from openpyxl.styles import Alignment
 
 from .models import N8nArticlesSearchRequest, N8nCaseTagsRequest
 
@@ -50,6 +51,7 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
 
         columns = [
             "id",
+            "created_at",
             "request_id",
             "environment",
             "status",
@@ -61,7 +63,6 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
             "letter_absolute_url",
             "accepted_by",
             "rejected_by",
-            "created_at",
             "updated_at",
             "response",
         ]
@@ -74,6 +75,7 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
             sheet.append(
                 [
                     obj.id,
+                    _naive(obj.created_at),
                     obj.request_id,
                     obj.environment,
                     obj.status,
@@ -93,10 +95,12 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
                     ),
                     str(obj.accepted_by) if obj.accepted_by_id else "",
                     str(obj.rejected_by) if obj.rejected_by_id else "",
-                    _naive(obj.created_at),
                     _naive(obj.updated_at),
                     obj.response,
                 ]
+            )
+            sheet.cell(row=sheet.max_row, column=len(columns)).alignment = Alignment(
+                wrap_text=True, vertical="top"
             )
 
         response = HttpResponse(
