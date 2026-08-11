@@ -75,6 +75,10 @@ document.addEventListener('DOMContentLoaded', function () {
             interesting_case_no: function() { return document.querySelector("input[name='check_interesting_case_no']").checked ? 1 : 0; },
             for_knowledge_base_yes: function() { return document.querySelector("input[name='check_for_knowledge_base_yes']").checked ? 1 : 0; },
             for_knowledge_base_no: function() { return document.querySelector("input[name='check_for_knowledge_base_no']").checked ? 1 : 0; },
+            has_ai_tag_suggestion_yes: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_yes']").checked ? 1 : 0; },
+            has_ai_tag_suggestion_no: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_no']").checked ? 1 : 0; },
+            has_ai_tag_suggestion_to_review_yes: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_to_review_yes']").checked ? 1 : 0; },
+            has_ai_tag_suggestion_to_review_no: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_to_review_no']").checked ? 1 : 0; },
         },
     );
     const filtersContainer = document.querySelector('.filters');

@@ -286,12 +286,48 @@ msgstr ""
 msgid "Edit"
 msgstr "Edytuj"
 
-#: poradnia/letters/templates/letters/_letter_list.html:84
+#: poradnia/letters/templates/letters/_letter_list.html:93
 #: poradnia/letters/templates/letters/form_send.html:7
 msgid "Send"
 msgstr "Wyślij"
 
+#: poradnia/letters/templates/letters/_letter_ai_feedback.html:7
+msgid "Accept AI answer"
+msgstr "Zaakceptuj odpowiedź AI"
+
+#: poradnia/letters/templates/letters/_letter_ai_feedback.html:15
+#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:11
+msgid "Reject AI answer"
+msgstr "Odrzuć odpowiedź AI"
+
+#: poradnia/letters/templates/letters/_letter_ai_feedback.html:22
+#, python-format
+msgid "Accepted by %(user)s on %(when)s"
+msgstr "Zaakceptowane przez %(user)s dnia %(when)s"
+
+#: poradnia/letters/templates/letters/_letter_ai_feedback.html:26
+#, python-format
+msgid "Rejected by %(user)s on %(when)s: %(reason)s"
+msgstr "Odrzucone przez %(user)s dnia %(when)s: %(reason)s"
+
+#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:16
+msgid "Reason for rejection"
+msgstr "Powód odrzucenia"
+
+#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:19
+msgid "Please provide a reason."
+msgstr "Podaj powód."
+
+#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:24
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:32
+msgid "Reject"
+msgstr "Odrzuć"
+
 #: poradnia/letters/templates/letters/attachment_text_content_modal.html:17
+#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:7
 msgid "Close"
 msgstr "Zamknij"
 
