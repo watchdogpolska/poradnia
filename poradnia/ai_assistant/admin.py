@@ -3,9 +3,14 @@ from django.http import HttpResponse
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from openpyxl import Workbook
-from openpyxl.styles import Alignment
+from openpyxl.styles import Alignment, Font, PatternFill
 
 from .models import N8nArticlesSearchRequest, N8nCaseTagsRequest
+
+HEADER_FONT = Font(bold=True)
+HEADER_FILL = PatternFill(
+    start_color="FFDDDDDD", end_color="FFDDDDDD", fill_type="solid"
+)
 
 
 def _naive(dt):
@@ -67,6 +72,10 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
             "response",
         ]
         sheet.append(columns)
+        for col_idx in range(1, len(columns) + 1):
+            cell = sheet.cell(row=1, column=col_idx)
+            cell.font = HEADER_FONT
+            cell.fill = HEADER_FILL
 
         queryset = queryset.select_related(
             "case", "letter", "accepted_by", "rejected_by"
