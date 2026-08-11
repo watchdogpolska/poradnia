@@ -6,6 +6,7 @@ import requests
 from django.conf import settings
 from django.core.exceptions import ImproperlyConfigured
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 logger = logging.getLogger(__name__)
 
@@ -29,6 +30,37 @@ class N8nArticlesSearchRequest(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    letter = models.OneToOneField(
+        "letters.Letter",
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="ai_search_request",
+        verbose_name=_("Letter"),
+    )
+    accepted_by = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="accepted_ai_search_requests",
+        verbose_name=_("Accepted by"),
+    )
+    accepted_at = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Accepted at")
+    )
+    rejected_by = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="rejected_ai_search_requests",
+        verbose_name=_("Rejected by"),
+    )
+    rejected_at = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Rejected at")
+    )
+    rejection_reason = models.TextField(blank=True, verbose_name=_("Rejection reason"))
 
     def search_articles(self):
         """
@@ -108,6 +140,29 @@ class N8nCaseTagsRequest(models.Model):
     )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    accepted_by = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="accepted_ai_tags_requests",
+        verbose_name=_("Accepted by"),
+    )
+    accepted_at = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Accepted at")
+    )
+    rejected_by = models.ForeignKey(
+        to=settings.AUTH_USER_MODEL,
+        null=True,
+        blank=True,
+        on_delete=models.SET_NULL,
+        related_name="rejected_ai_tags_requests",
+        verbose_name=_("Rejected by"),
+    )
+    rejected_at = models.DateTimeField(
+        null=True, blank=True, verbose_name=_("Rejected at")
+    )
+    rejection_reason = models.TextField(blank=True, verbose_name=_("Rejection reason"))
 
     def send_tags_request(self):
         """

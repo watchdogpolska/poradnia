@@ -343,6 +343,18 @@ class N8nArticlesSearchRequestModelTestCase(TestCase):
         self.assertEqual(obj.status, "error")
         self.assertIsNotNone(obj.pk)
 
+    def test_review_fields_default_unset(self):
+        obj = N8nArticlesSearchRequest.objects.create(
+            request_id="req-defaults", environment="TEST", question="q"
+        )
+
+        self.assertIsNone(obj.letter)
+        self.assertIsNone(obj.accepted_by)
+        self.assertIsNone(obj.accepted_at)
+        self.assertIsNone(obj.rejected_by)
+        self.assertIsNone(obj.rejected_at)
+        self.assertEqual(obj.rejection_reason, "")
+
 
 class N8nArticlesSearchCallbackViewTestCase(TestCase):
     def setUp(self):
@@ -485,6 +497,55 @@ class N8nArticlesSearchCallbackViewTestCase(TestCase):
         self.assertTrue(letter.created_by_is_staff)
         self.assertTrue(letter.name.startswith("ASYSTENT AI: "))
         self.assertTrue(letter.html)
+
+    @override_settings(**CALLBACK_SETTINGS)
+    def test_success_links_letter_to_search_request(self):
+        case = CaseFactory()
+        sr = self._make_search_request(case=case, question="Is this FOI?")
+
+        response = self.view(
+            self._post(
+                {
+                    "request_id": "test-req-1",
+                    "response": "Here are relevant articles...",
+                    "is_foi": "TAK",
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        sr.refresh_from_db()
+        letter = Letter.objects.get(case=case, genre=Letter.GENRE.ai_message_staff)
+        self.assertEqual(sr.letter_id, letter.pk)
+
+    @override_settings(**CALLBACK_SETTINGS)
+    def test_success_without_case_leaves_letter_unset(self):
+        sr = self._make_search_request()
+
+        self.view(
+            self._post(
+                {
+                    "request_id": "test-req-1",
+                    "response": "Article content here",
+                    "is_foi": "TAK",
+                }
+            )
+        )
+
+        sr.refresh_from_db()
+        self.assertIsNone(sr.letter)
+
+    @override_settings(**CALLBACK_SETTINGS)
+    def test_success_empty_response_leaves_letter_unset(self):
+        case = CaseFactory()
+        sr = self._make_search_request(case=case)
+
+        self.view(
+            self._post({"request_id": "test-req-1", "response": "", "is_foi": "NIE"})
+        )
+
+        sr.refresh_from_db()
+        self.assertIsNone(sr.letter)
 
     @override_settings(**CALLBACK_SETTINGS)
     def test_letter_name_fallback_when_question_empty(self):
@@ -942,6 +1003,37 @@ class N8nCaseTagsCallbackViewTestCase(TestCase):
         self.assertEqual(tags["jst"], "02")
         self.assertEqual(tags["issues"], [self.issue.pk])
         self.assertEqual(tags["area"], [self.area.pk])
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    @patch("poradnia.ai_assistant.views._validate_case_tags_payload", return_value=None)
+    def test_success_links_advice_to_tags_request(self, _validate):
+        case = CaseFactory()
+        advice = AdviceFactory(case=case)
+        tr = self._make_tags_request(case=case)
+
+        response = self.view(self._post(self._valid_payload()))
+
+        self.assertEqual(response.status_code, 200)
+        advice.refresh_from_db()
+        self.assertEqual(advice.ai_tags_request_id, tr.id)
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    @patch("poradnia.ai_assistant.views._validate_case_tags_payload", return_value=None)
+    def test_success_relinks_advice_to_new_request_on_repeat(self, _validate):
+        case = CaseFactory()
+        advice = AdviceFactory(case=case)
+        first = self._make_tags_request(case=case)
+        self.view(self._post(self._valid_payload()))
+        advice.refresh_from_db()
+        self.assertEqual(advice.ai_tags_request_id, first.id)
+
+        second = self._make_tags_request(request_id="tag-cb-req-2", case=case)
+        self.view(self._post(self._valid_payload(request_id="tag-cb-req-2")))
+
+        advice.refresh_from_db()
+        self.assertEqual(advice.ai_tags_request_id, second.id)
+        self.assertIsNone(advice.ai_tags_request.accepted_at)
+        self.assertIsNone(advice.ai_tags_request.rejected_at)
 
     @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
     @patch("poradnia.ai_assistant.views._validate_case_tags_payload", return_value=None)

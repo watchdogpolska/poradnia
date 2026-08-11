@@ -90,6 +90,30 @@
             </label><br>
             <br><br>
         </div>
+        <div class="row">
+            <label>{% trans 'Has AI tag suggestion' %}:</label><br>
+            <input type="checkbox" id="has_ai_tag_suggestion_yes" name="check_has_ai_tag_suggestion_yes" checked>
+            <label for="has_ai_tag_suggestion_yes" class="small">{% trans 'Yes' %} &nbsp;
+                <span class="fas fa-check" style="color: green;"></span>
+            </label><br>
+            <input type="checkbox" id="has_ai_tag_suggestion_no" name="check_has_ai_tag_suggestion_no" checked>
+            <label for="has_ai_tag_suggestion_no" class="small">{% trans 'No' %} &nbsp;
+                <span class="fas fa-xmark" style="color: red;"></span>
+            </label><br>
+            <br><br>
+        </div>
+        <div class="row">
+            <label>{% trans 'AI tag suggestions to review' %}:</label><br>
+            <input type="checkbox" id="has_ai_tag_suggestion_to_review_yes" name="check_has_ai_tag_suggestion_to_review_yes" checked>
+            <label for="has_ai_tag_suggestion_to_review_yes" class="small">{% trans 'Yes' %} &nbsp;
+                <span class="fas fa-check" style="color: green;"></span>
+            </label><br>
+            <input type="checkbox" id="has_ai_tag_suggestion_to_review_no" name="check_has_ai_tag_suggestion_to_review_no" checked>
+            <label for="has_ai_tag_suggestion_to_review_no" class="small">{% trans 'No' %} &nbsp;
+                <span class="fas fa-xmark" style="color: red;"></span>
+            </label><br>
+            <br><br>
+        </div>
     </div>
     <div class="table-responsive">
         <table id="datatable_advices" width="100%" class="table table-bordered compact">

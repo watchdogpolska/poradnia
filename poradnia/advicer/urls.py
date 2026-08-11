@@ -19,6 +19,16 @@ urlpatterns = [
     path("<int:pk>/edytuj/", views.AdviceUpdate.as_view(), name="update"),
     path("<int:pk>/usun/", views.AdviceDelete.as_view(), name="delete"),
     path(
+        "<int:pk>/ai-akceptuj/",
+        views.AdviceAiTagsAcceptView.as_view(),
+        name="ai_tags_accept",
+    ),
+    path(
+        "<int:pk>/ai-odrzuc/",
+        views.AdviceAiTagsRejectView.as_view(),
+        name="ai_tags_reject",
+    ),
+    path(
         "issue-autocomplete/",
         views.IssueAutocomplete.as_view(),
         name="issue-autocomplete",

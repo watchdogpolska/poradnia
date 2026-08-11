@@ -19,11 +19,50 @@
             });
             $('#form-tab a:first').tab('show')
         })(jQuery);
+
+        function validateAiSearchRejectReason(pk) {
+            var textarea = document.getElementById('aiSearchRejectReason-' + pk);
+            var error = document.getElementById('aiSearchRejectReasonError-' + pk);
+            var value = textarea.value.trim();
+            var ok = !!value;
+            error.style.display = ok ? 'none' : 'block';
+            if (ok) {
+                // hidden.bs.modal (below) clears the textarea as soon as
+                // hide() below runs - which, without CSS transition support,
+                // fires synchronously - so hx-vals would otherwise read an
+                // empty value. Stash it on a data attribute hx-vals can read
+                // instead, unaffected by that reset.
+                textarea.dataset.pendingValue = value;
+                // Hide the modal now, while it's still attached to the DOM.
+                // The htmx swap that follows replaces #ai-feedback-{pk} (the
+                // modal's own parent) with the rejected state, which no
+                // longer renders the modal at all - if we waited until after
+                // that swap to call .modal('hide'), Bootstrap would have no
+                // element left to run its hide transition on, and the
+                // backdrop it already added to <body> would never be
+                // removed, leaving the page stuck behind a dark overlay.
+                $('#aiSearchRejectModal-' + pk).modal('hide');
+            }
+            return ok;
+        }
+
+        $(document).on('hidden.bs.modal', '[id^="aiSearchRejectModal-"]', function () {
+            var pk = this.id.replace('aiSearchRejectModal-', '');
+            var ta = document.getElementById('aiSearchRejectReason-' + pk);
+            var err = document.getElementById('aiSearchRejectReasonError-' + pk);
+            if (ta) { ta.value = ''; }
+            if (err) { err.style.display = 'none'; }
+        });
     </script>
 {% endblock %}
 
 {% block extra_css %}
     {{ casegroup_form.media.css }}
+    <style>
+        .ai-thumb { color: #999; opacity: 0.6; font-size: 1.25em; }
+        .ai-thumb:hover { opacity: 1; }
+        .ai-thumb-active { color: #f0ad4e; opacity: 1; cursor: help; }
+    </style>
 {% endblock %}
 {# {% block breadcrumbs %} #}
 {#    <ol class="breadcrumb"> #}
