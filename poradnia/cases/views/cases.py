@@ -260,19 +260,11 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Created on"),
             "width": 80,
         },
-        {
-            "name": "has_project",
-            "visible": True,
-            "searchable": False,
-            "orderable": False,
-            "title": _("Project"),
-        },
     ]
 
     def customize_row(self, row, obj):
         row["name"] = obj.render_case_link()
         # row["name"] = obj.render_case_link_formatted(self.request.user)
-        row["has_project"] = obj.render_project_badge()
         row["status"] = obj.render_status()
         # row["handled"] = obj.render_handled()
         row["involved_staff"] = obj.render_involved_staff()
@@ -295,10 +287,17 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         qs = super().get_initial_queryset(request)
         qs = qs.ajax_status_filter(self.request)
         qs = qs.ajax_boolean_filter(self.request, "handled_", "handled")
-        qs = qs.ajax_boolean_filter(self.request, "has_project_", "has_project")
         qs = qs.ajax_has_tag_filter(self.request)
         qs = qs.ajax_has_deadline_filter(self.request)
         qs = qs.ajax_involved_staff_filter(self.request)
+        qs = qs.with_ai_review_flags()
+        qs = qs.ajax_boolean_filter(self.request, "has_ai_articles_", "has_ai_articles")
+        qs = qs.ajax_boolean_filter(
+            self.request, "has_ai_articles_to_review_", "has_ai_articles_to_review"
+        )
+        qs = qs.ajax_boolean_filter(
+            self.request, "has_ai_tag_suggestion_", "has_ai_tag_suggestion"
+        )
         return (
             qs.for_user(user=self.request.user)
             .with_involved_staff()

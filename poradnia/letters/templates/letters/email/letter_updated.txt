@@ -3,4 +3,5 @@
 {{actor}} zmienił pismo i napisał:
 {{target.text|format_text}}
 
+{% include 'letters/email/_activation_link.txt' %}
 {% include 'letters/email/_footer.txt' %}
