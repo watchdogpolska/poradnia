@@ -19,9 +19,11 @@ from django.db.models import (
     BooleanField,
     CharField,
     Count,
+    Exists,
     F,
     Func,
     IntegerField,
+    OuterRef,
     Prefetch,
     Q,
     expressions,
@@ -153,6 +155,31 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
                 default=True,
                 output_field=BooleanField(),
             )
+        )
+
+    def with_ai_review_flags(self):
+        from poradnia.advicer.models import Advice
+        from poradnia.ai_assistant.models import N8nArticlesSearchRequest
+
+        return self.annotate(
+            has_ai_articles=Exists(
+                N8nArticlesSearchRequest.objects.filter(
+                    case=OuterRef("pk"), letter__isnull=False
+                )
+            ),
+            has_ai_articles_to_review=Exists(
+                N8nArticlesSearchRequest.objects.filter(
+                    case=OuterRef("pk"),
+                    letter__isnull=False,
+                    accepted_at__isnull=True,
+                    rejected_at__isnull=True,
+                )
+            ),
+            has_ai_tag_suggestion=Exists(
+                Advice.objects.filter(
+                    case=OuterRef("pk"), ai_tags_request__isnull=False
+                )
+            ),
         )
 
     def with_formatted_deadline(self):
@@ -501,7 +528,6 @@ class Case(models.Model):
             assign_perm("can_view", self.client, self)  # assign client
             assign_perm("can_add_record", self.client, self)  # assign client
 
-    # TODO: Remove
     def send_notification(self, actor, user_qs, target=None, **context):
         if target is None:
             target = self

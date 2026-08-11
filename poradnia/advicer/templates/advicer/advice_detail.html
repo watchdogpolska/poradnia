@@ -34,119 +34,7 @@
                     </form>
                     {% endif %}
                 </div>
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th>{% trans 'Field' %}</th>
-                            <th>{% trans 'Value' %}</th>
-                            <th>{% trans 'AI suggestion' %}</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>{% trans 'Case' %}</td>
-                            <td>
-                            {% if object.case %}
-                                <a href="{{ object.case.get_absolute_url }}">{{ object.case }}</a>
-                            {% endif %}
-                            </td>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td>{% trans 'Tag subject' %}</td>
-                            <td>{{ object.subject|default_if_none:"---"|linebreaks }}</td>
-                            <td>{{ object.ai_subject|default:"---" }}</td>
-                        </tr>
-
-                        <tr>
-                            <td>{% trans 'Summary' %}</td>
-                            <td>{{ object.summary|default_if_none:"---"|linebreaks }}</td>
-                            <td>{{ object.ai_summary|default:"---"|linebreaks }}</td>
-                        </tr>
-
-                        <tr>
-                            <td>{% trans 'Issues' %}</td>
-                            <td>
-                            {% if object.issues.all %}
-                                {% for obj in object.issues.all %}
-                                    {{ obj }}{% if not forloop.last %}<br>{% endif %}
-                                {% endfor %}
-                            {% endif %}
-                            </td>
-                            <td>
-                            {% if object.ai_issues %}
-                                {{ object.ai_issues|join:", " }}
-                            {% else %}
-                                ---
-                            {% endif %}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>{% trans 'Area' %}</td>
-                            <td>
-                                {% if object.area.all %}
-                                    {% for obj in object.area.all %}
-                                        {{ obj }}{% if not forloop.last %}<br>{% endif %}
-                                    {% endfor %}
-                                {% endif %}
-                            </td>
-                            <td>
-                            {% if object.ai_area %}
-                                {{ object.ai_area|join:", " }}
-                            {% else %}
-                                ---
-                            {% endif %}
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>{% trans 'Kind of person' %}</td>
-                            <td>
-                                {{ object.person_kind | default:"---" }}
-                            </td>
-                            <td>{{ object.ai_person_kind|default:"---" }}</td>
-                        </tr>
-
-                        <tr>
-                            <td>{% trans 'Kind of istitution' %}</td>
-                            <td>{{ object.institution_kind | default:"---" }}</td>
-                            <td>{{ object.ai_institution_kind|default:"---" }}</td>
-                        </tr>
-
-                        <tr>
-                            <td>{% trans 'Unit of administrative division' %}</td>
-                            <td>{{ object.jst | default:"---" }}</td>
-                            <td>{{ object.ai_jst|default:"---" }}</td>
-                        </tr>
-
-                        <tr>
-                            <td>{% trans 'Comment' %}</td>
-                            <td>{{ object.comment|default_if_none:"---"|linebreaks }}</td>
-                            <td>{{ object.ai_comment|default:"---"|linebreaks }}</td>
-                        </tr>
-
-                        <tr>
-                            <td>{% trans 'We helped?' %}</td>
-                            <td>{{ object.helped|yesno:_("Yes,No") }}</td>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td>{% trans 'Interesting case' %}</td>
-                            <td>{{ object.interesting_case|yesno:_("Yes,No") }}</td>
-                            <td></td>
-                        </tr>
-
-                        <tr>
-                            <td>{% trans 'For knowledge base' %}</td>
-                            <td>{{ object.for_knowledge_base|yesno:_("Yes,No") }}</td>
-                            <td></td>
-                        </tr>
-
-                    </tbody>
-                </table>
+                {% include 'advicer/_ai_suggestion_table.html' %}
             </div>
         </div>
         <div class="col-lg-4">
@@ -190,4 +78,70 @@
         </div>
     </div>
 
+    <div class="modal fade" id="aiRejectModal" tabindex="-1" role="dialog" aria-labelledby="aiRejectModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="{% trans 'Close' %}">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                    <h4 class="modal-title" id="aiRejectModalLabel">{% trans 'Reject AI suggestion' %}</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <label for="aiRejectReason">{% trans 'Reason for rejection' %}</label>
+                        <textarea id="aiRejectReason" class="form-control" rows="4" required></textarea>
+                        <p class="help-block text-danger" id="aiRejectReasonError" style="display:none;">
+                            {% trans 'Please provide a reason.' %}
+                        </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+                    <button type="button" class="btn btn-danger" id="aiRejectSubmit"
+                        hx-post="{% url 'advicer:ai_tags_reject' pk=object.pk %}"
+                        hx-target="#advice-ai-table-wrap"
+                        hx-swap="outerHTML"
+                        hx-indicator="#htmx-spinner"
+                        hx-vals="js:{rejection_reason: document.getElementById('aiRejectReason').value}"
+                        hx-trigger="click[validateAiRejectReason()]"
+                    >{% trans 'Reject' %}</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block extra_css %}
+{{ block.super }}
+<style>
+    .ai-thumb { color: #999; opacity: 0.6; font-size: 1.25em; }
+    .ai-thumb:hover { opacity: 1; }
+    .ai-thumb-active { color: #f0ad4e; opacity: 1; cursor: help; }
+    .ai-suggestion-rejected { color: #777; cursor: help; }
+</style>
+{% endblock %}
+
+{% block javascript %}
+{{ block.super }}
+<script>
+    function validateAiRejectReason() {
+        var textarea = document.getElementById('aiRejectReason');
+        var error = document.getElementById('aiRejectReasonError');
+        var ok = !!textarea.value.trim();
+        error.style.display = ok ? 'none' : 'block';
+        return ok;
+    }
+
+    $(document).on('hidden.bs.modal', '#aiRejectModal', function () {
+        document.getElementById('aiRejectReason').value = '';
+        document.getElementById('aiRejectReasonError').style.display = 'none';
+    });
+
+    document.body.addEventListener('htmx:afterSwap', function (event) {
+        if (event.target.id === 'advice-ai-table-wrap') {
+            $('#aiRejectModal').modal('hide');
+        }
+    });
+</script>
 {% endblock %}
