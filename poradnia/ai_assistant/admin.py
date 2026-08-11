@@ -77,10 +77,23 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
             cell.font = HEADER_FONT
             cell.fill = HEADER_FILL
 
+        case_url_col = columns.index("case_absolute_url") + 1
+        letter_url_col = columns.index("letter_absolute_url") + 1
+
         queryset = queryset.select_related(
             "case", "letter", "accepted_by", "rejected_by"
         )
         for obj in queryset:
+            case_url = (
+                request.build_absolute_uri(obj.case.get_absolute_url())
+                if obj.case_id
+                else ""
+            )
+            letter_url = (
+                request.build_absolute_uri(obj.letter.get_absolute_url())
+                if obj.letter_id
+                else ""
+            )
             sheet.append(
                 [
                     obj.id,
@@ -91,26 +104,29 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
                     obj.is_foi,
                     obj.direct_search,
                     obj.case_id,
-                    (
-                        request.build_absolute_uri(obj.case.get_absolute_url())
-                        if obj.case_id
-                        else ""
-                    ),
+                    case_url,
                     obj.letter_id,
-                    (
-                        request.build_absolute_uri(obj.letter.get_absolute_url())
-                        if obj.letter_id
-                        else ""
-                    ),
+                    letter_url,
                     str(obj.accepted_by) if obj.accepted_by_id else "",
                     str(obj.rejected_by) if obj.rejected_by_id else "",
                     _naive(obj.updated_at),
                     obj.response,
                 ]
             )
-            sheet.cell(row=sheet.max_row, column=len(columns)).alignment = Alignment(
+            row_idx = sheet.max_row
+            sheet.cell(row=row_idx, column=len(columns)).alignment = Alignment(
                 wrap_text=True, vertical="top"
             )
+            for url, col_idx in (
+                (case_url, case_url_col),
+                (letter_url, letter_url_col),
+            ):
+                if url:
+                    cell = sheet.cell(row=row_idx, column=col_idx)
+                    cell.hyperlink = url
+                    cell.style = "Hyperlink"
+
+        sheet.auto_filter.ref = sheet.dimensions
 
         response = HttpResponse(
             content_type=(
