@@ -75,14 +75,30 @@
                         {% trans 'Edit'%}
                     </a>
                 {% endif %}
-                &bull;
-                {{ object.render_admin_delete_link }}
+                {% if object.genre == 'ai_message' or object.genre == 'ai_message_staff' %}
+                    {% with search_request=object.get_ai_search_request %}
+                    {% if search_request.rejected_at %}
+                        &bull;
+                        {{ object.render_admin_delete_link }}
+                    {% endif %}
+                    {% endwith %}
+                {% else %}
+                    &bull;
+                    {{ object.render_admin_delete_link }}
+                {% endif %}
             {% endif %}
             {% if "can_send_to_client" in case_perms and not object.is_done %} &bull;
             <i class="fas fa-check"></i>
             <a href="{{object.get_send_url}}">
                 {% trans 'Send'%}
             </a>
+            {% endif %}
+            {% if object.genre == 'ai_message' or object.genre == 'ai_message_staff' %}
+                {% if "can_change_case" in case_perms %} &bull;
+                    <span id="ai-feedback-{{ object.pk }}">
+                        {% include "letters/_letter_ai_feedback.html" %}
+                    </span>
+                {% endif %}
             {% endif %}
             {% if object.eml %} &bull;
             <a href="{{object.eml.url}}"><i class="far fa-life-ring"></i></a>
