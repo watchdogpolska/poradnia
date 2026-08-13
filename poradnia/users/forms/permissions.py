@@ -28,7 +28,7 @@ class TranslatedManageObjectPermissionForm(
     users = forms.ModelMultipleChoiceField(
         queryset=get_user_model().objects.none(),
         required=True,
-        widget=autocomplete.ModelSelect2Multiple(url="users:autocomplete"),
+        widget=autocomplete.ModelAlightMultiple(url="users:autocomplete"),
         label=_("Users"),
     )
 

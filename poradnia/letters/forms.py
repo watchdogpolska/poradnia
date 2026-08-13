@@ -77,7 +77,7 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
         label=_("Client"),
         required=False,
         help_text=CLIENT_FIELD_TEXT,
-        widget=autocomplete.ModelSelect2("users:autocomplete"),
+        widget=autocomplete.ModelAlight("users:autocomplete"),
     )
     email = forms.EmailField(required=False, label=_("User e-mail"))
     email_registration = forms.EmailField(

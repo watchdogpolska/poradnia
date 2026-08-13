@@ -405,7 +405,7 @@ class CaseRequestAiTagsView(SingleObjectPermissionMixin, DetailView):
         return redirect(advice if advice else self.object)
 
 
-class CaseAutocomplete(autocomplete.Select2QuerySetView):
+class CaseAutocomplete(autocomplete.AlightQuerySetView):
     def get_queryset(self):
         qs = Case.objects.for_user(self.request.user).all()
 

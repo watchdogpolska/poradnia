@@ -1,0 +1,74 @@
+// Blend dal_alight's autocomplete-select web component into the site's
+// Bootstrap 3 form styling. The component ships its own default look
+// (dropdown box, selected-item "deck" chips) driven by CSS custom
+// properties -- we point those at our theme colors instead of overriding
+// every rule, and style the text input/component shell to match
+// `.form-control` since the widget applies a Django-admin class
+// (`vTextField`) that has no meaning outside django.contrib.admin.
+
+:root {
+    --autocomplete-light-bg: #{$dropdown-bg};
+    --autocomplete-light-border: #{$input-border};
+    --autocomplete-light-border-light: #{$dropdown-divider-bg};
+    --autocomplete-light-highlight-bg: #{$dropdown-link-hover-bg};
+    --autocomplete-light-text: #{$dropdown-link-color};
+    --autocomplete-light-text-muted: #{$text-muted};
+    --autocomplete-light-text-secondary: #{$gray-light};
+}
+
+autocomplete-select {
+    display: block;
+    width: 100%;
+
+    autocomplete-select-input input {
+        display: block;
+        width: 100%;
+        height: $input-height-base;
+        padding: $padding-base-vertical $padding-base-horizontal;
+        font-size: $font-size-base;
+        line-height: $line-height-base;
+        color: $input-color;
+        background-color: $input-bg;
+        border: 1px solid $input-border;
+        border-radius: $input-border-radius;
+        box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
+        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+
+        &:focus {
+            border-color: $input-border-focus;
+            outline: 0;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
+        }
+    }
+
+    // Enforce auto height on the deck so it grows when several items are
+    // selected, instead of clipping to a single line like a plain input.
+    [slot=deck] {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2px;
+
+        &:not(:empty) {
+            margin-bottom: 4px;
+        }
+
+        [data-value] {
+            background-color: $brand-primary;
+            color: #fff;
+            border-radius: $border-radius-small;
+
+            .clear {
+                color: rgba(255, 255, 255, .75);
+
+                &:hover {
+                    color: #fff;
+                }
+            }
+        }
+    }
+}
+
+.autocomplete-light-box {
+    border-radius: $border-radius-base;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
