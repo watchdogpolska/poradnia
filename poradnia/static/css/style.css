@@ -17371,15 +17371,34 @@ autocomplete-select [slot=deck]:not(:empty) {
   margin-bottom: 4px;
 }
 autocomplete-select [slot=deck] [data-value] {
-  background-color: #D82727;
-  color: #fff;
+  display: inline-flex;
+  align-items: stretch;
+  padding: 0 0 0 6px;
+  background-color: #fff;
+  color: #333333;
+  border: 1px solid #ccc;
   border-radius: 3px;
+  font-size: 12px;
+  line-height: 16px;
 }
 autocomplete-select [slot=deck] [data-value] .clear {
-  color: rgba(255, 255, 255, 0.75);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 20px;
+  margin-left: 6px;
+  border-left: 1px solid #ccc;
+  border-radius: 0 3px 3px 0;
+  font-size: 13px;
+  line-height: 1;
+  color: rgb(46.7%, 46.7%, 46.7%);
+  cursor: pointer;
 }
 autocomplete-select [slot=deck] [data-value] .clear:hover {
   color: #fff;
+  background-color: #d9534f;
+  border-color: #d9534f;
 }
 
 .autocomplete-light-box {

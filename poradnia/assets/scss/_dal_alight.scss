@@ -52,16 +52,38 @@ autocomplete-select {
             margin-bottom: 4px;
         }
 
+        // Framed like a select2 multi-value choice: a bordered pill with the
+        // remove control as its own always-visible bordered segment, not a
+        // hover-reveal decoration.
         [data-value] {
-            background-color: $brand-primary;
-            color: #fff;
+            display: inline-flex;
+            align-items: stretch;
+            padding: 0 0 0 6px;
+            background-color: $dropdown-bg;
+            color: $text-color;
+            border: 1px solid $input-border;
             border-radius: $border-radius-small;
+            font-size: $font-size-small;
+            line-height: $line-height-computed - 4px;
 
             .clear {
-                color: rgba(255, 255, 255, .75);
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                flex: none;
+                width: $line-height-computed;
+                margin-left: 6px;
+                border-left: 1px solid $input-border;
+                border-radius: 0 $border-radius-small $border-radius-small 0;
+                font-size: 13px;
+                line-height: 1;
+                color: $gray-light;
+                cursor: pointer;
 
                 &:hover {
                     color: #fff;
+                    background-color: $brand-danger;
+                    border-color: $brand-danger;
                 }
             }
         }
