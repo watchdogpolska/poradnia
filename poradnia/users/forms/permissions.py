@@ -15,6 +15,12 @@ class PermissionsTranslationMixin:
             (key, _(value)) for key, value in self.fields["permissions"].choices
         ]
 
+    def get_obj_perms_field_widget(self):
+        # The permission list is small and fixed (not backed by a queryset),
+        # so no autocomplete `url` is needed -- the widget filters its
+        # <option>s locally in JS.
+        return autocomplete.AlightMultiple
+
 
 class TranslatedUserObjectPermissionsForm(
     SingleButtonMixin, PermissionsTranslationMixin, UserObjectPermissionsForm
