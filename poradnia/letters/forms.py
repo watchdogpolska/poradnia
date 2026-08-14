@@ -1,7 +1,8 @@
 import logging
 
 from atom.forms import PartialMixin
-from crispy_forms.layout import BaseInput, Submit
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import HTML, BaseInput, Submit
 from dal import autocomplete
 from django import forms
 from django.conf import settings
@@ -99,6 +100,12 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
 
         if settings.RICH_TEXT_ENABLED:
             self.fields["text"].help_text = INFO_ABOUT_MARKDOWN
+
+        text_index = self.helper.layout.fields.index("text")
+        self.helper.layout.fields.insert(
+            text_index + 1,
+            HTML('{% include "letters/_attachments_dropzone.html" %}'),
+        )
 
         if self._is_super_staff():
             self.fields["client"].initial = self.user
@@ -411,6 +418,13 @@ class AttachmentsFieldForm(forms.Form):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Always rendered inside another <form> (case_detail.html,
+        # letters/_form.html, or embedded in NewCaseForm's own layout) -
+        # without this, crispy emits its own nested <form>...</form>, which
+        # browsers don't allow and silently closes the outer form early,
+        # dropping whatever renders after it (e.g. the submit button).
+        self.helper = FormHelper()
+        self.helper.form_tag = False
 
 
 class LetterForm(SingleButtonMixin, PartialMixin, ModelForm):  # eg. edit form

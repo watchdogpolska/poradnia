@@ -78,6 +78,8 @@ const config = {
       path.app + "/cases/static/cases/case_datatables.js",
       path.app + "/advicer/static/advicer/advice_datatables.js",
       path.app + "/letters/static/letters/letters_datatables.js",
+      path.app + "/letters/static/letters/attachment_dropzone.js",
+      path.app + "/letters/static/letters/attachment_formset.js",
       path.app + "/events/static/events/events_datatables.js",
       path.app + "/users/static/users/users_datatables.js",
       path.app + "/dashboard/static/dashboard/dashboard.js",
