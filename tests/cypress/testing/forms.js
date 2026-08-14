@@ -102,16 +102,13 @@ const submitAdviceForm = (cy) => (
 ) => {
   if (adviceIssue) {
     cy.contains("div", "Zakresy tematyczne").within(($div) => {
-      selectAutocompleteOptionContaining(
-        cy.get(".selection"),
-        adviceIssue.name
-      );
+      selectAutocompleteOptionContaining(adviceIssue.name);
     });
   }
 
   if (adviceArea) {
     cy.contains("div", "Problemy z zakresu prawa").within(($div) => {
-      selectAutocompleteOptionContaining(cy.get(".selection"), adviceArea.name);
+      selectAutocompleteOptionContaining(adviceArea.name);
     });
   }
 
@@ -120,10 +117,7 @@ const submitAdviceForm = (cy) => (
   });
 
   cy.contains("div", "Jednostka podziału").within(($div) => {
-    selectAutocompleteOptionContaining(
-      cy.get(".selection"),
-      administrativeDivision
-    );
+    selectAutocompleteOptionContaining(administrativeDivision);
   });
 
   cy.contains("div", "Przedmiot tagu").within(($div) => {
@@ -177,13 +171,10 @@ const submitAdviceFilterForm = (cy) => (
       for (const administrativeDivision of administrativeDivisions) {
         // Re-select the field on every iteration.
         // Less fragile than depending on current state.
-        selectAutocompleteOptionContaining(
-          cy.get(".selection"),
-          administrativeDivision.name
-        );
+        selectAutocompleteOptionContaining(administrativeDivision.name);
       }
     } else {
-      clearAutocompleteField(cy.get(".selection"));
+      clearAutocompleteField();
     }
   });
 
@@ -197,11 +188,10 @@ const submitAdviceFilterForm = (cy) => (
 
   // If falsy, clear input.
   cy.contains("div", "Radzący").within(($div) => {
-    const selectionEl = cy.get(".selection");
     if (adviceAuthor) {
-      selectAutocompleteOptionContaining(selectionEl, adviceAuthor.firstName);
+      selectAutocompleteOptionContaining(adviceAuthor.firstName);
     } else {
-      clearAutocompleteField(selectionEl);
+      clearAutocompleteField();
     }
   });
 
@@ -209,13 +199,10 @@ const submitAdviceFilterForm = (cy) => (
   cy.contains("div", "Problemy z zakresu prawa").within(($div) => {
     if (adviceAreas) {
       for (const adviceArea of adviceAreas) {
-        selectAutocompleteOptionContaining(
-          cy.get(".selection"),
-          adviceArea.name
-        );
+        selectAutocompleteOptionContaining(adviceArea.name);
       }
     } else {
-      clearAutocompleteField(cy.get(".selection"));
+      clearAutocompleteField();
     }
   });
 
@@ -223,13 +210,10 @@ const submitAdviceFilterForm = (cy) => (
   cy.contains("div", "Zakresy tematyczne").within(($div) => {
     if (adviceIssues) {
       for (const adviceIssue of adviceIssues) {
-        selectAutocompleteOptionContaining(
-          cy.get(".selection"),
-          adviceIssue.name
-        );
+        selectAutocompleteOptionContaining(adviceIssue.name);
       }
     } else {
-      clearAutocompleteField(cy.get(".selection"));
+      clearAutocompleteField();
     }
   });
 
@@ -241,20 +225,41 @@ const clearSelect = (selectElement) => {
   selectElement.invoke("val", "");
 };
 
-// Expected to be invoked inside a div containing one autocomplete field.
+// Expected to be invoked inside a `within` block scoped to a single
+// autocomplete field (a dal_alight `<autocomplete-select>` component).
+//
+// Unlike Select2, dal_alight doesn't auto-highlight the top search result,
+// so pressing Enter alone selects nothing -- an explicit ArrowDown is needed
+// first to highlight a result before Enter can confirm it. It also doesn't
+// clear its search input after a selection is made (Select2 did, for
+// multi-select fields), so a stale leftover query would get prepended to the
+// next call's text -- hence the explicit `.clear()`.
+//
 // Waits a bit before pressing enter to give the async operation some time
-// to complete.
-// If flaky, consider increasing the timeout.
-const selectAutocompleteOptionContaining = (selectionElement, text) => {
-  selectionElement.click().focused().type(text).wait(1000).type("{enter}");
+// to complete. If flaky, consider increasing the timeout.
+const selectAutocompleteOptionContaining = (text) => {
+  cy.get("autocomplete-select-input input")
+    .click()
+    .clear()
+    .type(text)
+    .wait(1000)
+    .type("{downarrow}{enter}");
 };
 
-// Works with multiselect fields.
-// `clear` seems to clean up all selections, but I have a feeling
-// that this approach may be a bit fragile.
-// Revisit if causes problems.
-const clearAutocompleteField = (selectionElement) => {
-  selectionElement.click().focused().clear().wait(500).type("{esc}");
+// Works with both single- and multi-select fields.
+// Expected to be invoked inside a `within` block scoped to a single
+// autocomplete field. Repeatedly clicks the "x" button of the first
+// selected item in the deck until none remain.
+const clearAutocompleteField = () => {
+  const removeNext = () => {
+    cy.root().then(($root) => {
+      if ($root.find("[slot=deck] .clear").length) {
+        cy.get("[slot=deck] .clear").first().click();
+        removeNext();
+      }
+    });
+  };
+  removeNext();
 };
 
 module.exports = {

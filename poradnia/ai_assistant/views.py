@@ -292,7 +292,7 @@ class N8nArticlesSearchCallbackView(View):
                     if question_preview
                     else "ASYSTENT AI: odpowiedź asystenta"
                 )
-                Letter.objects.create(
+                letter = Letter.objects.create(
                     case=search_request.case,
                     genre=Letter.GENRE.ai_message_staff,
                     status=Letter.STATUS.staff,
@@ -302,6 +302,8 @@ class N8nArticlesSearchCallbackView(View):
                     created_by=bot,
                     created_by_is_staff=True,
                 )
+                search_request.letter = letter
+                search_request.save(update_fields=["letter", "updated_at"])
                 logger.info(
                     "Created ai_message_staff letter for case %s (request_id=%s)",
                     search_request.case_id,
@@ -515,7 +517,8 @@ class N8nCaseTagsCallbackView(View):
                     defaults={"advicer": bot, "created_by": bot},
                 )
                 advice.ai_assistant_tags = ai_tags
-                advice.save(update_fields=["ai_assistant_tags"])
+                advice.ai_tags_request = tags_request
+                advice.save(update_fields=["ai_assistant_tags", "ai_tags_request"])
                 logger.info(
                     "%s ai_assistant_tags for case %s (request_id=%s)",
                     "Created advice with" if created else "Updated",

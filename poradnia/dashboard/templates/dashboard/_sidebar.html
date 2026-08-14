@@ -1,0 +1,12 @@
+{% load i18n %}
+{% if request.user.is_authenticated and request.user.is_staff %}
+    <div class="block-list">
+        <div class="block-list-header">{% trans 'Dashboard' %}</div>
+        <ul class="block-list-list">
+            <li class="block-list-item">
+                <a href="{% url 'dashboard:index' %}"><i
+                        class="fas fa-chart-line"></i> {% trans 'Reports dashboard' %}</a>
+            </li>
+        </ul>
+    </div>
+{% endif %}

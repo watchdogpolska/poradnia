@@ -8,13 +8,17 @@ from braces.views import (
     UserFormKwargsMixin,
 )
 from dal import autocomplete
+from django.contrib.admin.models import CHANGE, LogEntry
+from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
-from django.shortcuts import get_object_or_404
+from django.http import HttpResponseBadRequest
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
-from django.views.generic import CreateView, DetailView, TemplateView, UpdateView
+from django.views.generic import CreateView, DetailView, TemplateView, UpdateView, View
+from django.views.generic.detail import SingleObjectMixin
 from django_filters.views import FilterView
 
 from poradnia.cases.models import Case
@@ -226,6 +230,19 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         qs = self._apply_nullable_bool_filter(
             qs, "for_knowledge_base_yes", "for_knowledge_base_no", "for_knowledge_base"
         )
+        qs = qs.with_ai_review_flags()
+        qs = self._apply_nullable_bool_filter(
+            qs,
+            "has_ai_tag_suggestion_yes",
+            "has_ai_tag_suggestion_no",
+            "has_ai_tag_suggestion",
+        )
+        qs = self._apply_nullable_bool_filter(
+            qs,
+            "has_ai_tag_suggestion_to_review_yes",
+            "has_ai_tag_suggestion_to_review_no",
+            "has_ai_tag_suggestion_to_review",
+        )
         return (
             qs.for_user(user=self.request.user)
             .with_formatted_datetime("created_on", timezone.get_default_timezone())
@@ -316,8 +333,98 @@ class AdviceDetail(StaffuserRequiredMixin, PermissionMixin, VisibleMixin, Detail
         return context
 
 
+class AdviceAiTagsAcceptView(
+    StaffuserRequiredMixin, PermissionMixin, VisibleMixin, SingleObjectMixin, View
+):
+    model = Advice
+    raise_exception = True
+    http_method_names = ["post"]
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        tags_request = self.object.ai_tags_request
+        if tags_request is None or not self.object.ai_assistant_tags:
+            return render(
+                request, "advicer/_ai_suggestion_table.html", {"object": self.object}
+            )
+
+        # "comment" is intentionally excluded: it's a human-authored field and
+        # must never be overwritten by an AI suggestion.
+        tags = self.object.ai_assistant_tags
+        applied = {
+            "subject": tags.get("subject"),
+            "summary": tags.get("summary"),
+            "person_kind": tags.get("person_kind"),
+            "institution_kind": tags.get("institution_kind"),
+            "issues": tags.get("issues") or [],
+            "area": tags.get("area") or [],
+        }
+        if "jst" in tags:
+            applied["jst"] = tags["jst"]
+
+        self.object.subject = applied["subject"]
+        self.object.summary = applied["summary"]
+        self.object.person_kind_id = applied["person_kind"]
+        self.object.institution_kind_id = applied["institution_kind"]
+        if "jst" in applied:
+            self.object.jst_id = applied["jst"]
+        self.object.modified_by = request.user
+        self.object.save()
+        self.object.issues.set(applied["issues"])  # replace, not merge
+        self.object.area.set(applied["area"])  # replace, not merge
+
+        tags_request.accepted_by = request.user
+        tags_request.accepted_at = timezone.now()
+        tags_request.save(update_fields=["accepted_by", "accepted_at", "updated_at"])
+
+        content_type = ContentType.objects.get_for_model(Advice)
+        LogEntry.objects.log_action(
+            user_id=request.user.id,
+            content_type_id=content_type.id,
+            object_id=self.object.id,
+            object_repr=str(self.object),
+            action_flag=CHANGE,
+            change_message=f"{{'applied_ai_assistant_tags': {applied}}}",
+        )
+        return render(
+            request, "advicer/_ai_suggestion_table.html", {"object": self.object}
+        )
+
+
+class AdviceAiTagsRejectView(
+    StaffuserRequiredMixin, PermissionMixin, VisibleMixin, SingleObjectMixin, View
+):
+    model = Advice
+    raise_exception = True
+    http_method_names = ["post"]
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        reason = (request.POST.get("rejection_reason") or "").strip()
+        if not reason:
+            return HttpResponseBadRequest("rejection_reason is required")
+
+        tags_request = self.object.ai_tags_request
+        if tags_request is not None:
+            tags_request.rejected_by = request.user
+            tags_request.rejected_at = timezone.now()
+            tags_request.rejection_reason = reason
+            tags_request.save(
+                update_fields=[
+                    "rejected_by",
+                    "rejected_at",
+                    "rejection_reason",
+                    "updated_at",
+                ]
+            )
+        # Advice's own fields are intentionally untouched.
+        return render(
+            request, "advicer/_ai_suggestion_table.html", {"object": self.object}
+        )
+
+
 class IssueAutocomplete(
-    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.Select2QuerySetView
+    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.AlightQuerySetView
 ):
     model = Issue
     search_expr = [
@@ -326,7 +433,7 @@ class IssueAutocomplete(
 
 
 class AreaAutocomplete(
-    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.Select2QuerySetView
+    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.AlightQuerySetView
 ):
     model = Area
     search_expr = [

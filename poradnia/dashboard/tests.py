@@ -1,0 +1,515 @@
+import datetime
+from io import BytesIO
+
+from django.urls import reverse
+from django.utils import timezone
+from openpyxl import load_workbook
+from test_plus.test import TestCase
+
+from poradnia.advicer.factories import (
+    AdviceFactory,
+    AreaFactory,
+    InstitutionKindFactory,
+    IssueFactory,
+    PersonKindFactory,
+)
+from poradnia.cases.factories import CaseFactory
+from poradnia.events.factories import EventFactory
+from poradnia.judgements.factories import (
+    CourtCaseFactory,
+    CourtFactory,
+    CourtSessionFactory,
+)
+from poradnia.letters.factories import AttachmentFactory, LetterFactory
+from poradnia.users.factories import StaffFactory, UserFactory
+
+from . import excel, reports
+
+
+def set_created_on(obj, date_str, field="created_on"):
+    naive = datetime.datetime.strptime(date_str, "%Y-%m-%d")
+    aware = timezone.make_aware(naive)
+    type(obj).objects.filter(pk=obj.pk).update(**{field: aware})
+    obj.refresh_from_db()
+    return obj
+
+
+class UsersReportTestCase(TestCase):
+    def test_bucketing_and_rollup(self):
+        client_a = UserFactory()
+        client_b = UserFactory()
+        client_c = UserFactory()
+
+        for _i in range(2):
+            set_created_on(CaseFactory(client=client_a), "2024-01-15")
+        for _i in range(7):
+            set_created_on(CaseFactory(client=client_b), "2024-01-20")
+        for _i in range(3):
+            set_created_on(CaseFactory(client=client_c), "2024-02-05")
+        for _i in range(4):
+            set_created_on(CaseFactory(client=client_a), "2024-02-10")
+        # Out of year - must be excluded.
+        set_created_on(CaseFactory(client=client_a), "2023-01-15")
+
+        report = reports.users_report(2024)
+        rows = {row["month"]: row for row in report["rows"]}
+
+        jan = rows["2024-01"]
+        self.assertEqual(jan["users_with_new_case"], 2)
+        self.assertEqual(jan["cases_le_5"], 1)
+        self.assertEqual(jan["cases_6_10"], 1)
+
+        feb = rows["2024-02"]
+        self.assertEqual(feb["users_with_new_case"], 2)
+        self.assertEqual(feb["cases_le_5"], 2)
+
+        total = rows[str(reports.TOTAL_LABEL)]
+        self.assertTrue(total["pinned"])
+        # ROLLUP semantics: sums (client, month) groups, not distinct clients.
+        self.assertEqual(total["users_with_new_case"], 4)
+        self.assertEqual(total["cases_le_5"], 3)
+        self.assertEqual(total["cases_6_10"], 1)
+
+
+class CasesReportTestCase(TestCase):
+    def test_letter_count_buckets(self):
+        set_created_on(CaseFactory(letter_count=2), "2024-03-01")
+        set_created_on(CaseFactory(letter_count=8), "2024-03-05")
+        set_created_on(CaseFactory(letter_count=120), "2024-04-01")
+        set_created_on(CaseFactory(letter_count=1), "2023-03-01")
+
+        report = reports.cases_report(2024)
+        rows = {row["month"]: row for row in report["rows"]}
+
+        march = rows["2024-03"]
+        self.assertEqual(march["cases_created"], 2)
+        self.assertEqual(march["b_le5"], 1)
+        self.assertEqual(march["b_6_10"], 1)
+
+        april = rows["2024-04"]
+        self.assertEqual(april["b_100p"], 1)
+
+        total = rows[str(reports.TOTAL_LABEL)]
+        self.assertTrue(total["pinned"])
+        self.assertEqual(total["cases_created"], 3)
+        self.assertEqual(total["b_100p"], 1)
+
+
+class StaffLettersReportTestCase(TestCase):
+    def test_staff_letters_and_attachments(self):
+        staff_letter = LetterFactory(created_by_is_staff=True)
+        set_created_on(staff_letter, "2024-05-10")
+        AttachmentFactory(letter=staff_letter)
+        AttachmentFactory(letter=staff_letter)
+
+        other_staff_letter = LetterFactory(created_by_is_staff=True)
+        set_created_on(other_staff_letter, "2024-05-11")
+
+        client_letter = LetterFactory(created_by_is_staff=False)
+        set_created_on(client_letter, "2024-05-12")
+
+        report = reports.staff_letters_report(2024)
+        rows = {row["month"]: row for row in report["rows"]}
+
+        may = rows["2024-05"]
+        self.assertEqual(may["letters_by_staff"], 2)
+        self.assertEqual(may["attachments_by_staff"], 2)
+
+        total = rows[str(reports.TOTAL_LABEL)]
+        self.assertTrue(total["pinned"])
+        self.assertEqual(total["letters_by_staff"], 2)
+        self.assertEqual(total["attachments_by_staff"], 2)
+
+
+class IssuesReportTestCase(TestCase):
+    def test_per_issue_and_any_total(self):
+        case_with_issue = CaseFactory()
+        set_created_on(case_with_issue, "2024-06-01")
+        case_without_issue = CaseFactory()
+        set_created_on(case_without_issue, "2024-06-02")
+        case_other_year = CaseFactory()
+        set_created_on(case_other_year, "2023-06-01")
+
+        issue = IssueFactory()
+        advice = AdviceFactory(case=case_with_issue)
+        advice.issues.add(issue)
+        AdviceFactory(case=case_without_issue)
+        other_advice = AdviceFactory(case=case_other_year)
+        other_advice.issues.add(issue)
+
+        report = reports.issues_report(2024)
+        rows = {row["issue_name"]: row for row in report["rows"]}
+
+        self.assertEqual(rows[issue.name]["cases_assigned"], 1)
+        self.assertEqual(rows[issue.name]["cases_missing"], 1)
+
+        any_total = rows[str(reports.ANY_TOTAL_LABEL)]
+        self.assertTrue(any_total["pinned"])
+        self.assertEqual(any_total["cases_assigned"], 1)
+        self.assertEqual(any_total["cases_missing"], 1)
+
+
+class InstitutionKindReportTestCase(TestCase):
+    def test_per_kind_and_any_total(self):
+        case_with_kind = CaseFactory()
+        set_created_on(case_with_kind, "2024-07-01")
+        case_without_kind = CaseFactory()
+        set_created_on(case_without_kind, "2024-07-02")
+
+        kind = InstitutionKindFactory()
+        AdviceFactory(case=case_with_kind, institution_kind=kind)
+        AdviceFactory(case=case_without_kind)
+
+        report = reports.institution_kind_report(2024)
+        rows = {row["kind_name"]: row for row in report["rows"]}
+
+        self.assertEqual(rows[kind.name]["cases_assigned"], 1)
+        self.assertEqual(rows[kind.name]["cases_missing"], 1)
+
+        any_total = rows[str(reports.ANY_TOTAL_LABEL)]
+        self.assertTrue(any_total["pinned"])
+        self.assertEqual(any_total["cases_assigned"], 1)
+
+
+class AreasAndPersonKindSmokeTestCase(TestCase):
+    """Both share the exact _m2m_case_breakdown / _fk_case_breakdown helpers
+    already covered in detail by IssuesReportTestCase / InstitutionKindReportTestCase
+    - just check they execute and produce the trailing ANY/TOTAL row."""
+
+    def test_areas_report_shape(self):
+        case = CaseFactory()
+        set_created_on(case, "2024-08-01")
+        area = AreaFactory()
+        advice = AdviceFactory(case=case)
+        advice.area.add(area)
+
+        report = reports.areas_report(2024)
+        self.assertEqual(report["rows"][-1]["area_name"], str(reports.ANY_TOTAL_LABEL))
+        self.assertTrue(report["rows"][-1]["pinned"])
+
+    def test_person_kind_report_shape(self):
+        case = CaseFactory()
+        set_created_on(case, "2024-08-01")
+        kind = PersonKindFactory()
+        AdviceFactory(case=case, person_kind=kind)
+
+        report = reports.person_kind_report(2024)
+        self.assertEqual(report["rows"][-1]["kind_name"], str(reports.ANY_TOTAL_LABEL))
+        self.assertTrue(report["rows"][-1]["pinned"])
+
+
+class CourtSessionsReportTestCase(TestCase):
+    def test_pivot_by_year(self):
+        session_2023 = CourtSessionFactory(parser_key="wsa")
+        set_created_on(session_2023, "2023-01-01", "created")
+        session_2024_a = CourtSessionFactory(parser_key="wsa")
+        set_created_on(session_2024_a, "2024-01-01", "created")
+        session_2024_b = CourtSessionFactory(parser_key="nsa")
+        set_created_on(session_2024_b, "2024-06-01", "created")
+
+        report = reports.courtsessions_report()
+        column_keys = {col["key"] for col in report["columns"]}
+        self.assertIn("y_2023", column_keys)
+        self.assertIn("y_2024", column_keys)
+
+        rows = {row["parser_key"]: row for row in report["rows"]}
+        self.assertEqual(rows["wsa"]["y_2023"], 1)
+        self.assertEqual(rows["wsa"]["y_2024"], 1)
+        self.assertEqual(rows["nsa"]["y_2024"], 1)
+
+        total = rows[str(reports.TOTAL_LABEL)]
+        self.assertTrue(total["pinned"])
+        self.assertEqual(total["total"], 3)
+
+
+class CourtCaseReportTestCase(TestCase):
+    def test_grouped_by_court_with_none(self):
+        court = CourtFactory(name="Sad Rejonowy")
+        CourtCaseFactory(court=court)
+        CourtCaseFactory(court=court)
+        CourtCaseFactory(court=None)
+
+        report = reports.courtcase_report()
+        rows = {row["court_name"]: row for row in report["rows"]}
+
+        self.assertEqual(rows["Sad Rejonowy"]["count"], 2)
+        self.assertEqual(rows[str(reports.NONE_LABEL)]["count"], 1)
+
+        total = rows[str(reports.TOTAL_LABEL)]
+        self.assertTrue(total["pinned"])
+        self.assertEqual(total["count"], 3)
+
+
+class SummaryReportTestCase(TestCase):
+    def test_yearly_metrics(self):
+        # "New users with cases" buckets by the user's registration year
+        # (date_joined), not by when their case(s) were created, and only
+        # counts users who have at least one case (in any year).
+        client_a = UserFactory()
+        set_created_on(client_a, "2022-01-01", "date_joined")
+        set_created_on(CaseFactory(client=client_a), "2024-03-01")
+        set_created_on(CaseFactory(client=client_a), "2024-09-01")
+
+        client_b = UserFactory()
+        set_created_on(client_b, "2025-01-05", "date_joined")
+        set_created_on(CaseFactory(client=client_b), "2025-01-10")
+
+        # Registered in 2024 but never got a case - must not be counted.
+        client_c = UserFactory()
+        set_created_on(client_c, "2024-06-01", "date_joined")
+
+        staff_letter = LetterFactory(created_by_is_staff=True)
+        set_created_on(staff_letter, "2024-05-01")
+        AttachmentFactory(letter=staff_letter)
+        # Non-staff letter/attachment must be excluded from the staff counts.
+        client_letter = LetterFactory(created_by_is_staff=False)
+        set_created_on(client_letter, "2024-05-02")
+        AttachmentFactory(letter=client_letter)
+
+        court_case = CourtCaseFactory()
+        set_created_on(court_case.record_general.get(), "2024-06-01")
+
+        session = CourtSessionFactory()
+        set_created_on(session, "2024-07-01", "created")
+
+        event = EventFactory()
+        set_created_on(event, "2024-08-01")
+
+        report = reports.summary_report()
+        rows = {row["metric"]: row for row in report["rows"]}
+
+        self.assertEqual(rows[str(reports.NEW_CASES_LABEL)]["y_2024"], 2)
+        self.assertEqual(rows[str(reports.NEW_CASES_LABEL)]["y_2025"], 1)
+
+        # "total" sums the row across all its year columns. Other factories
+        # used above (Letter/Event/CourtCase/CourtSession) implicitly create
+        # their own Case via SubFactory with created_on defaulting to "now",
+        # so exact totals aren't asserted here - only that the column adds up.
+        year_keys = [col["key"] for col in report["columns"] if col["key"] != "total"]
+        year_keys.remove("metric")
+        for row in report["rows"]:
+            self.assertEqual(
+                row["total"], sum(row[key] for key in year_keys), row["metric"]
+            )
+        # Client A registered in 2022 (dedup across their 2 cases); their
+        # cases being created in 2024 must not shift them into y_2024.
+        self.assertEqual(rows[str(reports.NEW_USERS_WITH_CASES_LABEL)]["y_2022"], 1)
+        self.assertEqual(rows[str(reports.NEW_USERS_WITH_CASES_LABEL)]["y_2024"], 0)
+        self.assertEqual(rows[str(reports.NEW_USERS_WITH_CASES_LABEL)]["y_2025"], 1)
+        self.assertEqual(rows[str(reports.STAFF_LETTERS_LABEL)]["y_2024"], 1)
+        self.assertEqual(rows[str(reports.STAFF_ATTACHMENTS_LABEL)]["y_2024"], 1)
+        self.assertEqual(rows[str(reports.COURT_CASES_LABEL)]["y_2024"], 1)
+        self.assertEqual(rows[str(reports.COURT_SESSIONS_LABEL)]["y_2024"], 1)
+        self.assertEqual(rows[str(reports.EVENTS_LABEL)]["y_2024"], 1)
+
+        # No leakage into an adjacent year for the metrics only fixtured in 2024.
+        for label in (
+            reports.STAFF_LETTERS_LABEL,
+            reports.STAFF_ATTACHMENTS_LABEL,
+            reports.COURT_CASES_LABEL,
+            reports.COURT_SESSIONS_LABEL,
+            reports.EVENTS_LABEL,
+        ):
+            self.assertEqual(rows[str(label)]["y_2023"], 0, label)
+            self.assertEqual(rows[str(label)]["y_2025"], 0, label)
+
+
+class DashboardViewsTestCase(TestCase):
+    def setUp(self):
+        self.staff = StaffFactory()
+        self.current_year = timezone.now().year
+
+    def login_staff(self):
+        self.client.login(username=self.staff.username, password="pass")
+
+    def test_anonymous_denied(self):
+        for url_name in (
+            "index",
+            "cases_tab",
+            "advices_tab",
+            "judgements_tab",
+            "export_excel",
+        ):
+            resp = self.client.get(reverse(f"dashboard:{url_name}"))
+            self.assertEqual(resp.status_code, 403, url_name)
+
+    def test_normal_user_denied(self):
+        user = UserFactory()
+        self.client.login(username=user.username, password="pass")
+        resp = self.client.get(reverse("dashboard:index"))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_index_default_year_and_summary_report(self):
+        self.login_staff()
+        resp = self.client.get(reverse("dashboard:index"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(resp.context["current_year"], self.current_year)
+        self.assertEqual(resp.context["years"][0], self.current_year)
+        self.assertEqual(resp.context["years"][-1], 2018)
+
+        summary_report = resp.context["summary_report"]
+        self.assertEqual(len(summary_report["rows"]), 7)
+        self.assertEqual(summary_report["columns"][-2]["key"], f"y_{self.current_year}")
+        self.assertEqual(summary_report["columns"][-1]["key"], "total")
+
+        # Summary is the only table rendered eagerly on the index page (Cases,
+        # Advices, Judgements all lazy-load via htmx) and must stay unsortable.
+        content = resp.content.decode()
+        self.assertNotIn("sortable-table", content)
+        self.assertNotIn("data-sort-key", content)
+
+    def test_cases_tab_year_param(self):
+        self.login_staff()
+        case = CaseFactory(letter_count=1)
+        set_created_on(case, "2019-01-15")
+
+        resp = self.client.get(reverse("dashboard:cases_tab"), {"year": 2019})
+        self.assertEqual(resp.status_code, 200)
+        cases_report = resp.context["cases_reports"][1]
+        rows = {row["month"]: row for row in cases_report["rows"]}
+        self.assertEqual(rows["2019-01"]["cases_created"], 1)
+
+    def test_cases_tab_year_out_of_range_falls_back_to_current(self):
+        self.login_staff()
+        resp = self.client.get(reverse("dashboard:cases_tab"), {"year": 1999})
+        self.assertEqual(resp.status_code, 200)
+
+    def test_advices_tab_returns_four_reports(self):
+        self.login_staff()
+        resp = self.client.get(reverse("dashboard:advices_tab"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.context["advices_reports"]), 4)
+
+    def test_judgements_tab_returns_two_reports(self):
+        self.login_staff()
+        resp = self.client.get(reverse("dashboard:judgements_tab"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(len(resp.context["judgements_reports"]), 2)
+
+
+def _sheet_values(sheet):
+    return [
+        cell.value
+        for row in sheet.iter_rows()
+        for cell in row
+        if cell.value is not None
+    ]
+
+
+class BuildWorkbookTestCase(TestCase):
+    def test_sheet_order_matches_tab_order_and_titles(self):
+        workbook = excel.build_workbook(2024)
+        report_titles = [
+            reports.summary_report()["title"],
+            reports.users_report(2024)["title"],
+            reports.cases_report(2024)["title"],
+            reports.staff_letters_report(2024)["title"],
+            reports.issues_report(2024)["title"],
+            reports.areas_report(2024)["title"],
+            reports.institution_kind_report(2024)["title"],
+            reports.person_kind_report(2024)["title"],
+            reports.courtsessions_report()["title"],
+            reports.courtcase_report()["title"],
+        ]
+        # Some Polish titles exceed Excel's 31-char sheet-name limit (e.g.
+        # "Raport rodzajów podmiotów zobowiązanych"), so expected names must
+        # go through the same sanitizer the workbook builder uses.
+        used_titles = set()
+        expected_titles = [
+            excel._unique_sheet_title(title, used_titles) for title in report_titles
+        ]
+        self.assertEqual(workbook.sheetnames, expected_titles)
+
+    def test_sheet_has_title_description_and_header_row(self):
+        workbook = excel.build_workbook(2024)
+        summary_report = reports.summary_report()
+        sheet = workbook[str(summary_report["title"])]
+
+        self.assertEqual(sheet["A1"].value, str(summary_report["title"]))
+        self.assertTrue(sheet["A1"].font.bold)
+        self.assertEqual(sheet["A2"].value, summary_report["description"])
+        header_values = [cell.value for cell in sheet[3]]
+        self.assertEqual(
+            header_values, [str(col["label"]) for col in summary_report["columns"]]
+        )
+
+    def test_pinned_row_is_bold_and_filled(self):
+        workbook = excel.build_workbook(2024)
+        cases_report = reports.cases_report(2024)
+        sheet = workbook[str(cases_report["title"])]
+
+        last_row = sheet.max_row
+        self.assertEqual(
+            sheet.cell(row=last_row, column=1).value, str(reports.TOTAL_LABEL)
+        )
+        self.assertTrue(sheet.cell(row=last_row, column=1).font.bold)
+
+    def test_year_scopes_case_report_rows(self):
+        case = CaseFactory(letter_count=1)
+        set_created_on(case, "2019-01-15")
+
+        workbook = excel.build_workbook(2019)
+        sheet = workbook[str(reports.cases_report(2019)["title"])]
+        self.assertIn("2019-01", _sheet_values(sheet))
+
+    def test_sheet_title_collisions_are_deduplicated(self):
+        used_titles = set()
+        first = excel._unique_sheet_title("A" * 40, used_titles)
+        second = excel._unique_sheet_title("A" * 40, used_titles)
+
+        self.assertNotEqual(first, second)
+        self.assertLessEqual(len(first), 31)
+        self.assertLessEqual(len(second), 31)
+
+
+class ExcelExportViewTestCase(TestCase):
+    def setUp(self):
+        self.staff = StaffFactory()
+        self.current_year = timezone.now().year
+
+    def login_staff(self):
+        self.client.login(username=self.staff.username, password="pass")
+
+    def test_normal_user_denied(self):
+        user = UserFactory()
+        self.client.login(username=user.username, password="pass")
+        resp = self.client.get(reverse("dashboard:export_excel"))
+        self.assertEqual(resp.status_code, 403)
+
+    def test_download_headers_default_to_current_year(self):
+        self.login_staff()
+        resp = self.client.get(reverse("dashboard:export_excel"))
+
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            resp["Content-Type"],
+            "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+        )
+        self.assertIn(
+            f"dashboard_{self.current_year}.xlsx", resp["Content-Disposition"]
+        )
+
+    def test_workbook_has_ten_sheets(self):
+        self.login_staff()
+        resp = self.client.get(reverse("dashboard:export_excel"))
+        workbook = load_workbook(BytesIO(resp.content))
+        self.assertEqual(len(workbook.sheetnames), 10)
+
+    def test_year_param_scopes_report_content(self):
+        self.login_staff()
+        case = CaseFactory(letter_count=1)
+        set_created_on(case, "2019-01-15")
+
+        resp = self.client.get(reverse("dashboard:export_excel"), {"year": 2019})
+        workbook = load_workbook(BytesIO(resp.content))
+        sheet = workbook[str(reports.cases_report(2019)["title"])]
+        self.assertIn("2019-01", _sheet_values(sheet))
+
+    def test_year_out_of_range_falls_back_to_current_year(self):
+        self.login_staff()
+        resp = self.client.get(reverse("dashboard:export_excel"), {"year": 1999})
+
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn(
+            f"dashboard_{self.current_year}.xlsx", resp["Content-Disposition"]
+        )

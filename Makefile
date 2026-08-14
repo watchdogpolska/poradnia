@@ -38,10 +38,10 @@ migrate:
 	docker compose run web python manage.py migrate
 
 lint: # lint currently staged files
-	pre-commit run
+	docker compose run web pre-commit run
 
 lint-all: # lint all files in repository
-	pre-commit run --all-files
+	docker compose run web pre-commit run --all-files
 
 check: wait_mysql
 	docker compose run web python manage.py makemigrations --check

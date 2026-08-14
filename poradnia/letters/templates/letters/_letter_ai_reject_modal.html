@@ -1,0 +1,36 @@
+{% load i18n %}
+<div class="modal fade" id="aiSearchRejectModal-{{ object.pk }}" tabindex="-1" role="dialog"
+     aria-labelledby="aiSearchRejectModalLabel-{{ object.pk }}">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="{% trans 'Close' %}">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h4 class="modal-title" id="aiSearchRejectModalLabel-{{ object.pk }}">
+                    {% trans 'Reject AI answer' %}
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="aiSearchRejectReason-{{ object.pk }}">{% trans 'Reason for rejection' %}</label>
+                    <textarea id="aiSearchRejectReason-{{ object.pk }}" class="form-control" rows="4" required></textarea>
+                    <p class="help-block text-danger" id="aiSearchRejectReasonError-{{ object.pk }}" style="display:none;">
+                        {% trans 'Please provide a reason.' %}
+                    </p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+                <button type="button" class="btn btn-danger"
+                    hx-post="{% url 'letters:ai_search_reject' pk=object.pk %}"
+                    hx-target="#ai-feedback-{{ object.pk }}"
+                    hx-swap="innerHTML"
+                    hx-indicator="#htmx-spinner"
+                    hx-vals="js:{rejection_reason: document.getElementById('aiSearchRejectReason-{{ object.pk }}').dataset.pendingValue}"
+                    hx-trigger="click[validateAiSearchRejectReason({{ object.pk }})]"
+                >{% trans 'Reject' %}</button>
+            </div>
+        </div>
+    </div>
+</div>

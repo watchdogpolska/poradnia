@@ -88,13 +88,35 @@
         </div>
         <div class="row">
             <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
-                title="{% trans 'Cases that have letter project.' %}">
+                title="{% trans 'Cases that have an AI-generated article suggestion letter.' %}">
             </i>
-            <label>{% trans 'Has project' %}:</label><br>
-            <input type="checkbox" id="has_project_yes" name="check_has_project_yes" checked>
-            <label for="has_project_yes" class="small">{% trans 'Yes' %}</label><br>
-            <input type="checkbox" id="has_project_no" name="check_has_project_no" checked>
-            <label for="has_project_no" class="small">{% trans 'No' %}</label><br>
+            <label>{% trans 'Has AI articles' %}:</label><br>
+            <input type="checkbox" id="has_ai_articles_yes" name="check_has_ai_articles_yes" checked>
+            <label for="has_ai_articles_yes" class="small">{% trans 'Yes' %}</label><br>
+            <input type="checkbox" id="has_ai_articles_no" name="check_has_ai_articles_no" checked>
+            <label for="has_ai_articles_no" class="small">{% trans 'No' %}</label><br>
+            <br><br>
+        </div>
+        <div class="row">
+            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+                title="{% trans 'Cases with an AI-generated article letter not yet accepted or rejected by staff.' %}">
+            </i>
+            <label>{% trans 'AI articles to review' %}:</label><br>
+            <input type="checkbox" id="has_ai_articles_to_review_yes" name="check_has_ai_articles_to_review_yes" checked>
+            <label for="has_ai_articles_to_review_yes" class="small">{% trans 'Yes' %}</label><br>
+            <input type="checkbox" id="has_ai_articles_to_review_no" name="check_has_ai_articles_to_review_no" checked>
+            <label for="has_ai_articles_to_review_no" class="small">{% trans 'No' %}</label><br>
+            <br><br>
+        </div>
+        <div class="row">
+            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+                title="{% trans 'Cases whose tag has an AI-generated tag suggestion.' %}">
+            </i>
+            <label>{% trans 'Has AI tag suggestion' %}:</label><br>
+            <input type="checkbox" id="has_ai_tag_suggestion_yes" name="check_has_ai_tag_suggestion_yes" checked>
+            <label for="has_ai_tag_suggestion_yes" class="small">{% trans 'Yes' %}</label><br>
+            <input type="checkbox" id="has_ai_tag_suggestion_no" name="check_has_ai_tag_suggestion_no" checked>
+            <label for="has_ai_tag_suggestion_no" class="small">{% trans 'No' %}</label><br>
             <br><br>
         </div>
     </div>
