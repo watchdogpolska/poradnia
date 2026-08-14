@@ -18,7 +18,7 @@ class AdviceAreaFilter(django_filters.ModelMultipleChoiceFilter):
 
     def __init__(self, queryset=None, widget=None, *args, **kwargs):
         queryset = queryset or Area.objects.all()
-        widget = widget or autocomplete.ModelSelect2Multiple(
+        widget = widget or autocomplete.ModelAlightMultiple(
             url="advicer:area-autocomplete"
         )
         super().__init__(queryset=queryset, widget=widget, *args, **kwargs)
@@ -31,7 +31,7 @@ class AdviceIssueFilter(django_filters.ModelMultipleChoiceFilter):
 
     def __init__(self, queryset=None, widget=None, *args, **kwargs):
         queryset = queryset or Issue.objects.all()
-        widget = widget or autocomplete.ModelSelect2Multiple(
+        widget = widget or autocomplete.ModelAlightMultiple(
             url="advicer:issue-autocomplete"
         )
         super().__init__(queryset=queryset, widget=widget, *args, **kwargs)
@@ -44,7 +44,7 @@ class AdviceFilter(CrispyFilterMixin, django_filters.FilterSet):
     created_on = django_filters.DateRangeFilter(label=_("Created on"))
     community = AreaMultipleFilter(
         label=_("Community"),
-        widget=autocomplete.ModelSelect2Multiple(url="teryt:community-autocomplete"),
+        widget=autocomplete.ModelAlightMultiple(url="teryt:community-autocomplete"),
     )
     issues = AdviceIssueFilter()
     area = AdviceAreaFilter()

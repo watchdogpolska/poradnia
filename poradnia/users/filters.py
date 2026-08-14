@@ -9,7 +9,7 @@ from poradnia.users.models import User
 
 class UserChoiceFilter(django_filters.ModelChoiceFilter):
     def __init__(self, queryset=None, widget=None, *args, **kwargs):
-        widget = widget or autocomplete.ModelSelect2(url="users:autocomplete")
+        widget = widget or autocomplete.ModelAlight(url="users:autocomplete")
         queryset = queryset or get_user_model().objects.all()
         super().__init__(queryset=queryset, widget=widget, *args, **kwargs)
 
