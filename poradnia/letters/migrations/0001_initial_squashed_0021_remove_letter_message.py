@@ -21,9 +21,10 @@
 import django.db.models.deletion
 import django.utils.timezone
 import model_utils.fields
-import poradnia.letters.utils
 from django.conf import settings
 from django.db import migrations, models
+
+import poradnia.letters.utils
 
 
 def migrate_created_by_is_staff(apps, schema_editor):
@@ -41,53 +42,197 @@ def migrate_genre(apps, schema_editor):
 
 class Migration(migrations.Migration):
 
-    replaces = [('letters', '0001_initial'), ('letters', '0002_letter_case'), ('letters', '0003_remove_attachment_text'), ('letters', '0004_auto_20150503_1741'), ('letters', '0005_auto_20150708_2005'), ('letters', '0006_auto_20150810_1440'), ('letters', '0007_auto_20150817_1707'), ('letters', '0008_letter_eml'), ('letters', '0009_auto_20160409_2334'), ('letters', '0010_auto_20180104_0436'), ('letters', '0011_letter_html'), ('letters', '0012_letter_created_by_staff'), ('letters', '0013_auto_20211230_1439'), ('letters', '0012_update_letter_genre'), ('letters', '0014_merge_20211230_1553'), ('letters', '0015_alter_letter_html'), ('letters', '0016_alter_letter_genre'), ('letters', '0017_alter_letter_status'), ('letters', '0018_alter_attachment_attachment_alter_letter_name'), ('letters', '0019_attachment_text_content_and_more'), ('letters', '0020_alter_letter_genre'), ('letters', '0021_remove_letter_message')]
+    replaces = [
+        ("letters", "0001_initial"),
+        ("letters", "0002_letter_case"),
+        ("letters", "0003_remove_attachment_text"),
+        ("letters", "0004_auto_20150503_1741"),
+        ("letters", "0005_auto_20150708_2005"),
+        ("letters", "0006_auto_20150810_1440"),
+        ("letters", "0007_auto_20150817_1707"),
+        ("letters", "0008_letter_eml"),
+        ("letters", "0009_auto_20160409_2334"),
+        ("letters", "0010_auto_20180104_0436"),
+        ("letters", "0011_letter_html"),
+        ("letters", "0012_letter_created_by_staff"),
+        ("letters", "0013_auto_20211230_1439"),
+        ("letters", "0012_update_letter_genre"),
+        ("letters", "0014_merge_20211230_1553"),
+        ("letters", "0015_alter_letter_html"),
+        ("letters", "0016_alter_letter_genre"),
+        ("letters", "0017_alter_letter_status"),
+        ("letters", "0018_alter_attachment_attachment_alter_letter_name"),
+        ("letters", "0019_attachment_text_content_and_more"),
+        ("letters", "0020_alter_letter_genre"),
+        ("letters", "0021_remove_letter_message"),
+    ]
 
     dependencies = [
-        ('cases', '0016_auto_20150316_0931'),
+        ("cases", "0016_auto_20150316_0931"),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Letter',
+            name="Letter",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('status', model_utils.fields.StatusField(choices=[('staff', 'Staff'), ('done', 'Done')], db_index=True, default='staff', max_length=100, no_check_for_status=True)),
-                ('genre', models.CharField(choices=[('mail', 'mail'), ('comment', 'comment'), ('app_message', 'app_message'), ('ai_message', 'ai_message'), ('ai_message_staff', 'ai_message_staff')], default='comment', max_length=20)),
-                ('status_changed', model_utils.fields.MonitorField(default=django.utils.timezone.now, monitor='status')),
-                ('accept', model_utils.fields.MonitorField(default=django.utils.timezone.now, monitor='status', verbose_name='Accepted on', when={'done'})),
-                ('name', models.CharField(max_length=300, verbose_name='Subject')),
-                ('text', models.TextField(verbose_name='Text')),
-                ('created_on', models.DateTimeField(auto_now_add=True, verbose_name='Created on')),
-                ('modified_on', models.DateTimeField(auto_now=True, null=True, verbose_name='Modified on')),
-                ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='letter_created_by', to=settings.AUTH_USER_MODEL, verbose_name='Created by')),
-                ('modified_by', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='letter_modified_by', to=settings.AUTH_USER_MODEL, verbose_name='Modified by')),
-                ('case', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cases.case')),
-                ('signature', models.TextField(blank=True, null=True, verbose_name='Signature')),
-                ('eml', models.FileField(help_text='Original full content of message', null=True, upload_to='messages', verbose_name='Raw message contents')),
-                ('html', models.TextField(blank=True, verbose_name='Mail formatted HTML')),
-                ('created_by_is_staff', models.BooleanField(verbose_name='Created by staff member')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "status",
+                    model_utils.fields.StatusField(
+                        choices=[("staff", "Staff"), ("done", "Done")],
+                        db_index=True,
+                        default="staff",
+                        max_length=100,
+                        no_check_for_status=True,
+                    ),
+                ),
+                (
+                    "genre",
+                    models.CharField(
+                        choices=[
+                            ("mail", "mail"),
+                            ("comment", "comment"),
+                            ("app_message", "app_message"),
+                            ("ai_message", "ai_message"),
+                            ("ai_message_staff", "ai_message_staff"),
+                        ],
+                        default="comment",
+                        max_length=20,
+                    ),
+                ),
+                (
+                    "status_changed",
+                    model_utils.fields.MonitorField(
+                        default=django.utils.timezone.now, monitor="status"
+                    ),
+                ),
+                (
+                    "accept",
+                    model_utils.fields.MonitorField(
+                        default=django.utils.timezone.now,
+                        monitor="status",
+                        verbose_name="Accepted on",
+                        when={"done"},
+                    ),
+                ),
+                ("name", models.CharField(max_length=300, verbose_name="Subject")),
+                ("text", models.TextField(verbose_name="Text")),
+                (
+                    "created_on",
+                    models.DateTimeField(auto_now_add=True, verbose_name="Created on"),
+                ),
+                (
+                    "modified_on",
+                    models.DateTimeField(
+                        auto_now=True, null=True, verbose_name="Modified on"
+                    ),
+                ),
+                (
+                    "created_by",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="letter_created_by",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Created by",
+                    ),
+                ),
+                (
+                    "modified_by",
+                    models.ForeignKey(
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="letter_modified_by",
+                        to=settings.AUTH_USER_MODEL,
+                        verbose_name="Modified by",
+                    ),
+                ),
+                (
+                    "case",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        to="cases.case",
+                    ),
+                ),
+                (
+                    "signature",
+                    models.TextField(blank=True, null=True, verbose_name="Signature"),
+                ),
+                (
+                    "eml",
+                    models.FileField(
+                        help_text="Original full content of message",
+                        null=True,
+                        upload_to="messages",
+                        verbose_name="Raw message contents",
+                    ),
+                ),
+                (
+                    "html",
+                    models.TextField(blank=True, verbose_name="Mail formatted HTML"),
+                ),
+                (
+                    "created_by_is_staff",
+                    models.BooleanField(verbose_name="Created by staff member"),
+                ),
             ],
             options={
-                'abstract': False,
-                'verbose_name': 'Letter',
-                'verbose_name_plural': 'Letters',
-                'ordering': ['-created_on'],
+                "abstract": False,
+                "verbose_name": "Letter",
+                "verbose_name_plural": "Letters",
+                "ordering": ["-created_on"],
             },
         ),
         migrations.CreateModel(
-            name='Attachment',
+            name="Attachment",
             fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('attachment', models.FileField(max_length=500, upload_to=poradnia.letters.utils.date_random_path, verbose_name='File')),
-                ('letter', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='letters.letter')),
-                ('text_content', models.TextField(blank=True, null=True, verbose_name='Text content')),
-                ('text_content_update_result', models.TextField(blank=True, null=True, verbose_name='Text content update result')),
+                (
+                    "id",
+                    models.AutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                (
+                    "attachment",
+                    models.FileField(
+                        max_length=500,
+                        upload_to=poradnia.letters.utils.date_random_path,
+                        verbose_name="File",
+                    ),
+                ),
+                (
+                    "letter",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE, to="letters.letter"
+                    ),
+                ),
+                (
+                    "text_content",
+                    models.TextField(
+                        blank=True, null=True, verbose_name="Text content"
+                    ),
+                ),
+                (
+                    "text_content_update_result",
+                    models.TextField(
+                        blank=True, null=True, verbose_name="Text content update result"
+                    ),
+                ),
             ],
             options={
-                'verbose_name': 'Attachment',
-                'verbose_name_plural': 'Attachments',
+                "verbose_name": "Attachment",
+                "verbose_name_plural": "Attachments",
             },
         ),
         migrations.RunPython(

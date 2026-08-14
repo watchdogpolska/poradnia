@@ -41,9 +41,7 @@ class Command(BaseCommand):
         apply_changes = options["apply"]
         logger.info("Mode: %s", "APPLY" if apply_changes else "DRY-RUN")
 
-        letters = Letter.objects.filter(message__isnull=False).select_related(
-            "message"
-        )
+        letters = Letter.objects.filter(message__isnull=False).select_related("message")
         total = letters.count()
         logger.info("Letters still linked to django_mailbox: %s", total)
 
@@ -76,8 +74,7 @@ class Command(BaseCommand):
             remaining = Letter.objects.filter(message__isnull=False).count()
             if remaining:
                 logger.warning(
-                    "%s letter(s) still linked to django_mailbox; "
-                    "skipping purge.",
+                    "%s letter(s) still linked to django_mailbox; " "skipping purge.",
                     remaining,
                 )
                 return
@@ -117,9 +114,7 @@ class Command(BaseCommand):
 
                 if apply_changes:
                     new_basename = os.path.basename(source_name)
-                    letter.eml.save(
-                        new_basename, ContentFile(source_bytes), save=False
-                    )
+                    letter.eml.save(new_basename, ContentFile(source_bytes), save=False)
 
                     if letter.eml.name == source_name:
                         raise CommandError(
@@ -144,8 +139,7 @@ class Command(BaseCommand):
                     )
                 else:
                     logger.info(
-                        "Letter pk=%s: would copy eml %r to an independent "
-                        "file",
+                        "Letter pk=%s: would copy eml %r to an independent " "file",
                         letter.pk,
                         source_name,
                     )
