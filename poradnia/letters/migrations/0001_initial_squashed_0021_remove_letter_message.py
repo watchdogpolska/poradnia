@@ -10,6 +10,13 @@
 #   is being uninstalled. The end schema state is identical either way;
 #   already-applied environments never replay these operations, they only
 #   matter for fresh installs, which never had the field in the first place.
+# - Dropped `default=1` from the `case` field in the initial CreateModel.
+#   The squash folded 0002_letter_case's AddField(default=1,
+#   preserve_default=False) into CreateModel but lost the
+#   preserve_default=False signal, permanently baking in a default that
+#   doesn't match the model (AbstractRecord.case has no default). That
+#   made `makemigrations --check` want to generate a no-op AlterField
+#   forever.
 
 import django.db.models.deletion
 import django.utils.timezone
@@ -56,7 +63,7 @@ class Migration(migrations.Migration):
                 ('modified_on', models.DateTimeField(auto_now=True, null=True, verbose_name='Modified on')),
                 ('created_by', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='letter_created_by', to=settings.AUTH_USER_MODEL, verbose_name='Created by')),
                 ('modified_by', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='letter_modified_by', to=settings.AUTH_USER_MODEL, verbose_name='Modified by')),
-                ('case', models.ForeignKey(default=1, on_delete=django.db.models.deletion.CASCADE, to='cases.case')),
+                ('case', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cases.case')),
                 ('signature', models.TextField(blank=True, null=True, verbose_name='Signature')),
                 ('eml', models.FileField(help_text='Original full content of message', null=True, upload_to='messages', verbose_name='Raw message contents')),
                 ('html', models.TextField(blank=True, verbose_name='Mail formatted HTML')),
