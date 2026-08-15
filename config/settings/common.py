@@ -46,7 +46,6 @@ THIRD_PARTY_APPS = (
     "allauth.socialaccount.providers.google",
     "allauth.mfa",
     "guardian",
-    "django_mailbox",
     "dal",
     "dal_alight",
     "tinycontent",
