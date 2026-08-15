@@ -7,6 +7,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
+from openpyxl.utils import get_column_letter
 
 from poradnia.advicer.models import Area, InstitutionKind, Issue, PersonKind
 
@@ -16,6 +17,7 @@ HEADER_FONT = Font(bold=True)
 HEADER_FILL = PatternFill(
     start_color="FFDDDDDD", end_color="FFDDDDDD", fill_type="solid"
 )
+STANDARD_COLUMN_WIDTH = 8.43
 
 
 def _naive(dt):
@@ -93,6 +95,10 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
 
         case_url_col = columns.index("case_absolute_url") + 1
         letter_url_col = columns.index("letter_absolute_url") + 1
+        for col_idx in (len(columns) - 1, len(columns)):
+            sheet.column_dimensions[get_column_letter(col_idx)].width = (
+                STANDARD_COLUMN_WIDTH * 3
+            )
 
         queryset = queryset.select_related(
             "case", "letter", "accepted_by", "rejected_by"
@@ -123,14 +129,15 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
                     letter_url,
                     str(obj.accepted_by) if obj.accepted_by_id else "",
                     str(obj.rejected_by) if obj.rejected_by_id else "",
-                    _naive(obj.updated_at),
+                    obj.rejection_reason or "",
                     obj.response,
                 ]
             )
             row_idx = sheet.max_row
-            sheet.cell(row=row_idx, column=len(columns)).alignment = Alignment(
-                wrap_text=True, vertical="top"
-            )
+            for col_idx in (len(columns) - 1, len(columns)):
+                sheet.cell(row=row_idx, column=col_idx).alignment = Alignment(
+                    wrap_text=True, vertical="top"
+                )
             for url, col_idx in (
                 (case_url, case_url_col),
                 (letter_url, letter_url_col),
@@ -221,6 +228,11 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
 
         case_url_col = columns.index("case_absolute_url") + 1
         advice_url_col = columns.index("advice_absolute_url") + 1
+        wrap_col_start = columns.index("rejection_reason") + 1
+        for col_idx in range(wrap_col_start, len(columns) + 1):
+            sheet.column_dimensions[get_column_letter(col_idx)].width = (
+                STANDARD_COLUMN_WIDTH * 3
+            )
 
         issue_names = dict(Issue.objects.values_list("id", "name"))
         area_names = dict(Area.objects.values_list("id", "name"))
@@ -254,6 +266,7 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
             sheet.append(
                 [
                     obj.id,
+                    _naive(obj.created_at),
                     obj.request_id,
                     obj.environment,
                     obj.status,
@@ -263,8 +276,7 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
                     advice_url,
                     str(obj.accepted_by) if obj.accepted_by_id else "",
                     str(obj.rejected_by) if obj.rejected_by_id else "",
-                    _naive(obj.created_at),
-                    _naive(obj.updated_at),
+                    obj.rejection_reason or "",
                     (
                         ", ".join(advice.issues.values_list("name", flat=True))
                         if advice
@@ -295,9 +307,10 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
                 ]
             )
             row_idx = sheet.max_row
-            sheet.cell(row=row_idx, column=len(columns)).alignment = Alignment(
-                wrap_text=True, vertical="top"
-            )
+            for col_idx in range(wrap_col_start, len(columns) + 1):
+                sheet.cell(row=row_idx, column=col_idx).alignment = Alignment(
+                    wrap_text=True, vertical="top"
+                )
             for url, col_idx in (
                 (case_url, case_url_col),
                 (advice_url, advice_url_col),
