@@ -1,4 +1,4 @@
-import json
+import re
 
 from atom.mixins import AdminTestCaseMixin
 from django.core import mail
@@ -7,6 +7,7 @@ from django.test import RequestFactory, override_settings
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
 from django.utils.encoding import force_bytes
+from django.utils.html import escape
 from django.utils.http import urlsafe_base64_encode
 from guardian.shortcuts import assign_perm, get_perms
 from test_plus.test import TestCase
@@ -418,9 +419,9 @@ class UserAutocompleteViewTestCase(TestCase):
         assign_perm("users.can_view_other", self.staff_user)
         response = UserAutocomplete.as_view()(request=request).getvalue()
         response = response.decode("utf-8")
-        response_json = json.loads(response)
-        self.assertEqual(len(response_json["results"]), 1)
-        self.assertEqual(response_json["results"][0]["text"], str(self.regular_user))
+        results = re.findall(r'<div data-value="[^"]*">(.*?)</div>', response)
+        self.assertEqual(len(results), 1)
+        self.assertEqual(results[0], escape(str(self.regular_user)))
 
     def test_staff_user_with_permission_can_not_view_reqular_user(self):
         request = self.factory.get("?q={}".format(self.regular_user.username))

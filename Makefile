@@ -35,7 +35,7 @@ wait_mysql:
 	docker compose run web bash -c 'wait-for-it db:3306'
 
 migrate:
-	docker compose run web python manage.py migrate
+	docker compose run -e DB_READ_TIMEOUT=300 -e DB_WRITE_TIMEOUT=300 web python manage.py migrate
 
 lint: # lint currently staged files
 	docker compose run web pre-commit run

@@ -58,10 +58,6 @@ class NewCaseMixin(CaseMixin):
 class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
     fields = ["name", "text", "email_registration", "turnstile", "giodo"]
     post_data = {
-        "attachment_set-INITIAL_FORMS": "0",
-        "attachment_set-MAX_NUM_FORMS": "1000",
-        "attachment_set-MIN_NUM_FORMS": "0",
-        "attachment_set-TOTAL_FORMS": "3",
         "email_registration": "my_email@oh-noes.pl",
         "giodo": "on",
         "name": "Lorem ipsum subject example",
@@ -137,22 +133,6 @@ class AdminNewCaseTestCase(NewCaseMixin, TestCase):
     def get_data(self):
         self.email = UserFactory.build().email
         return {
-            "attachment_set-0-DELETE": "",
-            "attachment_set-0-attachment": "",
-            "attachment_set-0-id": "",
-            "attachment_set-0-letter": "",
-            "attachment_set-1-DELETE": "",
-            "attachment_set-1-attachment": "",
-            "attachment_set-1-id": "",
-            "attachment_set-1-letter": "",
-            "attachment_set-2-DELETE": "",
-            "attachment_set-2-attachment": "",
-            "attachment_set-2-id": "",
-            "attachment_set-2-letter": "",
-            "attachment_set-INITIAL_FORMS": "0",
-            "attachment_set-MAX_NUM_FORMS": "1000",
-            "attachment_set-MIN_NUM_FORMS": "0",
-            "attachment_set-TOTAL_FORMS": "3",
             "client-autocomplete": "",
             "email": self.email,
             "giodo": "on",
@@ -186,22 +166,6 @@ class UserNewCaseTestCase(NewCaseMixin, TestCase):
 
     def get_data(self):
         return {
-            "attachment_set-0-DELETE": "",
-            "attachment_set-0-attachment": "",
-            "attachment_set-0-id": "",
-            "attachment_set-0-letter": "",
-            "attachment_set-1-DELETE": "",
-            "attachment_set-1-attachment": "",
-            "attachment_set-1-id": "",
-            "attachment_set-1-letter": "",
-            "attachment_set-2-DELETE": "",
-            "attachment_set-2-attachment": "",
-            "attachment_set-2-id": "",
-            "attachment_set-2-letter": "",
-            "attachment_set-INITIAL_FORMS": "0",
-            "attachment_set-MAX_NUM_FORMS": "1000",
-            "attachment_set-MIN_NUM_FORMS": "0",
-            "attachment_set-TOTAL_FORMS": "3",
             "name": "Lorem ipsum subject example",
             "text": "Lorem ipsum example text",
             "turnstile": "valid-turnstile-response",  # Mocked valid Turnstile response
@@ -222,14 +186,6 @@ class UserNewCaseTestCase(NewCaseMixin, TestCase):
 
 class AddLetterTestCase(CaseMixin, TestCase):
     post_data = {
-        "attachment_set-0-DELETE": "",
-        "attachment_set-0-attachment": "",
-        "attachment_set-0-id": "",
-        "attachment_set-0-letter": "",
-        "attachment_set-INITIAL_FORMS": "0",
-        "attachment_set-MAX_NUM_FORMS": "1000",
-        "attachment_set-MIN_NUM_FORMS": "0",
-        "attachment_set-TOTAL_FORMS": "1",
         "name": "Odp:  Pytanie o dostep do informacji publicznej",
         "status": "done",
         "text": "*bold* **italic** [link](http://google.pl)",
@@ -381,14 +337,6 @@ class AddLetterTestCase(CaseMixin, TestCase):
 
 class ProjectAddLetterTestCase(CaseMixin, TestCase):
     post_data = {
-        "attachment_set-0-DELETE": "",
-        "attachment_set-0-attachment": "",
-        "attachment_set-0-id": "",
-        "attachment_set-0-letter": "",
-        "attachment_set-INITIAL_FORMS": "0",
-        "attachment_set-MAX_NUM_FORMS": "1000",
-        "attachment_set-MIN_NUM_FORMS": "0",
-        "attachment_set-TOTAL_FORMS": "1",
         "name": "Odp:  Pytanie o dostep do informacji publicznej",
         "text": "XX",
     }

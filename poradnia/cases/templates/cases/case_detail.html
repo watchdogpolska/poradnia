@@ -6,13 +6,6 @@
     {{ casegroup_form.media.js }}
     <script type="text/javascript">
         ;(function($) {
-            $(function () {
-                $('form tbody tr').formset({
-                    addText: "{% trans 'add another'%}",
-                    deleteText: "{% trans 'remove'%}",
-                    prefix: 'attachment_set'
-                });
-            });
             $('#form-tab a').click(function (e) {
                 e.preventDefault()
                 $(this).tab('show')
@@ -109,33 +102,6 @@
         opacity: 1;
         visibility: visible;
     }
-        #selected-files {
-            border: 1px solid lightgray;
-        }
-
-        .sticky_right {
-            padding-right: 0;
-        }
-
-        .sticky_left {
-            padding-left: 0;
-        }
-
-        .clear-button {
-            margin-top: -15px;
-            margin-bottom: 20px;
-            margin-left: 12px;
-            display: none;
-        }
-
-        #div_id_file_field {
-            margin-bottom: 5px;
-        }
-
-        #drop-zone {
-            background-color: #f5f5f5;
-        }
-
         </style>
     <div class="row">
         <div class="col-xs-12">
@@ -329,32 +295,7 @@
                                         {% crispy row.formset %}
                                     {% endif %}
                                     {% if row.attachments_form %}
-                                        <div class="row" id="drop-zone">
-                                            <div class="col-lg-4 sticky_right">
-                                                {% crispy row.attachments_form %}
-                                                <button type="button" id="clear-files-button" 
-                                                    class="clear-button">
-                                                    &nbsp;&nbsp;{% trans 'Clear Files' %}&nbsp;&nbsp;
-                                                </button>
-                                            </div>
-                                            <div class="col-lg-8 sticky_left">
-                                                <table class="table table-striped table-condensed" 
-                                                    id="selected-files"
-                                                >
-                                                    <thead id="files-table-head">
-                                                        <tr>
-                                                            <th style="font-size: 14px;">
-                                                                <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
-                                                                    title="{% trans 'Select multiple files with ctr or shift.' %}">
-                                                                </i>
-                                                                {% trans 'Selected files:' %}
-                                                            </th>
-                                                        </tr>
-                                                    </thead>
-                                                    <tbody></tbody>
-                                                </table>
-                                            </div>
-                                        </div>
+                                        {% include 'letters/_attachments_dropzone.html' with attachments_form=row.attachments_form %}
                                     {% endif %}
                                 </form>
                             </div>
@@ -366,94 +307,6 @@
             {% endif %}            
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var dropZone = document.getElementById('drop-zone');
-            var clearButton = document.getElementById('clear-files-button');
-            var fileInput = document.getElementById('id_file_field');
-            if (!dropZone || !fileInput) {
-                return;
-            }
-            var selectedFilesList = new DataTransfer();
-
-            // Highlight drop zone when drag event occurs
-            dropZone.addEventListener('dragover', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                dropZone.style.backgroundColor = 'lightgray';
-            });
-            dropZone.addEventListener('dragleave', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                dropZone.style.backgroundColor = '#f5f5f5';
-            });
-            // Handle the drop event
-            dropZone.addEventListener('drop', function (e) {
-                e.preventDefault();
-                e.stopPropagation();
-                dropZone.style.backgroundColor = '#f5f5f5';
-                handleNewFiles(e.dataTransfer.files);
-                clearButton.style.display = 'inline-block';
-            });
-            // Attach an event listener to the file input change event
-            fileInput.addEventListener('change', function (e) {
-                handleNewFiles(e.target.files);
-                clearButton.style.display = selectedFilesList.files.length > 0 ? 'inline-block' : 'none';
-            });
-            // Use a button to clear files
-            clearButton.addEventListener('click', function () {
-                fileInput.files = new DataTransfer().files;
-                selectedFilesList = new DataTransfer();
-                updateTableWithFiles([]);
-                clearButton.style.display = 'none';
-            });
-
-            var filesTableHead = document.getElementById('files-table-head');
-            if (filesTableHead) {
-                var labelHeight = filesTableHead.offsetHeight;
-                document.querySelectorAll('.control-label').forEach(function (el) {
-                    el.style.height = (labelHeight - 5) + 'px';
-                });
-            }
-
-            // Function to update the table with files
-            function updateTableWithFiles(files) {
-                var tableBody = document.querySelector('#selected-files tbody');
-                if (!tableBody) {
-                    return;
-                }
-                tableBody.innerHTML = '';
-                for (var i = 0; i < files.length; i++) {
-                    var row = document.createElement('tr');
-                    row.className = 'dynamic-form';
-                    var cell = document.createElement('td');
-                    cell.textContent = files[i].name;
-                    row.appendChild(cell);
-                    tableBody.appendChild(row);
-                }
-            }
-
-            function handleNewFiles(eventFiles) {
-                var addedFiles = Array.from(eventFiles);
-                var selectedFiles = Array.from(selectedFilesList.files);
-                var newFiles = addedFiles.filter(function (addedFile) {
-                    return !selectedFiles.some(function (selectedFile) {
-                        return selectedFile.name === addedFile.name &&
-                            selectedFile.size === addedFile.size &&
-                            selectedFile.lastModified === addedFile.lastModified;
-                    });
-                });
-                newFiles.forEach(function (file) {
-                    selectedFilesList.items.add(file);
-                });
-
-                updateTableWithFiles(selectedFilesList.files);
-                fileInput.files = selectedFilesList.files;
-            }
-        });
-    </script>
-
 
     {% include 'cases/_case_pager.html' %}
 {% endblock %}
