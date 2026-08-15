@@ -29,7 +29,7 @@ class JSTListView(ListView):
         return qs.voivodeship()
 
 
-class AdviceCommunityAutocomplete(autocomplete.Select2QuerySetView):
+class AdviceCommunityAutocomplete(autocomplete.AlightQuerySetView):
     def get_result_label(self, result):
         return result.tree_name
 

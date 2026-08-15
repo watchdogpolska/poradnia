@@ -1,9 +1,7 @@
 import logging
 
 from django.contrib import messages
-from django.contrib.admin.models import ADDITION, LogEntry
 from django.contrib.auth.decorators import login_required
-from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.utils.translation import gettext as _
@@ -12,7 +10,6 @@ from poradnia.cases.models import Case
 
 # from crispy_forms.helper import FormHelper
 from ..forms import AddLetterForm, AttachmentsFieldForm, SendLetterForm
-from ..helpers import AttachmentFormSet
 from ..models import Letter
 
 NEW_CASE_ANONYMOUS_TEXT = _(
@@ -32,41 +29,18 @@ def add(request, case_pk):
     LocalLetterForm = AddLetterForm.partial(case=case, user=request.user)
     context["case"] = case
 
-    formset = None
     if request.method == "POST":
         form = LocalLetterForm(request.POST, request.FILES)
         if form.is_valid():
-            obj = form.save(commit=False)
-            formset = AttachmentFormSet(request.POST, request.FILES, instance=obj)
-            attachments_form = AttachmentsFieldForm(request.POST, request.FILES)
-            if formset.is_valid() or attachments_form.is_valid():
-                obj.save()
-                content_type = ContentType.objects.get_for_model(Letter)
-                change_dict = {
-                    "changed": form.changed_data,
-                    "cleaned_data": form.cleaned_data,
-                }
-                LogEntry.objects.log_action(
-                    user_id=request.user.id,
-                    content_type_id=content_type.id,
-                    object_id=obj.id,
-                    object_repr=str(obj),
-                    action_flag=ADDITION,
-                    change_message=f"{change_dict}",
-                )
-                messages.success(
-                    request, _("Letter %(object)s created!") % {"object": obj}
-                )
-                logger.info(f"Letter {obj.id} created by {request.user}")
-                formset.save()
-                req_files = request.FILES.getlist("file_field")
-                obj.save_attachments(files=req_files)
-                obj.send_notification(actor=request.user, verb="created")
-                return HttpResponseRedirect(case.get_absolute_url())
+            obj = form.save()
+            messages.success(request, _("Letter %(object)s created!") % {"object": obj})
+            logger.info(f"Letter {obj.id} created by {request.user}")
+            obj.send_notification(actor=request.user, verb="created")
+            return HttpResponseRedirect(case.get_absolute_url())
     else:
         form = LocalLetterForm()
     context["form"] = form
-    context["formset"] = formset or AttachmentFormSet(instance=None)
+    context["attachments_form"] = AttachmentsFieldForm()
     context["headline"] = _("Add letter")
     return render(request, "letters/form_add.html", context)
 

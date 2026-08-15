@@ -1,4 +1,4 @@
-Django==5.2.16
+Django==5.2.17
 
 # Configuration
 django-environ==0.14.0
@@ -17,7 +17,7 @@ sorl-thumbnail==13.0.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth[socialaccount,mfa]==65.18.0
+django-allauth[socialaccount,mfa]==65.19.0
 
 # For the persistance stores
 mysqlclient==2.2.8

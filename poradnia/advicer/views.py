@@ -424,7 +424,7 @@ class AdviceAiTagsRejectView(
 
 
 class IssueAutocomplete(
-    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.Select2QuerySetView
+    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.AlightQuerySetView
 ):
     model = Issue
     search_expr = [
@@ -433,7 +433,7 @@ class IssueAutocomplete(
 
 
 class AreaAutocomplete(
-    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.Select2QuerySetView
+    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.AlightQuerySetView
 ):
     model = Area
     search_expr = [

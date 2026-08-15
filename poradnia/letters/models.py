@@ -12,7 +12,6 @@ from django.forms.models import model_to_dict
 from django.urls import reverse
 from django.utils.html import mark_safe
 from django.utils.translation import gettext_lazy as _
-from django_mailbox.models import Message
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
@@ -100,9 +99,6 @@ class Letter(AbstractRecord):
     )
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modified on")
-    )
-    message = models.ForeignKey(
-        to=Message, null=True, blank=True, on_delete=models.CASCADE
     )
     eml = models.FileField(
         _("Raw message contents"),

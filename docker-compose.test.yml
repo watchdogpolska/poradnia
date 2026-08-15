@@ -49,6 +49,9 @@ services:
     networks:
       - poradnia-app-network
     working_dir: /e2e
+    # The cypress/included base image bakes in `ENTRYPOINT ["cypress", "run"]`,
+    # which would otherwise swallow this command as bogus arguments to it.
+    entrypoint: []
     command: sh -c "npx wait-on http://web:8000 && npx cypress run --e2e --config video=true"
 
 networks:
