@@ -205,7 +205,7 @@ class UserListView(StaffuserRequiredMixin, PermissionMixin, FilterView):
 
 
 class UserAutocomplete(
-    PermissionMixin, ExprAutocompleteMixin, autocomplete.Select2QuerySetView
+    PermissionMixin, ExprAutocompleteMixin, autocomplete.AlightQuerySetView
 ):
     model = User
     search_expr = [

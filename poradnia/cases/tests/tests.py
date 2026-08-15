@@ -1,3 +1,4 @@
+import re
 from datetime import timedelta
 from pathlib import Path
 
@@ -11,6 +12,7 @@ from django.test import RequestFactory
 from django.test.utils import override_settings
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.utils.html import escape
 from guardian.shortcuts import assign_perm, remove_perm
 from test_plus.test import TestCase
 
@@ -805,20 +807,20 @@ class CaseAutocompleteViewTestCase(PermissionStatusMixin, TestCase):
     def test_staff_user_with_permission_can_search_by_pk(self):
         self.login_permitted_user()
         resp = self.get_check_200(self.get_url(), data={"q": self.object.pk})
-        results = resp.json()["results"]
+        results = re.findall(r'<div data-value="[^"]*">(.*?)</div>', resp.text)
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]["text"], str(self.object))
+        self.assertEqual(results[0], escape(str(self.object)))
 
     def test_staff_user_with_permission_can_search_by_pk_like(self):
         self.login_permitted_user()
         resp = self.get_check_200(self.get_url(), data={"q": f"#{self.object.pk}"})
-        results = resp.json()["results"]
+        results = re.findall(r'<div data-value="[^"]*">(.*?)</div>', resp.text)
         self.assertEqual(len(results), 0)
 
     def test_staff_user_with_permission_can_search_by_name(self):
         self.object = self.permission_object = CaseFactory(name="abcd")
         self.login_permitted_user()
         resp = self.get_check_200(self.get_url(), data={"q": "abcd"})
-        results = resp.json()["results"]
+        results = re.findall(r'<div data-value="[^"]*">(.*?)</div>', resp.text)
         self.assertEqual(len(results), 1)
-        self.assertEqual(results[0]["text"], str(self.object))
+        self.assertEqual(results[0], escape(str(self.object)))

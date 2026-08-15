@@ -1,5 +1,6 @@
 import json
 
+from django.conf import settings
 from django.contrib import admin
 from django.http import HttpResponse
 from django.utils import timezone
@@ -146,9 +147,9 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
                 "application/vnd.openxmlformats-officedocument" ".spreadsheetml.sheet"
             )
         )
-        response["Content-Disposition"] = (
-            'attachment; filename="n8n_articles_search_requests.xlsx"'
-        )
+        timestamp = timezone.localtime(timezone.now()).strftime("%Y%m%d_%H%M%S")
+        filename = f"n8n_articles_search_requests_{settings.APP_MODE}_{timestamp}.xlsx"
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
         workbook.save(response)
         return response
 
@@ -313,8 +314,8 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
                 "application/vnd.openxmlformats-officedocument" ".spreadsheetml.sheet"
             )
         )
-        response["Content-Disposition"] = (
-            'attachment; filename="n8n_case_tags_requests.xlsx"'
-        )
+        timestamp = timezone.localtime(timezone.now()).strftime("%Y%m%d_%H%M%S")
+        filename = f"n8n_case_tags_requests_{settings.APP_MODE}_{timestamp}.xlsx"
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
         workbook.save(response)
         return response

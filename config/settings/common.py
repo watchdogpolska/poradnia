@@ -48,7 +48,7 @@ THIRD_PARTY_APPS = (
     "guardian",
     "django_mailbox",
     "dal",
-    "dal_select2",
+    "dal_alight",
     "tinycontent",
     "sorl.thumbnail",
     "atom",
@@ -258,8 +258,13 @@ DATABASES["default"]["OPTIONS"] = {
     "charset": "utf8mb4",
     "init_command": "SET NAMES 'utf8mb4' COLLATE 'utf8mb4_polish_ci'",
     "connect_timeout": 5,
-    "read_timeout": 20,
-    "write_timeout": 20,
+    # Long-running DDL (e.g. dropping an FK/indexed column on a large table
+    # during a migration) can legitimately take well past the 20s default
+    # that's appropriate for normal request-response queries. Override via
+    # DB_READ_TIMEOUT/DB_WRITE_TIMEOUT for one-off long migrations instead
+    # of raising the default for all app traffic.
+    "read_timeout": env.int("DB_READ_TIMEOUT", 20),
+    "write_timeout": env.int("DB_WRITE_TIMEOUT", 20),
 }
 
 DATABASES["default"]["CONN_MAX_AGE"] = env.int("DB_CONN_MAX_AGE", 60)
@@ -535,7 +540,7 @@ ROSETTA_EXCLUDED_APPLICATIONS = (
     "django.contrib.auth",
     "constance",
     "allauth",
-    "dal_select2",
+    "dal_alight",
     "django_tables2",
     "rosetta",
     "simple_history",

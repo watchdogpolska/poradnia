@@ -8,17 +8,16 @@
 {% block javascript %}
     {{ block.super }}
     {{ form.media.js }}
-    <script type="text/javascript">
-        ;(function($) {
-            $(function () {
-                $('form tbody tr').formset({
-                    'deleteText': '{% trans "remove"%}',
-                    'addText': '{% trans "add another"%}',
-                    prefix: 'attachment_set'
+    {% if formset %}
+        <script type="text/javascript">
+            document.addEventListener('DOMContentLoaded', function () {
+                initAttachmentFormset(document.querySelector('form tbody'), {
+                    addText: "{% trans 'add another' %}",
+                    deleteText: "{% trans 'remove' %}"
                 });
-            })
-        })(jQuery);
-    </script>
+            });
+        </script>
+    {% endif %}
 {% endblock %}
 
 {% block breadcrumbs %}
@@ -43,6 +42,8 @@
             {% crispy form %}
             {% if formset %}
                 {% crispy formset %}
+            {% elif attachments_form and not attachments_form_embedded %}
+                {% include 'letters/_attachments_dropzone.html' %}
             {% endif %}
         </form>
     </div>
