@@ -82,7 +82,7 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
             "letter_absolute_url",
             "accepted_by",
             "rejected_by",
-            "updated_at",
+            "rejection_reason",
             "response",
         ]
         sheet.append(columns)
@@ -190,6 +190,7 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
 
         columns = [
             "id",
+            "created_at",
             "request_id",
             "environment",
             "status",
@@ -199,8 +200,7 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
             "advice_absolute_url",
             "accepted_by",
             "rejected_by",
-            "created_at",
-            "updated_at",
+            "rejection_reason",
             "advice_issues_names",
             "ai_response_issues_names",
             "advice_areas_names",

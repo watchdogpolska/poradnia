@@ -34,7 +34,6 @@ cssselect==1.5.0
 PyYAML==6.0.3
 # Your custom requirements go here
 django-guardian==3.3.3
-django-mailbox==4.10.1
 django-filter==26.1
 django-cleanup==9.0.0
 django-turnstile==0.1.3 
