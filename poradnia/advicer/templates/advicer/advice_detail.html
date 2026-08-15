@@ -126,21 +126,26 @@
 {{ block.super }}
 <script>
     function validateAiRejectReason() {
-        var textarea = document.getElementById('aiRejectReason');
-        var error = document.getElementById('aiRejectReasonError');
-        var ok = !!textarea.value.trim();
+        const textarea = document.getElementById('aiRejectReason');
+        const error = document.getElementById('aiRejectReasonError');
+        const ok = !!textarea.value.trim();
         error.style.display = ok ? 'none' : 'block';
         return ok;
     }
 
-    $(document).on('hidden.bs.modal', '#aiRejectModal', function () {
-        document.getElementById('aiRejectReason').value = '';
-        document.getElementById('aiRejectReasonError').style.display = 'none';
+    document.addEventListener('click', function (event) {
+        if (event.target.closest('[data-target="#aiRejectModal"]')) {
+            document.getElementById('aiRejectReason').value = '';
+            document.getElementById('aiRejectReasonError').style.display = 'none';
+        }
     });
 
     document.body.addEventListener('htmx:afterSwap', function (event) {
         if (event.target.id === 'advice-ai-table-wrap') {
-            $('#aiRejectModal').modal('hide');
+            const dismissButton = document.querySelector('#aiRejectModal [data-dismiss="modal"]');
+            if (dismissButton) {
+                dismissButton.click();
+            }
         }
     });
 </script>

@@ -51,22 +51,27 @@ from poradnia.users.utils import PermissionMixin
 from poradnia.utils.constants import NAME_MAX_LENGTH
 from poradnia.utils.crispy_forms import FormSetMixin
 
-from ..forms import AttachmentForm, LetterForm, NewCaseForm
+from ..forms import AttachmentForm, AttachmentsFieldForm, LetterForm, NewCaseForm
 from ..models import Attachment, Letter
 from .fbv import NEW_CASE_ANONYMOUS_TEXT
 
 logger = logging.getLogger(__name__)
 
 
-class NewCaseCreateView(
-    SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, CreateView
-):
+class NewCaseCreateView(SetHeadlineMixin, UserFormKwargsMixin, CreateView):
     model = Letter
     form_class = NewCaseForm
     headline = _("Create a new case")
     template_name = "letters/form_new.html"
-    inline_model = Attachment
-    inline_form_cls = AttachmentForm
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context.setdefault("attachments_form", AttachmentsFieldForm())
+        # NewCaseForm's own crispy layout already embeds the dropzone
+        # right after the "text" field - don't render it again at the
+        # bottom of the form.
+        context["attachments_form_embedded"] = True
+        return context
 
     def form_valid(self, form):
         if getattr(form, "existing_account", False):
@@ -82,10 +87,10 @@ class NewCaseCreateView(
             )
             messages.success(self.request, NEW_CASE_ANONYMOUS_TEXT)
             return HttpResponseRedirect(reverse("home"))
-        return super().form_valid(form)
 
-    def formset_valid(self, form, formset, *args, **kwargs):
-        formset.save()
+        self.object = form.save()
+        self.object.save_attachments(files=self.request.FILES.getlist("file_field"))
+
         if self.object.client.has_usable_password():
             # An unverified/auto-created client (unusable password) already
             # got a neutral activation e-mail from register_by_email(); the
@@ -101,7 +106,7 @@ class NewCaseCreateView(
             # Anonymous submitters never get to see the case (they have no
             # session for it), and the redirect target/message must be
             # identical regardless of whether the e-mail was new or already
-            # registered - see form_valid() above.
+            # registered - see the existing_account branch above.
             messages.success(self.request, NEW_CASE_ANONYMOUS_TEXT)
             return HttpResponseRedirect(reverse("home"))
         messages.success(
@@ -109,15 +114,6 @@ class NewCaseCreateView(
             _("Case about {object} created!").format(object=self.object.name),
         )
         return HttpResponseRedirect(self.object.case.get_absolute_url())
-
-    def form_invalid(self, form, formset=None):
-        """Called by Django when the main form is invalid (no formset)."""
-        self.object = None
-        if formset is not None:  # defensive: tolerate accidental 2-arg calls
-            return self.render_to_response(
-                self.get_context_data(form=form, formset=formset)
-            )
-        return super().form_invalid(form)
 
 
 class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, UpdateView):
@@ -284,7 +280,7 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
     def render_row_details(self, pk, request=None):
         obj = self.model.objects.filter(id=pk).first()
-        fields_to_skip = ["case", "status_changed", "message", "eml"]
+        fields_to_skip = ["case", "status_changed", "eml"]
         fields = [
             f.name
             for f in obj._meta.get_fields()

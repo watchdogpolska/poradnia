@@ -57,7 +57,7 @@ class CaseGroupPermissionForm(HelperMixin, forms.Form):
     user = forms.ModelChoiceField(
         queryset=None,
         required=True,
-        widget=autocomplete.ModelSelect2("users:autocomplete"),
+        widget=autocomplete.ModelAlight("users:autocomplete"),
         label=_("User"),
     )
     group = forms.ModelChoiceField(
@@ -124,7 +124,7 @@ class CaseMergeForm(UserKwargModelFormMixin, HelperMixin, forms.ModelForm):
         label=_("Destination case"),
         queryset=Case.objects.none(),
         required=True,
-        widget=autocomplete.ModelSelect2(url="cases:autocomplete"),
+        widget=autocomplete.ModelAlight(url="cases:autocomplete"),
         help_text=_(
             "The selected case will receive all letters, "
             + "events, etc. from the current case."

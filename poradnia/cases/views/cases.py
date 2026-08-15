@@ -27,8 +27,6 @@ from poradnia.cases.models import Case, PermissionGroup
 from poradnia.events.forms import EventForm
 from poradnia.judgements.views import CourtCaseForm
 from poradnia.letters.forms import AddLetterForm, AttachmentsFieldForm
-
-# from poradnia.letters.helpers import AttachmentFormSet
 from poradnia.letters.models import Attachment
 from poradnia.records.models import Record
 from poradnia.users.views import PermissionMixin
@@ -89,7 +87,6 @@ class CaseDetailView(SingleObjectPermissionMixin, SelectRelatedMixin, DetailView
         forms["letter"] = {
             "title": _("Letter"),
             "form": AddLetterForm(user=self.request.user, case=self.object),
-            # "formset": AttachmentFormSet(instance=None),
             "attachments_form": AttachmentsFieldForm(),
         }
         if self.request.user.is_staff:
@@ -405,7 +402,7 @@ class CaseRequestAiTagsView(SingleObjectPermissionMixin, DetailView):
         return redirect(advice if advice else self.object)
 
 
-class CaseAutocomplete(autocomplete.Select2QuerySetView):
+class CaseAutocomplete(autocomplete.AlightQuerySetView):
     def get_queryset(self):
         qs = Case.objects.for_user(self.request.user).all()
 

@@ -213,18 +213,23 @@ describe("cases", () => {
         cy.get('input[type="text"]').clear().type("caseA");
       });
     cy.contains("div", "Klient").within(($div) => {
-      // This block uses an autocomplete widget.
-      cy.get(".selection").click();
-      // After clicking, the input field should be focused.
-      // Type the user's last name.
-      // There should be a suggestion with the user's full name. Pressing Enter should select it.
+      // This block uses a dal_alight autocomplete widget (`<autocomplete-select>`).
+      // Type the user's last name into its search input.
+      // There should be a suggestion with the user's full name.
       //
-      // Filtering is not immediate, hence `wait`.
+      // Filtering is not immediate, hence `wait`. Unlike Select2, dal_alight
+      // doesn't auto-highlight the top result, so an explicit ArrowDown is
+      // needed before Enter to select it.
       //
       // NOTE: it may be tempting to make the test case click on a suggestion, instead of using Enter, but the widget
-      // attaches the element outside of the selected div. It is possible to do it the other way around, but this
+      // attaches the dropdown outside of the selected div. It is possible to do it the other way around, but this
       // solution is simpler.
-      cy.focused().type(user.lastName).wait(500).type("{enter}");
+      cy.get("autocomplete-select-input input")
+        .click()
+        .clear()
+        .type(user.lastName)
+        .wait(500)
+        .type("{downarrow}{enter}");
     });
 
     cy.contains("Zastosuj filtr").click();

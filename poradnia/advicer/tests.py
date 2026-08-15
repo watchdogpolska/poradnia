@@ -1,5 +1,6 @@
 import datetime
 import json
+import re
 
 from atom.mixins import AdminTestCaseMixin
 from django.contrib.admin.models import CHANGE, LogEntry
@@ -7,6 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.test import RequestFactory
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
+from django.utils.html import escape
 from guardian.shortcuts import assign_perm
 from test_plus.test import TestCase
 
@@ -515,17 +517,24 @@ class AreaActiveAsJsonTestCase(TestCase):
         )
 
 
-def autocomplete_ids(autocomplete_response):
+def autocomplete_results(response_text):
     """
-    Autocomplete response contains more data than just the matching ids.
-    Dig ids from the object.
+    Parse an autocomplete-light HTML fragment response into (id, label) pairs.
 
     Note, that this function drops a lot of information. For each autocomplete
-    endpoint, there should exists a test that validates the whole object and
+    endpoint, there should exists a test that validates the whole fragment and
     does not utilize this function.
     """
-    results = autocomplete_response["results"]
-    return [int(result["id"]) for result in results]
+    return [
+        (int(value), label)
+        for value, label in re.findall(
+            r'<div data-value="([^"]*)">(.*?)</div>', response_text
+        )
+    ]
+
+
+def autocomplete_ids(response_text):
+    return [pk for pk, _label in autocomplete_results(response_text)]
 
 
 class IssueAutocompleteViewTestCase(TestCase):
@@ -553,12 +562,12 @@ class IssueAutocompleteViewTestCase(TestCase):
         response = self.client.get(self.url, {"q": "issue"})
         self.assertEqual(response.status_code, 200)
 
-        results = response.json()["results"]
+        results = autocomplete_results(response.text)
         self.assertEqual(len(results), 1)
 
-        result = results[0]
-        self.assertEqual(result["id"], str(issue.id))
-        self.assertEqual(result["text"], issue.name)
+        result_id, result_label = results[0]
+        self.assertEqual(result_id, issue.id)
+        self.assertEqual(result_label, escape(issue.name))
 
     def test_search_results(self):
         """
@@ -578,19 +587,19 @@ class IssueAutocompleteViewTestCase(TestCase):
         self.assertEqual(response_common.status_code, 200)
         # The order is not validated here.
         self.assertEqual(
-            set(autocomplete_ids(response_common.json())),
+            set(autocomplete_ids(response_common.text)),
             {issue_1.id, issue_2.id, issue_3.id},
         )
 
         # Search for a unique fragment. Single match expected.
         response_unique = self.client.get(self.url, {"q": "2"})
         self.assertEqual(response_unique.status_code, 200)
-        self.assertEqual(autocomplete_ids(response_unique.json()), [issue_2.id])
+        self.assertEqual(autocomplete_ids(response_unique.text), [issue_2.id])
 
         # Search for a non-existent fragment. No matches expected.
         response_nonexistent = self.client.get(self.url, {"q": "some-unknown-id"})
         self.assertEqual(response_nonexistent.status_code, 200)
-        self.assertEqual(autocomplete_ids(response_nonexistent.json()), [])
+        self.assertEqual(autocomplete_ids(response_nonexistent.text), [])
 
 
 class AreaAutocompleteViewTestCase(TestCase):
@@ -618,12 +627,12 @@ class AreaAutocompleteViewTestCase(TestCase):
         response = self.client.get(self.url, {"q": "area"})
         self.assertEqual(response.status_code, 200)
 
-        results = response.json()["results"]
+        results = autocomplete_results(response.text)
         self.assertEqual(len(results), 1)
 
-        result = results[0]
-        self.assertEqual(result["id"], str(area.id))
-        self.assertEqual(result["text"], area.name)
+        result_id, result_label = results[0]
+        self.assertEqual(result_id, area.id)
+        self.assertEqual(result_label, escape(area.name))
 
     def test_search_results(self):
         """
@@ -643,16 +652,16 @@ class AreaAutocompleteViewTestCase(TestCase):
         self.assertEqual(response_common.status_code, 200)
         # The order is not validated here.
         self.assertEqual(
-            set(autocomplete_ids(response_common.json())),
+            set(autocomplete_ids(response_common.text)),
             {area_1.id, area_2.id, area_3.id},
         )
 
         # Search for a unique fragment. Single match expected.
         response_unique = self.client.get(self.url, {"q": "2"})
         self.assertEqual(response_unique.status_code, 200)
-        self.assertEqual(autocomplete_ids(response_unique.json()), [area_2.id])
+        self.assertEqual(autocomplete_ids(response_unique.text), [area_2.id])
 
         # Search for a non-existent fragment. No matches expected.
         response_nonexistent = self.client.get(self.url, {"q": "some-unknown-id"})
         self.assertEqual(response_nonexistent.status_code, 200)
-        self.assertEqual(autocomplete_ids(response_nonexistent.json()), [])
+        self.assertEqual(autocomplete_ids(response_nonexistent.text), [])
