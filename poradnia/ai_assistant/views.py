@@ -273,8 +273,15 @@ class N8nArticlesSearchCallbackView(View):
             search_request.response = response_text
             search_request.is_foi = is_foi
             search_request.status = "completed"
+            search_request.phrase_matches = payload.get("phrase_matches", None)
             search_request.save(
-                update_fields=["response", "is_foi", "status", "updated_at"]
+                update_fields=[
+                    "response",
+                    "is_foi",
+                    "status",
+                    "phrase_matches",
+                    "updated_at",
+                ]
             )
             logger.info(
                 "Articles search %s completed (case=%s, is_foi=%r, response_len=%d)",
