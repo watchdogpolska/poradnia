@@ -9,6 +9,7 @@ from django.core.exceptions import ImproperlyConfigured
 from django.test import RequestFactory, SimpleTestCase, TestCase, override_settings
 from django.urls import reverse
 from django.utils.html import escape
+from teryt_tree.factories import JednostkaAdministracyjnaFactory
 
 from poradnia.advicer.factories import (
     AdviceFactory,
@@ -21,10 +22,12 @@ from poradnia.ai_assistant import views as views_module
 from poradnia.ai_assistant.admin import (
     STANDARD_COLUMN_WIDTH,
     N8nArticlesSearchRequestAdmin,
+    N8nCaseTagsRequestAdmin,
 )
 from poradnia.ai_assistant.models import N8nArticlesSearchRequest, N8nCaseTagsRequest
 from poradnia.cases.factories import CaseFactory
 from poradnia.letters.models import Letter
+from poradnia.teryt.models import JST
 from poradnia.users.factories import StaffFactory
 
 WEBHOOK_URL = "http://n8n.example.com/webhook/articles"
@@ -1247,3 +1250,73 @@ class N8nArticlesSearchRequestAdminExportTestCase(TestCase):
         self.assertEqual(
             sheet.column_dimensions[col_letter].width, STANDARD_COLUMN_WIDTH * 3
         )
+
+
+class N8nCaseTagsRequestAdminExportJstTestCase(TestCase):
+    def setUp(self):
+        self.admin = N8nCaseTagsRequestAdmin(N8nCaseTagsRequest, django_admin.site)
+        self.request = RequestFactory().get("/admin/ai_assistant/n8ncasetagsrequest/")
+
+    def _export_row(self, obj):
+        response = self.admin.export_as_excel(
+            self.request, N8nCaseTagsRequest.objects.filter(pk=obj.pk)
+        )
+        workbook = openpyxl.load_workbook(BytesIO(response.content))
+        sheet = workbook.active
+        headers = [cell.value for cell in sheet[1]]
+        return headers, dict(zip(headers, [cell.value for cell in sheet[2]]))
+
+    def test_export_includes_jst_columns_with_full_hierarchical_names(self):
+        case = CaseFactory()
+        advice_jst = JednostkaAdministracyjnaFactory()
+        ai_jst = JednostkaAdministracyjnaFactory()
+        AdviceFactory(case=case, jst_id=advice_jst.pk)
+        obj = N8nCaseTagsRequest.objects.create(
+            request_id="tags-export-jst-1",
+            environment="TEST",
+            question="q",
+            status="completed",
+            case=case,
+            response=json.dumps({"jst": ai_jst.pk}),
+        )
+
+        headers, row = self._export_row(obj)
+
+        self.assertEqual(
+            headers.index("advice_jst_name"),
+            headers.index("ai_response_personkind_name") + 1,
+        )
+        self.assertEqual(
+            headers.index("ai_response_jst_name"),
+            headers.index("advice_jst_name") + 1,
+        )
+        self.assertEqual(
+            headers.index("advice_subject"),
+            headers.index("ai_response_jst_name") + 1,
+        )
+
+        self.assertEqual(row["advice_jst_name"], str(JST.objects.get(pk=advice_jst.pk)))
+        self.assertEqual(
+            row["ai_response_jst_name"], str(JST.objects.get(pk=ai_jst.pk))
+        )
+        # full hierarchical name, not just the bare .name field
+        self.assertIn(advice_jst.pk, row["advice_jst_name"])
+        self.assertIn(ai_jst.pk, row["ai_response_jst_name"])
+
+    def test_export_jst_columns_blank_when_unset(self):
+        case = CaseFactory()
+        AdviceFactory(case=case)
+
+        obj = N8nCaseTagsRequest.objects.create(
+            request_id="tags-export-jst-2",
+            environment="TEST",
+            question="q",
+            status="completed",
+            case=case,
+            response=json.dumps({}),
+        )
+
+        _, row = self._export_row(obj)
+
+        self.assertIsNone(row["advice_jst_name"])
+        self.assertIsNone(row["ai_response_jst_name"])

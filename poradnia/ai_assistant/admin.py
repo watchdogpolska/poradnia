@@ -11,6 +11,7 @@ from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 from poradnia.advicer.models import Area, InstitutionKind, Issue, PersonKind
+from poradnia.teryt.models import JST
 
 from .models import N8nArticlesSearchRequest, N8nCaseTagsRequest
 
@@ -239,6 +240,8 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
             "ai_response_institutionkind_name",
             "advice_personkind_name",
             "ai_response_personkind_name",
+            "advice_jst_name",
+            "ai_response_jst_name",
             "advice_subject",
             "ai_response_subject",
             "ai_response_summary",
@@ -265,9 +268,22 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
         queryset = queryset.select_related(
             "case__advice__institution_kind",
             "case__advice__person_kind",
+            "case__advice__jst__parent__parent",
             "accepted_by",
             "rejected_by",
         ).prefetch_related("case__advice__issues", "case__advice__area")
+
+        jst_name_cache = {}
+
+        def _ai_jst_full_name(jst_id):
+            if jst_id not in jst_name_cache:
+                jst = (
+                    JST.objects.select_related("parent__parent")
+                    .filter(pk=jst_id)
+                    .first()
+                )
+                jst_name_cache[jst_id] = str(jst) if jst else ""
+            return jst_name_cache[jst_id]
 
         for obj in queryset:
             case_url = (
@@ -285,6 +301,7 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
             ai_area_ids = ai_data.get("area") or []
             ai_institution_kind_id = ai_data.get("institution_kind")
             ai_person_kind_id = ai_data.get("person_kind")
+            ai_jst_id = ai_data.get("jst")
 
             sheet.append(
                 [
@@ -324,6 +341,8 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
                         else ""
                     ),
                     person_kind_names.get(ai_person_kind_id, ""),
+                    str(advice.jst) if advice and advice.jst_id else "",
+                    _ai_jst_full_name(ai_jst_id) if ai_jst_id else "",
                     advice.subject if advice and advice.subject else "",
                     ai_data.get("subject") or "",
                     ai_data.get("summary") or "",
