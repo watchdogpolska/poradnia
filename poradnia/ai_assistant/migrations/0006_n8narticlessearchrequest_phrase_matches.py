@@ -6,13 +6,15 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ai_assistant', '0005_n8narticlessearchrequest_accepted_at_and_more'),
+        ("ai_assistant", "0005_n8narticlessearchrequest_accepted_at_and_more"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='n8narticlessearchrequest',
-            name='phrase_matches',
-            field=models.JSONField(blank=True, null=True, verbose_name='Phrase matches'),
+            model_name="n8narticlessearchrequest",
+            name="phrase_matches",
+            field=models.JSONField(
+                blank=True, null=True, verbose_name="Phrase matches"
+            ),
         ),
     ]
