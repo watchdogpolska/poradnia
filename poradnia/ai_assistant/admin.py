@@ -4,12 +4,14 @@ from django.conf import settings
 from django.contrib import admin
 from django.http import HttpResponse
 from django.utils import timezone
+from django.utils.html import format_html
 from django.utils.translation import gettext_lazy as _
 from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
 from poradnia.advicer.models import Area, InstitutionKind, Issue, PersonKind
+from poradnia.teryt.models import JST
 
 from .models import N8nArticlesSearchRequest, N8nCaseTagsRequest
 
@@ -33,6 +35,15 @@ def _parse_ai_response(response_text):
         return {}
 
 
+def _phrase_matches_pretty(phrase_matches):
+    if not phrase_matches:
+        return ""
+    data = [
+        {k: v for k, v in item.items() if k != "summary"} for item in phrase_matches
+    ]
+    return json.dumps(data, indent=2, ensure_ascii=False)
+
+
 @admin.register(N8nArticlesSearchRequest)
 class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
     list_display = (
@@ -53,16 +64,26 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
     search_fields = ("request_id", "question", "response")
     date_hierarchy = "created_at"
     raw_id_fields = ("case", "letter")
+    exclude = ("phrase_matches",)
     actions = ["export_as_excel"]
 
     def get_readonly_fields(self, request, obj=None):
-        return [f.name for f in self.model._meta.fields]
+        fields = [f.name for f in self.model._meta.fields]
+        fields[fields.index("phrase_matches")] = "phrase_matches_display"
+        return fields
 
     def has_add_permission(self, request):
         return False
 
     def has_change_permission(self, request, obj=None):
         return False
+
+    @admin.display(description=_("Phrase matches"))
+    def phrase_matches_display(self, obj):
+        if not obj.phrase_matches:
+            return "-"
+        pretty = json.dumps(obj.phrase_matches, indent=2, ensure_ascii=False)
+        return format_html("<pre>{}</pre>", pretty)
 
     @admin.action(description=_("Export selected as Excel report"))
     def export_as_excel(self, request, queryset):
@@ -86,6 +107,7 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
             "rejected_by",
             "rejection_reason",
             "response",
+            "phrase_matches",
         ]
         sheet.append(columns)
         for col_idx in range(1, len(columns) + 1):
@@ -95,7 +117,8 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
 
         case_url_col = columns.index("case_absolute_url") + 1
         letter_url_col = columns.index("letter_absolute_url") + 1
-        for col_idx in (len(columns) - 1, len(columns)):
+        wrap_col_start = columns.index("rejection_reason") + 1
+        for col_idx in range(wrap_col_start, len(columns) + 1):
             sheet.column_dimensions[get_column_letter(col_idx)].width = (
                 STANDARD_COLUMN_WIDTH * 3
             )
@@ -131,10 +154,11 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
                     str(obj.rejected_by) if obj.rejected_by_id else "",
                     obj.rejection_reason or "",
                     obj.response,
+                    _phrase_matches_pretty(obj.phrase_matches),
                 ]
             )
             row_idx = sheet.max_row
-            for col_idx in (len(columns) - 1, len(columns)):
+            for col_idx in range(wrap_col_start, len(columns) + 1):
                 sheet.cell(row=row_idx, column=col_idx).alignment = Alignment(
                     wrap_text=True, vertical="top"
                 )
@@ -216,6 +240,8 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
             "ai_response_institutionkind_name",
             "advice_personkind_name",
             "ai_response_personkind_name",
+            "advice_jst_name",
+            "ai_response_jst_name",
             "advice_subject",
             "ai_response_subject",
             "ai_response_summary",
@@ -242,9 +268,22 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
         queryset = queryset.select_related(
             "case__advice__institution_kind",
             "case__advice__person_kind",
+            "case__advice__jst__parent__parent",
             "accepted_by",
             "rejected_by",
         ).prefetch_related("case__advice__issues", "case__advice__area")
+
+        jst_name_cache = {}
+
+        def _ai_jst_full_name(jst_id):
+            if jst_id not in jst_name_cache:
+                jst = (
+                    JST.objects.select_related("parent__parent")
+                    .filter(pk=jst_id)
+                    .first()
+                )
+                jst_name_cache[jst_id] = str(jst) if jst else ""
+            return jst_name_cache[jst_id]
 
         for obj in queryset:
             case_url = (
@@ -262,6 +301,7 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
             ai_area_ids = ai_data.get("area") or []
             ai_institution_kind_id = ai_data.get("institution_kind")
             ai_person_kind_id = ai_data.get("person_kind")
+            ai_jst_id = ai_data.get("jst")
 
             sheet.append(
                 [
@@ -301,6 +341,8 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
                         else ""
                     ),
                     person_kind_names.get(ai_person_kind_id, ""),
+                    str(advice.jst) if advice and advice.jst_id else "",
+                    _ai_jst_full_name(ai_jst_id) if ai_jst_id else "",
                     advice.subject if advice and advice.subject else "",
                     ai_data.get("subject") or "",
                     ai_data.get("summary") or "",
