@@ -61,6 +61,9 @@ class N8nArticlesSearchRequest(models.Model):
         null=True, blank=True, verbose_name=_("Rejected at")
     )
     rejection_reason = models.TextField(blank=True, verbose_name=_("Rejection reason"))
+    phrase_matches = models.JSONField(
+        blank=True, null=True, verbose_name=_("Phrase matches")
+    )
 
     def search_articles(self):
         """

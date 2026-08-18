@@ -1,9 +1,15 @@
 import json
+from io import BytesIO
 from unittest.mock import MagicMock, patch
 
+import openpyxl
 import requests as req_lib
+from django.contrib import admin as django_admin
 from django.core.exceptions import ImproperlyConfigured
 from django.test import RequestFactory, SimpleTestCase, TestCase, override_settings
+from django.urls import reverse
+from django.utils.html import escape
+from teryt_tree.factories import JednostkaAdministracyjnaFactory
 
 from poradnia.advicer.factories import (
     AdviceFactory,
@@ -13,9 +19,16 @@ from poradnia.advicer.factories import (
     PersonKindFactory,
 )
 from poradnia.ai_assistant import views as views_module
+from poradnia.ai_assistant.admin import (
+    STANDARD_COLUMN_WIDTH,
+    N8nArticlesSearchRequestAdmin,
+    N8nCaseTagsRequestAdmin,
+)
 from poradnia.ai_assistant.models import N8nArticlesSearchRequest, N8nCaseTagsRequest
 from poradnia.cases.factories import CaseFactory
 from poradnia.letters.models import Letter
+from poradnia.teryt.models import JST
+from poradnia.users.factories import StaffFactory
 
 WEBHOOK_URL = "http://n8n.example.com/webhook/articles"
 WEBHOOK_SETTINGS = {
@@ -1073,3 +1086,237 @@ class N8nCaseTagsCallbackViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(_json(response)["error"]["code"], "invalid_field")
+
+
+SAMPLE_PHRASE_MATCHES = [
+    {
+        "url": "https://example.com/article-1",
+        "score": 0.66,
+        "phrase": "some matched phrase",
+        "subject": "Article subject",
+        "summary": "A long summary that should not appear in the export column.",
+    },
+    {
+        "url": None,
+        "score": None,
+        "phrase": "another matched phrase",
+        "subject": None,
+        "summary": None,
+    },
+]
+
+
+class N8nArticlesSearchRequestAdminDisplayTestCase(TestCase):
+    def setUp(self):
+        self.admin = N8nArticlesSearchRequestAdmin(
+            N8nArticlesSearchRequest, django_admin.site
+        )
+
+    def test_phrase_matches_display_pretty_prints_json(self):
+        obj = N8nArticlesSearchRequest.objects.create(
+            request_id="req-display-1",
+            environment="TEST",
+            question="q",
+            phrase_matches=SAMPLE_PHRASE_MATCHES,
+        )
+
+        result = self.admin.phrase_matches_display(obj)
+
+        pretty = json.dumps(SAMPLE_PHRASE_MATCHES, indent=2, ensure_ascii=False)
+        self.assertEqual(str(result), f"<pre>{escape(pretty)}</pre>")
+
+    def test_phrase_matches_display_escapes_html(self):
+        obj = N8nArticlesSearchRequest.objects.create(
+            request_id="req-display-2",
+            environment="TEST",
+            question="q",
+            phrase_matches=[{"phrase": "<script>alert(1)</script>"}],
+        )
+
+        result = self.admin.phrase_matches_display(obj)
+
+        self.assertNotIn("<script>", str(result))
+        self.assertIn("&lt;script&gt;", str(result))
+
+    def test_phrase_matches_display_empty_returns_dash(self):
+        obj = N8nArticlesSearchRequest.objects.create(
+            request_id="req-display-3", environment="TEST", question="q"
+        )
+
+        self.assertEqual(self.admin.phrase_matches_display(obj), "-")
+
+
+class N8nArticlesSearchRequestAdminChangeViewTestCase(TestCase):
+    def setUp(self):
+        self.user = StaffFactory(is_superuser=True)
+        self.client.force_login(self.user)
+
+    def test_change_view_shows_pretty_phrase_matches_only_once(self):
+        obj = N8nArticlesSearchRequest.objects.create(
+            request_id="req-change-1",
+            environment="TEST",
+            question="q",
+            phrase_matches=SAMPLE_PHRASE_MATCHES,
+        )
+
+        url = reverse(
+            "admin:ai_assistant_n8narticlessearchrequest_change", args=[obj.pk]
+        )
+        response = self.client.get(url)
+        content = response.content.decode()
+
+        self.assertEqual(response.status_code, 200)
+        # The pretty display field is rendered...
+        self.assertIn("field-phrase_matches_display", content)
+        # ...and the raw JSONField widget/row is not (no duplicate column).
+        self.assertNotIn('field-phrase_matches"', content)
+
+        field_start = content.index("field-phrase_matches_display")
+        pre_start = content.index("<pre>", field_start)
+        pre_end = content.index("</pre>", pre_start)
+        rendered = content[pre_start + len("<pre>") : pre_end]
+        self.assertIn("\n", rendered)  # indented, not a single compact line
+        unescaped = rendered.replace("&quot;", '"').replace("&amp;", "&")
+        self.assertEqual(json.loads(unescaped), SAMPLE_PHRASE_MATCHES)
+
+
+class N8nArticlesSearchRequestAdminExportTestCase(TestCase):
+    def setUp(self):
+        self.admin = N8nArticlesSearchRequestAdmin(
+            N8nArticlesSearchRequest, django_admin.site
+        )
+        self.request = RequestFactory().get(
+            "/admin/ai_assistant/n8narticlessearchrequest/"
+        )
+
+    def test_export_includes_phrase_matches_as_last_column_without_summary(self):
+        obj = N8nArticlesSearchRequest.objects.create(
+            request_id="req-export-1",
+            environment="TEST",
+            question="q",
+            status="completed",
+            response="some response",
+            phrase_matches=SAMPLE_PHRASE_MATCHES,
+        )
+
+        response = self.admin.export_as_excel(
+            self.request, N8nArticlesSearchRequest.objects.filter(pk=obj.pk)
+        )
+        workbook = openpyxl.load_workbook(BytesIO(response.content))
+        sheet = workbook.active
+        headers = [cell.value for cell in sheet[1]]
+
+        self.assertEqual(headers[-1], "phrase_matches")
+
+        cell_value = [cell.value for cell in sheet[2]][-1]
+        parsed = json.loads(cell_value)
+        expected = [
+            {k: v for k, v in item.items() if k != "summary"}
+            for item in SAMPLE_PHRASE_MATCHES
+        ]
+        self.assertEqual(parsed, expected)
+        self.assertTrue(all("summary" not in item for item in parsed))
+        self.assertIn("\n", cell_value)  # pretty-printed, not compact
+
+    def test_export_phrase_matches_column_is_blank_when_unset(self):
+        obj = N8nArticlesSearchRequest.objects.create(
+            request_id="req-export-2", environment="TEST", question="q"
+        )
+
+        response = self.admin.export_as_excel(
+            self.request, N8nArticlesSearchRequest.objects.filter(pk=obj.pk)
+        )
+        workbook = openpyxl.load_workbook(BytesIO(response.content))
+        sheet = workbook.active
+
+        cell_value = [cell.value for cell in sheet[2]][-1]
+        self.assertIsNone(cell_value)
+
+    def test_export_widens_phrase_matches_column(self):
+        obj = N8nArticlesSearchRequest.objects.create(
+            request_id="req-export-3", environment="TEST", question="q"
+        )
+
+        response = self.admin.export_as_excel(
+            self.request, N8nArticlesSearchRequest.objects.filter(pk=obj.pk)
+        )
+        workbook = openpyxl.load_workbook(BytesIO(response.content))
+        sheet = workbook.active
+        headers = [cell.value for cell in sheet[1]]
+        col_letter = openpyxl.utils.get_column_letter(
+            headers.index("phrase_matches") + 1
+        )
+
+        self.assertEqual(
+            sheet.column_dimensions[col_letter].width, STANDARD_COLUMN_WIDTH * 3
+        )
+
+
+class N8nCaseTagsRequestAdminExportJstTestCase(TestCase):
+    def setUp(self):
+        self.admin = N8nCaseTagsRequestAdmin(N8nCaseTagsRequest, django_admin.site)
+        self.request = RequestFactory().get("/admin/ai_assistant/n8ncasetagsrequest/")
+
+    def _export_row(self, obj):
+        response = self.admin.export_as_excel(
+            self.request, N8nCaseTagsRequest.objects.filter(pk=obj.pk)
+        )
+        workbook = openpyxl.load_workbook(BytesIO(response.content))
+        sheet = workbook.active
+        headers = [cell.value for cell in sheet[1]]
+        return headers, dict(zip(headers, [cell.value for cell in sheet[2]]))
+
+    def test_export_includes_jst_columns_with_full_hierarchical_names(self):
+        case = CaseFactory()
+        advice_jst = JednostkaAdministracyjnaFactory()
+        ai_jst = JednostkaAdministracyjnaFactory()
+        AdviceFactory(case=case, jst_id=advice_jst.pk)
+        obj = N8nCaseTagsRequest.objects.create(
+            request_id="tags-export-jst-1",
+            environment="TEST",
+            question="q",
+            status="completed",
+            case=case,
+            response=json.dumps({"jst": ai_jst.pk}),
+        )
+
+        headers, row = self._export_row(obj)
+
+        self.assertEqual(
+            headers.index("advice_jst_name"),
+            headers.index("ai_response_personkind_name") + 1,
+        )
+        self.assertEqual(
+            headers.index("ai_response_jst_name"),
+            headers.index("advice_jst_name") + 1,
+        )
+        self.assertEqual(
+            headers.index("advice_subject"),
+            headers.index("ai_response_jst_name") + 1,
+        )
+
+        self.assertEqual(row["advice_jst_name"], str(JST.objects.get(pk=advice_jst.pk)))
+        self.assertEqual(
+            row["ai_response_jst_name"], str(JST.objects.get(pk=ai_jst.pk))
+        )
+        # full hierarchical name, not just the bare .name field
+        self.assertIn(advice_jst.pk, row["advice_jst_name"])
+        self.assertIn(ai_jst.pk, row["ai_response_jst_name"])
+
+    def test_export_jst_columns_blank_when_unset(self):
+        case = CaseFactory()
+        AdviceFactory(case=case)
+
+        obj = N8nCaseTagsRequest.objects.create(
+            request_id="tags-export-jst-2",
+            environment="TEST",
+            question="q",
+            status="completed",
+            case=case,
+            response=json.dumps({}),
+        )
+
+        _, row = self._export_row(obj)
+
+        self.assertIsNone(row["advice_jst_name"])
+        self.assertIsNone(row["ai_response_jst_name"])
