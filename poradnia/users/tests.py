@@ -1,6 +1,5 @@
 import re
 
-from atom.mixins import AdminTestCaseMixin
 from django.core import mail
 from django.core.cache import cache
 from django.test import RequestFactory, override_settings
@@ -23,6 +22,7 @@ from poradnia.users.forms import (
 from poradnia.users.models import User
 from poradnia.users.tokens import account_activation_token
 from poradnia.users.views import UserAutocomplete
+from poradnia.utils.tests.mixins import AdminTestCaseMixin
 
 from .factories import UserFactory
 

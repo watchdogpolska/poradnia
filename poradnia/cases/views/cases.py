@@ -1,8 +1,6 @@
 from collections import OrderedDict
 
 from ajax_datatable import AjaxDatatableView
-from atom.ext.guardian.views import RaisePermissionRequiredMixin
-from braces.views import SelectRelatedMixin, UserFormKwargsMixin
 from dal import autocomplete
 from django.contrib import messages
 from django.db.models import Prefetch, Q
@@ -30,6 +28,8 @@ from poradnia.letters.forms import AddLetterForm, AttachmentsFieldForm
 from poradnia.letters.models import Attachment
 from poradnia.records.models import Record
 from poradnia.users.views import PermissionMixin
+from poradnia.utils.guardian import RaisePermissionRequiredMixin
+from poradnia.utils.view_mixins import SelectRelatedMixin, UserFormKwargsMixin
 
 
 class SingleObjectPermissionMixin(RaisePermissionRequiredMixin):

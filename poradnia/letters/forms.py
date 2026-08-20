@@ -1,6 +1,5 @@
 import logging
 
-from atom.forms import PartialMixin
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import HTML, BaseInput, Submit
 from dal import autocomplete
@@ -17,6 +16,7 @@ from tinymce.widgets import TinyMCE
 from turnstile.fields import TurnstileField
 
 from poradnia.cases.models import Case
+from poradnia.utils.action_views import PartialMixin
 from poradnia.utils.constants import TURNSTILE_ERROR_MESSAGES
 from poradnia.utils.crispy_forms import GIODOMixin, HelperMixin, SingleButtonMixin
 

@@ -1,14 +1,7 @@
 from ajax_datatable import AjaxDatatableView
-from atom.views import ActionMessageMixin, ActionView, FormInitialMixin
-from braces.views import (
-    FormValidMessageMixin,
-    LoginRequiredMixin,
-    SelectRelatedMixin,
-    StaffuserRequiredMixin,
-    UserFormKwargsMixin,
-)
 from dal import autocomplete
 from django.contrib.admin.models import CHANGE, LogEntry
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import Q
 from django.http import HttpResponseBadRequest
@@ -24,8 +17,15 @@ from django_filters.views import FilterView
 from poradnia.cases.models import Case
 from poradnia.users.models import User
 from poradnia.users.utils import PermissionMixin
+from poradnia.utils.action_views import ActionMessageMixin, ActionView, FormInitialMixin
 from poradnia.utils.mixins import ExprAutocompleteMixin
 from poradnia.utils.utils import get_numeric_param
+from poradnia.utils.view_mixins import (
+    FormValidMessageMixin,
+    SelectRelatedMixin,
+    StaffuserRequiredMixin,
+    UserFormKwargsMixin,
+)
 
 from .filters import AdviceFilter
 from .forms import AdviceForm
