@@ -1,4 +1,3 @@
-from braces.forms import UserKwargModelFormMixin
 from crispy_forms.layout import Submit
 from dal import autocomplete
 from django import forms
@@ -12,6 +11,7 @@ from poradnia.utils.crispy_forms import (
     HelperMixin,
     SingleButtonMixin,
 )
+from poradnia.utils.view_mixins import UserKwargModelFormMixin
 
 from ..letters.models import Letter
 from ..records.models import Record

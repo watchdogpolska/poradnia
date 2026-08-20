@@ -1,5 +1,3 @@
-from atom.forms import AuthorMixin
-from braces.forms import UserKwargModelFormMixin
 from crispy_forms.layout import Fieldset, Layout
 from dal import autocomplete
 from django.forms import ModelForm
@@ -7,10 +5,12 @@ from django.utils.timezone import now
 from django.utils.translation import gettext as _
 
 from poradnia.cases.models import Case
+from poradnia.utils.action_views import AuthorMixin
 from poradnia.utils.crispy_forms import (
     FormHorizontalMixin,
     SingleButtonMixin,
 )
+from poradnia.utils.view_mixins import UserKwargModelFormMixin
 
 from .models import Advice
 

@@ -2,7 +2,6 @@ import datetime
 import json
 import re
 
-from atom.mixins import AdminTestCaseMixin
 from django.contrib.admin.models import CHANGE, LogEntry
 from django.contrib.contenttypes.models import ContentType
 from django.test import RequestFactory
@@ -15,6 +14,7 @@ from test_plus.test import TestCase
 from poradnia.advicer.models import Advice, Area, Issue
 from poradnia.ai_assistant.models import N8nCaseTagsRequest
 from poradnia.users.factories import StaffFactory, UserFactory
+from poradnia.utils.tests.mixins import AdminTestCaseMixin
 
 from .factories import (
     AdviceFactory,

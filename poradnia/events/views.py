@@ -1,16 +1,10 @@
 import locale
 
 from ajax_datatable import AjaxDatatableView
-from atom.ext.guardian.views import RaisePermissionRequiredMixin
-from braces.views import (
-    FormValidMessageMixin,
-    LoginRequiredMixin,
-    SelectRelatedMixin,
-    UserFormKwargsMixin,
-)
 from dateutil.relativedelta import relativedelta
 from django.conf import settings
 from django.contrib.admin.models import ADDITION, CHANGE, LogEntry
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
@@ -32,6 +26,12 @@ from django.views.generic.list import BaseListView
 from poradnia.cases.models import Case
 from poradnia.keys.mixins import KeyAuthMixin
 from poradnia.users.utils import PermissionMixin
+from poradnia.utils.guardian import RaisePermissionRequiredMixin
+from poradnia.utils.view_mixins import (
+    FormValidMessageMixin,
+    SelectRelatedMixin,
+    UserFormKwargsMixin,
+)
 
 from .forms import EventForm
 from .models import Event

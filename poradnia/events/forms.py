@@ -1,9 +1,9 @@
-from atom.forms import AuthorMixin
 from django import forms
 from django.urls import reverse
 
 from poradnia.letters.forms import PartialMixin
 from poradnia.users.models import User
+from poradnia.utils.action_views import AuthorMixin
 from poradnia.utils.crispy_forms import FormHorizontalMixin, SingleButtonMixin
 
 from .models import Event

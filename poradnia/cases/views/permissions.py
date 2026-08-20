@@ -1,6 +1,3 @@
-from atom.ext.guardian.views import RaisePermissionRequiredMixin
-from atom.views import ActionMessageMixin, ActionView
-from braces.views import FormValidMessageMixin
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404
@@ -15,6 +12,9 @@ from poradnia.users.forms import (
     TranslatedUserObjectPermissionsForm,
 )
 from poradnia.users.models import User
+from poradnia.utils.action_views import ActionMessageMixin, ActionView
+from poradnia.utils.guardian import RaisePermissionRequiredMixin
+from poradnia.utils.view_mixins import FormValidMessageMixin
 
 from ..forms import CaseGroupPermissionForm
 from ..models import Case, CaseUserObjectPermission

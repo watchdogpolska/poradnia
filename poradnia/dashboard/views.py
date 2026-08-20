@@ -1,7 +1,8 @@
-from braces.views import StaffuserRequiredMixin
 from django.http import HttpResponse
 from django.utils import timezone
 from django.views.generic import TemplateView, View
+
+from poradnia.utils.view_mixins import StaffuserRequiredMixin
 
 from . import excel, reports
 
