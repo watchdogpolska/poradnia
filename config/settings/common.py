@@ -529,6 +529,18 @@ TINYMCE_DEFAULT_CONFIG = {
     "charmap | removeformat | help",
 }
 
+# Use the TinyMCE rich text editor for tinycontent's admin content field
+# instead of the default plain textarea.
+TINYCONTENT_USE_TINYMCE = True
+
+# Scan templates for {% tinycontent %}/{% tinycontent_simple %} usages and
+# auto-create blank content blocks for names that don't exist yet. Runs
+# after `migrate` (DEBUG=False) or on app startup (DEBUG=True); this is
+# the only way new blocks get created now that manual admin "Add" is
+# disabled. Set explicitly (matches the library default) since our
+# tinycontent_add.html override relies on this running to populate `obj`.
+TINYCONTENT_AUTO_INDEX = True
+
 
 ROSETTA_SHOW_AT_ADMIN_PANEL = True
 
