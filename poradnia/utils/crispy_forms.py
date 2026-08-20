@@ -14,6 +14,22 @@ from django.utils.translation import gettext as _
 from tinycontent.models import TinyContent
 
 
+class CrispyFilterMixin:
+    """Adds a crispy-forms "Filter" submit button to a FilterSet's form."""
+
+    form_class = "form-inline"
+
+    @property
+    def form(self):
+        self._form = super().form
+        self._form.helper = FormHelper(self._form)
+        if self.form_class:
+            self._form.helper.form_class = "form-inline"
+        self._form.helper.form_method = "get"
+        self._form.helper.layout.append(Submit("filter", _("Filter")))
+        return self._form
+
+
 class FormsetHelper(FormHelper):
     """Base formset helper with common settings."""
 

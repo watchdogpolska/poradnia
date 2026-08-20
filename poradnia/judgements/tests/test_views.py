@@ -1,10 +1,10 @@
-from atom.ext.guardian.tests import PermissionStatusMixin
 from django.test import TestCase
 from django.urls import reverse
 
 from poradnia.cases.factories import CaseFactory
 from poradnia.judgements.factories import CourtCaseFactory
 from poradnia.users.factories import UserFactory
+from poradnia.utils.tests.mixins import PermissionStatusMixin
 
 
 class CaseCourtCreateViewTestCase(PermissionStatusMixin, TestCase):

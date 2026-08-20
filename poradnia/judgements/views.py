@@ -1,7 +1,3 @@
-from atom.ext.guardian.views import RaisePermissionRequiredMixin
-from atom.views import DeleteMessageMixin
-from braces.forms import UserKwargModelFormMixin
-from braces.views import FormValidMessageMixin, UserFormKwargsMixin
 from django import forms
 from django.shortcuts import get_object_or_404
 from django.urls import reverse, reverse_lazy
@@ -11,7 +7,14 @@ from django.views.generic import CreateView, DeleteView, UpdateView
 
 from poradnia.cases.models import Case
 from poradnia.judgements.models import CourtCase
+from poradnia.utils.action_views import DeleteMessageMixin
 from poradnia.utils.crispy_forms import SingleButtonMixin
+from poradnia.utils.guardian import RaisePermissionRequiredMixin
+from poradnia.utils.view_mixins import (
+    FormValidMessageMixin,
+    UserFormKwargsMixin,
+    UserKwargModelFormMixin,
+)
 
 
 class CourtCaseForm(UserKwargModelFormMixin, SingleButtonMixin, forms.ModelForm):
