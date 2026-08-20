@@ -2,13 +2,11 @@ import re
 
 from ajax_datatable import AjaxDatatableView
 from allauth.core import ratelimit
-from atom.views import ActionMessageMixin, ActionView
-from braces.views import LoginRequiredMixin, StaffuserRequiredMixin, UserFormKwargsMixin
 from dal import autocomplete
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.forms import SetPasswordForm
-from django.contrib.auth.mixins import PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import HttpResponseRedirect
@@ -27,7 +25,9 @@ from django.views.generic import (
 from django_filters.views import FilterView
 
 from poradnia.cases.models import Case, CaseUserObjectPermission
+from poradnia.utils.action_views import ActionMessageMixin, ActionView
 from poradnia.utils.mixins import ExprAutocompleteMixin
+from poradnia.utils.view_mixins import StaffuserRequiredMixin, UserFormKwargsMixin
 
 from .filters import UserFilter
 from .forms import ProfileForm, UserForm

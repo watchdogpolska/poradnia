@@ -3,8 +3,6 @@ from datetime import timedelta
 from pathlib import Path
 
 import django
-from atom.ext.guardian.tests import PermissionStatusMixin
-from atom.mixins import AdminTestCaseMixin
 from django.contrib.admin.sites import AdminSite
 from django.core import mail
 from django.core.exceptions import PermissionDenied
@@ -32,6 +30,7 @@ from poradnia.events.factories import EventFactory
 from poradnia.letters.factories import AttachmentFactory, LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
+from poradnia.utils.tests.mixins import AdminTestCaseMixin, PermissionStatusMixin
 
 
 class CaseQuerySetTestCase(TestCase):

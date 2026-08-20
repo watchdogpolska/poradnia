@@ -1,5 +1,4 @@
 import django_filters
-from atom.ext.django_filters.filters import CrispyFilterMixin
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Div, Fieldset, Layout, Submit
 from dal import autocomplete
@@ -7,6 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from poradnia.teryt.filters import AreaMultipleFilter
 from poradnia.users.filters import UserChoiceFilter
+from poradnia.utils.crispy_forms import CrispyFilterMixin
 
 from .models import Advice, Area, Issue
 

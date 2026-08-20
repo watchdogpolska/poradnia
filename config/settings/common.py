@@ -50,7 +50,6 @@ THIRD_PARTY_APPS = (
     "dal_alight",
     "tinycontent",
     "sorl.thumbnail",
-    "atom",
     "django_filters",
     "github_revision",
     "mptt",
