@@ -1,9 +1,9 @@
-from atom.mixins import AdminTestCaseMixin
 from test_plus import TestCase
 
 from poradnia.letters.factories import LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
+from poradnia.utils.tests.mixins import AdminTestCaseMixin
 
 
 class LetterAdminTestCase(AdminTestCaseMixin, TestCase):

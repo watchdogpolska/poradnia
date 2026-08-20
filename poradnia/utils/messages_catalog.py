@@ -298,8 +298,8 @@ CATALOG = [
         key="advice_deleted",
         title="Usunięto poradę",
         trigger=(
-            "AdviceDelete.success_message, przez atom.ActionMessageMixin "
-            "(advicer/views.py)."
+            "AdviceDelete.success_message, przez "
+            "utils.action_views.ActionMessageMixin (advicer/views.py)."
         ),
         level="success",
         msgid="{subject} deleted!",
@@ -350,8 +350,8 @@ CATALOG = [
         key="key_deleted",
         title="Usunięto klucz",
         trigger=(
-            "KeyDeleteView.get_success_message, przez atom.DeleteMessageMixin "
-            "(keys/views.py)."
+            "KeyDeleteView.get_success_message, przez "
+            "utils.action_views.DeleteMessageMixin (keys/views.py)."
         ),
         level="success",
         msgid="{object} deleted!",
@@ -364,7 +364,7 @@ CATALOG = [
         title="Zapisano zgłoszoną uwagę",
         trigger=(
             "FeedbackCreateView.get_form_valid_message, przez "
-            "braces.FormValidMessageMixin (tasty_feedback/views.py)."
+            "utils.mixins.FormValidMessageMixin (tasty_feedback/views.py)."
         ),
         level="success",
         msgid="Feedback saved.",

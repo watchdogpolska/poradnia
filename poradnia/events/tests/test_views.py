@@ -1,7 +1,6 @@
 import datetime
 import json
 
-from atom.ext.guardian.tests import PermissionStatusMixin
 from django.test import TestCase
 from django.urls import reverse
 from django.utils import timezone
@@ -10,6 +9,7 @@ from poradnia.cases.factories import CaseFactory
 from poradnia.events.factories import EventFactory
 from poradnia.events.models import Event
 from poradnia.users.factories import UserFactory
+from poradnia.utils.tests.mixins import PermissionStatusMixin
 
 
 class EventCreateViewTestCase(PermissionStatusMixin, TestCase):

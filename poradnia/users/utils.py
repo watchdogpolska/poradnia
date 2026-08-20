@@ -1,4 +1,4 @@
-from braces.views import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
 from django.views.generic import View
 from guardian.shortcuts import get_perms
