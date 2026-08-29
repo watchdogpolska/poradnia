@@ -28,7 +28,7 @@ django-autoslug==1.9.9
 # Useful things
 # Time zones support
 pytz==2026.3.post1
-lxml==6.1.1
+lxml==6.1.2
 cssselect==1.5.0
 PyYAML==6.0.3
 # Your custom requirements go here
@@ -67,4 +67,4 @@ bleach==6.4.0
 celery[rabbitmq]==5.6.3
 django-celery-beat==2.9.0
 django-celery-results==2.6.0
-flower==2.0.1
+flower==2.1.0
