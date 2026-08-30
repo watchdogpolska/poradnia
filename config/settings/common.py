@@ -167,7 +167,18 @@ ACCOUNT_SESSION_REMEMBER = None
 # allauth's own token-in-URL password views, so it needs its own entry here
 # to get the same brute-force throttling those get automatically; matches
 # allauth's default "reset_password_from_key" rate (same risk shape).
-ACCOUNT_RATE_LIMITS = {"account_activation": "20/m/ip"}
+ACCOUNT_RATE_LIMITS = {
+    "account_activation": "20/m/ip",
+    # AccountActivationResendView: per-IP limit on hitting the endpoint at
+    # all (checked in dispatch(), can 429 - safe to expose since it doesn't
+    # depend on whether the uid in the URL is real).
+    "account_activation_resend": "20/m/ip",
+    # Separate action so this per-account cap (checked in form_valid(),
+    # keyed by the target user's pk, never surfaced as a 429) can't be
+    # combined with the ip-scoped rate above - allauth requires a `key` for
+    # any "/key" rate, which the ip-only check never has.
+    "account_activation_resend_target": "5/h/key",
+}
 MFA_ADAPTER = "allauth.mfa.adapter.DefaultMFAAdapter"
 MFA_SUPPORTED_TYPES = ["totp", "recovery_codes"]
 MFA_TOTP_ISSUER = f"Poradnia {APP_MODE} SO MFA"  # shown in authenticator app

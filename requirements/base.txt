@@ -12,11 +12,11 @@ django-model-utils==5.0.0
 
 # images
 Pillow==12.3.0
-sorl-thumbnail==13.0.0
+sorl-thumbnail==13.1.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth[socialaccount,mfa]==65.19.0
+django-allauth[socialaccount,mfa]==65.19.1
 
 # For the persistance stores
 mysqlclient==2.2.8
@@ -28,7 +28,7 @@ django-autoslug==1.9.9
 # Useful things
 # Time zones support
 pytz==2026.3.post1
-lxml==6.1.1
+lxml==6.1.2
 cssselect==1.5.0
 PyYAML==6.0.3
 # Your custom requirements go here
@@ -46,7 +46,7 @@ django-tinymce==5.0.0
 
 # django-tinycontent is not supported anymore so watchdog maintained fork is used
 git+https://github.com/watchdogpolska/django-tinycontent.git@v2.1.0
-icalendar==7.2.2
+icalendar==7.3.0
 html2text==2025.4.15
 pyGravatar==0.0.6
 
@@ -67,4 +67,4 @@ bleach==6.4.0
 celery[rabbitmq]==5.6.3
 django-celery-beat==2.9.0
 django-celery-results==2.6.0
-flower==2.0.1
+flower==2.1.0
