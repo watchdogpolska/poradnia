@@ -11,8 +11,6 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse
-from django.utils.encoding import force_str
-from django.utils.http import urlsafe_base64_decode
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import (
@@ -30,9 +28,9 @@ from poradnia.utils.mixins import ExprAutocompleteMixin
 from poradnia.utils.view_mixins import StaffuserRequiredMixin, UserFormKwargsMixin
 
 from .filters import UserFilter
-from .forms import ProfileForm, UserForm
+from .forms import AccountActivationResendForm, ProfileForm, UserForm
 from .models import Profile, User
-from .tokens import account_activation_token
+from .tokens import account_activation_token, get_user_from_uidb64
 from .utils import PermissionMixin
 
 
@@ -91,7 +89,7 @@ class AccountActivationView(FormView):
         )
         if rate_limited_response:
             return rate_limited_response
-        self.activation_user = self._get_user(kwargs["uidb64"])
+        self.activation_user = get_user_from_uidb64(kwargs["uidb64"])
         self.token_valid = (
             self.activation_user is not None
             and account_activation_token.check_token(
@@ -99,13 +97,6 @@ class AccountActivationView(FormView):
             )
         )
         return super().dispatch(request, *args, **kwargs)
-
-    def _get_user(self, uidb64):
-        try:
-            uid = force_str(urlsafe_base64_decode(uidb64))
-            return User.objects.get(pk=uid)
-        except (TypeError, ValueError, OverflowError, User.DoesNotExist):
-            return None
 
     def get(self, request, *args, **kwargs):
         if not self.token_valid:
@@ -137,7 +128,54 @@ class AccountActivationView(FormView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["token_valid"] = self.token_valid
+        context["uidb64"] = self.kwargs["uidb64"]
         return context
+
+
+class AccountActivationResendView(FormView):
+    """Lets someone holding a stale activation link request a fresh one for
+    the same account - the uid in the URL already identifies it, so no
+    e-mail address needs to be typed in. Always shows the same generic
+    confirmation regardless of whether the uid resolves to a real,
+    still-unactivated account, so this can't be used to enumerate accounts
+    the way NewCaseForm once could (see anonymous case-submission fix). The
+    visible per-IP rate limit (action="account_activation_resend") guards
+    against flooding the endpoint; a separate, silent per-account limit
+    (action="account_activation_resend_target", checked only in
+    form_valid and never affecting the response) caps how many activation
+    e-mails a single guessed uid can be made to receive, without that cap
+    itself becoming an observable signal."""
+
+    template_name = "users/account_activation_resend.html"
+    form_class = AccountActivationResendForm
+
+    def dispatch(self, request, *args, **kwargs):
+        rate_limited_response = ratelimit.consume_or_429(
+            request, action="account_activation_resend"
+        )
+        if rate_limited_response:
+            return rate_limited_response
+        self.activation_user = get_user_from_uidb64(kwargs["uidb64"])
+        return super().dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        user = self.activation_user
+        if user is not None and not user.has_usable_password():
+            allowed = ratelimit.consume(
+                self.request,
+                action="account_activation_resend_target",
+                key=str(user.pk),
+            )
+            if allowed:
+                User.objects.send_activation_email(user)
+        messages.success(
+            self.request,
+            _(
+                "Jeśli podany link dotyczy konta oczekującego na aktywację, "
+                "wysłaliśmy na powiązany adres e-mail nowy link aktywacyjny."
+            ),
+        )
+        return HttpResponseRedirect(reverse("account_login"))
 
 
 class UserUpdateView(LoginRequiredMixin, UpdateView):

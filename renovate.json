@@ -1,5 +1,9 @@
 {
-  "extends": ["config:recommended"],
+  "extends": [
+    "config:recommended",
+    "schedule:weekly",
+    "group:allNonMajor"
+  ],
   "baseBranchPatterns": ["dev"],
   "ignorePaths": [
     "poradnia/static/jquery-ui/**"
