@@ -7,7 +7,11 @@ from django.utils.translation import gettext as _
 from turnstile.fields import TurnstileField
 
 from poradnia.utils.constants import TURNSTILE_ERROR_MESSAGES
-from poradnia.utils.crispy_forms import FormHorizontalMixin, GIODOMixin
+from poradnia.utils.crispy_forms import (
+    FormHorizontalMixin,
+    GIODOMixin,
+    SingleButtonMixin,
+)
 
 
 class SignupForm(
@@ -49,3 +53,11 @@ class SignupForm(
 
     def signup(self, request, user):
         pass
+
+
+class AccountActivationResendForm(SingleButtonMixin, forms.Form):
+    action_text = _("Wyślij nowy link aktywacyjny")
+
+    turnstile = TurnstileField(
+        label=_(" "), error_messages=TURNSTILE_ERROR_MESSAGES, language="pl"
+    )
