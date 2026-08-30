@@ -18,6 +18,11 @@ urlpatterns = [
     ),
     path("info/<username>/", views.UserInfoView.as_view(), name="user_info"),
     path(
+        "aktywuj/<uidb64>/wyslij-ponownie/",
+        views.AccountActivationResendView.as_view(),
+        name="activate-resend",
+    ),
+    path(
         "aktywuj/<uidb64>/<token>/",
         views.AccountActivationView.as_view(),
         name="activate",

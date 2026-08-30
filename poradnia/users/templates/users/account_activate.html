@@ -19,6 +19,11 @@
             {% else %}
                 <h2>{% trans "Nieprawidłowy link aktywacyjny" %}</h2>
                 <p>{% trans "Ten link aktywacyjny jest nieprawidłowy lub wygasł." %}</p>
+                <p>
+                    <a href="{% url 'users:activate-resend' uidb64=uidb64 %}" class="btn btn-primary">
+                        {% trans "Wyślij nowy link aktywacyjny" %}
+                    </a>
+                </p>
             {% endif %}
         </div>
     </div>

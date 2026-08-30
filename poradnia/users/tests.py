@@ -1,4 +1,6 @@
 import re
+from datetime import datetime, timedelta
+from unittest.mock import patch
 
 from django.core import mail
 from django.core.cache import cache
@@ -20,7 +22,10 @@ from poradnia.users.forms import (
     UserForm,
 )
 from poradnia.users.models import User
-from poradnia.users.tokens import account_activation_token
+from poradnia.users.tokens import (
+    AccountActivationTokenGenerator,
+    account_activation_token,
+)
 from poradnia.users.views import UserAutocomplete
 from poradnia.utils.tests.mixins import AdminTestCaseMixin
 
@@ -542,3 +547,109 @@ class AccountActivationViewTestCase(TestCase):
         for _ in range(5):
             resp = self.client.get(self.get_url())
         self.assertContains(resp, "<form")
+
+
+class AccountActivationTokenGeneratorTestCase(TestCase):
+    """Activation tokens use their own timeout (30 days), decoupled from
+    Django's global PASSWORD_RESET_TIMEOUT (3-day default) - see
+    poradnia/users/tokens.py for why."""
+
+    def setUp(self):
+        self.user = User.objects.register_by_email(
+            email="unverified-token@example.com", notify=False
+        )
+
+    def test_token_survives_past_djangos_default_password_reset_timeout(self):
+        token = account_activation_token.make_token(self.user)
+        with patch.object(
+            AccountActivationTokenGenerator,
+            "_now",
+            return_value=datetime.now() + timedelta(days=4),
+        ):
+            self.assertTrue(account_activation_token.check_token(self.user, token))
+
+    def test_token_expires_after_its_own_timeout(self):
+        token = account_activation_token.make_token(self.user)
+        with patch.object(
+            AccountActivationTokenGenerator,
+            "_now",
+            return_value=datetime.now() + timedelta(days=31),
+        ):
+            self.assertFalse(account_activation_token.check_token(self.user, token))
+
+
+class AccountActivationResendViewTestCase(TestCase):
+    turnstile_data = {"turnstile": "valid-turnstile-response"}
+
+    def setUp(self):
+        cache.clear()  # rate-limit counters live in the cache, not the DB
+        self.user = User.objects.register_by_email(
+            email="unverified-resend@example.com", notify=False
+        )
+
+    def get_url(self, user=None):
+        user = user or self.user
+        uidb64 = urlsafe_base64_encode(force_bytes(user.pk))
+        return reverse("users:activate-resend", kwargs={"uidb64": uidb64})
+
+    @patch("turnstile.fields.TurnstileField.validate", return_value=True)
+    def test_resend_sends_new_activation_email(self, _mock):
+        resp = self.client.post(self.get_url(), data=self.turnstile_data)
+        self.assertRedirects(resp, reverse("account_login"))
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn(self.user.email, mail.outbox[0].to)
+
+    @patch("turnstile.fields.TurnstileField.validate", return_value=True)
+    def test_resend_is_noop_for_already_activated_account(self, _mock):
+        self.user.set_password("a-Very-Str0ng-Pass")
+        self.user.save()
+        resp = self.client.post(self.get_url(), data=self.turnstile_data)
+        self.assertRedirects(resp, reverse("account_login"))
+        self.assertEqual(len(mail.outbox), 0)
+
+    @patch("turnstile.fields.TurnstileField.validate", return_value=True)
+    def test_resend_is_noop_for_unknown_uid(self, _mock):
+        bogus_uidb64 = urlsafe_base64_encode(force_bytes(999999))
+        resp = self.client.post(
+            reverse("users:activate-resend", kwargs={"uidb64": bogus_uidb64}),
+            data=self.turnstile_data,
+        )
+        self.assertRedirects(resp, reverse("account_login"))
+        self.assertEqual(len(mail.outbox), 0)
+
+    @patch("turnstile.fields.TurnstileField.validate", return_value=True)
+    def test_response_is_identical_whether_or_not_the_uid_is_real(self, _mock):
+        # Same status code and redirect target either way, so the endpoint
+        # can't be used to enumerate which accounts exist.
+        bogus_uidb64 = urlsafe_base64_encode(force_bytes(999999))
+        real_resp = self.client.post(self.get_url(), data=self.turnstile_data)
+        bogus_resp = self.client.post(
+            reverse("users:activate-resend", kwargs={"uidb64": bogus_uidb64}),
+            data=self.turnstile_data,
+        )
+        self.assertEqual(real_resp.status_code, bogus_resp.status_code)
+        self.assertEqual(real_resp.url, bogus_resp.url)
+
+    @override_settings(ACCOUNT_RATE_LIMITS={"account_activation_resend": "2/m/ip"})
+    @patch("turnstile.fields.TurnstileField.validate", return_value=True)
+    def test_post_beyond_ip_rate_limit_returns_429(self, _mock):
+        url = self.get_url()
+        self.client.post(url, data=self.turnstile_data)
+        self.client.post(url, data=self.turnstile_data)
+        resp = self.client.post(url, data=self.turnstile_data)
+        self.assertEqual(resp.status_code, 429)
+
+    @override_settings(
+        ACCOUNT_RATE_LIMITS={
+            "account_activation_resend": "20/m/ip",
+            "account_activation_resend_target": "1/h/key",
+        }
+    )
+    @patch("turnstile.fields.TurnstileField.validate", return_value=True)
+    def test_per_account_cap_stops_sending_without_changing_the_response(self, _mock):
+        url = self.get_url()
+        first = self.client.post(url, data=self.turnstile_data)
+        second = self.client.post(url, data=self.turnstile_data)
+        self.assertEqual(first.status_code, second.status_code)
+        self.assertEqual(first.url, second.url)
+        self.assertEqual(len(mail.outbox), 1)
