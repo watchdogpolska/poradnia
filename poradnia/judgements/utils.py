@@ -17,6 +17,7 @@ class Manager:
         self.stderr = stderr
 
     def _log(self, message):
+        # Both needed: call_command() captures self.stdout, not logging output.
         logger.info(message)
         self.stdout.write(message)
 
