@@ -61,8 +61,37 @@ class AdviceAdmin(admin.ModelAdmin):
         return False
 
 
-@admin.register(Issue, InstitutionKind, PersonKind, Area)
+@admin.register(Issue, Area)
 class CategoryAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     ordering = ("name",)
     actions = None
+    list_display = [
+        "id",
+        "name",
+        "is_dip",
+        "is_local_government",
+        "is_slapp",
+        "active",
+    ]
+    list_filter = [
+        "is_dip",
+        "is_local_government",
+        "is_slapp",
+        "active",
+    ]
+
+
+@admin.register(InstitutionKind, PersonKind)
+class SimpleCategoryAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+    ordering = ("name",)
+    actions = None
+    list_display = [
+        "id",
+        "name",
+        "active",
+    ]
+    list_filter = [
+        "active",
+    ]
