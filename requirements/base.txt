@@ -21,10 +21,6 @@ django-allauth[socialaccount,mfa]==65.19.1
 # For the persistance stores
 mysqlclient==2.2.8
 
-# Unicode slugification
-unicode-slugify==0.1.5
-django-autoslug==1.9.9
-
 # Useful things
 # Time zones support
 pytz==2026.3.post1
