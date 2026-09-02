@@ -44,13 +44,11 @@ django-tinymce==5.0.0
 git+https://github.com/watchdogpolska/django-tinycontent.git@v2.1.0
 icalendar==7.3.0
 html2text==2025.4.15
-pyGravatar==0.0.6
 
 openpyxl==3.1.5
 sentry-sdk==2.68.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
-zipstream-new==1.1.8
 django-teryt-tree==0.18.4
 django-mptt==0.18.0
 mistune==3.3.4
