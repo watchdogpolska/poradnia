@@ -1,5 +1,6 @@
 import re
 from datetime import datetime, timedelta
+from hashlib import md5
 from unittest.mock import patch
 
 from django.core import mail
@@ -22,6 +23,7 @@ from poradnia.users.forms import (
     UserForm,
 )
 from poradnia.users.models import User
+from poradnia.users.templatetags.users_tags import get_avatar_url
 from poradnia.users.tokens import (
     AccountActivationTokenGenerator,
     account_activation_token,
@@ -85,6 +87,20 @@ class UserTestCase(TestCase):
         created_on = UserFactory().created_on
         diff_seconds = (created_on - now).total_seconds()
         self.assertLess(diff_seconds, 5)  # allow small latency
+
+
+class GetAvatarUrlTestCase(TestCase):
+    def test_uses_uploaded_picture_thumbnail_when_present(self):
+        user = UserFactory()
+        self.assertIn(".jpg", get_avatar_url(user))
+
+    def test_falls_back_to_gravatar_url_when_no_picture(self):
+        user = UserFactory.build(picture=None, email="jan@example.com")
+        expected_hash = md5(b"jan@example.com").hexdigest()
+        url = get_avatar_url(user, width=100)
+        self.assertTrue(url.startswith("https://secure.gravatar.com/avatar/"))
+        self.assertIn(expected_hash, url)
+        self.assertIn("s=100", url)
 
 
 class UserQuerySetTestCase(TestCase):
