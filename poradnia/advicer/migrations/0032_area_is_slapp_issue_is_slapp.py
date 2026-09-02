@@ -6,18 +6,18 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('advicer', '0031_advice_ai_tags_request'),
+        ("advicer", "0031_advice_ai_tags_request"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='area',
-            name='is_slapp',
-            field=models.BooleanField(default=False, verbose_name='Is SLAPP area?'),
+            model_name="area",
+            name="is_slapp",
+            field=models.BooleanField(default=False, verbose_name="Is SLAPP area?"),
         ),
         migrations.AddField(
-            model_name='issue',
-            name='is_slapp',
-            field=models.BooleanField(default=False, verbose_name='Is SLAPP issue?'),
+            model_name="issue",
+            name="is_slapp",
+            field=models.BooleanField(default=False, verbose_name="Is SLAPP issue?"),
         ),
     ]
