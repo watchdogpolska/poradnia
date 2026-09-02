@@ -492,7 +492,7 @@ class IssueActiveAsJsonTestCase(TestCase):
         item = next(d for d in data if d["id"] == issue.pk)
         self.assertEqual(
             set(item.keys()),
-            {"id", "name", "tag_helper", "is_dip", "is_local_government"},
+            {"id", "name", "tag_helper", "is_dip", "is_local_government", "is_slapp"},
         )
 
 
@@ -513,7 +513,7 @@ class AreaActiveAsJsonTestCase(TestCase):
         item = next(d for d in data if d["id"] == area.pk)
         self.assertEqual(
             set(item.keys()),
-            {"id", "name", "tag_helper", "is_dip", "is_local_government"},
+            {"id", "name", "tag_helper", "is_dip", "is_local_government", "is_slapp"},
         )
 
 

@@ -657,11 +657,11 @@ class Case(models.Model):
                 ),
             }
 
-        def serialize_tags(model):
+        def serialize_tags(model, *extra_fields):
             return list(
                 model.objects.filter(active=True)
                 .order_by("id")
-                .values("id", "name", "tag_helper")
+                .values("id", "name", "tag_helper", *extra_fields)
             )
 
         letters = (
@@ -699,8 +699,10 @@ class Case(models.Model):
                 }
                 for letter in letters
             ],
-            "issues": serialize_tags(Issue),
-            "areas": serialize_tags(Area),
+            "issues": serialize_tags(
+                Issue, "is_dip", "is_local_government", "is_slapp"
+            ),
+            "areas": serialize_tags(Area, "is_dip", "is_local_government", "is_slapp"),
             "person_kinds": serialize_tags(PersonKind),
             "institution_kinds": serialize_tags(InstitutionKind),
             "client": serialize_user(self.client),
