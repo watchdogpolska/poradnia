@@ -16,27 +16,28 @@ def _process_event_for_user(event, user, now):
     if not hasattr(user, "profile"):
         deadline_days = 1
     elif user.profile.event_reminder_time == 0:
-        return
+        return False
     else:
         deadline_days = user.profile.event_reminder_time
 
     notification_deadline = timedelta(days=deadline_days)
 
-    if (now + notification_deadline > event.time) and (not event.completed):
-        msg = f"Sending notification about {event} to user {user}"
-        logger.info(msg)
+    if now + notification_deadline <= event.time:
+        return False
 
-        user.notify(
-            actor=user,
-            verb="reminder",
-            target=event,
-            from_email=event.case.get_email(),
-        )
-        Reminder.objects.create(event=event, user=user)
+    if event.completed:
+        logger.info("Event %s is completed, skipping notification", event)
+        return False
 
-    elif (now + notification_deadline > event.time) and event.completed:
-        msg = f"Event {event} is completed, skipping notification"
-        logger.info(msg)
+    logger.info("Sending notification about %s to user %s", event, user)
+    user.notify(
+        actor=user,
+        verb="reminder",
+        target=event,
+        from_email=event.case.get_email(),
+    )
+    Reminder.objects.create(event=event, user=user)
+    return True
 
 
 @shared_task(
@@ -46,6 +47,7 @@ def _process_event_for_user(event, user, now):
     retry_backoff=True,
     retry_jitter=True,
     max_retries=3,
+    resultrepr_maxsize=8192,
 )
 def send_event_reminders(self):
     """
@@ -89,7 +91,9 @@ def send_event_reminders(self):
                 skipped.append((user.email, event.id))
                 continue
 
-            _process_event_for_user(event, user, now)
-            sent.append((user.email, event.id))
+            if _process_event_for_user(event, user, now):
+                sent.append((user.email, event.id))
+            else:
+                skipped.append((user.email, event.id))
 
     return {"sent": sent, "skipped": skipped}

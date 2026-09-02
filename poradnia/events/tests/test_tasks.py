@@ -82,3 +82,18 @@ class SendEventRemindersTaskTestCase(TestCase):
         self.assertIn("skipped", result)
         self.assertEqual(len(result["sent"]), 1)
         self.assertEqual(len(result["skipped"]), 0)
+
+    def test_completed_event_sends_no_email_and_is_not_reported_as_sent(self):
+        # regression: completed events were logged as "skipping notification"
+        # but still counted in the task's "sent" result, misreporting that a
+        # reminder went out.
+        EventFactory(
+            case=self.case,
+            time=timezone.now() + timedelta(days=2),
+            completed=True,
+        )
+        result = self._run()
+        self.assertEqual(len(mail.outbox), 0)
+        self.assertEqual(self.user.reminder_set.count(), 0)
+        self.assertEqual(len(result["sent"]), 0)
+        self.assertEqual(len(result["skipped"]), 1)

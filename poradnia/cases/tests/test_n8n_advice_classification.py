@@ -135,11 +135,29 @@ class CaseN8NAdviceClassificationTestCase(TestCase):
 
         self.assertEqual(
             payload["issues"],
-            [{"id": issue.pk, "name": "Issue active", "tag_helper": "Issue helper"}],
+            [
+                {
+                    "id": issue.pk,
+                    "name": "Issue active",
+                    "tag_helper": "Issue helper",
+                    "is_dip": True,
+                    "is_local_government": False,
+                    "is_slapp": False,
+                }
+            ],
         )
         self.assertEqual(
             payload["areas"],
-            [{"id": area.pk, "name": "Area active", "tag_helper": "Area helper"}],
+            [
+                {
+                    "id": area.pk,
+                    "name": "Area active",
+                    "tag_helper": "Area helper",
+                    "is_dip": True,
+                    "is_local_government": False,
+                    "is_slapp": False,
+                }
+            ],
         )
         self.assertEqual(
             payload["person_kinds"],

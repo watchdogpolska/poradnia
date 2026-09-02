@@ -77,7 +77,7 @@ const createAdministrativeDivisionUnit = (cy) => (unit) => {
 };
 
 const createAdviceArea = (cy) => (adviceArea) => {
-  const { name, active = 1, tag_helper = null, is_dip = 1, is_local_government = 0 } = adviceArea;
+  const { name, active = 1, tag_helper = null, is_dip = 1, is_local_government = 0, is_slapp = 0 } = adviceArea;
   cy.task(
     "db:query",
     buildInsertQuery("advicer_area", {
@@ -86,12 +86,13 @@ const createAdviceArea = (cy) => (adviceArea) => {
       tag_helper: tag_helper === null ? "NULL" : withExtraQuotes(tag_helper),
       is_dip,
       is_local_government,
+      is_slapp,
     })
   );
 };
 
 const createAdviceIssue = (cy) => (adviceIssue) => {
-  const { name, active = 1, tag_helper = null, is_dip = 1, is_local_government = 0 } = adviceIssue;
+  const { name, active = 1, tag_helper = null, is_dip = 1, is_local_government = 0, is_slapp = 0 } = adviceIssue;
   cy.task(
     "db:query",
     buildInsertQuery("advicer_issue", {
@@ -100,6 +101,7 @@ const createAdviceIssue = (cy) => (adviceIssue) => {
       tag_helper: tag_helper === null ? "NULL" : withExtraQuotes(tag_helper),
       is_dip,
       is_local_government,
+      is_slapp,
     })
   );
 };

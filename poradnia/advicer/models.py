@@ -43,6 +43,7 @@ class Issue(AbstractCategory):
     is_local_government = models.BooleanField(
         default=False, verbose_name=_("Is local government issue?")
     )
+    is_slapp = models.BooleanField(default=False, verbose_name=_("Is SLAPP issue?"))
 
     class Meta:
         verbose_name = _("The thematic scope of the request")
@@ -52,7 +53,7 @@ class Issue(AbstractCategory):
     def active_as_json(cls):
         items = list(
             cls.objects.filter(active=True).values(
-                "id", "name", "tag_helper", "is_dip", "is_local_government"
+                "id", "name", "tag_helper", "is_dip", "is_local_government", "is_slapp"
             )
         )
         return json.dumps(items)
@@ -63,6 +64,7 @@ class Area(AbstractCategory):
     is_local_government = models.BooleanField(
         default=False, verbose_name=_("Is local government area?")
     )
+    is_slapp = models.BooleanField(default=False, verbose_name=_("Is SLAPP area?"))
 
     class Meta:
         verbose_name = _("Problem regarding the right to information")
@@ -72,7 +74,7 @@ class Area(AbstractCategory):
     def active_as_json(cls):
         items = list(
             cls.objects.filter(active=True).values(
-                "id", "name", "tag_helper", "is_dip", "is_local_government"
+                "id", "name", "tag_helper", "is_dip", "is_local_government", "is_slapp"
             )
         )
         return json.dumps(items)

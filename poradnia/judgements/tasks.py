@@ -26,21 +26,6 @@ from poradnia.judgements.utils import Manager
 logger = get_task_logger(__name__)
 
 
-class LoggerWrapper:
-    """Redirect file-like stdout/stderr writes to a logger function."""
-
-    def __init__(self, logger_func):
-        self.logger_func = logger_func
-
-    def write(self, message: str) -> None:
-        if message and message.strip():
-            self.logger_func(message.strip())
-
-    def flush(self) -> None:
-        """Provided for file-like compatibility."""
-        return None
-
-
 @shared_task(
     bind=True,
     ignore_result=False,
@@ -196,10 +181,13 @@ def _process_all_courts(
     result: Dict[str, Any],
 ) -> None:
     """Process all selected courts and accumulate summary metrics."""
+    # Manager also logs each action via `logger` directly; these buffers just
+    # satisfy its stdout/stderr file-like interface without duplicating that
+    # logging (unlike a logger-backed writer would).
     manager = Manager(
         bot=judgement_bot,
-        stdout=LoggerWrapper(logger.info),
-        stderr=LoggerWrapper(logger.error),
+        stdout=io.StringIO(),
+        stderr=io.StringIO(),
     )
 
     for court in courts_list:
