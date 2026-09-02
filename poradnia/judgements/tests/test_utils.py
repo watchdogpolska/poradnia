@@ -1,3 +1,5 @@
+import datetime
+
 from poradnia.judgements.tests.test_parsers import my_vcr
 
 try:
@@ -9,6 +11,7 @@ from unittest import mock
 
 from django.core import mail
 from django.test import TestCase
+from django.utils import timezone
 
 from poradnia.cases.factories import CaseUserObjectPermissionFactory
 from poradnia.events.models import Event
@@ -83,6 +86,29 @@ class ManagerTestCase(TestCase):
         new_mail = mail.outbox.pop()
 
         self.assertIn(courtcase.signature, new_mail.body)
+
+    def test_skip_update_and_notification_if_event_completed(self):
+        # regression: a court session's time/description getting corrected
+        # upstream after a human already marked the local event completed
+        # used to silently reopen it and re-notify staff.
+        old_time = timezone.now().replace(hour=10, minute=0, second=0, microsecond=0)
+        courtsession = CourtSessionFactory(event__time=old_time)
+        courtcase = courtsession.courtcase
+        old_event = courtsession.event
+        old_text = old_event.text
+        old_event.completed = True
+        old_event.save()
+        session_row = SessionRowFactory(
+            signature=courtcase.signature,
+            datetime=old_time + datetime.timedelta(hours=1),
+        )
+        my_mock = mock.Mock(get_session_rows=lambda: [session_row])
+        self.manager.handle_court(courtsession.courtcase.court, my_mock)
+        old_event.refresh_from_db()
+        self.assertEqual(old_event.text, old_text)
+        self.assertEqual(old_event.time, old_time)
+        self.assertIsNone(old_event.modified_by)
+        self.assertEqual(len(mail.outbox), 0)
 
     def test_skip_update_event_if_session_row_match(self):
         courtsession = CourtSessionFactory()

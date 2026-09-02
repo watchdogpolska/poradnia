@@ -68,6 +68,19 @@ class Manager:
             )
             return
 
+        if courtsession.event.completed:
+            logger.info(
+                "Event {} is completed, skipping court session update to {}".format(
+                    courtsession.event, session_row.datetime
+                )
+            )
+            self.stdout.write(
+                "Event {} is completed, skipping court session update to {}".format(
+                    courtsession.event, session_row.datetime
+                )
+            )
+            return
+
         logger.info(
             "Update court session {} to {} from {}".format(
                 courtsession, session_row.datetime, courtsession.event.time
