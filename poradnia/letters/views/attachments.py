@@ -1,12 +1,57 @@
+import zipfile
 from os.path import basename
 
-import zipstream
 from django.http import StreamingHttpResponse
 from django.shortcuts import get_object_or_404
 from django.views.generic import ListView, RedirectView
 
 from poradnia.letters.models import Attachment
 from poradnia.users.utils import PermissionMixin
+
+ZIP_READ_CHUNK_SIZE = 64 * 1024
+
+
+class _ZipStreamBuffer:
+    """Write-only buffer standing in for zipfile.ZipFile's output file.
+
+    zipfile falls back to a non-seekable write mode when fp.tell()/seek()
+    aren't available, so a plain write() is all that's needed to make it
+    emit the archive as a sequence of chunks instead of a real file.
+    """
+
+    def __init__(self):
+        self._chunks = bytearray()
+
+    def write(self, data):
+        self._chunks += data
+        return len(data)
+
+    def flush(self):
+        pass
+
+    def take(self):
+        chunk = bytes(self._chunks)
+        self._chunks.clear()
+        return chunk
+
+
+def _iter_zip(attachments):
+    buffer = _ZipStreamBuffer()
+    with zipfile.ZipFile(buffer, mode="w") as archive:
+        for attachment in attachments:
+            path = attachment.attachment.path
+            with (
+                open(path, "rb") as source,
+                archive.open(basename(path), mode="w") as dest,
+            ):
+                while chunk := source.read(ZIP_READ_CHUNK_SIZE):
+                    dest.write(chunk)
+                    if data := buffer.take():
+                        yield data
+            if data := buffer.take():
+                yield data
+    if data := buffer.take():
+        yield data
 
 
 class StreamAttachmentView(PermissionMixin, ListView):
@@ -18,17 +63,10 @@ class StreamAttachmentView(PermissionMixin, ListView):
             letter=self.kwargs["letter_pk"]
         )
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data()
-        z = zipstream.ZipFile()
-        for attachment in self.get_queryset():
-            z.write(attachment.attachment.path, basename(attachment.attachment.path))
-        context["archive"] = z
-        return context
-
     def render_to_response(self, context, **response_kwargs):
         response = StreamingHttpResponse(
-            streaming_content=context["archive"], content_type="application/zip"
+            streaming_content=_iter_zip(self.object_list),
+            content_type="application/zip",
         )
         response["Content-Disposition"] = (
             'attachment; filename="sprawa-{case_pk}-list-{letter_pk}.zip"'.format(

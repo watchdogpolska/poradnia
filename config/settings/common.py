@@ -347,7 +347,7 @@ WSGI_APPLICATION = "config.wsgi.application"
 # End URL Configuration
 
 # SLUGLIFIER
-AUTOSLUG_SLUGIFY_FUNCTION = "slugify.slugify"
+AUTOSLUG_SLUGIFY_FUNCTION = "poradnia.utils.utils.slugify_unicode"
 # END SLUGLIFIER
 
 # LOGGING CONFIGURATION

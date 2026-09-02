@@ -16,9 +16,13 @@ class Manager:
         self.stdout = stdout
         self.stderr = stderr
 
+    def _log(self, message):
+        # Both needed: call_command() captures self.stdout, not logging output.
+        logger.info(message)
+        self.stdout.write(message)
+
     def handle_court(self, court, parser=None):
-        logger.info("=" * 6 + force_str(court))
-        self.stdout.write("=" * 6 + force_str(court))
+        self._log("=" * 6 + force_str(court))
         signatures = {
             x.signature: x
             for x in CourtCase.objects.filter(court=court).with_events().all()
@@ -56,24 +60,22 @@ class Manager:
 
     def handle_update_courtsession(self, courtsession, session_row):
         if self._cmp_event_sessionrow(courtsession.event, session_row):
-            logger.info(
-                "Skip update court session {} to {}".format(
-                    courtsession, session_row.datetime
-                )
-            )
-            self.stdout.write(
+            self._log(
                 "Skip update court session {} to {}".format(
                     courtsession, session_row.datetime
                 )
             )
             return
 
-        logger.info(
-            "Update court session {} to {} from {}".format(
-                courtsession, session_row.datetime, courtsession.event.time
+        if courtsession.event.completed:
+            self._log(
+                "Event {} is completed, skipping court session update to {}".format(
+                    courtsession.event, session_row.datetime
+                )
             )
-        )
-        self.stdout.write(
+            return
+
+        self._log(
             "Update court session {} to {} from {}".format(
                 courtsession, session_row.datetime, courtsession.event.time
             )
@@ -105,12 +107,7 @@ class Manager:
         CourtSession.objects.create(
             courtcase=courtcase, parser_key=court.parser_key, event=event
         )
-        logger.info(
-            "Registered court session for {} at {}".format(
-                session_row.signature, session_row.datetime
-            )
-        )
-        self.stdout.write(
+        self._log(
             "Registered court session for {} at {}".format(
                 session_row.signature, session_row.datetime
             )
