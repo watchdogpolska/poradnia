@@ -11,7 +11,7 @@ from django.utils.html import escape
 from guardian.shortcuts import assign_perm
 from test_plus.test import TestCase
 
-from poradnia.advicer.models import Advice, Area, Issue
+from poradnia.advicer.models import Advice, Area, Issue, Scope
 from poradnia.ai_assistant.models import N8nCaseTagsRequest
 from poradnia.users.factories import StaffFactory, UserFactory
 from poradnia.utils.tests.mixins import AdminTestCaseMixin
@@ -22,6 +22,7 @@ from .factories import (
     InstitutionKindFactory,
     IssueFactory,
     PersonKindFactory,
+    ScopeFactory,
 )
 
 
@@ -492,7 +493,14 @@ class IssueActiveAsJsonTestCase(TestCase):
         item = next(d for d in data if d["id"] == issue.pk)
         self.assertEqual(
             set(item.keys()),
-            {"id", "name", "tag_helper", "is_dip", "is_local_government", "is_slapp"},
+            {
+                "id",
+                "name",
+                "tag_helper",
+                "is_dip",
+                "is_local_government",
+                "is_slapp",
+            },
         )
 
 
@@ -514,6 +522,35 @@ class AreaActiveAsJsonTestCase(TestCase):
         self.assertEqual(
             set(item.keys()),
             {"id", "name", "tag_helper", "is_dip", "is_local_government", "is_slapp"},
+        )
+
+
+class ScopeActiveAsJsonTestCase(TestCase):
+    def test_excludes_inactive(self):
+        inactive = ScopeFactory(active=False)
+        data = json.loads(Scope.active_as_json())
+        self.assertNotIn(inactive.pk, [item["id"] for item in data])
+
+    def test_includes_active(self):
+        scope = ScopeFactory(active=True)
+        data = json.loads(Scope.active_as_json())
+        self.assertIn(scope.pk, [item["id"] for item in data])
+
+    def test_fields(self):
+        scope = ScopeFactory(active=True)
+        data = json.loads(Scope.active_as_json())
+        item = next(d for d in data if d["id"] == scope.pk)
+        self.assertEqual(
+            set(item.keys()),
+            {
+                "id",
+                "name",
+                "tag_helper",
+                "is_dip",
+                "is_local_government",
+                "is_slapp",
+                "is_out_of_scope",
+            },
         )
 
 

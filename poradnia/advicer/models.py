@@ -38,6 +38,36 @@ class AbstractCategory(models.Model):
         return json.dumps(items)
 
 
+class Scope(AbstractCategory):
+    is_dip = models.BooleanField(default=True, verbose_name=_("Is FOI issue?"))
+    is_local_government = models.BooleanField(
+        default=False, verbose_name=_("Is local government issue?")
+    )
+    is_slapp = models.BooleanField(default=False, verbose_name=_("Is SLAPP issue?"))
+    is_out_of_scope = models.BooleanField(
+        default=False, verbose_name=_("Is Out of scope?")
+    )
+
+    class Meta:
+        verbose_name = _("Scope")
+        verbose_name_plural = _("Scopes")
+
+    @classmethod
+    def active_as_json(cls):
+        items = list(
+            cls.objects.filter(active=True).values(
+                "id",
+                "name",
+                "tag_helper",
+                "is_dip",
+                "is_local_government",
+                "is_slapp",
+                "is_out_of_scope",
+            )
+        )
+        return json.dumps(items)
+
+
 class Issue(AbstractCategory):
     is_dip = models.BooleanField(default=True, verbose_name=_("Is FOI issue?"))
     is_local_government = models.BooleanField(
@@ -46,14 +76,19 @@ class Issue(AbstractCategory):
     is_slapp = models.BooleanField(default=False, verbose_name=_("Is SLAPP issue?"))
 
     class Meta:
-        verbose_name = _("The thematic scope of the request")
-        verbose_name_plural = _("Thematic scopes of requests")
+        verbose_name = _("Issue")
+        verbose_name_plural = _("Issues")
 
     @classmethod
     def active_as_json(cls):
         items = list(
             cls.objects.filter(active=True).values(
-                "id", "name", "tag_helper", "is_dip", "is_local_government", "is_slapp"
+                "id",
+                "name",
+                "tag_helper",
+                "is_dip",
+                "is_local_government",
+                "is_slapp",
             )
         )
         return json.dumps(items)
@@ -67,14 +102,19 @@ class Area(AbstractCategory):
     is_slapp = models.BooleanField(default=False, verbose_name=_("Is SLAPP area?"))
 
     class Meta:
-        verbose_name = _("Problem regarding the right to information")
-        verbose_name_plural = _("Problems regarding the right to information")
+        verbose_name = _("Area")
+        verbose_name_plural = _("Areas")
 
     @classmethod
     def active_as_json(cls):
         items = list(
             cls.objects.filter(active=True).values(
-                "id", "name", "tag_helper", "is_dip", "is_local_government", "is_slapp"
+                "id",
+                "name",
+                "tag_helper",
+                "is_dip",
+                "is_local_government",
+                "is_slapp",
             )
         )
         return json.dumps(items)

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
 
-from .models import Advice, Area, InstitutionKind, Issue, PersonKind
+from .models import Advice, Area, InstitutionKind, Issue, PersonKind, Scope
 
 
 class NullCaseFilter(admin.SimpleListFilter):
@@ -61,8 +61,52 @@ class AdviceAdmin(admin.ModelAdmin):
         return False
 
 
-@admin.register(Issue, Area)
-class CategoryAdmin(admin.ModelAdmin):
+@admin.register(Scope)
+class ScopeAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+    ordering = ("name",)
+    actions = None
+    list_display = [
+        "id",
+        "name",
+        "is_dip",
+        "is_local_government",
+        "is_slapp",
+        "is_out_of_scope",
+        "active",
+    ]
+    list_filter = [
+        "is_dip",
+        "is_local_government",
+        "is_slapp",
+        "is_out_of_scope",
+        "active",
+    ]
+
+
+@admin.register(Issue)
+class IssueAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+    ordering = ("name",)
+    actions = None
+    list_display = [
+        "id",
+        "name",
+        "is_dip",
+        "is_local_government",
+        "is_slapp",
+        "active",
+    ]
+    list_filter = [
+        "is_dip",
+        "is_local_government",
+        "is_slapp",
+        "active",
+    ]
+
+
+@admin.register(Area)
+class AreaAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     ordering = ("name",)
     actions = None
