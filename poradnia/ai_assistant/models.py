@@ -176,7 +176,13 @@ class N8nCaseTagsRequest(models.Model):
         Raises ImproperlyConfigured when required settings are absent.
         Raises requests.HTTPError for non-2xx responses.
         """
-        from poradnia.advicer.models import Area, InstitutionKind, Issue, PersonKind
+        from poradnia.advicer.models import (
+            Area,
+            InstitutionKind,
+            Issue,
+            PersonKind,
+            Scope,
+        )
 
         webhook_url = getattr(settings, "N8N_CASE_TAGS_WEBHOOK", None)
         webhook_token = getattr(settings, "N8N_CASE_TAGS_WEBHOOK_TOKEN", None)
@@ -197,6 +203,7 @@ class N8nCaseTagsRequest(models.Model):
         payload = {
             "question": self.question,
             "environment": environment,
+            "scopes_list": json.loads(Scope.active_as_json()),
             "issues_list": json.loads(Issue.active_as_json()),
             "areas_list": json.loads(Area.active_as_json()),
             "personkind_list": json.loads(PersonKind.active_as_json()),

@@ -17,6 +17,7 @@ from poradnia.advicer.factories import (
     InstitutionKindFactory,
     IssueFactory,
     PersonKindFactory,
+    ScopeFactory,
 )
 from poradnia.ai_assistant import views as views_module
 from poradnia.ai_assistant.admin import (
@@ -626,6 +627,7 @@ class N8nCaseTagsRequestModelTestCase(TestCase):
         issue = IssueFactory(name="Test Issue")
         area = AreaFactory(name="Test Area")
         person_kind = PersonKindFactory(name="Test Person Kind")
+        scope = ScopeFactory(name="Test Scope")
 
         obj = N8nCaseTagsRequest(question="What is the question?")
         obj.send_tags_request()
@@ -648,6 +650,14 @@ class N8nCaseTagsRequestModelTestCase(TestCase):
         self.assertIn("Test Area", area_names)
         person_kind_names = [p["name"] for p in kwargs["json"]["personkind_list"]]
         self.assertIn("Test Person Kind", person_kind_names)
+        person_kind_item = next(
+            p
+            for p in kwargs["json"]["personkind_list"]
+            if p["name"] == "Test Person Kind"
+        )
+        self.assertEqual(person_kind_item["is_undefined"], False)
+        scope_names = [s["name"] for s in kwargs["json"]["scopes_list"]]
+        self.assertIn("Test Scope", scope_names)
 
     @override_settings(**CASE_TAGS_WEBHOOK_SETTINGS)
     @patch("poradnia.ai_assistant.models.requests.post")

@@ -11,7 +11,14 @@ from django.utils.html import escape
 from guardian.shortcuts import assign_perm
 from test_plus.test import TestCase
 
-from poradnia.advicer.models import Advice, Area, Issue
+from poradnia.advicer.models import (
+    Advice,
+    Area,
+    InstitutionKind,
+    Issue,
+    PersonKind,
+    Scope,
+)
 from poradnia.ai_assistant.models import N8nCaseTagsRequest
 from poradnia.users.factories import StaffFactory, UserFactory
 from poradnia.utils.tests.mixins import AdminTestCaseMixin
@@ -22,6 +29,7 @@ from .factories import (
     InstitutionKindFactory,
     IssueFactory,
     PersonKindFactory,
+    ScopeFactory,
 )
 
 
@@ -492,7 +500,14 @@ class IssueActiveAsJsonTestCase(TestCase):
         item = next(d for d in data if d["id"] == issue.pk)
         self.assertEqual(
             set(item.keys()),
-            {"id", "name", "tag_helper", "is_dip", "is_local_government", "is_slapp"},
+            {
+                "id",
+                "name",
+                "tag_helper",
+                "is_dip",
+                "is_local_government",
+                "is_slapp",
+            },
         )
 
 
@@ -515,6 +530,89 @@ class AreaActiveAsJsonTestCase(TestCase):
             set(item.keys()),
             {"id", "name", "tag_helper", "is_dip", "is_local_government", "is_slapp"},
         )
+
+
+class ScopeActiveAsJsonTestCase(TestCase):
+    def test_excludes_inactive(self):
+        inactive = ScopeFactory(active=False)
+        data = json.loads(Scope.active_as_json())
+        self.assertNotIn(inactive.pk, [item["id"] for item in data])
+
+    def test_includes_active(self):
+        scope = ScopeFactory(active=True)
+        data = json.loads(Scope.active_as_json())
+        self.assertIn(scope.pk, [item["id"] for item in data])
+
+    def test_fields(self):
+        scope = ScopeFactory(active=True)
+        data = json.loads(Scope.active_as_json())
+        item = next(d for d in data if d["id"] == scope.pk)
+        self.assertEqual(
+            set(item.keys()),
+            {
+                "id",
+                "name",
+                "tag_helper",
+                "is_dip",
+                "is_local_government",
+                "is_slapp",
+                "is_out_of_scope",
+            },
+        )
+
+
+class PersonKindActiveAsJsonTestCase(TestCase):
+    def test_excludes_inactive(self):
+        inactive = PersonKindFactory(active=False)
+        data = json.loads(PersonKind.active_as_json())
+        self.assertNotIn(inactive.pk, [item["id"] for item in data])
+
+    def test_includes_active(self):
+        person_kind = PersonKindFactory(active=True)
+        data = json.loads(PersonKind.active_as_json())
+        self.assertIn(person_kind.pk, [item["id"] for item in data])
+
+    def test_fields(self):
+        person_kind = PersonKindFactory(active=True)
+        data = json.loads(PersonKind.active_as_json())
+        item = next(d for d in data if d["id"] == person_kind.pk)
+        self.assertEqual(
+            set(item.keys()),
+            {"id", "name", "tag_helper", "is_undefined"},
+        )
+
+
+class InstitutionKindActiveAsJsonTestCase(TestCase):
+    def test_excludes_inactive(self):
+        inactive = InstitutionKindFactory(active=False)
+        data = json.loads(InstitutionKind.active_as_json())
+        self.assertNotIn(inactive.pk, [item["id"] for item in data])
+
+    def test_includes_active(self):
+        institution_kind = InstitutionKindFactory(active=True)
+        data = json.loads(InstitutionKind.active_as_json())
+        self.assertIn(institution_kind.pk, [item["id"] for item in data])
+
+    def test_fields(self):
+        institution_kind = InstitutionKindFactory(active=True)
+        data = json.loads(InstitutionKind.active_as_json())
+        item = next(d for d in data if d["id"] == institution_kind.pk)
+        self.assertEqual(
+            set(item.keys()),
+            {"id", "name", "tag_helper", "is_undefined"},
+        )
+
+
+class PersonKindAdminTestCase(AdminTestCaseMixin, TestCase):
+    user_factory_cls = UserFactory
+    factory_cls = PersonKindFactory
+    model = PersonKind
+
+
+class InstitutionKindAdminTestCase(AdminTestCaseMixin, TestCase):
+    user_factory_cls = UserFactory
+    factory_cls = InstitutionKindFactory
+    model = InstitutionKind
 
 
 def autocomplete_results(response_text):
