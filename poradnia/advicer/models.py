@@ -121,15 +121,43 @@ class Area(AbstractCategory):
 
 
 class PersonKind(AbstractCategory):
+    is_undefined = models.BooleanField(default=False, verbose_name=_("Is undefined?"))
+
     class Meta:
         verbose_name = _("Type of person who reporting the advice")
         verbose_name_plural = _("Types of people who report to for advice")
 
+    @classmethod
+    def active_as_json(cls):
+        items = list(
+            cls.objects.filter(active=True).values(
+                "id",
+                "name",
+                "tag_helper",
+                "is_undefined",
+            )
+        )
+        return json.dumps(items)
+
 
 class InstitutionKind(AbstractCategory):
+    is_undefined = models.BooleanField(default=False, verbose_name=_("Is undefined?"))
+
     class Meta:
         verbose_name = _("Institution kind")
         verbose_name_plural = _("Institution kinds")
+
+    @classmethod
+    def active_as_json(cls):
+        items = list(
+            cls.objects.filter(active=True).values(
+                "id",
+                "name",
+                "tag_helper",
+                "is_undefined",
+            )
+        )
+        return json.dumps(items)
 
 
 class AdviceQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):

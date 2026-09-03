@@ -703,8 +703,8 @@ class Case(models.Model):
                 Issue, "is_dip", "is_local_government", "is_slapp"
             ),
             "areas": serialize_tags(Area, "is_dip", "is_local_government", "is_slapp"),
-            "person_kinds": serialize_tags(PersonKind),
-            "institution_kinds": serialize_tags(InstitutionKind),
+            "person_kinds": serialize_tags(PersonKind, "is_undefined"),
+            "institution_kinds": serialize_tags(InstitutionKind, "is_undefined"),
             "client": serialize_user(self.client),
             "advisor": serialize_user(advisor.user if advisor else None),
         }

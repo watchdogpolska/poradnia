@@ -126,16 +126,35 @@ class AreaAdmin(admin.ModelAdmin):
     ]
 
 
-@admin.register(InstitutionKind, PersonKind)
-class SimpleCategoryAdmin(admin.ModelAdmin):
+@admin.register(InstitutionKind)
+class InstitutionKindAdmin(admin.ModelAdmin):
     search_fields = ["name"]
     ordering = ("name",)
     actions = None
     list_display = [
         "id",
         "name",
+        "is_undefined",
         "active",
     ]
     list_filter = [
+        "is_undefined",
+        "active",
+    ]
+
+
+@admin.register(PersonKind)
+class PersonKindAdmin(admin.ModelAdmin):
+    search_fields = ["name"]
+    ordering = ("name",)
+    actions = None
+    list_display = [
+        "id",
+        "name",
+        "is_undefined",
+        "active",
+    ]
+    list_filter = [
+        "is_undefined",
         "active",
     ]
