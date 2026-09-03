@@ -109,7 +109,7 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "visible": True,
             "choices": True,
             "autofilter": True,
-            "title": _("Thematic scopes of requests"),
+            "title": _("Issues"),
             "m2m_foreign_field": "issues__name",
         },
         {
@@ -117,7 +117,7 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "visible": True,
             "choices": True,
             "autofilter": True,
-            "title": _("Problems regarding the right to information"),
+            "title": _("Areas"),
             "m2m_foreign_field": "area__name",
         },
         {

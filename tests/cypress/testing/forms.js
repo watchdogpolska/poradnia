@@ -101,13 +101,13 @@ const submitAdviceForm = (cy) => (
   }
 ) => {
   if (adviceIssue) {
-    cy.contains("div", "Zakresy tematyczne").within(($div) => {
+    cy.contains("div", "Zagadnienia").within(($div) => {
       selectAutocompleteOptionContaining(adviceIssue.name);
     });
   }
 
   if (adviceArea) {
-    cy.contains("div", "Problemy z zakresu prawa").within(($div) => {
+    cy.contains("div", "Obszary").within(($div) => {
       selectAutocompleteOptionContaining(adviceArea.name);
     });
   }
@@ -196,7 +196,7 @@ const submitAdviceFilterForm = (cy) => (
   });
 
   // If falsy, unselect all.
-  cy.contains("div", "Problemy z zakresu prawa").within(($div) => {
+  cy.contains("div", "Obszary").within(($div) => {
     if (adviceAreas) {
       for (const adviceArea of adviceAreas) {
         selectAutocompleteOptionContaining(adviceArea.name);
@@ -207,7 +207,7 @@ const submitAdviceFilterForm = (cy) => (
   });
 
   // If falsy, unselect all.
-  cy.contains("div", "Zakresy tematyczne").within(($div) => {
+  cy.contains("div", "Zagadnienia").within(($div) => {
     if (adviceIssues) {
       for (const adviceIssue of adviceIssues) {
         selectAutocompleteOptionContaining(adviceIssue.name);
