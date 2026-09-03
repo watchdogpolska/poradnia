@@ -4,6 +4,13 @@ import factory
 import factory.fuzzy
 
 
+class ScopeFactory(factory.django.DjangoModelFactory):
+    name = factory.Sequence(lambda n: "scope-%d" % n)
+
+    class Meta:
+        model = "advicer.Scope"
+
+
 class IssueFactory(factory.django.DjangoModelFactory):
     name = factory.Sequence(lambda n: "issue-%d" % n)
 

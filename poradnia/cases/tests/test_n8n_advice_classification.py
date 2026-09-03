@@ -166,6 +166,7 @@ class CaseN8NAdviceClassificationTestCase(TestCase):
                     "id": person_kind.pk,
                     "name": "Person kind active",
                     "tag_helper": "Person kind helper",
+                    "is_undefined": False,
                 }
             ],
         )
@@ -176,6 +177,7 @@ class CaseN8NAdviceClassificationTestCase(TestCase):
                     "id": institution_kind.pk,
                     "name": "Institution kind active",
                     "tag_helper": "Institution kind helper",
+                    "is_undefined": False,
                 }
             ],
         )
