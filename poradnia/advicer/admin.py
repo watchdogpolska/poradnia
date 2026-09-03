@@ -1,3 +1,5 @@
+import types
+
 from django.contrib import admin
 from django.db.models import Q
 from django.utils.translation import gettext_lazy as _
@@ -158,3 +160,32 @@ class PersonKindAdmin(admin.ModelAdmin):
         "is_undefined",
         "active",
     ]
+
+
+ADVICER_ADMIN_MODEL_ORDER = [
+    "Advice",
+    "Scope",
+    "Issue",
+    "Area",
+    "PersonKind",
+    "InstitutionKind",
+]
+
+_default_get_app_list = admin.site.get_app_list
+
+
+def _advicer_ordered_get_app_list(self, request, app_label=None):
+    app_list = _default_get_app_list(request, app_label)
+    for app in app_list:
+        if app["app_label"] == "advicer":
+            app["models"].sort(
+                key=lambda model: (
+                    ADVICER_ADMIN_MODEL_ORDER.index(model["object_name"])
+                    if model["object_name"] in ADVICER_ADMIN_MODEL_ORDER
+                    else len(ADVICER_ADMIN_MODEL_ORDER)
+                )
+            )
+    return app_list
+
+
+admin.site.get_app_list = types.MethodType(_advicer_ordered_get_app_list, admin.site)
