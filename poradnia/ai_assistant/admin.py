@@ -44,6 +44,12 @@ def _phrase_matches_pretty(phrase_matches):
     return json.dumps(data, indent=2, ensure_ascii=False)
 
 
+def _pretty_json(data):
+    if not data:
+        return ""
+    return json.dumps(data, indent=2, ensure_ascii=False)
+
+
 @admin.register(N8nArticlesSearchRequest)
 class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
     list_display = (
@@ -245,6 +251,7 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
             "advice_subject",
             "ai_response_subject",
             "ai_response_summary",
+            "scope_check",
         ]
         sheet.append(columns)
         for col_idx in range(1, len(columns) + 1):
@@ -346,6 +353,7 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
                     advice.subject if advice and advice.subject else "",
                     ai_data.get("subject") or "",
                     ai_data.get("summary") or "",
+                    _pretty_json(ai_data.get("scope_check")),
                 ]
             )
             row_idx = sheet.max_row
