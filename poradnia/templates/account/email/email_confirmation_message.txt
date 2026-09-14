@@ -12,4 +12,6 @@ Jeśli to nie Ty rejestrowałeś/-aś się w naszym serwisie, zignoruj tę wiado
 Z wyrazami szacunku,
 Sieć Obywatelska - Watchdog Polska
 
+{% include '_email_noreply_notice.txt' %}
+
 {% include '_email_signature.txt' %}

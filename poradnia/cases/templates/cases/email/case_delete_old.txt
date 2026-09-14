@@ -9,4 +9,6 @@ Przejdź pod adres {% full_link admin_cases_delete_url %} , aby je skasować.
 Z wyrazami szacunku,
 Zespół Watchdog Polska
 
+{% include '_email_noreply_notice.txt' %}
+
 {% include '_email_signature.txt' %}

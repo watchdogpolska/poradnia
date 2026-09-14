@@ -5,4 +5,7 @@ W systemie Poradnia została dodana nowa sprawa.
 Przejdź pod adres {% full_link case.get_absolute_url %} , aby się z nią zapoznać.
 
 Z wyrazami szacunku,
+
+{% include '_email_noreply_notice.txt' %}
+
 {% include '_email_signature.txt' %}

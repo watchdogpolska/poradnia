@@ -12,4 +12,6 @@ Zmiana została dokonana z:
 Z wyrazami szacunku,
 Sieć Obywatelska - Watchdog Polska
 
+{% include '_email_noreply_notice.txt' %}
+
 {% include '_email_signature.txt' %}
