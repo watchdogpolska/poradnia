@@ -9,9 +9,9 @@ Wpisz go w oknie przeglądarki, w którym rozpoczęto rejestrację, aby potwierd
 
 Jeśli to nie Ty rejestrowałeś/-aś się w naszym serwisie, zignoruj tę wiadomość - konto pozostanie nieaktywne.
 
+{% include '_email_noreply_notice.txt' %}
+
 Z wyrazami szacunku,
 Sieć Obywatelska - Watchdog Polska
-
-{% include '_email_noreply_notice.txt' %}
 
 {% include '_email_signature.txt' %}

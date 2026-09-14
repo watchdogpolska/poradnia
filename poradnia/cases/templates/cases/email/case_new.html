@@ -6,10 +6,10 @@ W systemie Poradnia została dodana nowa sprawa.
 Przejdź pod adres <a href="{% full_link case.get_absolute_url %}">{% full_link case.get_absolute_url %}</a>, aby się z nią zapoznać.
 </p>
 
+{% include '_email_noreply_notice.html' %}
+
 <p>
 Z wyrazami szacunku,
 </p>
-
-{% include '_email_noreply_notice.html' %}
 
 {% include '_email_signature.html' %}

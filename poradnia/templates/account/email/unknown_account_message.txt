@@ -7,9 +7,9 @@ Jeśli to nie Ty, możesz bezpiecznie zignorować tę wiadomość.
 Jeśli to Ty i chcesz założyć konto, skorzystaj z poniższego linku:
 {{ signup_url }}
 
+{% include '_email_noreply_notice.txt' %}
+
 Z wyrazami szacunku,
 Sieć Obywatelska - Watchdog Polska
-
-{% include '_email_noreply_notice.txt' %}
 
 {% include '_email_signature.txt' %}
