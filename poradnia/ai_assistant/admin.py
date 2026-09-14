@@ -178,6 +178,7 @@ class N8nArticlesSearchRequestAdmin(admin.ModelAdmin):
                     cell.style = "Hyperlink"
 
         sheet.auto_filter.ref = sheet.dimensions
+        sheet.freeze_panes = "A2"
 
         response = HttpResponse(
             content_type=(
@@ -371,6 +372,7 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
                     cell.style = "Hyperlink"
 
         sheet.auto_filter.ref = sheet.dimensions
+        sheet.freeze_panes = "A2"
 
         response = HttpResponse(
             content_type=(
