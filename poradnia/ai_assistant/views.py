@@ -391,7 +391,6 @@ def _validate_int_list(payload, name, model):
 
 def _validate_case_tags_payload(payload):
     from poradnia.advicer.models import Area, InstitutionKind, Issue, PersonKind
-    from poradnia.teryt.models import JST
 
     err = _validate_nonempty_string(payload, "subject")
     if err:
@@ -409,20 +408,93 @@ def _validate_case_tags_payload(payload):
     if err:
         return err
 
-    jst_id = payload.get("jst_id")
-    if jst_id is not None:
-        if not isinstance(jst_id, str) or not re.fullmatch(r"\d{2,7}", jst_id):
-            return _json_error(
-                "invalid_field", "jst_id must be a string of 2–7 digits.", 400
-            )
-        if not JST.objects.filter(pk=jst_id).exists():
-            return _json_error("invalid_field", f"JST {jst_id!r} does not exist.", 400)
+    err = _validate_jst_id(payload)
+    if err:
+        return err
 
     err = _validate_int_list(payload, "issue_ids", Issue)
     if err:
         return err
 
-    return _validate_int_list(payload, "area_ids", Area)
+    err = _validate_int_list(payload, "area_ids", Area)
+    if err:
+        return err
+
+    return _validate_scope_check(payload)
+
+
+def _validate_jst_id(payload):
+    from poradnia.teryt.models import JST
+
+    jst_id = payload.get("jst_id")
+    if jst_id is None:
+        return None
+    if not isinstance(jst_id, str) or not re.fullmatch(r"\d{2,7}", jst_id):
+        return _json_error(
+            "invalid_field", "jst_id must be a string of 2–7 digits.", 400
+        )
+    if not JST.objects.filter(pk=jst_id).exists():
+        return _json_error("invalid_field", f"JST {jst_id!r} does not exist.", 400)
+    return None
+
+
+def _validate_scope_check(payload):
+    scope_check = payload.get("scope_check")
+    if scope_check is not None and not isinstance(scope_check, dict):
+        return _json_error("invalid_field", "scope_check must be a JSON object.", 400)
+    return None
+
+
+def _build_case_tags_data(payload):
+    """Build the (ai_tags, response_data) pair from a validated payload.
+
+    ai_tags is copied onto Advice.ai_assistant_tags; response_data is what's
+    stored verbatim on tags_request.response and additionally carries the
+    n8n scope_check reasoning, which isn't a case tag itself.
+    """
+    ai_tags = {
+        "subject": payload["subject"],
+        "summary": payload["summary"],
+        "institution_kind": payload["institution_kind_id"],
+        "person_kind": payload["person_kind_id"],
+        "issues": payload["issue_ids"],
+        "area": payload["area_ids"],
+    }
+    jst_id = payload.get("jst_id")
+    if jst_id is not None:
+        ai_tags["jst"] = jst_id
+
+    response_data = dict(ai_tags)
+    scope_check = payload.get("scope_check")
+    if scope_check is not None:
+        response_data["scope_check"] = scope_check
+
+    return ai_tags, response_data
+
+
+def _upsert_advice_ai_tags(tags_request, ai_tags, request_id):
+    if not tags_request.case:
+        logger.debug(
+            "Case tags %s: no case attached, skipping advice update", request_id
+        )
+        return
+
+    from poradnia.advicer.models import Advice
+
+    bot = _get_or_create_ai_assistant()
+    advice, created = Advice.objects.get_or_create(
+        case=tags_request.case,
+        defaults={"advicer": bot, "created_by": bot},
+    )
+    advice.ai_assistant_tags = ai_tags
+    advice.ai_tags_request = tags_request
+    advice.save(update_fields=["ai_assistant_tags", "ai_tags_request"])
+    logger.info(
+        "%s ai_assistant_tags for case %s (request_id=%s)",
+        "Created advice with" if created else "Updated",
+        tags_request.case_id,
+        request_id,
+    )
 
 
 @method_decorator(csrf_exempt, name="dispatch")
@@ -448,6 +520,9 @@ class N8nCaseTagsCallbackView(View):
                               JST if provided.
     ``issue_ids``           - non-empty list[int], all must reference existing Issues.
     ``area_ids``            - non-empty list[int], all must reference existing Areas.
+    ``scope_check``         - dict (optional).  n8n's scope-exclusion reasoning; stored
+                              verbatim in ``tags_request.response`` but not copied onto
+                              ``Advice.ai_assistant_tags``.
 
     On success the view upserts ``Advice.ai_assistant_tags`` on the advice
     linked to the request's case and marks the request as completed.  If no
@@ -493,19 +568,11 @@ class N8nCaseTagsCallbackView(View):
             if err:
                 return err
 
-            ai_tags = {
-                "subject": payload["subject"],
-                "summary": payload["summary"],
-                "institution_kind": payload["institution_kind_id"],
-                "person_kind": payload["person_kind_id"],
-                "issues": payload["issue_ids"],
-                "area": payload["area_ids"],
-            }
-            jst_id = payload.get("jst_id")
-            if jst_id is not None:
-                ai_tags["jst"] = jst_id
+            ai_tags, response_data = _build_case_tags_data(payload)
 
-            tags_request.response = json.dumps(ai_tags, ensure_ascii=False, indent=2)
+            tags_request.response = json.dumps(
+                response_data, ensure_ascii=False, indent=2
+            )
             tags_request.status = "completed"
             tags_request.save(update_fields=["response", "status", "updated_at"])
 
@@ -515,27 +582,6 @@ class N8nCaseTagsCallbackView(View):
                 tags_request.case_id,
             )
 
-            if tags_request.case:
-                from poradnia.advicer.models import Advice
-
-                bot = _get_or_create_ai_assistant()
-                advice, created = Advice.objects.get_or_create(
-                    case=tags_request.case,
-                    defaults={"advicer": bot, "created_by": bot},
-                )
-                advice.ai_assistant_tags = ai_tags
-                advice.ai_tags_request = tags_request
-                advice.save(update_fields=["ai_assistant_tags", "ai_tags_request"])
-                logger.info(
-                    "%s ai_assistant_tags for case %s (request_id=%s)",
-                    "Created advice with" if created else "Updated",
-                    tags_request.case_id,
-                    request_id,
-                )
-            else:
-                logger.debug(
-                    "Case tags %s: no case attached, skipping advice update",
-                    request_id,
-                )
+            _upsert_advice_ai_tags(tags_request, ai_tags, request_id)
 
         return JsonResponse({"ok": True, "result": "completed"})
