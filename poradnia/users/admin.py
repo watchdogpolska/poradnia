@@ -216,6 +216,7 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
     actions = [
         "delete_selected",
         "force_password_change",
+        "resend_activation_email",
     ]
 
     def response_action(self, request, queryset):
@@ -284,6 +285,36 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
             _("Marked %(updated)s user(s) to change password on next login.")
             % {"updated": updated},
         )
+
+    @admin.action(description=_("Resend activation email"))
+    def resend_activation_email(self, request, queryset):
+        # Only auto-created accounts still waiting for their first password
+        # count as "unactivated" - already-active accounts are skipped so a
+        # broad selection can't accidentally re-send anything to them. This
+        # mirrors AccountActivationResendView: it only sends a fresh link.
+        # The e-mail address gets marked confirmed later, by
+        # AccountActivationView, only once the user actually clicks that
+        # link - staff resending it is not itself proof of mailbox
+        # ownership, so it must not mark the address verified.
+        sent, skipped = 0, 0
+        for user in queryset:
+            if user.has_usable_password():
+                skipped += 1
+                continue
+            User.objects.send_activation_email(user)
+            sent += 1
+
+        if sent:
+            messages.success(
+                request,
+                _("Resent the activation email for %(sent)s user(s).") % {"sent": sent},
+            )
+        if skipped:
+            messages.warning(
+                request,
+                _("Skipped %(skipped)s user(s) who already have a password set.")
+                % {"skipped": skipped},
+            )
 
 
 @admin.register(Profile)

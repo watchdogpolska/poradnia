@@ -6,6 +6,8 @@ W systemie Poradnia istnieje {% old_cases_to_delete_count %} spraw,
  które nie miały żadnej aktywności od {% years_to_store_cases %} lat.
 Przejdź pod adres {% full_link admin_cases_delete_url %} , aby je skasować.
 
+{% include '_email_noreply_notice.txt' %}
+
 Z wyrazami szacunku,
 Zespół Watchdog Polska
 
