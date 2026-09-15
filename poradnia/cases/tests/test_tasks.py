@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import call, patch
 
 from django.core import mail
 from django.test import TestCase, TransactionTestCase, override_settings
@@ -6,6 +6,7 @@ from django.utils import timezone
 
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.tasks import (
+    enqueue_request_ai_tags_for_cases_task,
     request_ai_tags_for_case_task,
     search_articles_for_case_task,
     send_old_cases_reminder,
@@ -117,6 +118,50 @@ class SearchArticlesForCaseTaskTestCase(TransactionTestCase):
         result = self._run(0)
         self.assertEqual(result["case_pk"], 0)
         self.assertEqual(result["status"], "not_found")
+
+
+class EnqueueRequestAiTagsForCasesTaskTestCase(TestCase):
+    def _run(self, case_ids, pause_seconds=30):
+        return enqueue_request_ai_tags_for_cases_task.apply(
+            args=[case_ids], kwargs={"pause_seconds": pause_seconds}
+        ).result
+
+    @patch("poradnia.cases.tasks.request_ai_tags_for_case_task.apply_async")
+    def test_enqueues_each_case_id(self, mock_apply_async):
+        self._run([10, 20, 30])
+        self.assertEqual(mock_apply_async.call_count, 3)
+
+    @patch("poradnia.cases.tasks.request_ai_tags_for_case_task.apply_async")
+    def test_staggers_countdown_by_pause_seconds(self, mock_apply_async):
+        self._run([10, 20, 30])
+        mock_apply_async.assert_has_calls(
+            [
+                call(args=[10], countdown=0),
+                call(args=[20], countdown=30),
+                call(args=[30], countdown=60),
+            ]
+        )
+
+    @patch("poradnia.cases.tasks.request_ai_tags_for_case_task.apply_async")
+    def test_respects_custom_pause_seconds(self, mock_apply_async):
+        self._run([10, 20], pause_seconds=5)
+        mock_apply_async.assert_has_calls(
+            [
+                call(args=[10], countdown=0),
+                call(args=[20], countdown=5),
+            ]
+        )
+
+    @patch("poradnia.cases.tasks.request_ai_tags_for_case_task.apply_async")
+    def test_returns_enqueued_summary(self, mock_apply_async):
+        result = self._run([10, 20, 30])
+        self.assertEqual(result, {"case_ids": [10, 20, 30], "enqueued": 3})
+
+    @patch("poradnia.cases.tasks.request_ai_tags_for_case_task.apply_async")
+    def test_empty_case_ids_enqueues_nothing(self, mock_apply_async):
+        result = self._run([])
+        mock_apply_async.assert_not_called()
+        self.assertEqual(result, {"case_ids": [], "enqueued": 0})
 
 
 class RequestAiTagsForCaseTaskTestCase(TransactionTestCase):

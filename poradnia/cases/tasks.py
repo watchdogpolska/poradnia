@@ -127,3 +127,33 @@ def request_ai_tags_for_case_task(self, case_pk):
         "case_pk": case.pk,
         "status": "ok" if ok else "failed",
     }
+
+
+@shared_task(
+    bind=True,
+    ignore_result=False,
+    autoretry_for=(Exception,),
+    retry_backoff=True,
+    retry_jitter=True,
+    max_retries=3,
+)
+def enqueue_request_ai_tags_for_cases_task(self, case_ids, pause_seconds=30):
+    """
+    Fan out request_ai_tags_for_case_task for a list of case ids, staggering
+    each enqueue pause_seconds apart via countdown so they don't all hit the
+    n8n webhook at once.
+    """
+    enqueued = []
+    for i, case_pk in enumerate(case_ids):
+        request_ai_tags_for_case_task.apply_async(
+            args=[case_pk], countdown=i * pause_seconds
+        )
+        enqueued.append(case_pk)
+
+    logger.info(
+        "Enqueued %s request_ai_tags_for_case_task(s), staggered %ss apart.",
+        len(enqueued),
+        pause_seconds,
+    )
+
+    return {"case_ids": enqueued, "enqueued": len(enqueued)}
