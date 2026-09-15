@@ -531,6 +531,8 @@ class ReceiveEmailView(View):
         letter.send_notification(actor=actor, verb="created")
         if case_created:
             self.enqueue_new_case_pipeline(case, letter)
+        elif letter.status == Letter.STATUS.done:
+            letter.enqueue_attachments_text_content_update()
         return JsonResponse({"status": "OK", "letter": letter.pk})
 
     # TODO: replace with get_or_create_case
