@@ -1,6 +1,7 @@
 import logging
 
 from celery import shared_task
+from django.db import close_old_connections
 
 from poradnia.cases.models import Case
 from poradnia.template_mail.utils import TemplateKey
@@ -52,3 +53,77 @@ def send_old_cases_reminder(self) -> None:
             failed.append(user.email)
 
     return {"old_cases_count": old_cases_count, "sent": sent, "failed": failed}
+
+
+@shared_task(
+    bind=True,
+    acks_late=True,
+    reject_on_worker_lost=True,
+    ignore_result=False,
+    autoretry_for=(Exception,),
+    retry_backoff=True,
+    retry_backoff_max=300,
+    retry_jitter=True,
+    max_retries=3,
+)
+def search_articles_for_case_task(self, case_pk, direct_search=False):
+    """
+    Celery entrypoint for searching FOI articles for one case.
+    """
+    close_old_connections()
+    try:
+        case = Case.objects.get(pk=case_pk)
+    except Case.DoesNotExist:
+        msg = f"Case with pk={case_pk} not found."
+        logger.warning(msg)
+        return {
+            "case_pk": case_pk,
+            "status": "not_found",
+            "message": msg,
+        }
+    finally:
+        close_old_connections()
+
+    ok = case.search_articles_for_case(direct_search=direct_search)
+
+    return {
+        "case_pk": case.pk,
+        "status": "ok" if ok else "failed",
+    }
+
+
+@shared_task(
+    bind=True,
+    acks_late=True,
+    reject_on_worker_lost=True,
+    ignore_result=False,
+    autoretry_for=(Exception,),
+    retry_backoff=True,
+    retry_backoff_max=300,
+    retry_jitter=True,
+    max_retries=3,
+)
+def request_ai_tags_for_case_task(self, case_pk):
+    """
+    Celery entrypoint for requesting AI tags for one case.
+    """
+    close_old_connections()
+    try:
+        case = Case.objects.get(pk=case_pk)
+    except Case.DoesNotExist:
+        msg = f"Case with pk={case_pk} not found."
+        logger.warning(msg)
+        return {
+            "case_pk": case_pk,
+            "status": "not_found",
+            "message": msg,
+        }
+    finally:
+        close_old_connections()
+
+    ok = case.request_ai_tags_for_case()
+
+    return {
+        "case_pk": case.pk,
+        "status": "ok" if ok else "failed",
+    }

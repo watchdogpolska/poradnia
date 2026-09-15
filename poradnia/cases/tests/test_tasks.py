@@ -1,9 +1,15 @@
+from unittest.mock import patch
+
 from django.core import mail
-from django.test import TestCase, override_settings
+from django.test import TestCase, TransactionTestCase, override_settings
 from django.utils import timezone
 
 from poradnia.cases.factories import CaseFactory
-from poradnia.cases.tasks import send_old_cases_reminder
+from poradnia.cases.tasks import (
+    request_ai_tags_for_case_task,
+    search_articles_for_case_task,
+    send_old_cases_reminder,
+)
 from poradnia.users.factories import UserFactory
 
 OLD_DATE = timezone.make_aware(timezone.datetime(2000, 1, 1))
@@ -71,3 +77,72 @@ class SendOldCasesReminderTaskTestCase(TestCase):
         result = self._run()
         self.assertEqual(result["old_cases_count"], 0)
         self.assertEqual(len(mail.outbox), 0)
+
+
+class SearchArticlesForCaseTaskTestCase(TransactionTestCase):
+    def _run(self, case_pk, direct_search=False):
+        return search_articles_for_case_task.apply(
+            args=[case_pk], kwargs={"direct_search": direct_search}
+        ).result
+
+    @patch(
+        "poradnia.cases.models.Case.search_articles_for_case",
+        return_value=True,
+    )
+    def test_returns_ok_on_success(self, mock_search):
+        case = CaseFactory()
+        result = self._run(case.pk)
+        self.assertEqual(result, {"case_pk": case.pk, "status": "ok"})
+        mock_search.assert_called_once_with(direct_search=False)
+
+    @patch(
+        "poradnia.cases.models.Case.search_articles_for_case",
+        return_value=False,
+    )
+    def test_returns_failed_on_failure(self, mock_search):
+        case = CaseFactory()
+        result = self._run(case.pk)
+        self.assertEqual(result, {"case_pk": case.pk, "status": "failed"})
+
+    @patch(
+        "poradnia.cases.models.Case.search_articles_for_case",
+        return_value=True,
+    )
+    def test_passes_direct_search_through(self, mock_search):
+        case = CaseFactory()
+        self._run(case.pk, direct_search=True)
+        mock_search.assert_called_once_with(direct_search=True)
+
+    def test_returns_not_found_for_missing_case(self):
+        result = self._run(0)
+        self.assertEqual(result["case_pk"], 0)
+        self.assertEqual(result["status"], "not_found")
+
+
+class RequestAiTagsForCaseTaskTestCase(TransactionTestCase):
+    def _run(self, case_pk):
+        return request_ai_tags_for_case_task.apply(args=[case_pk]).result
+
+    @patch(
+        "poradnia.cases.models.Case.request_ai_tags_for_case",
+        return_value=True,
+    )
+    def test_returns_ok_on_success(self, mock_request):
+        case = CaseFactory()
+        result = self._run(case.pk)
+        self.assertEqual(result, {"case_pk": case.pk, "status": "ok"})
+        mock_request.assert_called_once_with()
+
+    @patch(
+        "poradnia.cases.models.Case.request_ai_tags_for_case",
+        return_value=False,
+    )
+    def test_returns_failed_on_failure(self, mock_request):
+        case = CaseFactory()
+        result = self._run(case.pk)
+        self.assertEqual(result, {"case_pk": case.pk, "status": "failed"})
+
+    def test_returns_not_found_for_missing_case(self):
+        result = self._run(0)
+        self.assertEqual(result["case_pk"], 0)
+        self.assertEqual(result["status"], "not_found")
