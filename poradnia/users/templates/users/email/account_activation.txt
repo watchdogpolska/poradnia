@@ -8,6 +8,8 @@ Aby potwierdzić adres e-mail, ustawić hasło i zobaczyć szczegóły zgłoszen
 
 Jeśli to nie Ty zgłaszałeś/-aś sprawę, zignoruj tę wiadomość - konto i zgłoszenie pozostaną nieaktywne.
 
+{% include '_email_noreply_notice.txt' %}
+
 Z wyrazami szacunku,
 Sieć Obywatelska - Watchdog Polska
 

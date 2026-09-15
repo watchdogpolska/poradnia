@@ -37,6 +37,12 @@
       <strong>Uwaga:</strong> {{ item.entry.note }}
     </p>
     {% endif %}
+    {% if item.entry.sender %}
+    <p><strong>Od:</strong> {{ item.entry.sender }}</p>
+    {% endif %}
+    {% if item.entry.recipient %}
+    <p><strong>Do:</strong> {{ item.entry.recipient }}</p>
+    {% endif %}
     {% if item.subject %}
     <p><strong>Temat:</strong> {{ item.subject }}</p>
     {% endif %}

@@ -8,6 +8,8 @@ template anywhere in the app, update the matching entry here too.
 from dataclasses import dataclass, field
 from typing import Callable, Optional
 
+from django.conf import settings
+
 
 class Mock:
     """Duck-typed stand-in for a model instance, used only to build a
@@ -27,6 +29,8 @@ class EmailCatalogEntry:
     key: str
     title: str
     trigger: str
+    sender: Optional[str] = None  # who/what address the e-mail is sent from
+    recipient: Optional[str] = None  # who the e-mail is sent to
     txt_template: Optional[str] = None
     html_template: Optional[str] = None
     subject_template: Optional[str] = None  # allauth-style: subject rendered separately
@@ -137,6 +141,29 @@ def _notification_meta(**extra):
     }
 
 
+# Sender text reused by every "case address" e-mail (TemplateMailManager /
+# Case.send_notification always builds the From header as the case's own
+# inbound address, display-named as the acting user - see cases/models.py).
+_CASE_ADDRESS_SENDER = (
+    "adres sprawy (sprawa-{id}@...), jako wyświetlana nazwa nadawcy "
+    "widnieje osoba wykonująca akcję"
+)
+_DEFAULT_SENDER = (
+    f"domyślny adres nadawcy systemu (ustawienie DEFAULT_FROM_EMAIL: "
+    f"{settings.DEFAULT_FROM_EMAIL})"
+)
+_ALLAUTH_SENDER = _DEFAULT_SENDER + " (allauth)"
+_MANAGERS_RECIPIENT = "adresy z ustawienia MANAGERS: " + (
+    ", ".join(email for _, email in settings.MANAGERS)
+    or "(brak skonfigurowanych adresów)"
+)
+_SERVER_EMAIL_DISPLAY = settings.SERVER_EMAIL or "(pusty ciąg — nieustawione)"
+_SERVER_EMAIL_SENDER = (
+    f"ustawienie SERVER_EMAIL ({_SERVER_EMAIL_DISPLAY}); nagłówek Reply-To "
+    "wskazuje na adres zgłaszającego"
+)
+
+
 CATALOG = [
     # -- Sprawy (cases) ------------------------------------------------
     EmailCatalogEntry(
@@ -148,6 +175,11 @@ CATALOG = [
             "wysyłane natychmiast po utworzeniu nowej sprawy, do wszystkich "
             "użytkowników z profilowym ustawieniem „Powiadamiaj o nowych "
             "sprawach” (User.notify_new_case=True)."
+        ),
+        sender=_DEFAULT_SENDER,
+        recipient=(
+            "użytkownicy z ustawieniem „Powiadamiaj o nowych sprawach” "
+            "(User.notify_new_case=True)"
         ),
         txt_template="cases/email/case_new.txt",
         html_template="cases/email/case_new.html",
@@ -163,6 +195,8 @@ CATALOG = [
             "do klienta po zarejestrowaniu nowej sprawy, o ile jego konto ma już "
             "ustawione hasło (client.has_usable_password())."
         ),
+        sender=_CASE_ADDRESS_SENDER + " (osoba rejestrująca sprawę)",
+        recipient="klient (tylko jeśli jego konto ma już ustawione hasło)",
         txt_template="cases/email/case_registered.txt",
         html_template="cases/email/case_registered.html",
         split_subject=True,
@@ -181,6 +215,11 @@ CATALOG = [
             "Case.close() (cases/models.py) - wysyłane, gdy sprawa zostanie "
             "zamknięta."
         ),
+        sender=_CASE_ADDRESS_SENDER + " (osoba zamykająca sprawę)",
+        recipient=(
+            "wszyscy użytkownicy z jakimikolwiek uprawnieniami do sprawy "
+            "(także klient)"
+        ),
         txt_template="cases/email/case_closed.txt",
         html_template="cases/email/case_closed.html",
         split_subject=True,
@@ -194,6 +233,8 @@ CATALOG = [
             "CaseForm.save() (cases/forms.py) - wysyłane do przypisanego "
             "personelu, gdy sprawa w statusie „przypisana” zostanie zmieniona."
         ),
+        sender=_CASE_ADDRESS_SENDER + " (osoba edytująca sprawę)",
+        recipient="przypisany personel sprawy (bez klienta)",
         txt_template="cases/email/case_updated.txt",
         html_template="cases/email/case_updated.html",
         split_subject=True,
@@ -208,6 +249,8 @@ CATALOG = [
             "wysyłane do personelu, gdy ktoś nada użytkownikowi uprawnienia "
             "do sprawy."
         ),
+        sender=_CASE_ADDRESS_SENDER + " (osoba nadająca uprawnienia)",
+        recipient="personel z uprawnieniami do sprawy",
         txt_template="cases/email/case_granted.txt",
         html_template="cases/email/case_granted.html",
         split_subject=True,
@@ -222,6 +265,8 @@ CATALOG = [
             "przypisanego personelu, gdy użytkownikowi zostanie nadana grupa "
             "uprawnień (np. „opiekun”) w konkretnej sprawie."
         ),
+        sender=_CASE_ADDRESS_SENDER + " (osoba nadająca uprawnienia)",
+        recipient="przypisany personel sprawy",
         txt_template="cases/email/case_grant_group.txt",
         html_template="cases/email/case_grant_group.html",
         split_subject=True,
@@ -242,6 +287,11 @@ CATALOG = [
             "sprawach” (User.notify_old_cases=True), gdy w systemie są sprawy "
             "bez aktywności dłużej niż YEARS_TO_STORE_CASES lat."
         ),
+        sender=_DEFAULT_SENDER,
+        recipient=(
+            "użytkownicy z ustawieniem „Powiadamiaj o starych sprawach” "
+            "(User.notify_old_cases=True)"
+        ),
         txt_template="cases/email/case_delete_old.txt",
         html_template="cases/email/case_delete_old.html",
         split_subject=True,
@@ -256,6 +306,8 @@ CATALOG = [
             "EventForm.save() (events/forms.py) - wysyłane przy utworzeniu "
             "wydarzenia."
         ),
+        sender=_CASE_ADDRESS_SENDER + " (osoba tworząca wydarzenie)",
+        recipient="przypisany personel sprawy",
         txt_template="events/email/event_created.txt",
         html_template="events/email/event_created.html",
         split_subject=True,
@@ -269,6 +321,8 @@ CATALOG = [
             "EventForm.save() (events/forms.py) - wysyłane przy edycji "
             "istniejącego wydarzenia."
         ),
+        sender=_CASE_ADDRESS_SENDER + " (osoba edytująca wydarzenie)",
+        recipient="przypisany personel sprawy",
         txt_template="events/email/event_updated.txt",
         html_template="events/email/event_updated.html",
         split_subject=True,
@@ -282,6 +336,12 @@ CATALOG = [
             "Okresowe zadanie celery send_event_reminders (events/tasks.py) - "
             "wysyłane, gdy do terminu wydarzenia zostało mniej niż "
             "profil.event_reminder_time dni (domyślnie 1 dzień)."
+        ),
+        sender=_CASE_ADDRESS_SENDER + " (jako nadawca widnieje sam odbiorca)",
+        recipient=(
+            "personel z uprawnieniami do sprawy (w pierwszej kolejności osoby "
+            "mogące wysyłać do klienta), z fallbackiem do użytkowników z "
+            "ustawieniem „Powiadamiaj o nieprzypisanych pismach”"
         ),
         txt_template="events/email/event_reminder.txt",
         html_template="events/email/event_reminder.html",
@@ -303,6 +363,11 @@ CATALOG = [
             "wtedy pojawia się ten sam dopisek o aktywacji konta co w "
             "letter_send_to_client, zob. wpis niżej."
         ),
+        sender=_CASE_ADDRESS_SENDER + " (autor pisma)",
+        recipient=(
+            "personel przypisany do sprawy; klient dodatkowo, jeśli pismo od "
+            "razu ma status „gotowe” (zob. opis wyzwalacza)"
+        ),
         txt_template="letters/email/letter_created.txt",
         html_template="letters/email/letter_created.html",
         split_subject=True,
@@ -320,6 +385,8 @@ CATALOG = [
             "konto nie ma jeszcze ustawionego hasła - patrz "
             "letter_send_to_client_unactivated poniżej po wyjaśnienie."
         ),
+        sender=_CASE_ADDRESS_SENDER + " (autor pisma)",
+        recipient="jak wyżej - tu klient jeszcze bez ustawionego hasła",
         txt_template="letters/email/letter_created.txt",
         html_template="letters/email/letter_created.html",
         split_subject=True,
@@ -336,6 +403,11 @@ CATALOG = [
             "wcześniej wysłanej do klienta) - wtedy klient też dostaje tę "
             "wiadomość i obowiązuje ten sam dopisek o aktywacji konta co w "
             "letter_send_to_client, zob. wpis niżej."
+        ),
+        sender=_CASE_ADDRESS_SENDER + " (osoba edytująca pismo)",
+        recipient=(
+            "personel przypisany do sprawy; klient dodatkowo, jeśli pismo ma "
+            "już status „gotowe”"
         ),
         txt_template="letters/email/letter_updated.txt",
         html_template="letters/email/letter_updated.html",
@@ -354,6 +426,8 @@ CATALOG = [
             "konto nie ma jeszcze ustawionego hasła - patrz "
             "letter_send_to_client_unactivated poniżej po wyjaśnienie."
         ),
+        sender=_CASE_ADDRESS_SENDER + " (osoba edytująca pismo)",
+        recipient="jak wyżej - tu klient jeszcze bez ustawionego hasła",
         txt_template="letters/email/letter_updated.txt",
         html_template="letters/email/letter_updated.html",
         split_subject=True,
@@ -367,6 +441,8 @@ CATALOG = [
             "LetterCommentForm.save() (letters/forms.py) - wysyłane, gdy "
             "ktoś doda wewnętrzną notatkę."
         ),
+        sender=_CASE_ADDRESS_SENDER + " (autor notatki)",
+        recipient="wyłącznie personel przypisany do sprawy (nigdy klient)",
         txt_template="letters/email/letter_drop_a_note.txt",
         html_template="letters/email/letter_drop_a_note.html",
         split_subject=True,
@@ -387,6 +463,8 @@ CATALOG = [
             "_activation_link.html/.txt, współdzielony też przez "
             "letter_created i letter_updated) - zob. wpis niżej."
         ),
+        sender=_CASE_ADDRESS_SENDER + " (pracownik wysyłający pismo)",
+        recipient="klient oraz cały personel z uprawnieniami do sprawy",
         txt_template="letters/email/letter_send_to_client.txt",
         html_template="letters/email/letter_send_to_client.html",
         split_subject=True,
@@ -407,6 +485,11 @@ CATALOG = [
             "zalogować, przed odnośnikiem do akt sprawy pojawia się dodatkowy "
             "link do dokończenia aktywacji konta (User.get_activation_path())."
         ),
+        sender=_CASE_ADDRESS_SENDER + " (pracownik wysyłający pismo)",
+        recipient=(
+            "klient bez ustawionego hasła oraz cały personel z uprawnieniami "
+            "do sprawy"
+        ),
         txt_template="letters/email/letter_send_to_client.txt",
         html_template="letters/email/letter_send_to_client.html",
         split_subject=True,
@@ -420,6 +503,8 @@ CATALOG = [
             "Szablon zdefiniowany w TemplateMailManager.TEMPLATE_MAP, ale "
             "żaden kod w repozytorium go obecnie nie wysyła."
         ),
+        sender="— (martwy kod, zob. Uwaga wyżej)",
+        recipient="— (martwy kod, zob. Uwaga wyżej)",
         txt_template="letters/email/letter_accepted.txt",
         html_template="letters/email/letter_accepted.html",
         split_subject=True,
@@ -441,6 +526,8 @@ CATALOG = [
             "do nadawcy, gdy wiadomość przychodząca webhookiem pocztowym nie "
             "była zaadresowana do Poradni (nie pasuje do żadnej znanej sprawy)."
         ),
+        sender=_DEFAULT_SENDER,
+        recipient="nadawca odrzuconej wiadomości (adres z nagłówka „From:”)",
         txt_template="letters/email/letter_refused.txt",
         html_template="letters/email/letter_refused.html",
         split_subject=True,
@@ -460,6 +547,8 @@ CATALOG = [
             "nieznanego adresu e-mail i zostanie dla niego utworzone konto "
             "bez hasła."
         ),
+        sender=_DEFAULT_SENDER,
+        recipient="nowo utworzone konto (adres e-mail ze zgłoszenia)",
         txt_template="users/email/account_activation.txt",
         html_template="users/email/account_activation.html",
         split_subject=True,
@@ -479,6 +568,11 @@ CATALOG = [
             "kontem (zamiast ujawniać to zgłaszającemu - patrz "
             "ACCOUNT_PREVENT_ENUMERATION)."
         ),
+        sender=_DEFAULT_SENDER,
+        recipient=(
+            "adres e-mail, na który próbowano zarejestrować nową sprawę "
+            "(właściciel istniejącego konta)"
+        ),
         txt_template="users/email/existing_case_attempt.txt",
         html_template="users/email/existing_case_attempt.html",
         split_subject=True,
@@ -493,6 +587,8 @@ CATALOG = [
             "allauth - wysyłane przy rejestracji/dodaniu adresu e-mail "
             "wymagającego potwierdzenia."
         ),
+        sender=_ALLAUTH_SENDER,
+        recipient="użytkownik potwierdzający adres e-mail",
         txt_template="account/email/email_confirmation_message.txt",
         html_template="account/email/email_confirmation_message.html",
         subject_template="account/email/email_confirmation_subject.txt",
@@ -512,6 +608,8 @@ CATALOG = [
             "wysyłane zamiast ujawnienia błędu „konto już istnieje” w "
             "formularzu rejestracji."
         ),
+        sender=_ALLAUTH_SENDER,
+        recipient="adres e-mail podany w formularzu rejestracji",
         txt_template="account/email/account_already_exists_message.txt",
         html_template="account/email/account_already_exists_message.html",
         subject_template="account/email/account_already_exists_subject.txt",
@@ -531,6 +629,8 @@ CATALOG = [
             "wysyłane zamiast ujawnienia, że podany adres nie ma konta, gdy "
             "ktoś poprosi o reset hasła."
         ),
+        sender=_ALLAUTH_SENDER,
+        recipient="adres e-mail podany przy próbie resetu hasła",
         txt_template="account/email/unknown_account_message.txt",
         html_template="account/email/unknown_account_message.html",
         subject_template="account/email/unknown_account_subject.txt",
@@ -547,6 +647,8 @@ CATALOG = [
             "allauth - wysyłane po złożeniu prośby o reset hasła dla "
             "istniejącego konta."
         ),
+        sender=_ALLAUTH_SENDER,
+        recipient="użytkownik resetujący hasło",
         txt_template="account/email/password_reset_key_message.txt",
         html_template="account/email/password_reset_key_message.html",
         subject_template="account/email/password_reset_key_subject.txt",
@@ -567,6 +669,8 @@ CATALOG = [
             "projekcie) - wysyłane po zmianie hasła jako powiadomienie "
             "bezpieczeństwa."
         ),
+        sender=_ALLAUTH_SENDER,
+        recipient="użytkownik, którego hasło zmieniono",
         txt_template="account/email/password_changed_message.txt",
         html_template="account/email/password_changed_message.html",
         subject_template="account/email/password_changed_subject.txt",
@@ -581,6 +685,8 @@ CATALOG = [
             "konto bez hasła (np. utworzone automatycznie ze zgłoszenia "
             "e-mail) ustawi hasło po raz pierwszy."
         ),
+        sender=_ALLAUTH_SENDER,
+        recipient="użytkownik, który ustawił hasło po raz pierwszy",
         txt_template="account/email/password_set_message.txt",
         html_template="account/email/password_set_message.html",
         subject_template="account/email/password_set_subject.txt",
@@ -594,6 +700,8 @@ CATALOG = [
             "allauth, wymaga ACCOUNT_EMAIL_NOTIFICATIONS=True - wysyłane po "
             "zmianie adresu e-mail konta."
         ),
+        sender=_ALLAUTH_SENDER,
+        recipient="użytkownik, którego adres e-mail zmieniono",
         txt_template="account/email/email_changed_message.txt",
         html_template="account/email/email_changed_message.html",
         subject_template="account/email/email_changed_subject.txt",
@@ -612,6 +720,8 @@ CATALOG = [
             "allauth, wymaga ACCOUNT_EMAIL_NOTIFICATIONS=True - wysyłane po "
             "usunięciu dodatkowego adresu e-mail z konta."
         ),
+        sender=_ALLAUTH_SENDER,
+        recipient="użytkownik, którego dodatkowy adres e-mail usunięto",
         txt_template="account/email/email_deleted_message.txt",
         html_template="account/email/email_deleted_message.html",
         subject_template="account/email/email_deleted_subject.txt",
@@ -630,6 +740,8 @@ CATALOG = [
             "allauth-mfa, wymaga ACCOUNT_EMAIL_NOTIFICATIONS=True - "
             "wysyłane po włączeniu TOTP."
         ),
+        sender=_DEFAULT_SENDER + " (allauth-mfa)",
+        recipient="użytkownik, który włączył TOTP",
         txt_template="mfa/email/totp_activated_message.txt",
         html_template="mfa/email/totp_activated_message.html",
         subject_template="mfa/email/totp_activated_subject.txt",
@@ -643,6 +755,8 @@ CATALOG = [
             "allauth-mfa, wymaga ACCOUNT_EMAIL_NOTIFICATIONS=True - "
             "wysyłane po wyłączeniu TOTP."
         ),
+        sender=_DEFAULT_SENDER + " (allauth-mfa)",
+        recipient="użytkownik, który wyłączył TOTP",
         txt_template="mfa/email/totp_deactivated_message.txt",
         html_template="mfa/email/totp_deactivated_message.html",
         subject_template="mfa/email/totp_deactivated_subject.txt",
@@ -657,6 +771,8 @@ CATALOG = [
             "wysyłane, gdy użytkownik wygeneruje nowy komplet kodów "
             "zapasowych."
         ),
+        sender=_DEFAULT_SENDER + " (allauth-mfa)",
+        recipient="użytkownik, który wygenerował nowe kody zapasowe",
         txt_template="mfa/email/recovery_codes_generated_message.txt",
         html_template="mfa/email/recovery_codes_generated_message.html",
         subject_template="mfa/email/recovery_codes_generated_subject.txt",
@@ -672,6 +788,8 @@ CATALOG = [
             "- wysyłane po połączeniu konta z dostawcą logowania "
             "społecznościowego."
         ),
+        sender=_DEFAULT_SENDER + " (allauth-socialaccount)",
+        recipient="użytkownik, który połączył konto zewnętrzne",
         txt_template="socialaccount/email/account_connected_message.txt",
         html_template="socialaccount/email/account_connected_message.html",
         subject_template="socialaccount/email/account_connected_subject.txt",
@@ -690,6 +808,8 @@ CATALOG = [
             "- wysyłane po odłączeniu konta dostawcy logowania "
             "społecznościowego."
         ),
+        sender=_DEFAULT_SENDER + " (allauth-socialaccount)",
+        recipient="użytkownik, który odłączył konto zewnętrzne",
         txt_template="socialaccount/email/account_disconnected_message.txt",
         html_template="socialaccount/email/account_disconnected_message.html",
         subject_template="socialaccount/email/account_disconnected_subject.txt",
@@ -709,6 +829,8 @@ CATALOG = [
             "notify_manager) - wysyłane do adresów z ustawienia MANAGERS, gdy "
             "użytkownik zgłosi opinię/błąd przez widget feedbacku."
         ),
+        sender=_SERVER_EMAIL_SENDER,
+        recipient=_MANAGERS_RECIPIENT,
         note=(
             "Ten e-mail nie używa żadnego szablonu Django - "
             "mail_managers_replyable() (tasty_feedback/utils.py) buduje temat "
