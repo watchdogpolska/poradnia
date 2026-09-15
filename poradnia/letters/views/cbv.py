@@ -17,6 +17,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.contenttypes.models import ContentType
 from django.core.exceptions import PermissionDenied
 from django.core.files.base import File
+from django.db import transaction
 from django.forms.models import model_to_dict
 from django.http import (
     FileResponse,
@@ -348,10 +349,20 @@ class ReceiveEmailView(View):
         return get_user_model().objects.get_by_email_or_create(from_emails[0])
 
     def create_case(self, manifest, actor):
+        """
+        Returns a (case, created) tuple, mirroring get_or_create semantics.
+        """
         return self.get_case(
             subject=manifest["headers"]["subject"],
             addresses=manifest["headers"]["to+"],
             actor=actor,
+        )
+
+    def enqueue_new_case_pipeline(self, case, letter):
+        from poradnia.cases.tasks import process_new_case_pipeline_task
+
+        transaction.on_commit(
+            lambda: process_new_case_pipeline_task.delay(case.pk, letter.pk)
         )
 
     def refuse_letter(self, manifest):
@@ -510,7 +521,7 @@ class ReceiveEmailView(View):
             return HttpResponseBadRequest(
                 "Invalid email format: Missing sender email address in the manifest."
             )
-        case = self.create_case(manifest, actor)
+        case, case_created = self.create_case(manifest, actor)
         letter = self.create_letter(request, actor, case, manifest)
         if case.status == Case.STATUS.closed and letter.status == Letter.STATUS.done:
             case.update_status(reopen=True, save=False)
@@ -518,16 +529,20 @@ class ReceiveEmailView(View):
         case.update_counters()
         case.save()
         letter.send_notification(actor=actor, verb="created")
+        if case_created:
+            self.enqueue_new_case_pipeline(case, letter)
         return JsonResponse({"status": "OK", "letter": letter.pk})
 
     # TODO: replace with get_or_create_case
     def get_case(self, subject, addresses, actor):
+        created = False
         try:
             case = Case.objects.by_addresses(addresses).get()
         except Case.DoesNotExist:
             case = Case.objects.create(
                 name=subject[:NAME_MAX_LENGTH], created_by=actor, client=actor
             )
+            created = True
             if actor.has_usable_password():
                 # See NewCaseCreateView.formset_valid(): don't disclose case
                 # content to a mailbox that hasn't proven ownership yet (the
@@ -544,7 +559,7 @@ class ReceiveEmailView(View):
                 f"Multiple cases found for addresses {addresses}. "
                 f"First case {case.id} ({case.name}) will be used."
             )
-        return case
+        return case, created
 
     def get_letter_status(self, actor, case):
         if actor.is_staff and not actor.has_perm("cases.can_send_to_client", case):

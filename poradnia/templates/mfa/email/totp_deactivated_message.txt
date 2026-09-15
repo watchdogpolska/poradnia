@@ -9,6 +9,8 @@ Zmiana została dokonana z:
 - przeglądarka: {{ user_agent }}
 - data: {{ timestamp }}
 
+{% include '_email_noreply_notice.txt' %}
+
 Z wyrazami szacunku,
 Sieć Obywatelska - Watchdog Polska
 

@@ -54,7 +54,11 @@ class Feedback(models.Model):
 
 def notify_manager(sender, instance, **kwargs):
     subject = _("New feedback - %(created)s") % instance.__dict__
-    message = f"{instance.text}\nURL:{instance.url}"
+    if instance.user:
+        user_info = f"{instance.user} <{instance.user.email}>"
+    else:
+        user_info = _("Anonymous")
+    message = f"{instance.text}\nURL:{instance.url}\nUser:{user_info}"
     reply_email = instance.user.email if instance.user else None
     mail_managers_replyable(subject, message, reply_email=reply_email)
 
