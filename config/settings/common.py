@@ -753,3 +753,12 @@ N8N_CASE_TAGS_WEBHOOK_TOKEN = env("N8N_CASE_TAGS_WEBHOOK_TOKEN", default="")
 N8N_CASE_TAGS_WEBHOOK_TIMEOUT = env.int("N8N_CASE_TAGS_WEBHOOK_TIMEOUT", default=10)
 N8N_CASE_TAGS_CALLBACK = env("N8N_CASE_TAGS_CALLBACK", default="")
 N8N_CASE_TAGS_CALLBACK_TOKEN = env("N8N_CASE_TAGS_CALLBACK_TOKEN", default="")
+
+# Whether new cases created from received e-mail should automatically trigger
+# AI tagging / FOI article search as a background follow-up.
+AUTO_REQUEST_AI_TAGS_FOR_NEW_CASES = env.bool(
+    "AUTO_REQUEST_AI_TAGS_FOR_NEW_CASES", default=False
+)
+AUTO_SEARCH_ARTICLES_FOR_NEW_CASES = env.bool(
+    "AUTO_SEARCH_ARTICLES_FOR_NEW_CASES", default=False
+)

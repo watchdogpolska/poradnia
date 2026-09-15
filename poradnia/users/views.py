@@ -1,6 +1,7 @@
 import re
 
 from ajax_datatable import AjaxDatatableView
+from allauth.account.models import EmailAddress
 from allauth.core import ratelimit
 from dal import autocomplete
 from django.contrib import messages
@@ -115,6 +116,17 @@ class AccountActivationView(FormView):
 
     def form_valid(self, form):
         form.save()
+        # Setting a password here is only reachable by clicking the link we
+        # e-mailed to this address, so it already proves mailbox ownership -
+        # confirm allauth's EmailAddress here too, otherwise this user would
+        # be able to set a password but still get blocked at their next
+        # normal login by allauth's mandatory "please confirm your e-mail"
+        # gate, since that login goes through allauth rather than this view.
+        email_address, _created = EmailAddress.objects.get_or_create(
+            user=self.activation_user, email=self.activation_user.email
+        )
+        email_address.set_verified()
+        email_address.set_as_primary(conditional=True)
         login(
             self.request,
             self.activation_user,

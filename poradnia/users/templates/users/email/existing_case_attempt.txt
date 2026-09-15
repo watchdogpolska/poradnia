@@ -7,6 +7,8 @@ Jeśli to Ty próbowałeś/-aś zgłosić sprawę, zaloguj się na swoje konto i
 
 Jeśli to nie Ty, możesz zignorować tę wiadomość.
 
+{% include '_email_noreply_notice.txt' %}
+
 Z wyrazami szacunku,
 Sieć Obywatelska - Watchdog Polska
 

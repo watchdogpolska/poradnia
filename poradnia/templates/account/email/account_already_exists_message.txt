@@ -7,6 +7,8 @@ Jeśli to Ty próbowałeś/-aś się zarejestrować i nie pamiętasz hasła, mo�
 
 Jeśli to nie Ty, możesz zignorować tę wiadomość - nowe konto nie zostało założone.
 
+{% include '_email_noreply_notice.txt' %}
+
 Z wyrazami szacunku,
 Sieć Obywatelska - Watchdog Polska
 

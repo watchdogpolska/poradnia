@@ -3,6 +3,8 @@ from datetime import datetime, timedelta
 from hashlib import md5
 from unittest.mock import patch
 
+from allauth.account.models import EmailAddress
+from django.contrib.admin import helpers
 from django.core import mail
 from django.core.cache import cache
 from django.test import RequestFactory, override_settings
@@ -536,6 +538,38 @@ class AccountActivationViewTestCase(TestCase):
         self.assertTrue(self.user.has_usable_password())
         self.assertEqual(int(self.client.session["_auth_user_id"]), self.user.pk)
 
+    def test_activation_confirms_email_address(self):
+        self.client.post(
+            self.get_url(),
+            data={
+                "new_password1": "a-Very-Str0ng-Pass",
+                "new_password2": "a-Very-Str0ng-Pass",
+            },
+        )
+        email_address = EmailAddress.objects.get(user=self.user, email=self.user.email)
+        self.assertTrue(email_address.verified)
+        self.assertTrue(email_address.primary)
+
+    def test_activation_does_not_clobber_existing_primary_email(self):
+        other_address = EmailAddress.objects.create(
+            user=self.user,
+            email="already-primary@example.com",
+            verified=True,
+            primary=True,
+        )
+        self.client.post(
+            self.get_url(),
+            data={
+                "new_password1": "a-Very-Str0ng-Pass",
+                "new_password2": "a-Very-Str0ng-Pass",
+            },
+        )
+        other_address.refresh_from_db()
+        self.assertTrue(other_address.primary)
+        new_address = EmailAddress.objects.get(user=self.user, email=self.user.email)
+        self.assertTrue(new_address.verified)
+        self.assertFalse(new_address.primary)
+
     def test_token_is_single_use(self):
         url = self.get_url()
         self.client.post(
@@ -669,3 +703,39 @@ class AccountActivationResendViewTestCase(TestCase):
         self.assertEqual(first.status_code, second.status_code)
         self.assertEqual(first.url, second.url)
         self.assertEqual(len(mail.outbox), 1)
+
+
+class UserAdminResendActivationEmailActionTestCase(TestCase):
+    def setUp(self):
+        self.admin = StaffFactory(password="password", is_superuser=True)
+        self.client.login(username=self.admin.username, password="password")
+        self.unactivated = User.objects.register_by_email(
+            email="stuck@example.com", notify=False
+        )
+
+    def post_action(self, users):
+        return self.client.post(
+            reverse("admin:users_user_changelist"),
+            data={
+                "action": "resend_activation_email",
+                helpers.ACTION_CHECKBOX_NAME: [user.pk for user in users],
+            },
+            follow=True,
+        )
+
+    def test_sends_activation_email(self):
+        self.post_action([self.unactivated])
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn(self.unactivated.email, mail.outbox[0].to)
+
+    def test_does_not_confirm_the_email_address(self):
+        # Staff clicking "resend" is not proof of mailbox ownership - only
+        # the user completing AccountActivationView is, so this action must
+        # not mark the address verified itself.
+        self.post_action([self.unactivated])
+        self.assertFalse(EmailAddress.objects.filter(user=self.unactivated).exists())
+
+    def test_skips_already_activated_account(self):
+        activated = UserFactory(email="active@example.com")
+        self.post_action([activated])
+        self.assertEqual(len(mail.outbox), 0)
