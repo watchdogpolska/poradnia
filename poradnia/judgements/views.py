@@ -8,8 +8,8 @@ from django.views.generic import CreateView, DeleteView, UpdateView
 from poradnia.cases.models import Case
 from poradnia.judgements.models import CourtCase
 from poradnia.utils.action_views import DeleteMessageMixin
-from poradnia.utils.crispy_forms import SingleButtonMixin
-from poradnia.utils.guardian import RaisePermissionRequiredMixin
+from poradnia.utils.crispy_forms_helpers import SingleButtonMixin
+from poradnia.utils.guardian_helpers import RaisePermissionRequiredMixin
 from poradnia.utils.view_mixins import (
     FormValidMessageMixin,
     UserFormKwargsMixin,

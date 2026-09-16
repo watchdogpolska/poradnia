@@ -6,7 +6,7 @@ from django.urls import reverse
 from django.utils.translation import gettext_lazy as _
 from guardian.shortcuts import assign_perm
 
-from poradnia.utils.crispy_forms import (
+from poradnia.utils.crispy_forms_helpers import (
     FormHorizontalMixin,
     HelperMixin,
     SingleButtonMixin,

@@ -5,7 +5,7 @@ from django.utils.translation import gettext as _
 from guardian.forms import BaseObjectPermissionsForm, UserObjectPermissionsForm
 from guardian.shortcuts import assign_perm, remove_perm
 
-from poradnia.utils.crispy_forms import SingleButtonMixin
+from poradnia.utils.crispy_forms_helpers import SingleButtonMixin
 
 
 class PermissionsTranslationMixin:

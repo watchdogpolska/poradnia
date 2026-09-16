@@ -7,7 +7,7 @@ from django.utils.translation import gettext as _
 from turnstile.fields import TurnstileField
 
 from poradnia.utils.constants import TURNSTILE_ERROR_MESSAGES
-from poradnia.utils.crispy_forms import (
+from poradnia.utils.crispy_forms_helpers import (
     FormHorizontalMixin,
     GIODOMixin,
     SingleButtonMixin,

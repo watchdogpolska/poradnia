@@ -30,7 +30,6 @@ from django.db.models import (
 )
 from django.db.models.functions import Cast
 from django.db.models.query import QuerySet
-from django.db.models.signals import post_save, pre_delete
 from django.template import Context, Template
 from django.urls import reverse
 from django.utils import timezone
@@ -41,7 +40,6 @@ from guardian.shortcuts import assign_perm, get_objects_for_user, get_users_with
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
 
-from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 from poradnia.utils.constants import NAME_MAX_LENGTH
 from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 from poradnia.utils.utils import get_numeric_param
@@ -814,37 +812,3 @@ class PermissionGroup(models.Model):
         return f"\n{self.name}:\n" + "\n".join(
             [f"- {n}" for n in sorted(perm_name_list)]
         )
-
-
-def notify_new_case(sender, instance, created, **kwargs):
-    if created:
-        User = get_user_model()
-        users = User.objects.filter(notify_new_case=True).all()
-        email = [x.email for x in users]
-        TemplateMailManager.send(
-            template_key=TemplateKey.CASE_NEW,
-            recipient_list=email,
-            context={"case": instance},
-        )
-
-
-post_save.connect(receiver=notify_new_case, sender=Case, dispatch_uid="new_case_notify")
-
-
-def assign_perm_new_case(sender, instance, created, **kwargs):
-    if created:
-        instance.assign_perm()
-
-
-post_save.connect(
-    receiver=assign_perm_new_case, sender=Case, dispatch_uid="assign_perm_new_case"
-)
-
-
-def delete_files(sender, instance, **kwargs):
-    delete_files_for_cases([instance])
-
-
-pre_delete.connect(
-    receiver=delete_files, sender=Case, dispatch_uid="delete_files_for_case"
-)

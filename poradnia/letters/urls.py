@@ -16,7 +16,7 @@ urlpatterns = [
         views.cbv.LetterAjaxDatatableView.as_view(),
         name="letters_table_ajax_data",
     ),
-    path("sprawa-<int:case_pk>/", views.add, name="add"),
+    path("sprawa-<int:case_pk>/", views.LetterCreateView.as_view(), name="add"),
     path(
         "sprawa-<int:case_pk>/list-<int:letter_pk>/zalaczniki",
         views.StreamAttachmentView.as_view(),
@@ -27,7 +27,7 @@ urlpatterns = [
         views.DownloadAttachmentView.as_view(),
         name="attachment_download",
     ),
-    path("<int:pk>/wyslij/", views.send, name="send"),
+    path("<int:pk>/wyslij/", views.LetterSendView.as_view(), name="send"),
     path("<int:pk>/edytuj/", views.LetterUpdateView.as_view(), name="edit"),
     path(
         "<int:pk>/ai-akceptuj/",
@@ -39,7 +39,7 @@ urlpatterns = [
         views.LetterAiSearchRejectView.as_view(),
         name="ai_search_reject",
     ),
-    path("<int:pk>/", views.send, name="detail"),
+    path("<int:pk>/", views.LetterSendView.as_view(), name="detail"),
     path("", views.NewCaseCreateView.as_view(), name="home"),
     path("", views.NewCaseCreateView.as_view(), name="add"),
     path("tinymce/", include("tinymce.urls")),

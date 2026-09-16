@@ -5,7 +5,7 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import gettext as _
 from django.utils.translation import gettext_lazy as _l
 
-from poradnia.utils.crispy_forms import SingleButtonMixin
+from poradnia.utils.crispy_forms_helpers import SingleButtonMixin
 
 
 class CustomLoginForm(SingleButtonMixin, LoginForm):

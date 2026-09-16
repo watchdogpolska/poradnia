@@ -26,7 +26,7 @@ from django.views.generic.list import BaseListView
 from poradnia.cases.models import Case
 from poradnia.keys.mixins import KeyAuthMixin
 from poradnia.users.utils import PermissionMixin
-from poradnia.utils.guardian import RaisePermissionRequiredMixin
+from poradnia.utils.guardian_helpers import RaisePermissionRequiredMixin
 from poradnia.utils.view_mixins import (
     FormValidMessageMixin,
     SelectRelatedMixin,
