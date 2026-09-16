@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-16 11:14+0200\n"
+"POT-Creation-Date: 2026-09-16 12:18+0200\n"
 "PO-Revision-Date: 2026-05-05 20:00+0200\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -39,18 +39,18 @@ msgstr ""
 msgid "with 20-second spacing."
 msgstr "z odstępem 20 sekund."
 
-#: poradnia/letters/apps.py:7 poradnia/letters/models.py:118
-#: poradnia/letters/views/cbv.py:188
+#: poradnia/letters/apps.py:7 poradnia/letters/models.py:114
+#: poradnia/letters/views/cbv.py:212
 msgid "Letters"
 msgstr "Listy"
 
-#: poradnia/letters/forms.py:25
+#: poradnia/letters/forms.py:30
 msgid "Leave empty to use email field and create a new one user."
 msgstr ""
 "Pozostaw puste, aby wykorzystać pole adresu e-mail i utworzyć nowego "
 "użytkownika."
 
-#: poradnia/letters/forms.py:28
+#: poradnia/letters/forms.py:33
 msgid ""
 "The user account will be created automatically, so you haveaccess to the "
 "archive and data about persons responsible for the case."
@@ -58,7 +58,7 @@ msgstr ""
 "Konto użytkownika zostanie utworzone automatycznie, dzięki czemu będziesz "
 "mieć dostęp do archiwum zawierającego wszystkie Twoje sprawy."
 
-#: poradnia/letters/forms.py:33
+#: poradnia/letters/forms.py:38
 msgid ""
 "Short description of the case for organizational purposes. The institution "
 "name and two words will suffice."
@@ -66,7 +66,7 @@ msgstr ""
 "Podaj nazwę instytucji i typ problemu np. „brak odpowiedzi”, „ochrona danych "
 "osobowych” itp."
 
-#: poradnia/letters/forms.py:38
+#: poradnia/letters/forms.py:43
 msgid ""
 "After choosing this option, your message will be sent to the client and the "
 "members of the legal team, who can see this case (admins and assigned team "
@@ -79,7 +79,7 @@ msgstr ""
 "Wybierz ją, jeśli Twoja wiadomość jest ostateczna i może trafić do klienta/"
 "klientki poradnictwa."
 
-#: poradnia/letters/forms.py:45
+#: poradnia/letters/forms.py:50
 msgid ""
 "After choosing this option, your message will be saved in the system as a "
 "draft. The admin will check the saved draft and will either suggest changes, "
@@ -90,7 +90,7 @@ msgstr ""
 "Admin sprawdzi zapisany projekt i albo poprosi Cię o jego zmianę albo wyśle "
 "go do klienta/klientki."
 
-#: poradnia/letters/forms.py:51
+#: poradnia/letters/forms.py:56
 msgid ""
 "After choosing this option, your message will only be sent to the members of "
 "the legal team who can see this case (admins and assigned team members). "
@@ -101,7 +101,7 @@ msgstr ""
 "zespołu).\n"
 "Wybierz ją, jeśli chcesz coś ustalić, skonsultować w ramach zespołu."
 
-#: poradnia/letters/forms.py:57
+#: poradnia/letters/forms.py:62
 msgid ""
 "This field supports <a href='https://www.markdownguide.org/cheat-"
 "sheet'>Markdown</a>"
@@ -109,28 +109,23 @@ msgstr ""
 "To pole obsługuje składnię <a href='https://blog.nayma.pl/podstawy-"
 "markdown/'>Markdown</a>"
 
-#: poradnia/letters/forms.py:75
-#, python-format
-msgid "E-mail %(email)s are already used. Please log in."
-msgstr "Adres e-mail %(email)s jest aktualnie w użyciu. Proszę, zaloguj się."
-
-#: poradnia/letters/forms.py:85
+#: poradnia/letters/forms.py:78
 msgid "Report case"
 msgstr "Zgłoś sprawę"
 
-#: poradnia/letters/forms.py:89
+#: poradnia/letters/forms.py:82
 msgid "Client"
 msgstr "Klient"
 
-#: poradnia/letters/forms.py:94
+#: poradnia/letters/forms.py:87
 msgid "User e-mail"
 msgstr "E-mail użytkownika"
 
-#: poradnia/letters/forms.py:96
+#: poradnia/letters/forms.py:89
 msgid "E-mail"
 msgstr "E-mail"
 
-#: poradnia/letters/forms.py:99
+#: poradnia/letters/forms.py:92
 msgid " "
 msgstr " "
 
@@ -138,122 +133,174 @@ msgstr " "
 msgid "Have to enter user email or select a client"
 msgstr "Musisz podać adres e-mail klienta lub go wybrać z bazy."
 
-#: poradnia/letters/forms.py:221
+#: poradnia/letters/forms.py:230
 msgid "Reply to all"
 msgstr "Odpowiedz wszystkim"
 
-#: poradnia/letters/forms.py:229 poradnia/letters/forms.py:248
+#: poradnia/letters/forms.py:238 poradnia/letters/forms.py:257
 msgid "Save to review"
 msgstr "Zapisz do przejrzenia"
 
-#: poradnia/letters/forms.py:238 poradnia/letters/forms.py:256
+#: poradnia/letters/forms.py:247 poradnia/letters/forms.py:265
 msgid "Write to staff"
 msgstr "Napisz do zespołu"
 
-#: poradnia/letters/forms.py:263
+#: poradnia/letters/forms.py:272
 msgid "Reply"
 msgstr "Odpowiedz"
 
-#: poradnia/letters/forms.py:345
+#: poradnia/letters/forms.py:354
 msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
-#: poradnia/letters/forms.py:411
+#: poradnia/letters/forms.py:420
 msgid "Attachments (select or drop here)"
 msgstr "Załączniki (wybierz lub upuść tutaj)"
 
-#: poradnia/letters/models.py:70
+#: poradnia/letters/models.py:69
 #: poradnia/letters/templates/letters/_letter_list.html:20
 msgid "Staff"
 msgstr "Zespół"
 
-#: poradnia/letters/models.py:70
+#: poradnia/letters/models.py:69
 msgid "Done"
 msgstr "Wykonane"
 
-#: poradnia/letters/models.py:76
+#: poradnia/letters/models.py:75
 msgid "Accepted on"
 msgstr "Zaakceptowane o"
 
-#: poradnia/letters/models.py:79
+#: poradnia/letters/models.py:78
 msgid "Subject"
 msgstr "Przedmiot"
 
-#: poradnia/letters/models.py:81
+#: poradnia/letters/models.py:80
 msgid "Text"
 msgstr "Treść"
 
-#: poradnia/letters/models.py:82
+#: poradnia/letters/models.py:81
 msgid "Mail formatted HTML"
 msgstr "Mail sformatowany w HTML"
 
-#: poradnia/letters/models.py:83
+#: poradnia/letters/models.py:82
 msgid "Signature"
 msgstr "Podpis"
 
-#: poradnia/letters/models.py:87 poradnia/letters/views/cbv.py:206
+#: poradnia/letters/models.py:86 poradnia/letters/views/cbv.py:230
 msgid "Created by"
 msgstr "Utworzone przez"
 
-#: poradnia/letters/models.py:93 poradnia/letters/views/cbv.py:201
+#: poradnia/letters/models.py:92 poradnia/letters/views/cbv.py:225
 msgid "Created on"
 msgstr "Utworzone o"
 
-#: poradnia/letters/models.py:96
+#: poradnia/letters/models.py:95
 msgid "Modified by"
 msgstr "Zmienione o"
 
-#: poradnia/letters/models.py:102
+#: poradnia/letters/models.py:101
 msgid "Modified on"
 msgstr "Zmienione przez"
 
-#: poradnia/letters/models.py:108
+#: poradnia/letters/models.py:104
 msgid "Raw message contents"
 msgstr "Treść surowej wiadomości"
 
-#: poradnia/letters/models.py:111
+#: poradnia/letters/models.py:107
 msgid "Original full content of message"
 msgstr "Oryginalna, pełna treść wiadomości"
 
-#: poradnia/letters/models.py:117
+#: poradnia/letters/models.py:113
 msgid "Letter"
 msgstr "List"
 
-#: poradnia/letters/models.py:143
+#: poradnia/letters/models.py:139
 msgid "Delete letter"
 msgstr "Usuń list"
 
-#: poradnia/letters/models.py:300
+#: poradnia/letters/models.py:299
 msgid "File"
 msgstr "Plik"
 
-#: poradnia/letters/models.py:304
+#: poradnia/letters/models.py:303
 msgid "Text content"
 msgstr "Treść tekstu"
 
-#: poradnia/letters/models.py:307
+#: poradnia/letters/models.py:306
 msgid "Text content update result"
 msgstr "Wyniki aktualizacji treści tekstowej"
 
-#: poradnia/letters/models.py:312
+#: poradnia/letters/models.py:311
 msgid "Attachment"
 msgstr "Załącznik"
 
-#: poradnia/letters/models.py:313
+#: poradnia/letters/models.py:312
 msgid "Attachments"
 msgstr "Załączniki"
 
-#: poradnia/letters/templates/letters/_form.html:15
-msgid "remove"
-msgstr "usuń"
+#: poradnia/letters/templates/letters/_attachments_dropzone.html:34
+msgid "Clear Files"
+msgstr "Wyczyść pliki"
 
-#: poradnia/letters/templates/letters/_form.html:16
+#: poradnia/letters/templates/letters/_attachments_dropzone.html:43
+msgid "Select multiple files with ctr or shift."
+msgstr "Wybierz wiele plików za pomocą Ctrl lub Shift."
+
+#: poradnia/letters/templates/letters/_attachments_dropzone.html:45
+msgid "Selected files:"
+msgstr "Wybrane pliki:"
+
+#: poradnia/letters/templates/letters/_form.html:15
 msgid "add another"
 msgstr "dodaj kolejne"
 
-#: poradnia/letters/templates/letters/_form.html:26
+#: poradnia/letters/templates/letters/_form.html:16
+msgid "remove"
+msgstr "usuń"
+
+#: poradnia/letters/templates/letters/_form.html:25
 msgid "Cases"
 msgstr "Sprawy"
+
+#: poradnia/letters/templates/letters/_letter_ai_feedback.html:7
+msgid "Accept AI answer"
+msgstr "Zaakceptuj odpowiedź AI"
+
+#: poradnia/letters/templates/letters/_letter_ai_feedback.html:15
+#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:11
+msgid "Reject AI answer"
+msgstr "Odrzuć odpowiedź AI"
+
+#: poradnia/letters/templates/letters/_letter_ai_feedback.html:22
+#, python-format
+msgid "Accepted by %(user)s on %(when)s"
+msgstr "Zaakceptowane przez %(user)s dnia %(when)s"
+
+#: poradnia/letters/templates/letters/_letter_ai_feedback.html:26
+#, python-format
+msgid "Rejected by %(user)s on %(when)s: %(reason)s"
+msgstr "Odrzucone przez %(user)s dnia %(when)s: %(reason)s"
+
+#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:7
+#: poradnia/letters/templates/letters/attachment_text_content_modal.html:17
+msgid "Close"
+msgstr "Zamknij"
+
+#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:16
+msgid "Reason for rejection"
+msgstr "Powód odrzucenia"
+
+#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:19
+msgid "Please provide a reason."
+msgstr "Podaj powód."
+
+#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:24
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:32
+msgid "Reject"
+msgstr "Odrzuć"
 
 #: poradnia/letters/templates/letters/_letter_list.html:18
 msgid "Everybody"
@@ -282,7 +329,7 @@ msgstr ""
 
 #: poradnia/letters/templates/letters/_letter_list.html:75
 #: poradnia/letters/templates/letters/form_edit.html:6
-#: poradnia/letters/views/cbv.py:101
+#: poradnia/letters/views/cbv.py:125
 msgid "Edit"
 msgstr "Edytuj"
 
@@ -290,46 +337,6 @@ msgstr "Edytuj"
 #: poradnia/letters/templates/letters/form_send.html:7
 msgid "Send"
 msgstr "Wyślij"
-
-#: poradnia/letters/templates/letters/_letter_ai_feedback.html:7
-msgid "Accept AI answer"
-msgstr "Zaakceptuj odpowiedź AI"
-
-#: poradnia/letters/templates/letters/_letter_ai_feedback.html:15
-#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:11
-msgid "Reject AI answer"
-msgstr "Odrzuć odpowiedź AI"
-
-#: poradnia/letters/templates/letters/_letter_ai_feedback.html:22
-#, python-format
-msgid "Accepted by %(user)s on %(when)s"
-msgstr "Zaakceptowane przez %(user)s dnia %(when)s"
-
-#: poradnia/letters/templates/letters/_letter_ai_feedback.html:26
-#, python-format
-msgid "Rejected by %(user)s on %(when)s: %(reason)s"
-msgstr "Odrzucone przez %(user)s dnia %(when)s: %(reason)s"
-
-#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:16
-msgid "Reason for rejection"
-msgstr "Powód odrzucenia"
-
-#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:19
-msgid "Please provide a reason."
-msgstr "Podaj powód."
-
-#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:24
-msgid "Cancel"
-msgstr "Anuluj"
-
-#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:32
-msgid "Reject"
-msgstr "Odrzuć"
-
-#: poradnia/letters/templates/letters/attachment_text_content_modal.html:17
-#: poradnia/letters/templates/letters/_letter_ai_reject_modal.html:7
-msgid "Close"
-msgstr "Zamknij"
 
 #: poradnia/letters/templates/letters/attachment_text_content_modal.html:31
 msgid "No extracted text available."
@@ -351,73 +358,85 @@ msgstr "Rejestr korespondencji"
 msgid "Letters Table"
 msgstr "Tabela korespondencji"
 
-#: poradnia/letters/views/cbv.py:65
+#: poradnia/letters/views/cbv.py:64
 msgid "Create a new case"
 msgstr "Tworzenie nowej sprawy"
 
-#: poradnia/letters/views/cbv.py:74
+#: poradnia/letters/views/cbv.py:117
 #, python-brace-format
 msgid "Case about {object} created!"
 msgstr "Sprawa o tytule {object} została zarejestrowana!"
 
-#: poradnia/letters/views/cbv.py:136
+#: poradnia/letters/views/cbv.py:160
 msgid "Status"
 msgstr "Status"
 
-#: poradnia/letters/views/cbv.py:177
+#: poradnia/letters/views/cbv.py:201
 msgid "Letter search table"
 msgstr "Tabela wyszukiwania korespondencji"
 
-#: poradnia/letters/views/cbv.py:211
+#: poradnia/letters/views/cbv.py:235
 msgid "Letter Subject"
 msgstr "Temat listu/maila"
 
-#: poradnia/letters/views/cbv.py:218
+#: poradnia/letters/views/cbv.py:242
 msgid "Letter Content (first 300 chars when longer)"
 msgstr "Treść listu/maila (pierwsze 300 znaków, gdy jest dłuższy)"
 
-#: poradnia/letters/views/cbv.py:225
+#: poradnia/letters/views/cbv.py:249
 msgid "Case Subject"
 msgstr "Przedmiot sprawy"
 
-#: poradnia/letters/views/cbv.py:232
+#: poradnia/letters/views/cbv.py:256
 msgid "Advice Subject"
 msgstr "Przedmiot porady"
 
-#: poradnia/letters/views/cbv.py:240
+#: poradnia/letters/views/cbv.py:264
 msgid "Advice Comment"
 msgstr "Komentarz porady"
 
-#: poradnia/letters/views/fbv.py:19
-#, python-format
+#: poradnia/letters/views/fbv.py:16
 msgid ""
-"User  %(user)s registered! You will receive a password by mail. Log in to "
-"get access to archive"
+"Thank you for submitting your case. Please check your e-mail for further "
+"instructions on how to proceed."
 msgstr ""
-"Konto %(user)s utworzone! Hasło otrzymasz na adres e-mail. Zaloguj się, aby "
-"uzyskać dostęp do archiwum."
+"Dziękujemy za zgłoszenie sprawy. Sprawdź swoją skrzynkę e-mail, aby zapoznać "
+"się z dalszymi instrukcjami postępowania."
 
-#: poradnia/letters/views/fbv.py:58
+#: poradnia/letters/views/fbv.py:36
 #, python-format
 msgid "Letter %(object)s created!"
 msgstr "List %(object)s utworzone"
 
-#: poradnia/letters/views/fbv.py:70
+#: poradnia/letters/views/fbv.py:44
 msgid "Add letter"
 msgstr "Dodaj list"
 
-#: poradnia/letters/views/fbv.py:86
+#: poradnia/letters/views/fbv.py:60
 msgid "You can not send one letter twice."
 msgstr "Nie możesz wysłać jednego listu dwukrotnie. "
 
-#: poradnia/letters/views/fbv.py:95
+#: poradnia/letters/views/fbv.py:69
 #, python-format
 msgid "Letter %(object)s send!"
 msgstr "List %(object)s wysłany!"
 
-#: poradnia/letters/views/fbv.py:100
+#: poradnia/letters/views/fbv.py:74
 msgid "Send to client"
 msgstr "Wyślij do klienta"
+
+#, python-format
+#~ msgid "E-mail %(email)s are already used. Please log in."
+#~ msgstr ""
+#~ "Adres e-mail %(email)s jest aktualnie w użyciu. Proszę, zaloguj się."
+
+#, python-format
+#~ msgid ""
+#~ "User  %(user)s registered! You will receive a password by mail. Log in to "
+#~ "get access to archive"
+#~ msgstr ""
+#~ "Konto %(user)s utworzone! Hasło otrzymasz na adres e-mail. Zaloguj się, "
+#~ "aby uzyskać dostęp do archiwum."
 
 #~ msgid "Total letter registered"
 #~ msgstr "Łączna liczba listów zarejestrowanych"

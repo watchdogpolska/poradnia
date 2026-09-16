@@ -6,7 +6,7 @@ from django.utils.translation import gettext as _
 
 from poradnia.cases.models import Case
 from poradnia.utils.action_views import AuthorMixin
-from poradnia.utils.crispy_forms import (
+from poradnia.utils.crispy_forms_helpers import (
     FormHorizontalMixin,
     SingleButtonMixin,
 )

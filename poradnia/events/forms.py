@@ -4,7 +4,7 @@ from django.urls import reverse
 from poradnia.letters.forms import PartialMixin
 from poradnia.users.models import User
 from poradnia.utils.action_views import AuthorMixin
-from poradnia.utils.crispy_forms import FormHorizontalMixin, SingleButtonMixin
+from poradnia.utils.crispy_forms_helpers import FormHorizontalMixin, SingleButtonMixin
 
 from .models import Event
 

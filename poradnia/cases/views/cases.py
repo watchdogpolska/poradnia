@@ -28,7 +28,7 @@ from poradnia.letters.forms import AddLetterForm, AttachmentsFieldForm
 from poradnia.letters.models import Attachment
 from poradnia.records.models import Record
 from poradnia.users.views import PermissionMixin
-from poradnia.utils.guardian import RaisePermissionRequiredMixin
+from poradnia.utils.guardian_helpers import RaisePermissionRequiredMixin
 from poradnia.utils.view_mixins import SelectRelatedMixin, UserFormKwargsMixin
 
 
