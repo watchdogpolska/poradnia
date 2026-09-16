@@ -196,7 +196,7 @@ CATALOG = [
         group="Pisma",
         key="letter_created",
         title="Dodano nowe pismo",
-        trigger="letters.views.fbv.add() (letters/views/fbv.py).",
+        trigger="LetterCreateView.form_valid (letters/views/cbv.py).",
         level="success",
         msgid="Letter %(object)s created!",
         render=lambda t: t % {"object": "Odpowiedź na pytanie"},
@@ -206,8 +206,8 @@ CATALOG = [
         key="letter_send_twice_blocked",
         title="Próba ponownego wysłania pisma",
         trigger=(
-            "letters.views.fbv.send(), gdy pismo ma już status „wysłane” "
-            "(letters/views/fbv.py)."
+            "LetterSendView._redirect_if_already_sent, gdy pismo ma już status "
+            "„wysłane” (letters/views/cbv.py)."
         ),
         level="warning",
         msgid="You can not send one letter twice.",
@@ -216,7 +216,7 @@ CATALOG = [
         group="Pisma",
         key="letter_sent",
         title="Wysłano pismo do klienta",
-        trigger="letters.views.fbv.send() (letters/views/fbv.py).",
+        trigger="LetterSendView.form_valid (letters/views/cbv.py).",
         level="success",
         msgid="Letter %(object)s send!",
         render=lambda t: t % {"object": "Odpowiedź na pytanie"},
