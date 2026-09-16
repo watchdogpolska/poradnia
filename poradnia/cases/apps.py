@@ -5,3 +5,6 @@ from django.utils.translation import gettext_lazy as _
 class CustomAppConfig(AppConfig):
     name = "poradnia.cases"
     verbose_name = _("Cases")
+
+    def ready(self):
+        import poradnia.cases.signals  # noqa: F401
