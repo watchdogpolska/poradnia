@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-07-10 12:11+0200\n"
+"POT-Creation-Date: 2026-09-16 11:58+0200\n"
 "PO-Revision-Date: 2026-07-08 18:34+0200\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: \n"
@@ -113,21 +113,19 @@ msgstr "Województwa"
 msgid "Select voivodeship."
 msgstr "Wybierz województwo"
 
-#: poradnia/teryt/urls.py:8
+#: poradnia/teryt/urls.py:7
 msgid "^(?P<slug>[\\w-]+)$"
 msgstr "^(?P<slug>[\\w-]+)$"
 
-#: poradnia/teryt/urls.py:12
-msgid "voivodeship-autocomplete/"
-msgstr "wojewodztwo-autouzupelnianie/"
-
-#: poradnia/teryt/urls.py:17
-msgid "county-autocomplete/"
-msgstr "powiat-autouzupelnianie/"
-
-#: poradnia/teryt/urls.py:22
+#: poradnia/teryt/urls.py:11
 msgid "community-autocomplete/"
 msgstr "gminy-autouzupelnianie/"
+
+#~ msgid "voivodeship-autocomplete/"
+#~ msgstr "wojewodztwo-autouzupelnianie/"
+
+#~ msgid "county-autocomplete/"
+#~ msgstr "powiat-autouzupelnianie/"
 
 #~ msgid "^$"
 #~ msgstr "^$"

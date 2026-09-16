@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import gettext_lazy as _
 
 from poradnia.users.models import User
-from poradnia.utils.crispy_forms import CrispyFilterMixin
+from poradnia.utils.crispy_forms_helpers import CrispyFilterMixin
 
 
 class UserChoiceFilter(django_filters.ModelChoiceFilter):

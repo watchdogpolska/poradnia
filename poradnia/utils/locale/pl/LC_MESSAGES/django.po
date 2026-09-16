@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-01 22:11+0100\n"
+"POT-Creation-Date: 2026-09-16 12:18+0200\n"
 "PO-Revision-Date: 2026-03-01 22:27+0100\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,8 +16,15 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && "
+"(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
+"n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 "X-Translated-Using: django-rosetta 0.10.3\n"
+
+#: poradnia/utils/action_views.py:38
+#, python-brace-format
+msgid "{verbose_name} {object} deleted!"
+msgstr "{verbose_name} {object} usunięto!"
 
 #: poradnia/utils/constants.py:6 poradnia/utils/constants.py:7
 msgid "Turnstile could not be verified."
@@ -27,18 +34,34 @@ msgstr "Nie można zweryfikować Turnstile."
 msgid "Please prove you are a human."
 msgstr "Kliknij pole powyżej aby udowodnć że nie jesteś automatem."
 
-#: poradnia/utils/crispy_forms.py:89
+#: poradnia/utils/crispy_forms_helpers.py:29
+msgid "Filter"
+msgstr "Zastosuj filtr"
+
+#: poradnia/utils/crispy_forms_helpers.py:105
 msgid "Update"
 msgstr "Aktualizacja"
 
-#: poradnia/utils/crispy_forms.py:89
+#: poradnia/utils/crispy_forms_helpers.py:105
 msgid "Save"
 msgstr "Zapisz"
 
-#: poradnia/utils/crispy_forms.py:148
+#: poradnia/utils/crispy_forms_helpers.py:164
 #, python-brace-format
 msgid "{0} created!"
 msgstr "{0} utworzone!"
+
+#: poradnia/utils/messages_catalog.py:405
+msgid "Users with cases can be deleted with user form only: "
+msgstr ""
+"Użytkowników posiadających sprawy można usunąć wyłącznie za pomocą "
+"formularza użytkownika: "
+
+#: poradnia/utils/messages_catalog.py:408
+msgid "Users with letters can be deleted with user form only: "
+msgstr ""
+"Użytkowników posiadających listy można usunąć wyłącznie za pomocą formularza "
+"użytkownika: "
 
 #: poradnia/utils/mixins.py:42
 msgid "Apply Filter"

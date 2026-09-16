@@ -13,7 +13,7 @@ from poradnia.users.forms import (
 )
 from poradnia.users.models import User
 from poradnia.utils.action_views import ActionMessageMixin, ActionView
-from poradnia.utils.guardian import RaisePermissionRequiredMixin
+from poradnia.utils.guardian_helpers import RaisePermissionRequiredMixin
 from poradnia.utils.view_mixins import FormValidMessageMixin
 
 from ..forms import CaseGroupPermissionForm
