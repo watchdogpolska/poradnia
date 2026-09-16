@@ -298,7 +298,12 @@ class UserAdmin(AdminImageMixin, AuthUserAdmin):
         # ownership, so it must not mark the address verified.
         sent, skipped = 0, 0
         for user in queryset:
-            if user.has_usable_password():
+            # has_usable_password() alone treats a bare empty string as
+            # "usable" (it only checks for the "!" unusable-password
+            # prefix), which disagrees with the admin's own password
+            # widget - so also require a non-empty password field to
+            # match what "Hasło: Nie ustawiono hasła." actually means.
+            if user.password and user.has_usable_password():
                 skipped += 1
                 continue
             User.objects.send_activation_email(user)

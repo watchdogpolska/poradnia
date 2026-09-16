@@ -43,7 +43,7 @@ from poradnia.letters.utils import get_html_from_eml_file
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 from poradnia.users.utils import PermissionMixin
 from poradnia.utils.constants import NAME_MAX_LENGTH
-from poradnia.utils.crispy_forms import CrispyFilterMixin, FormSetMixin
+from poradnia.utils.crispy_forms_helpers import CrispyFilterMixin, FormSetMixin
 from poradnia.utils.view_mixins import (
     PrefetchRelatedMixin,
     SelectRelatedMixin,
@@ -51,9 +51,20 @@ from poradnia.utils.view_mixins import (
     UserFormKwargsMixin,
 )
 
-from ..forms import AttachmentForm, AttachmentsFieldForm, LetterForm, NewCaseForm
+from ..forms import (
+    AddLetterForm,
+    AttachmentForm,
+    AttachmentsFieldForm,
+    LetterForm,
+    NewCaseForm,
+    SendLetterForm,
+)
 from ..models import Attachment, Letter
-from .fbv import NEW_CASE_ANONYMOUS_TEXT
+
+NEW_CASE_ANONYMOUS_TEXT = _(
+    "Thank you for submitting your case. Please check your e-mail for "
+    "further instructions on how to proceed."
+)
 
 logger = logging.getLogger(__name__)
 
@@ -91,11 +102,14 @@ class NewCaseCreateView(SetHeadlineMixin, UserFormKwargsMixin, CreateView):
         self.object = form.save()
         self.object.save_attachments(files=self.request.FILES.getlist("file_field"))
 
-        if self.object.client.has_usable_password():
+        if self.object.client.password and self.object.client.has_usable_password():
             # An unverified/auto-created client (unusable password) already
             # got a neutral activation e-mail from register_by_email(); the
             # case-registered content itself is withheld until they confirm
-            # ownership of the mailbox by activating.
+            # ownership of the mailbox by activating. has_usable_password()
+            # alone would wrongly pass a literal empty-string password (a
+            # legacy data artifact - see the admin resend_activation_email
+            # fix), so also require a non-empty password field.
             self.object.client.notify(
                 actor=self.object.created_by,
                 verb="registered",
@@ -114,6 +128,95 @@ class NewCaseCreateView(SetHeadlineMixin, UserFormKwargsMixin, CreateView):
             _("Case about {object} created!").format(object=self.object.name),
         )
         return HttpResponseRedirect(self.object.case.get_absolute_url())
+
+
+class LetterCreateView(
+    LoginRequiredMixin, SetHeadlineMixin, UserFormKwargsMixin, CreateView
+):
+    model = Letter
+    form_class = AddLetterForm
+    headline = _("Add letter")
+    template_name = "letters/form_add.html"
+
+    def get(self, request, *args, **kwargs):
+        self.case = get_object_or_404(Case, pk=kwargs["case_pk"])
+        self.case.perm_check(request.user, "can_add_record")
+        return super().get(request, *args, **kwargs)
+
+    def post(self, request, *args, **kwargs):
+        self.case = get_object_or_404(Case, pk=kwargs["case_pk"])
+        self.case.perm_check(request.user, "can_add_record")
+        return super().post(request, *args, **kwargs)
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs["case"] = self.case
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["case"] = self.case
+        context.setdefault("attachments_form", AttachmentsFieldForm())
+        return context
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(
+            self.request, _("Letter %(object)s created!") % {"object": self.object}
+        )
+        logger.info(f"Letter {self.object.id} created by {self.request.user}")
+        self.object.send_notification(actor=self.request.user, verb="created")
+        return response
+
+    def get_success_url(self):
+        return self.case.get_absolute_url()
+
+
+class LetterSendView(
+    LoginRequiredMixin, SetHeadlineMixin, UserFormKwargsMixin, UpdateView
+):
+    model = Letter
+    form_class = SendLetterForm
+    headline = _("Send to client")
+    template_name = "letters/form_send.html"
+
+    def get_object(self, queryset=None):
+        obj = super().get_object(queryset)
+        obj.case.perm_check(self.request.user, "can_add_record")
+        return obj
+
+    def _redirect_if_already_sent(self, request):
+        if self.object.status != Letter.STATUS.done:
+            return None
+        messages.warning(request, _("You can not send one letter twice."))
+        return HttpResponseRedirect(self.object.case.get_absolute_url())
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return self._redirect_if_already_sent(request) or super().get(
+            request, *args, **kwargs
+        )
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        return self._redirect_if_already_sent(request) or super().post(
+            request, *args, **kwargs
+        )
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["case"] = self.object.case
+        return context
+
+    def form_valid(self, form):
+        response = super().form_valid(form)
+        messages.success(
+            self.request, _("Letter %(object)s send!") % {"object": self.object}
+        )
+        return response
+
+    def get_success_url(self):
+        return self.object.case.get_absolute_url()
 
 
 class LetterUpdateView(SetHeadlineMixin, FormSetMixin, UserFormKwargsMixin, UpdateView):
@@ -548,10 +651,14 @@ class ReceiveEmailView(View):
                 name=subject[:NAME_MAX_LENGTH], created_by=actor, client=actor
             )
             created = True
-            if actor.has_usable_password():
+            if actor.password and actor.has_usable_password():
                 # See NewCaseCreateView.formset_valid(): don't disclose case
                 # content to a mailbox that hasn't proven ownership yet (the
                 # From: header on inbound mail is trivially spoofable).
+                # has_usable_password() alone would wrongly pass a literal
+                # empty-string password (a legacy data artifact - see the
+                # admin resend_activation_email fix), so also require a
+                # non-empty password field.
                 actor.notify(
                     actor=actor,
                     verb="registered",

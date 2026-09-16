@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-08-05 15:19+0200\n"
+"POT-Creation-Date: 2026-09-16 11:58+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -20,168 +20,225 @@ msgstr ""
 "(n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && "
 "n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
 
+#: poradnia/dashboard/apps.py:7
+#: poradnia/dashboard/templates/dashboard/_sidebar.html:4
+#: poradnia/dashboard/templates/dashboard/index.html:6
 msgid "Dashboard"
 msgstr "Panel raportów"
 
+#: poradnia/dashboard/reports.py:17
 msgid "TOTAL"
 msgstr "SUMA"
 
+#: poradnia/dashboard/reports.py:18
 msgid "ANY / TOTAL"
 msgstr "DOWOLNA / SUMA"
 
+#: poradnia/dashboard/reports.py:19
 msgid "None"
 msgstr "Brak"
 
+#: poradnia/dashboard/reports.py:21
 msgid "New cases"
 msgstr "Nowe sprawy"
 
+#: poradnia/dashboard/reports.py:22
 msgid "New users with cases"
 msgstr "Nowi użytkownicy ze sprawami"
 
+#: poradnia/dashboard/reports.py:23
 msgid "Letters created by staff"
 msgstr "Listy utworzone przez zespół"
 
+#: poradnia/dashboard/reports.py:24
 msgid "Attachments created by staff"
 msgstr "Załączniki utworzone przez zespół"
 
+#: poradnia/dashboard/reports.py:25
 msgid "Court cases"
 msgstr "Sprawy sądowe"
 
+#: poradnia/dashboard/reports.py:26
 msgid "Court sessions"
 msgstr "Rozprawy sądowe"
 
+#: poradnia/dashboard/reports.py:27
 msgid "Events"
 msgstr "Wydarzenia"
 
+#: poradnia/dashboard/reports.py:30
 msgid "cases <= 5"
 msgstr "sprawy <= 5"
 
+#: poradnia/dashboard/reports.py:31
 msgid "cases 6-10"
 msgstr "sprawy 6-10"
 
+#: poradnia/dashboard/reports.py:32
 msgid "cases 11-20"
 msgstr "sprawy 11-20"
 
+#: poradnia/dashboard/reports.py:33
 msgid "cases 21-50"
 msgstr "sprawy 21-50"
 
+#: poradnia/dashboard/reports.py:34
 msgid "cases > 50"
 msgstr "sprawy > 50"
 
+#: poradnia/dashboard/reports.py:38
 msgid "case letters count <=5"
 msgstr "listy w sprawie <=5"
 
+#: poradnia/dashboard/reports.py:39
 msgid "case letters count 6-10"
 msgstr "listy w sprawie 6-10"
 
+#: poradnia/dashboard/reports.py:40
 msgid "case letters count 11-20"
 msgstr "listy w sprawie 11-20"
 
+#: poradnia/dashboard/reports.py:41
 msgid "case letters count 21-50"
 msgstr "listy w sprawie 21-50"
 
+#: poradnia/dashboard/reports.py:42
 msgid "case letters count 51-100"
 msgstr "listy w sprawie 51-100"
 
+#: poradnia/dashboard/reports.py:43
 msgid "case letters count 100+"
 msgstr "listy w sprawie 100+"
 
+#: poradnia/dashboard/reports.py:59
 msgid "Month"
 msgstr "Miesiąc"
 
+#: poradnia/dashboard/reports.py:71
 msgid "users with new case"
 msgstr "użytkownicy z nową sprawą"
 
+#: poradnia/dashboard/reports.py:103
 msgid "Users report"
 msgstr "Raport użytkowników"
 
+#: poradnia/dashboard/reports.py:120
 msgid "cases created"
 msgstr "utworzone sprawy"
 
+#: poradnia/dashboard/reports.py:152
 msgid "Cases report"
 msgstr "Raport spraw"
 
+#: poradnia/dashboard/reports.py:165
 msgid "letters by staff"
 msgstr "listy zespołu"
 
+#: poradnia/dashboard/reports.py:166
 msgid "attachments by staff"
 msgstr "załączniki zespołu"
 
+#: poradnia/dashboard/reports.py:204
 msgid "Staff letters report"
 msgstr "Raport listów zespołu"
 
+#: poradnia/dashboard/reports.py:240 poradnia/dashboard/reports.py:294
 msgid "id"
 msgstr "id"
 
+#: poradnia/dashboard/reports.py:241 poradnia/dashboard/reports.py:295
 msgid "name"
 msgstr "nazwa"
 
+#: poradnia/dashboard/reports.py:242 poradnia/dashboard/reports.py:296
 msgid "cases assigned"
 msgstr "przypisane sprawy"
 
+#: poradnia/dashboard/reports.py:243 poradnia/dashboard/reports.py:297
 msgid "cases missing"
 msgstr "sprawy bez przypisania"
 
+#: poradnia/dashboard/reports.py:347
 msgid "Issues report"
 msgstr "Raport zagadnień"
 
+#: poradnia/dashboard/reports.py:362
 msgid "Areas report"
 msgstr "Raport obszarów"
 
+#: poradnia/dashboard/reports.py:377
 msgid "Institution kind report"
 msgstr "Raport rodzajów podmiotów zobowiązanych"
 
+#: poradnia/dashboard/reports.py:392
 msgid "Person kind report"
 msgstr "Raport rodzajów osób"
 
+#: poradnia/dashboard/reports.py:425
 msgid "parser key"
 msgstr "klucz parsera"
 
+#: poradnia/dashboard/reports.py:427 poradnia/dashboard/reports.py:517
 msgid "total"
 msgstr "suma"
 
+#: poradnia/dashboard/reports.py:442
 msgid "Court sessions report"
 msgstr "Raport rozpraw sądowych"
 
+#: poradnia/dashboard/reports.py:515
 msgid "Metric"
 msgstr "Wskaźnik"
 
+#: poradnia/dashboard/reports.py:525
 msgid "Summary report"
 msgstr "Raport podsumowujący"
 
+#: poradnia/dashboard/reports.py:552
 msgid "court"
 msgstr "sąd"
 
+#: poradnia/dashboard/reports.py:553
 msgid "count"
 msgstr "liczba"
 
+#: poradnia/dashboard/reports.py:564
 msgid "Court cases report"
 msgstr "Raport spraw sądowych"
 
+#: poradnia/dashboard/templates/dashboard/_sidebar.html:8
 msgid "Reports dashboard"
 msgstr "Panel raportów"
 
+#: poradnia/dashboard/templates/dashboard/_year_select.html:3
 msgid "Year"
 msgstr "Rok"
 
+#: poradnia/dashboard/templates/dashboard/index.html:11
 msgid "Download Excel"
 msgstr "Pobierz Excel"
 
+#: poradnia/dashboard/templates/dashboard/index.html:18
 msgid "Summary"
 msgstr "Podsumowanie"
 
+#: poradnia/dashboard/templates/dashboard/index.html:25
 msgid "Cases"
 msgstr "Sprawy"
 
+#: poradnia/dashboard/templates/dashboard/index.html:32
 msgid "Tags"
 msgstr "Tagi"
 
+#: poradnia/dashboard/templates/dashboard/index.html:39
 msgid "Courts"
 msgstr "Sądy"
 
+#: poradnia/dashboard/templates/dashboard/index.html:73
 msgid "Choose a year for the export"
 msgstr "Wybierz rok eksportu"
 
+#: poradnia/dashboard/templates/dashboard/index.html:78
 msgid ""
 "The \"Cases\" and \"Tags\" tabs currently have different years selected. "
 "Choose which year to use for the whole Excel export:"
@@ -189,15 +246,19 @@ msgstr ""
 "Zakładki „Sprawy” i „Tagi” mają obecnie wybrane różne lata. Wybierz, który "
 "rok ma zostać użyty w całym eksporcie do Excela:"
 
+#: poradnia/dashboard/templates/dashboard/index.html:84
 msgid "Cases tab year:"
 msgstr "Rok z zakładki Sprawy:"
 
+#: poradnia/dashboard/templates/dashboard/index.html:91
 msgid "Tags tab year:"
 msgstr "Rok z zakładki Tagi:"
 
+#: poradnia/dashboard/templates/dashboard/index.html:97
 msgid "Cancel"
 msgstr "Anuluj"
 
+#: poradnia/dashboard/templates/dashboard/index.html:100
 msgid "Download"
 msgstr "Pobierz"
 

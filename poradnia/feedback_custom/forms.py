@@ -1,5 +1,5 @@
 from poradnia.tasty_feedback.forms import FeedbackForm
-from poradnia.utils.crispy_forms import FormHorizontalMixin, SingleButtonMixin
+from poradnia.utils.crispy_forms_helpers import FormHorizontalMixin, SingleButtonMixin
 
 
 class CustomFeedbackForm(FormHorizontalMixin, SingleButtonMixin, FeedbackForm):

@@ -6,7 +6,7 @@ from django.utils.translation import gettext_lazy as _
 
 from poradnia.teryt.filters import AreaMultipleFilter
 from poradnia.users.filters import UserChoiceFilter
-from poradnia.utils.crispy_forms import CrispyFilterMixin
+from poradnia.utils.crispy_forms_helpers import CrispyFilterMixin
 
 from .models import Advice, Area, Issue
 
