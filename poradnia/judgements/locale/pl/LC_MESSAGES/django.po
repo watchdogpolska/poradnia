@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-03-01 22:11+0100\n"
+"POT-Creation-Date: 2026-09-16 11:58+0200\n"
 "PO-Revision-Date: 2020-07-16 22:51+0200\n"
 "Last-Translator: Adam Dobrawy <naczelnik@jawnosc.tk>\n"
 "Language-Team: \n"
@@ -101,17 +101,17 @@ msgstr "Anuluj"
 msgid "Cases"
 msgstr "Sprawy"
 
-#: poradnia/judgements/views.py:68
+#: poradnia/judgements/views.py:71
 #, python-brace-format
 msgid "{0} created!"
 msgstr "{0} utworzony!"
 
-#: poradnia/judgements/views.py:85
+#: poradnia/judgements/views.py:88
 #, python-brace-format
 msgid "{0} updated!"
 msgstr "{0} zaktualizowany!"
 
-#: poradnia/judgements/views.py:100
+#: poradnia/judgements/views.py:103
 #, python-brace-format
 msgid "{0} deleted!"
 msgstr "{0} usunięty!"
