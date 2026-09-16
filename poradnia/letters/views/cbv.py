@@ -91,11 +91,14 @@ class NewCaseCreateView(SetHeadlineMixin, UserFormKwargsMixin, CreateView):
         self.object = form.save()
         self.object.save_attachments(files=self.request.FILES.getlist("file_field"))
 
-        if self.object.client.has_usable_password():
+        if self.object.client.password and self.object.client.has_usable_password():
             # An unverified/auto-created client (unusable password) already
             # got a neutral activation e-mail from register_by_email(); the
             # case-registered content itself is withheld until they confirm
-            # ownership of the mailbox by activating.
+            # ownership of the mailbox by activating. has_usable_password()
+            # alone would wrongly pass a literal empty-string password (a
+            # legacy data artifact - see the admin resend_activation_email
+            # fix), so also require a non-empty password field.
             self.object.client.notify(
                 actor=self.object.created_by,
                 verb="registered",
@@ -548,10 +551,14 @@ class ReceiveEmailView(View):
                 name=subject[:NAME_MAX_LENGTH], created_by=actor, client=actor
             )
             created = True
-            if actor.has_usable_password():
+            if actor.password and actor.has_usable_password():
                 # See NewCaseCreateView.formset_valid(): don't disclose case
                 # content to a mailbox that hasn't proven ownership yet (the
                 # From: header on inbound mail is trivially spoofable).
+                # has_usable_password() alone would wrongly pass a literal
+                # empty-string password (a legacy data artifact - see the
+                # admin resend_activation_email fix), so also require a
+                # non-empty password field.
                 actor.notify(
                     actor=actor,
                     verb="registered",
