@@ -18,7 +18,11 @@ from turnstile.fields import TurnstileField
 from poradnia.cases.models import Case
 from poradnia.utils.action_views import PartialMixin
 from poradnia.utils.constants import TURNSTILE_ERROR_MESSAGES
-from poradnia.utils.crispy_forms import GIODOMixin, HelperMixin, SingleButtonMixin
+from poradnia.utils.crispy_forms_helpers import (
+    GIODOMixin,
+    HelperMixin,
+    SingleButtonMixin,
+)
 
 from .models import Attachment, Letter
 from .utils import HTMLFilter

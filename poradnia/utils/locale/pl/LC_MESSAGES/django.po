@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-16 11:58+0200\n"
+"POT-Creation-Date: 2026-09-16 12:18+0200\n"
 "PO-Revision-Date: 2026-03-01 22:27+0100\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -34,19 +34,19 @@ msgstr "Nie można zweryfikować Turnstile."
 msgid "Please prove you are a human."
 msgstr "Kliknij pole powyżej aby udowodnć że nie jesteś automatem."
 
-#: poradnia/utils/crispy_forms.py:29
+#: poradnia/utils/crispy_forms_helpers.py:29
 msgid "Filter"
 msgstr "Zastosuj filtr"
 
-#: poradnia/utils/crispy_forms.py:105
+#: poradnia/utils/crispy_forms_helpers.py:105
 msgid "Update"
 msgstr "Aktualizacja"
 
-#: poradnia/utils/crispy_forms.py:105
+#: poradnia/utils/crispy_forms_helpers.py:105
 msgid "Save"
 msgstr "Zapisz"
 
-#: poradnia/utils/crispy_forms.py:164
+#: poradnia/utils/crispy_forms_helpers.py:164
 #, python-brace-format
 msgid "{0} created!"
 msgstr "{0} utworzone!"

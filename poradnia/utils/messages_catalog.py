@@ -227,8 +227,8 @@ CATALOG = [
         title="Domyślny komunikat po zapisaniu formularza z załącznikami",
         trigger=(
             "FormSetMixin.formset_valid, domyślna get_formset_valid_message() "
-            "(utils/crispy_forms.py) - używana przez LetterUpdateView, która nie "
-            "nadpisuje tego komunikatu."
+            "(utils/crispy_forms_helpers.py) - używana przez LetterUpdateView, "
+            "która nie nadpisuje tego komunikatu."
         ),
         level="success",
         msgid="{0} created!",

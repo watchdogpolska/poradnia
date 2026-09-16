@@ -1,6 +1,6 @@
 from django.forms import ModelForm
 
-from poradnia.utils.crispy_forms import SingleButtonMixin
+from poradnia.utils.crispy_forms_helpers import SingleButtonMixin
 from poradnia.utils.view_mixins import UserKwargModelFormMixin
 
 from .models import Key

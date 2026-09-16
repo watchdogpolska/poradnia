@@ -43,7 +43,7 @@ from poradnia.letters.utils import get_html_from_eml_file
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 from poradnia.users.utils import PermissionMixin
 from poradnia.utils.constants import NAME_MAX_LENGTH
-from poradnia.utils.crispy_forms import CrispyFilterMixin, FormSetMixin
+from poradnia.utils.crispy_forms_helpers import CrispyFilterMixin, FormSetMixin
 from poradnia.utils.view_mixins import (
     PrefetchRelatedMixin,
     SelectRelatedMixin,

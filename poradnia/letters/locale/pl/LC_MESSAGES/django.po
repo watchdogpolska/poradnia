@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-16 11:58+0200\n"
+"POT-Creation-Date: 2026-09-16 12:18+0200\n"
 "PO-Revision-Date: 2026-05-05 20:00+0200\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -44,13 +44,13 @@ msgstr "z odstępem 20 sekund."
 msgid "Letters"
 msgstr "Listy"
 
-#: poradnia/letters/forms.py:26
+#: poradnia/letters/forms.py:30
 msgid "Leave empty to use email field and create a new one user."
 msgstr ""
 "Pozostaw puste, aby wykorzystać pole adresu e-mail i utworzyć nowego "
 "użytkownika."
 
-#: poradnia/letters/forms.py:29
+#: poradnia/letters/forms.py:33
 msgid ""
 "The user account will be created automatically, so you haveaccess to the "
 "archive and data about persons responsible for the case."
@@ -58,7 +58,7 @@ msgstr ""
 "Konto użytkownika zostanie utworzone automatycznie, dzięki czemu będziesz "
 "mieć dostęp do archiwum zawierającego wszystkie Twoje sprawy."
 
-#: poradnia/letters/forms.py:34
+#: poradnia/letters/forms.py:38
 msgid ""
 "Short description of the case for organizational purposes. The institution "
 "name and two words will suffice."
@@ -66,7 +66,7 @@ msgstr ""
 "Podaj nazwę instytucji i typ problemu np. „brak odpowiedzi”, „ochrona danych "
 "osobowych” itp."
 
-#: poradnia/letters/forms.py:39
+#: poradnia/letters/forms.py:43
 msgid ""
 "After choosing this option, your message will be sent to the client and the "
 "members of the legal team, who can see this case (admins and assigned team "
@@ -79,7 +79,7 @@ msgstr ""
 "Wybierz ją, jeśli Twoja wiadomość jest ostateczna i może trafić do klienta/"
 "klientki poradnictwa."
 
-#: poradnia/letters/forms.py:46
+#: poradnia/letters/forms.py:50
 msgid ""
 "After choosing this option, your message will be saved in the system as a "
 "draft. The admin will check the saved draft and will either suggest changes, "
@@ -90,7 +90,7 @@ msgstr ""
 "Admin sprawdzi zapisany projekt i albo poprosi Cię o jego zmianę albo wyśle "
 "go do klienta/klientki."
 
-#: poradnia/letters/forms.py:52
+#: poradnia/letters/forms.py:56
 msgid ""
 "After choosing this option, your message will only be sent to the members of "
 "the legal team who can see this case (admins and assigned team members). "
@@ -101,7 +101,7 @@ msgstr ""
 "zespołu).\n"
 "Wybierz ją, jeśli chcesz coś ustalić, skonsultować w ramach zespołu."
 
-#: poradnia/letters/forms.py:58
+#: poradnia/letters/forms.py:62
 msgid ""
 "This field supports <a href='https://www.markdownguide.org/cheat-"
 "sheet'>Markdown</a>"
@@ -109,51 +109,51 @@ msgstr ""
 "To pole obsługuje składnię <a href='https://blog.nayma.pl/podstawy-"
 "markdown/'>Markdown</a>"
 
-#: poradnia/letters/forms.py:74
+#: poradnia/letters/forms.py:78
 msgid "Report case"
 msgstr "Zgłoś sprawę"
 
-#: poradnia/letters/forms.py:78
+#: poradnia/letters/forms.py:82
 msgid "Client"
 msgstr "Klient"
 
-#: poradnia/letters/forms.py:83
+#: poradnia/letters/forms.py:87
 msgid "User e-mail"
 msgstr "E-mail użytkownika"
 
-#: poradnia/letters/forms.py:85
+#: poradnia/letters/forms.py:89
 msgid "E-mail"
 msgstr "E-mail"
 
-#: poradnia/letters/forms.py:88
+#: poradnia/letters/forms.py:92
 msgid " "
 msgstr " "
 
-#: poradnia/letters/forms.py:144
+#: poradnia/letters/forms.py:148
 msgid "Have to enter user email or select a client"
 msgstr "Musisz podać adres e-mail klienta lub go wybrać z bazy."
 
-#: poradnia/letters/forms.py:226
+#: poradnia/letters/forms.py:230
 msgid "Reply to all"
 msgstr "Odpowiedz wszystkim"
 
-#: poradnia/letters/forms.py:234 poradnia/letters/forms.py:253
+#: poradnia/letters/forms.py:238 poradnia/letters/forms.py:257
 msgid "Save to review"
 msgstr "Zapisz do przejrzenia"
 
-#: poradnia/letters/forms.py:243 poradnia/letters/forms.py:261
+#: poradnia/letters/forms.py:247 poradnia/letters/forms.py:265
 msgid "Write to staff"
 msgstr "Napisz do zespołu"
 
-#: poradnia/letters/forms.py:268
+#: poradnia/letters/forms.py:272
 msgid "Reply"
 msgstr "Odpowiedz"
 
-#: poradnia/letters/forms.py:350
+#: poradnia/letters/forms.py:354
 msgid "Comment for staff"
 msgstr "Komentarz dla zespołu"
 
-#: poradnia/letters/forms.py:416
+#: poradnia/letters/forms.py:420
 msgid "Attachments (select or drop here)"
 msgstr "Załączniki (wybierz lub upuść tutaj)"
 
