@@ -16,10 +16,10 @@ sorl-thumbnail==13.1.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth[socialaccount,mfa]==65.19.2
+django-allauth[socialaccount,mfa]==65.19.4
 
 # For the persistance stores
-mysqlclient==2.2.8
+mysqlclient==2.3.0
 
 # Useful things
 # Time zones support
@@ -28,7 +28,7 @@ lxml==6.1.3
 cssselect==1.5.0
 PyYAML==6.0.3
 # Your custom requirements go here
-django-guardian==3.4.1
+django-guardian==3.5.0
 django-filter==26.1
 django-cleanup==9.0.0
 django-turnstile==0.1.3 
@@ -46,7 +46,7 @@ icalendar==7.3.0
 html2text==2025.4.15
 
 openpyxl==3.1.5
-sentry-sdk==2.68.1
+sentry-sdk==2.69.2
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 django-teryt-tree==0.18.4
