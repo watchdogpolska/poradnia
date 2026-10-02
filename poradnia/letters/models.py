@@ -409,9 +409,6 @@ class Attachment(models.Model):
         warning = """
             Uwaga: treść załączników została odczytana maszynowo, więc może
             zawierać błędy związane z nieprawidłowym odczytaniem znaków,
-            a także błędną interpretacji układu tekstu na stronie.
-            Jeśli nie masz stosownych uprawnień i potrzebujesz dostępu
-            do oryginału, skontaktuj się z biurem SOWP.
-
+            a także błędną interpretacją układu tekstu na stronie.
         """
         return warning  # " ".join(warning.split())
