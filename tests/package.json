@@ -13,6 +13,6 @@
   },
   "scripts": {
     "cy:open": "cypress open --e2e",
-    "cy:run": "cypress run --e2e"
+    "cy:run": "cypress run --e2e --browser chrome"
   }
 }
