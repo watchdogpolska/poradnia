@@ -15,11 +15,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
 // Bootstrap-3 tooltip plugin still depends on jQuery — Stage 3 leftover
 // (pending widget-replacement decision in #2134).
-;(function ($) {
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-})(jQuery);
+function initTooltips() {
+    jQuery('[data-toggle="tooltip"]').tooltip();
+}
+
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", initTooltips);
+} else {
+    initTooltips();
+}
 
 function initFormSave() {
     function storageAvailable(type) {
