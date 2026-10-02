@@ -34,8 +34,7 @@ const config = {
       path.npm + "/@fortawesome/fontawesome-free/css/regular.css",
       path.npm + "/@fortawesome/fontawesome-free/css/brands.css",
       path.assets + "/scss/style.scss",
-      path.npm + "/datatables.net-buttons-dt/css/buttons.dataTables.css",
-      path.npm + "/datatables.net-dt/css/jquery.dataTables.css",
+      path.npm + "/datatables.net-dt/css/dataTables.dataTables.css",
     ],
     include: [
       path.npm,
@@ -48,10 +47,6 @@ const config = {
       filename: "style.css",
     },
     watch: [path.assets + "/scss/**/*.scss"],
-  },
-  images: {
-    input: [path.npm + "/datatables.net-dt/images/sort*.*"],
-    output: path.static + "/images",
   },
   icons: {
     input: [path.npm + "/@fortawesome/fontawesome-free/webfonts/**/*.*"],
@@ -71,9 +66,8 @@ const config = {
       path.npm + "/pikaday-time/pikaday.js",
       path.npm + "/patternomaly/dist/patternomaly.js",
       path.assets + "/js/*.js",
-      path.npm + "/datatables.net/js/jquery.dataTables.js",
+      path.npm + "/datatables.net/js/dataTables.js",
       path.npm + "/datatables.net-dt/js/dataTables.dataTables.js",
-      path.npm + "/datatables.net-buttons/js/dataTables.buttons.js",
       path.staticfiles + "/ajax_datatable/js/utils.js",
       path.app + "/cases/static/cases/case_datatables.js",
       path.app + "/advicer/static/advicer/advice_datatables.js",
@@ -100,11 +94,6 @@ const config = {
 function icons() {
   return gulp.src(config.icons.input, { encoding: false })
     .pipe(gulp.dest(config.icons.output));
-}
-
-function images() {
-  return gulp.src(config.images.input, { encoding: false })
-    .pipe(gulp.dest(config.images.output));
 }
 
 function js() {
@@ -145,11 +134,10 @@ function watchFiles() {
 // ----------------------------------
 // Build & default
 // ----------------------------------
-const build = gulp.series(images, icons, js, scss);
+const build = gulp.series(icons, js, scss);
 const dev = gulp.series(build, watchFiles);
 
 exports.icons = icons;
-exports.images = images;
 exports.js = js;
 exports.scss = scss;
 exports.build = build;

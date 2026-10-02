@@ -8,10 +8,10 @@ document.addEventListener('DOMContentLoaded', function () {
     tableWrapper.style.maxHeight = maxHeight + 'px';
 
     // Subscribe "initComplete" event
-    $('#datatable_users').on('initComplete', function (event, table) {
+    table1.addEventListener('initComplete', function () {
         // Code to resize input fields
-        const headerCells = tableWrapper.querySelectorAll("th");
-        headerCells.forEach(function (th) {
+        const filterRowCells = tableWrapper.querySelectorAll("tr.datatable-column-filter-row th");
+        filterRowCells.forEach(function (th) {
             th.style.padding = "0";
             const input = th.querySelector("input[type=text]");
             if (input) {
@@ -23,13 +23,16 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize table
     AjaxDatatableViewUtils.initialize_table(
-        $('#datatable_users'),
+        table1,
         "/uzytkownik/users_table_ajax_data/",
         {
             processing: true,
             serverSide: true,
             autoWidth: true,
             full_row_select: false,
+            // Group the length selector/search box, and the info/paging controls,
+            // each into one row (default dom string stacks every feature separately).
+            dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
             scrollX: true,
             scrollY: maxHeight - 250,
             "language": {
