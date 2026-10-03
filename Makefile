@@ -6,6 +6,9 @@ db:
 start: wait_mysql
 	docker compose up
 
+runserver: run-background
+	docker compose exec web python manage.py runserver 0.0.0.0:8000
+
 run-background: wait_mysql
 	docker compose up -d
 

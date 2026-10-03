@@ -87,6 +87,26 @@ SAMPLE_PLAIN_TEXT = (
     "Chetnie pomoge."
 )
 
+SAMPLE_RESPONSE_MULTI_FIELD = """\
+Użyteczne artykuły w sprawie:
+
+- [https://informacjapubliczna.org/news/informacja-przetworzona-praktyczny-przewodnik/]
+
+**Temat:** Informacja przetworzona – praktyczny przewodnik
+
+**Problem w sprawie:** Czy Wójt mógł prawidłowo zakwalifikować cały zakres żądanych zestawień jako informację przetworzoną?
+
+**Dlaczego ten artykuł:** Praktyczny przewodnik omawia kryteria kwalifikacji informacji jako „przetworzonej”.
+
+- [https://informacjapubliczna.org/sentence/organ-musi-udowodnic-ze-informacja-ma-charakter-przetworzony/]
+
+**Temat:** Organ musi udowodnić, że informacja ma charakter przetworzony
+
+**Problem w sprawie:** Czy wezwanie Urzędu gminy realizuje wskazania SKO?
+
+**Dlaczego ten artykuł:** Wyrok podkreśla, że organ musi wykazać konkretne czynności i nakłady pracy.
+"""
+
 
 class FormatArticlesHtmlTestCase(SimpleTestCase):
     def _fmt(self, text):
@@ -134,6 +154,50 @@ class FormatArticlesHtmlTestCase(SimpleTestCase):
         html = self._fmt(SAMPLE_RESPONSE)
         self.assertIn("<ul>", html)
         self.assertIn("</ul>", html)
+
+    def test_multi_field_sample_contains_all_labels(self):
+        html = self._fmt(SAMPLE_RESPONSE_MULTI_FIELD)
+        self.assertIn("<strong>Temat:</strong>", html)
+        self.assertIn("<strong>Problem w sprawie:</strong>", html)
+        self.assertIn("<strong>Dlaczego ten artykuł:</strong>", html)
+
+    def test_multi_field_sample_contains_values(self):
+        html = self._fmt(SAMPLE_RESPONSE_MULTI_FIELD)
+        self.assertIn("Informacja przetworzona – praktyczny przewodnik", html)
+        self.assertIn(
+            "Czy Wójt mógł prawidłowo zakwalifikować cały zakres żądanych "
+            "zestawień jako informację przetworzoną?",
+            html,
+        )
+        self.assertIn(
+            "Praktyczny przewodnik omawia kryteria kwalifikacji informacji "
+            "jako „przetworzonej”.",
+            html,
+        )
+        self.assertIn(
+            "Organ musi udowodnić, że informacja ma charakter przetworzony", html
+        )
+
+    def test_multi_field_sample_wraps_two_articles_in_ul(self):
+        html = self._fmt(SAMPLE_RESPONSE_MULTI_FIELD)
+        self.assertIn("<ul>", html)
+        self.assertIn("</ul>", html)
+        self.assertEqual(html.count("<li>"), 2)
+
+    def test_multi_field_sample_preserves_field_order(self):
+        html = self._fmt(SAMPLE_RESPONSE_MULTI_FIELD)
+        first_article_html = html.split("</li>")[0]
+        temat_pos = first_article_html.index("Temat:")
+        problem_pos = first_article_html.index("Problem w sprawie:")
+        dlaczego_pos = first_article_html.index("Dlaczego ten artykuł:")
+        self.assertLess(temat_pos, problem_pos)
+        self.assertLess(problem_pos, dlaczego_pos)
+
+    def test_arbitrary_field_label_is_rendered(self):
+        html = self._fmt(
+            "Title\n- https://example.com/\n**Custom Label:** Custom value\n"
+        )
+        self.assertIn("<strong>Custom Label:</strong> Custom value", html)
 
     def test_markdown_link_format_also_works(self):
         html = self._fmt(SAMPLE_RESPONSE_MD_LINKS)

@@ -16,26 +16,24 @@ sorl-thumbnail==13.1.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth[socialaccount,mfa]==65.19.2
+django-allauth[socialaccount,mfa]==65.19.4
 
 # For the persistance stores
-mysqlclient==2.2.8
+mysqlclient==2.3.0
 
 # Useful things
 # Time zones support
-pytz==2026.3.post1
+pytz==2026.4
 lxml==6.1.3
 cssselect==1.5.0
 PyYAML==6.0.3
 # Your custom requirements go here
-django-guardian==3.4.1
+django-guardian==3.5.0
 django-filter==26.1
 django-cleanup==9.0.0
 django-turnstile==0.1.3 
-# django-ajax-datatable to be installed from github fork until
-# https://github.com/morlandi/django-ajax-datatable/pull/111 is merged
-# django-ajax-datatable==4.4.5
-git+https://github.com/PiotrIw/django-ajax-datatable.git@master
+# django-ajax-datatable fork rewritten for DataTables.net v3 (jQuery-free frontend)
+git+https://github.com/PiotrIw/django-ajax-datatables.net.v3.git@v1.0.0
 
 django-autocomplete-light==5.0.0
 django-tinymce==5.0.0
@@ -46,7 +44,7 @@ icalendar==7.3.0
 html2text==2025.4.15
 
 openpyxl==3.1.5
-sentry-sdk==2.68.1
+sentry-sdk==2.70.0
 python-dateutil==2.9.0.post0
 django-github-revision==0.0.3
 django-teryt-tree==0.18.4
@@ -61,4 +59,4 @@ bleach==6.4.0
 celery[rabbitmq]==5.6.3
 django-celery-beat==2.9.0
 django-celery-results==2.6.0
-flower==2.1.0
+flower==2.2.0
