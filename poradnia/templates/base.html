@@ -142,30 +142,42 @@
     Loading...
 </div>
 <script>
-    $(document).on('click', '[hx-target="#attachment-text-modal-container"]', function () {
-        var $existingModal = $('#attachmentTextModal');
-
-        if ($existingModal.length) {
-            $existingModal.modal('hide');
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('[hx-target="#attachment-text-modal-container"]')) {
+            return;
         }
 
-        $('.modal-backdrop').remove();
-        $('body').removeClass('modal-open');
+        var existingModal = document.getElementById('attachmentTextModal');
+        if (existingModal) {
+            jQuery(existingModal).modal('hide');
+        }
+
+        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+            el.remove();
+        });
+        document.body.classList.remove('modal-open');
     });
 
     document.body.addEventListener('htmx:afterSwap', function (event) {
         if (event.target.id === 'attachment-text-modal-container') {
-            var $modal = $('#attachmentTextModal');
-            if ($modal.length) {
-                $modal.modal('show');
+            var modal = document.getElementById('attachmentTextModal');
+            if (modal) {
+                jQuery(modal).modal('show');
             }
         }
     });
 
-    $(document).on('hidden.bs.modal', '#attachmentTextModal', function () {
-        $('#attachment-text-modal-container').empty();
-        $('.modal-backdrop').remove();
-        $('body').removeClass('modal-open');
+    // Bootstrap 3's modal plugin fires this only as a jQuery-namespaced event,
+    // not a native DOM event — stays on jQuery until the Bootstrap 5 migration.
+    jQuery(document).on('hidden.bs.modal', '#attachmentTextModal', function () {
+        var container = document.getElementById('attachment-text-modal-container');
+        if (container) {
+            container.innerHTML = '';
+        }
+        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+            el.remove();
+        });
+        document.body.classList.remove('modal-open');
     });
 
     function getCookie(name) {
