@@ -8,12 +8,10 @@
   "license": "MIT",
   "name": "tests",
   "devDependencies": {
-    "cypress": "^15.0.0",
-    "cypress-file-upload": "^5.0.8",
     "mysql2": "^3.9.2"
   },
   "scripts": {
     "cy:open": "cypress open --e2e",
-    "cy:run": "cypress run --e2e"
+    "cy:run": "cypress run --e2e --browser chrome"
   }
 }

@@ -14,11 +14,17 @@ Cypress.on('uncaught:exception', (_err, _runnable) => {
 
 // Check the MFA bypass cookie before each test - good for debugging tests
 // beforeEach(() => {
-//   cy.task('log', `E2E secret = ${Cypress.env('E2E_MFA_BYPASS_SECRET')}`)
+//   cy.env(['E2E_MFA_BYPASS_SECRET']).then(({ E2E_MFA_BYPASS_SECRET }) => {
+//     cy.task('log', `E2E secret = ${E2E_MFA_BYPASS_SECRET}`)
+//   })
 // })
 
-// Set the MFA bypass cookie before each test, using the secret from environment
+// Set the MFA bypass cookie before each test, using the secret from environment.
+// `Cypress.env()` was removed in Cypress 16; `cy.env()` is the Node-process-only
+// replacement for reading sensitive values like this secret.
 beforeEach(() => {
-  cy.setCookie('e2e_bypass_mfa', Cypress.env('E2E_MFA_BYPASS_SECRET'), { path: '/' })
+  cy.env(['E2E_MFA_BYPASS_SECRET']).then(({ E2E_MFA_BYPASS_SECRET }) => {
+    cy.setCookie('e2e_bypass_mfa', E2E_MFA_BYPASS_SECRET, { path: '/' })
+  })
 })
 

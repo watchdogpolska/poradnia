@@ -24,13 +24,14 @@
             </div>
 
             <div class="modal-body">
-                <div style="max-height: 70vh; overflow-y: auto; white-space: pre-wrap; word-break: break-word;">
-                    {% if attachment.text_content %}
+                {% if attachment.text_content %}
+                    <p class="small text-muted"><em>{{ attachment.text_content_warning }}</em></p>
+                    <div class="well" style="max-height: 70vh; overflow-y: auto; white-space: pre-wrap; word-break: break-word;">
                         {{ attachment.text_content }}
-                    {% else %}
-                        <em>{% trans "No extracted text available." %}</em>
-                    {% endif %}
-                </div>
+                    </div>
+                {% else %}
+                    <em>{% trans "No extracted text available." %}</em>
+                {% endif %}
             </div>
         </div>
     </div>

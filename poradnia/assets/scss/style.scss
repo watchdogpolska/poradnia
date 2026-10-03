@@ -77,3 +77,20 @@
 .htmx-indicator.htmx-request {
     display: block;
 }
+
+.dt-top-row,
+.dt-bottom-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.dt-top-row {
+    margin-bottom: 10px;
+}
+
+.dt-bottom-row {
+    margin-top: 10px;
+}

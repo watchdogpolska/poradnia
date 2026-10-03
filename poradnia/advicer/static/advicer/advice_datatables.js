@@ -7,10 +7,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const maxHeight = viewportHeight - tableTop;
     tableWrapper.style.maxHeight = maxHeight + 'px';
     // Subscribe "initComplete" event
-    $('#datatable_advices').on('initComplete', function (event, table) {
+    table1.addEventListener('initComplete', function () {
         // Code to resize input fields
-        const headerCells = tableWrapper.querySelectorAll("th");
-        headerCells.forEach(function (th) {
+        const filterRowCells = tableWrapper.querySelectorAll("tr.datatable-column-filter-row th");
+        filterRowCells.forEach(function (th) {
             th.style.padding = "0";
             const input = th.querySelector("input[type=text]");
             if (input) {
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     // Initialize table
     AjaxDatatableViewUtils.initialize_table(
-        $('#datatable_advices'),
+        table1,
         "/porady/advice_table_ajax_data/",
         {
             // extra_options (example)
@@ -34,6 +34,9 @@ document.addEventListener('DOMContentLoaded', function () {
             serverSide: true,
             autoWidth: true,
             full_row_select: false,
+            // Group the length selector/search box, and the info/paging controls,
+            // each into one row (default dom string stacks every feature separately).
+            dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
             scrollX: true,
             // searching: false,
             scrollY: maxHeight - 250,
@@ -84,7 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const filtersContainer = document.querySelector('.filters');
     if (filtersContainer) {
         filtersContainer.addEventListener('change', function () {
-            $('#datatable_advices').DataTable().ajax.reload(null, false);
+            AjaxDatatableViewUtils.redraw_table(table1);
         });
     }
 });

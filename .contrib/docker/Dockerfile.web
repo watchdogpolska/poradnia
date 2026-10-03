@@ -10,7 +10,7 @@ WORKDIR /code
 ENV PYTHONUNBUFFERED=1
 RUN apt-get update \
 && apt-get install -y --no-install-recommends \
-   python3-dev default-libmysqlclient-dev build-essential \
+   default-libmysqlclient-dev build-essential \
    default-mysql-client libssl-dev pkg-config \
    gcc \
    git \

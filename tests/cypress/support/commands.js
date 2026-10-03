@@ -1,5 +1,3 @@
-import 'cypress-file-upload';
-
 // Select an option containing `text`.
 // Standard `select` command expects an exact match.
 // This command allows you to select an option that contains the given text or 
