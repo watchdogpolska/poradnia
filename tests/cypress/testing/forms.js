@@ -11,7 +11,7 @@ const submitCaseForm = (cy) => (form, { title, content, attachment }) => {
     cy.get('input[type="file"]')
       .filter(":visible")
       .first()
-      .attachFile(attachment);
+      .selectFile(`cypress/fixtures/${attachment}`);
   }
   cy.contains("input", "Zgłoś").click();
 };
@@ -23,7 +23,7 @@ const submitLetterForm = (cy) => (form, { title, content, attachment }) => {
     cy.get('input[type="file"]')
       .filter(":visible")
       .first()
-      .attachFile(attachment);
+      .selectFile(`cypress/fixtures/${attachment}`);
   }
   cy.contains("input", "Odpowiedz wszystkim").click();
 };
@@ -36,7 +36,7 @@ const submitTinymceLetterForm = (cy) => (form, { title, content, attachment }) =
     cy.get('input[type="file"]')
       .filter(":visible")
       .first()
-      .attachFile(attachment);
+      .selectFile(`cypress/fixtures/${attachment}`);
   }
   cy.contains("input", "Odpowiedz wszystkim").click();
 };

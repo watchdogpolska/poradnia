@@ -2,24 +2,23 @@ AjaxDatatableViewUtils.init({
     search_icon_html: '<i class="fas fa-magnifying-glass"></i>',
     language: {
     },
-    fn_daterange_widget_initialize: function(table, data) {
-        var wrapper = table.closest('.dataTables_wrapper');
-        var toolbar = wrapper.find(".toolbar");
-        toolbar.html(
+    fn_daterange_widget_initialize: function(tableEl, data, api, extraFilterState) {
+        var wrapper = tableEl.closest('.dt-container');
+        var toolbar = wrapper.querySelector('.toolbar');
+        toolbar.innerHTML =
             '<div class="daterange" style="float: left; margin-right: 6px;">' +
                 '<span class="from"><label>Czas od</label>: ' +
                     '<input type="date" class="date_from datepicker"></span>' +
                 '<span class="to"><label>&nbsp do</label>: ' +
                     '<input type="date" class="date_to datepicker"></span>' +
-            '</div>'
-        );
-        toolbar[0].addEventListener('change', function(event) {
+            '</div>';
+        toolbar.addEventListener('change', function(event) {
             if (!event.target.matches('.date_from, .date_to')) return;
             // Annotate table with values retrieved from date widgets
-            table.data('date_from', wrapper.find('.date_from').val());
-            table.data('date_to', wrapper.find('.date_to').val());
+            extraFilterState.date_from = wrapper.querySelector('.date_from').value;
+            extraFilterState.date_to = wrapper.querySelector('.date_to').value;
             // Redraw table
-            table.api().draw();
+            api.draw();
         });
     }
 });
@@ -33,10 +32,10 @@ document.addEventListener('DOMContentLoaded', function () {
     const maxHeight = viewportHeight - tableTop;
     tableWrapper.style.maxHeight = maxHeight + 'px';
     // Subscribe "initComplete" event
-    $('#datatable_events').on('initComplete', function (event, table) {
+    table1.addEventListener('initComplete', function () {
         // Code to resize input fields
-        const headerCells = tableWrapper.querySelectorAll("th");
-        headerCells.forEach(function (th) {
+        const filterRowCells = tableWrapper.querySelectorAll("tr.datatable-column-filter-row th");
+        filterRowCells.forEach(function (th) {
             th.style.padding = "0";
             const input = th.querySelector("input[type=text]");
             if (input) {
@@ -47,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
     // Initialize table
     AjaxDatatableViewUtils.initialize_table(
-        $('#datatable_events'),
+        table1,
         "/wydarzenia/events_table_ajax_data/",
         {
             // extra_options (example)
@@ -55,6 +54,9 @@ document.addEventListener('DOMContentLoaded', function () {
             serverSide: true,
             autoWidth: true,
             full_row_select: false,
+            // Group the length selector/search box, and the info/paging controls,
+            // each into one row (default dom string stacks every feature separately).
+            dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
             scrollX: true,
             // searching: false,
             scrollY: maxHeight - 250,
@@ -101,7 +103,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const filtersContainer = document.querySelector('.filters');
     if (filtersContainer) {
         filtersContainer.addEventListener('change', function () {
-            $('#datatable_events').DataTable().ajax.reload(null, false);
+            AjaxDatatableViewUtils.redraw_table(table1);
         });
     }
 });

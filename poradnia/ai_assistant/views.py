@@ -81,14 +81,18 @@ def _extract_url(line):
     return None
 
 
+_FIELD_LINE_RE = re.compile(r"^\*\*(.+?):\*\*\s*(.*)$")
+
+
 def _build_article(url, lines):
-    art = {"url": url, "subject": "", "summary": ""}
+    fields = []
     for line in lines:
-        if line.startswith("**Temat:**"):
-            art["subject"] = line[len("**Temat:**") :].strip()
-        elif line.startswith("**Podsumowanie:**"):
-            art["summary"] = line[len("**Podsumowanie:**") :].strip()
-    return art
+        m = _FIELD_LINE_RE.match(line)
+        if m:
+            label, value = m.group(1).strip(), m.group(2).strip()
+            if value:
+                fields.append((label, value))
+    return {"url": url, "fields": fields}
 
 
 def _parse_articles(lines):
@@ -117,10 +121,8 @@ def _render_article_li(art):
             + f'rel="noopener noreferrer">{escape(art["url"])}</a>'
         ),
     ]
-    if art["subject"]:
-        parts.append(f'    <br><strong>Temat:</strong> {escape(art["subject"])}')
-    if art["summary"]:
-        parts.append(f'    <br><strong>Podsumowanie:</strong> {escape(art["summary"])}')
+    for label, value in art["fields"]:
+        parts.append(f"    <br><strong>{escape(label)}:</strong> {escape(value)}")
     parts.append("  </li>")
     return parts
 
