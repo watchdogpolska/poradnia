@@ -198,7 +198,7 @@ def _validate_phrase_matches(payload):
     n8n has sent two shapes over time: a flat list of match objects, and the
     current ``{phrase: [match, ...]}`` grouping. Reject anything else so a
     malformed payload fails loudly here instead of surfacing as a broken
-    admin export later.
+    admin export later. Returns an error message, or ``None`` if valid.
     """
     phrase_matches = payload.get("phrase_matches")
     if phrase_matches is None:
@@ -209,22 +209,20 @@ def _validate_phrase_matches(payload):
     elif isinstance(phrase_matches, list):
         matches_lists = [phrase_matches]
     else:
-        return _json_error(
-            "invalid_field",
-            "phrase_matches must be an object keyed by phrase or a list.",
-            400,
-        )
+        return "phrase_matches must be an object keyed by phrase or a list."
 
     for matches in matches_lists:
         if not isinstance(matches, list) or not all(
             isinstance(m, dict) for m in matches
         ):
-            return _json_error(
-                "invalid_field",
-                "phrase_matches entries must be lists of objects.",
-                400,
-            )
+            return "phrase_matches entries must be lists of objects."
     return None
+
+
+def _mark_search_request_failed(search_request, message):
+    search_request.status = "failed"
+    search_request.response = message
+    search_request.save(update_fields=["response", "status", "updated_at"])
 
 
 def _create_articles_search_letter(search_request, response_text, response_html):
@@ -287,7 +285,10 @@ class N8nArticlesSearchCallbackView(View):
 
     1. Authenticates the caller with a bearer token (``_check_token``).
     2. Looks up the pending ``N8nArticlesSearchRequest`` by ``request_id``.
-    3. On error: marks the request as *failed* and stores the error message.
+    3. On error, or on a malformed ``phrase_matches``: marks the request as
+       *failed* and stores the error message. n8n does not retry this
+       callback, so this is the request's final state rather than being
+       left *pending* forever.
     4. On success: marks the request as *completed*, stores the plain-text
        response and the ``is_foi`` flag, then creates an
        ``ai_message_staff`` ``Letter`` on the associated case so advisors
@@ -339,17 +340,21 @@ class N8nArticlesSearchCallbackView(View):
 
         with transaction.atomic():
             if error:
-                search_request.status = "failed"
-                search_request.response = error
-                search_request.save(update_fields=["response", "status", "updated_at"])
+                _mark_search_request_failed(search_request, error)
                 logger.warning(
                     "Articles search request %s failed: %s", request_id, error
                 )
                 return JsonResponse({"ok": True, "result": "failed"})
 
-            err = _validate_phrase_matches(payload)
-            if err:
-                return err
+            phrase_matches_error = _validate_phrase_matches(payload)
+            if phrase_matches_error:
+                _mark_search_request_failed(search_request, phrase_matches_error)
+                logger.warning(
+                    "Articles search request %s failed: %s",
+                    request_id,
+                    phrase_matches_error,
+                )
+                return _json_error("invalid_field", phrase_matches_error, 400)
 
             response_text = payload.get("response", "")
             response_html = (

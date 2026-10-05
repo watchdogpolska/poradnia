@@ -726,7 +726,8 @@ class N8nArticlesSearchCallbackViewTestCase(TestCase):
         self.assertEqual(response.status_code, 400)
         self.assertEqual(_json(response)["error"]["code"], "invalid_field")
         sr.refresh_from_db()
-        self.assertEqual(sr.status, "pending")
+        self.assertEqual(sr.status, "failed")
+        self.assertEqual(sr.response, _json(response)["error"]["message"])
 
     @override_settings(**CALLBACK_SETTINGS)
     def test_phrase_matches_list_with_non_object_items_returns_400(self):
@@ -798,7 +799,7 @@ class N8nArticlesSearchCallbackViewTestCase(TestCase):
         self.assertEqual(sr.phrase_matches, {})
 
     @override_settings(**CALLBACK_SETTINGS)
-    def test_invalid_phrase_matches_does_not_mutate_request(self):
+    def test_invalid_phrase_matches_marks_request_failed(self):
         sr = self._make_search_request()
 
         self.view(
@@ -812,8 +813,8 @@ class N8nArticlesSearchCallbackViewTestCase(TestCase):
         )
 
         sr.refresh_from_db()
-        self.assertEqual(sr.status, "pending")
-        self.assertEqual(sr.response, "")
+        self.assertEqual(sr.status, "failed")
+        self.assertTrue(sr.response)
         self.assertIsNone(sr.phrase_matches)
 
 
