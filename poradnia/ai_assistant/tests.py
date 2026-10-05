@@ -661,6 +661,162 @@ class N8nArticlesSearchCallbackViewTestCase(TestCase):
         letter = Letter.objects.filter(case=case).first()
         self.assertIn("Will this appear in the name?", letter.name)
 
+    @override_settings(**CALLBACK_SETTINGS)
+    def test_success_stores_grouped_phrase_matches(self):
+        sr = self._make_search_request()
+
+        response = self.view(
+            self._post(
+                {
+                    "request_id": "test-req-1",
+                    "response": "Article content here",
+                    "phrase_matches": SAMPLE_PHRASE_MATCHES_GROUPED,
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        sr.refresh_from_db()
+        self.assertEqual(sr.phrase_matches, SAMPLE_PHRASE_MATCHES_GROUPED)
+
+    @override_settings(**CALLBACK_SETTINGS)
+    def test_success_stores_legacy_list_phrase_matches(self):
+        sr = self._make_search_request()
+
+        response = self.view(
+            self._post(
+                {
+                    "request_id": "test-req-1",
+                    "response": "Article content here",
+                    "phrase_matches": SAMPLE_PHRASE_MATCHES,
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        sr.refresh_from_db()
+        self.assertEqual(sr.phrase_matches, SAMPLE_PHRASE_MATCHES)
+
+    @override_settings(**CALLBACK_SETTINGS)
+    def test_missing_phrase_matches_leaves_it_unset(self):
+        sr = self._make_search_request()
+
+        response = self.view(
+            self._post({"request_id": "test-req-1", "response": "Article content"})
+        )
+
+        self.assertEqual(response.status_code, 200)
+        sr.refresh_from_db()
+        self.assertIsNone(sr.phrase_matches)
+
+    @override_settings(**CALLBACK_SETTINGS)
+    def test_phrase_matches_as_string_returns_400(self):
+        sr = self._make_search_request()
+
+        response = self.view(
+            self._post(
+                {
+                    "request_id": "test-req-1",
+                    "response": "Article content",
+                    "phrase_matches": "oops",
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(_json(response)["error"]["code"], "invalid_field")
+        sr.refresh_from_db()
+        self.assertEqual(sr.status, "failed")
+        self.assertEqual(sr.response, _json(response)["error"]["message"])
+
+    @override_settings(**CALLBACK_SETTINGS)
+    def test_phrase_matches_list_with_non_object_items_returns_400(self):
+        self._make_search_request()
+
+        response = self.view(
+            self._post(
+                {
+                    "request_id": "test-req-1",
+                    "response": "Article content",
+                    "phrase_matches": ["not-an-object"],
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(_json(response)["error"]["code"], "invalid_field")
+
+    @override_settings(**CALLBACK_SETTINGS)
+    def test_phrase_matches_dict_with_non_list_value_returns_400(self):
+        self._make_search_request()
+
+        response = self.view(
+            self._post(
+                {
+                    "request_id": "test-req-1",
+                    "response": "Article content",
+                    "phrase_matches": {"some phrase": "not-a-list"},
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(_json(response)["error"]["code"], "invalid_field")
+
+    @override_settings(**CALLBACK_SETTINGS)
+    def test_phrase_matches_dict_with_non_object_match_returns_400(self):
+        self._make_search_request()
+
+        response = self.view(
+            self._post(
+                {
+                    "request_id": "test-req-1",
+                    "response": "Article content",
+                    "phrase_matches": {"some phrase": ["not-an-object"]},
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(_json(response)["error"]["code"], "invalid_field")
+
+    @override_settings(**CALLBACK_SETTINGS)
+    def test_phrase_matches_empty_dict_is_allowed(self):
+        sr = self._make_search_request()
+
+        response = self.view(
+            self._post(
+                {
+                    "request_id": "test-req-1",
+                    "response": "Article content",
+                    "phrase_matches": {},
+                }
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        sr.refresh_from_db()
+        self.assertEqual(sr.phrase_matches, {})
+
+    @override_settings(**CALLBACK_SETTINGS)
+    def test_invalid_phrase_matches_marks_request_failed(self):
+        sr = self._make_search_request()
+
+        self.view(
+            self._post(
+                {
+                    "request_id": "test-req-1",
+                    "response": "Article content",
+                    "phrase_matches": 42,
+                }
+            )
+        )
+
+        sr.refresh_from_db()
+        self.assertEqual(sr.status, "failed")
+        self.assertTrue(sr.response)
+        self.assertIsNone(sr.phrase_matches)
+
 
 CASE_TAGS_WEBHOOK_URL = "http://n8n.example.com/webhook/case-tags"
 CASE_TAGS_WEBHOOK_SETTINGS = {
@@ -1229,6 +1385,26 @@ SAMPLE_PHRASE_MATCHES = [
     },
 ]
 
+# Current n8n payload schema: matches grouped by phrase instead of a flat list.
+SAMPLE_PHRASE_MATCHES_GROUPED = {
+    "some matched phrase": [
+        {
+            "url": "https://example.com/article-1",
+            "score": 0.66,
+            "subject": "Article subject",
+            "summary": "A long summary that should not appear in the export column.",
+        }
+    ],
+    "another matched phrase": [
+        {
+            "url": None,
+            "score": None,
+            "subject": None,
+            "summary": None,
+        }
+    ],
+}
+
 
 class N8nArticlesSearchRequestAdminDisplayTestCase(TestCase):
     def setUp(self):
@@ -1341,6 +1517,33 @@ class N8nArticlesSearchRequestAdminExportTestCase(TestCase):
         self.assertEqual(parsed, expected)
         self.assertTrue(all("summary" not in item for item in parsed))
         self.assertIn("\n", cell_value)  # pretty-printed, not compact
+
+    def test_export_includes_grouped_phrase_matches_without_summary(self):
+        obj = N8nArticlesSearchRequest.objects.create(
+            request_id="req-export-grouped-1",
+            environment="TEST",
+            question="q",
+            status="completed",
+            response="some response",
+            phrase_matches=SAMPLE_PHRASE_MATCHES_GROUPED,
+        )
+
+        response = self.admin.export_as_excel(
+            self.request, N8nArticlesSearchRequest.objects.filter(pk=obj.pk)
+        )
+        workbook = openpyxl.load_workbook(BytesIO(response.content))
+        sheet = workbook.active
+
+        cell_value = [cell.value for cell in sheet[2]][-1]
+        parsed = json.loads(cell_value)
+        expected = {
+            phrase: [
+                {k: v for k, v in item.items() if k != "summary"} for item in matches
+            ]
+            for phrase, matches in SAMPLE_PHRASE_MATCHES_GROUPED.items()
+        }
+        self.assertEqual(parsed, expected)
+        self.assertNotIn("summary", cell_value)
 
     def test_export_phrase_matches_column_is_blank_when_unset(self):
         obj = N8nArticlesSearchRequest.objects.create(
