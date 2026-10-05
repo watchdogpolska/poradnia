@@ -192,6 +192,81 @@ def _format_articles_html(response_text):
     return "\n".join(parts)
 
 
+def _validate_phrase_matches(payload):
+    """Validate the optional ``phrase_matches`` field.
+
+    n8n has sent two shapes over time: a flat list of match objects, and the
+    current ``{phrase: [match, ...]}`` grouping. Reject anything else so a
+    malformed payload fails loudly here instead of surfacing as a broken
+    admin export later. Returns an error message, or ``None`` if valid.
+    """
+    phrase_matches = payload.get("phrase_matches")
+    if phrase_matches is None:
+        return None
+
+    if isinstance(phrase_matches, dict):
+        matches_lists = phrase_matches.values()
+    elif isinstance(phrase_matches, list):
+        matches_lists = [phrase_matches]
+    else:
+        return "phrase_matches must be an object keyed by phrase or a list."
+
+    for matches in matches_lists:
+        if not isinstance(matches, list) or not all(
+            isinstance(m, dict) for m in matches
+        ):
+            return "phrase_matches entries must be lists of objects."
+    return None
+
+
+def _mark_search_request_failed(search_request, message):
+    search_request.status = "failed"
+    search_request.response = message
+    search_request.save(update_fields=["response", "status", "updated_at"])
+
+
+def _create_articles_search_letter(search_request, response_text, response_html):
+    request_id = search_request.request_id
+
+    if not search_request.case:
+        logger.debug(
+            "Articles search %s: no case attached, skipping letter creation",
+            request_id,
+        )
+        return
+    if not response_text:
+        logger.debug(
+            "Articles search %s: empty response, skipping letter creation",
+            request_id,
+        )
+        return
+
+    bot = _get_or_create_ai_assistant()
+    question_preview = (search_request.question or "")[:100]
+    letter_name = (
+        f"ASYSTENT AI: {question_preview}"
+        if question_preview
+        else "ASYSTENT AI: odpowiedź asystenta"
+    )
+    letter = Letter.objects.create(
+        case=search_request.case,
+        genre=Letter.GENRE.ai_message_staff,
+        status=Letter.STATUS.staff,
+        name=letter_name[:200],
+        text=response_text,
+        html=response_html,
+        created_by=bot,
+        created_by_is_staff=True,
+    )
+    search_request.letter = letter
+    search_request.save(update_fields=["letter", "updated_at"])
+    logger.info(
+        "Created ai_message_staff letter for case %s (request_id=%s)",
+        search_request.case_id,
+        request_id,
+    )
+
+
 def _get_or_create_ai_assistant():
     User = get_user_model()
     bot, _ = User.objects.get_or_create(
@@ -210,7 +285,10 @@ class N8nArticlesSearchCallbackView(View):
 
     1. Authenticates the caller with a bearer token (``_check_token``).
     2. Looks up the pending ``N8nArticlesSearchRequest`` by ``request_id``.
-    3. On error: marks the request as *failed* and stores the error message.
+    3. On error, or on a malformed ``phrase_matches``: marks the request as
+       *failed* and stores the error message. n8n does not retry this
+       callback, so this is the request's final state rather than being
+       left *pending* forever.
     4. On success: marks the request as *completed*, stores the plain-text
        response and the ``is_foi`` flag, then creates an
        ``ai_message_staff`` ``Letter`` on the associated case so advisors
@@ -219,10 +297,13 @@ class N8nArticlesSearchCallbackView(View):
     Expected JSON payload::
 
         {
-            "request_id": "<uuid>",
-            "response":   "<plain-text answer>",    # optional on error
-            "is_foi":     "<value>",                # optional
-            "error":      "<message>"               # present only on failure
+            "request_id":     "<uuid>",
+            "response":       "<plain-text answer>",   # optional on error
+            "is_foi":         "<value>",               # optional
+            "phrase_matches": {"<phrase>": [<match>, ...], ...},  # optional;
+                                                        # a flat [<match>, ...]
+                                                        # list is also accepted
+            "error":          "<message>"              # present only on failure
         }
 
     Returns ``{"ok": true, "result": "completed"|"failed"}`` on success,
@@ -259,13 +340,21 @@ class N8nArticlesSearchCallbackView(View):
 
         with transaction.atomic():
             if error:
-                search_request.status = "failed"
-                search_request.response = error
-                search_request.save(update_fields=["response", "status", "updated_at"])
+                _mark_search_request_failed(search_request, error)
                 logger.warning(
                     "Articles search request %s failed: %s", request_id, error
                 )
                 return JsonResponse({"ok": True, "result": "failed"})
+
+            phrase_matches_error = _validate_phrase_matches(payload)
+            if phrase_matches_error:
+                _mark_search_request_failed(search_request, phrase_matches_error)
+                logger.warning(
+                    "Articles search request %s failed: %s",
+                    request_id,
+                    phrase_matches_error,
+                )
+                return _json_error("invalid_field", phrase_matches_error, 400)
 
             response_text = payload.get("response", "")
             response_html = (
@@ -293,41 +382,7 @@ class N8nArticlesSearchCallbackView(View):
                 len(response_text),
             )
 
-            if search_request.case and response_text:
-                bot = _get_or_create_ai_assistant()
-                question_preview = (search_request.question or "")[:100]
-                letter_name = (
-                    f"ASYSTENT AI: {question_preview}"
-                    if question_preview
-                    else "ASYSTENT AI: odpowiedź asystenta"
-                )
-                letter = Letter.objects.create(
-                    case=search_request.case,
-                    genre=Letter.GENRE.ai_message_staff,
-                    status=Letter.STATUS.staff,
-                    name=letter_name[:200],
-                    text=response_text,
-                    html=response_html,
-                    created_by=bot,
-                    created_by_is_staff=True,
-                )
-                search_request.letter = letter
-                search_request.save(update_fields=["letter", "updated_at"])
-                logger.info(
-                    "Created ai_message_staff letter for case %s (request_id=%s)",
-                    search_request.case_id,
-                    request_id,
-                )
-            elif not search_request.case:
-                logger.debug(
-                    "Articles search %s: no case attached, skipping letter creation",
-                    request_id,
-                )
-            elif not response_text:
-                logger.debug(
-                    "Articles search %s: empty response, skipping letter creation",
-                    request_id,
-                )
+            _create_articles_search_letter(search_request, response_text, response_html)
 
         return JsonResponse({"ok": True, "result": "completed"})
 
