@@ -35,12 +35,24 @@ def _parse_ai_response(response_text):
         return {}
 
 
+def _without_summary(item):
+    if isinstance(item, dict):
+        return {k: v for k, v in item.items() if k != "summary"}
+    return item
+
+
 def _phrase_matches_pretty(phrase_matches):
     if not phrase_matches:
         return ""
-    data = [
-        {k: v for k, v in item.items() if k != "summary"} for item in phrase_matches
-    ]
+    if isinstance(phrase_matches, dict):
+        # Current schema: {phrase: [match, ...]}.
+        data = {
+            phrase: [_without_summary(item) for item in matches]
+            for phrase, matches in phrase_matches.items()
+        }
+    else:
+        # Legacy schema: [match, ...] with "phrase" on each match.
+        data = [_without_summary(item) for item in phrase_matches]
     return json.dumps(data, indent=2, ensure_ascii=False)
 
 
