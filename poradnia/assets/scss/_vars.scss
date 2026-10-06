@@ -6,6 +6,15 @@
 $primary: #D82727; // was $brand-primary: #D82727
 $success: #555555; // was $brand-success: $gray (i.e. gray, not Bootstrap's default green)
 
+// BS3's base styles set `a { text-decoration: none }` by default, showing
+// underline only on hover ($link-hover-decoration). BS4+ Reboot flipped this
+// default to underline-always - found via the post-migration visual regression
+// check, where it showed up as dozens of plain <a> tags and custom components
+// (e.g. .support-button, the donate-popup links) suddenly underlined app-wide
+// that never had their own text-decoration rule because they relied on this
+// BS3 default. Restored rather than hand-patching every affected template.
+$link-decoration: none;
+
 // Legacy BS3-named variables, aliased rather than ported, because several
 // custom partials (_layout.scss, _sidebar.scss, _case.scss, _cases.scss,
 // _timeline.scss, _page-home.scss, dashboard.scss, _dal_alight.scss) — none

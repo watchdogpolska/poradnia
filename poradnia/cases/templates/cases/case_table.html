@@ -23,12 +23,12 @@
     </div>
 </div>
 
-<div id="tableWrapper">
+<div id="tableWrapper" class="row">
     <!-- TODO add colvis button and functionality -->
     <div class="col-sm-1 filters">
         <br><br><br><br>
         <h4>{% trans 'Filters' %}:</h4><br>
-        <div class="row">
+        <div>
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title='{% trans 'Cases have status changed by staff.' %}'>
             </i>
@@ -42,7 +42,7 @@
             {% endfor %}
             <br><br>
         </div>
-        <div class="row">
+        <div>
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have selected user in involved staff.' %}">
             </i>
@@ -53,7 +53,7 @@
                 {% endfor %}
             </select><br><br><br>
         </div>        
-        <div class="row">
+        <div>
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that do have letter with status done (case subject not in bold).' %}">
             </i>
@@ -64,7 +64,7 @@
             <label for="handled_no" class="small">{% trans 'No' %}</label><br>
             <br><br>
         </div>
-        <div class="row">
+        <div>
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have tag.' %}">
             </i>
@@ -75,7 +75,7 @@
             <label for="has_tag_no" class="small">{% trans 'No' %}</label><br>
             <br><br>
         </div>
-        <div class="row">
+        <div>
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have event with deadline.' %}">
             </i>
@@ -86,7 +86,7 @@
             <label for="has_deadline_no" class="small">{% trans 'No' %}</label><br>
             <br><br>
         </div>
-        <div class="row">
+        <div>
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have an AI-generated article suggestion letter.' %}">
             </i>
@@ -97,7 +97,7 @@
             <label for="has_ai_articles_no" class="small">{% trans 'No' %}</label><br>
             <br><br>
         </div>
-        <div class="row">
+        <div>
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases with an AI-generated article letter not yet accepted or rejected by staff.' %}">
             </i>
@@ -108,7 +108,7 @@
             <label for="has_ai_articles_to_review_no" class="small">{% trans 'No' %}</label><br>
             <br><br>
         </div>
-        <div class="row">
+        <div>
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases whose tag has an AI-generated tag suggestion.' %}">
             </i>
@@ -120,7 +120,7 @@
             <br><br>
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="col-sm-11 table-responsive">
         <table id="datatable_cases" width="100%" class="table table-bordered compact">
             <!-- table-striped  nowrap-->
         </table>
