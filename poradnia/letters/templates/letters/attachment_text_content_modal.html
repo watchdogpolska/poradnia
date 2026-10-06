@@ -24,7 +24,7 @@
             <div class="modal-body">
                 {% if attachment.text_content %}
                     <p class="small text-muted"><em>{{ attachment.text_content_warning }}</em></p>
-                    <div class="well" style="max-height: 70vh; overflow-y: auto; white-space: pre-wrap; word-break: break-word;">
+                    <div class="border rounded p-3 bg-body-secondary" style="max-height: 70vh; overflow-y: auto; white-space: pre-wrap; word-break: break-word;">
                         {{ attachment.text_content }}
                     </div>
                 {% else %}

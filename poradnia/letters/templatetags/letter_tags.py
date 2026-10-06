@@ -8,11 +8,14 @@ register = template.Library()
 
 @register.filter
 def letter2panel(obj):
+    """Bootstrap color-variant name (not a full class) for this letter's
+    card, used as both `border-{{ }}` on the card and `text-bg-{{ }}` on
+    its header."""
     if obj.genre == obj.GENRE.comment:
-        return "panel-info"
+        return "info"
     if obj.genre in (obj.GENRE.ai_message, obj.GENRE.ai_message_staff):
-        return "panel-success"
-    return "panel-primary" if obj.created_by_is_staff else "panel-default"
+        return "success"
+    return "primary" if obj.created_by_is_staff else "secondary"
 
 
 @register.filter

@@ -3,7 +3,7 @@
 {% if search_request %}
     {% if not search_request.accepted_at and not search_request.rejected_at %}
     <button type="button"
-        class="btn btn-link btn-xs ai-thumb ai-thumb-up"
+        class="btn btn-link btn-sm ai-thumb ai-thumb-up"
         title="{% trans 'Accept AI answer' %}"
         hx-post="{% url 'letters:ai_search_accept' pk=object.pk %}"
         hx-target="#ai-feedback-{{ object.pk }}"
@@ -11,7 +11,7 @@
         hx-indicator="#htmx-spinner"
     ><i class="fas fa-thumbs-up"></i></button>
     <button type="button"
-        class="btn btn-link btn-xs ai-thumb ai-thumb-down"
+        class="btn btn-link btn-sm ai-thumb ai-thumb-down"
         title="{% trans 'Reject AI answer' %}"
         data-bs-toggle="modal"
         data-bs-target="#aiSearchRejectModal-{{ object.pk }}"

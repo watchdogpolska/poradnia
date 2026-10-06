@@ -100,7 +100,7 @@ describe("datatables", () => {
       adviceAuthor: user,
       ...Advice.fromId("adviceA"),
     };
-    cy.contains(".panel", "Dane statystyczne").contains("Otaguj sprawę").click();
+    cy.contains(".card", "Dane statystyczne").contains("Otaguj sprawę").click();
     cy.contains("form", "Dane statystyczne").within(($form) => {
       submitAdviceForm(cy)($form, advice);
     });
