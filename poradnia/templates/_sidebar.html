@@ -13,7 +13,7 @@
         {# TODO remove navsearch and all code artefacts related to it due to replacemet with case table search #}
         {% if request.user.is_authenticated %}
            <li class="block-list-item">
-              <a href="#" data-toggle="modal" data-target="#navsearch_modal">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#navsearch_modal">
                    <i class="fas fa-magnifying-glass"></i> {% trans 'Search' %}
                </a>
            </li>
