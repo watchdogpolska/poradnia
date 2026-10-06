@@ -8,10 +8,10 @@
         <!-- Default panel contents -->
         <div class="panel-heading">{{ object }}
             {% block buttons %}
-                <a class="btn btn-default btn-xs pull-right"
+                <a class="btn btn-secondary btn-xs float-end"
                    href="{% url 'tasty_feedback:status' pk=object.pk %}">{% trans "Switch status" %}</a>
                 {% if object.get_github_link %}
-                    <a class="btn btn-default btn-xs pull-right" href="{{ object.get_github_link }}"><i
+                    <a class="btn btn-secondary btn-xs float-end" href="{{ object.get_github_link }}"><i
                             class="fab fa-github"></i> GitHub</a>{% endif %}
             {% endblock %}
         </div>
