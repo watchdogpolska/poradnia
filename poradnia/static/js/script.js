@@ -31029,10 +31029,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// Bootstrap-3 tooltip plugin still depends on jQuery — Stage 3 leftover
-// (pending widget-replacement decision in #2134).
 function initTooltips() {
-    jQuery('[data-toggle="tooltip"]').tooltip();
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+        bootstrap.Tooltip.getOrCreateInstance(el);
+    });
 }
 
 if (document.readyState === "loading") {
@@ -45369,7 +45369,7 @@ document.addEventListener('DOMContentLoaded', function () {
         document.getElementById("dashboard-export-year-cases-value").textContent = casesYear;
         document.getElementById("dashboard-export-year-tags-value").textContent = tagsYear;
 
-        window.jQuery(document.getElementById("dashboard-export-year-modal")).modal("show");
+        window.bootstrap.Modal.getOrCreateInstance(document.getElementById("dashboard-export-year-modal")).show();
     }
 
     document.addEventListener("click", function (event) {
@@ -45392,7 +45392,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var checked = document.querySelector(
                 'input[name="dashboard-export-year-choice"]:checked'
             );
-            window.jQuery(document.getElementById("dashboard-export-year-modal")).modal("hide");
+            window.bootstrap.Modal.getOrCreateInstance(document.getElementById("dashboard-export-year-modal")).hide();
             if (checked) {
                 startExport(pendingExportUrl, checked.value);
             }

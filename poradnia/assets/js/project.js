@@ -13,10 +13,10 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 });
 
-// Bootstrap-3 tooltip plugin still depends on jQuery — Stage 3 leftover
-// (pending widget-replacement decision in #2134).
 function initTooltips() {
-    jQuery('[data-toggle="tooltip"]').tooltip();
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+        bootstrap.Tooltip.getOrCreateInstance(el);
+    });
 }
 
 if (document.readyState === "loading") {

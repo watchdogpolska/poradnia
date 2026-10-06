@@ -5,13 +5,13 @@
     {{ block.super }}
     {{ casegroup_form.media.js }}
     <script type="text/javascript">
-        ;(function($) {
-            $('#form-tab a').click(function (e) {
-                e.preventDefault()
-                $(this).tab('show')
-            });
-            $('#form-tab a:first').tab('show')
-        })(jQuery);
+        // #form-tab links already use data-bs-toggle="tab", which handles
+        // click-to-switch on its own - only the initial tab (none is
+        // active on page load) still needs an explicit show().
+        var firstFormTab = document.querySelector('#form-tab a');
+        if (firstFormTab) {
+            bootstrap.Tab.getOrCreateInstance(firstFormTab).show();
+        }
 
         function validateAiSearchRejectReason(pk) {
             var textarea = document.getElementById('aiSearchRejectReason-' + pk);
@@ -30,11 +30,12 @@
                 // The htmx swap that follows replaces #ai-feedback-{pk} (the
                 // modal's own parent) with the rejected state, which no
                 // longer renders the modal at all - if we waited until after
-                // that swap to call .modal('hide'), Bootstrap would have no
+                // that swap to call .hide(), Bootstrap would have no
                 // element left to run its hide transition on, and the
                 // backdrop it already added to <body> would never be
                 // removed, leaving the page stuck behind a dark overlay.
-                $('#aiSearchRejectModal-' + pk).modal('hide');
+                var modalEl = document.getElementById('aiSearchRejectModal-' + pk);
+                bootstrap.Modal.getOrCreateInstance(modalEl).hide();
             }
             return ok;
         }

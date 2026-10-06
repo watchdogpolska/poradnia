@@ -149,7 +149,7 @@
 
         var existingModal = document.getElementById('attachmentTextModal');
         if (existingModal) {
-            jQuery(existingModal).modal('hide');
+            bootstrap.Modal.getOrCreateInstance(existingModal).hide();
         }
 
         document.querySelectorAll('.modal-backdrop').forEach(function (el) {
@@ -162,13 +162,11 @@
         if (event.target.id === 'attachment-text-modal-container') {
             var modal = document.getElementById('attachmentTextModal');
             if (modal) {
-                jQuery(modal).modal('show');
+                bootstrap.Modal.getOrCreateInstance(modal).show();
             }
         }
     });
 
-    // Bootstrap 3's modal plugin fires this only as a jQuery-namespaced event,
-    // not a native DOM event — stays on jQuery until the Bootstrap 5 migration.
     jQuery(document).on('hidden.bs.modal', '#attachmentTextModal', function () {
         var container = document.getElementById('attachment-text-modal-container');
         if (container) {
