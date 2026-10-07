@@ -24170,6 +24170,21 @@ body.show-sidebar .sidebar {
   width: auto;
   vertical-align: middle;
 }
+.form-inline fieldset,
+.form-inline .row {
+  flex: 1 0 100%;
+}
+.form-inline fieldset {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: flex-end;
+}
+
+legend {
+  margin-bottom: 20px;
+  color: #333;
+  border-bottom: 1px solid #e5e5e5;
+}
 
 table.month {
   table-layout: fixed;

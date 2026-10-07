@@ -114,4 +114,47 @@
 		width: auto;
 		vertical-align: middle;
 	}
+
+	// crispy-forms' Fieldset() layout (advicer's advice_filter.html groups
+	// fields under "Dane statystyczne"/"Szczególy" legends) renders each
+	// <fieldset> as a sibling of the plain .mb-3 fields, same as the submit
+	// button - as a flex item with no explicit basis it was sizing to its
+	// own content and sitting side by side with the *other* fieldset
+	// instead of stacking as its own full-width section (found via a user
+	// report showing "Szczególy" rendering where "Dane statystyczne" should
+	// be). `.row` gets the same full-width treatment because a Fieldset()
+	// can itself wrap a sub-group of fields in a plain Bootstrap `.row`
+	// (`Div(..., css_class="row")`) rather than a single bare field.
+	fieldset,
+	.row {
+		flex: 1 0 100%;
+	}
+
+	// BS3's real .form-inline rule was `.form-inline .form-group { ... }` -
+	// a *descendant* selector, so every bare field sat side by side no
+	// matter how deep it was nested, with no .row/.col-* wrapper needed.
+	// "Dane statystyczne" wraps its fields in an explicit `.row`/`.col-*`
+	// grid (unrelated to .form-inline, so it already worked), but
+	// "Szczegóły" places its fields directly inside its <fieldset> with no
+	// such wrapper, matching BS3's old reliance on cascading inline-block.
+	// Making <fieldset> its own nested flex row (mirroring .form-inline
+	// itself) is what recreates that - without it, .mb-3's `flex: 0 0 auto`
+	// above does nothing, since `flex` only has an effect on an element
+	// whose *parent* is a flex container, and plain <fieldset> isn't one.
+	fieldset {
+		display: flex;
+		flex-flow: row wrap;
+		align-items: flex-end;
+	}
+}
+
+// BS5 kept <legend> full-width (`float: left; width: 100%`) but dropped
+// BS3's bottom-border separator, darker text color, and larger
+// margin-bottom entirely. Restored globally (not just inside .form-inline)
+// since any Fieldset() section - filter or regular form - loses the same
+// visual separator, found via the same fieldset-stacking user report.
+legend {
+	margin-bottom: $line-height-computed; // 20px, BS3's $line-height-computed
+	color: $text-color; // #333, BS3's $legend-color
+	border-bottom: 1px solid #e5e5e5; // BS3's $legend-border-color
 }
