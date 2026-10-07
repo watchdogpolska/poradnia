@@ -24358,6 +24358,34 @@ table.month li.deadline {
   --bs-btn-disabled-border-color: #ccc;
 }
 
+.alert-success {
+  --bs-alert-color: #3c763d;
+  --bs-alert-bg: #dff0d8;
+  --bs-alert-border-color: #d6e9c6;
+  --bs-alert-link-color: #2b542c;
+}
+
+.alert-info {
+  --bs-alert-color: #31708f;
+  --bs-alert-bg: #d9edf7;
+  --bs-alert-border-color: #bce8f1;
+  --bs-alert-link-color: #245269;
+}
+
+.alert-warning {
+  --bs-alert-color: #8a6d3b;
+  --bs-alert-bg: #fcf8e3;
+  --bs-alert-border-color: #faebcc;
+  --bs-alert-link-color: #66512c;
+}
+
+.alert-danger {
+  --bs-alert-color: #a94442;
+  --bs-alert-bg: #f2dede;
+  --bs-alert-border-color: #ebccd1;
+  --bs-alert-link-color: #843534;
+}
+
 .h1.success {
   background-color: #DFF0D8;
 }

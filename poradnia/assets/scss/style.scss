@@ -52,6 +52,48 @@
 	--bs-btn-disabled-border-color: #ccc;
 }
 
+// BS3 kept alert colors (`$state-success-bg` etc.) completely independent
+// from button/badge colors (`$brand-success` etc.); BS5 collapsed both into
+// one shared `$success`/`$danger`/`$warning`/`$info` per state, each alert's
+// `--bs-alert-bg` etc. (see .alert-success and friends in node_modules/
+// bootstrap/scss/_alert.scss) derived from the SAME color. $success here is
+// deliberately #555555 (gray) to match this app's historically-gray success
+// *button* (see $success in _vars.scss) - alerts inheriting that same gray
+// is exactly what a user reported ("Tagowanie AI rozpoczete..." showing gray
+// instead of light green). $danger/$warning/$info were never customized at
+// all, so those three alerts use BS5's stock colors rather than this app's
+// original BS3 ones - not broken, just not historically matched, restored
+// here too at the user's request. Scoped to just the alert classes (same
+// technique as .btn-default above) rather than touching the shared
+// variables, so buttons/badges/borders etc. built on them are unaffected.
+// Values are bootstrap-sass 3.4.3's actual stock $state-*-text/-bg/-border
+// (the same border/bg pair already used for .panel-success and friends in
+// _vars.scss) and its alert-link darkened shades.
+.alert-success{
+	--bs-alert-color: #3c763d;
+	--bs-alert-bg: #dff0d8;
+	--bs-alert-border-color: #d6e9c6;
+	--bs-alert-link-color: #2b542c;
+}
+.alert-info{
+	--bs-alert-color: #31708f;
+	--bs-alert-bg: #d9edf7;
+	--bs-alert-border-color: #bce8f1;
+	--bs-alert-link-color: #245269;
+}
+.alert-warning{
+	--bs-alert-color: #8a6d3b;
+	--bs-alert-bg: #fcf8e3;
+	--bs-alert-border-color: #faebcc;
+	--bs-alert-link-color: #66512c;
+}
+.alert-danger{
+	--bs-alert-color: #a94442;
+	--bs-alert-bg: #f2dede;
+	--bs-alert-border-color: #ebccd1;
+	--bs-alert-link-color: #843534;
+}
+
 .h1.success{
     background-color: #DFF0D8;
 }
