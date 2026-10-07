@@ -10,6 +10,7 @@
         itemtype="http://schema.org/BreadcrumbList">
         {% for jst in object.get_ancestors.all %}
             <li
+                class="breadcrumb-item"
                 itemprop="itemListElement"
                 itemscope
                 itemtype="http://schema.org/ListItem">
@@ -19,10 +20,10 @@
             </li>
         {% endfor %}
         <li
+            class="breadcrumb-item active"
             itemprop="itemListElement"
             itemscope
-            itemtype="http://schema.org/ListItem"
-            class="active">
+            itemtype="http://schema.org/ListItem">
             <span itemprop="name">{{ object }}</span>
         </li>
     </ol>

@@ -44698,7 +44698,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const tableTop = tableWrapper.getBoundingClientRect().top;
     const viewportHeight = window.innerHeight;
     const maxHeight = viewportHeight - tableTop;
-    tableWrapper.style.maxHeight = maxHeight + 'px';
+    // Only the DataTable itself (via scrollY below) should be height-capped.
+    // Capping #tableWrapper too used to be harmless because the .filters
+    // sidebar's content happened to fit within that height under BS3's
+    // tighter spacing - BS5's taller checkbox/label spacing pushes .filters
+    // past the cap, and since it's not independently scrollable, it
+    // visibly spills into whatever follows (e.g. the page footer).
     // Subscribe "initComplete" event
     table1.addEventListener('initComplete', function () {
         // Code to resize input fields

@@ -24148,6 +24148,31 @@ body.show-sidebar .sidebar {
   width: 500px;
 }
 
+.form-inline {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+}
+.form-inline .mb-3,
+.form-inline .form-check {
+  display: flex;
+  flex: 0 0 auto;
+  flex-flow: row wrap;
+  align-items: center;
+  margin-bottom: 0;
+  margin-right: 0.75rem;
+}
+.form-inline .form-label {
+  margin-bottom: 0;
+  margin-right: 0.5rem;
+}
+.form-inline .form-control,
+.form-inline .form-select {
+  display: inline-block;
+  width: auto;
+  vertical-align: middle;
+}
+
 table.month {
   table-layout: fixed;
   width: 100%;

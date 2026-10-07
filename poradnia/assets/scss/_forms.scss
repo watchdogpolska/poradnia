@@ -52,3 +52,36 @@
 	@include center-block;
 	width: 500px;
 }
+
+// BS5 removed the .form-inline utility entirely; CrispyApplyFilterMixin
+// (poradnia/utils/mixins.py) and a few filters.py/forms.py still set it as
+// the crispy form_class for one-row filter forms, so reproduce the original
+// single-row layout directly against crispy-bootstrap5's own field markup
+// (each field wraps in .mb-3, checkboxes in .form-check, labels in .form-label).
+.form-inline {
+	display: flex;
+	flex-flow: row wrap;
+	align-items: center;
+
+	.mb-3,
+	.form-check {
+		display: flex;
+		flex: 0 0 auto;
+		flex-flow: row wrap;
+		align-items: center;
+		margin-bottom: 0;
+		margin-right: 0.75rem;
+	}
+
+	.form-label {
+		margin-bottom: 0;
+		margin-right: 0.5rem;
+	}
+
+	.form-control,
+	.form-select {
+		display: inline-block;
+		width: auto;
+		vertical-align: middle;
+	}
+}
