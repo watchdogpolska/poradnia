@@ -24158,8 +24158,11 @@ body.show-sidebar .sidebar {
 .form-inline .mb-3,
 .form-inline .form-check {
   flex: 0 0 auto;
-  margin-bottom: 0;
+  margin-bottom: 0 !important;
   margin-right: 0.75rem;
+}
+.form-inline .form-label {
+  display: block;
 }
 .form-inline .form-control,
 .form-inline .form-select {

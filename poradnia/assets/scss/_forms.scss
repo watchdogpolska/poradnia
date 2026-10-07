@@ -60,13 +60,23 @@
 // (each field wraps in .mb-3, checkboxes in .form-check, labels in .form-label).
 //
 // Only the field GROUPS (.mb-3/.form-check) go side by side here - each
-// group keeps BS5's own default block stacking internally (label above its
-// input), matching BS3's real .form-inline behavior: `.form-group` was
-// `display: inline-block` while the `label` inside it was left `display:
-// block`, so groups sat in a row while each one's own label still stacked
-// above its field. An earlier version of this rule also flexed .mb-3/
-// .form-check internally, which incorrectly pushed every label beside its
-// field instead of above it - found via a user report on /uzytkownik/.
+// group keeps its label above its input internally, matching BS3's real
+// .form-inline behavior: `.form-group` was `display: inline-block` while
+// `label` inside it was left `display: block`, so groups sat in a row while
+// each one's own label still stacked above its field. Getting that requires
+// TWO things crispy-bootstrap5's markup doesn't give for free, unlike BS3's
+// own template pack: `<label>` is inline by default with nothing here to
+// force a line break after it (BS3's pack wrapped the field itself in a
+// block-level `.controls` div; BS5's puts label and field as plain
+// siblings), and a raw user report (HTML dump of both versions, on
+// /uzytkownik/) showed label+field still sitting on one line even after an
+// earlier fix removed the (wrong) internal flex from .mb-3/.form-check -
+// because .form-control/.form-select below is deliberately set to
+// inline-block (so it auto-sizes instead of stretching full-width), and
+// with no other block sibling to force a break, the inline label and the
+// now-inline-block field just flowed onto the same line. Making the label
+// itself `display: block` recreates the line break BS3 got for free from
+// its wrapper div.
 // align-items: flex-end (not center) lines up each field's input box along
 // the bottom of the row regardless of label length, which is also what
 // puts the submit button inline with the fields rather than floating
@@ -79,8 +89,23 @@
 	.mb-3,
 	.form-check {
 		flex: 0 0 auto;
-		margin-bottom: 0;
+		// .mb-3 is itself a Bootstrap spacing utility, and BS5 ships utility
+		// classes with !important specifically so they win over component/
+		// context styles - an unqualified override here silently lost to
+		// .mb-3's own `margin-bottom: 1rem !important`, leaving 16px of
+		// invisible margin below each field. align-items: flex-end respects
+		// the margin box, not just the border box, so that invisible 16px
+		// was exactly what pushed the submit button (zero margin, no
+		// override needed) 16px further down than the fields' visible
+		// boxes - found via a user-provided HTML dump showing the button
+		// still misaligned after margin-bottom: 0 (without !important) had
+		// already been in place.
+		margin-bottom: 0 !important;
 		margin-right: 0.75rem;
+	}
+
+	.form-label {
+		display: block;
 	}
 
 	.form-control,
