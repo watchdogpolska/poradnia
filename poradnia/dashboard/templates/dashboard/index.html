@@ -4,7 +4,7 @@
 {% block content %}
     <div class="dashboard-page-header">
         <h3>{% trans 'Dashboard' %}</h3>
-        <button type="button" class="btn btn-secondary" id="dashboard-export-btn"
+        <button type="button" class="btn btn-default" id="dashboard-export-btn"
                 data-export-url="{% url 'dashboard:export_excel' %}"
                 data-current-year="{{ current_year }}">
             <i class="fas fa-file-excel" aria-hidden="true"></i>
@@ -91,7 +91,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">
                         {% trans 'Cancel' %}
                     </button>
                     <button type="button" class="btn btn-primary" id="dashboard-export-year-confirm">

@@ -113,20 +113,20 @@
                                 class="fa-solid fa-pen-to-square"></i> {% trans 'Edit' %}</a>
                     {% endif %}
                     {% if 'can_close_case' in case_perms and object.status != object.STATUS.closed %}
-                        <a class="btn btn-secondary" href="{{ object.get_close_url }}"><i
+                        <a class="btn btn-default" href="{{ object.get_close_url }}"><i
                                 class="fa-regular fa-circle-xmark"></i> {% trans 'Close' %}</a>
                     {% endif %}
                     {% if 'delete_case' in case_perms and user.is_staff %}
-                        <a class="btn btn-secondary" href="{% url 'admin:cases_case_delete' object_id=object.pk %}"><i
+                        <a class="btn btn-default" href="{% url 'admin:cases_case_delete' object_id=object.pk %}"><i
                                 class="fas fa-trash-can"></i> {% trans 'Delete' %}</a>
                     {% endif %}
                     {% if 'can_merge_case' in case_perms %}
-                        <a class="btn btn-secondary" href="{% url 'cases:merge' pk=object.pk %}"><i
+                        <a class="btn btn-default" href="{% url 'cases:merge' pk=object.pk %}"><i
                                 class="fas fa-code-fork"></i> {% trans 'Merge' %}</a>
                     {% endif %}
                     {% if 'change_case' in case_perms and request.user.is_staff %}
                         <div>
-                            <button type="button" class="btn btn-secondary dropdown-toggle js-ai-dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button type="button" class="btn btn-default dropdown-toggle js-ai-dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-robot"></i> {% trans 'AI Assistant' %}
                             </button>
                             <ul class="dropdown-menu">
@@ -236,7 +236,7 @@
                             <div class="card">
                                 <div class="card-header">
                                     <i class="fas fa-users"></i> {% trans 'Assign permissions' %}
-                                    <a class="btn btn-secondary btn-sm float-end"
+                                    <a class="btn btn-default btn-sm float-end"
                                     href="{% url 'cases:permission_add' pk=object.pk %}">{% trans "..." %}</a>
                                 </div>
                                 <div class="card-body">

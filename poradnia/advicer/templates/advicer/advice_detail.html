@@ -28,7 +28,7 @@
                     {% if object.case %}
                     <form method="post" action="{% url 'cases:request_ai_tags' pk=object.case.pk %}">
                         {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary">
+                        <button type="submit" class="btn btn-default">
                             <i class="fas fa-robot"></i> {% trans 'Request fresh AI Tag suggestions' %}
                         </button>
                     </form>
@@ -95,7 +95,7 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans 'Cancel' %}</button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">{% trans 'Cancel' %}</button>
                     <button type="button" class="btn btn-danger" id="aiRejectSubmit"
                         hx-post="{% url 'advicer:ai_tags_reject' pk=object.pk %}"
                         hx-target="#advice-ai-table-wrap"

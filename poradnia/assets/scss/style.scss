@@ -21,6 +21,37 @@
 	background: url("../images/logo.png") no-repeat center center
 }
 
+// The migration's mechanical class sweep renamed every `btn-default` to
+// `btn-secondary` (the officially recommended 1:1 BS3->BS5 mapping), but the
+// two variants don't share a color scheme: BS3's `.btn-default` was a white
+// button with dark (#333) text and a light gray border, while BS5's
+// `.btn-secondary` is a solid gray button with white text. Found via a user
+// report on case_detail.html's "Zadanie nowych sugestii tagów AI" button -
+// confirmed via the mechanical-sweep commit's own diff that every current
+// `btn-secondary` in the app (advicer, letters, dashboard, keys, cases,
+// tasty_feedback, account/signup) is this same renamed `btn-default`, none
+// intentionally BS5-native. Rather than override BS5's own `.btn-secondary`
+// class to mean something else, `.btn-default` is revived here as this
+// project's own (non-Bootstrap) class for that exact look, and every one of
+// those 9 templates points back at it - leaving the real `.btn-secondary`
+// alone and available with its real BS5 meaning for any future button that
+// actually wants it.
+.btn-default {
+	--bs-btn-color: #333;
+	--bs-btn-bg: #fff;
+	--bs-btn-border-color: #ccc;
+	--bs-btn-hover-color: #333;
+	--bs-btn-hover-bg: #e6e6e6;
+	--bs-btn-hover-border-color: #adadad;
+	--bs-btn-focus-shadow-rgb: 173, 173, 173;
+	--bs-btn-active-color: #333;
+	--bs-btn-active-bg: #e6e6e6;
+	--bs-btn-active-border-color: #adadad;
+	--bs-btn-disabled-color: #333;
+	--bs-btn-disabled-bg: #fff;
+	--bs-btn-disabled-border-color: #ccc;
+}
+
 .h1.success{
     background-color: #DFF0D8;
 }
