@@ -9,8 +9,15 @@
 
 {% block extra_css %}
     <style>
+        {# BS5 paints table-cell backgrounds per-<td> via an inset box-shadow
+           driven by --bs-table-bg (see node_modules/bootstrap/scss/_tables.scss) -
+           every cell's own opaque background-color covers whatever color sits
+           on the <tr> itself, so overriding the custom property is what BS5's
+           own contextual row classes (.table-danger etc.) do instead of a
+           plain background-color. Found via a user report that staff rows had
+           lost their highlight after the migration. #}
         .staff {
-            background-color: #FF7474;
+            --bs-table-bg: #FF7474;
         }
         #submit-id-filter {
             margin-top: 20px;

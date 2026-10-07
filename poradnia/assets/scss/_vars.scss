@@ -6,6 +6,25 @@
 $primary: #D82727; // was $brand-primary: #D82727
 $success: #555555; // was $brand-success: $gray (i.e. gray, not Bootstrap's default green)
 
+// bootstrap-sass 3.4.3's actual default $font-size-base was 14px, not the
+// browser's 16px - BS5's own default ($font-size-base: 1rem, i.e. 16px)
+// was left in place by the diff above since a raw `14px` literal here
+// crashes the build (mixed with BS5's rem-based internals elsewhere, e.g.
+// $font-size-base * 2.5 for headings, Sass can't reconcile incompatible
+// px/rem units). Expressed as a rem fraction instead, which plays along
+// with BS5's own math and avoids a second, differently-scoped base living
+// only under $dal-font-size-base (see below) - found via a user report
+// that every rem/em-sized element (most of the app) had grown ~14% versus
+// the pre-migration baseline, while explicitly-px-sized elements (e.g.
+// .footer, _layout.scss) hadn't.
+$font-size-base: 0.875rem; // 14px / 16px browser default
+
+// BS3's base styles made every <label> bold by default; BS5's .form-label
+// leaves $form-label-font-weight null (i.e. inherit/normal). Found via a
+// user report that filter-form labels on /uzytkownik/ (and by extension
+// every crispy-rendered form label app-wide) had lost their bold weight.
+$form-label-font-weight: bold;
+
 // BS3's base styles set `a { text-decoration: none }` by default, showing
 // underline only on hover ($link-hover-decoration). BS4+ Reboot flipped this
 // default to underline-always - found via the post-migration visual regression

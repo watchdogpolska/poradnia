@@ -58,24 +58,29 @@
 // the crispy form_class for one-row filter forms, so reproduce the original
 // single-row layout directly against crispy-bootstrap5's own field markup
 // (each field wraps in .mb-3, checkboxes in .form-check, labels in .form-label).
+//
+// Only the field GROUPS (.mb-3/.form-check) go side by side here - each
+// group keeps BS5's own default block stacking internally (label above its
+// input), matching BS3's real .form-inline behavior: `.form-group` was
+// `display: inline-block` while the `label` inside it was left `display:
+// block`, so groups sat in a row while each one's own label still stacked
+// above its field. An earlier version of this rule also flexed .mb-3/
+// .form-check internally, which incorrectly pushed every label beside its
+// field instead of above it - found via a user report on /uzytkownik/.
+// align-items: flex-end (not center) lines up each field's input box along
+// the bottom of the row regardless of label length, which is also what
+// puts the submit button inline with the fields rather than floating
+// vertically centered against their (taller, labeled) neighbors.
 .form-inline {
 	display: flex;
 	flex-flow: row wrap;
-	align-items: center;
+	align-items: flex-end;
 
 	.mb-3,
 	.form-check {
-		display: flex;
 		flex: 0 0 auto;
-		flex-flow: row wrap;
-		align-items: center;
 		margin-bottom: 0;
 		margin-right: 0.75rem;
-	}
-
-	.form-label {
-		margin-bottom: 0;
-		margin-right: 0.5rem;
 	}
 
 	.form-control,
