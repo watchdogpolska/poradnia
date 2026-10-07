@@ -94,6 +94,31 @@
 	--bs-alert-link-color: #843534;
 }
 
+// BS3's `.breadcrumb` was a padded, rounded, light-grey pill
+// (`background-color: #f5f5f5; padding: 8px 15px; border-radius: 4px;`);
+// BS5 redesigned it as flat/padding-less by default (its own
+// --bs-breadcrumb-bg/-padding-x/-padding-y/-border-radius custom properties
+// all ship empty/zero) - restored via those same properties, found via a
+// user report wanting the grey background back.
+.breadcrumb{
+	--bs-breadcrumb-bg: #f5f5f5;
+	--bs-breadcrumb-padding-x: 15px;
+	--bs-breadcrumb-padding-y: 8px;
+	--bs-breadcrumb-border-radius: 4px;
+
+	// BS5's `.breadcrumb` is `display: flex` (needed for the `<li>` divider
+	// styling), so `float: right` on a sibling `.float-end` (e.g. advicer's
+	// advice_filter.html "Dodaj" button) does nothing - float has no effect
+	// on an element that's a flex item, no matter how specific/!important
+	// the float declaration is. margin-left: auto is the flex-correct way
+	// to push one item to the end of the row while the rest stay packed to
+	// the start, without touching .float-end's normal (non-flex) float
+	// behavior used everywhere else in the app.
+	.float-end{
+		margin-left: auto;
+	}
+}
+
 .h1.success{
     background-color: #DFF0D8;
 }

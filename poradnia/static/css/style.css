@@ -24401,6 +24401,16 @@ table.month li.deadline {
   --bs-alert-link-color: #843534;
 }
 
+.breadcrumb {
+  --bs-breadcrumb-bg: #f5f5f5;
+  --bs-breadcrumb-padding-x: 15px;
+  --bs-breadcrumb-padding-y: 8px;
+  --bs-breadcrumb-border-radius: 4px;
+}
+.breadcrumb .float-end {
+  margin-left: auto;
+}
+
 .h1.success {
   background-color: #DFF0D8;
 }
