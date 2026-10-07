@@ -24411,6 +24411,10 @@ table.month li.deadline {
   margin-left: auto;
 }
 
+.text-center .pagination {
+  display: inline-flex;
+}
+
 .h1.success {
   background-color: #DFF0D8;
 }

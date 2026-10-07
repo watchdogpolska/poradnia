@@ -119,6 +119,22 @@
 	}
 }
 
+// BS3's `.pagination` was `display: inline-block`, so wrapping it in
+// `<div class="text-center">` (_pagination.html, used by cases/letters/
+// users/advicer/tasty_feedback list pages) centered it via `text-align:
+// center` same as any other inline content. BS5 made `.pagination`
+// `display: flex` (block-level), which `text-align` has no effect on - a
+// block element just fills the available width regardless of its
+// ancestor's text-align. Scoped to `.text-center .pagination` specifically
+// (inline-flex still centers via text-align, same mechanism as inline-
+// block) rather than changing `.pagination` everywhere, since other
+// bare/unwrapped uses should keep BS5's normal block-flex behavior -
+// found via a user report that pagination controls were no longer
+// centered.
+.text-center .pagination{
+	display: inline-flex;
+}
+
 .h1.success{
     background-color: #DFF0D8;
 }
