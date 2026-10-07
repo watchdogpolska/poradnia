@@ -10,12 +10,14 @@ register = template.Library()
 def letter2panel(obj):
     """Bootstrap color-variant name (not a full class) for this letter's
     card, used as both `border-{{ }}` on the card and `text-bg-{{ }}` on
-    its header."""
+    its header. "default" is this app's own revived BS3 panel-default
+    look (white/light-grey, not BS5's real gray-background `secondary`) -
+    see `.text-bg-default`/`.border-default` in style.scss."""
     if obj.genre == obj.GENRE.comment:
         return "info"
     if obj.genre in (obj.GENRE.ai_message, obj.GENRE.ai_message_staff):
         return "success"
-    return "primary" if obj.created_by_is_staff else "secondary"
+    return "primary" if obj.created_by_is_staff else "default"
 
 
 @register.filter

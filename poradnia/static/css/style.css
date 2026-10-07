@@ -24025,10 +24025,10 @@ body.show-sidebar .sidebar {
   }
 }
 
-.timeline-comment.border-secondary {
+.timeline-comment.border-default {
   position: relative;
 }
-.timeline-comment.border-secondary:before, .timeline-comment.border-secondary:after {
+.timeline-comment.border-default:before, .timeline-comment.border-default:after {
   content: "";
   position: absolute;
   display: block;
@@ -24036,11 +24036,11 @@ body.show-sidebar .sidebar {
   border-left-width: 0px;
   top: 12px;
 }
-.timeline-comment.border-secondary:after {
+.timeline-comment.border-default:after {
   border-right-color: #f5f5f5;
   left: -7px;
 }
-.timeline-comment.border-secondary:before {
+.timeline-comment.border-default:before {
   border-right-color: #ddd;
   left: -8px;
 }
@@ -24413,6 +24413,45 @@ table.month li.deadline {
 
 .text-center .pagination {
   display: inline-flex;
+}
+
+.text-bg-default {
+  color: #333 !important;
+  background-color: #f5f5f5 !important;
+}
+
+.border-default {
+  border-color: #ddd !important;
+}
+
+.border-success {
+  border-color: #d6e9c6 !important;
+}
+
+.card-header.text-bg-success {
+  color: #3c763d !important;
+  background-color: #dff0d8 !important;
+}
+
+.border-info {
+  border-color: #bce8f1 !important;
+}
+
+.card-header.text-bg-info {
+  color: #31708f !important;
+  background-color: #d9edf7 !important;
+}
+
+.card-title {
+  font-size: 16px;
+  color: inherit;
+}
+.card-title > a,
+.card-title > small,
+.card-title > .small,
+.card-title > small > a,
+.card-title > .small > a {
+  color: inherit;
 }
 
 .h1.success {

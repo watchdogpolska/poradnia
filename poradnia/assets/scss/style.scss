@@ -135,6 +135,101 @@
 	display: inline-flex;
 }
 
+// Same category of issue as .btn-default: the Milestone 3 panel->card
+// migration's `letter2panel()` (poradnia/letters/templatetags/
+// letter_tags.py) used to return "panel-default" for non-staff letters,
+// matching BS3's actual class name for that look (white card header,
+// #333 text, #ddd border) - rewritten to bare "secondary" as part of the
+// same mechanical renaming the button fix ran into, even though BS5's
+// real `.text-bg-secondary`/`.border-secondary` render solid gray with
+// white text, not this app's white/light-grey "default" look. Renamed
+// back to "default" in letter_tags.py (not a real BS5 class, same as
+// .btn-default) rather than overriding the real `.text-bg-secondary`/
+// `.border-secondary` utilities, for the same forward-compatibility
+// reason: letter2panel is the only thing that emits `border-{{ }}`/
+// `text-bg-{{ }}` on a card at all, so nothing currently depends on real
+// BS5 secondary styling here, but something might in the future.
+// _timeline.scss's `.timeline-comment.border-default` (the speech-bubble
+// triangle) already used these same colors under the old "secondary"
+// selector name - found via a user report that letter cards for
+// non-staff messages had lost their background/border/text color
+// entirely.
+.text-bg-default{
+	color: $text-color !important; // #333
+	background-color: $panel-default-heading-bg !important; // #f5f5f5
+}
+.border-default{
+	border-color: $panel-default-border !important; // #ddd
+}
+
+// `letter2panel()` also returns "success" for AI-message letters (BS3:
+// "panel-success"), and BS3 genuinely had two independent success colors
+// depending on which component used them: $state-success-bg/-text (a
+// pastel green, #dff0d8/#3c763d - feeding only .alert-success/.panel-
+// success) vs $brand-success (feeding .btn-success/.label-success/badges
+// - deliberately gray in this app, see $success above). BS5 collapsed
+// both into the one shared $success, so `.text-bg-success`/`.border-
+// success` (generic utilities, not scoped to a single component the way
+// .alert-success's own --bs-alert-* custom properties are) now render
+// this app's gray everywhere, including letter cards that want the
+// pastel green - found via a user report that some letter types still
+// didn't match their pre-migration background.
+// `.border-success` is safe to restore globally: nothing in the app uses
+// that literal class except via letter2panel. `.text-bg-success` is NOT
+// - .badge/.text-bg-success elsewhere (case_detail.html, _project_badge.
+// html, _simple_list.html) are genuinely gray-success badges that
+// should stay as they are, matching .btn-success. Scoped to `.card-
+// header.text-bg-success` specifically, since that combination only
+// ever occurs on a letter2panel-driven card.
+.border-success{
+	border-color: $panel-success-border !important; // #d6e9c6
+}
+.card-header.text-bg-success{
+	color: #3c763d !important;
+	background-color: $panel-success-heading-bg !important; // #dff0d8
+}
+
+// letter2panel()'s "info" (comment genre) isn't a gray-conflict bug like
+// success was - $info was never customized away from BS5's stock cyan -
+// but it's still not this app's original BS3 color, restored here to
+// match .alert-info (#d9edf7/#31708f/#bce8f1) at the user's request.
+// Same badge-collision reasoning as .text-bg-success above: `.border-
+// info` is safe globally (only letter2panel emits it), `.text-bg-info`
+// is scoped to `.card-header` since bare `.badge.text-bg-info` elsewhere
+// (case_filter.html, _simple_list.html) should keep BS5's cyan.
+.border-info{
+	border-color: $panel-info-border !important; // #bce8f1
+}
+.card-header.text-bg-info{
+	color: #31708f !important;
+	background-color: $panel-info-heading-bg !important; // #d9edf7
+}
+
+// BS3's `.panel-title` set a modest, fixed font-size AND specifically
+// reset any nested link's color to inherit (`.panel-title > a { color:
+// inherit; } .panel-title > small, ...`), so a clickable title (e.g.
+// every letter card's header, see letter2panel above) showed the
+// heading's own contextual color - white on a colored panel, #333 on
+// panel-default - not the theme's link color at a bare heading's size.
+// BS5's `.card-title` only sets margin-bottom and an (empty-by-default)
+// --bs-card-title-color, so a raw <a> inside it falls through to its own
+// normal link-color rule ($link-color: $primary here, i.e. red) instead
+// of inheriting, and with no font-size override at all a bare <h2>
+// renders at roughly 2x BS3's size - found via a user report that letter
+// titles were red instead of black and about twice as large as before.
+.card-title {
+	font-size: 16px; // BS3's ceil($font-size-base * 1.125) at 14px base
+	color: inherit;
+
+	> a,
+	> small,
+	> .small,
+	> small > a,
+	> .small > a {
+		color: inherit;
+	}
+}
+
 .h1.success{
     background-color: #DFF0D8;
 }

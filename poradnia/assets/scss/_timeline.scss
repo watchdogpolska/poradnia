@@ -68,7 +68,7 @@ $timeline-line-padding: 4px;
 		left: #{ -$timeline-triangle-size };
 	}	
 }
-.timeline-comment.border-secondary {
+.timeline-comment.border-default {
 	@include timeline-comment-variant($panel-default-border, $panel-default-heading-bg);
 }
 .timeline-comment.border-primary {
