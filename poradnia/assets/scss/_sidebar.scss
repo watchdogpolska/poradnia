@@ -123,7 +123,7 @@ $block-list-inidicator-color: $block-list-link-color !default;
 	// 		transform: rotateZ(-45deg)
 	// 	}
 	// }
-	.navbar-toggle:focus &, .navbar-toggle:hover &,{
+	.navbar-toggler:focus &, .navbar-toggler:hover &,{
 		background-color: $brand-primary;
 		&:before, &:after{
 			background-color: $brand-primary;

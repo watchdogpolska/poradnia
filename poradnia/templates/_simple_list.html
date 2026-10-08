@@ -1,13 +1,13 @@
-<p><span class="label label-primary">{{ title }}</span>
+<p><span class="badge text-bg-primary">{{ title }}</span>
     {% if object_list %}
         {% for object in object_list %}
             {% if object.get_absolute_url %}
-                <a href="{{ object.get_absolute_url }}" class="label label-success">{{ object }}</a>
+                <a href="{{ object.get_absolute_url }}" class="badge text-bg-success">{{ object }}</a>
             {% else %}
-                <span class="label label-info">{{ object }}</span>
+                <span class="badge text-bg-info">{{ object }}</span>
             {% endif %}
         {% endfor %}
     {% else %}
-        <span class="label label-warning">No {{ title }} for object</span>
+        <span class="badge text-bg-warning">No {{ title }} for object</span>
     {% endif %}
 </p>

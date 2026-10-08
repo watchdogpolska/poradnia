@@ -32,13 +32,13 @@
     </div>
 </div>
 
-<div id="tableWrapper">
+<div id="tableWrapper" class="row">
     <!-- TODO add colvis button and functionality -->
     <!-- TODO fix column invisible column sorting buttons -->
     <div class="col-sm-1 filters">
         <br><br><br><br>
         <h4>{% trans 'Filters' %}:</h4><br>
-        <div class="row">
+        <div>
             <label>{% trans 'Helped? (col. H?)' %}:</label><br>
             <input type="checkbox" id="helped_yes" name="check_helped_yes" checked>
             <label for="helped_yes" class="small">{% trans 'Yes' %} &nbsp;
@@ -54,7 +54,7 @@
             </label><br>
             <br><br>
         </div>
-        <div class="row">
+        <div>
             <label>{% trans 'Visible (col. V.)' %}:</label><br>
             <input type="checkbox" id="visible_yes" name="check_visible_yes" checked>
             <label for="visible_yes" class="small">{% trans 'Yes' %}  &nbsp;
@@ -66,7 +66,7 @@
             </label><br>
             <br><br>
         </div>
-        <div class="row">
+        <div>
             <label>{% trans 'Interesting case' %}:</label><br>
             <input type="checkbox" id="interesting_case_yes" name="check_interesting_case_yes" checked>
             <label for="interesting_case_yes" class="small">{% trans 'Yes' %} &nbsp;
@@ -78,7 +78,7 @@
             </label><br>
             <br><br>
         </div>
-        <div class="row">
+        <div>
             <label>{% trans 'For knowledge base' %}:</label><br>
             <input type="checkbox" id="for_knowledge_base_yes" name="check_for_knowledge_base_yes" checked>
             <label for="for_knowledge_base_yes" class="small">{% trans 'Yes' %} &nbsp;
@@ -90,7 +90,7 @@
             </label><br>
             <br><br>
         </div>
-        <div class="row">
+        <div>
             <label>{% trans 'Has AI tag suggestion' %}:</label><br>
             <input type="checkbox" id="has_ai_tag_suggestion_yes" name="check_has_ai_tag_suggestion_yes" checked>
             <label for="has_ai_tag_suggestion_yes" class="small">{% trans 'Yes' %} &nbsp;
@@ -102,7 +102,7 @@
             </label><br>
             <br><br>
         </div>
-        <div class="row">
+        <div>
             <label>{% trans 'AI tag suggestions to review' %}:</label><br>
             <input type="checkbox" id="has_ai_tag_suggestion_to_review_yes" name="check_has_ai_tag_suggestion_to_review_yes" checked>
             <label for="has_ai_tag_suggestion_to_review_yes" class="small">{% trans 'Yes' %} &nbsp;
@@ -115,7 +115,7 @@
             <br><br>
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="col-sm-11 table-responsive">
         <table id="datatable_advices" width="100%" class="table table-bordered compact">
             <!-- table-striped  nowrap-->
         </table>

@@ -23,13 +23,13 @@
     </div>
 </div>
 
-<div id="tableWrapper">
+<div id="tableWrapper" class="row">
     <!-- TODO add colvis button and functionality -->
     <div class="col-sm-1 filters">
         <br><br><br><br>
         <h4>{% trans 'Filters' %}:</h4><br>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title='{% trans 'Cases have status changed by staff.' %}'>
             </i>
             <label>{% trans 'Status (col. "S")' %}:</label><br>
@@ -42,8 +42,8 @@
             {% endfor %}
             <br><br>
         </div>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have selected user in involved staff.' %}">
             </i>
             <label>{% trans 'Involved staff' %}:</label><br>
@@ -53,8 +53,8 @@
                 {% endfor %}
             </select><br><br><br>
         </div>        
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that do have letter with status done (case subject not in bold).' %}">
             </i>
             <label>{% trans 'Replied' %}:</label><br>
@@ -64,8 +64,8 @@
             <label for="handled_no" class="small">{% trans 'No' %}</label><br>
             <br><br>
         </div>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have tag.' %}">
             </i>
             <label>{% trans 'Has tag' %}:</label><br>
@@ -75,8 +75,8 @@
             <label for="has_tag_no" class="small">{% trans 'No' %}</label><br>
             <br><br>
         </div>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have event with deadline.' %}">
             </i>
             <label>{% trans 'Has deadline' %}:</label><br>
@@ -86,8 +86,8 @@
             <label for="has_deadline_no" class="small">{% trans 'No' %}</label><br>
             <br><br>
         </div>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have an AI-generated article suggestion letter.' %}">
             </i>
             <label>{% trans 'Has AI articles' %}:</label><br>
@@ -97,8 +97,8 @@
             <label for="has_ai_articles_no" class="small">{% trans 'No' %}</label><br>
             <br><br>
         </div>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases with an AI-generated article letter not yet accepted or rejected by staff.' %}">
             </i>
             <label>{% trans 'AI articles to review' %}:</label><br>
@@ -108,8 +108,8 @@
             <label for="has_ai_articles_to_review_no" class="small">{% trans 'No' %}</label><br>
             <br><br>
         </div>
-        <div class="row">
-            <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases whose tag has an AI-generated tag suggestion.' %}">
             </i>
             <label>{% trans 'Has AI tag suggestion' %}:</label><br>
@@ -120,7 +120,7 @@
             <br><br>
         </div>
     </div>
-    <div class="table-responsive">
+    <div class="col-sm-11 table-responsive">
         <table id="datatable_cases" width="100%" class="table table-bordered compact">
             <!-- table-striped  nowrap-->
         </table>
