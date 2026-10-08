@@ -24470,6 +24470,50 @@ table.month li.deadline {
   margin-bottom: 20px;
 }
 
+.pager {
+  padding-left: 0;
+  margin: 20px 0;
+  list-style: none;
+  text-align: center;
+}
+.pager::before, .pager::after {
+  content: " ";
+  display: table;
+}
+.pager::after {
+  clear: both;
+}
+.pager li {
+  display: inline;
+}
+.pager li > a,
+.pager li > span {
+  display: inline-block;
+  padding: 5px 14px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  border-radius: 15px;
+}
+.pager li > a:hover,
+.pager li > a:focus {
+  text-decoration: none;
+  background-color: #eee;
+}
+.pager .next > a,
+.pager .next > span {
+  float: right;
+}
+.pager .previous > a,
+.pager .previous > span {
+  float: left;
+}
+.pager .disabled > a,
+.pager .disabled > span {
+  color: #777;
+  background-color: #fff;
+  cursor: not-allowed;
+}
+
 .card-title {
   font-size: 16px;
   color: inherit;

@@ -265,6 +265,72 @@
 	margin-bottom: $line-height-computed; // 20px, BS3's $panel-margin-bottom
 }
 
+// BS3's `.pager` (a simple previous/next link row, distinct from
+// `.pagination`) was dropped entirely in BS4+ with no replacement - unlike
+// `.panel`/`.well`/`.page-header`, the original migration's component
+// audit never touched it, so `.pager` has had zero CSS at all since the
+// migration landed, for every one of its three usages in the app
+// (cases/_case_pager.html, events/calendar.html, notifications_custom/
+// templates/notifications/list.html) - found via a user report on the
+// case-detail prev/next-letter pager. Restored as bootstrap-sass 3.4.3's
+// actual stock `.pager` (this app never customized $pager-*/$pagination-*
+// away from their defaults): a centered row of pill-shaped, bordered
+// links, `.previous` floated left and `.next` floated right (used by
+// _case_pager.html; the other two usages have no .previous/.next on
+// their <li>s, so those just render as plain centered pills - correct,
+// since they don't need opposite-edge positioning).
+.pager {
+	padding-left: 0;
+	margin: $line-height-computed 0;
+	list-style: none;
+	text-align: center;
+
+	&::before,
+	&::after {
+		content: " ";
+		display: table;
+	}
+	&::after {
+		clear: both;
+	}
+
+	li {
+		display: inline;
+
+		> a,
+		> span {
+			display: inline-block;
+			padding: 5px 14px;
+			background-color: #fff;
+			border: 1px solid #ddd;
+			border-radius: 15px;
+		}
+
+		> a:hover,
+		> a:focus {
+			text-decoration: none;
+			background-color: $gray-lighter; // #eee
+		}
+	}
+
+	.next > a,
+	.next > span {
+		float: right;
+	}
+
+	.previous > a,
+	.previous > span {
+		float: left;
+	}
+
+	.disabled > a,
+	.disabled > span {
+		color: $gray-light; // #777
+		background-color: #fff;
+		cursor: not-allowed;
+	}
+}
+
 // BS3's `.panel-title` set a modest, fixed font-size AND specifically
 // reset any nested link's color to inherit (`.panel-title > a { color:
 // inherit; } .panel-title > small, ...`), so a clickable title (e.g.
