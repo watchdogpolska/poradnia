@@ -195,14 +195,40 @@
 // match .alert-info (#d9edf7/#31708f/#bce8f1) at the user's request.
 // Same badge-collision reasoning as .text-bg-success above: `.border-
 // info` is safe globally (only letter2panel emits it), `.text-bg-info`
-// is scoped to `.card-header` since bare `.badge.text-bg-info` elsewhere
-// (case_filter.html, _simple_list.html) should keep BS5's cyan.
+// is scoped to `.card-header` since `.badge.text-bg-info` elsewhere
+// (case_filter.html, _simple_list.html, cases/models.py) needs its own,
+// different historical color - see below.
 .border-info{
 	border-color: $panel-info-border !important; // #bce8f1
 }
 .card-header.text-bg-info{
 	color: #31708f !important;
 	background-color: $panel-info-heading-bg !important; // #d9edf7
+}
+
+// The Milestone 3 `label -> badge text-bg-*` rename (BS4+ merged BS3's
+// two separate components into one) carried over the class names but
+// not BS3's actual `.label-*` colors: every BS3 label used solid
+// $brand-info/$brand-warning backgrounds with uniform WHITE text, while
+// BS5's `.badge`/`.text-bg-*` picks black-on-info/black-on-warning
+// instead (its own WCAG-driven contrast choice) on top of BS5's stock
+// (never customized in this app) info/warning hues rather than BS3's
+// actual #5bc0de/#f0ad4e - found via a user report that badges didn't
+// match BS3. `.badge.text-bg-success`/`.badge.text-bg-primary` were
+// already correct without any override (this app's $success/$primary
+// already equal BS3's $brand-success/$brand-primary, and both already
+// render white text), and no `.badge.text-bg-danger` exists anywhere in
+// the app, so neither needed touching. Scoped to `.badge.text-bg-*`
+// specifically (not the bare utility) since `.text-bg-info` is also
+// used, correctly, on letter2panel-driven card headers above with a
+// different (pastel) historical color.
+.badge.text-bg-info{
+	color: #fff !important;
+	background-color: #5bc0de !important; // BS3's stock $brand-info
+}
+.badge.text-bg-warning{
+	color: #fff !important;
+	background-color: #f0ad4e !important; // BS3's stock $brand-warning
 }
 
 // BS3's `.panel-title` set a modest, fixed font-size AND specifically

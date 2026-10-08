@@ -1,8 +1,8 @@
 {% load guardian_tags crispy_forms_tags humanize users_tags i18n %}
 <div class="timeline-messange">
     <a href="#"><img src="{% get_avatar_url object.created_by %}" class="timeline-avatar"></a>
-    <div class="card border-{{ object.created_by.is_staff|yesno:'secondary,primary' }} timeline-comment" id="courtcase-{{object.pk}}">
-        <div class="card-header text-bg-{{ object.created_by.is_staff|yesno:'secondary,primary' }}">
+    <div class="card border-{{ object.created_by.is_staff|yesno:'default,primary' }} timeline-comment" id="courtcase-{{object.pk}}">
+        <div class="card-header text-bg-{{ object.created_by.is_staff|yesno:'default,primary' }}">
             <h2 class="card-title">
                 <a href="#courtcase-{{object.pk}}">
                     <i class="fas fa-gavel"></i> {{ object }}

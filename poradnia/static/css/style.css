@@ -24451,6 +24451,16 @@ table.month li.deadline {
   background-color: #d9edf7 !important;
 }
 
+.badge.text-bg-info {
+  color: #fff !important;
+  background-color: #5bc0de !important;
+}
+
+.badge.text-bg-warning {
+  color: #fff !important;
+  background-color: #f0ad4e !important;
+}
+
 .card-title {
   font-size: 16px;
   color: inherit;
