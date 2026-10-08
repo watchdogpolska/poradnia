@@ -2,10 +2,10 @@
 {% load i18n %}
 {% block breadcrumbs %}
     <ol class="breadcrumb">
-        <li><a href="{% url 'users:list' %}">{% trans 'Users' %}</a></li>
-        <li><a href="{% url 'users:detail' username=user.username %}">{{ user }}</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'users:list' %}">{% trans 'Users' %}</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'users:detail' username=user.username %}">{{ user }}</a></li>
         {% if user.is_superuser %}
-            <li><a href="{% url 'keys:list' %}">{% trans 'Keys' %}</a></li>
+            <li class="breadcrumb-item"><a href="{% url 'keys:list' %}">{% trans 'Keys' %}</a></li>
         {% endif %}
         {% block breadcrumbs_rows %}{% endblock %}
     </ol>

@@ -74,7 +74,7 @@
         document.getElementById("dashboard-export-year-cases-value").textContent = casesYear;
         document.getElementById("dashboard-export-year-tags-value").textContent = tagsYear;
 
-        window.jQuery(document.getElementById("dashboard-export-year-modal")).modal("show");
+        window.bootstrap.Modal.getOrCreateInstance(document.getElementById("dashboard-export-year-modal")).show();
     }
 
     document.addEventListener("click", function (event) {
@@ -97,7 +97,7 @@
             var checked = document.querySelector(
                 'input[name="dashboard-export-year-choice"]:checked'
             );
-            window.jQuery(document.getElementById("dashboard-export-year-modal")).modal("hide");
+            window.bootstrap.Modal.getOrCreateInstance(document.getElementById("dashboard-export-year-modal")).hide();
             if (checked) {
                 startExport(pendingExportUrl, checked.value);
             }

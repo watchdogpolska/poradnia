@@ -26,6 +26,17 @@
     #drop-zone {
         background-color: #f5f5f5;
     }
+
+    /* BS5's own .table CSS paints every cell's own opaque background-color
+       (default: white) on top of whatever sits behind the table - BS3 left
+       cells transparent, so #drop-zone's light-grey background above showed
+       straight through the "Wybrane pliki:" header. table-striped's own
+       accent color is a separate box-shadow layer, unaffected by this, so
+       striping on populated rows still works once files are added. Found
+       via a user report that the header had gone white instead of grey. */
+    #selected-files > :not(caption) > * > * {
+        background-color: transparent;
+    }
 </style>
 <div class="row" id="drop-zone">
     <div class="col-lg-4 sticky_right">
@@ -39,7 +50,7 @@
             <thead id="files-table-head">
                 <tr>
                     <th style="font-size: 14px;">
-                        <i class="fa-regular fa-circle-question" data-toggle="tooltip" data-placement="bottom"
+                        <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                             title="{% trans 'Select multiple files with ctr or shift.' %}">
                         </i>
                         {% trans 'Selected files:' %}

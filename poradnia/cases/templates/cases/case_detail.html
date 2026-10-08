@@ -5,13 +5,13 @@
     {{ block.super }}
     {{ casegroup_form.media.js }}
     <script type="text/javascript">
-        ;(function($) {
-            $('#form-tab a').click(function (e) {
-                e.preventDefault()
-                $(this).tab('show')
-            });
-            $('#form-tab a:first').tab('show')
-        })(jQuery);
+        // #form-tab links already use data-bs-toggle="tab", which handles
+        // click-to-switch on its own - only the initial tab (none is
+        // active on page load) still needs an explicit show().
+        var firstFormTab = document.querySelector('#form-tab a');
+        if (firstFormTab) {
+            bootstrap.Tab.getOrCreateInstance(firstFormTab).show();
+        }
 
         function validateAiSearchRejectReason(pk) {
             var textarea = document.getElementById('aiSearchRejectReason-' + pk);
@@ -30,11 +30,12 @@
                 // The htmx swap that follows replaces #ai-feedback-{pk} (the
                 // modal's own parent) with the rejected state, which no
                 // longer renders the modal at all - if we waited until after
-                // that swap to call .modal('hide'), Bootstrap would have no
+                // that swap to call .hide(), Bootstrap would have no
                 // element left to run its hide transition on, and the
                 // backdrop it already added to <body> would never be
                 // removed, leaving the page stuck behind a dark overlay.
-                $('#aiSearchRejectModal-' + pk).modal('hide');
+                var modalEl = document.getElementById('aiSearchRejectModal-' + pk);
+                bootstrap.Modal.getOrCreateInstance(modalEl).hide();
             }
             return ok;
         }
@@ -104,7 +105,7 @@
     }
         </style>
     <div class="row">
-        <div class="col-xs-12">
+        <div class="col-12">
             <div class="case-header">
                 <div class="case-header-actions">
                     {% if 'change_case' in case_perms %}
@@ -125,8 +126,8 @@
                     {% endif %}
                     {% if 'change_case' in case_perms and request.user.is_staff %}
                         <div>
-                            <button type="button" class="btn btn-default dropdown-toggle js-ai-dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-robot"></i> {% trans 'AI Assistant' %} <span class="caret"></span>
+                            <button type="button" class="btn btn-default dropdown-toggle js-ai-dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-robot"></i> {% trans 'AI Assistant' %}
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
@@ -161,11 +162,11 @@
                     <span class="case-header-number">#{{ object.pk }}</span></h1>
                 <div class="case-header-meta">
                     {% if object.status_changed %}
-                        <span class="label label-success"
+                        <span class="badge text-bg-success"
                               title="Ostatnia zmiana stanu: {{ object.status_changed }} dni temu"> <i
                                 class="{{ object.status|status2css }}"></i> {{ object.status_display }}</span>
                     {% else %}
-                        <span class="label label-success" title="Ostatnia zmiana 7 dni temu"> <i
+                        <span class="badge text-bg-success" title="Ostatnia zmiana 7 dni temu"> <i
                                 class="far fa-folder-open"></i> {{ object.status }}</span>
                     {% endif %}
                     {% if request.user.is_staff and object.has_project %}
@@ -183,8 +184,8 @@
         <div class="col-lg-6" style="height: 1000px; overflow-y: auto;">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="panel panel-default">
-                        <div class="panel-heading"><i class="far fa-newspaper"></i> {% trans 'Workflow' %}</div>
+                    <div class="card">
+                        <div class="card-header"><i class="far fa-newspaper"></i> {% trans 'Workflow' %}</div>
                         <table class="table">
                             <tr>
                                 <td><i class="fas fa-user"></i> {% trans 'Involved in' %}</td>
@@ -210,8 +211,8 @@
                         </table>
                     </div>
                     {% if request.user.is_staff %}
-                        <div class="panel panel-default">
-                            <div class="panel-heading"><i class="fas fa-phone"></i> {% trans 'Metrical data' %}</div>
+                        <div class="card">
+                            <div class="card-header"><i class="fas fa-phone"></i> {% trans 'Metrical data' %}</div>
                             <table class="table">
                                 <tr>
                                     <td><i class="fas fa-chart-area"></i> {% trans 'Advice tags' %}</td>
@@ -232,13 +233,13 @@
                 {% if request.user.is_staff %}
                     <div class=" col-md-6">
                         {% if 'can_assign' in case_perms %}
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
+                            <div class="card">
+                                <div class="card-header">
                                     <i class="fas fa-users"></i> {% trans 'Assign permissions' %}
-                                    <a class="btn btn-default btn-xs pull-right"
+                                    <a class="btn btn-default btn-sm float-end"
                                     href="{% url 'cases:permission_add' pk=object.pk %}">{% trans "..." %}</a>
                                 </div>
-                                <div class="panel-body">
+                                <div class="card-body">
                                     {% crispy casegroup_form %}
                                     <details class="permissions_help">
                                         <summary>
@@ -260,7 +261,7 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <span class="label label-warning">{% trans 'No records' %}</span>
+                <span class="badge text-bg-warning">{% trans 'No records' %}</span>
             {% endif %}        
         
         </div>
@@ -271,10 +272,10 @@
 
                     <ul class="nav nav-tabs" role="tablist" id="form-tab">
                         {% for label, row in forms.items %}
-                            <li role="presentation" 
-                                {% if forloop.last %} class="active"{% endif %}>
+                            <li role="presentation">
                                 <a href="#{{ label }}" aria-controls="{{ label }}"
-                                    role="tab" data-toggle="tab">{{ row.title }}</a>
+                                    class="nav-link{% if forloop.first %} active{% endif %}"
+                                    role="tab" data-bs-toggle="tab">{{ row.title }}</a>
                             </li>
                         {% endfor %}
                     </ul>

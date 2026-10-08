@@ -5,7 +5,50 @@ $case-header-padding-vertical: 1em;
 	margin-bottom: 1em;
 	&-actions{
 		@extend .btn-group;
-		@media(min-width: $screen-md-min) {		
+
+		// BS5's `@extend .btn-group` makes this `display: inline-flex`
+		// with no wrapping, and its buttons `flex: 1 1 auto` (grown to
+		// fill the row equally) - neither matches what this component
+		// needs. The AI-assistant dropdown toggle is wrapped in an extra
+		// <div> (case_detail.html, needed for Bootstrap's dropdown
+		// positioning context) that should sit on its own line below the
+		// plain <a class="btn"> actions, flush with their left edge, and
+		// the whole block should shrink-wrap tightly to its actual
+		// content so it doesn't eat into the h1 title's wrapping width
+		// (both found via user reports).
+		//
+		// A flex-wrap: wrap + flex-basis: 100% version of this (an
+		// earlier attempt) got the stacking right but not the width: per
+		// the flex spec, a *wrapping* flex container's shrink-to-fit
+		// width is the SUM of every item's width as if they were all on
+		// one line, completely ignoring that they're about to wrap - so
+		// the container ended up ~130px wider than the actual button row
+		// needed, pushing the whole right-floated block further left and
+		// stealing that space from the title. `width: fit-content`
+		// doesn't help either, since fit-content's max-content
+		// calculation has that exact same "ignore the wrap" rule built
+		// into the flexbox spec itself.
+		//
+		// Switching to BS3's own original .btn-group technique sidesteps
+		// all of this: `display: block` + `float: left` on each direct
+		// .btn (not flex items at all - BS5's inherited `flex: 1 1 auto`
+		// becomes a no-op once the parent isn't flex), with the AI-
+		// assistant <div> `clear: both` to drop below them. A block
+		// element shrink-wrapped around floated children sizes itself
+		// from the floats' actual laid-out positions, which correctly
+		// accounts for the wrap - unlike flex's intrinsic-size
+		// calculation, which doesn't.
+		display: block;
+
+		> .btn {
+			float: left;
+		}
+
+		> div {
+			clear: both;
+		}
+
+		@media(min-width: $screen-md-min) {
 			float: right;
 			margin: 20px;
 		}

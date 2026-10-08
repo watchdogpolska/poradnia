@@ -2,14 +2,14 @@
 {% load i18n humanize users_tags %}
 {% block title %}{{ object }} - {{ block.super }}{% endblock %}
 {% block breadcrumbs_rows %}
-    <li class="active">{{ object }}</a>
+    <li class="breadcrumb-item active">{{ object }}</a>
 {% endblock %}
 
 {% block content %}
     <div class="row">
-        <div class="col-xs-12">
-            <h1 class="pull-left">{{ object }}</h1>
-            <div class="btn-group pull-right">
+        <div class="col-12">
+            <h1 class="float-start">{{ object }}</h1>
+            <div class="btn-group float-end">
                 <a href="{% url 'advicer:update' pk=object.pk %}" class="btn btn-primary">
                     <i class="fas fa-pencil"></i> {% trans 'Edit' %}
                 </a>
@@ -22,8 +22,8 @@
 
     <div class="row">
         <div class="col-lg-8">
-            <div class="panel panel-default">
-                <div class="panel-heading" style="display:flex;align-items:center;justify-content:space-between;">
+            <div class="card">
+                <div class="card-header" style="display:flex;align-items:center;justify-content:space-between;">
                     <span>{% trans 'Statistic data' %}</span>
                     {% if object.case %}
                     <form method="post" action="{% url 'cases:request_ai_tags' pk=object.case.pk %}">
@@ -38,8 +38,8 @@
             </div>
         </div>
         <div class="col-lg-4">
-            <div class="panel panel-default">
-                <div class="panel-heading">{% trans 'Details' %}</div>
+            <div class="card">
+                <div class="card-header">{% trans 'Details' %}</div>
                 <table class="table">
                     <tr>
                         <td>{% trans 'Grant on' %}</td>
@@ -82,22 +82,20 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="{% trans 'Close' %}">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                     <h4 class="modal-title" id="aiRejectModalLabel">{% trans 'Reject AI suggestion' %}</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
                 </div>
                 <div class="modal-body">
                     <div class="form-group">
                         <label for="aiRejectReason">{% trans 'Reason for rejection' %}</label>
                         <textarea id="aiRejectReason" class="form-control" rows="4" required></textarea>
-                        <p class="help-block text-danger" id="aiRejectReasonError" style="display:none;">
+                        <p class="form-text text-danger" id="aiRejectReasonError" style="display:none;">
                             {% trans 'Please provide a reason.' %}
                         </p>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">{% trans 'Cancel' %}</button>
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">{% trans 'Cancel' %}</button>
                     <button type="button" class="btn btn-danger" id="aiRejectSubmit"
                         hx-post="{% url 'advicer:ai_tags_reject' pk=object.pk %}"
                         hx-target="#advice-ai-table-wrap"
@@ -134,7 +132,7 @@
     }
 
     document.addEventListener('click', function (event) {
-        if (event.target.closest('[data-target="#aiRejectModal"]')) {
+        if (event.target.closest('[data-bs-target="#aiRejectModal"]')) {
             document.getElementById('aiRejectReason').value = '';
             document.getElementById('aiRejectReasonError').style.display = 'none';
         }
@@ -142,7 +140,7 @@
 
     document.body.addEventListener('htmx:afterSwap', function (event) {
         if (event.target.id === 'advice-ai-table-wrap') {
-            const dismissButton = document.querySelector('#aiRejectModal [data-dismiss="modal"]');
+            const dismissButton = document.querySelector('#aiRejectModal [data-bs-dismiss="modal"]');
             if (dismissButton) {
                 dismissButton.click();
             }
