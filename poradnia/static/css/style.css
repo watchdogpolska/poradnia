@@ -23952,6 +23952,15 @@ body.show-sidebar .sidebar {
   padding-bottom: 1em;
   margin-bottom: 1em;
 }
+.case-header-actions {
+  display: block;
+}
+.case-header-actions > .btn {
+  float: left;
+}
+.case-header-actions > div {
+  clear: both;
+}
 @media (min-width: 992px) {
   .case-header-actions {
     float: right;
