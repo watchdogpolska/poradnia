@@ -13,27 +13,27 @@
     </div>
 
     <ul class="nav nav-tabs" role="tablist" id="dashboard-tabs">
-        <li role="presentation" class="active">
-            <a href="#dashboard-tab-summary" aria-controls="dashboard-tab-summary" role="tab" data-toggle="tab">
+        <li role="presentation">
+            <a href="#dashboard-tab-summary" aria-controls="dashboard-tab-summary" class="nav-link active" role="tab" data-bs-toggle="tab">
                 {% trans 'Summary' %}
             </a>
         </li>
         <li role="presentation">
-            <a href="#dashboard-tab-cases" aria-controls="dashboard-tab-cases" role="tab" data-toggle="tab"
+            <a href="#dashboard-tab-cases" aria-controls="dashboard-tab-cases" class="nav-link" role="tab" data-bs-toggle="tab"
                hx-get="{% url 'dashboard:cases_tab' %}" hx-target="#cases-tables"
                hx-trigger="click once" hx-swap="innerHTML">
                 {% trans 'Cases' %}
             </a>
         </li>
         <li role="presentation">
-            <a href="#dashboard-tab-advices" aria-controls="dashboard-tab-advices" role="tab" data-toggle="tab"
+            <a href="#dashboard-tab-advices" aria-controls="dashboard-tab-advices" class="nav-link" role="tab" data-bs-toggle="tab"
                hx-get="{% url 'dashboard:advices_tab' %}" hx-target="#advices-tables"
                hx-trigger="click once" hx-swap="innerHTML">
                 {% trans 'Tags' %}
             </a>
         </li>
         <li role="presentation">
-            <a href="#dashboard-tab-judgements" aria-controls="dashboard-tab-judgements" role="tab" data-toggle="tab"
+            <a href="#dashboard-tab-judgements" aria-controls="dashboard-tab-judgements" class="nav-link" role="tab" data-bs-toggle="tab"
                hx-get="{% url 'dashboard:judgements_tab' %}" hx-target="#judgements-tables"
                hx-trigger="click once" hx-swap="innerHTML">
                 {% trans 'Courts' %}
@@ -66,34 +66,32 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
                     <h4 class="modal-title" id="dashboard-export-year-modal-label">
                         {% trans 'Choose a year for the export' %}
                     </h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     <p>
                         {% trans 'The "Cases" and "Tags" tabs currently have different years selected. Choose which year to use for the whole Excel export:' %}
                     </p>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="dashboard-export-year-choice"
-                                   id="dashboard-export-year-cases" checked>
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="dashboard-export-year-choice"
+                               id="dashboard-export-year-cases" checked>
+                        <label class="form-check-label" for="dashboard-export-year-cases">
                             {% trans 'Cases tab year:' %} <strong id="dashboard-export-year-cases-value"></strong>
                         </label>
                     </div>
-                    <div class="radio">
-                        <label>
-                            <input type="radio" name="dashboard-export-year-choice"
-                                   id="dashboard-export-year-tags">
+                    <div class="form-check">
+                        <input type="radio" class="form-check-input" name="dashboard-export-year-choice"
+                               id="dashboard-export-year-tags">
+                        <label class="form-check-label" for="dashboard-export-year-tags">
                             {% trans 'Tags tab year:' %} <strong id="dashboard-export-year-tags-value"></strong>
                         </label>
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">
+                    <button type="button" class="btn btn-default" data-bs-dismiss="modal">
                         {% trans 'Cancel' %}
                     </button>
                     <button type="button" class="btn btn-primary" id="dashboard-export-year-confirm">

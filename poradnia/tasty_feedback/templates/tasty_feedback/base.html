@@ -2,7 +2,7 @@
 {% load i18n %}
 {% block breadcrumbs %}
     <ol class="breadcrumb">
-        <li><a href="{% url 'tasty_feedback:list' %}">{% trans 'Feedback index' %}</a></li>
+        <li class="breadcrumb-item"><a href="{% url 'tasty_feedback:list' %}">{% trans 'Feedback index' %}</a></li>
         {% block breadcrumbs_rows %}{% endblock %}
     </ol>
 {% endblock %}

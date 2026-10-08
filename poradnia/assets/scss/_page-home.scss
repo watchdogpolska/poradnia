@@ -1,9 +1,23 @@
 @use "sass:color";
 
 .freatures{
-	@include make-row;
+	// Was @include make-row; / @include make-md-column(4, 40px); — BS3's
+	// breakpoint-infixed column mixins (make-md-column) have no BS5
+	// equivalent (BS5's make-col() dropped per-call gutter overrides and
+	// breakpoint infixes), so this reproduces their expanded output directly:
+	// a 30px-gutter row containing a 4-of-12 column with its own 40px gutter.
+	margin-left: -15px;
+	margin-right: -15px;
+	@include clearfix;
 	&__freature{
-		@include make-md-column(4, 40px);
+		position: relative;
+		min-height: 1px;
+		padding-left: 20px;
+		padding-right: 20px;
+		@media (min-width: $screen-md-min) {
+			float: left;
+			width: 33.33333333%;
+		}
 	}
 }
 .freature{

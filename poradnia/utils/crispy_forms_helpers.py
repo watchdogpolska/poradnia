@@ -40,12 +40,9 @@ class FormsetHelper(FormHelper):
 class TableFormSetHelper(FormsetHelper):
     """
     Formset helper for table-based inline formsets.
-    Uses bootstrap3 compatible template instead of the missing bootstrap template.
     """
 
-    # Use the built-in bootstrap3 template instead of the missing
-    # bootstrap/table_inline_formset.html
-    template = "bootstrap3/table_inline_formset.html"
+    template = "bootstrap5/table_inline_formset.html"
 
 
 class TableFormSetMixin:

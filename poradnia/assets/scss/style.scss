@@ -14,11 +14,383 @@
 
 
 
+// BS3's base styles made every bare <label> bold by default (a plain
+// element selector, not scoped to any class); BS5 leaves label font-
+// weight at normal. First found via a user report on /uzytkownik/'s
+// crispy-rendered filter-form labels and fixed there via BS5's own
+// $form-label-font-weight variable (scoped to .form-label) - too
+// narrow, since a second report (navsearch/input.html's hand-written,
+// non-crispy search form, no .form-label class at all) showed BS3's
+// real rule was never scoped to begin with. Replaced with this bare
+// selector, matching BS3's actual universal scope and covering both
+// cases (and any other hand-written form in the app) with one rule.
+label {
+	font-weight: bold;
+}
+
 .logo{
 	display: inline-block;
 	width: 160px;
 	height: 160px;
 	background: url("../images/logo.png") no-repeat center center
+}
+
+// The migration's mechanical class sweep renamed every `btn-default` to
+// `btn-secondary` (the officially recommended 1:1 BS3->BS5 mapping), but the
+// two variants don't share a color scheme: BS3's `.btn-default` was a white
+// button with dark (#333) text and a light gray border, while BS5's
+// `.btn-secondary` is a solid gray button with white text. Found via a user
+// report on case_detail.html's "Zadanie nowych sugestii tagów AI" button -
+// confirmed via the mechanical-sweep commit's own diff that every current
+// `btn-secondary` in the app (advicer, letters, dashboard, keys, cases,
+// tasty_feedback, account/signup) is this same renamed `btn-default`, none
+// intentionally BS5-native. Rather than override BS5's own `.btn-secondary`
+// class to mean something else, `.btn-default` is revived here as this
+// project's own (non-Bootstrap) class for that exact look, and every one of
+// those 9 templates points back at it - leaving the real `.btn-secondary`
+// alone and available with its real BS5 meaning for any future button that
+// actually wants it.
+.btn-default {
+	--bs-btn-color: #333;
+	--bs-btn-bg: #fff;
+	--bs-btn-border-color: #ccc;
+	--bs-btn-hover-color: #333;
+	--bs-btn-hover-bg: #e6e6e6;
+	--bs-btn-hover-border-color: #adadad;
+	--bs-btn-focus-shadow-rgb: 173, 173, 173;
+	--bs-btn-active-color: #333;
+	--bs-btn-active-bg: #e6e6e6;
+	--bs-btn-active-border-color: #adadad;
+	--bs-btn-disabled-color: #333;
+	--bs-btn-disabled-bg: #fff;
+	--bs-btn-disabled-border-color: #ccc;
+}
+
+// BS3's every `.btn-{color}` variant used uniform WHITE text regardless of
+// the background's own lightness. BS5's button-variant mixin instead picks
+// text color via `color-contrast($background)`, a WCAG-driven choice - for
+// $info (cyan) and $warning (yellow), both light colors, that computes to
+// BLACK, not BS3's white. Found via a user report on `.btn-info` (used by
+// user_detail.html's "Zmiana hasła" link). `.btn-warning` has the identical
+// bug and no template currently uses it, but it's fixed alongside .btn-info
+// so the same mistake doesn't resurface the next time someone reaches for
+// it. Scoped to just the text-color properties, not the background shades -
+// unlike .btn-default (a genuine rename collision) or the info/success cards
+// (an explicit user request for full historical-color parity), nothing here
+// suggests the backgrounds themselves are wrong, only the text contrast
+// choice. `.btn-danger` already renders white text correctly (BS5's own
+// contrast pick for that darker red happens to agree with BS3), so left
+// untouched.
+.btn-info,
+.btn-warning {
+	--bs-btn-color: #fff;
+	--bs-btn-hover-color: #fff;
+	--bs-btn-active-color: #fff;
+	--bs-btn-disabled-color: #fff;
+}
+
+// BS3 kept alert colors (`$state-success-bg` etc.) completely independent
+// from button/badge colors (`$brand-success` etc.); BS5 collapsed both into
+// one shared `$success`/`$danger`/`$warning`/`$info` per state, each alert's
+// `--bs-alert-bg` etc. (see .alert-success and friends in node_modules/
+// bootstrap/scss/_alert.scss) derived from the SAME color. $success here is
+// deliberately #555555 (gray) to match this app's historically-gray success
+// *button* (see $success in _vars.scss) - alerts inheriting that same gray
+// is exactly what a user reported ("Tagowanie AI rozpoczete..." showing gray
+// instead of light green). $danger/$warning/$info were never customized at
+// all, so those three alerts use BS5's stock colors rather than this app's
+// original BS3 ones - not broken, just not historically matched, restored
+// here too at the user's request. Scoped to just the alert classes (same
+// technique as .btn-default above) rather than touching the shared
+// variables, so buttons/badges/borders etc. built on them are unaffected.
+// Values are bootstrap-sass 3.4.3's actual stock $state-*-text/-bg/-border
+// (the same border/bg pair already used for .panel-success and friends in
+// _vars.scss) and its alert-link darkened shades.
+.alert-success{
+	--bs-alert-color: #3c763d;
+	--bs-alert-bg: #dff0d8;
+	--bs-alert-border-color: #d6e9c6;
+	--bs-alert-link-color: #2b542c;
+}
+.alert-info{
+	--bs-alert-color: #31708f;
+	--bs-alert-bg: #d9edf7;
+	--bs-alert-border-color: #bce8f1;
+	--bs-alert-link-color: #245269;
+}
+.alert-warning{
+	--bs-alert-color: #8a6d3b;
+	--bs-alert-bg: #fcf8e3;
+	--bs-alert-border-color: #faebcc;
+	--bs-alert-link-color: #66512c;
+}
+.alert-danger{
+	--bs-alert-color: #a94442;
+	--bs-alert-bg: #f2dede;
+	--bs-alert-border-color: #ebccd1;
+	--bs-alert-link-color: #843534;
+}
+
+// BS3's `.breadcrumb` was a padded, rounded, light-grey pill
+// (`background-color: #f5f5f5; padding: 8px 15px; border-radius: 4px;`);
+// BS5 redesigned it as flat/padding-less by default (its own
+// --bs-breadcrumb-bg/-padding-x/-padding-y/-border-radius custom properties
+// all ship empty/zero) - restored via those same properties, found via a
+// user report wanting the grey background back.
+.breadcrumb{
+	--bs-breadcrumb-bg: #f5f5f5;
+	--bs-breadcrumb-padding-x: 15px;
+	--bs-breadcrumb-padding-y: 8px;
+	--bs-breadcrumb-border-radius: 4px;
+
+	// BS5's `.breadcrumb` is `display: flex` (needed for the `<li>` divider
+	// styling), so `float: right` on a sibling `.float-end` (e.g. advicer's
+	// advice_filter.html "Dodaj" button) does nothing - float has no effect
+	// on an element that's a flex item, no matter how specific/!important
+	// the float declaration is. margin-left: auto is the flex-correct way
+	// to push one item to the end of the row while the rest stay packed to
+	// the start, without touching .float-end's normal (non-flex) float
+	// behavior used everywhere else in the app.
+	.float-end{
+		margin-left: auto;
+	}
+}
+
+// BS3's `.pagination` was `display: inline-block`, so wrapping it in
+// `<div class="text-center">` (_pagination.html, used by cases/letters/
+// users/advicer/tasty_feedback list pages) centered it via `text-align:
+// center` same as any other inline content. BS5 made `.pagination`
+// `display: flex` (block-level), which `text-align` has no effect on - a
+// block element just fills the available width regardless of its
+// ancestor's text-align. Scoped to `.text-center .pagination` specifically
+// (inline-flex still centers via text-align, same mechanism as inline-
+// block) rather than changing `.pagination` everywhere, since other
+// bare/unwrapped uses should keep BS5's normal block-flex behavior -
+// found via a user report that pagination controls were no longer
+// centered.
+.text-center .pagination{
+	display: inline-flex;
+}
+
+// Same category of issue as .btn-default: the Milestone 3 panel->card
+// migration's `letter2panel()` (poradnia/letters/templatetags/
+// letter_tags.py) used to return "panel-default" for non-staff letters,
+// matching BS3's actual class name for that look (white card header,
+// #333 text, #ddd border) - rewritten to bare "secondary" as part of the
+// same mechanical renaming the button fix ran into, even though BS5's
+// real `.text-bg-secondary`/`.border-secondary` render solid gray with
+// white text, not this app's white/light-grey "default" look. Renamed
+// back to "default" in letter_tags.py (not a real BS5 class, same as
+// .btn-default) rather than overriding the real `.text-bg-secondary`/
+// `.border-secondary` utilities, for the same forward-compatibility
+// reason: letter2panel is the only thing that emits `border-{{ }}`/
+// `text-bg-{{ }}` on a card at all, so nothing currently depends on real
+// BS5 secondary styling here, but something might in the future.
+// _timeline.scss's `.timeline-comment.border-default` (the speech-bubble
+// triangle) already used these same colors under the old "secondary"
+// selector name - found via a user report that letter cards for
+// non-staff messages had lost their background/border/text color
+// entirely.
+.text-bg-default{
+	color: $text-color !important; // #333
+	background-color: $panel-default-heading-bg !important; // #f5f5f5
+}
+.border-default{
+	border-color: $panel-default-border !important; // #ddd
+}
+
+// `letter2panel()` also returns "success" for AI-message letters (BS3:
+// "panel-success"), and BS3 genuinely had two independent success colors
+// depending on which component used them: $state-success-bg/-text (a
+// pastel green, #dff0d8/#3c763d - feeding only .alert-success/.panel-
+// success) vs $brand-success (feeding .btn-success/.label-success/badges
+// - deliberately gray in this app, see $success above). BS5 collapsed
+// both into the one shared $success, so `.text-bg-success`/`.border-
+// success` (generic utilities, not scoped to a single component the way
+// .alert-success's own --bs-alert-* custom properties are) now render
+// this app's gray everywhere, including letter cards that want the
+// pastel green - found via a user report that some letter types still
+// didn't match their pre-migration background.
+// `.border-success` is safe to restore globally: nothing in the app uses
+// that literal class except via letter2panel. `.text-bg-success` is NOT
+// - .badge/.text-bg-success elsewhere (case_detail.html, _project_badge.
+// html, _simple_list.html) are genuinely gray-success badges that
+// should stay as they are, matching .btn-success. Scoped to `.card-
+// header.text-bg-success` specifically, since that combination only
+// ever occurs on a letter2panel-driven card.
+.border-success{
+	border-color: $panel-success-border !important; // #d6e9c6
+}
+.card-header.text-bg-success{
+	color: #3c763d !important;
+	background-color: $panel-success-heading-bg !important; // #dff0d8
+}
+
+// letter2panel()'s "info" (comment genre) isn't a gray-conflict bug like
+// success was - $info was never customized away from BS5's stock cyan -
+// but it's still not this app's original BS3 color, restored here to
+// match .alert-info (#d9edf7/#31708f/#bce8f1) at the user's request.
+// Same badge-collision reasoning as .text-bg-success above: `.border-
+// info` is safe globally (only letter2panel emits it), `.text-bg-info`
+// is scoped to `.card-header` since `.badge.text-bg-info` elsewhere
+// (case_filter.html, _simple_list.html, cases/models.py) needs its own,
+// different historical color - see below.
+.border-info{
+	border-color: $panel-info-border !important; // #bce8f1
+}
+.card-header.text-bg-info{
+	color: #31708f !important;
+	background-color: $panel-info-heading-bg !important; // #d9edf7
+}
+
+// The Milestone 3 `label -> badge text-bg-*` rename (BS4+ merged BS3's
+// two separate components into one) carried over the class names but
+// not BS3's actual `.label-*` colors: every BS3 label used solid
+// $brand-info/$brand-warning backgrounds with uniform WHITE text, while
+// BS5's `.badge`/`.text-bg-*` picks black-on-info/black-on-warning
+// instead (its own WCAG-driven contrast choice) on top of BS5's stock
+// (never customized in this app) info/warning hues rather than BS3's
+// actual #5bc0de/#f0ad4e - found via a user report that badges didn't
+// match BS3. `.badge.text-bg-success`/`.badge.text-bg-primary` were
+// already correct without any override (this app's $success/$primary
+// already equal BS3's $brand-success/$brand-primary, and both already
+// render white text), and no `.badge.text-bg-danger` exists anywhere in
+// the app, so neither needed touching. Scoped to `.badge.text-bg-*`
+// specifically (not the bare utility) since `.text-bg-info` is also
+// used, correctly, on letter2panel-driven card headers above with a
+// different (pastel) historical color.
+.badge.text-bg-info{
+	color: #fff !important;
+	background-color: #5bc0de !important; // BS3's stock $brand-info
+}
+.badge.text-bg-warning{
+	color: #fff !important;
+	background-color: #f0ad4e !important; // BS3's stock $brand-warning
+}
+
+// BS3 specifically zeroed out a <table>'s own margin-bottom when it sat
+// directly inside a `.panel` (bypassing `.panel-body`): `.panel > .table,
+// .panel > .table-responsive > .table { margin-bottom: 0; }` - several
+// cards in this app use that exact direct-table pattern (case_detail.html's
+// "Workflow"/"Metrical data" cards, events/_event_list.html, judgements/
+// _courtcase_list.html). BS5 has no equivalent `.card > .table` rule, so
+// the table's own default `margin-bottom: 1rem` now shows as unwanted
+// empty space between the table and the card's own border (the border
+// prevents the margin from collapsing out through the card, unlike a
+// plain block container) - found via a user report that this gap used to
+// sit outside the card, not inside it.
+.card > .table,
+.card > .table-responsive > .table {
+	margin-bottom: 0;
+}
+
+// BS3's `.panel` itself carried its own `margin-bottom: 20px`
+// ($line-height-computed) - the actual visible gap *between* stacked
+// panels/cards. BS5's `.card` has no margin-bottom of its own at all
+// (cards are meant to rely on a `.row`/grid's own gutters, or an
+// explicit `.mb-*` utility in the markup, neither of which is used
+// here). Removing the table's internal margin-bottom above correctly
+// closed the gap that had leaked *inside* the card, but that exposed
+// the fact that nothing was providing the gap that should exist
+// *outside* it either - found via a user follow-up after the table fix
+// landed. Restored globally, matching every .card in the app (the
+// plain workflow/stat-data cards above and every letter/event/court-
+// case timeline card alike), none of which currently get any vertical
+// spacing from anywhere else (checked: no .timeline-comment/
+// .timeline-messange margin-bottom exists either).
+.card {
+	margin-bottom: $line-height-computed; // 20px, BS3's $panel-margin-bottom
+}
+
+// BS3's `.pager` (a simple previous/next link row, distinct from
+// `.pagination`) was dropped entirely in BS4+ with no replacement - unlike
+// `.panel`/`.well`/`.page-header`, the original migration's component
+// audit never touched it, so `.pager` has had zero CSS at all since the
+// migration landed, for every one of its three usages in the app
+// (cases/_case_pager.html, events/calendar.html, notifications_custom/
+// templates/notifications/list.html) - found via a user report on the
+// case-detail prev/next-letter pager. Restored as bootstrap-sass 3.4.3's
+// actual stock `.pager` (this app never customized $pager-*/$pagination-*
+// away from their defaults): a centered row of pill-shaped, bordered
+// links, `.previous` floated left and `.next` floated right (used by
+// _case_pager.html; the other two usages have no .previous/.next on
+// their <li>s, so those just render as plain centered pills - correct,
+// since they don't need opposite-edge positioning).
+.pager {
+	padding-left: 0;
+	margin: $line-height-computed 0;
+	list-style: none;
+	text-align: center;
+
+	&::before,
+	&::after {
+		content: " ";
+		display: table;
+	}
+	&::after {
+		clear: both;
+	}
+
+	li {
+		display: inline;
+
+		> a,
+		> span {
+			display: inline-block;
+			padding: 5px 14px;
+			background-color: #fff;
+			border: 1px solid #ddd;
+			border-radius: 15px;
+		}
+
+		> a:hover,
+		> a:focus {
+			text-decoration: none;
+			background-color: $gray-lighter; // #eee
+		}
+	}
+
+	.next > a,
+	.next > span {
+		float: right;
+	}
+
+	.previous > a,
+	.previous > span {
+		float: left;
+	}
+
+	.disabled > a,
+	.disabled > span {
+		color: $gray-light; // #777
+		background-color: #fff;
+		cursor: not-allowed;
+	}
+}
+
+// BS3's `.panel-title` set a modest, fixed font-size AND specifically
+// reset any nested link's color to inherit (`.panel-title > a { color:
+// inherit; } .panel-title > small, ...`), so a clickable title (e.g.
+// every letter card's header, see letter2panel above) showed the
+// heading's own contextual color - white on a colored panel, #333 on
+// panel-default - not the theme's link color at a bare heading's size.
+// BS5's `.card-title` only sets margin-bottom and an (empty-by-default)
+// --bs-card-title-color, so a raw <a> inside it falls through to its own
+// normal link-color rule ($link-color: $primary here, i.e. red) instead
+// of inheriting, and with no font-size override at all a bare <h2>
+// renders at roughly 2x BS3's size - found via a user report that letter
+// titles were red instead of black and about twice as large as before.
+.card-title {
+	font-size: 16px; // BS3's ceil($font-size-base * 1.125) at 14px base
+	color: inherit;
+
+	> a,
+	> small,
+	> .small,
+	> small > a,
+	> .small > a {
+		color: inherit;
+	}
 }
 
 .h1.success{
@@ -33,7 +405,7 @@
             margin-bottom: 10px;
     }
 }
-.panel-body {
+.card-body {
     position:relative;
 }
 .panel-status {
@@ -42,7 +414,7 @@
     top: 15px;
     opacity: 0.5;
 }
-.label {
+.badge {
     margin-right: 2px;
     margin-left: 2px;
 }
@@ -93,4 +465,40 @@
 
 .dt-bottom-row {
     margin-top: 10px;
+}
+
+// BS3 left `<input type="file">` completely unstyled, so every browser drew
+// its own native OS file-picker button - always rendered with its own
+// visible border/bevel sitting on a light gray fill, unmistakably a button,
+// against the rest of the field's plain white. BS5's Reboot sets
+// `appearance: none` on every `.form-control` including file inputs, then
+// substitutes its own `::file-selector-button` filled with `--bs-tertiary-bg`
+// (#f8f9fa, barely different from the input's own white) and only a 1px
+// separator on its trailing edge - no border of its own, so it no longer
+// reads as a button. Found via a user report on the letters attachments
+// dropzone's "Choose Files" control. A first pass that only darkened the
+// background still wasn't enough per that same user - restored the missing
+// border too (color matching `.btn-default`'s), rounded on the leading edge
+// to follow the input's own corner radius there instead of poking a square
+// corner out past it.
+.form-control::file-selector-button {
+	background-color: #e6e6e6;
+	border: 1px solid #adadad;
+	border-top-left-radius: var(--bs-border-radius);
+	border-bottom-left-radius: var(--bs-border-radius);
+}
+.form-control:hover:not(:disabled):not([readonly])::file-selector-button {
+	background-color: #d4d4d4;
+}
+
+// Attachment filenames (this modal's title) run long - user asked for the
+// title text ~15% smaller so it fits the header more comfortably. An ID
+// selector necessarily outranks h4's own bare-element font-size rule, which
+// means it fully replaces that declaration rather than scaling it - an
+// earlier `0.85em` attempt computed against the *inherited* (modal body,
+// 14px) font-size instead of h4's own 21px, landing far smaller than
+// intended. Computed from Bootstrap's own $h4-font-size Sass variable
+// instead, so the 15% reduction is relative to what h4 actually renders at.
+#attachmentTextModalLabel {
+	font-size: $h4-font-size * 0.85;
 }
