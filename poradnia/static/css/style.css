@@ -24461,6 +24461,15 @@ table.month li.deadline {
   background-color: #f0ad4e !important;
 }
 
+.card > .table,
+.card > .table-responsive > .table {
+  margin-bottom: 0;
+}
+
+.card {
+  margin-bottom: 20px;
+}
+
 .card-title {
   font-size: 16px;
   color: inherit;

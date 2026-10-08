@@ -231,6 +231,40 @@
 	background-color: #f0ad4e !important; // BS3's stock $brand-warning
 }
 
+// BS3 specifically zeroed out a <table>'s own margin-bottom when it sat
+// directly inside a `.panel` (bypassing `.panel-body`): `.panel > .table,
+// .panel > .table-responsive > .table { margin-bottom: 0; }` - several
+// cards in this app use that exact direct-table pattern (case_detail.html's
+// "Workflow"/"Metrical data" cards, events/_event_list.html, judgements/
+// _courtcase_list.html). BS5 has no equivalent `.card > .table` rule, so
+// the table's own default `margin-bottom: 1rem` now shows as unwanted
+// empty space between the table and the card's own border (the border
+// prevents the margin from collapsing out through the card, unlike a
+// plain block container) - found via a user report that this gap used to
+// sit outside the card, not inside it.
+.card > .table,
+.card > .table-responsive > .table {
+	margin-bottom: 0;
+}
+
+// BS3's `.panel` itself carried its own `margin-bottom: 20px`
+// ($line-height-computed) - the actual visible gap *between* stacked
+// panels/cards. BS5's `.card` has no margin-bottom of its own at all
+// (cards are meant to rely on a `.row`/grid's own gutters, or an
+// explicit `.mb-*` utility in the markup, neither of which is used
+// here). Removing the table's internal margin-bottom above correctly
+// closed the gap that had leaked *inside* the card, but that exposed
+// the fact that nothing was providing the gap that should exist
+// *outside* it either - found via a user follow-up after the table fix
+// landed. Restored globally, matching every .card in the app (the
+// plain workflow/stat-data cards above and every letter/event/court-
+// case timeline card alike), none of which currently get any vertical
+// spacing from anywhere else (checked: no .timeline-comment/
+// .timeline-messange margin-bottom exists either).
+.card {
+	margin-bottom: $line-height-computed; // 20px, BS3's $panel-margin-bottom
+}
+
 // BS3's `.panel-title` set a modest, fixed font-size AND specifically
 // reset any nested link's color to inherit (`.panel-title > a { color:
 // inherit; } .panel-title > small, ...`), so a clickable title (e.g.
