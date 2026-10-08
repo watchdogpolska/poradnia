@@ -14,6 +14,20 @@
 
 
 
+// BS3's base styles made every bare <label> bold by default (a plain
+// element selector, not scoped to any class); BS5 leaves label font-
+// weight at normal. First found via a user report on /uzytkownik/'s
+// crispy-rendered filter-form labels and fixed there via BS5's own
+// $form-label-font-weight variable (scoped to .form-label) - too
+// narrow, since a second report (navsearch/input.html's hand-written,
+// non-crispy search form, no .form-label class at all) showed BS3's
+// real rule was never scoped to begin with. Replaced with this bare
+// selector, matching BS3's actual universal scope and covering both
+// cases (and any other hand-written form in the app) with one rule.
+label {
+	font-weight: bold;
+}
+
 .logo{
 	display: inline-block;
 	width: 160px;

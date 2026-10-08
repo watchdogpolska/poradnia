@@ -19,12 +19,6 @@ $success: #555555; // was $brand-success: $gray (i.e. gray, not Bootstrap's defa
 // .footer, _layout.scss) hadn't.
 $font-size-base: 0.875rem; // 14px / 16px browser default
 
-// BS3's base styles made every <label> bold by default; BS5's .form-label
-// leaves $form-label-font-weight null (i.e. inherit/normal). Found via a
-// user report that filter-form labels on /uzytkownik/ (and by extension
-// every crispy-rendered form label app-wide) had lost their bold weight.
-$form-label-font-weight: bold;
-
 // BS3's base styles set `a { text-decoration: none }` by default, showing
 // underline only on hover ($link-hover-decoration). BS4+ Reboot flipped this
 // default to underline-always - found via the post-migration visual regression
