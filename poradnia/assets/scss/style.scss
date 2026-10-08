@@ -490,3 +490,15 @@ label {
 .form-control:hover:not(:disabled):not([readonly])::file-selector-button {
 	background-color: #d4d4d4;
 }
+
+// Attachment filenames (this modal's title) run long - user asked for the
+// title text ~15% smaller so it fits the header more comfortably. An ID
+// selector necessarily outranks h4's own bare-element font-size rule, which
+// means it fully replaces that declaration rather than scaling it - an
+// earlier `0.85em` attempt computed against the *inherited* (modal body,
+// 14px) font-size instead of h4's own 21px, landing far smaller than
+// intended. Computed from Bootstrap's own $h4-font-size Sass variable
+// instead, so the 15% reduction is relative to what h4 actually renders at.
+#attachmentTextModalLabel {
+	font-size: $h4-font-size * 0.85;
+}

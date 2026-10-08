@@ -24623,6 +24623,10 @@ label {
 .form-control:hover:not(:disabled):not([readonly])::file-selector-button {
   background-color: #d4d4d4;
 }
+
+#attachmentTextModalLabel {
+  font-size: 1.115625rem;
+}
 :root {
   --dt_background-selected: 13, 110, 253;
   --dt_color-selected: 255, 255, 255;
