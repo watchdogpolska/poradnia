@@ -66,6 +66,29 @@ label {
 	--bs-btn-disabled-border-color: #ccc;
 }
 
+// BS3's every `.btn-{color}` variant used uniform WHITE text regardless of
+// the background's own lightness. BS5's button-variant mixin instead picks
+// text color via `color-contrast($background)`, a WCAG-driven choice - for
+// $info (cyan) and $warning (yellow), both light colors, that computes to
+// BLACK, not BS3's white. Found via a user report on `.btn-info` (used by
+// user_detail.html's "Zmiana hasła" link). `.btn-warning` has the identical
+// bug and no template currently uses it, but it's fixed alongside .btn-info
+// so the same mistake doesn't resurface the next time someone reaches for
+// it. Scoped to just the text-color properties, not the background shades -
+// unlike .btn-default (a genuine rename collision) or the info/success cards
+// (an explicit user request for full historical-color parity), nothing here
+// suggests the backgrounds themselves are wrong, only the text contrast
+// choice. `.btn-danger` already renders white text correctly (BS5's own
+// contrast pick for that darker red happens to agree with BS3), so left
+// untouched.
+.btn-info,
+.btn-warning {
+	--bs-btn-color: #fff;
+	--bs-btn-hover-color: #fff;
+	--bs-btn-active-color: #fff;
+	--bs-btn-disabled-color: #fff;
+}
+
 // BS3 kept alert colors (`$state-success-bg` etc.) completely independent
 // from button/badge colors (`$brand-success` etc.); BS5 collapsed both into
 // one shared `$success`/`$danger`/`$warning`/`$info` per state, each alert's

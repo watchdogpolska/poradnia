@@ -24384,6 +24384,14 @@ label {
   --bs-btn-disabled-border-color: #ccc;
 }
 
+.btn-info,
+.btn-warning {
+  --bs-btn-color: #fff;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-active-color: #fff;
+  --bs-btn-disabled-color: #fff;
+}
+
 .alert-success {
   --bs-alert-color: #3c763d;
   --bs-alert-bg: #dff0d8;
