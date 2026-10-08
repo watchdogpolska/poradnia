@@ -466,3 +466,27 @@ label {
 .dt-bottom-row {
     margin-top: 10px;
 }
+
+// BS3 left `<input type="file">` completely unstyled, so every browser drew
+// its own native OS file-picker button - always rendered with its own
+// visible border/bevel sitting on a light gray fill, unmistakably a button,
+// against the rest of the field's plain white. BS5's Reboot sets
+// `appearance: none` on every `.form-control` including file inputs, then
+// substitutes its own `::file-selector-button` filled with `--bs-tertiary-bg`
+// (#f8f9fa, barely different from the input's own white) and only a 1px
+// separator on its trailing edge - no border of its own, so it no longer
+// reads as a button. Found via a user report on the letters attachments
+// dropzone's "Choose Files" control. A first pass that only darkened the
+// background still wasn't enough per that same user - restored the missing
+// border too (color matching `.btn-default`'s), rounded on the leading edge
+// to follow the input's own corner radius there instead of poking a square
+// corner out past it.
+.form-control::file-selector-button {
+	background-color: #e6e6e6;
+	border: 1px solid #adadad;
+	border-top-left-radius: var(--bs-border-radius);
+	border-bottom-left-radius: var(--bs-border-radius);
+}
+.form-control:hover:not(:disabled):not([readonly])::file-selector-button {
+	background-color: #d4d4d4;
+}
