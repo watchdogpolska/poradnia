@@ -1,15 +1,6 @@
 {% extends 'tasty_feedback/base.html' %}
 {% load humanize i18n crispy_forms_tags %}
 
-{% block javascript %}
-    {{ block.super }}
-    {{ filter.form.media.js }}
-{% endblock %}
-
-{% block extra_css %}
-    {{ filter.form.media.css }}
-{% endblock %}
-
 {% block breadcrumbs_rows %}
     <li class="breadcrumb-item active">{% trans 'Feedback index' %}</li>
 {% endblock %}

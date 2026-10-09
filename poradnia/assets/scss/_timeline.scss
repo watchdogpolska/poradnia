@@ -1,8 +1,10 @@
+@use "vars";
+
 
 $timeline-transparent-size: 5px;
 $timeline-mark-height: 10px;
 $timeline-mark-width: 2px;
-$timeline-mark-color: $panel-default-border; 
+$timeline-mark-color: vars.$panel-default-border; 
 $timeline-avatar-size: 48px;
 $timeline-avatar-border-radius: 4px;
 
@@ -27,7 +29,7 @@ $timeline-line-padding: 4px;
 			transparent			 $timeline-mark-height ,
 			transparent			 #{ $timeline-mark-height + $timeline-transparent-size });
 		left: $timeline-line-padding;
-		@media(min-width: $screen-md-min) {	 
+		@media(min-width: vars.$screen-md-min) {	 
 			left: #{ $timeline-line-padding + $timeline-avatar-size };
 		}
 
@@ -35,16 +37,16 @@ $timeline-line-padding: 4px;
 	&-avatar{
 		float: left;
 		border-radius: $timeline-avatar-border-radius;
-		@include square($timeline-avatar-size);
+		@include vars.square($timeline-avatar-size);
 		display: none;
-		@media(min-width: $screen-md-min) {	
+		@media(min-width: vars.$screen-md-min) {	
 			display: block;
 		}
 	}
 	&-comment{
 		position: relative;
 		margin-left: #{$timeline-line-padding * 2 + $timeline-mark-width + $timeline-triangle-size } ;
-		@media(min-width: $screen-md-min) {	 
+		@media(min-width: vars.$screen-md-min) {	 
 			margin-left: #{$timeline-line-padding * 2 + $timeline-avatar-size + $timeline-mark-width + $timeline-triangle-size };
 		}
 	}
@@ -69,14 +71,14 @@ $timeline-line-padding: 4px;
 	}	
 }
 .timeline-comment.border-default {
-	@include timeline-comment-variant($panel-default-border, $panel-default-heading-bg);
+	@include timeline-comment-variant(vars.$panel-default-border, vars.$panel-default-heading-bg);
 }
 .timeline-comment.border-primary {
-	@include timeline-comment-variant($panel-primary-border, $panel-primary-heading-bg);
+	@include timeline-comment-variant(vars.$panel-primary-border, vars.$panel-primary-heading-bg);
 }
 .timeline-comment.border-success {
-	@include timeline-comment-variant($panel-success-border, $panel-success-heading-bg);
+	@include timeline-comment-variant(vars.$panel-success-border, vars.$panel-success-heading-bg);
 }
 .timeline-comment.border-info {
-	@include timeline-comment-variant($panel-info-border, $panel-info-heading-bg);
+	@include timeline-comment-variant(vars.$panel-info-border, vars.$panel-info-heading-bg);
 }

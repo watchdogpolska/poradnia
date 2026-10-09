@@ -1,6 +1,9 @@
+@use "bootstrap";
+@use "vars";
+
 $case-header-padding-vertical: 1em;
 .case-header{
-	border-bottom: 1px solid $gray-lighter;
+	border-bottom: 1px solid vars.$gray-lighter;
 	padding-bottom: 1em;
 	margin-bottom: 1em;
 	&-actions{
@@ -48,7 +51,7 @@ $case-header-padding-vertical: 1em;
 			clear: both;
 		}
 
-		@media(min-width: $screen-md-min) {
+		@media(min-width: vars.$screen-md-min) {
 			float: right;
 			margin: 20px;
 		}
@@ -58,7 +61,7 @@ $case-header-padding-vertical: 1em;
 	&-title{
 	}
 	&-number{
-		color: $gray-light;
+		color: vars.$gray-light;
 		font-size: 0.7em;
 		vertical-align: middle;
 	}

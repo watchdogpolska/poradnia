@@ -1,6 +1,6 @@
 {% load staticfiles i18n tinycontent_tags github_revision_tags poradnia_tags %}
 <!DOCTYPE html>
-<html lang="pl  ">
+<html lang="pl">
 <head>
     <meta charset="utf-8">
     <title>{% block title %}Poradnia{% endblock title %}</title>
@@ -167,7 +167,10 @@
         }
     });
 
-    jQuery(document).on('hidden.bs.modal', '#attachmentTextModal', function () {
+    document.addEventListener('hidden.bs.modal', function (event) {
+        if (!event.target.matches('#attachmentTextModal')) {
+            return;
+        }
         var container = document.getElementById('attachment-text-modal-container');
         if (container) {
             container.innerHTML = '';
