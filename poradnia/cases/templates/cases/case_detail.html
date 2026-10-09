@@ -3,7 +3,6 @@
 {% block title %}{{ object }} - {{ block.super }}{% endblock %}
 {% block javascript %}
     {{ block.super }}
-    {{ casegroup_form.media.js }}
     <script type="text/javascript">
         // #form-tab links already use data-bs-toggle="tab", which handles
         // click-to-switch on its own - only the initial tab (none is
@@ -54,7 +53,6 @@
 {% endblock %}
 
 {% block extra_css %}
-    {{ casegroup_form.media.css }}
     <style>
         .ai-thumb { color: #999; opacity: 0.6; font-size: 1.25em; }
         .ai-thumb:hover { opacity: 1; }
