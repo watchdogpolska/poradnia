@@ -40,8 +40,11 @@
             return ok;
         }
 
-        $(document).on('hidden.bs.modal', '[id^="aiSearchRejectModal-"]', function () {
-            var pk = this.id.replace('aiSearchRejectModal-', '');
+        document.addEventListener('hidden.bs.modal', function (event) {
+            if (!event.target.matches('[id^="aiSearchRejectModal-"]')) {
+                return;
+            }
+            var pk = event.target.id.replace('aiSearchRejectModal-', '');
             var ta = document.getElementById('aiSearchRejectReason-' + pk);
             var err = document.getElementById('aiSearchRejectReasonError-' + pk);
             if (ta) { ta.value = ''; }

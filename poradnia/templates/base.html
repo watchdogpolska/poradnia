@@ -167,7 +167,10 @@
         }
     });
 
-    jQuery(document).on('hidden.bs.modal', '#attachmentTextModal', function () {
+    document.addEventListener('hidden.bs.modal', function (event) {
+        if (!event.target.matches('#attachmentTextModal')) {
+            return;
+        }
         var container = document.getElementById('attachment-text-modal-container');
         if (container) {
             container.innerHTML = '';
