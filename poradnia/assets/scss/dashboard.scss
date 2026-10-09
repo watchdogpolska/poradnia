@@ -1,3 +1,5 @@
+@use "vars";
+
 .sortable-table {
     th[data-sort-key] {
         cursor: pointer;
@@ -60,7 +62,7 @@
         color: #666;
     }
 
-    @media (min-width: $screen-sm-min) {
+    @media (min-width: vars.$screen-sm-min) {
         .dashboard-table-header {
             display: flex;
             align-items: baseline;

@@ -1,13 +1,8 @@
 {% extends 'letters/base.html' %}
 {% load crispy_forms_tags staticfiles i18n %}
 
-{% block extra_css %}
-    {{ form.media.css }}
-{% endblock %}
-
 {% block javascript %}
     {{ block.super }}
-    {{ form.media.js }}
     {% if formset %}
         <script type="text/javascript">
             document.addEventListener('DOMContentLoaded', function () {

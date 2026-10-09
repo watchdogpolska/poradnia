@@ -1,29 +1,32 @@
+@use "bootstrap";
+@use "vars";
+
 .main{
-	@include clearfix;
+	@include bootstrap.clearfix;
 }
 .main-side{
-	@media(min-width: $grid-float-breakpoint) {
+	@media(min-width: vars.$grid-float-breakpoint) {
 		margin-left: 240px;
 	};
 }
 .navbar{
 	position: fixed;
 	width: 100%;
-	z-index: $zindex-navbar;
-	@media(min-width: $grid-float-breakpoint) {
+	z-index: vars.$zindex-navbar;
+	@media(min-width: vars.$grid-float-breakpoint) {
 		display: none;
 	}
 }
 .content{
 	width: 99%;
 	margin: 6em auto;
-	@media(min-width: $screen-sm-min) {
+	@media(min-width: vars.$screen-sm-min) {
 		margin-top: 1em;
 	}
 }
 
 .footer{
-	@include clearfix;
+	@include bootstrap.clearfix;
 	padding: 12px 6px;
 	margin: 12px 0;
 	border-top: 1px solid #F5F5F5;
