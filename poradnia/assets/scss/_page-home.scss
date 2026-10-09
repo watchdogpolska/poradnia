@@ -1,3 +1,6 @@
+@use "bootstrap";
+@use "vars";
+
 @use "sass:color";
 
 .freatures{
@@ -8,13 +11,13 @@
 	// a 30px-gutter row containing a 4-of-12 column with its own 40px gutter.
 	margin-left: -15px;
 	margin-right: -15px;
-	@include clearfix;
+	@include bootstrap.clearfix;
 	&__freature{
 		position: relative;
 		min-height: 1px;
 		padding-left: 20px;
 		padding-right: 20px;
-		@media (min-width: $screen-md-min) {
+		@media (min-width: vars.$screen-md-min) {
 			float: left;
 			width: 33.33333333%;
 		}
@@ -45,7 +48,7 @@
 	padding:.5em;
 	transition: .2s;
 	font-size: 1.8em;
-	@media (min-width: $screen-md-min) {
+	@media (min-width: vars.$screen-md-min) {
 		font-size: 2.3em;
 	}
 	&:hover{

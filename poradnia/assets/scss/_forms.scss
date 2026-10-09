@@ -1,3 +1,5 @@
+@use "vars";
+
 // .form-actions{
 // 	background: #F5F5F5;
 // 	padding: $padding-base-horizontal $padding-base-vertical;
@@ -25,7 +27,7 @@
 	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.05);
 }
 .login-form{
-	@include center-block;
+	@include vars.center-block;
 	width: 500px;
 	min-height: 20px;
     padding: 19px;
@@ -37,7 +39,7 @@
 }
 
 .password_change{
-	@include center-block;
+	@include vars.center-block;
 	width: 500px;
 	min-height: 20px;
     padding: 19px;
@@ -49,7 +51,7 @@
 }
 
 .registration-form{
-	@include center-block;
+	@include vars.center-block;
 	width: 500px;
 }
 
@@ -154,7 +156,7 @@
 // since any Fieldset() section - filter or regular form - loses the same
 // visual separator, found via the same fieldset-stacking user report.
 legend {
-	margin-bottom: $line-height-computed; // 20px, BS3's $line-height-computed
-	color: $text-color; // #333, BS3's $legend-color
+	margin-bottom: vars.$line-height-computed; // 20px, BS3's $line-height-computed
+	color: vars.$text-color; // #333, BS3's $legend-color
 	border-bottom: 1px solid #e5e5e5; // BS3's $legend-border-color
 }

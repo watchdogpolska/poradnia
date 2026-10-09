@@ -1,3 +1,5 @@
+@use "vars";
+
 // Blend dal_alight's autocomplete-select web component into the site's
 // Bootstrap 3 form styling. The component ships its own default look
 // (dropdown box, selected-item "deck" chips) driven by CSS custom
@@ -7,13 +9,13 @@
 // (`vTextField`) that has no meaning outside django.contrib.admin.
 
 :root {
-    --autocomplete-light-bg: #{$dal-dropdown-bg};
-    --autocomplete-light-border: #{$input-border};
-    --autocomplete-light-border-light: #{$dal-dropdown-divider-bg};
-    --autocomplete-light-highlight-bg: #{$dal-dropdown-link-hover-bg};
-    --autocomplete-light-text: #{$dal-dropdown-link-color};
-    --autocomplete-light-text-muted: #{$dal-text-muted};
-    --autocomplete-light-text-secondary: #{$gray-light};
+    --autocomplete-light-bg: #{vars.$dal-dropdown-bg};
+    --autocomplete-light-border: #{vars.$input-border};
+    --autocomplete-light-border-light: #{vars.$dal-dropdown-divider-bg};
+    --autocomplete-light-highlight-bg: #{vars.$dal-dropdown-link-hover-bg};
+    --autocomplete-light-text: #{vars.$dal-dropdown-link-color};
+    --autocomplete-light-text-muted: #{vars.$dal-text-muted};
+    --autocomplete-light-text-secondary: #{vars.$gray-light};
 }
 
 autocomplete-select {
@@ -23,19 +25,19 @@ autocomplete-select {
     autocomplete-select-input input {
         display: block;
         width: 100%;
-        height: $input-height-base;
-        padding: $padding-base-vertical $padding-base-horizontal;
-        font-size: $dal-font-size-base;
-        line-height: $dal-line-height-base;
-        color: $dal-input-color;
-        background-color: $dal-input-bg;
-        border: 1px solid $input-border;
-        border-radius: $dal-input-border-radius;
+        height: vars.$input-height-base;
+        padding: vars.$padding-base-vertical vars.$padding-base-horizontal;
+        font-size: vars.$dal-font-size-base;
+        line-height: vars.$dal-line-height-base;
+        color: vars.$dal-input-color;
+        background-color: vars.$dal-input-bg;
+        border: 1px solid vars.$input-border;
+        border-radius: vars.$dal-input-border-radius;
         box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075);
         transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 
         &:focus {
-            border-color: $input-border-focus;
+            border-color: vars.$input-border-focus;
             outline: 0;
             box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(102, 175, 233, .6);
         }
@@ -59,31 +61,31 @@ autocomplete-select {
             display: inline-flex;
             align-items: stretch;
             padding: 0 0 0 6px;
-            background-color: $dal-dropdown-bg;
-            color: $text-color;
-            border: 1px solid $input-border;
-            border-radius: $border-radius-small;
-            font-size: $font-size-small;
-            line-height: $line-height-computed - 4px;
+            background-color: vars.$dal-dropdown-bg;
+            color: vars.$text-color;
+            border: 1px solid vars.$input-border;
+            border-radius: vars.$border-radius-small;
+            font-size: vars.$font-size-small;
+            line-height: vars.$line-height-computed - 4px;
 
             .clear {
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
                 flex: none;
-                width: $line-height-computed;
+                width: vars.$line-height-computed;
                 margin-left: 6px;
-                border-left: 1px solid $input-border;
-                border-radius: 0 $border-radius-small $border-radius-small 0;
+                border-left: 1px solid vars.$input-border;
+                border-radius: 0 vars.$border-radius-small vars.$border-radius-small 0;
                 font-size: 13px;
                 line-height: 1;
-                color: $gray-light;
+                color: vars.$gray-light;
                 cursor: pointer;
 
                 &:hover {
                     color: #fff;
-                    background-color: $brand-danger;
-                    border-color: $brand-danger;
+                    background-color: vars.$brand-danger;
+                    border-color: vars.$brand-danger;
                 }
             }
         }
@@ -91,6 +93,6 @@ autocomplete-select {
 }
 
 .autocomplete-light-box {
-    border-radius: $border-radius-base;
+    border-radius: vars.$border-radius-base;
     box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
 }

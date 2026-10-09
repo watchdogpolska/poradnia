@@ -54,7 +54,6 @@ const config = {
   },
   script: {
     input: [
-      path.npm + "/jquery/dist/jquery.js",
       path.npm + "/bootstrap/dist/js/bootstrap.bundle.js",
       path.npm + "/htmx.org/dist/htmx.js",
       path.staticfiles + "/tasty_feedback/style.js",
@@ -109,7 +108,8 @@ function scss() {
     .pipe(
       sass({
         style: "expanded",
-        includePaths: config.scss.include,
+        loadPaths: config.scss.include,
+        quietDeps: true,
       }).on("error", sass.logError)
     )
     .pipe(postcss([autoprefixer()]))

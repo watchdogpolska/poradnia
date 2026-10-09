@@ -1,1 +1,16 @@
-@import "bootstrap/scss/bootstrap";
+@use "vars";
+
+// Bootstrap's own !default variables can only be configured at the point
+// where its module is first loaded (@use's module system has no equivalent
+// of @import's "define a bare variable earlier in the file, then rely on
+// !default to skip re-assigning it" trick - each module's variables are
+// isolated from every other module's scope). These four are vars.scss's
+// only genuine Bootstrap-default overrides (see its own header comment);
+// everything else there is either a BS3-legacy-named alias consumed
+// directly by our own partials, or unrelated to Bootstrap entirely.
+@forward "bootstrap/scss/bootstrap" with (
+  $primary: vars.$primary,
+  $success: vars.$success,
+  $font-size-base: vars.$font-size-base,
+  $link-decoration: vars.$link-decoration
+);
