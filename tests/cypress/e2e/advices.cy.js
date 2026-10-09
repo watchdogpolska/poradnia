@@ -130,7 +130,7 @@ describe("advices", () => {
       cy.contains("a", advice.case.title).click();
 
       // Add an advice.
-      cy.contains(".panel", "Dane statystyczne")
+      cy.contains(".card", "Dane statystyczne")
         .contains("Otaguj sprawę")
         .click();
       cy.contains("form", "Dane statystyczne").within(($form) => {

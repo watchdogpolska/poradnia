@@ -10,23 +10,21 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <button
-                    type="button"
-                    class="close"
-                    data-dismiss="modal"
-                    aria-label="{% trans 'Close' %}"
-                >
-                    <span aria-hidden="true">&times;</span>
-                </button>
                 <h4 class="modal-title" id="attachmentTextModalLabel">
                     {{ attachment.filename }}
                 </h4>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="{% trans 'Close' %}"
+                ></button>
             </div>
 
             <div class="modal-body">
                 {% if attachment.text_content %}
                     <p class="small text-muted"><em>{{ attachment.text_content_warning }}</em></p>
-                    <div class="well" style="max-height: 70vh; overflow-y: auto; white-space: pre-wrap; word-break: break-word;">
+                    <div class="border rounded p-3 bg-body-secondary" style="max-height: 70vh; overflow-y: auto; white-space: pre-wrap; word-break: break-word;">
                         {{ attachment.text_content }}
                     </div>
                 {% else %}

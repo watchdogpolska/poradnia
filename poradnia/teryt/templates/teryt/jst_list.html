@@ -3,7 +3,9 @@
 {% block content %}
 
     <div class="gray">
-        <h2 class="page-header">{% trans 'Voivodeship' %}</h2>
+        <div class="pb-2 mb-3 border-bottom">
+            <h2>{% trans 'Voivodeship' %}</h2>
+        </div>
         <p>{% trans 'Select voivodeship.' %}</p>
         <ul class="select-list">
             {% for jst in object_list %}
