@@ -4,16 +4,20 @@
 {% block title %}{% trans 'Users index' %}{% endblock %}
 
 {% block breadcrumbs_rows %}
-    <li class="active">{% trans 'Users index' %}</li>
+    <li class="breadcrumb-item active">{% trans 'Users index' %}</li>
 {% endblock %}
 
 {% block extra_css %}
     <style>
+        {# BS5 paints table-cell backgrounds per-<td> via an inset box-shadow
+           driven by --bs-table-bg (see node_modules/bootstrap/scss/_tables.scss) -
+           every cell's own opaque background-color covers whatever color sits
+           on the <tr> itself, so overriding the custom property is what BS5's
+           own contextual row classes (.table-danger etc.) do instead of a
+           plain background-color. Found via a user report that staff rows had
+           lost their highlight after the migration. #}
         .staff {
-            background-color: #FF7474;
-        }
-        #submit-id-filter {
-            margin-top: 20px;
+            --bs-table-bg: #FF7474;
         }
         #user-nav-tabs {
             margin-top: 10px;
@@ -23,7 +27,7 @@
 {% endblock %}
 {% block users_content %}
 <div class="row">
-    <div class="col-lg-8 col-md-10 col-sm-12 col-xs-12 col-lg-offset-2 col-md-offset-1">
+    <div class="col-lg-8 col-md-10 col-sm-12 col-12 offset-lg-2 offset-md-1">
         <h2>{% trans 'Users' %}</h2>
         {% if not perms.users.can_view_other %}
             <p>
