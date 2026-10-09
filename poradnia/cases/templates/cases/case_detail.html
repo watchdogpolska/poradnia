@@ -3,7 +3,6 @@
 {% block title %}{{ object }} - {{ block.super }}{% endblock %}
 {% block javascript %}
     {{ block.super }}
-    {{ casegroup_form.media.js }}
     <script type="text/javascript">
         // #form-tab links already use data-bs-toggle="tab", which handles
         // click-to-switch on its own - only the initial tab (none is
@@ -40,8 +39,11 @@
             return ok;
         }
 
-        $(document).on('hidden.bs.modal', '[id^="aiSearchRejectModal-"]', function () {
-            var pk = this.id.replace('aiSearchRejectModal-', '');
+        document.addEventListener('hidden.bs.modal', function (event) {
+            if (!event.target.matches('[id^="aiSearchRejectModal-"]')) {
+                return;
+            }
+            var pk = event.target.id.replace('aiSearchRejectModal-', '');
             var ta = document.getElementById('aiSearchRejectReason-' + pk);
             var err = document.getElementById('aiSearchRejectReasonError-' + pk);
             if (ta) { ta.value = ''; }
@@ -51,7 +53,6 @@
 {% endblock %}
 
 {% block extra_css %}
-    {{ casegroup_form.media.css }}
     <style>
         .ai-thumb { color: #999; opacity: 0.6; font-size: 1.25em; }
         .ai-thumb:hover { opacity: 1; }
