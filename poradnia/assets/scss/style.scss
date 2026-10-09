@@ -1,16 +1,18 @@
-@import "base";
+@use "base";
 
-@import "layout";
-@import "cards";
-@import "sidebar";
-@import "case";
-@import "cases";
-@import "timeline";
-@import "forms";
-@import "calendar";
-@import "keys";
-@import "page-home";
-@import "dashboard";
+@use "layout";
+@use "cards";
+@use "sidebar";
+@use "case";
+@use "cases";
+@use "timeline";
+@use "forms";
+@use "calendar";
+@use "keys";
+@use "page-home";
+@use "dashboard";
+@use "bootstrap";
+@use "vars";
 
 
 
@@ -192,11 +194,11 @@ label {
 // non-staff messages had lost their background/border/text color
 // entirely.
 .text-bg-default{
-	color: $text-color !important; // #333
-	background-color: $panel-default-heading-bg !important; // #f5f5f5
+	color: vars.$text-color !important; // #333
+	background-color: vars.$panel-default-heading-bg !important; // #f5f5f5
 }
 .border-default{
-	border-color: $panel-default-border !important; // #ddd
+	border-color: vars.$panel-default-border !important; // #ddd
 }
 
 // `letter2panel()` also returns "success" for AI-message letters (BS3:
@@ -219,11 +221,11 @@ label {
 // header.text-bg-success` specifically, since that combination only
 // ever occurs on a letter2panel-driven card.
 .border-success{
-	border-color: $panel-success-border !important; // #d6e9c6
+	border-color: vars.$panel-success-border !important; // #d6e9c6
 }
 .card-header.text-bg-success{
 	color: #3c763d !important;
-	background-color: $panel-success-heading-bg !important; // #dff0d8
+	background-color: vars.$panel-success-heading-bg !important; // #dff0d8
 }
 
 // letter2panel()'s "info" (comment genre) isn't a gray-conflict bug like
@@ -236,11 +238,11 @@ label {
 // (case_filter.html, _simple_list.html, cases/models.py) needs its own,
 // different historical color - see below.
 .border-info{
-	border-color: $panel-info-border !important; // #bce8f1
+	border-color: vars.$panel-info-border !important; // #bce8f1
 }
 .card-header.text-bg-info{
 	color: #31708f !important;
-	background-color: $panel-info-heading-bg !important; // #d9edf7
+	background-color: vars.$panel-info-heading-bg !important; // #d9edf7
 }
 
 // The Milestone 3 `label -> badge text-bg-*` rename (BS4+ merged BS3's
@@ -299,7 +301,7 @@ label {
 // spacing from anywhere else (checked: no .timeline-comment/
 // .timeline-messange margin-bottom exists either).
 .card {
-	margin-bottom: $line-height-computed; // 20px, BS3's $panel-margin-bottom
+	margin-bottom: vars.$line-height-computed; // 20px, BS3's $panel-margin-bottom
 }
 
 // BS3's `.pager` (a simple previous/next link row, distinct from
@@ -318,7 +320,7 @@ label {
 // since they don't need opposite-edge positioning).
 .pager {
 	padding-left: 0;
-	margin: $line-height-computed 0;
+	margin: vars.$line-height-computed 0;
 	list-style: none;
 	text-align: center;
 
@@ -346,7 +348,7 @@ label {
 		> a:hover,
 		> a:focus {
 			text-decoration: none;
-			background-color: $gray-lighter; // #eee
+			background-color: vars.$gray-lighter; // #eee
 		}
 	}
 
@@ -362,7 +364,7 @@ label {
 
 	.disabled > a,
 	.disabled > span {
-		color: $gray-light; // #777
+		color: vars.$gray-light; // #777
 		background-color: #fff;
 		cursor: not-allowed;
 	}
@@ -500,5 +502,5 @@ label {
 // intended. Computed from Bootstrap's own $h4-font-size Sass variable
 // instead, so the 15% reduction is relative to what h4 actually renders at.
 #attachmentTextModalLabel {
-	font-size: $h4-font-size * 0.85;
+	font-size: bootstrap.$h4-font-size * 0.85;
 }
