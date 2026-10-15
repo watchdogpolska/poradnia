@@ -369,12 +369,19 @@ class Case(models.Model):
             return ""
 
     def render_involved_staff(self):
-        permissions = self.caseuserobjectpermission_set.all()
+        # order_by("user_id") is required for itertools.groupby to group
+        # correctly (it only groups contiguous runs of the same key); the
+        # permission names are separately sorted() since their own order
+        # otherwise depends on queryset/iteration order, which isn't stable
+        # across process restarts - confirmed live, the same case's badge
+        # tooltip rendered permissions in a different order after a plain
+        # server restart with no data change at all.
+        permissions = self.caseuserobjectpermission_set.order_by("user_id")
         grouped_permissions = itertools.groupby(permissions, lambda p: p.user)
         user_list = [
             {
                 "grouper": key,
-                "title": ", ".join([p.permission.name for p in list(group)]),
+                "title": ", ".join(sorted(p.permission.name for p in group)),
             }
             for key, group in grouped_permissions
             if key.is_staff
