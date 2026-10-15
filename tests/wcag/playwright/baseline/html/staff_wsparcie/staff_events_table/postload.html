@@ -1,0 +1,472 @@
+<!DOCTYPE html><html lang="pl" data-ui-mode="normal"><head>
+    <meta charset="utf-8">
+    <title>Poradnia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Poradnia App">
+    <meta name="author" content="Sieć Obywatelska - Watchdog Polska">
+    <meta name="theme-color" content="#D82727">
+    <link rel="apple-touch-icon" sizes="160x128" href="/static/images/logo-160x128.png">
+    <link rel="shortcut icon" type="image/png" href="/static/images/favicon-32x26.png" sizes="32x32">
+    <link rel="manifest" href="/static/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="/static/images/logo-160x128.png">
+    <meta property="og:image" content="/static/images/logo-czerwone-tlo-1200x600.jpg">
+    <meta property="og:image:type" content="image/jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="600">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+  <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+    <link rel="stylesheet" href="/static/tasty_feedback/style.css">
+
+    
+        <link rel="stylesheet" href="/static/css/style.min.css">
+    
+    
+    
+
+<style>.htmx-indicator{opacity:0;visibility: hidden} .htmx-request .htmx-indicator, .htmx-request.htmx-indicator{opacity:1;visibility: visible;transition: opacity 200ms ease-in}</style><style type="text/css">
+  *, *::before, *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    caret-color: transparent !important;
+    scroll-behavior: auto !important;
+  }
+</style></head>
+
+<body>
+
+<!-- First element in body by design: keyboard-reachable before anything
+     else, no JS required (plain form POST). This is the one approved
+     normal-mode DOM change - see logs/wcag/plan/ui-mode-design.md §2.
+     z-index below is needed because .navbar is position:fixed on mobile
+     widths (see _layout.scss) and would otherwise render on top of this. -->
+<form method="post" action="/ui-mode/" style="position: relative; z-index: 1051;">
+    <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
+    <input type="hidden" name="next" value="/wydarzenia/table/">
+    
+        <input type="hidden" name="mode" value="wcag">
+        <button type="submit" class="btn btn-dark">Włącz wersję dostępną</button>
+    
+</form>
+
+<!-- Moved to beginning to load JQueary before any other js code  -->
+
+    <script src="/static/js/script.min.js"></script>
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="body">
+                <span class="visually-hidden">Toggle navigation</span>
+                <i class="navbar-burger"></i>
+            </button>
+            <a class="navbar-brand" href="#">Poradnia</a>
+        </div>
+    </div>
+</nav>
+<!-- app_main_style tag used to differentiate dev, demo and production environments -->
+<div class="main" style="background-color: #d3e20040;">)
+
+    <div class="sidebar">
+        
+<div class="sidebar-header">
+    <h1 style="color: red;">DEV</h1>
+    <a href="/">
+        <div class="logo"></div>
+        <p>Poradnia</p>
+    </a>
+    <p><a href="http://siecobywatelska.pl">Sieci Watchdog</a></p>
+</div>
+<div class="block-list">
+    <ul class="block-list-list">
+
+        
+        
+           <li class="block-list-item">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#navsearch_modal">
+                   <i class="fas fa-magnifying-glass"></i> Wyszukaj
+               </a>
+           </li>
+        
+        
+        
+    </ul>
+</div>
+
+<div class="block-list">
+    <div class="block-list-header">Użytkownik</div>
+    <ul class="block-list-list">
+
+        
+            <li class="block-list-item">
+                <a href="/uzytkownik/a11y_staff_wsparcie/"><i class="fas fa-user"></i>
+                    Celina Wsparcie (team) - profil i bezpieczeństwo</a>
+            </li>
+            
+                <li class="block-list-item">
+                    <a href="/uzytkownik/table/"><i class="fas fa-users"></i> Tabela użytkowników</a>
+                </li>
+                <li class="block-list-item">
+                    <a href="/uzytkownik/"><i class="fas fa-users"></i> Wykaz użytkowników</a>
+                </li>
+            
+            
+            <li class="block-list-item">
+                <a href="/konta/logout/"><i class="fa-solid fa-right-from-bracket"></i> Wyloguj</a>
+            </li>
+        
+    </ul>
+</div>
+
+
+
+    <div class="block-list">
+        <div class="block-list-header">Tagi</div>
+        <ul class="block-list-list">
+            <li class="block-list-item">
+                <a href="/porady/table/"><i class="fas fa-book"></i> Tabela tagów</a>
+            </li>
+            <li class="block-list-item">
+                <a href="/porady/?page=1"><i class="fas fa-chart-area"></i> Rejestr tagów</a>
+            </li>
+        </ul>
+    </div>
+
+
+
+<div class="block-list">
+    <div class="block-list-header">Sprawy</div>
+    <ul class="block-list-list">
+        <li class="block-list-item"><a href="/listy/"><i class="fas fa-pencil"></i> Nowa sprawa</a></li>
+        
+            <li class="block-list-item">
+                <a href="/sprawy/table/"><i class="fas fa-book"></i> Tabela spraw</a>
+            </li>
+            <li class="block-list-item">
+                <a href="/sprawy/?status=0&amp;status=1&amp;status=3"><i class="fas fa-book"></i> Wykaz spraw</a>
+            </li>
+        
+        
+            
+            <li class="block-list-item">
+                <a href="/wydarzenia/table/"><i class="fas fa-calendar-days"></i> Tabela wydarzeń</a>
+            </li>
+            <li class="block-list-item">
+                <!-- <a href="/wydarzenia/"><i class="fas fa-calendar-days"></i> Kalendarz wydarzeń</a> -->
+                <a href="/wydarzenia/2026-10"><i class="fas fa-calendar-days"></i> Kalendarz wydarzeń</a>
+            </li>
+        
+        <li class="block-list-item">
+            <a href="/strony/regulamin-poradnictwa/"><i class="fas fa-gavel"></i> Regulamin poradnictwa</a>
+        </li>
+        <!-- TODO - move the below to Letters or generic sidebar for code consistency -->
+        
+            <li class="block-list-item">
+                <a href="/listy/table/"><i class="far fa-envelope"></i> Tabela korespondencji</a>
+            </li>
+        
+        
+            <li class="block-list-item">
+                <a href="/listy/rejestr"><i class="far fa-envelope"></i> Korespondencja</a>
+            </li>
+        
+    </ul>
+</div>
+
+
+
+    <div class="block-list">
+        <div class="block-list-header">Panel raportów</div>
+        <ul class="block-list-list">
+            <li class="block-list-item">
+                <a href="/dashboard/"><i class="fas fa-chart-line"></i> Panel raportów</a>
+            </li>
+        </ul>
+    </div>
+
+
+<div class="footer row">
+    
+        <div class="col-12">
+            <p class="text-center">
+                <img src="/static/images/baner.png" alt="" class="img-fluid">
+                Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
+                finansowanego z Funduszy EOG.
+            </p>
+        </div>
+    
+
+
+</div>
+
+
+
+    </div>
+    <div class="main-side">
+        <div class="content">
+            
+            
+            <div class="container-fluid">
+                
+
+<style>
+    input[type=search] {
+        width: 400px; /* set the desired min-width value */
+    }
+    input[type=text] {
+        width: 10px; /* set the desired min-width value */
+    }
+</style>
+
+<h3>Tabela wydarzeń:</h3>
+
+<div id="modal-popup" class="modal fade" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="width:1000px;"></div>
+    </div>
+</div>
+
+<div id="tableWrapper" class="row" style="max-height: 972.609px;">
+    <!-- TODO add colvis button and functionality -->
+    <div class="col-sm-1 filters">
+        <br><br><br><br>
+        <h4>Filtry:</h4><br>
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Istotne wydarzenie, szczególnie podkreślone np. na liście spraw." data-bs-original-title="Istotne wydarzenie, szczególnie podkreślone np. na liście spraw.">
+            </i>
+            <label>Termin:</label><br>
+            <input type="checkbox" id="deadline_yes" name="check_deadline_yes" checked="">
+            <label for="deadline_yes" class="small">Tak&nbsp;
+                <span class="fas fa-hourglass-half" style="color: black;"></span></label><br>
+            <input type="checkbox" id="deadline_no" name="check_deadline_no" checked="">
+            <label for="deadline_no" class="small">Nie&nbsp;
+                <span class="fas fa-hourglass" style="color: gray;"></span></label><br>
+            <br><br>
+        </div>
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Wydarzenie zostało zakończone, nie będzie przypomnień." data-bs-original-title="Wydarzenie zostało zakończone, nie będzie przypomnień.">
+            </i>
+            <label>Zakończone:</label><br>
+            <input type="checkbox" id="completed_yes" name="check_completed_yes" checked="">
+            <label for="completed_yes" class="small">Tak&nbsp;
+                <span class="fas fa-check" style="color: black;"></span></label><br>
+            <input type="checkbox" id="completed_no" name="check_completed_no" checked="">
+            <label for="completed_no" class="small">Nie&nbsp;
+                <span class="fas fa-xmark" style="color: gray;"></span></label><br>
+            <br><br>
+        </div>
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Zdarzenie jest widoczne dla klientów (ext)." data-bs-original-title="Zdarzenie jest widoczne dla klientów (ext).">
+            </i>
+            <label>Publiczny:</label><br>
+            <input type="checkbox" id="public_yes" name="check_public_yes" checked="">
+            <label for="public_yes" class="small">Tak&nbsp;
+                <span class="fas fa-earth-europe" style="color: black;"></span></label><br>
+            <input type="checkbox" id="public_no" name="check_public_no" checked="">
+            <label for="public_no" class="small">Nie&nbsp;
+                <span class="fas fa-house-user" style="color: gray;"></span></label><br>
+            <br><br>
+        </div>
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Wydarzenie jest rozprawą sądową" data-bs-original-title="Wydarzenie jest rozprawą sądową">
+            </i>
+            <label>Rozprawa sądowa:</label><br>
+            <input type="checkbox" id="courtsession_yes" name="check_courtsession_yes" checked="">
+            <label for="courtsession_yes" class="small">Tak&nbsp;
+                <span class="fas fa-scale-balanced" style="color: black;
+                    font-weight: bold; font-size: 17px;"></span></label><br>
+            <input type="checkbox" id="courtsession_no" name="check_courtsession_no" checked="">
+            <label for="courtsession_no" class="small">Nie</label><br>
+            <br><br>
+        </div>
+    </div>
+    <div class="col-sm-11 table-responsive">
+        <div id="datatable_events_wrapper" class="dt-container dt-empty-footer"><div id="" class="toolbar"><div class="daterange" style="float: left; margin-right: 6px;"><span class="from"><label>Czas od</label>: <input type="date" class="date_from datepicker"></span><span class="to"><label>&nbsp; do</label>: <input type="date" class="date_to datepicker"></span></div></div><div id="" class="dt-top-row"><div class="dt-length"><label for="dt-length-0">Pokaż <select aria-controls="datatable_events" autocomplete="off" class="dt-input" id="dt-length-0"><option value="20">20</option><option value="50">50</option><option value="100">100</option></select> pozycji</label></div><div class="dt-search"><label for="dt-search-0">Szukaj:</label><input type="search" class="dt-input" autocomplete="off" id="dt-search-0" placeholder="" aria-controls="datatable_events"></div></div><div class="dt-scroll" role="table"><div id="datatable_events_processing" role="status" class="dt-processing" style="display: none;">Przetwarzanie...<div><div></div><div></div><div></div><div></div></div></div><div class="dt-scroll-head" role="none" style="overflow: hidden; position: relative; border: 0px; width: 100%;"><div class="dt-scroll-headInner" role="none" style="box-sizing: content-box; width: 1501px; padding-right: 0px;"><table width="100%" class="table table-bordered compact dataTable" role="none" style="margin-left: 0px; width: 1501px;"><thead><tr><th class="latest_by dt-orderable-asc dt-orderable-desc dt-ordering-desc dt-type-date" data-dt-column="0" rowspan="1" colspan="1" aria-sort="descending"><div class="dt-column-header"><div class="dt-column-title">Czas</div><div class="dt-column-order" role="button" aria-label="Czas: Activate to remove sorting" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="1" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Przedmiot</div><div class="dt-column-order" role="button" aria-label="Przedmiot: Activate to sort" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="2" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Sprawa - Przedmiot</div><div class="dt-column-order" role="button" aria-label="Sprawa - Przedmiot: Activate to sort" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="3" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Klient</div><div class="dt-column-order" role="button" aria-label="Klient: Activate to sort" tabindex="0"></div></div></th><th class="null dt-orderable-none" data-dt-column="4" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Właściwości</div><div class="dt-column-order"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="5" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Sprawa sadowa</div><div class="dt-column-order" role="button" aria-label="Sprawa sadowa: Activate to sort" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="6" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Sąd</div><div class="dt-column-order" role="button" aria-label="Sąd: Activate to sort" tabindex="0"></div></div></th></tr><tr class="datatable-column-filter-row"><th style="padding: 0px;"><i class="fas fa-magnifying-glass"></i></th><th style="padding: 0px;"><input type="text" data-index="1" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></th><th style="padding: 0px;"><input type="text" data-index="2" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></th><th style="padding: 0px;"><input type="text" data-index="3" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></th><th style="padding: 0px;">&nbsp;</th><th style="padding: 0px;"><input type="text" data-index="5" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></th><th style="padding: 0px;"><input type="text" data-index="6" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></th></tr></thead><colgroup><col data-dt-column="0" style="width: 140.328px; min-width: 140.328px;"><col data-dt-column="1" style="width: 256.109px; min-width: 256.109px;"><col data-dt-column="2" style="width: 352.062px; min-width: 352.062px;"><col data-dt-column="3" style="width: 172.812px; min-width: 172.812px;"><col data-dt-column="4" style="width: 256.375px; min-width: 256.375px;"><col data-dt-column="5" style="width: 198.219px; min-width: 198.219px;"><col data-dt-column="6" style="width: 124.094px; min-width: 124.094px;"></colgroup></table></div></div><div class="dt-scroll-body" role="none" style="position: relative; overflow: auto; width: 100%; max-height: 722.609px; height: 722.609px;"><table id="datatable_events" width="100%" class="table table-bordered compact dataTable" role="none" aria-describedby="datatable_events_info" style="width: 100%;"><colgroup><col data-dt-column="0" style="width: 140.328px; min-width: 140.328px;"><col data-dt-column="1" style="width: 256.109px; min-width: 256.109px;"><col data-dt-column="2" style="width: 352.062px; min-width: 352.062px;"><col data-dt-column="3" style="width: 172.812px; min-width: 172.812px;"><col data-dt-column="4" style="width: 256.375px; min-width: 256.375px;"><col data-dt-column="5" style="width: 198.219px; min-width: 198.219px;"><col data-dt-column="6" style="width: 124.094px; min-width: 124.094px;"></colgroup><tfoot role="none"></tfoot><thead role="none"><tr role="row"><th class="latest_by dt-orderable-asc dt-orderable-desc dt-ordering-desc dt-type-date" data-dt-column="0" rowspan="1" colspan="1" aria-sort="descending" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Czas</div><div class="dt-column-order" aria-label="Czas: Activate to remove sorting"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="1" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Przedmiot</div><div class="dt-column-order" aria-label="Przedmiot: Activate to sort"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="2" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Sprawa - Przedmiot</div><div class="dt-column-order" aria-label="Sprawa - Przedmiot: Activate to sort"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="3" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Klient</div><div class="dt-column-order" aria-label="Klient: Activate to sort"></div></div></div></th><th class="null dt-orderable-none" data-dt-column="4" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Właściwości</div><div class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="5" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Sprawa sadowa</div><div class="dt-column-order" aria-label="Sprawa sadowa: Activate to sort"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="6" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Sąd</div><div class="dt-column-order" aria-label="Sąd: Activate to sort"></div></div></div></th></tr><tr class="datatable-column-filter-row" role="row"><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing"><i class="fas fa-magnifying-glass"></i></div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing"><input type="text" data-index="1" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing"><input type="text" data-index="2" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing"><input type="text" data-index="3" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing">&nbsp;</div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing"><input type="text" data-index="5" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing"><input type="text" data-index="6" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></div></th></tr></thead>
+            <!-- table-striped  nowrap-->
+        <tbody role="rowgroup"><tr id="row-3" role="row"><td class="latest_by dt-type-date sorting_1" role="cell">[DATETIME]</td><td class="null" role="cell"><b><a href="/sprawy/sprawa-4/#event-3">Przyszłe wydarzenie</a></b></td><td class="null" role="cell"><b><a href="/sprawy/sprawa-4/">Sprawa zamknięta po udzieleniu odpowiedzi</a></b></td><td class="null" role="cell">Ewa Klientka</td><td class="null" role="cell">
+            <i class="fas fa-hourglass" data-toggle="tooltip" data-placement="top" style="color: gray;" title="Wydarzenie nie jest terminem">
+            </i>
+        
+            <i class="fas fa-xmark" data-toggle="tooltip" data-placement="top" style="color: gray;" title="Nie ukończono (są przypomnienia)">
+            </i>
+        
+            <i class="fas fa-earth-europe" data-toggle="tooltip" data-placement="top" style="color: black;" title="Wydarzenie jest publiczne">
+            </i>
+        </td><td class="null" role="cell"></td><td class="null" role="cell"></td></tr><tr id="row-1" role="row"><td class="latest_by dt-type-date sorting_1" role="cell">[DATETIME]</td><td class="null" role="cell"><a href="/sprawy/sprawa-2/#event-1">Termin, który już minął</a></td><td class="null" role="cell"><b><a href="/sprawy/sprawa-2/">Spór o dostęp do danych środowiskowych</a></b></td><td class="null" role="cell">Ewa Klientka</td><td class="null" role="cell">
+            <i class="fas fa-hourglass-half" data-toggle="tooltip" data-placement="top" style="color: black;" title="Wydarzenie jest terminem">
+            </i>
+        
+            <i class="fas fa-xmark" data-toggle="tooltip" data-placement="top" style="color: gray;" title="Nie ukończono (są przypomnienia)">
+            </i>
+        
+            <i class="fas fa-house-user" data-toggle="tooltip" data-placement="top" style="color: gray;" title="Wydarzenie nie jest publiczne">
+            </i>
+        </td><td class="null" role="cell"></td><td class="null" role="cell"></td></tr></tbody></table></div><div class="dt-scroll-foot" role="none" style="overflow: hidden; border: 0px; width: 100%;"><div class="dt-scroll-footInner" role="none" style="width: 1501px; padding-right: 0px;"><table width="100%" class="table table-bordered compact dataTable" role="none" style="margin-left: 0px; width: 1501px;"><colgroup><col data-dt-column="0" style="width: 140.328px; min-width: 140.328px;"><col data-dt-column="1" style="width: 256.109px; min-width: 256.109px;"><col data-dt-column="2" style="width: 352.062px; min-width: 352.062px;"><col data-dt-column="3" style="width: 172.812px; min-width: 172.812px;"><col data-dt-column="4" style="width: 256.375px; min-width: 256.375px;"><col data-dt-column="5" style="width: 198.219px; min-width: 198.219px;"><col data-dt-column="6" style="width: 124.094px; min-width: 124.094px;"></colgroup></table></div></div></div><div id="" class="dt-bottom-row"><div class="dt-info" aria-live="polite" id="datatable_events_info" role="status">Pozycje od 1 do 2 z 2 łącznie</div><div class="dt-paging"><nav aria-label="pagination"><button class="dt-paging-button disabled first" role="link" type="button" aria-controls="datatable_events" aria-disabled="true" aria-label="First" data-dt-idx="first" tabindex="-1">Pierwsza</button><button class="dt-paging-button disabled previous" role="link" type="button" aria-controls="datatable_events" aria-disabled="true" aria-label="Previous" data-dt-idx="previous" tabindex="-1">Poprzednia</button><button class="dt-paging-button current" role="link" type="button" aria-controls="datatable_events" aria-current="page" data-dt-idx="0">1</button><button class="dt-paging-button disabled next" role="link" type="button" aria-controls="datatable_events" aria-disabled="true" aria-label="Next" data-dt-idx="next" tabindex="-1">Następna</button><button class="dt-paging-button disabled last" role="link" type="button" aria-controls="datatable_events" aria-disabled="true" aria-label="Last" data-dt-idx="last" tabindex="-1">Ostatnia</button></nav></div></div><div class="dt-autosize" style="width: 100%; height: 0px;"></div></div>
+    </div>
+</div>
+
+
+            </div>
+            <div class="footer">
+                <div class="footer-right">Sieć Obywatelska - Watchdog Polska<br>
+                    ul. Szpitalna 5/5<br>
+                    00-031 Warszawa
+                </div>
+                <div class="footer-left">
+                    silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
+                    [VERSION] |
+                    <a href="https://github.com/watchdogpolska/poradnia">
+                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/c31bc739...master">c31bc73</a>
+                </div>
+                <div class="footer-center">Strona wykorzystuje cookies</div>
+            </div>
+            <div class="footer">
+                    <div class="footer-center col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                        
+                            <img src="/static/images/baner.png" alt="" class="img-fluid"><br>
+                            Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
+                            finansowanego z Funduszy EOG.<br>
+                        
+
+
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+        
+        
+<div id="feedback">
+    <div id="feedback-header">Zgłoś usterkę administratorom poradni.</div>
+    <div id="feedback-body">
+        <p>Przekaż nam uwagi o tej stronie dotyczące błędów lub możliwych ulepszeń.</p>
+        
+
+<form action="/uwagi/submit" method="post"> <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div id="div_id_text" class="mb-3"> <label for="id_text" class="form-label requiredField">
+                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea name="text" cols="40" rows="10" class="textarea form-control" required="" aria-describedby="id_text_helptext" id="id_text"></textarea> <div id="id_text_helptext" class="form-text">Treść zgłoszona przez użytkownika</div> </div> <input type="hidden" name="url" value="http://localhost:8000/wydarzenia/table/" id="id_url"> <div class="mb-3"> <div class=""> <input type="submit" name="action" value="Zgłoś usterkę administratorom poradni." class="btn btn-primary btn-primary" id="submit-id-action"> </div> </div> </form>
+
+    </div>
+</div>
+
+    
+
+</div>
+
+    
+<!-- Modal -->
+<div class="modal fade" id="navsearch_modal" tabindex="-1" role="dialog" aria-labelledby="navsearch_modal_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="navsearch_modal_label">Wyszukaj</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+<div class="navsearch">
+	<form class="form" onsubmit="return false;">
+		<div class="form-group">
+			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
+			<input type="search" id="search" name="q" class="form-control navsearch__input" hx-get="/navsearch/" hx-trigger="input changed delay:300ms" hx-target=".navsearch__results" hx-swap="innerHTML">
+		</div>
+	</form>
+	<div class="navsearch__results"></div>
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Le javascript
+  ================================================== -->
+<!-- Rest of js placed at the end of the document so the pages load faster -->
+
+
+
+
+
+
+
+
+<div id="attachment-text-modal-container"></div>
+<div id="htmx-spinner" class="htmx-indicator">
+    Loading...
+</div>
+<script>
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('[hx-target="#attachment-text-modal-container"]')) {
+            return;
+        }
+
+        var existingModal = document.getElementById('attachmentTextModal');
+        if (existingModal) {
+            bootstrap.Modal.getOrCreateInstance(existingModal).hide();
+        }
+
+        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+            el.remove();
+        });
+        document.body.classList.remove('modal-open');
+    });
+
+    document.body.addEventListener('htmx:afterSwap', function (event) {
+        if (event.target.id === 'attachment-text-modal-container') {
+            var modal = document.getElementById('attachmentTextModal');
+            if (modal) {
+                bootstrap.Modal.getOrCreateInstance(modal).show();
+            }
+        }
+    });
+
+    document.addEventListener('hidden.bs.modal', function (event) {
+        if (!event.target.matches('#attachmentTextModal')) {
+            return;
+        }
+        var container = document.getElementById('attachment-text-modal-container');
+        if (container) {
+            container.innerHTML = '';
+        }
+        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+            el.remove();
+        });
+        document.body.classList.remove('modal-open');
+    });
+
+    function getCookie(name) {
+        var value = '; ' + document.cookie;
+        var parts = value.split('; ' + name + '=');
+        if (parts.length === 2) {
+            return parts.pop().split(';').shift();
+        }
+        return null;
+    }
+
+    document.body.addEventListener('htmx:configRequest', function (event) {
+        event.detail.headers['X-CSRFToken'] = getCookie('csrftoken');
+    });
+</script>
+
+
+
+
+</body></html>

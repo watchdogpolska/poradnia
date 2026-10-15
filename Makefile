@@ -33,6 +33,39 @@ test: wait_mysql
 e2e: wait_mysql
 	docker compose --file docker-compose.yml --file docker-compose.test.yml up --build --exit-code-from tests db web tests
 
+# Regenerate the committed WCAG normal-mode baseline (tests/wcag/playwright/baseline/)
+# before committing a PR that changes normal-mode output - see
+# logs/wcag/README.md §4-5 for what gets committed (HTML + assets.sha256) vs
+# stays local-only (screenshots). Seeds a throwaway poradnia_a11y database
+# (never poradnia/test_poradnia - no real client data), brings the app up
+# against it, rebuilds frontend assets, then runs the Playwright capture on
+# the host (Playwright needs a real Chromium, not the web container) before
+# switching the web container back to its normal (non-a11y) config.
+wcag-baseline: A11Y_SEED_PASSWORD := $(shell openssl rand -base64 24)
+wcag-baseline: wait_mysql
+	docker compose exec -T db mysql -uroot -ppassword -e \
+		"CREATE DATABASE IF NOT EXISTS poradnia_a11y CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci;"
+	docker compose -f docker-compose.yml -f tests/wcag/docker-compose.a11y.yml \
+		run --rm web python manage.py migrate
+	docker compose up -d --remove-orphans maildump
+	docker compose -f docker-compose.yml -f tests/wcag/docker-compose.a11y.yml \
+		run --rm -e A11Y_SEED_PASSWORD="$(A11Y_SEED_PASSWORD)" \
+		web python tests/wcag/seed_a11y.py --reset
+	docker compose -f docker-compose.yml -f tests/wcag/docker-compose.a11y.yml up -d web
+	$(MAKE) gulp
+	sha256sum poradnia/static/css/style.css poradnia/static/css/style.min.css \
+		poradnia/static/js/script.js poradnia/static/js/script.min.js \
+		> tests/wcag/playwright/baseline/assets.sha256
+	cd tests/wcag/playwright && npm install && npx playwright install chromium && \
+		A11Y_SEED_PASSWORD="$(A11Y_SEED_PASSWORD)" node baseline_capture.js
+	docker compose up -d web
+	@echo ""
+	@echo "Baseline regenerated. Review before committing:"
+	@echo "  git status tests/wcag/playwright/baseline/"
+	@echo "  git diff tests/wcag/playwright/baseline/html/"
+	@echo "Commit tests/wcag/playwright/baseline/{html,assets.sha256} if the change is expected."
+	@echo "Screenshots (logs/wcag/baseline/screenshots/) are local-only - not committed."
+
 wait_mysql:
 	docker compose up -d --remove-orphans db
 	docker compose run web bash -c 'wait-for-it db:3306'

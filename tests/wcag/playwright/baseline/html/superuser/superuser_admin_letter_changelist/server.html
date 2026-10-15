@@ -1,0 +1,1587 @@
+<!DOCTYPE html>
+
+<html lang="pl" dir="ltr">
+<head>
+<title>Wybierz List do obejrzenia | Administracja stroną Django</title>
+<link rel="stylesheet" href="/static/admin/css/base.css">
+
+  <link rel="stylesheet" href="/static/admin/css/dark_mode.css">
+  <script src="/static/admin/js/theme.js"></script>
+
+
+  <link rel="stylesheet" href="/static/admin/css/nav_sidebar.css">
+  <script src="/static/admin/js/nav_sidebar.js" defer></script>
+
+
+  
+  <link rel="stylesheet" href="/static/admin/css/changelists.css">
+  
+  
+    <script src="/admin/jsi18n/"></script>
+  
+  
+  
+
+
+
+
+<script src="/static/admin/js/vendor/jquery/jquery.js"></script>
+<script src="/static/admin/js/jquery.init.js"></script>
+<script src="/static/admin/js/core.js"></script>
+<script src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script src="/static/admin/js/actions.js"></script>
+<script src="/static/admin/js/urlify.js"></script>
+<script src="/static/admin/js/prepopulate.js"></script>
+<script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+<script src="/static/admin/js/filters.js" defer></script>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/admin/css/responsive.css">
+    
+
+<meta name="robots" content="NONE,NOARCHIVE">
+</head>
+
+<body class=" app-letters model-letter change-list"
+  data-admin-utc-offset="7200">
+<a href="#content-start" class="skip-to-content-link">Przejdź do głównej treści</a>
+<!-- Container -->
+<div id="container">
+
+    
+    <!-- Header -->
+    
+      <header id="header">
+        <div id="branding">
+        
+<div id="site-name"><a href="/admin/">Administracja Django</a></div>
+
+
+        </div>
+        
+        
+        <div id="user-tools">
+            
+                Witaj,
+                <strong>Anna</strong>.
+            
+            
+                
+                    <a href="/">Pokaż stronę</a> /
+                
+                
+                    
+                    
+                
+                
+                <a href="/admin/password_change/">Zmień hasło</a> /
+                
+                <form id="logout-form" method="post" action="/admin/logout/">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
+                    <button type="submit">Wyloguj się</button>
+                </form>
+                
+<button class="theme-toggle">
+  <span class="visually-hidden theme-label-when-auto">Przełącz motyw (bieżący motyw: auto)</span>
+  <span class="visually-hidden theme-label-when-light">Przełącz motyw (bieżący motyw: jasny)</span>
+  <span class="visually-hidden theme-label-when-dark">Przełącz motyw (bieżący motyw: ciemny)</span>
+  <svg aria-hidden="true" class="theme-icon-when-auto">
+    <use xlink:href="#icon-auto" />
+  </svg>
+  <svg aria-hidden="true" class="theme-icon-when-dark">
+    <use xlink:href="#icon-moon" />
+  </svg>
+  <svg aria-hidden="true" class="theme-icon-when-light">
+    <use xlink:href="#icon-sun" />
+  </svg>
+</button>
+
+            
+        </div>
+        
+        
+        
+      </header>
+    
+    <!-- END Header -->
+    
+      <nav aria-label="Breadcrumbs">
+        
+<div class="breadcrumbs">
+<a href="/admin/">Start</a>
+&rsaquo; <a href="/admin/letters/">Korespondencja</a>
+&rsaquo; Korespondencja
+</div>
+
+      </nav>
+    
+    
+
+    <div class="main" id="main">
+      
+        
+          
+<button class="sticky toggle-nav-sidebar" id="toggle-nav-sidebar" aria-label="Przełącz nawigację"></button>
+<nav class="sticky" id="nav-sidebar" aria-label="Pasek boczny">
+  <input type="search" id="nav-filter"
+         placeholder="Zacznij pisać, aby odfiltrować…"
+         aria-label="Filtruj elementy nawigacji">
+  
+
+
+  
+    <div class="app-admin module">
+      <table>
+        <caption>
+          <a href="/admin/admin/" class="section" title="Modele w aplikacji Administracja">Administracja</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-logentry">
+              <th scope="row" id="admin-logentry">
+                
+                  <a href="/admin/admin/logentry/">Logi</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-teryt_tree module">
+      <table>
+        <caption>
+          <a href="/admin/teryt_tree/" class="section" title="Modele w aplikacji Administrative division">Administrative division</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-jednostkaadministracyjna">
+              <th scope="row" id="teryt_tree-jednostkaadministracyjna">
+                
+                  <a href="/admin/teryt_tree/jednostkaadministracyjna/">Units of administrative division</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-ai_assistant module">
+      <table>
+        <caption>
+          <a href="/admin/ai_assistant/" class="section" title="Modele w aplikacji Ai_Assistant">Ai_Assistant</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-n8narticlessearchrequest">
+              <th scope="row" id="ai_assistant-n8narticlessearchrequest">
+                
+                  <a href="/admin/ai_assistant/n8narticlessearchrequest/">N8n articles search requests</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-n8ncasetagsrequest">
+              <th scope="row" id="ai_assistant-n8ncasetagsrequest">
+                
+                  <a href="/admin/ai_assistant/n8ncasetagsrequest/">N8n case tags requests</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-celery_monitor module">
+      <table>
+        <caption>
+          <a href="/admin/celery_monitor/" class="section" title="Modele w aplikacji Celery / RabbitMQ Monitoring">Celery / RabbitMQ Monitoring</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-monitoringalert">
+              <th scope="row" id="celery_monitor-monitoringalert">
+                
+                  <a href="/admin/celery_monitor/monitoringalert/">Monitoring alerts</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-queuesnapshot">
+              <th scope="row" id="celery_monitor-queuesnapshot">
+                
+                  <a href="/admin/celery_monitor/queuesnapshot/">Queue snapshots</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-systemhealthcheck">
+              <th scope="row" id="celery_monitor-systemhealthcheck">
+                
+                  <a href="/admin/celery_monitor/systemhealthcheck/">System health checks</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-taskslasnapshot">
+              <th scope="row" id="celery_monitor-taskslasnapshot">
+                
+                  <a href="/admin/celery_monitor/taskslasnapshot/">Task sla snapshots</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-workerheartbeat">
+              <th scope="row" id="celery_monitor-workerheartbeat">
+                
+                  <a href="/admin/celery_monitor/workerheartbeat/">Worker heartbeats</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-django_celery_results module">
+      <table>
+        <caption>
+          <a href="/admin/django_celery_results/" class="section" title="Modele w aplikacji Celery Results">Celery Results</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-groupresult">
+              <th scope="row" id="django_celery_results-groupresult">
+                
+                  <a href="/admin/django_celery_results/groupresult/">Group results</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/django_celery_results/groupresult/add/" class="addlink" aria-describedby="django_celery_results-groupresult">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-taskresult">
+              <th scope="row" id="django_celery_results-taskresult">
+                
+                  <a href="/admin/django_celery_results/taskresult/">Task results</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-judgements module">
+      <table>
+        <caption>
+          <a href="/admin/judgements/" class="section" title="Modele w aplikacji Judgements">Judgements</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-courtsession">
+              <th scope="row" id="judgements-courtsession">
+                
+                  <a href="/admin/judgements/courtsession/">Rozprawy sądowe</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/judgements/courtsession/add/" class="addlink" aria-describedby="judgements-courtsession">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-courtcase">
+              <th scope="row" id="judgements-courtcase">
+                
+                  <a href="/admin/judgements/courtcase/">Sprawy sądowe</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/judgements/courtcase/add/" class="addlink" aria-describedby="judgements-courtcase">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-court">
+              <th scope="row" id="judgements-court">
+                
+                  <a href="/admin/judgements/court/">Sądy</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/judgements/court/add/" class="addlink" aria-describedby="judgements-court">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-keys module">
+      <table>
+        <caption>
+          <a href="/admin/keys/" class="section" title="Modele w aplikacji Klucze API">Klucze API</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-key">
+              <th scope="row" id="keys-key">
+                
+                  <a href="/admin/keys/key/">Klucze dostępu</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-account module">
+      <table>
+        <caption>
+          <a href="/admin/account/" class="section" title="Modele w aplikacji Konta">Konta</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-emailaddress">
+              <th scope="row" id="account-emailaddress">
+                
+                  <a href="/admin/account/emailaddress/">Adresy e-mail</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/account/emailaddress/add/" class="addlink" aria-describedby="account-emailaddress">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-socialaccount module">
+      <table>
+        <caption>
+          <a href="/admin/socialaccount/" class="section" title="Modele w aplikacji Konta społecznościowe">Konta społecznościowe</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-socialapp">
+              <th scope="row" id="socialaccount-socialapp">
+                
+                  <a href="/admin/socialaccount/socialapp/">Aplikacje społecznościowe</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/socialaccount/socialapp/add/" class="addlink" aria-describedby="socialaccount-socialapp">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-socialaccount">
+              <th scope="row" id="socialaccount-socialaccount">
+                
+                  <a href="/admin/socialaccount/socialaccount/">Konta społecznościowe</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-socialtoken">
+              <th scope="row" id="socialaccount-socialtoken">
+                
+                  <a href="/admin/socialaccount/socialtoken/">Tokeny aplikacji społecznościowych</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-letters module current-app">
+      <table>
+        <caption>
+          <a href="/admin/letters/" class="section" title="Modele w aplikacji Korespondencja">Korespondencja</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-letter current-model">
+              <th scope="row" id="letters-letter">
+                
+                  <a href="/admin/letters/letter/" aria-current="page">Korespondencja</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-attachment">
+              <th scope="row" id="letters-attachment">
+                
+                  <a href="/admin/letters/attachment/">Załączniki</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-mfa module">
+      <table>
+        <caption>
+          <a href="/admin/mfa/" class="section" title="Modele w aplikacji MFA">MFA</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-authenticator">
+              <th scope="row" id="mfa-authenticator">
+                
+                  <a href="/admin/mfa/authenticator/">Authenticators</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-django_celery_beat module">
+      <table>
+        <caption>
+          <a href="/admin/django_celery_beat/" class="section" title="Modele w aplikacji Periodic Tasks">Periodic Tasks</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-clockedschedule">
+              <th scope="row" id="django_celery_beat-clockedschedule">
+                
+                  <a href="/admin/django_celery_beat/clockedschedule/">Clocked</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/django_celery_beat/clockedschedule/add/" class="addlink" aria-describedby="django_celery_beat-clockedschedule">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-crontabschedule">
+              <th scope="row" id="django_celery_beat-crontabschedule">
+                
+                  <a href="/admin/django_celery_beat/crontabschedule/">Crontabs</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/django_celery_beat/crontabschedule/add/" class="addlink" aria-describedby="django_celery_beat-crontabschedule">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-intervalschedule">
+              <th scope="row" id="django_celery_beat-intervalschedule">
+                
+                  <a href="/admin/django_celery_beat/intervalschedule/">Intervals</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/django_celery_beat/intervalschedule/add/" class="addlink" aria-describedby="django_celery_beat-intervalschedule">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-periodictask">
+              <th scope="row" id="django_celery_beat-periodictask">
+                
+                  <a href="/admin/django_celery_beat/periodictask/">Periodic tasks</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/django_celery_beat/periodictask/add/" class="addlink" aria-describedby="django_celery_beat-periodictask">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-solarschedule">
+              <th scope="row" id="django_celery_beat-solarschedule">
+                
+                  <a href="/admin/django_celery_beat/solarschedule/">Solar events</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/django_celery_beat/solarschedule/add/" class="addlink" aria-describedby="django_celery_beat-solarschedule">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-advicer module">
+      <table>
+        <caption>
+          <a href="/admin/advicer/" class="section" title="Modele w aplikacji Rejestr tagów spraw">Rejestr tagów spraw</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-advice">
+              <th scope="row" id="advicer-advice">
+                
+                  <a href="/admin/advicer/advice/">Tagi</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-scope">
+              <th scope="row" id="advicer-scope">
+                
+                  <a href="/admin/advicer/scope/">Zakresy poradnictwa</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/advicer/scope/add/" class="addlink" aria-describedby="advicer-scope">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-issue">
+              <th scope="row" id="advicer-issue">
+                
+                  <a href="/admin/advicer/issue/">Zagadnienia</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/advicer/issue/add/" class="addlink" aria-describedby="advicer-issue">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-area">
+              <th scope="row" id="advicer-area">
+                
+                  <a href="/admin/advicer/area/">Obszary</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/advicer/area/add/" class="addlink" aria-describedby="advicer-area">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-personkind">
+              <th scope="row" id="advicer-personkind">
+                
+                  <a href="/admin/advicer/personkind/">Rodzaj osób, które się zgłaszają o poradę:</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/advicer/personkind/add/" class="addlink" aria-describedby="advicer-personkind">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-institutionkind">
+              <th scope="row" id="advicer-institutionkind">
+                
+                  <a href="/admin/advicer/institutionkind/">Rodzaje instytucji</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/advicer/institutionkind/add/" class="addlink" aria-describedby="advicer-institutionkind">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-cases module">
+      <table>
+        <caption>
+          <a href="/admin/cases/" class="section" title="Modele w aplikacji Sprawy">Sprawy</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-permissiongroup">
+              <th scope="row" id="cases-permissiongroup">
+                
+                  <a href="/admin/cases/permissiongroup/">Permission groups</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/cases/permissiongroup/add/" class="addlink" aria-describedby="cases-permissiongroup">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-case">
+              <th scope="row" id="cases-case">
+                
+                  <a href="/admin/cases/case/">Sprawy</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-deletecaseproxy">
+              <th scope="row" id="cases-deletecaseproxy">
+                
+                  <a href="/admin/cases/deletecaseproxy/">Sprawy do usunięcia</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-sites module">
+      <table>
+        <caption>
+          <a href="/admin/sites/" class="section" title="Modele w aplikacji Strony">Strony</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-site">
+              <th scope="row" id="sites-site">
+                
+                  <a href="/admin/sites/site/">Strony</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/sites/site/add/" class="addlink" aria-describedby="sites-site">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-tinycontent module">
+      <table>
+        <caption>
+          <a href="/admin/tinycontent/" class="section" title="Modele w aplikacji Tinycontent">Tinycontent</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-tinycontent">
+              <th scope="row" id="tinycontent-tinycontent">
+                
+                  <a href="/admin/tinycontent/tinycontent/">Content blocks</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-tinycontentfileupload">
+              <th scope="row" id="tinycontent-tinycontentfileupload">
+                
+                  <a href="/admin/tinycontent/tinycontentfileupload/">File uploads</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/tinycontent/tinycontentfileupload/add/" class="addlink" aria-describedby="tinycontent-tinycontentfileupload">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-tasty_feedback module">
+      <table>
+        <caption>
+          <a href="/admin/tasty_feedback/" class="section" title="Modele w aplikacji Uwagi">Uwagi</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-feedback">
+              <th scope="row" id="tasty_feedback-feedback">
+                
+                  <a href="/admin/tasty_feedback/feedback/">Uwagi</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/tasty_feedback/feedback/add/" class="addlink" aria-describedby="tasty_feedback-feedback">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-auth module">
+      <table>
+        <caption>
+          <a href="/admin/auth/" class="section" title="Modele w aplikacji Uwierzytelnienie i autoryzacja">Uwierzytelnienie i autoryzacja</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-group">
+              <th scope="row" id="auth-group">
+                
+                  <a href="/admin/auth/group/">Grupy</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/auth/group/add/" class="addlink" aria-describedby="auth-group">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-users module">
+      <table>
+        <caption>
+          <a href="/admin/users/" class="section" title="Modele w aplikacji Użytkownicy">Użytkownicy</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-profile">
+              <th scope="row" id="users-profile">
+                
+                  <a href="/admin/users/profile/">Profile</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/users/profile/add/" class="addlink" aria-describedby="users-profile">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-user">
+              <th scope="row" id="users-user">
+                
+                  <a href="/admin/users/user/">Użytkownicy</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/users/user/add/" class="addlink" aria-describedby="users-user">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-records module">
+      <table>
+        <caption>
+          <a href="/admin/records/" class="section" title="Modele w aplikacji Wpis">Wpis</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-record">
+              <th scope="row" id="records-record">
+                
+                  <a href="/admin/records/record/">Wpis</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/records/record/add/" class="addlink" aria-describedby="records-record">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+    <div class="app-events module">
+      <table>
+        <caption>
+          <a href="/admin/events/" class="section" title="Modele w aplikacji Wydarzenia">Wydarzenia</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tr class="model-event">
+              <th scope="row" id="events-event">
+                
+                  <a href="/admin/events/event/">Wydarzenia</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/events/event/add/" class="addlink" aria-describedby="events-event">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </table>
+    </div>
+  
+
+
+</nav>
+
+        
+      
+      <main id="content-start" class="content" tabindex="-1">
+        
+          
+        
+        <!-- Content -->
+        <div id="content" class="">
+          
+          <h1>Wybierz List do obejrzenia</h1>
+          
+          
+  <div id="content-main">
+    
+        <ul class="object-tools">
+          
+            
+
+
+  
+
+
+          
+        </ul>
+    
+    
+    <div class="module filtered" id="changelist">
+      <div class="changelist-form-container">
+        
+
+<div id="toolbar"><form id="changelist-search" method="get" role="search">
+<div><!-- DIV needed for valid HTML -->
+<label for="searchbar"><img src="/static/admin/img/search.svg" alt="Search"></label>
+<input type="text" size="40" name="q" value="" id="searchbar">
+<input type="submit" value="Wyszukaj">
+
+
+</div>
+
+</form></div>
+
+
+        
+<nav class="toplinks">
+
+
+<a href="?created_on__year=2026" class="date-back">&lsaquo; 2026</a>
+
+
+
+<a href="?created_on__day=15&amp;created_on__month=10&amp;created_on__year=2026">15 października</a>
+
+
+
+</nav>
+
+
+
+        <form id="changelist-form" method="post" novalidate><input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
+        
+
+        
+          
+<div class="actions">
+  
+    
+    <label>Akcja: <select name="action" required>
+  <option value="" selected>---------</option>
+
+  <option value="delete_selected">Usuń wybrane Korespondencja</option>
+
+  <option value="enqueue_letter_attachments_text_extraction">Zadania ekstrakcji tekstu z załączników dla wybranych listów (odstęp 20 sekund)</option>
+
+</select></label><input type="hidden" name="select_across" value="0" class="select-across">
+    
+    
+    <button type="submit" class="button" title="Wykonaj wybraną akcję" name="index" value="0">Idź</button>
+    
+    
+    
+        <span class="action-counter" data-actions-icnt="45">Wybrano 0 z 45</span>
+        
+    
+    
+  
+</div>
+
+          
+
+
+<div class="results">
+<table id="result_list">
+<thead>
+<tr>
+
+<th scope="col" class="action-checkbox-column">
+   
+   <div class="text"><span><input type="checkbox" id="action-toggle" aria-label="Wybierz wszystkie obiekty na tej stronie do wykonania akcji"></span></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="column-pk">
+   
+   <div class="text"><span>Pk</span></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-genre">
+   
+   <div class="text"><a href="?o=2">Genre</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-status">
+   
+   <div class="text"><a href="?o=3">Status</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-name">
+   
+   <div class="text"><a href="?o=4">Przedmiot</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-get_case_name">
+   
+   <div class="text"><a href="?o=5">Nazwa sprawy</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-created_by">
+   
+   <div class="text"><a href="?o=6">Utworzona przez</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-created_by_is_staff">
+   
+   <div class="text"><a href="?o=7">Created by staff member</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-created_on">
+   
+   <div class="text"><a href="?o=8">Utworzone o</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-modified_by">
+   
+   <div class="text"><a href="?o=9">Zmodyfikowane przez</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-modified_on">
+   
+   <div class="text"><a href="?o=10">Zmodyfikowane o</a></div>
+   <div class="clear"></div>
+</th>
+<th scope="col" class="sortable column-eml">
+   
+   <div class="text"><a href="?o=11">Treść surowej wiadomości</a></div>
+   <div class="clear"></div>
+</th>
+</tr>
+</thead>
+<tbody>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="45" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 56"></td><th class="field-pk"><a href="/admin/letters/letter/45/change/">45</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 56</td><td class="field-get_case_name">Zapytanie o uchwałę rady miasta nr 56</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="44" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 51"></td><th class="field-pk"><a href="/admin/letters/letter/44/change/">44</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 51</td><td class="field-get_case_name">Pytanie o wydatki publiczne nr 51</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="43" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 46"></td><th class="field-pk"><a href="/admin/letters/letter/43/change/">43</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 46</td><td class="field-get_case_name">Wniosek o informację publiczną nr 46</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="42" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 41"></td><th class="field-pk"><a href="/admin/letters/letter/42/change/">42</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 41</td><td class="field-get_case_name">Dostęp do danych środowiskowych nr 41</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="41" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 36"></td><th class="field-pk"><a href="/admin/letters/letter/41/change/">41</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 36</td><td class="field-get_case_name">Wniosek o informację publiczną nr 36</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="40" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 31"></td><th class="field-pk"><a href="/admin/letters/letter/40/change/">40</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 31</td><td class="field-get_case_name">Sprawa dotycząca ponownego wykorzystania nr 31</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="39" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 26"></td><th class="field-pk"><a href="/admin/letters/letter/39/change/">39</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 26</td><td class="field-get_case_name">Odwołanie od decyzji wójta nr 26</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="38" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 21"></td><th class="field-pk"><a href="/admin/letters/letter/38/change/">38</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 21</td><td class="field-get_case_name">Zażalenie na odmowę nr 21</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="37" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 16"></td><th class="field-pk"><a href="/admin/letters/letter/37/change/">37</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 16</td><td class="field-get_case_name">Skarga na bezczynność urzędu nr 16</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="36" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 11"></td><th class="field-pk"><a href="/admin/letters/letter/36/change/">36</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 11</td><td class="field-get_case_name">Skarga na bezczynność urzędu nr 11</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="35" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 6"></td><th class="field-pk"><a href="/admin/letters/letter/35/change/">35</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 6</td><td class="field-get_case_name">Odwołanie od decyzji wójta nr 6</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="34" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 1"></td><th class="field-pk"><a href="/admin/letters/letter/34/change/">34</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 1</td><td class="field-get_case_name">Odwołanie od decyzji wójta nr 1</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="33" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Odpowiedź i zamknięcie sprawy"></td><th class="field-pk"><a href="/admin/letters/letter/33/change/">33</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Odpowiedź i zamknięcie sprawy</td><td class="field-get_case_name">Sprawa zamknięta po udzieleniu odpowiedzi</td><td class="field-created_by nowrap">Celina Wsparcie (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="32" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pytanie o decyzję"></td><th class="field-pk"><a href="/admin/letters/letter/32/change/">32</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pytanie o decyzję</td><td class="field-get_case_name">Sprawa zamknięta po udzieleniu odpowiedzi</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="31" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 25 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/31/change/">31</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 25 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="30" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 24 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/30/change/">30</a></th><td class="field-genre">ai_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 24 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="29" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 23 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/29/change/">29</a></th><td class="field-genre">app_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 23 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="28" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 22 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/28/change/">28</a></th><td class="field-genre">comment</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 22 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="27" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 21 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/27/change/">27</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 21 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="26" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 20 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/26/change/">26</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 20 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="25" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 19 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/25/change/">25</a></th><td class="field-genre">ai_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 19 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="24" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 18 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/24/change/">24</a></th><td class="field-genre">app_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 18 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="23" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 17 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/23/change/">23</a></th><td class="field-genre">comment</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 17 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="22" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 16 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/22/change/">22</a></th><td class="field-genre">mail</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 16 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="21" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 15 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/21/change/">21</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 15 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="20" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 14 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/20/change/">20</a></th><td class="field-genre">ai_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 14 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="19" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 13 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/19/change/">19</a></th><td class="field-genre">app_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 13 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="18" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 12 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/18/change/">18</a></th><td class="field-genre">comment</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 12 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="17" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 11 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/17/change/">17</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 11 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="16" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 10 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/16/change/">16</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 10 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="15" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 9 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/15/change/">15</a></th><td class="field-genre">ai_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 9 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="14" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 8 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/14/change/">14</a></th><td class="field-genre">app_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 8 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="13" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 7 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/13/change/">13</a></th><td class="field-genre">comment</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 7 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="12" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 6 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/12/change/">12</a></th><td class="field-genre">mail</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 6 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="11" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 5 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/11/change/">11</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 5 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="10" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 4 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/10/change/">10</a></th><td class="field-genre">ai_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 4 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="9" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 3 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/9/change/">9</a></th><td class="field-genre">app_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 3 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="8" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 2 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/8/change/">8</a></th><td class="field-genre">comment</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 2 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="7" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 1 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/7/change/">7</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 1 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="6" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 5 w sprawie danych środowiskowych"></td><th class="field-pk"><a href="/admin/letters/letter/6/change/">6</a></th><td class="field-genre">ai_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo 5 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Celina Wsparcie (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="5" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 4 w sprawie danych środowiskowych"></td><th class="field-pk"><a href="/admin/letters/letter/5/change/">5</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Zespoł</td><td class="field-name">Pismo 4 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Celina Wsparcie (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="4" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 3 w sprawie danych środowiskowych"></td><th class="field-pk"><a href="/admin/letters/letter/4/change/">4</a></th><td class="field-genre">app_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo 3 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="3" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 2 w sprawie danych środowiskowych"></td><th class="field-pk"><a href="/admin/letters/letter/3/change/">3</a></th><td class="field-genre">comment</td><td class="field-status">Zespoł</td><td class="field-name">Pismo 2 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Celina Wsparcie (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="2" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 1 w sprawie danych środowiskowych"></td><th class="field-pk"><a href="/admin/letters/letter/2/change/">2</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pismo 1 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+
+<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="1" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Wniosek o udostępnienie rejestru umów"></td><th class="field-pk"><a href="/admin/letters/letter/1/change/">1</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Wniosek o udostępnienie rejestru umów</td><td class="field-get_case_name">Wniosek o udostępnienie rejestru umów</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+
+</tbody>
+</table>
+</div>
+
+
+          
+        
+        
+
+<p class="paginator">
+
+45 Korespondencja
+
+
+</p>
+
+        </form>
+      </div>
+      
+        
+          <nav id="changelist-filter" aria-labelledby="changelist-filter-header">
+            <h2 id="changelist-filter-header">Filtr</h2>
+            <div id="changelist-filter-extra-actions">
+              <h3>
+                <a href="?_facets=True" class="viewlink">Pokaż ilości</a>
+              </h3>
+              
+            </div>
+            
+<details data-filter-title="genre" open>
+  <summary>
+     Według pola genre 
+  </summary>
+  <ul>
+  
+    <li class="selected">
+    <a href="?">Wszystko</a></li>
+  
+    <li>
+    <a href="?genre__exact=mail">mail</a></li>
+  
+    <li>
+    <a href="?genre__exact=comment">comment</a></li>
+  
+    <li>
+    <a href="?genre__exact=app_message">app_message</a></li>
+  
+    <li>
+    <a href="?genre__exact=ai_message">ai_message</a></li>
+  
+    <li>
+    <a href="?genre__exact=ai_message_staff">ai_message_staff</a></li>
+  
+  </ul>
+</details>
+
+<details data-filter-title="status" open>
+  <summary>
+     Według pola status 
+  </summary>
+  <ul>
+  
+    <li class="selected">
+    <a href="?">Wszystko</a></li>
+  
+    <li>
+    <a href="?status__exact=staff">Zespoł</a></li>
+  
+    <li>
+    <a href="?status__exact=done">Wykonane</a></li>
+  
+  </ul>
+</details>
+
+          </nav>
+        
+      
+    </div>
+  </div>
+
+          
+          <br class="clear">
+        </div>
+        <!-- END Content -->
+      </main>
+    </div>
+    <footer id="footer"></footer>
+</div>
+<!-- END Container -->
+
+<!-- SVGs -->
+<svg xmlns="http://www.w3.org/2000/svg" class="base-svgs">
+  <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-auto"><path d="M0 0h24v24H0z" fill="currentColor"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2V4a8 8 0 1 0 0 16z"/></symbol>
+  <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-moon"><path d="M0 0h24v24H0z" fill="currentColor"/><path d="M10 7a7 7 0 0 0 12 4.9v.1c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2h.1A6.979 6.979 0 0 0 10 7zm-6 5a8 8 0 0 0 15.062 3.762A9 9 0 0 1 8.238 4.938 7.999 7.999 0 0 0 4 12z"/></symbol>
+  <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-sun"><path d="M0 0h24v24H0z" fill="currentColor"/><path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.121 2.121-1.414 1.414-2.121-2.121zm2.121-14.85l1.414 1.415-2.121 2.121-1.414-1.414 2.121-2.121zM5.636 16.95l1.414 1.414-2.121 2.121-1.414-1.414 2.121-2.121zM23 11v2h-3v-2h3zM4 11v2H1v-2h3z"/></symbol>
+</svg>
+<!-- END SVGs -->
+
+</body>
+</html>

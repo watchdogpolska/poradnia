@@ -1,6 +1,6 @@
 {% load staticfiles i18n tinycontent_tags github_revision_tags poradnia_tags %}
 <!DOCTYPE html>
-<html lang="pl">
+<html lang="pl" data-ui-mode="{{ ui_mode }}">
 <head>
     <meta charset="utf-8">
     <title>{% block title %}Poradnia{% endblock title %}</title>
@@ -29,17 +29,48 @@
     {% else %}
         <link rel="stylesheet" href="{% static 'css/style.min.css' %}">
     {% endif %}
+    {% if ui_mode == "wcag" %}
+        {% if debug %}
+            <link rel="stylesheet" href="{% static 'css/wcag.css' %}">
+        {% else %}
+            <link rel="stylesheet" href="{% static 'css/wcag.min.css' %}">
+        {% endif %}
+    {% endif %}
     {% block extra_css %}{% endblock %}
 
 </head>
 
 <body>
 
+<!-- First element in body by design: keyboard-reachable before anything
+     else, no JS required (plain form POST). This is the one approved
+     normal-mode DOM change - see logs/wcag/plan/ui-mode-design.md §2.
+     z-index below is needed because .navbar is position:fixed on mobile
+     widths (see _layout.scss) and would otherwise render on top of this. -->
+<form method="post" action="{% url 'ui_mode_switch' %}" style="position: relative; z-index: 1051;">
+    {% csrf_token %}
+    <input type="hidden" name="next" value="{{ request.get_full_path }}">
+    {% if ui_mode == "wcag" %}
+        <input type="hidden" name="mode" value="normal">
+        <button type="submit" class="btn btn-dark">Przełącz na wersję standardową</button>
+    {% else %}
+        <input type="hidden" name="mode" value="wcag">
+        <button type="submit" class="btn btn-dark">Włącz wersję dostępną</button>
+    {% endif %}
+</form>
+
 <!-- Moved to beginning to load JQueary before any other js code  -->
 {% if debug %}
     <script src="{% static 'js/script.js' %}"></script>
 {% else %}
     <script src="{% static 'js/script.min.js' %}"></script>
+{% endif %}
+{% if ui_mode == "wcag" %}
+    {% if debug %}
+        <script src="{% static 'js/wcag.js' %}"></script>
+    {% else %}
+        <script src="{% static 'js/wcag.min.js' %}"></script>
+    {% endif %}
 {% endif %}
 
 {% show_donate_popup as show_donate_popup_flag %}

@@ -1,0 +1,4 @@
+// WCAG-mode-only stylesheet. Loaded in base.html only when ui_mode == "wcag",
+// after style.css, and every rule here should additionally be scoped under
+// html[data-ui-mode="wcag"] as a belt-and-suspenders guard. Empty for M0 —
+// see logs/wcag/plan/plan.md M1 for the first rules landing here.

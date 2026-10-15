@@ -1,0 +1,495 @@
+<!DOCTYPE html><html lang="pl" data-ui-mode="normal"><head>
+    <meta charset="utf-8">
+    <title>Tabela tagów - Poradnia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Poradnia App">
+    <meta name="author" content="Sieć Obywatelska - Watchdog Polska">
+    <meta name="theme-color" content="#D82727">
+    <link rel="apple-touch-icon" sizes="160x128" href="/static/images/logo-160x128.png">
+    <link rel="shortcut icon" type="image/png" href="/static/images/favicon-32x26.png" sizes="32x32">
+    <link rel="manifest" href="/static/images/manifest.json">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="/static/images/logo-160x128.png">
+    <meta property="og:image" content="/static/images/logo-czerwone-tlo-1200x600.jpg">
+    <meta property="og:image:type" content="image/jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="600">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+  <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+    <link rel="stylesheet" href="/static/tasty_feedback/style.css">
+
+    
+        <link rel="stylesheet" href="/static/css/style.min.css">
+    
+    
+    
+    
+    <style>
+        select#id_person_kind, select#id_area, select#id_issues, select#id_institution_kind, select#id_helped {
+            width: 100%;
+        }
+    </style>
+
+
+
+<style>.htmx-indicator{opacity:0;visibility: hidden} .htmx-request .htmx-indicator, .htmx-request.htmx-indicator{opacity:1;visibility: visible;transition: opacity 200ms ease-in}</style><style type="text/css">
+  *, *::before, *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    caret-color: transparent !important;
+    scroll-behavior: auto !important;
+  }
+</style></head>
+
+<body>
+
+<!-- First element in body by design: keyboard-reachable before anything
+     else, no JS required (plain form POST). This is the one approved
+     normal-mode DOM change - see logs/wcag/plan/ui-mode-design.md §2.
+     z-index below is needed because .navbar is position:fixed on mobile
+     widths (see _layout.scss) and would otherwise render on top of this. -->
+<form method="post" action="/ui-mode/" style="position: relative; z-index: 1051;">
+    <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
+    <input type="hidden" name="next" value="/porady/">
+    
+        <input type="hidden" name="mode" value="wcag">
+        <button type="submit" class="btn btn-dark">Włącz wersję dostępną</button>
+    
+</form>
+
+<!-- Moved to beginning to load JQueary before any other js code  -->
+
+    <script src="/static/js/script.min.js"></script>
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="body">
+                <span class="visually-hidden">Toggle navigation</span>
+                <i class="navbar-burger"></i>
+            </button>
+            <a class="navbar-brand" href="#">Poradnia</a>
+        </div>
+    </div>
+</nav>
+<!-- app_main_style tag used to differentiate dev, demo and production environments -->
+<div class="main" style="background-color: #d3e20040;">)
+
+    <div class="sidebar">
+        
+<div class="sidebar-header">
+    <h1 style="color: red;">DEV</h1>
+    <a href="/">
+        <div class="logo"></div>
+        <p>Poradnia</p>
+    </a>
+    <p><a href="http://siecobywatelska.pl">Sieci Watchdog</a></p>
+</div>
+<div class="block-list">
+    <ul class="block-list-list">
+
+        
+        
+           <li class="block-list-item">
+              <a href="#" data-bs-toggle="modal" data-bs-target="#navsearch_modal">
+                   <i class="fas fa-magnifying-glass"></i> Wyszukaj
+               </a>
+           </li>
+        
+        
+        
+    </ul>
+</div>
+
+<div class="block-list">
+    <div class="block-list-header">Użytkownik</div>
+    <ul class="block-list-list">
+
+        
+            <li class="block-list-item">
+                <a href="/uzytkownik/a11y_staff_wsparcie/"><i class="fas fa-user"></i>
+                    Celina Wsparcie (team) - profil i bezpieczeństwo</a>
+            </li>
+            
+                <li class="block-list-item">
+                    <a href="/uzytkownik/table/"><i class="fas fa-users"></i> Tabela użytkowników</a>
+                </li>
+                <li class="block-list-item">
+                    <a href="/uzytkownik/"><i class="fas fa-users"></i> Wykaz użytkowników</a>
+                </li>
+            
+            
+            <li class="block-list-item">
+                <a href="/konta/logout/"><i class="fa-solid fa-right-from-bracket"></i> Wyloguj</a>
+            </li>
+        
+    </ul>
+</div>
+
+
+
+    <div class="block-list">
+        <div class="block-list-header">Tagi</div>
+        <ul class="block-list-list">
+            <li class="block-list-item">
+                <a href="/porady/table/"><i class="fas fa-book"></i> Tabela tagów</a>
+            </li>
+            <li class="block-list-item">
+                <a href="/porady/?page=1"><i class="fas fa-chart-area"></i> Rejestr tagów</a>
+            </li>
+        </ul>
+    </div>
+
+
+
+<div class="block-list">
+    <div class="block-list-header">Sprawy</div>
+    <ul class="block-list-list">
+        <li class="block-list-item"><a href="/listy/"><i class="fas fa-pencil"></i> Nowa sprawa</a></li>
+        
+            <li class="block-list-item">
+                <a href="/sprawy/table/"><i class="fas fa-book"></i> Tabela spraw</a>
+            </li>
+            <li class="block-list-item">
+                <a href="/sprawy/?status=0&amp;status=1&amp;status=3"><i class="fas fa-book"></i> Wykaz spraw</a>
+            </li>
+        
+        
+            
+            <li class="block-list-item">
+                <a href="/wydarzenia/table/"><i class="fas fa-calendar-days"></i> Tabela wydarzeń</a>
+            </li>
+            <li class="block-list-item">
+                <!-- <a href="/wydarzenia/"><i class="fas fa-calendar-days"></i> Kalendarz wydarzeń</a> -->
+                <a href="/wydarzenia/2026-10"><i class="fas fa-calendar-days"></i> Kalendarz wydarzeń</a>
+            </li>
+        
+        <li class="block-list-item">
+            <a href="/strony/regulamin-poradnictwa/"><i class="fas fa-gavel"></i> Regulamin poradnictwa</a>
+        </li>
+        <!-- TODO - move the below to Letters or generic sidebar for code consistency -->
+        
+            <li class="block-list-item">
+                <a href="/listy/table/"><i class="far fa-envelope"></i> Tabela korespondencji</a>
+            </li>
+        
+        
+            <li class="block-list-item">
+                <a href="/listy/rejestr"><i class="far fa-envelope"></i> Korespondencja</a>
+            </li>
+        
+    </ul>
+</div>
+
+
+
+    <div class="block-list">
+        <div class="block-list-header">Panel raportów</div>
+        <ul class="block-list-list">
+            <li class="block-list-item">
+                <a href="/dashboard/"><i class="fas fa-chart-line"></i> Panel raportów</a>
+            </li>
+        </ul>
+    </div>
+
+
+<div class="footer row">
+    
+        <div class="col-12">
+            <p class="text-center">
+                <img src="/static/images/baner.png" alt="" class="img-fluid">
+                Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
+                finansowanego z Funduszy EOG.
+            </p>
+        </div>
+    
+
+
+</div>
+
+
+
+    </div>
+    <div class="main-side">
+        <div class="content">
+            
+            
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/porady/table/">Tabela tagów</a></li>
+        
+    <li class="breadcrumb-item active">Wykaz tagów</li>
+    <div class="float-end">
+        <a href="/porady/nowa/" class="btn btn-success"><i class="fas fa-pencil"></i> Dodaj</a>
+    </div>
+
+    </ol>
+
+            <div class="container-fluid">
+                
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-12 col-md-12 col-sm-12">
+                
+
+<form class="form-inline" method="get"> <link href="/static/dal_alight/autocomplete-light.css" media="all" rel="stylesheet">
+<script src="/static/dal_alight/autocomplete-light.js"></script>
+<script src="/static/dal_alight/dal-django.js"></script> <fieldset> <legend>Dane statystyczne</legend> <div class="row"> <div class="col-sm-12 col-md-4"> <div id="div_id_area" class="mb-3"> <label for="id_area" class="form-label">
+                Obszary
+            </label> <autocomplete-select data-bound="true"><select name="area" class="modelalightmultiple form-select" id="id_area" slot="select" data-autocomplete-light-url="/porady/area-autocomplete/" multiple="">
+</select><span slot="deck"></span><autocomplete-select-input slot="input" url="/porady/area-autocomplete/" data-bound="true"><input type="text" name="area-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="false"></autocomplete-select-input></autocomplete-select> </div> </div>
+<div class="col-sm-12 col-md-4"> <div id="div_id_issues" class="mb-3"> <label for="id_issues" class="form-label">
+                Zagadnienia
+            </label> <autocomplete-select data-bound="true"><select name="issues" class="modelalightmultiple form-select" id="id_issues" slot="select" data-autocomplete-light-url="/porady/issue-autocomplete/" multiple="">
+</select><span slot="deck"></span><autocomplete-select-input slot="input" url="/porady/issue-autocomplete/" data-bound="true"><input type="text" name="issues-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="false"></autocomplete-select-input></autocomplete-select> </div> </div>
+<div class="col-sm-12 col-md-4"> <div id="div_id_person_kind" class="mb-3"> <label for="id_person_kind" class="form-label">
+                Rodzaj osoby, która się zgłasza o poradę
+            </label> <select name="person_kind" class="select form-select" id="id_person_kind"> <option value="" selected="">---------</option> <option value="1">Osoba fizyczna</option>
+
+</select> </div> </div>
+
+</div>
+<div class="row"> <div class="col-sm-12 col-md-3"> <div id="div_id_institution_kind" class="mb-3"> <label for="id_institution_kind" class="form-label">
+                Rodzaj podmiotu zobowiązanego
+            </label> <select name="institution_kind" class="select form-select" id="id_institution_kind"> <option value="" selected="">---------</option> <option value="1">Urząd gminy</option>
+
+</select> </div> </div>
+<div class="col-sm-12 col-md-2"> <div id="div_id_helped" class="mb-3"> <label for="id_helped" class="form-label">
+                Czy udzieliliśmy porady?
+            </label> <select name="helped" class="nullbooleanselect form-select" id="id_helped"> <option value="unknown" selected="">Nieznane</option> <option value="true">Tak</option> <option value="false">Nie</option>
+
+</select> </div> </div>
+<div class="col-sm-12 col-md-7"> <div id="div_id_community" class="mb-3"> <label for="id_community" class="form-label">
+                Gmina
+            </label> <autocomplete-select data-bound="true"><select name="community" class="modelalightmultiple form-select" id="id_community" slot="select" data-autocomplete-light-url="/teryt/gminy-autouzupelnianie/" multiple="">
+</select><span slot="deck"></span><autocomplete-select-input slot="input" url="/teryt/gminy-autouzupelnianie/" data-bound="true"><input type="text" name="community-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="false"></autocomplete-select-input></autocomplete-select> </div> </div>
+
+</div> </fieldset>
+<fieldset> <legend>Szczegóły</legend> <div id="div_id_advicer" class="mb-3"> <label for="id_advicer" class="form-label">
+                Radzący
+            </label> <autocomplete-select data-bound="true"><select name="advicer" class="modelalight form-select" id="id_advicer" slot="select" data-autocomplete-light-url="/uzytkownik/~autocomplete/">
+</select><span slot="deck"></span><autocomplete-select-input slot="input" url="/uzytkownik/~autocomplete/" data-bound="true"><input type="text" name="advicer-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="false"></autocomplete-select-input></autocomplete-select> </div> <div id="div_id_created_by" class="mb-3"> <label for="id_created_by" class="form-label">
+                Utworzona przez
+            </label> <autocomplete-select data-bound="true"><select name="created_by" class="modelalight form-select" id="id_created_by" slot="select" data-autocomplete-light-url="/uzytkownik/~autocomplete/">
+</select><span slot="deck"></span><autocomplete-select-input slot="input" url="/uzytkownik/~autocomplete/" data-bound="true"><input type="text" name="created_by-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="false"></autocomplete-select-input></autocomplete-select> </div> <div id="div_id_created_on" class="mb-3"> <label for="id_created_on" class="form-label">
+                Utworzone o
+            </label> <select name="created_on" class="select form-select" id="id_created_on"> <option value="" selected="">---------</option> <option value="today">Dziś</option> <option value="yesterday">Wczoraj</option> <option value="week">Ostatnie 7 dni</option> <option value="month">Ten miesiąc</option> <option value="year">Ten rok</option>
+
+</select> </div> <div id="div_id_subject" class="mb-3"> <label for="id_subject" class="form-label">
+                Przedmiot
+            </label> <input type="text" name="subject" class="textinput form-control" id="id_subject"> </div> <div id="div_id_comment" class="mb-3"> <label for="id_comment" class="form-label">
+                Komentarz
+            </label> <input type="text" name="comment" class="textinput form-control" id="id_comment"> </div> </fieldset> <div class="mb-3"> <div class=""> <input type="submit" name="filter" value="Zastosuj filtr" class="btn btn-primary" id="submit-id-filter"> </div> </div> </form>
+
+                
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-striped">
+                                <thead>
+                                <tr>
+                                    <th>Data utworzenia</th>
+                                    <th>Utworzona przez</th>
+                                    <th>Radzący</th>
+                                    <th>Przedmiot</th>
+                                    <th>Klient sprawy</th>
+                                    <th>Sprawa</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                
+                                    <tr>
+                                        <td>
+                                            <time datetime="[DATETIME]CEST">[RELATIVE_TIME]</time>
+                                        </td>
+                                        <td colspan="2" style="text-align: center">Celina Wsparcie (team)</td>
+                                        
+                                        <td><a href="/porady/1">Porada ws. danych środowiskowych</a></td>
+                                        
+                                            <td><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a>
+                                            </td><td><a href="/sprawy/sprawa-2/">Spór o dostęp do danych środowiskowych</a></td>
+                                        
+                                    </tr>
+                                    <tr>
+                                        <td colspan="6">None</td>
+                                    </tr>
+                                
+                                </tbody>
+                            </table>
+                            <div class="text-center">
+                                
+
+
+                            </div>
+                        </div>
+                    </div>
+                
+
+            </div>
+        </div>
+    </div>
+
+
+            </div>
+            <div class="footer">
+                <div class="footer-right">Sieć Obywatelska - Watchdog Polska<br>
+                    ul. Szpitalna 5/5<br>
+                    00-031 Warszawa
+                </div>
+                <div class="footer-left">
+                    silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
+                    [VERSION] |
+                    <a href="https://github.com/watchdogpolska/poradnia">
+                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/c31bc739...master">c31bc73</a>
+                </div>
+                <div class="footer-center">Strona wykorzystuje cookies</div>
+            </div>
+            <div class="footer">
+                    <div class="footer-center col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                        
+                            <img src="/static/images/baner.png" alt="" class="img-fluid"><br>
+                            Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
+                            finansowanego z Funduszy EOG.<br>
+                        
+
+
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+        
+        
+<div id="feedback">
+    <div id="feedback-header">Zgłoś usterkę administratorom poradni.</div>
+    <div id="feedback-body">
+        <p>Przekaż nam uwagi o tej stronie dotyczące błędów lub możliwych ulepszeń.</p>
+        
+
+<form action="/uwagi/submit" method="post"> <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div id="div_id_text" class="mb-3"> <label for="id_text" class="form-label requiredField">
+                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea name="text" cols="40" rows="10" class="textarea form-control" required="" aria-describedby="id_text_helptext" id="id_text"></textarea> <div id="id_text_helptext" class="form-text">Treść zgłoszona przez użytkownika</div> </div> <input type="hidden" name="url" value="http://localhost:8000/porady/" id="id_url"> <div class="mb-3"> <div class=""> <input type="submit" name="action" value="Zgłoś usterkę administratorom poradni." class="btn btn-primary btn-primary" id="submit-id-action"> </div> </div> </form>
+
+    </div>
+</div>
+
+    
+
+</div>
+
+    
+<!-- Modal -->
+<div class="modal fade" id="navsearch_modal" tabindex="-1" role="dialog" aria-labelledby="navsearch_modal_label">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="navsearch_modal_label">Wyszukaj</h4>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+<div class="navsearch">
+	<form class="form" onsubmit="return false;">
+		<div class="form-group">
+			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
+			<input type="search" id="search" name="q" class="form-control navsearch__input" hx-get="/navsearch/" hx-trigger="input changed delay:300ms" hx-target=".navsearch__results" hx-swap="innerHTML">
+		</div>
+	</form>
+	<div class="navsearch__results"></div>
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Le javascript
+  ================================================== -->
+<!-- Rest of js placed at the end of the document so the pages load faster -->
+
+
+
+
+
+
+
+
+<div id="attachment-text-modal-container"></div>
+<div id="htmx-spinner" class="htmx-indicator">
+    Loading...
+</div>
+<script>
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('[hx-target="#attachment-text-modal-container"]')) {
+            return;
+        }
+
+        var existingModal = document.getElementById('attachmentTextModal');
+        if (existingModal) {
+            bootstrap.Modal.getOrCreateInstance(existingModal).hide();
+        }
+
+        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+            el.remove();
+        });
+        document.body.classList.remove('modal-open');
+    });
+
+    document.body.addEventListener('htmx:afterSwap', function (event) {
+        if (event.target.id === 'attachment-text-modal-container') {
+            var modal = document.getElementById('attachmentTextModal');
+            if (modal) {
+                bootstrap.Modal.getOrCreateInstance(modal).show();
+            }
+        }
+    });
+
+    document.addEventListener('hidden.bs.modal', function (event) {
+        if (!event.target.matches('#attachmentTextModal')) {
+            return;
+        }
+        var container = document.getElementById('attachment-text-modal-container');
+        if (container) {
+            container.innerHTML = '';
+        }
+        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+            el.remove();
+        });
+        document.body.classList.remove('modal-open');
+    });
+
+    function getCookie(name) {
+        var value = '; ' + document.cookie;
+        var parts = value.split('; ' + name + '=');
+        if (parts.length === 2) {
+            return parts.pop().split(';').shift();
+        }
+        return null;
+    }
+
+    document.body.addEventListener('htmx:configRequest', function (event) {
+        event.detail.headers['X-CSRFToken'] = getCookie('csrftoken');
+    });
+</script>
+
+
+
+
+</body></html>

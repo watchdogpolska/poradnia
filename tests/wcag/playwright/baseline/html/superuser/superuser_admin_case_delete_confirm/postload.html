@@ -1,0 +1,1254 @@
+<!DOCTYPE html><html lang="pl" dir="ltr" data-theme="auto"><head>
+<title>Usuń | Administracja stroną Django</title>
+<link rel="stylesheet" href="/static/admin/css/base.css">
+
+  <link rel="stylesheet" href="/static/admin/css/dark_mode.css">
+  <script src="/static/admin/js/theme.js"></script>
+
+
+  <link rel="stylesheet" href="/static/admin/css/nav_sidebar.css">
+  <script src="/static/admin/js/nav_sidebar.js" defer=""></script>
+
+
+
+
+    
+    <script src="/static/admin/js/vendor/jquery/jquery.js"></script>
+<script src="/static/admin/js/jquery.init.js"></script>
+<script src="/static/admin/js/core.js"></script>
+<script src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+<script src="/static/admin/js/actions.js"></script>
+<script src="/static/admin/js/urlify.js"></script>
+<script src="/static/admin/js/prepopulate.js"></script>
+<script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+    <script src="/static/admin/js/cancel.js" async=""></script>
+
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/admin/css/responsive.css">
+    
+
+<meta name="robots" content="NONE,NOARCHIVE">
+<style type="text/css">
+  *, *::before, *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    caret-color: transparent !important;
+    scroll-behavior: auto !important;
+  }
+</style></head>
+
+<body class=" app-cases model-case delete-confirmation" data-admin-utc-offset="7200">
+<a href="#content-start" class="skip-to-content-link">Przejdź do głównej treści</a>
+<!-- Container -->
+<div id="container">
+
+    
+    <!-- Header -->
+    
+      <header id="header">
+        <div id="branding">
+        
+<div id="site-name"><a href="/admin/">Administracja Django</a></div>
+
+
+        </div>
+        
+        
+        <div id="user-tools">
+            
+                Witaj,
+                <strong>Anna</strong>.
+            
+            
+                
+                    <a href="/">Pokaż stronę</a> /
+                
+                
+                    
+                    
+                
+                
+                <a href="/admin/password_change/">Zmień hasło</a> /
+                
+                <form id="logout-form" method="post" action="/admin/logout/">
+                    <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
+                    <button type="submit">Wyloguj się</button>
+                </form>
+                
+<button class="theme-toggle">
+  <span class="visually-hidden theme-label-when-auto">Przełącz motyw (bieżący motyw: auto)</span>
+  <span class="visually-hidden theme-label-when-light">Przełącz motyw (bieżący motyw: jasny)</span>
+  <span class="visually-hidden theme-label-when-dark">Przełącz motyw (bieżący motyw: ciemny)</span>
+  <svg aria-hidden="true" class="theme-icon-when-auto">
+    <use xlink:href="#icon-auto"></use>
+  </svg>
+  <svg aria-hidden="true" class="theme-icon-when-dark">
+    <use xlink:href="#icon-moon"></use>
+  </svg>
+  <svg aria-hidden="true" class="theme-icon-when-light">
+    <use xlink:href="#icon-sun"></use>
+  </svg>
+</button>
+
+            
+        </div>
+        
+        
+        
+      </header>
+    
+    <!-- END Header -->
+    
+      <nav aria-label="Breadcrumbs">
+        
+<div class="breadcrumbs">
+<a href="/admin/">Start</a>
+› <a href="/admin/cases/">Sprawy</a>
+› <a href="/admin/cases/case/">Sprawy</a>
+› <a href="/admin/cases/case/8/change/">Przykładowa sprawa &lt;b&gt;test&lt;/b&gt; do testów renderowania</a>
+› Usuń
+</div>
+
+      </nav>
+    
+    
+
+    <div class="main shifted" id="main">
+      
+        
+          
+<button class="sticky toggle-nav-sidebar" id="toggle-nav-sidebar" aria-label="Przełącz nawigację"></button>
+<nav class="sticky" id="nav-sidebar" aria-label="Pasek boczny" aria-expanded="true">
+  <input type="search" id="nav-filter" placeholder="Zacznij pisać, aby odfiltrować…" aria-label="Filtruj elementy nawigacji">
+  
+
+
+  
+    <div class="app-admin module">
+      <table>
+        <caption>
+          <a href="/admin/admin/" class="section" title="Modele w aplikacji Administracja">Administracja</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-logentry">
+              <th scope="row" id="admin-logentry">
+                
+                  <a href="/admin/admin/logentry/">Logi</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-teryt_tree module">
+      <table>
+        <caption>
+          <a href="/admin/teryt_tree/" class="section" title="Modele w aplikacji Administrative division">Administrative division</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-jednostkaadministracyjna">
+              <th scope="row" id="teryt_tree-jednostkaadministracyjna">
+                
+                  <a href="/admin/teryt_tree/jednostkaadministracyjna/">Units of administrative division</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-ai_assistant module">
+      <table>
+        <caption>
+          <a href="/admin/ai_assistant/" class="section" title="Modele w aplikacji Ai_Assistant">Ai_Assistant</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-n8narticlessearchrequest">
+              <th scope="row" id="ai_assistant-n8narticlessearchrequest">
+                
+                  <a href="/admin/ai_assistant/n8narticlessearchrequest/">N8n articles search requests</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-n8ncasetagsrequest">
+              <th scope="row" id="ai_assistant-n8ncasetagsrequest">
+                
+                  <a href="/admin/ai_assistant/n8ncasetagsrequest/">N8n case tags requests</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-celery_monitor module">
+      <table>
+        <caption>
+          <a href="/admin/celery_monitor/" class="section" title="Modele w aplikacji Celery / RabbitMQ Monitoring">Celery / RabbitMQ Monitoring</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-monitoringalert">
+              <th scope="row" id="celery_monitor-monitoringalert">
+                
+                  <a href="/admin/celery_monitor/monitoringalert/">Monitoring alerts</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-queuesnapshot">
+              <th scope="row" id="celery_monitor-queuesnapshot">
+                
+                  <a href="/admin/celery_monitor/queuesnapshot/">Queue snapshots</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-systemhealthcheck">
+              <th scope="row" id="celery_monitor-systemhealthcheck">
+                
+                  <a href="/admin/celery_monitor/systemhealthcheck/">System health checks</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-taskslasnapshot">
+              <th scope="row" id="celery_monitor-taskslasnapshot">
+                
+                  <a href="/admin/celery_monitor/taskslasnapshot/">Task sla snapshots</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-workerheartbeat">
+              <th scope="row" id="celery_monitor-workerheartbeat">
+                
+                  <a href="/admin/celery_monitor/workerheartbeat/">Worker heartbeats</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-django_celery_results module">
+      <table>
+        <caption>
+          <a href="/admin/django_celery_results/" class="section" title="Modele w aplikacji Celery Results">Celery Results</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-groupresult">
+              <th scope="row" id="django_celery_results-groupresult">
+                
+                  <a href="/admin/django_celery_results/groupresult/">Group results</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/django_celery_results/groupresult/add/" class="addlink" aria-describedby="django_celery_results-groupresult">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-taskresult">
+              <th scope="row" id="django_celery_results-taskresult">
+                
+                  <a href="/admin/django_celery_results/taskresult/">Task results</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-judgements module">
+      <table>
+        <caption>
+          <a href="/admin/judgements/" class="section" title="Modele w aplikacji Judgements">Judgements</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-courtsession">
+              <th scope="row" id="judgements-courtsession">
+                
+                  <a href="/admin/judgements/courtsession/">Rozprawy sądowe</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/judgements/courtsession/add/" class="addlink" aria-describedby="judgements-courtsession">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-courtcase">
+              <th scope="row" id="judgements-courtcase">
+                
+                  <a href="/admin/judgements/courtcase/">Sprawy sądowe</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/judgements/courtcase/add/" class="addlink" aria-describedby="judgements-courtcase">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-court">
+              <th scope="row" id="judgements-court">
+                
+                  <a href="/admin/judgements/court/">Sądy</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/judgements/court/add/" class="addlink" aria-describedby="judgements-court">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-keys module">
+      <table>
+        <caption>
+          <a href="/admin/keys/" class="section" title="Modele w aplikacji Klucze API">Klucze API</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-key">
+              <th scope="row" id="keys-key">
+                
+                  <a href="/admin/keys/key/">Klucze dostępu</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-account module">
+      <table>
+        <caption>
+          <a href="/admin/account/" class="section" title="Modele w aplikacji Konta">Konta</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-emailaddress">
+              <th scope="row" id="account-emailaddress">
+                
+                  <a href="/admin/account/emailaddress/">Adresy e-mail</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/account/emailaddress/add/" class="addlink" aria-describedby="account-emailaddress">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-socialaccount module">
+      <table>
+        <caption>
+          <a href="/admin/socialaccount/" class="section" title="Modele w aplikacji Konta społecznościowe">Konta społecznościowe</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-socialapp">
+              <th scope="row" id="socialaccount-socialapp">
+                
+                  <a href="/admin/socialaccount/socialapp/">Aplikacje społecznościowe</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/socialaccount/socialapp/add/" class="addlink" aria-describedby="socialaccount-socialapp">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-socialaccount">
+              <th scope="row" id="socialaccount-socialaccount">
+                
+                  <a href="/admin/socialaccount/socialaccount/">Konta społecznościowe</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-socialtoken">
+              <th scope="row" id="socialaccount-socialtoken">
+                
+                  <a href="/admin/socialaccount/socialtoken/">Tokeny aplikacji społecznościowych</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-letters module">
+      <table>
+        <caption>
+          <a href="/admin/letters/" class="section" title="Modele w aplikacji Korespondencja">Korespondencja</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-letter">
+              <th scope="row" id="letters-letter">
+                
+                  <a href="/admin/letters/letter/">Korespondencja</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-attachment">
+              <th scope="row" id="letters-attachment">
+                
+                  <a href="/admin/letters/attachment/">Załączniki</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-mfa module">
+      <table>
+        <caption>
+          <a href="/admin/mfa/" class="section" title="Modele w aplikacji MFA">MFA</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-authenticator">
+              <th scope="row" id="mfa-authenticator">
+                
+                  <a href="/admin/mfa/authenticator/">Authenticators</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-django_celery_beat module">
+      <table>
+        <caption>
+          <a href="/admin/django_celery_beat/" class="section" title="Modele w aplikacji Periodic Tasks">Periodic Tasks</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-clockedschedule">
+              <th scope="row" id="django_celery_beat-clockedschedule">
+                
+                  <a href="/admin/django_celery_beat/clockedschedule/">Clocked</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/django_celery_beat/clockedschedule/add/" class="addlink" aria-describedby="django_celery_beat-clockedschedule">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-crontabschedule">
+              <th scope="row" id="django_celery_beat-crontabschedule">
+                
+                  <a href="/admin/django_celery_beat/crontabschedule/">Crontabs</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/django_celery_beat/crontabschedule/add/" class="addlink" aria-describedby="django_celery_beat-crontabschedule">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-intervalschedule">
+              <th scope="row" id="django_celery_beat-intervalschedule">
+                
+                  <a href="/admin/django_celery_beat/intervalschedule/">Intervals</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/django_celery_beat/intervalschedule/add/" class="addlink" aria-describedby="django_celery_beat-intervalschedule">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-periodictask">
+              <th scope="row" id="django_celery_beat-periodictask">
+                
+                  <a href="/admin/django_celery_beat/periodictask/">Periodic tasks</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/django_celery_beat/periodictask/add/" class="addlink" aria-describedby="django_celery_beat-periodictask">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-solarschedule">
+              <th scope="row" id="django_celery_beat-solarschedule">
+                
+                  <a href="/admin/django_celery_beat/solarschedule/">Solar events</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/django_celery_beat/solarschedule/add/" class="addlink" aria-describedby="django_celery_beat-solarschedule">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-advicer module">
+      <table>
+        <caption>
+          <a href="/admin/advicer/" class="section" title="Modele w aplikacji Rejestr tagów spraw">Rejestr tagów spraw</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-advice">
+              <th scope="row" id="advicer-advice">
+                
+                  <a href="/admin/advicer/advice/">Tagi</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-scope">
+              <th scope="row" id="advicer-scope">
+                
+                  <a href="/admin/advicer/scope/">Zakresy poradnictwa</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/advicer/scope/add/" class="addlink" aria-describedby="advicer-scope">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-issue">
+              <th scope="row" id="advicer-issue">
+                
+                  <a href="/admin/advicer/issue/">Zagadnienia</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/advicer/issue/add/" class="addlink" aria-describedby="advicer-issue">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-area">
+              <th scope="row" id="advicer-area">
+                
+                  <a href="/admin/advicer/area/">Obszary</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/advicer/area/add/" class="addlink" aria-describedby="advicer-area">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-personkind">
+              <th scope="row" id="advicer-personkind">
+                
+                  <a href="/admin/advicer/personkind/">Rodzaj osób, które się zgłaszają o poradę:</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/advicer/personkind/add/" class="addlink" aria-describedby="advicer-personkind">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-institutionkind">
+              <th scope="row" id="advicer-institutionkind">
+                
+                  <a href="/admin/advicer/institutionkind/">Rodzaje instytucji</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/advicer/institutionkind/add/" class="addlink" aria-describedby="advicer-institutionkind">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-cases module current-app">
+      <table>
+        <caption>
+          <a href="/admin/cases/" class="section" title="Modele w aplikacji Sprawy">Sprawy</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-permissiongroup">
+              <th scope="row" id="cases-permissiongroup">
+                
+                  <a href="/admin/cases/permissiongroup/">Permission groups</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/cases/permissiongroup/add/" class="addlink" aria-describedby="cases-permissiongroup">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-case current-model">
+              <th scope="row" id="cases-case">
+                
+                  <a href="/admin/cases/case/" aria-current="page">Sprawy</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-deletecaseproxy">
+              <th scope="row" id="cases-deletecaseproxy">
+                
+                  <a href="/admin/cases/deletecaseproxy/">Sprawy do usunięcia</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-sites module">
+      <table>
+        <caption>
+          <a href="/admin/sites/" class="section" title="Modele w aplikacji Strony">Strony</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-site">
+              <th scope="row" id="sites-site">
+                
+                  <a href="/admin/sites/site/">Strony</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/sites/site/add/" class="addlink" aria-describedby="sites-site">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-tinycontent module">
+      <table>
+        <caption>
+          <a href="/admin/tinycontent/" class="section" title="Modele w aplikacji Tinycontent">Tinycontent</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-tinycontent">
+              <th scope="row" id="tinycontent-tinycontent">
+                
+                  <a href="/admin/tinycontent/tinycontent/">Content blocks</a>
+                
+              </th>
+
+              
+                <td></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-tinycontentfileupload">
+              <th scope="row" id="tinycontent-tinycontentfileupload">
+                
+                  <a href="/admin/tinycontent/tinycontentfileupload/">File uploads</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/tinycontent/tinycontentfileupload/add/" class="addlink" aria-describedby="tinycontent-tinycontentfileupload">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-tasty_feedback module">
+      <table>
+        <caption>
+          <a href="/admin/tasty_feedback/" class="section" title="Modele w aplikacji Uwagi">Uwagi</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-feedback">
+              <th scope="row" id="tasty_feedback-feedback">
+                
+                  <a href="/admin/tasty_feedback/feedback/">Uwagi</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/tasty_feedback/feedback/add/" class="addlink" aria-describedby="tasty_feedback-feedback">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-auth module">
+      <table>
+        <caption>
+          <a href="/admin/auth/" class="section" title="Modele w aplikacji Uwierzytelnienie i autoryzacja">Uwierzytelnienie i autoryzacja</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-group">
+              <th scope="row" id="auth-group">
+                
+                  <a href="/admin/auth/group/">Grupy</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/auth/group/add/" class="addlink" aria-describedby="auth-group">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-users module">
+      <table>
+        <caption>
+          <a href="/admin/users/" class="section" title="Modele w aplikacji Użytkownicy">Użytkownicy</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-profile">
+              <th scope="row" id="users-profile">
+                
+                  <a href="/admin/users/profile/">Profile</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/users/profile/add/" class="addlink" aria-describedby="users-profile">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+          
+            <tr class="model-user">
+              <th scope="row" id="users-user">
+                
+                  <a href="/admin/users/user/">Użytkownicy</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/users/user/add/" class="addlink" aria-describedby="users-user">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-records module">
+      <table>
+        <caption>
+          <a href="/admin/records/" class="section" title="Modele w aplikacji Wpis">Wpis</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-record">
+              <th scope="row" id="records-record">
+                
+                  <a href="/admin/records/record/">Wpis</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/records/record/add/" class="addlink" aria-describedby="records-record">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+    <div class="app-events module">
+      <table>
+        <caption>
+          <a href="/admin/events/" class="section" title="Modele w aplikacji Wydarzenia">Wydarzenia</a>
+        </caption>
+        <thead class="visually-hidden">
+          <tr>
+            <th scope="col">Nazwa modelu</th>
+            <th scope="col">Dodaj link</th>
+            <th scope="col">Link do zmiany lub podglądu</th>
+          </tr>
+        </thead>
+        
+          
+            <tbody><tr class="model-event">
+              <th scope="row" id="events-event">
+                
+                  <a href="/admin/events/event/">Wydarzenia</a>
+                
+              </th>
+
+              
+                <td><a href="/admin/events/event/add/" class="addlink" aria-describedby="events-event">Dodaj</a></td>
+              
+
+              
+            </tr>
+          
+        
+      </tbody></table>
+    </div>
+  
+
+
+</nav>
+
+        
+      
+      <main id="content-start" class="content" tabindex="-1">
+        
+          
+        
+        <!-- Content -->
+        <div id="content" class="colM">
+          
+          <h1>Usuń</h1>
+          
+          
+
+  
+    <p>Czy chcesz skasować Sprawa „Przykładowa sprawa &lt;b&gt;test&lt;/b&gt; do testów renderowania”? Następujące obiekty powiązane zostaną usunięte:</p>
+    
+<h2>Podsumowanie</h2>
+<ul>
+    
+    <li>Sprawy: 1</li>
+    
+    <li>Case user object permissions: 2</li>
+    
+</ul>
+
+    <h2>Obiekty</h2>
+    <ul id="deleted-objects">	<li>Sprawa: <a href="/admin/cases/case/8/change/">Przykładowa sprawa &lt;b&gt;test&lt;/b&gt; do testów renderowania</a>
+	<ul>
+		<li>Case user object permission: Przykładowa sprawa &lt;b&gt;test&lt;/b&gt; do testów renderowania | Ewa Klientka | can_view</li>
+		<li>Case user object permission: Przykładowa sprawa &lt;b&gt;test&lt;/b&gt; do testów renderowania | Ewa Klientka | can_add_record</li>
+	</ul>
+	</li></ul>
+    <form method="post"><input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
+    <div>
+    <input type="hidden" name="post" value="yes">
+    
+    
+    <input type="submit" value="Tak, na pewno">
+    <a href="#" class="button cancel-link">Nie, zabierz mnie stąd</a>
+    </div>
+    </form>
+  
+
+
+          
+          <br class="clear">
+        </div>
+        <!-- END Content -->
+      </main>
+    </div>
+    <footer id="footer"></footer>
+</div>
+<!-- END Container -->
+
+<!-- SVGs -->
+<svg xmlns="http://www.w3.org/2000/svg" class="base-svgs">
+  <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-auto"><path d="M0 0h24v24H0z" fill="currentColor"></path><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2V4a8 8 0 1 0 0 16z"></path></symbol>
+  <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-moon"><path d="M0 0h24v24H0z" fill="currentColor"></path><path d="M10 7a7 7 0 0 0 12 4.9v.1c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2h.1A6.979 6.979 0 0 0 10 7zm-6 5a8 8 0 0 0 15.062 3.762A9 9 0 0 1 8.238 4.938 7.999 7.999 0 0 0 4 12z"></path></symbol>
+  <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-sun"><path d="M0 0h24v24H0z" fill="currentColor"></path><path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.121 2.121-1.414 1.414-2.121-2.121zm2.121-14.85l1.414 1.415-2.121 2.121-1.414-1.414 2.121-2.121zM5.636 16.95l1.414 1.414-2.121 2.121-1.414-1.414 2.121-2.121zM23 11v2h-3v-2h3zM4 11v2H1v-2h3z"></path></symbol>
+</svg>
+<!-- END SVGs -->
+
+
+
+</body></html>
