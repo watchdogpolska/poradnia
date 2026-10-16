@@ -1,6 +1,27 @@
 {% load tinycontent_tags %}
 
 <style>
+#popup-backdrop {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Below both the popup itself (1000) and the mode-switch form that's
+       the first element in body (1051, see base.html), above everything
+       else - this is what actually blocks clicking through to the rest
+       of the page while the popup is shown. */
+    z-index: 999;
+}
+#popup-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 400ms ease, visibility 0s linear 0s;
+}
 #popup-container {
     opacity: 0;
     visibility: hidden;
@@ -40,13 +61,18 @@
 #popup-container button {
     color: white;
 }
+#popup-container form {
+    display: inline-block;
+    margin: 0 4px;
+}
 </style>
 
-<div id="popup-container">
+<div id="popup-backdrop"></div>
+<div id="popup-container" role="dialog" aria-modal="true" aria-label="Przekaż 1,5% podatku" tabindex="-1">
     {% tinycontent 'donate_popup:message' %}
         <h3>Przekaż 1,5% podatku na działanie poradni Watchdoga!</h3>
         <a href="https://siecobywatelska.pl/dbamy-o-orla/">
-            <img src="https://siecobywatelska.pl/wp-content/uploads/2024/02/WD_Szklanka_750x200.png" 
+            <img src="https://siecobywatelska.pl/wp-content/uploads/2024/02/WD_Szklanka_750x200.png"
                 alt="Wspieramy obywateli">
         </a>
         <h2>Numer KRS: 0000181348</h2>
@@ -57,5 +83,21 @@
     <input type="checkbox" id="alreadyDonated" name="alreadyDonated" value="donated">
     <label for="alreadyDonated">Już przekazałem/am</label>
     <p>&nbsp;</p>
+    <!-- While this popup blocks the rest of the page, switching to WCAG
+         mode has to be reachable from inside it too, not just the
+         always-on-top switch form at the very start of body - this is
+         the one other allowed action besides closing (see the same fix
+         on donate_popup_alternative.html). -->
+    <form method="post" action="{% url 'ui_mode_switch' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        {% if ui_mode == "wcag" %}
+            <input type="hidden" name="mode" value="normal">
+            <button type="submit">Przełącz na wersję standardową</button>
+        {% else %}
+            <input type="hidden" name="mode" value="wcag">
+            <button type="submit">Włącz wersję dostępną</button>
+        {% endif %}
+    </form>
     <button class="btn btn-primary" id="donate-button" onclick="closePopup()">Zamknij</button>
 </div>

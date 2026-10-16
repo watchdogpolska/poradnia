@@ -1,6 +1,27 @@
 {% load tinycontent_tags %}
 
 <style>
+#alt-popup-backdrop {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Below both the popup itself (1001) and the mode-switch form that's
+       the first element in body (1051, see base.html), above everything
+       else - this is what actually blocks clicking through to the rest
+       of the page while the popup is shown. */
+    z-index: 1000;
+}
+#alt-popup-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 400ms ease, visibility 0s linear 0s;
+}
 #alt-popup-container {
     opacity: 0;
     visibility: hidden;
@@ -51,9 +72,14 @@
     margin-top: 15px;
     margin-bottom: 15px;
 }
+#alt-popup-container form {
+    display: inline-block;
+    margin: 0 4px;
+}
 </style>
 
-<div id="alt-popup-container">
+<div id="alt-popup-backdrop"></div>
+<div id="alt-popup-container" role="dialog" aria-modal="true" aria-label="Wesprzyj naszą działalność" tabindex="-1">
     {% tinycontent 'donate_popup_alternative:message' %}
         <h2>Wesprzyj naszą działalność!</h2>
         <h4>Wesprzyj działanie naszej poradni dobrowolną darowizną,<br>
@@ -66,5 +92,20 @@
     <!-- <input type="checkbox" id="altAlreadyDonated" name="altAlreadyDonated" value="donated">
     <label for="altAlreadyDonated">Już przekazałem/am</label> -->
     <p>&nbsp;</p>
+    <!-- While this popup blocks the rest of the page, switching to WCAG
+         mode has to be reachable from inside it too, not just the
+         always-on-top switch form at the very start of body - this is
+         the one other allowed action besides closing. -->
+    <form method="post" action="{% url 'ui_mode_switch' %}">
+        {% csrf_token %}
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        {% if ui_mode == "wcag" %}
+            <input type="hidden" name="mode" value="normal">
+            <button type="submit">Przełącz na wersję standardową</button>
+        {% else %}
+            <input type="hidden" name="mode" value="wcag">
+            <button type="submit">Włącz wersję dostępną</button>
+        {% endif %}
+    </form>
     <button class="btn btn-primary" id="alt-donate-button" onclick="closeAltPopup()">Zamknij</button>
 </div>

@@ -39,7 +39,7 @@ Cypress.Commands.add('closeDonatePopup', () => {
         cy.get('#popup-container').invoke('hide');
       }
     }
-    
+
     // Handle alternative popup
     if ($body.find('#alt-popup-container:visible').length) {
       if ($body.find('button#alt-donate-button:visible').length) {
@@ -48,8 +48,23 @@ Cypress.Commands.add('closeDonatePopup', () => {
         cy.get('#alt-popup-container').invoke('hide');
       }
     }
+
+    // Both popups now render a full-page backdrop while shown (so the
+    // rest of the page is genuinely unclickable, not just visually
+    // covered - see donate_popup.html/donate_popup_alternative.html).
+    // The real close buttons already clear their own backdrop via
+    // closePopup()/closeAltPopup(), but the invoke('hide') fallback
+    // above only touches the popup box itself, so explicitly hide both
+    // backdrops here too regardless of which path ran. Hiding an
+    // already-hidden element is a harmless no-op.
+    if ($body.find('#popup-backdrop').length) {
+      cy.get('#popup-backdrop').invoke('hide');
+    }
+    if ($body.find('#alt-popup-backdrop').length) {
+      cy.get('#alt-popup-backdrop').invoke('hide');
+    }
   });
-  
+
   // Brief wait for any animations to complete
   cy.wait(300);
 });
