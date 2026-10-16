@@ -1,6 +1,7 @@
 {% extends 'advicer/base.html' %}
-{% load crispy_forms_tags i18n %}
+{% load crispy_forms_tags i18n wcag_tags %}
 
+{% block title %}{% if object %}{{ object }}{% else %}{% trans 'Advice' %}{% endif %} - {{ block.super }}{% endblock %}
 {% block breadcrumbs_rows %}
     {% if object %}
         <li class="breadcrumb-item"><a href="{{ object.get_absolute_url }}">{{ object }}</a></li>
@@ -16,6 +17,7 @@
             {% if object %}<h1>{{ object }}</h1>{% endif %}
             {% block form %}
                 <form class="{{ form.helper.form_class }}" method="POST">
+                    {% form_error_summary form %}
                     {% crispy form %}
                 </form>
             {% endblock %}

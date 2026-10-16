@@ -60,6 +60,7 @@
     
 </form>
 
+
 <!-- Moved to beginning to load JQueary before any other js code  -->
 
     <script src="/static/js/script.min.js"></script>
@@ -262,6 +263,7 @@
         <div class="content">
             
             
+            
             <div class="container-fluid">
                 
     
@@ -364,7 +366,7 @@
                     
                         
 <div class="timeline-messange">
-    <a href="#"><img src="/media/cache/64/4c/644cbebeebf6b0c4942e25a963b73aea.jpg" class="timeline-avatar"></a>
+    <a href="#"><img src="/media/cache/c9/bd/c9bd40e539c08e9d6c2a2a0ee79a21a3.jpg" class="timeline-avatar"></a>
     <div class="card border-default timeline-comment" id="letter-2">
         <div class="card-header text-bg-default">
             <h2 class="card-title">
@@ -425,7 +427,7 @@
                     
                         
 <div class="timeline-messange">
-    <a href="#"><img src="/media/cache/64/4c/644cbebeebf6b0c4942e25a963b73aea.jpg" class="timeline-avatar"></a>
+    <a href="#"><img src="/media/cache/c9/bd/c9bd40e539c08e9d6c2a2a0ee79a21a3.jpg" class="timeline-avatar"></a>
     <div class="card border-default timeline-comment" id="letter-4">
         <div class="card-header text-bg-default">
             <h2 class="card-title">
@@ -466,7 +468,7 @@
                     
                         
 <div class="timeline-messange">
-    <a href="#"><img src="/media/cache/40/b3/40b3ddc33dc38af24ba2df84aefb90b7.jpg" class="timeline-avatar"></a>
+    <a href="#"><img src="/media/cache/1b/a6/1ba6cc6bf6ad8f3db63b0aa8062a6a00.jpg" class="timeline-avatar"></a>
     <div class="card border-success timeline-comment" id="letter-6">
         <div class="card-header text-bg-success">
             <h2 class="card-title">
@@ -535,6 +537,9 @@
                                 <form method="post" class="" enctype="multipart/form-data" action="/listy/sprawa-2/" data-form-save="form-letter-2">
                                     
 
+
+                                    
+
 <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]" style=""> <script src="/static/tinymce/tinymce.min.js"></script>
 <script src="/static/django_tinymce/init_tinymce.js"></script> <div id="div_id_name" class="mb-3"> <label for="id_name" class="form-label requiredField">
                 Przedmiot<span class="asteriskField">*</span> </label> <input type="text" name="name" value="Odp: Spór o dostęp do danych środowiskowych" maxlength="300" class="textinput form-control" required="" id="id_name" style=""> </div> <div id="div_id_html" class="mb-3"> <label for="id_html" class="form-label">
@@ -587,6 +592,9 @@
     <div class="col-lg-4 sticky_right">
         
 
+
+        
+
 <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]" style=""> <div id="div_id_file_field" class="mb-3"> <label for="id_file_field" class="form-label">
                 Załączniki (wybierz lub upuść tutaj)
             </label> <div> <input type="file" name="file_field" class="form-control" multiple="" id="id_file_field" style=""> </div> </div>
@@ -618,6 +626,9 @@
                             <div role="tabpanel" class="tab-pane " id="court">
                                 <h2>Sprawa sądowa</h2>
                                 <form method="post" class="" enctype="multipart/form-data" action="/sprawy_sadowe/~create-2" data-form-save="form-court-2">
+                                    
+
+
                                     
 
  <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]" style=""> <div id="div_id_court" class="mb-3"> <label for="id_court" class="form-label">
@@ -652,6 +663,7 @@
 
 
             </div>
+            
             <div class="footer">
                 <div class="footer-right">Sieć Obywatelska - Watchdog Polska<br>
                     ul. Szpitalna 5/5<br>
@@ -661,7 +673,7 @@
                     silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
                     [VERSION] |
                     <a href="https://github.com/watchdogpolska/poradnia">
-                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/c31bc739...master">c31bc73</a>
+                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/[GITHUB_REVISION]...master">[GITHUB_REVISION]</a>
                 </div>
                 <div class="footer-center">Strona wykorzystuje cookies</div>
             </div>
@@ -687,8 +699,11 @@
         <p>Przekaż nam uwagi o tej stronie dotyczące błędów lub możliwych ulepszeń.</p>
         
 
+
+        
+
 <form action="/uwagi/submit" method="post"> <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]" style=""> <div id="div_id_text" class="mb-3"> <label for="id_text" class="form-label requiredField">
-                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea name="text" cols="40" rows="10" class="textarea form-control" required="" aria-describedby="id_text_helptext" id="id_text" style=""></textarea> <div id="id_text_helptext" class="form-text">Treść zgłoszona przez użytkownika</div> </div> <input type="hidden" name="url" value="http://localhost:8000/sprawy/sprawa-2/" id="id_url" style=""> <div class="mb-3"> <div class=""> <input type="submit" name="action" value="Zgłoś usterkę administratorom poradni." class="btn btn-primary btn-primary" id="submit-id-action" style=""> </div> </div> </form>
+                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea name="text" cols="40" rows="10" class="textarea form-control" required="" aria-describedby="id_text_helptext" id="id_text" style=""></textarea> <div id="id_text_helptext" class="form-text">Treść zgłoszona przez użytkownika</div> </div> <input type="hidden" name="url" value="http://localhost:8000/sprawy/sprawa-2/" id="id_url" style=""> <div class="mb-3"> <div class=""> <input type="submit" name="feedback_action" value="Zgłoś usterkę administratorom poradni." class="btn btn-primary btn-primary" id="submit-id-feedback_action" style=""> </div> </div> </form>
 
     </div>
 </div>
@@ -842,7 +857,7 @@
     </div>
 </div></div>
 <div id="htmx-spinner" class="htmx-indicator">
-    Loading...
+    Wczytywanie...
 </div>
 <script>
     document.addEventListener('click', function (event) {
@@ -850,16 +865,29 @@
             return;
         }
 
+        // Only clean up a modal that's actually open (switching straight
+        // from one attachment's modal to another's, without closing
+        // first) - this used to run unconditionally on every click of an
+        // attachment button, including the very click that opens the
+        // *first* modal, which stripped the backdrop/scroll-lock Bootstrap
+        // had just added for that same click (confirmed via an isolated
+        // Bootstrap-only repro outside the app, alongside the F004 fix in
+        // wcag.js). Registered capture:true so this runs *before* the
+        // click's own handler swaps #attachment-text-modal-container's
+        // content below - otherwise, on a direct switch between two
+        // attachments, `existingModal` would already be the new (not-yet-
+        // shown) modal instead of the old (actually open) one, and this
+        // would wrongly skip cleanup, leaking the old backdrop behind the
+        // new one (confirmed via the same repro).
         var existingModal = document.getElementById('attachmentTextModal');
-        if (existingModal) {
+        if (existingModal && existingModal.classList.contains('show')) {
             bootstrap.Modal.getOrCreateInstance(existingModal).hide();
+            document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+                el.remove();
+            });
+            document.body.classList.remove('modal-open');
         }
-
-        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
-            el.remove();
-        });
-        document.body.classList.remove('modal-open');
-    });
+    }, true);
 
     document.body.addEventListener('htmx:afterSwap', function (event) {
         if (event.target.id === 'attachment-text-modal-container') {

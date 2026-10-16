@@ -65,6 +65,7 @@
     
 </form>
 
+
 <!-- Moved to beginning to load JQueary before any other js code  -->
 
     <script src="/static/js/script.min.js"></script>
@@ -245,6 +246,7 @@
 
     </ol>
 
+            
             <div class="container-fluid">
                 
     
@@ -258,6 +260,9 @@
         
 
         <div class="row">
+            
+
+
             
 
 <form  class="form-inline" method="get" > <div id="div_id_is_superuser" class="mb-3"> <label
@@ -309,7 +314,7 @@
                         <a href="/uzytkownik/a11y_superuser/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/a2/e6/a2e6204b3f014d2565022aec300adcdd.jpg"> Anna Administrator
+                                <img src="/media/cache/f3/18/f3188883982c802e18c2160806d54f87.jpg"> Anna Administrator
                             </div>
                         </a>
                     </td>
@@ -338,7 +343,7 @@
                         <a href="/uzytkownik/a11y_staff_admin/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/aa/73/aa73baa66818aa6292bf66ab0df7fbd8.jpg"> Bartosz Kierownik
+                                <img src="/media/cache/66/92/6692861272821d800a131a334f7c00cb.jpg"> Bartosz Kierownik
                             </div>
                         </a>
                     </td>
@@ -367,7 +372,7 @@
                         <a href="/uzytkownik/a11y_staff_wsparcie/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/40/b3/40b3ddc33dc38af24ba2df84aefb90b7.jpg"> Celina Wsparcie
+                                <img src="/media/cache/1b/a6/1ba6cc6bf6ad8f3db63b0aa8062a6a00.jpg"> Celina Wsparcie
                             </div>
                         </a>
                     </td>
@@ -396,7 +401,7 @@
                         <a href="/uzytkownik/a11y_staff_obserwator/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/fd/5a/fd5a4e3bc96aae427b91d2af6d06398f.jpg"> Dawid Obserwator
+                                <img src="/media/cache/fe/12/fe121430f5add3bca38a6552a8af54b6.jpg"> Dawid Obserwator
                             </div>
                         </a>
                     </td>
@@ -425,7 +430,7 @@
                         <a href="/uzytkownik/a11y_client_active/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/64/4c/644cbebeebf6b0c4942e25a963b73aea.jpg"> Ewa Klientka
+                                <img src="/media/cache/c9/bd/c9bd40e539c08e9d6c2a2a0ee79a21a3.jpg"> Ewa Klientka
                             </div>
                         </a>
                     </td>
@@ -463,6 +468,7 @@
 
 
             </div>
+            
             <div class="footer">
                 <div class="footer-right">Sieć Obywatelska - Watchdog Polska<br>
                     ul. Szpitalna 5/5<br>
@@ -472,7 +478,7 @@
                     silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
                     [VERSION] |
                     <a href="https://github.com/watchdogpolska/poradnia">
-                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/c31bc739...master">c31bc73</a>
+                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/[GITHUB_REVISION]...master">[GITHUB_REVISION]</a>
                 </div>
                 <div class="footer-center">Strona wykorzystuje cookies</div>
             </div>
@@ -498,15 +504,18 @@
         <p>Przekaż nam uwagi o tej stronie dotyczące błędów lub możliwych ulepszeń.</p>
         
 
+
+        
+
 <form  action="/uwagi/submit" method="post" > <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div id="div_id_text" class="mb-3"> <label
                 for="id_text" class="form-label requiredField">
                 Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea name="text" cols="40" rows="10" class="textarea form-control" required aria-describedby="id_text_helptext" id="id_text">
 </textarea> <div id="id_text_helptext" class="form-text">Treść zgłoszona przez użytkownika</div> </div> <input type="hidden" name="url" value="http://localhost:8000/uzytkownik/" id="id_url"> <div class="mb-3"> <div class=""> <input type="submit"
-    name="action"
+    name="feedback_action"
     value="Zgłoś usterkę administratorom poradni."
     
         class="btn btn-primary btn-primary"
-        id="submit-id-action"
+        id="submit-id-feedback_action"
     
     
     /> </div> </div> </form>
@@ -566,7 +575,7 @@
 
 <div id="attachment-text-modal-container"></div>
 <div id="htmx-spinner" class="htmx-indicator">
-    Loading...
+    Wczytywanie...
 </div>
 <script>
     document.addEventListener('click', function (event) {
@@ -574,16 +583,29 @@
             return;
         }
 
+        // Only clean up a modal that's actually open (switching straight
+        // from one attachment's modal to another's, without closing
+        // first) - this used to run unconditionally on every click of an
+        // attachment button, including the very click that opens the
+        // *first* modal, which stripped the backdrop/scroll-lock Bootstrap
+        // had just added for that same click (confirmed via an isolated
+        // Bootstrap-only repro outside the app, alongside the F004 fix in
+        // wcag.js). Registered capture:true so this runs *before* the
+        // click's own handler swaps #attachment-text-modal-container's
+        // content below - otherwise, on a direct switch between two
+        // attachments, `existingModal` would already be the new (not-yet-
+        // shown) modal instead of the old (actually open) one, and this
+        // would wrongly skip cleanup, leaking the old backdrop behind the
+        // new one (confirmed via the same repro).
         var existingModal = document.getElementById('attachmentTextModal');
-        if (existingModal) {
+        if (existingModal && existingModal.classList.contains('show')) {
             bootstrap.Modal.getOrCreateInstance(existingModal).hide();
+            document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+                el.remove();
+            });
+            document.body.classList.remove('modal-open');
         }
-
-        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
-            el.remove();
-        });
-        document.body.classList.remove('modal-open');
-    });
+    }, true);
 
     document.body.addEventListener('htmx:afterSwap', function (event) {
         if (event.target.id === 'attachment-text-modal-container') {

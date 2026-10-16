@@ -58,6 +58,10 @@
         <button type="submit" class="btn btn-dark">Włącz wersję dostępną</button>
     {% endif %}
 </form>
+{% if ui_mode == "wcag" %}
+    <!-- F001: skip link, visually-hidden until focused (poradnia/assets/scss/wcag.scss) -->
+    <a href="#main-content" class="wcag-skip-link">Przejdź do treści głównej</a>
+{% endif %}
 
 <!-- Moved to beginning to load JQueary before any other js code  -->
 {% if debug %}
@@ -104,16 +108,20 @@
     <div class="main-side">
         <div class="content">
             {% if messages %}
+                {% if ui_mode == "wcag" %}<div role="status" aria-live="polite">{% endif %}
                 {% for message in messages %}
-                    <div class="alert {% if message.tags %}alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+                    <div class="alert{% if message.tags %} alert-{{ message.tags }}{% endif %}">{{ message }}</div>
                 {% endfor %}
+                {% if ui_mode == "wcag" %}</div>{% endif %}
             {% endif %}
             {% block breadcrumbs %}{% endblock %}
+            {% if ui_mode == "wcag" %}<main id="main-content">{% endif %}
             <div class="container-fluid">
                 {% block content %}
                     <p>Use this document as a way to quick start any new project.</p>
                 {% endblock content %}
             </div>
+            {% if ui_mode == "wcag" %}</main>{% endif %}
             <div class="footer">
                 <div class="footer-right">Sieć Obywatelska - Watchdog Polska<br>
                     ul. Szpitalna 5/5<br>
@@ -170,7 +178,7 @@
 
 <div id="attachment-text-modal-container"></div>
 <div id="htmx-spinner" class="htmx-indicator">
-    Loading...
+    Wczytywanie...
 </div>
 <script>
     document.addEventListener('click', function (event) {
@@ -178,16 +186,29 @@
             return;
         }
 
+        // Only clean up a modal that's actually open (switching straight
+        // from one attachment's modal to another's, without closing
+        // first) - this used to run unconditionally on every click of an
+        // attachment button, including the very click that opens the
+        // *first* modal, which stripped the backdrop/scroll-lock Bootstrap
+        // had just added for that same click (confirmed via an isolated
+        // Bootstrap-only repro outside the app, alongside the F004 fix in
+        // wcag.js). Registered capture:true so this runs *before* the
+        // click's own handler swaps #attachment-text-modal-container's
+        // content below - otherwise, on a direct switch between two
+        // attachments, `existingModal` would already be the new (not-yet-
+        // shown) modal instead of the old (actually open) one, and this
+        // would wrongly skip cleanup, leaking the old backdrop behind the
+        // new one (confirmed via the same repro).
         var existingModal = document.getElementById('attachmentTextModal');
-        if (existingModal) {
+        if (existingModal && existingModal.classList.contains('show')) {
             bootstrap.Modal.getOrCreateInstance(existingModal).hide();
+            document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+                el.remove();
+            });
+            document.body.classList.remove('modal-open');
         }
-
-        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
-            el.remove();
-        });
-        document.body.classList.remove('modal-open');
-    });
+    }, true);
 
     document.body.addEventListener('htmx:afterSwap', function (event) {
         if (event.target.id === 'attachment-text-modal-container') {
@@ -195,6 +216,22 @@
             if (modal) {
                 bootstrap.Modal.getOrCreateInstance(modal).show();
             }
+        }
+    });
+
+    // Bootstrap sets aria-hidden="true" on the modal from _hideModal(),
+    // called after the hide transition - if focus is still inside the
+    // modal at that point (e.g. the "Zamknij" button that was just
+    // clicked/activated to close it), the browser blocks it and logs an
+    // "aria-hidden blocked" console warning, since a hidden ancestor must
+    // never contain the focused element. 'hide.bs.modal' fires
+    // synchronously, immediately, before any of that - blurring here
+    // means focus is already outside the modal by the time aria-hidden
+    // is actually applied. The 'hidden.bs.modal' handler below still runs
+    // afterwards to move focus on to the triggering attachment button.
+    document.addEventListener('hide.bs.modal', function (event) {
+        if (event.target.matches('#attachmentTextModal') && event.target.contains(document.activeElement)) {
+            document.activeElement.blur();
         }
     });
 

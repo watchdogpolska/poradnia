@@ -43,17 +43,26 @@ function diffPair(label, normal, wcag, diffs) {
     return;
   }
 
-  const normalForms = JSON.stringify(normal.forms);
-  const wcagForms = JSON.stringify(wcag.forms);
-  if (normalForms !== wcagForms) {
-    diffs.push(`${label}: FORM FIELDS DIFFER\n    normal: ${normalForms}\n    wcag:   ${wcagForms}`);
+  // Containment, not exact equality: WCAG mode is explicitly allowed to ADD
+  // forms/controls (e.g. F001's skip link, which has no normal-mode
+  // equivalent) - this only fails when something present in normal mode is
+  // missing from WCAG mode, never on an addition. Forms are compared by a
+  // stable per-form key since object identity/order isn't meaningful here.
+  const wcagFormKeys = new Set(wcag.forms.map((f) => JSON.stringify(f)));
+  const missingForms = normal.forms
+    .map((f) => JSON.stringify(f))
+    .filter((key) => !wcagFormKeys.has(key));
+  if (missingForms.length > 0) {
+    diffs.push(
+      `${label}: WCAG mode is missing form(s) present in normal mode: ${missingForms.join(", ")}`
+    );
   }
 
-  const normalControls = JSON.stringify(normal.controls);
-  const wcagControls = JSON.stringify(wcag.controls);
-  if (normalControls !== wcagControls) {
+  const wcagControlSet = new Set(wcag.controls);
+  const missingControls = normal.controls.filter((c) => !wcagControlSet.has(c));
+  if (missingControls.length > 0) {
     diffs.push(
-      `${label}: CONTROL TARGETS DIFFER\n    normal: ${normalControls}\n    wcag:   ${wcagControls}`
+      `${label}: WCAG mode is missing control target(s) present in normal mode: ${missingControls.join(", ")}`
     );
   }
 

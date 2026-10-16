@@ -3,7 +3,7 @@
 {# {% load bootstrap4 %} #}
 {% load i18n %}
 
-
+{% block title %}{% trans 'Letters table' %} - {{ block.super }}{% endblock %}
 {% block content %}
 <style>
     /* overriding element style to hide */

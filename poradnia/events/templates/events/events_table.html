@@ -3,7 +3,7 @@
 {# {% load bootstrap4 %} #}
 {% load i18n cases_tags %}
 
-
+{% block title %}{% trans 'Events Table' %} - {{ block.super }}{% endblock %}
 {% block content %}
 
 <style>

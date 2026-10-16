@@ -1,6 +1,7 @@
 {% extends "cases/base.html" %}
-{% load crispy_forms_tags humanize i18n cases_tags %}
+{% load crispy_forms_tags humanize i18n cases_tags wcag_tags %}
 
+{% block title %}{% trans 'Cases index' %} - {{ block.super }}{% endblock %}
 {% block extra_css %}
     <style>
         span.free, tr.free > td, td.free {
@@ -30,6 +31,7 @@
 {% block content %}
 <div class="row">
     <div class="col-lg-8 col-md-10 col-sm-12 col-12 offset-lg-2 offset-md-1">
+        {% form_error_summary filter.form %}
         {% crispy filter.form %}
 
         {% if object_list %}

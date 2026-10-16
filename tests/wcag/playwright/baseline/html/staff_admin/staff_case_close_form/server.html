@@ -48,6 +48,7 @@
     
 </form>
 
+
 <!-- Moved to beginning to load JQueary before any other js code  -->
 
     <script src="/static/js/script.min.js"></script>
@@ -231,6 +232,7 @@
         <li class="breadcrumb-item active">Zamknij</li>
     </ol>
 
+            
             <div class="container-fluid">
                 
     <h1>Długotrwała korespondencja ws. decyzji administracyjnej</h1>
@@ -241,6 +243,9 @@
     </p>
     <p>&nbsp;</p>
     <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
+    
+
+
     
 
 <form  action="/sprawy/sprawa-3/zamknij/" method="post" > <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div class="mb-3"> <div class=""> <input type="submit"
@@ -255,6 +260,7 @@
 
 
             </div>
+            
             <div class="footer">
                 <div class="footer-right">Sieć Obywatelska - Watchdog Polska<br>
                     ul. Szpitalna 5/5<br>
@@ -264,7 +270,7 @@
                     silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
                     [VERSION] |
                     <a href="https://github.com/watchdogpolska/poradnia">
-                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/c31bc739...master">c31bc73</a>
+                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/[GITHUB_REVISION]...master">[GITHUB_REVISION]</a>
                 </div>
                 <div class="footer-center">Strona wykorzystuje cookies</div>
             </div>
@@ -290,15 +296,18 @@
         <p>Przekaż nam uwagi o tej stronie dotyczące błędów lub możliwych ulepszeń.</p>
         
 
+
+        
+
 <form  action="/uwagi/submit" method="post" > <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div id="div_id_text" class="mb-3"> <label
                 for="id_text" class="form-label requiredField">
                 Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea name="text" cols="40" rows="10" class="textarea form-control" required aria-describedby="id_text_helptext" id="id_text">
 </textarea> <div id="id_text_helptext" class="form-text">Treść zgłoszona przez użytkownika</div> </div> <input type="hidden" name="url" value="http://localhost:8000/sprawy/sprawa-3/zamknij/" id="id_url"> <div class="mb-3"> <div class=""> <input type="submit"
-    name="action"
+    name="feedback_action"
     value="Zgłoś usterkę administratorom poradni."
     
         class="btn btn-primary btn-primary"
-        id="submit-id-action"
+        id="submit-id-feedback_action"
     
     
     /> </div> </div> </form>
@@ -388,7 +397,7 @@
 
 <div id="attachment-text-modal-container"></div>
 <div id="htmx-spinner" class="htmx-indicator">
-    Loading...
+    Wczytywanie...
 </div>
 <script>
     document.addEventListener('click', function (event) {
@@ -396,16 +405,29 @@
             return;
         }
 
+        // Only clean up a modal that's actually open (switching straight
+        // from one attachment's modal to another's, without closing
+        // first) - this used to run unconditionally on every click of an
+        // attachment button, including the very click that opens the
+        // *first* modal, which stripped the backdrop/scroll-lock Bootstrap
+        // had just added for that same click (confirmed via an isolated
+        // Bootstrap-only repro outside the app, alongside the F004 fix in
+        // wcag.js). Registered capture:true so this runs *before* the
+        // click's own handler swaps #attachment-text-modal-container's
+        // content below - otherwise, on a direct switch between two
+        // attachments, `existingModal` would already be the new (not-yet-
+        // shown) modal instead of the old (actually open) one, and this
+        // would wrongly skip cleanup, leaking the old backdrop behind the
+        // new one (confirmed via the same repro).
         var existingModal = document.getElementById('attachmentTextModal');
-        if (existingModal) {
+        if (existingModal && existingModal.classList.contains('show')) {
             bootstrap.Modal.getOrCreateInstance(existingModal).hide();
+            document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+                el.remove();
+            });
+            document.body.classList.remove('modal-open');
         }
-
-        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
-            el.remove();
-        });
-        document.body.classList.remove('modal-open');
-    });
+    }, true);
 
     document.body.addEventListener('htmx:afterSwap', function (event) {
         if (event.target.id === 'attachment-text-modal-container') {

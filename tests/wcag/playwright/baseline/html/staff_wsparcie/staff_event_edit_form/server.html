@@ -48,6 +48,7 @@
     
 </form>
 
+
 <!-- Moved to beginning to load JQueary before any other js code  -->
 
     <script src="/static/js/script.min.js"></script>
@@ -227,9 +228,13 @@
         <li class="breadcrumb-item active">Edytuj</li>
     </ol>
 
+            
             <div class="container-fluid">
                 
     <h1>Wydarzenie (#1) w sprawie #2</h1>
+    
+
+
     
 
 <form  action="/wydarzenia/wydarzenie-1" class="form-horizontal" method="post" > <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div class="mb-3 row"> <div class="offset-lg-3 col-lg-9"> <div id="div_id_deadline" class="form-check"> <input type="checkbox" name="deadline" class="checkboxinput form-check-input" aria-describedby="id_deadline_helptext" id="id_deadline" checked> <label for="id_deadline" class="form-check-label">
@@ -240,7 +245,7 @@
                     Publiczny
                 </label> <div id="id_public_helptext" class="form-text">Zdarzenie jest widoczne dla klientów (ext).</div> </div> </div> </div> <div id="div_id_time" class="mb-3 row"> <label
                 for="id_time" class="col-form-label pt-0 col-lg-3 requiredField">
-                Czas<span class="asteriskField">*</span> </label> <div class="col-lg-9"> <input type="text" name="time" value="05.10.2026 [TIME]" autocomplete="off" class="datetimeinput form-control" required id="id_time"> </div> </div> <div id="div_id_text" class="mb-3 row"> <label
+                Czas<span class="asteriskField">*</span> </label> <div class="col-lg-9"> <input type="text" name="time" value="06.10.2026 [TIME]" autocomplete="off" class="datetimeinput form-control" required id="id_time"> </div> </div> <div id="div_id_text" class="mb-3 row"> <label
                 for="id_text" class="col-form-label pt-0 col-lg-3 requiredField">
                 Przedmiot<span class="asteriskField">*</span> </label> <div class="col-lg-9"> <textarea name="text" cols="40" rows="10" class="textarea form-control" required id="id_text">
 Termin, który już minął</textarea> </div> </div> <div class="mb-3 row"> <div class="aab col-lg-3"></div> <div class="col-lg-9"> <input type="submit"
@@ -255,6 +260,7 @@ Termin, który już minął</textarea> </div> </div> <div class="mb-3 row"> <div
 
 
             </div>
+            
             <div class="footer">
                 <div class="footer-right">Sieć Obywatelska - Watchdog Polska<br>
                     ul. Szpitalna 5/5<br>
@@ -264,7 +270,7 @@ Termin, który już minął</textarea> </div> </div> <div class="mb-3 row"> <div
                     silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
                     [VERSION] |
                     <a href="https://github.com/watchdogpolska/poradnia">
-                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/c31bc739...master">c31bc73</a>
+                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/[GITHUB_REVISION]...master">[GITHUB_REVISION]</a>
                 </div>
                 <div class="footer-center">Strona wykorzystuje cookies</div>
             </div>
@@ -290,15 +296,18 @@ Termin, który już minął</textarea> </div> </div> <div class="mb-3 row"> <div
         <p>Przekaż nam uwagi o tej stronie dotyczące błędów lub możliwych ulepszeń.</p>
         
 
+
+        
+
 <form  action="/uwagi/submit" method="post" > <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div id="div_id_text" class="mb-3"> <label
                 for="id_text" class="form-label requiredField">
                 Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea name="text" cols="40" rows="10" class="textarea form-control" required aria-describedby="id_text_helptext" id="id_text">
 </textarea> <div id="id_text_helptext" class="form-text">Treść zgłoszona przez użytkownika</div> </div> <input type="hidden" name="url" value="http://localhost:8000/wydarzenia/wydarzenie-1" id="id_url"> <div class="mb-3"> <div class=""> <input type="submit"
-    name="action"
+    name="feedback_action"
     value="Zgłoś usterkę administratorom poradni."
     
         class="btn btn-primary btn-primary"
-        id="submit-id-action"
+        id="submit-id-feedback_action"
     
     
     /> </div> </div> </form>
@@ -360,7 +369,7 @@ Termin, który już minął</textarea> </div> </div> <div class="mb-3 row"> <div
 
 <div id="attachment-text-modal-container"></div>
 <div id="htmx-spinner" class="htmx-indicator">
-    Loading...
+    Wczytywanie...
 </div>
 <script>
     document.addEventListener('click', function (event) {
@@ -368,16 +377,29 @@ Termin, który już minął</textarea> </div> </div> <div class="mb-3 row"> <div
             return;
         }
 
+        // Only clean up a modal that's actually open (switching straight
+        // from one attachment's modal to another's, without closing
+        // first) - this used to run unconditionally on every click of an
+        // attachment button, including the very click that opens the
+        // *first* modal, which stripped the backdrop/scroll-lock Bootstrap
+        // had just added for that same click (confirmed via an isolated
+        // Bootstrap-only repro outside the app, alongside the F004 fix in
+        // wcag.js). Registered capture:true so this runs *before* the
+        // click's own handler swaps #attachment-text-modal-container's
+        // content below - otherwise, on a direct switch between two
+        // attachments, `existingModal` would already be the new (not-yet-
+        // shown) modal instead of the old (actually open) one, and this
+        // would wrongly skip cleanup, leaking the old backdrop behind the
+        // new one (confirmed via the same repro).
         var existingModal = document.getElementById('attachmentTextModal');
-        if (existingModal) {
+        if (existingModal && existingModal.classList.contains('show')) {
             bootstrap.Modal.getOrCreateInstance(existingModal).hide();
+            document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+                el.remove();
+            });
+            document.body.classList.remove('modal-open');
         }
-
-        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
-            el.remove();
-        });
-        document.body.classList.remove('modal-open');
-    });
+    }, true);
 
     document.body.addEventListener('htmx:afterSwap', function (event) {
         if (event.target.id === 'attachment-text-modal-container') {

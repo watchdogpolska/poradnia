@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load i18n %}
 
+{% block title %}{% trans 'Dashboard' %} - {{ block.super }}{% endblock %}
 {% block content %}
     <div class="dashboard-page-header">
         <h3>{% trans 'Dashboard' %}</h3>

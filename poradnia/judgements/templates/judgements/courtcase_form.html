@@ -1,6 +1,6 @@
 {% extends 'letters/base.html' %}
-{% load crispy_forms_tags staticfiles i18n %}
-{% block title %}{{ object }} - {{ block.super }}{% endblock %}
+{% load crispy_forms_tags staticfiles i18n wcag_tags %}
+{% block title %}{% if object %}{{ object }}{% else %}{% trans 'Court case' %}{% endif %} - {{ block.super }}{% endblock %}
 {% block breadcrumbs %}
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{% url 'cases:list' %}">{% trans 'Cases' %}</a></li>
@@ -11,6 +11,7 @@
 
 {% block content %}
     {% block object %}<h1>{{ object }}</h1>{% endblock %}
+    {% form_error_summary form %}
     {% crispy form %}
 {% endblock %}
 {% block javascript %}

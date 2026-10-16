@@ -1,5 +1,5 @@
 {% extends "users/base.html" %}
-{% load static i18n users_tags crispy_forms_tags %}
+{% load static i18n users_tags crispy_forms_tags wcag_tags %}
 
 {% block title %}{% trans 'Users index' %}{% endblock %}
 
@@ -36,6 +36,7 @@
         {% endif %}
 
         <div class="row">
+            {% form_error_summary filter.form %}
             {% crispy filter.form %}
         </div>
 

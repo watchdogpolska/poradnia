@@ -42,6 +42,7 @@ from model_utils.fields import MonitorField, StatusField
 
 from poradnia.utils.constants import NAME_MAX_LENGTH
 from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
+from poradnia.utils.ui_mode import UI_MODE_WCAG, get_ui_mode
 from poradnia.utils.utils import get_numeric_param
 
 logger = logging.getLogger(__name__)
@@ -348,6 +349,11 @@ class Case(models.Model):
 
     def render_status(self):
         status_icon = self.STATUS_STYLE[self.status]
+        if get_ui_mode() == UI_MODE_WCAG:
+            return (
+                f'<span class="{status_icon}" aria-hidden="true"></span>'
+                f'<span class="visually-hidden">{self.get_status_display()}</span>'
+            )
         return f'<span class="{status_icon}"></span>'
 
     def render_project_badge(self):

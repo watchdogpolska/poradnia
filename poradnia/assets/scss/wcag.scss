@@ -1,4 +1,41 @@
 // WCAG-mode-only stylesheet. Loaded in base.html only when ui_mode == "wcag",
 // after style.css, and every rule here should additionally be scoped under
-// html[data-ui-mode="wcag"] as a belt-and-suspenders guard. Empty for M0 —
-// see logs/wcag/plan/plan.md M1 for the first rules landing here.
+// html[data-ui-mode="wcag"] as a belt-and-suspenders guard.
+
+// F001: skip link (base.html), visually-hidden until focused - a standard
+// accessible pattern, not the same requirement as the mode-switch button
+// (which must stay always-visible per logs/wcag/plan/ui-mode-design.md §2).
+html[data-ui-mode="wcag"] .wcag-skip-link {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	z-index: 1052;
+	padding: 0.5rem 1rem;
+	background: #fff;
+	color: #000;
+
+	&:focus {
+		top: 0;
+	}
+}
+
+// F013: style.scss's .btn-default border-color (#ccc, ~1.6:1 against white)
+// and focus-shadow-rgb (173,173,173, ~2.24:1) both fall under the 3:1
+// minimum WCAG 1.4.11 requires for UI-component boundaries/focus
+// indicators. Overridden here (not in style.scss) so normal mode's look -
+// and assets.sha256 - stay untouched. See audit/findings.csv F013.
+html[data-ui-mode="wcag"] .btn-default {
+	// #767676 is the well-known "exactly ~4.5:1 against white" gray,
+	// comfortably clearing the 3:1 minimum (was #ccc, ~1.6:1).
+	--bs-btn-border-color: #767676;
+	--bs-btn-hover-border-color: #767676;
+	--bs-btn-active-border-color: #767676;
+	--bs-btn-disabled-border-color: #767676;
+	// Bootstrap's own .btn:focus-visible rule renders this at 50% alpha
+	// over the page background (rgba(var(--bs-btn-focus-shadow-rgb), .5)),
+	// so the effective on-screen color is lighter than this raw value -
+	// black blends to roughly #808080 (~3.95:1), clearing 3:1 (the old
+	// 173,173,173 raw value was already under 3:1 *before* accounting for
+	// that blend, so the real rendered contrast was worse still).
+	--bs-btn-focus-shadow-rgb: 0, 0, 0;
+}

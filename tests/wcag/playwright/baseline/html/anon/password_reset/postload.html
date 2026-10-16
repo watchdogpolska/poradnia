@@ -54,6 +54,7 @@
     
 </form>
 
+
 <!-- Moved to beginning to load JQueary before any other js code  -->
 
     <script src="/static/js/script.min.js"></script>
@@ -232,6 +233,7 @@
         <div class="content">
             
             
+            
             <div class="container-fluid">
                 
     <h2>Reset hasła</h2>
@@ -243,6 +245,9 @@
         <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
         
 
+
+        
+
 <div id="div_id_email" class="mb-3"> <label for="id_email" class="form-label requiredField">
                 E-mail<span class="asteriskField">*</span> </label> <input type="email" name="email" autocomplete="email" placeholder="Adres e-mail" maxlength="320" class="textinput form-control" required="" id="id_email"> </div>
 
@@ -252,6 +257,7 @@
     <p>Prosimy, skontaktuj się, jeżeli masz jakiekolwiek trudności z resetem hasła.</p>
 
             </div>
+            
             <div class="footer">
                 <div class="footer-right">Sieć Obywatelska - Watchdog Polska<br>
                     ul. Szpitalna 5/5<br>
@@ -261,7 +267,7 @@
                     silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
                     [VERSION] |
                     <a href="https://github.com/watchdogpolska/poradnia">
-                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/c31bc739...master">c31bc73</a>
+                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/[GITHUB_REVISION]...master">[GITHUB_REVISION]</a>
                 </div>
                 <div class="footer-center">Strona wykorzystuje cookies</div>
             </div>
@@ -307,7 +313,7 @@
 
 <div id="attachment-text-modal-container"></div>
 <div id="htmx-spinner" class="htmx-indicator">
-    Loading...
+    Wczytywanie...
 </div>
 <script>
     document.addEventListener('click', function (event) {
@@ -315,16 +321,29 @@
             return;
         }
 
+        // Only clean up a modal that's actually open (switching straight
+        // from one attachment's modal to another's, without closing
+        // first) - this used to run unconditionally on every click of an
+        // attachment button, including the very click that opens the
+        // *first* modal, which stripped the backdrop/scroll-lock Bootstrap
+        // had just added for that same click (confirmed via an isolated
+        // Bootstrap-only repro outside the app, alongside the F004 fix in
+        // wcag.js). Registered capture:true so this runs *before* the
+        // click's own handler swaps #attachment-text-modal-container's
+        // content below - otherwise, on a direct switch between two
+        // attachments, `existingModal` would already be the new (not-yet-
+        // shown) modal instead of the old (actually open) one, and this
+        // would wrongly skip cleanup, leaking the old backdrop behind the
+        // new one (confirmed via the same repro).
         var existingModal = document.getElementById('attachmentTextModal');
-        if (existingModal) {
+        if (existingModal && existingModal.classList.contains('show')) {
             bootstrap.Modal.getOrCreateInstance(existingModal).hide();
+            document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+                el.remove();
+            });
+            document.body.classList.remove('modal-open');
         }
-
-        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
-            el.remove();
-        });
-        document.body.classList.remove('modal-open');
-    });
+    }, true);
 
     document.body.addEventListener('htmx:afterSwap', function (event) {
         if (event.target.id === 'attachment-text-modal-container') {

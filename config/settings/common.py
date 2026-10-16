@@ -529,6 +529,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
     "promotion": False,
+    # This project uses the open-source (GPL) release of TinyMCE, not a
+    # commercial license - without this, TinyMCE 6+ assumes evaluation
+    # mode and logs a console warning on every page it loads on.
+    "license_key": "gpl",
     "height": 500,
     "menubar": True,
     "lineheight": 1,

@@ -1,4 +1,4 @@
-{% load crispy_forms_tags i18n %}
+{% load crispy_forms_tags i18n wcag_tags %}
 <style>
     #selected-files {
         border: 1px solid lightgray;
@@ -40,6 +40,7 @@
 </style>
 <div class="row" id="drop-zone">
     <div class="col-lg-4 sticky_right">
+        {% form_error_summary attachments_form %}
         {% crispy attachments_form %}
         <button type="button" id="clear-files-button" class="clear-button">
             &nbsp;&nbsp;{% trans 'Clear Files' %}&nbsp;&nbsp;

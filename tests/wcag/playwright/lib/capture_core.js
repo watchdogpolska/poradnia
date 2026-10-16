@@ -398,9 +398,12 @@ async function extractSemantics(page) {
         }`;
       })
       .sort();
-    // No <main> landmark exists yet (M1/F001) - .content is the existing
-    // wrapper around {% block content %} in base.html, present in both
-    // modes today; swap this to <main> once M1 lands.
+    // M1/F001 added <main id="main-content">, but scoped tightly around
+    // just {% block content %} per the audit's own fix (findings.csv F001)
+    // - breadcrumbs and Django messages sit in .content but outside
+    // <main>, in both modes. .content stays the right text-comparison
+    // scope here since this check cares about "same visible information
+    // between modes", not the landmark structure itself (that's axe's job).
     const main = document.querySelector(".content") || document.body;
     return { forms, controls, mainText: norm(main.innerText) };
   });

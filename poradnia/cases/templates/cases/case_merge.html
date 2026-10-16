@@ -1,5 +1,5 @@
 {% extends "cases/base.html" %}
-{% load crispy_forms_tags i18n %}
+{% load crispy_forms_tags i18n wcag_tags %}
 
 {% block title %}{{ object }} - {{ block.super }}{% endblock %}
 {% block breadcrumbs %}
@@ -12,5 +12,6 @@
 {% block content %}
     <h1>{% block header %}{{ object }}{% endblock %}</h1>
     {% csrf_token %}
+    {% form_error_summary form %}
     {% crispy form %}
 {% endblock %}

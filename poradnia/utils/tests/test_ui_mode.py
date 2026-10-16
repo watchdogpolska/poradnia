@@ -85,15 +85,11 @@ class UiModeSwitchViewTestCase(TestCase):
     def test_switching_to_wcag_sets_cookie_and_redirects(self):
         response = self.client.post(self.url, {"mode": UI_MODE_WCAG, "next": "/"})
         self.assertRedirects(response, "/")
-        self.assertEqual(
-            response.cookies[UI_MODE_COOKIE_NAME].value, UI_MODE_WCAG
-        )
+        self.assertEqual(response.cookies[UI_MODE_COOKIE_NAME].value, UI_MODE_WCAG)
 
     def test_switching_to_normal_sets_cookie(self):
         response = self.client.post(self.url, {"mode": UI_MODE_NORMAL, "next": "/"})
-        self.assertEqual(
-            response.cookies[UI_MODE_COOKIE_NAME].value, UI_MODE_NORMAL
-        )
+        self.assertEqual(response.cookies[UI_MODE_COOKIE_NAME].value, UI_MODE_NORMAL)
 
     def test_invalid_mode_is_rejected(self):
         response = self.client.post(self.url, {"mode": "bogus", "next": "/"})
@@ -110,3 +106,25 @@ class UiModeSwitchViewTestCase(TestCase):
             {"mode": UI_MODE_WCAG, "next": "https://evil.example/phish"},
         )
         self.assertRedirects(response, "/")
+
+
+class BaseTemplateWcagModeTestCase(TestCase):
+    """base.html's M1 additions (F001 main/skip-link, F002 messages live
+    region) must be purely additive: identical normal-mode output, new
+    markup only in WCAG mode - see logs/wcag/plan/ui-mode-design.md §6."""
+
+    def setUp(self):
+        self.client = Client()
+
+    def test_normal_mode_has_neither(self):
+        response = self.client.get("/")
+        content = response.content.decode()
+        self.assertNotIn("wcag-skip-link", content)
+        self.assertNotIn('<main id="main-content">', content)
+
+    def test_wcag_mode_has_skip_link_and_main_landmark(self):
+        self.client.cookies[UI_MODE_COOKIE_NAME] = UI_MODE_WCAG
+        response = self.client.get("/")
+        content = response.content.decode()
+        self.assertIn('class="wcag-skip-link"', content)
+        self.assertIn('<main id="main-content">', content)

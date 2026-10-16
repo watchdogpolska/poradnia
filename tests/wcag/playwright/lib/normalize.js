@@ -53,6 +53,19 @@ const RULES = [
     re: /\b(?:\d+(?:\s|&nbsp;)+)?[\p{L}]+(?:\s|&nbsp;)+temu\b/giu,
     replacement: "[RELATIVE_TIME]",
   },
+  {
+    // {% github_link %} (templates/base.html footer) renders the checked-
+    // out commit's short hash twice - in the compare URL and as the link
+    // text - so it drifts on every commit regardless of any actual
+    // normal-mode output change. Listed in HANDOFF's own normalisation
+    // list ("poradnia_version and the GitHub revision") but never
+    // actually wired in here until found live: baseline_diff.js flagged
+    // this footer line as a false-positive change after two ordinary
+    // commits landed with no template changes at all.
+    label: "GitHub revision link ({% github_link %}, templates/base.html footer)",
+    re: /(href="https:\/\/github\.com\/watchdogpolska\/poradnia\/compare\/)[0-9a-f]{6,40}(\.\.\.[^"]*")>[0-9a-f]{6,40}(<\/a>)/g,
+    replacement: "$1[GITHUB_REVISION]$2>[GITHUB_REVISION]$3",
+  },
 ];
 
 function normalizeHtml(html) {
