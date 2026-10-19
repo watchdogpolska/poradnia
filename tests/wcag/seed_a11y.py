@@ -11,6 +11,7 @@ container, from the repo root:
 
 Requires env var A11Y_SEED_PASSWORD (never printed or written to disk).
 """
+
 import argparse
 import os
 import random
@@ -30,11 +31,11 @@ import django  # noqa: E402
 
 django.setup()
 
+from allauth.account.models import EmailAddress  # noqa: E402
 from django.conf import settings  # noqa: E402
 from django.contrib.contenttypes.models import ContentType  # noqa: E402
 from django.core.files import File  # noqa: E402
 from django.utils import timezone  # noqa: E402
-from allauth.account.models import EmailAddress  # noqa: E402
 from guardian.shortcuts import assign_perm  # noqa: E402
 
 from poradnia.advicer.models import (  # noqa: E402
@@ -129,7 +130,9 @@ def assert_a11y_database():
 def get_seed_password():
     password = os.environ.get("A11Y_SEED_PASSWORD")
     if not password:
-        raise SystemExit("A11Y_SEED_PASSWORD env var is required (not printed anywhere).")
+        raise SystemExit(
+            "A11Y_SEED_PASSWORD env var is required (not printed anywhere)."
+        )
     return password
 
 
@@ -175,7 +178,8 @@ def _make_docx(path, paragraphs):
     )
     rels = (
         '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">'
+        '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006'
+        '/relationships">'
         '<Relationship Id="rId1" '
         'Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships'
         '/officeDocument" Target="word/document.xml"/>'
@@ -184,7 +188,8 @@ def _make_docx(path, paragraphs):
     body = "".join(f"<w:p><w:r><w:t>{p}</w:t></w:r></w:p>" for p in paragraphs)
     document = (
         '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>'
-        '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml/2006/main">'
+        '<w:document xmlns:w="http://schemas.openxmlformats.org/wordprocessingml'
+        '/2006/main">'
         f"<w:body>{body}</w:body>"
         "</w:document>"
     )
@@ -348,8 +353,8 @@ def create_users(password):
     _record_login(
         users["staff_admin"],
         "staff (admin group)",
-        "Staff member granted the 'admin' PermissionGroup (all case perms) on some cases"
-        " + tasty_feedback.view/change_feedback",
+        "Staff member granted the 'admin' PermissionGroup (all case perms) on some"
+        " cases + tasty_feedback.view/change_feedback",
     )
 
     users["staff_wsparcie"] = UserFactory(
@@ -487,10 +492,15 @@ def create_scenario_cases(users, groups, files):
 
     # 1-message thread, unassigned (free).
     case = create_case(
-        users["client_active"], users["client_active"], "Wniosek o udostępnienie rejestru umów"
+        users["client_active"],
+        users["client_active"],
+        "Wniosek o udostępnienie rejestru umów",
     )
     create_letter(
-        case, users["client_active"], "mail", Letter.STATUS.done,
+        case,
+        users["client_active"],
+        "mail",
+        Letter.STATUS.done,
         "Wniosek o udostępnienie rejestru umów",
         "Proszę o udostępnienie rejestru umów zawartych w 2026 roku.",
     )
@@ -498,7 +508,9 @@ def create_scenario_cases(users, groups, files):
 
     # 5-message thread covering every genre and both statuses.
     case = create_case(
-        users["client_active"], users["client_active"], "Spór o dostęp do danych środowiskowych"
+        users["client_active"],
+        users["client_active"],
+        "Spór o dostęp do danych środowiskowych",
     )
     grant_group(users["staff_wsparcie"], case, groups["wsparcie"])
     genre_status_plan = [
@@ -511,7 +523,10 @@ def create_scenario_cases(users, groups, files):
     first_letter = None
     for i, (genre, status, author) in enumerate(genre_status_plan):
         letter = create_letter(
-            case, author, genre, status,
+            case,
+            author,
+            genre,
+            status,
             f"Pismo {i + 1} w sprawie danych środowiskowych",
             f"Treść pisma numer {i + 1} (genre={genre}, status={status}).",
         )
@@ -523,7 +538,9 @@ def create_scenario_cases(users, groups, files):
 
     # 25-message thread, for DataTables-style pagination within a case.
     case = create_case(
-        users["client_active"], users["client_active"], "Długotrwała korespondencja ws. decyzji administracyjnej"
+        users["client_active"],
+        users["client_active"],
+        "Długotrwała korespondencja ws. decyzji administracyjnej",
     )
     grant_group(users["staff_admin"], case, groups["admin"])
     genres = [g[0] for g in Letter.GENRE]
@@ -532,7 +549,10 @@ def create_scenario_cases(users, groups, files):
     for i in range(25):
         author = users["client_active"] if i % 3 == 0 else users["staff_admin"]
         letter = create_letter(
-            case, author, genres[i % len(genres)], statuses[i % len(statuses)],
+            case,
+            author,
+            genres[i % len(genres)],
+            statuses[i % len(statuses)],
             f"Pismo nr {i + 1} w długiej korespondencji",
             f"Treść pisma numer {i + 1} z 25 w tej sprawie.",
         )
@@ -542,7 +562,9 @@ def create_scenario_cases(users, groups, files):
     # The clause-10 reference failure: attached to a staff-authored letter so
     # it reads as an organisation-produced document, not a client upload
     # (client uploads are explicitly out of clause-10 scope per HANDOFF §1).
-    staff_letter = next(l for l in letters if l.created_by_id == users["staff_admin"].id)
+    staff_letter = next(
+        letter for letter in letters if letter.created_by_id == users["staff_admin"].id
+    )
     attach_file(staff_letter, files["untagged_pdf"])
     # Pending AI-articles-search request on an ai_message letter: this is
     # what makes the accept/reject thumbs-up/down UI (and the "reject"
@@ -553,7 +575,9 @@ def create_scenario_cases(users, groups, files):
     # N8nArticlesSearchRequest.search_articles(), which is the only thing
     # that would actually hit the n8n webhook.
     ai_letter = next(
-        l for l in letters if l.genre == "ai_message" and l.status == Letter.STATUS.staff
+        letter
+        for letter in letters
+        if letter.genre == "ai_message" and letter.status == Letter.STATUS.staff
     )
     N8nArticlesSearchRequest.objects.create(
         request_id="a11y-seed-request-1",
@@ -568,16 +592,26 @@ def create_scenario_cases(users, groups, files):
 
     # Closed case.
     case = create_case(
-        users["client_active"], users["client_active"], "Sprawa zamknięta po udzieleniu odpowiedzi"
+        users["client_active"],
+        users["client_active"],
+        "Sprawa zamknięta po udzieleniu odpowiedzi",
     )
     grant_group(users["staff_wsparcie"], case, groups["wsparcie"])
     create_letter(
-        case, users["client_active"], "mail", Letter.STATUS.done,
-        "Pytanie o decyzję", "Proszę o wyjaśnienie decyzji z zeszłego miesiąca.",
+        case,
+        users["client_active"],
+        "mail",
+        Letter.STATUS.done,
+        "Pytanie o decyzję",
+        "Proszę o wyjaśnienie decyzji z zeszłego miesiąca.",
     )
     create_letter(
-        case, users["staff_wsparcie"], "mail", Letter.STATUS.done,
-        "Odpowiedź i zamknięcie sprawy", "Sprawa została wyjaśniona i zamykamy wątek.",
+        case,
+        users["staff_wsparcie"],
+        "mail",
+        Letter.STATUS.done,
+        "Odpowiedź i zamknięcie sprawy",
+        "Sprawa została wyjaśniona i zamykamy wątek.",
     )
     case.status = Case.STATUS.closed
     case.save()
@@ -591,18 +625,24 @@ def create_scenario_cases(users, groups, files):
     cases["moderated"] = case
 
     # Max-length subject (NAME_MAX_LENGTH == 250).
-    long_name = ("Wniosek o udostępnienie informacji publicznej dotyczącej wydatków " * 10)[:250]
-    cases["maxlen"] = create_case(users["client_active"], users["client_active"], long_name)
+    long_name = (
+        "Wniosek o udostępnienie informacji publicznej dotyczącej wydatków " * 10
+    )[:250]
+    cases["maxlen"] = create_case(
+        users["client_active"], users["client_active"], long_name
+    )
 
     # Diacritics-heavy subject.
     cases["diacritics"] = create_case(
-        users["client_longname"], users["client_longname"],
+        users["client_longname"],
+        users["client_longname"],
         "Żądanie dostępu do dokumentów dotyczących śmieci i ścieków w gminie Łęczyca",
     )
 
     # Raw-HTML-in-subject, for 4.1.1 parsing / escaping checks.
     cases["xss"] = create_case(
-        users["client_active"], users["client_active"],
+        users["client_active"],
+        users["client_active"],
         "Przykładowa sprawa <b>test</b> do testów renderowania",
     )
 
@@ -630,7 +670,10 @@ def create_bulk_cases(users, groups, target_total):
             grant_group(users["staff_admin"], case, groups["admin"])
         if i % 5 == 0:
             create_letter(
-                case, users["client_active"], "mail", Letter.STATUS.done,
+                case,
+                users["client_active"],
+                "mail",
+                Letter.STATUS.done,
                 f"Pierwsze pismo w sprawie nr {i + 1}",
                 "Treść pierwszego pisma w tej sprawie.",
             )
@@ -644,16 +687,25 @@ def create_bulk_cases(users, groups, target_total):
 def create_events(users, cases):
     now = timezone.now()
     past = Event.objects.create(
-        case=cases["thread5"], text="Termin, który już minął", deadline=True,
-        time=now - timezone.timedelta(days=10), created_by=users["staff_wsparcie"],
+        case=cases["thread5"],
+        text="Termin, który już minął",
+        deadline=True,
+        time=now - timezone.timedelta(days=10),
+        created_by=users["staff_wsparcie"],
     )
     today = Event.objects.create(
-        case=cases["thread25"], text="Termin przypadający dzisiaj", deadline=True,
-        time=now, created_by=users["staff_admin"],
+        case=cases["thread25"],
+        text="Termin przypadający dzisiaj",
+        deadline=True,
+        time=now,
+        created_by=users["staff_admin"],
     )
     future = Event.objects.create(
-        case=cases["closed"], text="Przyszłe wydarzenie", deadline=False,
-        time=now + timezone.timedelta(days=30), created_by=users["staff_wsparcie"],
+        case=cases["closed"],
+        text="Przyszłe wydarzenie",
+        deadline=False,
+        time=now + timezone.timedelta(days=30),
+        created_by=users["staff_wsparcie"],
         public=True,
     )
     Reminder.objects.create(user=users["staff_wsparcie"], event=future)
@@ -691,31 +743,46 @@ def create_advicer_data(users, cases):
 
 
 def create_judgements_data(users, cases, events):
-    court = Court.objects.create(name="Wojewódzki Sąd Administracyjny w Warszawie", parser_key="")
+    court = Court.objects.create(
+        name="Wojewódzki Sąd Administracyjny w Warszawie", parser_key=""
+    )
     court_case = CourtCase.objects.create(
-        case=cases["thread25"], court=court, signature="II SAB/Wa 12/26",
+        case=cases["thread25"],
+        court=court,
+        signature="II SAB/Wa 12/26",
         created_by=users["staff_admin"],
     )
-    CourtSession.objects.create(courtcase=court_case, event=events["today"], parser_key="")
+    CourtSession.objects.create(
+        courtcase=court_case, event=events["today"], parser_key=""
+    )
     return {"court": court, "court_case": court_case}
 
 
 def create_keys(users):
-    Key.objects.create(user=users["client_active"], description="Klucz do integracji testowej")
+    Key.objects.create(
+        user=users["client_active"], description="Klucz do integracji testowej"
+    )
     Key.objects.create(user=users["staff_wsparcie"], description="Klucz API personelu")
 
 
 def create_feedback(users):
     Feedback.objects.create(
-        user=users["client_active"], url="/cases/", text="Trudno znaleźć przycisk odpowiedzi.",
+        user=users["client_active"],
+        url="/cases/",
+        text="Trudno znaleźć przycisk odpowiedzi.",
         status=False,
     )
     Feedback.objects.create(
-        user=users["staff_wsparcie"], url="/cases/1/", text="Lista pism ładuje się długo.",
+        user=users["staff_wsparcie"],
+        url="/cases/1/",
+        text="Lista pism ładuje się długo.",
         status=True,
     )
     Feedback.objects.create(
-        user=None, url="/", text="Zgłoszenie anonimowe o problemie z kontrastem.", status=False,
+        user=None,
+        url="/",
+        text="Zgłoszenie anonimowe o problemie z kontrastem.",
+        status=False,
     )
 
 
@@ -739,7 +806,8 @@ def write_logins_to_readme(table_markdown):
     section = (
         f"{LOGIN_MARKER_BEGIN}\n"
         "<!-- Generated by tests/wcag/seed_a11y.py. Do not edit by hand. -->\n"
-        "<!-- Passwords are never recorded here: use the A11Y_SEED_PASSWORD env var. -->\n\n"
+        "<!-- Passwords are never recorded here: use the A11Y_SEED_PASSWORD env"
+        " var. -->\n\n"
         f"{table_markdown}\n\n"
         f"{LOGIN_MARKER_END}\n"
     )
@@ -798,7 +866,9 @@ def self_check():
         passed = count >= minimum
         ok = ok and passed
         print(f"{model:<16} {count:>6} {minimum:>6}  {'PASS' if passed else 'FAIL'}")
-    groups_with_perms = [g.name for g in PermissionGroup.objects.all() if g.permissions.count() == 0]
+    groups_with_perms = [
+        g.name for g in PermissionGroup.objects.all() if g.permissions.count() == 0
+    ]
     if groups_with_perms:
         ok = False
         print(f"FAIL: PermissionGroup(s) with zero permissions: {groups_with_perms}")
@@ -833,7 +903,9 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--reset", action="store_true", help="Wipe and re-seed.")
     parser.add_argument(
-        "--self-check", action="store_true", dest="self_check",
+        "--self-check",
+        action="store_true",
+        dest="self_check",
         help="Only verify row counts against expected minimums; no writes.",
     )
     args = parser.parse_args()
