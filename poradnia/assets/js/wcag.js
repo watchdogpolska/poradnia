@@ -201,3 +201,47 @@
         });
     }).observe(document.body, { childList: true });
 })();
+
+// Tooltip-triggering icons: aria-label on an element with no valid role.
+//
+// project.js's initTooltips() calls bootstrap.Tooltip.getOrCreateInstance()
+// on every [data-bs-toggle="tooltip"] element on the page. Bootstrap's own
+// Tooltip._fixTitle() (node_modules/bootstrap/js/src/tooltip.js:486-499)
+// then unconditionally copies that element's title into aria-label whenever
+// the element has no text content of its own - which is every icon-only
+// <i> in this app using this pattern (originally flagged narrowly as F008,
+// scoped to just _involved_in.html's per-staff permission icon, but the
+// exact same aria-label-on-a-roleless-<i> defect fires on all 15
+// [data-bs-toggle="tooltip"] icons app-wide: case_table.html/case_filter.html's
+// filter-legend help icons, events_table.html's equivalents, and
+// _attachments_dropzone.html's multi-select hint - confirmed by reading
+// Bootstrap's source rather than guessing, since the aria-label is injected
+// by Bootstrap at runtime, not present in any of these templates' own
+// markup). <i> has no implicit ARIA role, so aria-label on it is invalid
+// per axe-core's aria-prohibited-attr - the fix is the same one F008 already
+// specified (role="img"), just applied to every such icon rather than one.
+// Both this script tag and script.min.js's sit in base.html *above*
+// {% block content %}, so their own top-level code runs mid-parse, before
+// any of these icons exist in the DOM yet - this has to wait for
+// DOMContentLoaded like project.js's initTooltips() does (confirmed live:
+// an earlier version of this patch ran too early and fixed nothing). No
+// MutationObserver needed on top of that: initTooltips() runs once, only
+// on DOMContentLoaded, and is never re-run after an HTMX swap (checked -
+// no htmx:afterSwap listener calls it anywhere), so a tooltip icon added
+// by a later swap would never get Bootstrap's _fixTitle() treatment
+// either - there's no dynamically-added instance of this bug to catch.
+// Ordering within DOMContentLoaded's own listener queue is registration
+// order: script.min.js's tag precedes this one in base.html, so
+// initTooltips() (and therefore _fixTitle()) always runs first.
+function patchTooltipIcons() {
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
+        if (el.tagName === "I" && !el.hasAttribute("role")) {
+            el.setAttribute("role", "img");
+        }
+    });
+}
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", patchTooltipIcons);
+} else {
+    patchTooltipIcons();
+}
