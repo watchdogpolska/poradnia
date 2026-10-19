@@ -393,6 +393,22 @@
         }
     });
 
+    // Bootstrap sets aria-hidden="true" on the modal from _hideModal(),
+    // called after the hide transition - if focus is still inside the
+    // modal at that point (e.g. the "Zamknij" button that was just
+    // clicked/activated to close it), the browser blocks it and logs an
+    // "aria-hidden blocked" console warning, since a hidden ancestor must
+    // never contain the focused element. 'hide.bs.modal' fires
+    // synchronously, immediately, before any of that - blurring here
+    // means focus is already outside the modal by the time aria-hidden
+    // is actually applied. The 'hidden.bs.modal' handler below still runs
+    // afterwards to move focus on to the triggering attachment button.
+    document.addEventListener('hide.bs.modal', function (event) {
+        if (event.target.matches('#attachmentTextModal') && event.target.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+    });
+
     document.addEventListener('hidden.bs.modal', function (event) {
         if (!event.target.matches('#attachmentTextModal')) {
             return;

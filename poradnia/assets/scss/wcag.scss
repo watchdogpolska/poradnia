@@ -39,3 +39,21 @@ html[data-ui-mode="wcag"] .btn-default {
 	// that blend, so the real rendered contrast was worse still).
 	--bs-btn-focus-shadow-rgb: 0, 0, 0;
 }
+
+// F006: DataTables.net's own ".dt-column-order" sort control renders at
+// 8x14px, under the 24x24px / adequate-spacing WCAG 2.5.8 (AA) target-size
+// minimum. The django-ajax-datatables.net.v3 fork (v1.1.0+) adds an
+// ".a11y-mode" class to the table wrapper when a11y_mode:true is passed to
+// initialize_table() (see the 5 *_datatables.js files), and ships this same
+// rule in its own ajax_datatable/css/style.css - not bundled here, since
+// that file also carries a lot of unrelated, unconditional DataTables
+// styling (font-size, padding, box-sizing) poradnia has never loaded in
+// either mode; pulling in the whole file would be a real, unreviewed visual
+// change. Duplicating just the one opt-in rule keeps this scoped to WCAG
+// mode and to this one fix. box-sizing is forced to content-box so the
+// padding reliably *adds* to the rendered size under Bootstrap's global
+// border-box reset.
+html[data-ui-mode="wcag"] .a11y-mode .dt-column-order {
+	box-sizing: content-box;
+	padding: 0 8px;
+}

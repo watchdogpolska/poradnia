@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', function () {
             serverSide: true,
             autoWidth: true,
             full_row_select: false,
+            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
             // Group the length selector/search box, and the info/paging controls,
             // each into one row (default dom string stacks every feature separately).
             dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',

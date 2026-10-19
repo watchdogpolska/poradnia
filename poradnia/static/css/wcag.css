@@ -18,3 +18,8 @@ html[data-ui-mode=wcag] .btn-default {
   --bs-btn-disabled-border-color: #767676;
   --bs-btn-focus-shadow-rgb: 0, 0, 0;
 }
+
+html[data-ui-mode=wcag] .a11y-mode .dt-column-order {
+  box-sizing: content-box;
+  padding: 0 8px;
+}
