@@ -1,6 +1,6 @@
 {% load guardian_tags crispy_forms_tags humanize users_tags letter_tags i18n format_text%}
 <div class="timeline-messange">
-    <a href="#"><img src="{% get_avatar_url object.created_by %}" class="timeline-avatar"></a>
+    <img src="{% get_avatar_url object.created_by %}" class="timeline-avatar" alt="">
     <div class="card border-{{ object|letter2panel }} timeline-comment" id="letter-{{object.pk}}">
         <div class="card-header text-bg-{{ object|letter2panel }}">
             <h2 class="card-title">

@@ -7,10 +7,10 @@ AjaxDatatableViewUtils.init({
         var toolbar = wrapper.querySelector('.toolbar');
         toolbar.innerHTML =
             '<div class="daterange" style="float: left; margin-right: 6px;">' +
-                '<span class="from"><label>Czas od</label>: ' +
-                    '<input type="date" class="date_from datepicker"></span>' +
-                '<span class="to"><label>&nbsp do</label>: ' +
-                    '<input type="date" class="date_to datepicker"></span>' +
+                '<span class="from"><label for="daterange_from">Czas od</label>: ' +
+                    '<input type="date" id="daterange_from" class="date_from datepicker"></span>' +
+                '<span class="to"><label for="daterange_to">&nbsp do</label>: ' +
+                    '<input type="date" id="daterange_to" class="date_to datepicker"></span>' +
             '</div>';
         toolbar.addEventListener('change', function(event) {
             if (!event.target.matches('.date_from, .date_to')) return;
@@ -85,7 +85,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 "aria": {
                     "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "previous": "Poprzednia",
+                        "next": "Następna",
+                        "last": "Ostatnia"
+                    }
                 }
             },
         }, {

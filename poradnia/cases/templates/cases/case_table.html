@@ -46,7 +46,7 @@
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have selected user in involved staff.' %}">
             </i>
-            <label>{% trans 'Involved staff' %}:</label><br>
+            <label for="involved_staff_select">{% trans 'Involved staff' %}:</label><br>
             <select id="involved_staff_select" name="involved_staff_select" style="width: 120px;">
                 {% for involved in involved_staff %}
                     <option value="{{ involved.0 }}">{{ involved.1 }}</option>

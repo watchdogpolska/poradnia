@@ -60,7 +60,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 },
                 "aria": {
                     "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "previous": "Poprzednia",
+                        "next": "Następna",
+                        "last": "Ostatnia"
+                    }
                 }
             },
         }, {
