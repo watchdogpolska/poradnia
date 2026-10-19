@@ -54,8 +54,9 @@ document.addEventListener('DOMContentLoaded', function () {
                     "last":       "Ostatnia"
                 },
                 "aria": {
-                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco",
+                    "orderable": ": aktywuj, by posortować kolumnę",
+                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
+                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
                     "paginate": {
                         "first": "Pierwsza",
                         "previous": "Poprzednia",

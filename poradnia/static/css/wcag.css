@@ -23,3 +23,8 @@ html[data-ui-mode=wcag] .a11y-mode .dt-column-order {
   box-sizing: content-box;
   padding: 0 8px;
 }
+
+html[data-ui-mode=wcag] .event-month-link {
+  display: inline-block;
+  padding: 6px 4px;
+}

@@ -57,3 +57,12 @@ html[data-ui-mode="wcag"] .a11y-mode .dt-column-order {
 	box-sizing: content-box;
 	padding: 0 8px;
 }
+
+// events/event_archive.html's plain-text month links (the "months index"
+// archive page) render with no padding, so the clickable box is just the
+// text glyphs - under 24x24px / adequate-spacing for short labels like
+// "2026" (WCAG 2.5.8 AA target-size). Same fix shape as F006 above.
+html[data-ui-mode="wcag"] .event-month-link {
+	display: inline-block;
+	padding: 6px 4px;
+}

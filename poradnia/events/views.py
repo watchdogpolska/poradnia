@@ -58,6 +58,11 @@ class EventCreateView(
         kwargs["case"] = self.case
         return kwargs
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["case"] = self.case
+        return context
+
     def form_valid(self, form):
         response = super().form_valid(form)
         content_type = ContentType.objects.get_for_model(Event)
@@ -101,6 +106,11 @@ class EventUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs["case"] = self.object.case
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["case"] = self.object.case
+        return context
 
     def form_valid(self, form):
         self.object.reminder_set.all().update(active=False)

@@ -245,3 +245,68 @@ if (document.readyState === "loading") {
 } else {
     patchTooltipIcons();
 }
+
+// Bootstrap's .table-responsive wrapper (dashboard/_report_table.html) can
+// scroll horizontally on narrow viewports but has no way to receive focus,
+// so keyboard users can't scroll it at all (axe-core:
+// scrollable-region-focusable). Only fires on dashboard's own report
+// tables in practice - the 5 *_datatables.js-driven tables also sit inside
+// a .table-responsive wrapper, but DataTables' own scrollX:true markup
+// (.dt-scroll-body) is what actually scrolls there, confirmed by this
+// exact rule never firing on any of those pages in axe_run.js. Same
+// DOMContentLoaded gating as patchTooltipIcons above, same reason.
+function patchScrollableTables() {
+    document.querySelectorAll(".table-responsive").forEach(function (el) {
+        if (el.hasAttribute("tabindex")) {
+            return;
+        }
+        el.setAttribute("tabindex", "0");
+        el.setAttribute("role", "region");
+        var wrapper = el.closest(".dashboard-table-wrapper");
+        var heading = wrapper && wrapper.querySelector(".dashboard-table-title");
+        if (heading) {
+            el.setAttribute("aria-label", heading.textContent.trim());
+        }
+    });
+}
+if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", patchScrollableTables);
+} else {
+    patchScrollableTables();
+}
+
+// DataTables v3's own sort-header div (.dt-column-order) sets role="button"
+// + tabindex="0" together with aria-label when a column's header first
+// builds (confirmed by reading its source: node_modules/datatables.net/js/
+// dataTables.js, the orderSpan.attr('role','button').attr('aria-label', ...)
+// chain). But a completely idle page (no user interaction, scrollX:true)
+// keeps re-triggering this build internally on its own - confirmed live via
+// a throwaway MutationObserver that counted 7 aria-label/role mutations on
+// .dt-column-order in 4 passive seconds - and each rebuild re-sets
+// aria-label but drops role/tabindex, the other two calls in that same
+// chain, for a brief window every time. This patch closes that window
+// every time it reopens, confirmed live immediately after each rebuild,
+// but can't close it *instantly*: axe_run.js still occasionally samples
+// mid-rebuild and reports role missing, since both its DOM read and this
+// patch's own MutationObserver callback are reacting to the same
+// mutation. Root cause (why scrollX keeps rebuilding an idle table at all)
+// lives entirely inside DataTables' own vendored internals, not this app's
+// or the fork's code, and isn't chased further here - this patch is a
+// mitigation, not a full close of the race.
+function patchColumnOrderRoles(el) {
+    if (!el.hasAttribute("role")) {
+        el.setAttribute("role", "button");
+    }
+    if (!el.hasAttribute("tabindex")) {
+        el.setAttribute("tabindex", "0");
+    }
+}
+document.querySelectorAll(".dt-column-order[aria-label]").forEach(patchColumnOrderRoles);
+new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+        var target = mutation.target;
+        if (target.classList && target.classList.contains("dt-column-order") && target.hasAttribute("aria-label")) {
+            patchColumnOrderRoles(target);
+        }
+    });
+}).observe(document.body, { attributes: true, attributeFilter: ["aria-label"], subtree: true });
