@@ -66,3 +66,112 @@ html[data-ui-mode="wcag"] .event-month-link {
 	display: inline-block;
 	padding: 6px 4px;
 }
+
+// F018 completion: the audit's own fix note for F018 ("darken...wherever
+// this exact pair is used", findings.csv) was only partially done - the M1
+// commit scoped the darkened link color to .footer a alone, judged safe to
+// also apply in normal mode since that one shift is visually imperceptible.
+// The same #d82727-vs-#f4f8bf 4.48:1 shortfall (a hair under the 4.5:1
+// minimum) recurs sitewide wherever a plain link or a Bootstrap nav-link
+// sits against the general content background - case/letter lists, the
+// event calendar, dashboard/case-detail nav-tabs, profile pages - a much
+// larger and more visible footprint than the footer alone, so this
+// completion is kept WCAG-mode-only rather than extended to normal mode.
+// Overriding the two CSS custom properties Bootstrap's own rules actually
+// consume (not a plain `a{color}` rule, which can't reach .nav-link: it
+// renders via its own --bs-nav-link-color, itself defaulting to
+// --bs-link-color - see node_modules/bootstrap/scss/_nav.scss /
+// _root.scss) reaches every consumer in one place rather than chasing each
+// component's selector individually. Reuses #C42020, the same color
+// already picked for .footer a (5.32:1 against #f4f8bf).
+//
+// Darkening the link color to clear 1.4.3 against the light content
+// background pushes it *closer* to the dark body text color (#212529),
+// which tripped a second, previously-passing check: axe's
+// link-in-text-block (a plain-language link needs either >=3:1 contrast
+// from its surrounding non-link text, or a non-color cue like underline -
+// #C42020 only clears 2.63:1 against #212529, and the two thresholds here
+// turn out to be mutually exclusive for any color in this hue: the
+// luminance window that clears 4.5:1 against #f4f8bf while also clearing
+// 3:1 against #212529 is under 0.01 wide, no comfortable margin exists).
+// Solved properly by decoupling the two checks instead of fighting the
+// color math: restore the underline $link-decoration: none (_vars.scss)
+// deliberately removed app-wide for BS3 parity - once a link has its own
+// non-color affordance, link-in-text-block no longer cares about the
+// color-contrast number at all. Re-excluded on the handful of components
+// Bootstrap itself would normally force back to no-underline when
+// $link-decoration isn't none (grep "link-decoration == none" under
+// node_modules/bootstrap/scss/) - without this, .btn/.nav-link anchors
+// would get wrongly underlined too, since this project's compiled CSS
+// never emits their own text-decoration:none in the first place (Bootstrap
+// only emits that exclusion when $link-decoration is NOT already none).
+html[data-ui-mode="wcag"] {
+	--bs-link-color: #C42020;
+	--bs-link-color-rgb: 196, 32, 32;
+}
+html[data-ui-mode="wcag"] a {
+	text-decoration: underline;
+}
+html[data-ui-mode="wcag"] .btn,
+html[data-ui-mode="wcag"] .nav-link,
+html[data-ui-mode="wcag"] .dropdown-item,
+html[data-ui-mode="wcag"] .navbar-brand,
+html[data-ui-mode="wcag"] .page-link,
+html[data-ui-mode="wcag"] .list-group-item {
+	text-decoration: none;
+}
+
+// F019: .footer's shared gray (_layout.scss, #888888) is reused against two
+// different backgrounds it was never contrast-checked against - 3.21:1
+// against the main footer's light background (#f4f8bf) and 2.42:1 against
+// the sidebar footer's dark background (#4c4c4c). One shared value can't
+// clear 4.5:1 against both, so two separate overrides are needed. Kept
+// WCAG-mode-only (unlike F018's footer-link fix) since the darkening/
+// lightening needed here is large enough to be visibly noticeable, not an
+// imperceptible shift - see audit/findings.csv F019.
+html[data-ui-mode="wcag"] .footer {
+	color: #666666; // 5.20:1 against #f4f8bf
+}
+html[data-ui-mode="wcag"] .sidebar .footer {
+	color: #c4c4c4; // 4.92:1 against #4c4c4c
+}
+
+// F020: the donate popup's white heading/body text on its #f93434 red
+// background (templates/donate_popup_alternative.html) computes to
+// 3.71-3.77:1, under the 4.5:1 minimum. Text is already white (can't go
+// lighter), so the background is darkened instead - toward the same red
+// family, not toward F018/F019's unrelated #C42020, since this is a
+// visually distinct component (a modal, not body text) with its own
+// color identity. Only the container's own rule needs overriding; its
+// descendants (h2/h4/a/button) all already inherit or hardcode white text,
+// which now clears contrast against the darker background without
+// themselves changing.
+html[data-ui-mode="wcag"] #alt-popup-container {
+	background-color: #A82727; // 4.82:1 against white text
+}
+
+// New finding (post-M4 axe sweep, not yet in findings.csv): BS5's own
+// contrast-driven defaults for .badge.text-bg-info/.badge.text-bg-warning
+// and .btn-info/.btn-warning render black text, but style.scss deliberately
+// overrides all four to BS3's white-on-cyan/white-on-orange look (see the
+// long comments there) at Piotr's explicit request for historical parity -
+// white-on-#5bc0de (2.09:1), white-on-#f0ad4e (1.94:1), and white-on-
+// #0dcaf0 (1.95:1) are all well under 4.5:1. Rather than reverse that
+// explicit normal-mode decision, WCAG mode reverts to BS5's own choice
+// (plain black, ~10:1+ against all three) - preserves the BS3 look
+// everywhere else, fixes contrast only behind the toggle. Needs !important
+// to outrank style.scss's own !important rules for the badge pair; the
+// .btn-info/.btn-warning pair only sets CSS custom properties with no
+// !important, so a plain override (still scoped under this higher-
+// specificity selector) is enough there.
+html[data-ui-mode="wcag"] .badge.text-bg-info,
+html[data-ui-mode="wcag"] .badge.text-bg-warning {
+	color: #000 !important;
+}
+html[data-ui-mode="wcag"] .btn-info,
+html[data-ui-mode="wcag"] .btn-warning {
+	--bs-btn-color: #000;
+	--bs-btn-hover-color: #000;
+	--bs-btn-active-color: #000;
+	--bs-btn-disabled-color: #000;
+}

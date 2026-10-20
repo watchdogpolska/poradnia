@@ -28,3 +28,46 @@ html[data-ui-mode=wcag] .event-month-link {
   display: inline-block;
   padding: 6px 4px;
 }
+
+html[data-ui-mode=wcag] {
+  --bs-link-color: #C42020;
+  --bs-link-color-rgb: 196, 32, 32;
+}
+
+html[data-ui-mode=wcag] a {
+  text-decoration: underline;
+}
+
+html[data-ui-mode=wcag] .btn,
+html[data-ui-mode=wcag] .nav-link,
+html[data-ui-mode=wcag] .dropdown-item,
+html[data-ui-mode=wcag] .navbar-brand,
+html[data-ui-mode=wcag] .page-link,
+html[data-ui-mode=wcag] .list-group-item {
+  text-decoration: none;
+}
+
+html[data-ui-mode=wcag] .footer {
+  color: #666666;
+}
+
+html[data-ui-mode=wcag] .sidebar .footer {
+  color: #c4c4c4;
+}
+
+html[data-ui-mode=wcag] #alt-popup-container {
+  background-color: #A82727;
+}
+
+html[data-ui-mode=wcag] .badge.text-bg-info,
+html[data-ui-mode=wcag] .badge.text-bg-warning {
+  color: #000 !important;
+}
+
+html[data-ui-mode=wcag] .btn-info,
+html[data-ui-mode=wcag] .btn-warning {
+  --bs-btn-color: #000;
+  --bs-btn-hover-color: #000;
+  --bs-btn-active-color: #000;
+  --bs-btn-disabled-color: #000;
+}
