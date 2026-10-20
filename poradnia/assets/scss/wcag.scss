@@ -188,3 +188,13 @@ html[data-ui-mode="wcag"] .btn-warning {
 html[data-ui-mode="wcag"] .panel-status {
 	opacity: 0.7;
 }
+
+// case_detail.html's "#<pk>" case-number suffix next to the case title
+// (_case.scss's .case-header-number, $gray-light = #777) against the same
+// general content background as F019's footer (#f4f8bf) computes to
+// 4.05:1, under the 4.5:1 minimum. Reuses #666666, the same color already
+// picked for F019's .footer against this exact background (5.20:1), for
+// consistency rather than introducing another one-off gray.
+html[data-ui-mode="wcag"] .case-header-number {
+	color: #666666;
+}

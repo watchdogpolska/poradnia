@@ -75,3 +75,7 @@ html[data-ui-mode=wcag] .btn-warning {
 html[data-ui-mode=wcag] .panel-status {
   opacity: 0.7;
 }
+
+html[data-ui-mode=wcag] .case-header-number {
+  color: #666666;
+}
