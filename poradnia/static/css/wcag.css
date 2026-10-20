@@ -79,3 +79,7 @@ html[data-ui-mode=wcag] .panel-status {
 html[data-ui-mode=wcag] .case-header-number {
   color: #666666;
 }
+
+html[data-ui-mode=wcag] .staff a {
+  color: #000;
+}

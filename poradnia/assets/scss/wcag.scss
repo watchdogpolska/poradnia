@@ -198,3 +198,20 @@ html[data-ui-mode="wcag"] .panel-status {
 html[data-ui-mode="wcag"] .case-header-number {
 	color: #666666;
 }
+
+// users/user_filter.html's deliberate ".staff { --bs-table-bg: #FF7474; }"
+// row highlight (its own inline <style>, restored during the BS3->BS5
+// migration to bring back a staff-row highlight a user report said had
+// gone missing - unrelated to this WCAG work) clashes with the red link
+// color sitting on top of it in the username cell: #C42020 (this file's
+// own WCAG-mode link color, see the F018-completion rule above) only
+// clears 2.24:1 against that bright pink, under 4.5:1. Darkening the
+// background toward the same red hue makes it WORSE, not better (it
+// converges with the link color instead of separating from it - checked:
+// every shade tried scored under 1.6:1) - so the fix goes the other way,
+// overriding just the link's own text color back to black within these
+// rows (8.00:1 against #FF7474) rather than touching the deliberate
+// highlight color itself.
+html[data-ui-mode="wcag"] .staff a {
+	color: #000;
+}
