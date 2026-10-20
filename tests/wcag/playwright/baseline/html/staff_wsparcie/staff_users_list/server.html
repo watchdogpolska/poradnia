@@ -54,9 +54,19 @@
 <!-- First element in body by design: keyboard-reachable before anything
      else, no JS required (plain form POST). This is the one approved
      normal-mode DOM change - see logs/wcag/plan/ui-mode-design.md §2.
-     z-index below is needed because .navbar is position:fixed on mobile
-     widths (see _layout.scss) and would otherwise render on top of this. -->
-<form method="post" action="/ui-mode/" style="position: relative; z-index: 1051;">
+     Fixed (not relative) so it stays in the same viewport corner
+     regardless of scroll position, like a django-debug-toolbar handle -
+     previously position:relative, it scrolled away with page content on
+     any long page (e.g. /sprawy/). top: 50px (not 0) matches
+     $navbar-height (_vars.scss, also what .sidebar's own top offset
+     uses, _sidebar.scss) - confirmed via Playwright that pinning this at
+     top:0 fully covers the mobile navbar's hamburger toggle and brand
+     link (both sit within the navbar's own ~44px height), and at this
+     width even the desktop sidebar's home link (measured at y:211+) is
+     still comfortably clear. z-index is needed because .navbar is
+     position:fixed on mobile widths (see _layout.scss) and would
+     otherwise render on top of this. -->
+<form method="post" action="/ui-mode/" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
     <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
     <input type="hidden" name="next" value="/uzytkownik/">
     
@@ -314,7 +324,7 @@
                         <a href="/uzytkownik/a11y_superuser/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/9a/b1/9ab1601544621941e004988b74675b21.jpg" alt=""> Anna Administrator
+                                <img src="/media/cache/3b/c6/3bc6c4266de05cbe743244738432186e.jpg" alt=""> Anna Administrator
                             </div>
                         </a>
                     </td>
@@ -343,7 +353,7 @@
                         <a href="/uzytkownik/a11y_staff_admin/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/d9/c4/d9c466e94bb304a9afa44bbcb5d6c55b.jpg" alt=""> Bartosz Kierownik
+                                <img src="/media/cache/5b/b1/5bb14b55cd984adf284762e2e84642e7.jpg" alt=""> Bartosz Kierownik
                             </div>
                         </a>
                     </td>
@@ -372,7 +382,7 @@
                         <a href="/uzytkownik/a11y_staff_wsparcie/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/23/de/23defe7e949e26453c5768673803b1a3.jpg" alt=""> Celina Wsparcie
+                                <img src="/media/cache/9e/6f/9e6f10e99afb774769204d366b2defda.jpg" alt=""> Celina Wsparcie
                             </div>
                         </a>
                     </td>
@@ -401,7 +411,7 @@
                         <a href="/uzytkownik/a11y_staff_obserwator/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/5e/66/5e661fed6bd394b7115c1c69065e33ad.jpg" alt=""> Dawid Obserwator
+                                <img src="/media/cache/fb/c4/fbc4a72f59d83decd2b34a856effac2a.jpg" alt=""> Dawid Obserwator
                             </div>
                         </a>
                     </td>
@@ -430,7 +440,7 @@
                         <a href="/uzytkownik/a11y_client_active/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/e7/e4/e7e417cf67ac33b6c015fa7497b7bb94.jpg" alt=""> Ewa Klientka
+                                <img src="/media/cache/9d/47/9d47c830095524cda96ac5d3ec8adfbc.jpg" alt=""> Ewa Klientka
                             </div>
                         </a>
                     </td>

@@ -61,9 +61,19 @@
 <!-- First element in body by design: keyboard-reachable before anything
      else, no JS required (plain form POST). This is the one approved
      normal-mode DOM change - see logs/wcag/plan/ui-mode-design.md §2.
-     z-index below is needed because .navbar is position:fixed on mobile
-     widths (see _layout.scss) and would otherwise render on top of this. -->
-<form method="post" action="/ui-mode/" style="position: relative; z-index: 1051;">
+     Fixed (not relative) so it stays in the same viewport corner
+     regardless of scroll position, like a django-debug-toolbar handle -
+     previously position:relative, it scrolled away with page content on
+     any long page (e.g. /sprawy/). top: 50px (not 0) matches
+     $navbar-height (_vars.scss, also what .sidebar's own top offset
+     uses, _sidebar.scss) - confirmed via Playwright that pinning this at
+     top:0 fully covers the mobile navbar's hamburger toggle and brand
+     link (both sit within the navbar's own ~44px height), and at this
+     width even the desktop sidebar's home link (measured at y:211+) is
+     still comfortably clear. z-index is needed because .navbar is
+     position:fixed on mobile widths (see _layout.scss) and would
+     otherwise render on top of this. -->
+<form method="post" action="/ui-mode/" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
     <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]" style="">
     <input type="hidden" name="next" value="/sprawy/" style="">
     
@@ -1209,4 +1219,4 @@
 
 
 
-<div class="autocomplete-light-box" role="listbox" style="top: 234px; left: 797.109px; width: 198px;"><div data-value="1" role="option" aria-selected="false" data-bound="true">Anna Administrator (team)</div><div data-value="2" role="option" aria-selected="false" data-bound="true">Bartosz Kierownik (team)</div><div data-value="3" role="option" aria-selected="false" data-bound="true">Celina Wsparcie (team)</div><div data-value="4" role="option" aria-selected="false" data-bound="true">Dawid Obserwator (team)</div><div data-value="5" role="option" aria-selected="false" data-bound="true">Ewa Klientka</div></div></body></html>
+<div class="autocomplete-light-box" role="listbox" style="top: 199px; left: 797.109px; width: 198px;"><div data-value="1" role="option" aria-selected="false" data-bound="true">Anna Administrator (team)</div><div data-value="2" role="option" aria-selected="false" data-bound="true">Bartosz Kierownik (team)</div><div data-value="3" role="option" aria-selected="false" data-bound="true">Celina Wsparcie (team)</div><div data-value="4" role="option" aria-selected="false" data-bound="true">Dawid Obserwator (team)</div><div data-value="5" role="option" aria-selected="false" data-bound="true">Ewa Klientka</div></div></body></html>

@@ -49,9 +49,19 @@
 <!-- First element in body by design: keyboard-reachable before anything
      else, no JS required (plain form POST). This is the one approved
      normal-mode DOM change - see logs/wcag/plan/ui-mode-design.md §2.
-     z-index below is needed because .navbar is position:fixed on mobile
-     widths (see _layout.scss) and would otherwise render on top of this. -->
-<form method="post" action="/ui-mode/" style="position: relative; z-index: 1051;">
+     Fixed (not relative) so it stays in the same viewport corner
+     regardless of scroll position, like a django-debug-toolbar handle -
+     previously position:relative, it scrolled away with page content on
+     any long page (e.g. /sprawy/). top: 50px (not 0) matches
+     $navbar-height (_vars.scss, also what .sidebar's own top offset
+     uses, _sidebar.scss) - confirmed via Playwright that pinning this at
+     top:0 fully covers the mobile navbar's hamburger toggle and brand
+     link (both sit within the navbar's own ~44px height), and at this
+     width even the desktop sidebar's home link (measured at y:211+) is
+     still comfortably clear. z-index is needed because .navbar is
+     position:fixed on mobile widths (see _layout.scss) and would
+     otherwise render on top of this. -->
+<form method="post" action="/ui-mode/" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
     <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
     <input type="hidden" name="next" value="/sprawy/sprawa-2/">
     
@@ -168,18 +178,6 @@
     <!-- <input type="checkbox" id="altAlreadyDonated" name="altAlreadyDonated" value="donated">
     <label for="altAlreadyDonated">Już przekazałem/am</label> -->
     <p>&nbsp;</p>
-    <!-- While this popup blocks the rest of the page, switching to WCAG
-         mode has to be reachable from inside it too, not just the
-         always-on-top switch form at the very start of body - this is
-         the one other allowed action besides closing. -->
-    <form method="post" action="/ui-mode/">
-        <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
-        <input type="hidden" name="next" value="/sprawy/sprawa-2/">
-        
-            <input type="hidden" name="mode" value="wcag">
-            <button type="submit">Włącz wersję dostępną</button>
-        
-    </form>
     <button class="btn btn-primary" id="alt-donate-button" onclick="closeAltPopup()">Zamknij</button>
 </div>
 
@@ -404,7 +402,7 @@
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/e7/e4/e7e417cf67ac33b6c015fa7497b7bb94.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/9d/47/9d47c830095524cda96ac5d3ec8adfbc.jpg" class="timeline-avatar" alt="">
     <div class="card border-default timeline-comment" id="letter-2">
         <div class="card-header text-bg-default">
             <h2 class="card-title">
@@ -465,7 +463,7 @@
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/e7/e4/e7e417cf67ac33b6c015fa7497b7bb94.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/9d/47/9d47c830095524cda96ac5d3ec8adfbc.jpg" class="timeline-avatar" alt="">
     <div class="card border-default timeline-comment" id="letter-4">
         <div class="card-header text-bg-default">
             <h2 class="card-title">
@@ -506,7 +504,7 @@
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/23/de/23defe7e949e26453c5768673803b1a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/9e/6f/9e6f10e99afb774769204d366b2defda.jpg" class="timeline-avatar" alt="">
     <div class="card border-success timeline-comment" id="letter-6">
         <div class="card-header text-bg-success">
             <h2 class="card-title">

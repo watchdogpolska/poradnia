@@ -83,21 +83,5 @@
     <input type="checkbox" id="alreadyDonated" name="alreadyDonated" value="donated">
     <label for="alreadyDonated">Już przekazałem/am</label>
     <p>&nbsp;</p>
-    <!-- While this popup blocks the rest of the page, switching to WCAG
-         mode has to be reachable from inside it too, not just the
-         always-on-top switch form at the very start of body - this is
-         the one other allowed action besides closing (see the same fix
-         on donate_popup_alternative.html). -->
-    <form method="post" action="{% url 'ui_mode_switch' %}">
-        {% csrf_token %}
-        <input type="hidden" name="next" value="{{ request.get_full_path }}">
-        {% if ui_mode == "wcag" %}
-            <input type="hidden" name="mode" value="normal">
-            <button type="submit">Przełącz na wersję standardową</button>
-        {% else %}
-            <input type="hidden" name="mode" value="wcag">
-            <button type="submit">Włącz wersję dostępną</button>
-        {% endif %}
-    </form>
     <button class="btn btn-primary" id="donate-button" onclick="closePopup()">Zamknij</button>
 </div>
