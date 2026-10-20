@@ -83,3 +83,7 @@ html[data-ui-mode=wcag] .case-header-number {
 html[data-ui-mode=wcag] .staff a {
   color: #000;
 }
+
+html[data-ui-mode=wcag] .app-mode-banner {
+  color: #ff8080 !important;
+}

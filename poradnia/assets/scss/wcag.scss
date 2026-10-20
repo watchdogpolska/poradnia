@@ -215,3 +215,21 @@ html[data-ui-mode="wcag"] .case-header-number {
 html[data-ui-mode="wcag"] .staff a {
 	color: #000;
 }
+
+// poradnia_tags.py's app_mode() prints the sidebar's "DEV"/"DEMO" env
+// banner (APP_MODE != "PROD") as a plain inline style="color: red;" <h1>,
+// no stylesheet hook until the class added alongside this fix. Pure red
+// (#ff0000) against the sidebar's dark background (#4c4c4c) is 2.15:1,
+// under the 3:1 minimum for large text (this h1 renders at ~35px, well
+// over the 18pt/24px large-text threshold). Lightened to #ff8080 (3.54:1)
+// in WCAG mode - needs !important since an inline style attribute always
+// outranks an external stylesheet rule otherwise, regardless of selector
+// specificity. Previously excluded from findings.csv as an environment-
+// only, not-a-real-page artifact, but it's real markup served from a real
+// endpoint, so closing it is straightforward once there's a class to
+// target - left for normal mode (the dev/demo-only audience already
+// knows what environment they're in from the banner text itself; the
+// color choice was never meant to be a conformance claim).
+html[data-ui-mode="wcag"] .app-mode-banner {
+	color: #ff8080 !important;
+}

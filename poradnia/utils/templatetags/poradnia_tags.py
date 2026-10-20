@@ -35,7 +35,13 @@ def app_mode():
     """
     if settings.APP_MODE == "PROD":
         return mark_safe("")
-    return mark_safe(f'<h1 style="color: red;">{settings.APP_MODE}</h1>')
+    # class added so WCAG mode can target this one h1 without touching any
+    # other <h1> on the page - the inline style (needed so !important can
+    # still win over it in WCAG mode, see wcag.scss) carries the normal-mode
+    # color unchanged.
+    return mark_safe(
+        f'<h1 class="app-mode-banner" style="color: red;">{settings.APP_MODE}</h1>'
+    )
 
 
 @register.simple_tag
