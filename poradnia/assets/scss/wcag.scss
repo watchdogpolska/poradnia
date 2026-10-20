@@ -175,3 +175,16 @@ html[data-ui-mode="wcag"] .btn-warning {
 	--bs-btn-active-color: #000;
 	--bs-btn-disabled-color: #000;
 }
+
+// Another post-M4 finding, not in findings.csv: letters/_letter_list.html's
+// staff-only "Wszyscy"/"Zespół" status badge (style.scss's .panel-status)
+// sets only opacity: 0.5, no color of its own - it inherits the ordinary
+// body text color (#212529, confirmed live via getComputedStyle) and lets
+// opacity do the fading. At 0.5 that composites to ~#909294 against the
+// white card background, 3.12:1, under the 4.5:1 minimum. Raised to 0.7
+// (5.76:1) rather than removed outright (1.0, ~15:1) - keeps it reading
+// as a de-emphasized secondary label instead of full-strength body text,
+// just with enough opacity left to pass.
+html[data-ui-mode="wcag"] .panel-status {
+	opacity: 0.7;
+}

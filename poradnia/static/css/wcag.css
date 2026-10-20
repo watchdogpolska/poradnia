@@ -71,3 +71,7 @@ html[data-ui-mode=wcag] .btn-warning {
   --bs-btn-active-color: #000;
   --bs-btn-disabled-color: #000;
 }
+
+html[data-ui-mode=wcag] .panel-status {
+  opacity: 0.7;
+}
