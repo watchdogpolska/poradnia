@@ -198,7 +198,20 @@
     <div class="container-fluid">
         <!-- Brand and toggle get grouped for better mobile display -->
         <div class="navbar-header">
-            <button type="button" class="navbar-toggler collapsed" data-bs-toggle="collapse" data-bs-target="body">
+            <!-- No data-bs-toggle="collapse" here on purpose: the actual
+                 show/hide is handled by sidebar.js (a plain classList
+                 toggle on data-bs-target, driving .sidebar's CSS
+                 transform - not an accordion-style collapse panel).
+                 Bootstrap's own collapse JS binds to [data-bs-toggle=
+                 "collapse"] globally regardless of any explicit JS
+                 instantiation, so having both attached used to run two
+                 independent toggles per click: sidebar.js's (correct) and
+                 Bootstrap's own (which also manages body's collapse/show
+                 classes). Opening was harmless, but closing left body
+                 with class="collapse" and no "show" - Bootstrap's own
+                 CSS (.collapse:not(.show) { display: none; }) then hid
+                 the entire page until reload. -->
+            <button type="button" class="navbar-toggler collapsed" data-bs-target="body" aria-expanded="false">
                 <span class="visually-hidden">Toggle navigation</span>
                 <i class="navbar-burger"></i>
             </button>
