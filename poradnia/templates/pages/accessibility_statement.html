@@ -1,9 +1,8 @@
 {% extends 'base.html' %}
-{% load tinycontent_tags %}
+{% load tinycontent_tags poradnia_tags %}
 {% block title %}Deklaracja dostępności - {{ block.super }}{% endblock %}
 {% block content %}
 <h1>Deklaracja dostępności</h1>
-{% tinycontent 'accessibility_statement' %}
 <p>
     Sieć Obywatelska Watchdog Polska zobowiązuje się zapewnić dostępność serwisu Poradnia
     zgodnie z ustawą z dnia 4 kwietnia 2019 r. o dostępności cyfrowej stron internetowych i
@@ -65,7 +64,11 @@
     (axe-core, html-validate) oraz skryptowy przegląd nawigacji klawiaturą i zarządzania
     fokusem na próbie stron reprezentatywnej dla wszystkich głównych typów widoków, ról i
     stanów serwisu. Pełny przegląd z użyciem technologii asystujących jest planowany na
-    <strong>[DO UZUPEŁNIENIA: termin kolejnego przeglądu]</strong>.
+    <strong>
+        {% filter strip_wrapping_p %}{% tinycontent 'accessibility_statement_next_review_date' %}
+        [DO UZUPEŁNIENIA: termin kolejnego przeglądu]
+        {% endtinycontent %}{% endfilter %}
+    </strong>.
 </p>
 
 <h2>Jak włączyć Tryb dostępności (WCAG)</h2>
@@ -171,7 +174,11 @@
     trybu wyświetlania strony i wymaga odrębnego procesu po stronie zespołu. Kryteria oznaczone
     jako "Nie oceniono" wymagają pełnego przeglądu z użyciem technologii asystujących,
     planowanego - tak jak w przypadku widoku standardowego - na
-    <strong>[DO UZUPEŁNIENIA: termin kolejnego przeglądu]</strong>.
+    <strong>
+        {% filter strip_wrapping_p %}{% tinycontent 'accessibility_statement_next_review_date' %}
+        [DO UZUPEŁNIENIA: termin kolejnego przeglądu]
+        {% endtinycontent %}{% endfilter %}
+    </strong>.
 </p>
 
 <h2>Przygotowanie deklaracji dostępności</h2>
@@ -196,9 +203,22 @@
 <h2>Informacje zwrotne i dane kontaktowe</h2>
 <p>
     W przypadku problemów z dostępnością cyfrową serwisu prosimy o kontakt. Osobą kontaktową
-    jest <strong>[DO UZUPEŁNIENIA: imię i nazwisko osoby kontaktowej]</strong>, adres e-mail:
-    <strong>[DO UZUPEŁNIENIA: adres e-mail]</strong>, telefon:
-    <strong>[DO UZUPEŁNIENIA: numer telefonu]</strong>. Tą samą drogą można składać wnioski o
+    jest
+    <strong>
+        {% filter strip_wrapping_p %}{% tinycontent 'accessibility_statement_contact_name' %}
+        [DO UZUPEŁNIENIA: imię i nazwisko osoby kontaktowej]
+        {% endtinycontent %}{% endfilter %}
+    </strong>, adres e-mail:
+    <strong>
+        {% filter strip_wrapping_p %}{% tinycontent 'accessibility_statement_contact_email' %}
+        [DO UZUPEŁNIENIA: adres e-mail]
+        {% endtinycontent %}{% endfilter %}
+    </strong>, telefon:
+    <strong>
+        {% filter strip_wrapping_p %}{% tinycontent 'accessibility_statement_contact_phone' %}
+        [DO UZUPEŁNIENIA: numer telefonu]
+        {% endtinycontent %}{% endfilter %}
+    </strong>. Tą samą drogą można składać wnioski o
     udostępnienie informacji niedostępnej oraz żądania zapewnienia dostępności cyfrowej strony
     internetowej, aplikacji mobilnej lub ich elementu.
 </p>
@@ -227,26 +247,29 @@
     realizacji żądania zapewnienia dostępności lub alternatywnego sposobu dostępu do informacji,
     a także gdy osoba żądająca nie jest zadowolona z udzielonej odpowiedzi, przysługuje jej
     prawo do złożenia skargi do Rzecznika Praw Obywatelskich:
-    <strong>[DO UZUPEŁNIENIA: adres strony Biura Rzecznika Praw Obywatelskich]</strong>.
+    <strong>
+        {% filter strip_wrapping_p %}{% tinycontent 'accessibility_statement_rpo_link' %}
+        [DO UZUPEŁNIENIA: adres strony Biura Rzecznika Praw Obywatelskich]
+        {% endtinycontent %}{% endfilter %}
+    </strong>.
 </p>
 
 <h2>Dostępność architektoniczna</h2>
-<p>
-    <strong>[DO UZUPEŁNIENIA: opis dostępności architektonicznej budynku/siedziby - m.in.
-    dostęp bez barier architektonicznych, winda, dostosowane toalety, miejsca parkingowe,
-    możliwość wstępu z psem asystującym, dostępność tłumacza języka znaków]</strong>.
-</p>
+{% tinycontent 'accessibility_statement_architectural_accessibility' %}
+<p><strong>[DO UZUPEŁNIENIA: opis dostępności architektonicznej budynku/siedziby - m.in.
+dostęp bez barier architektonicznych, winda, dostosowane toalety, miejsca parkingowe,
+możliwość wstępu z psem asystującym, dostępność tłumacza języka znaków]</strong></p>
+{% endtinycontent %}
 
 <h2>Dostępność alternatywna</h2>
-<p>
-    <strong>[DO UZUPEŁNIENIA: alternatywny sposób dostępu do pomocy prawnej dla osób, które nie
-    mogą skorzystać z serwisu, np. numer telefonu lub adres, pod którym można uzyskać pomoc
-    bez korzystania z serwisu internetowego]</strong>.
-</p>
+{% tinycontent 'accessibility_statement_alternative_access' %}
+<p><strong>[DO UZUPEŁNIENIA: alternatywny sposób dostępu do pomocy prawnej dla osób, które nie
+mogą skorzystać z serwisu, np. numer telefonu lub adres, pod którym można uzyskać pomoc
+bez korzystania z serwisu internetowego]</strong></p>
+{% endtinycontent %}
 
 <h2>Aplikacje mobilne</h2>
 <p>
     Podmiot nie udostępnia aplikacji mobilnych.
 </p>
-{% endtinycontent %}
 {% endblock %}
