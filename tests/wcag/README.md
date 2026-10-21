@@ -5,6 +5,31 @@ Permanent CI tooling for the `wcag_mode_checks` job in
 `ui-mode-design.md` §9 under `logs/wcag/` for the full design history -
 that tree is gitignored/local-only; nothing here depends on it existing).
 
+## Policy: no feature merges without its WCAG-mode version
+
+Poradnia offers two display modes (see the accessibility statement at
+`/strony/deklaracja-dostepnosci/` for the public-facing explanation). WCAG
+mode must keep offering the same information and functionality as normal
+mode, and stay that way as the app evolves - not just on the day it first
+reached that state. A PR that adds a control, form, or page only in normal
+mode is treated the same as a PR that breaks an existing test: it doesn't
+merge. `equivalence_test.js` is the automated half of that check (same
+form fields, actionable-control targets, and content in both modes); it
+cannot judge whether the WCAG-mode rendering is actually *good*
+(semantically correct landmarks, sensible focus order, real labels - not
+just "technically present"), which stays a human PR-review step.
+
+## Review cadence
+
+- **Annually, by 31 March** (art. 11 of the Polish digital-accessibility
+  act): re-run the full `audit/sample.md` pass (`axe_run.js --mode=wcag`,
+  `equivalence_test.js`, `baseline_diff.js`, plus a fresh manual keyboard
+  review) and republish the accessibility statement with updated dates and
+  any new or resolved non-conformities.
+- **After every release**: the three CI gates above catch *regressions*
+  automatically on every PR. They do not substitute for the human review
+  step described above for *new* WCAG-mode work.
+
 ## What's here
 
 - `docker-compose.a11y.yml` - compose override pointing `web` at an

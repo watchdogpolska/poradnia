@@ -52,6 +52,11 @@ urlpatterns = [
         TemplateView.as_view(template_name="pages/privacy.html"),
         name="privacy",
     ),
+    path(
+        "strony/deklaracja-dostepnosci/",
+        TemplateView.as_view(template_name="pages/accessibility_statement.html"),
+        name="accessibility_statement",
+    ),
     re_path(r"^media/(?P<path>.*)$", ProtectedMediaView.as_view()),
 ]
 
