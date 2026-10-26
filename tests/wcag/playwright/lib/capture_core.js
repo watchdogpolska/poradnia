@@ -34,7 +34,7 @@ const DISABLE_ANIMATIONS_CSS = `
 // guarantees evaluate() itself always returns.
 const STABLE_WAIT_MS = 3000;
 
-async function waitStable(page) {
+async function waitStable(page, label) {
   await page.waitForLoadState("load");
   await page
     .evaluate((ms) => {
@@ -120,24 +120,42 @@ async function waitStable(page) {
   // correct, which is why neither raising the timeout nor rewriting the
   // wait condition itself ever changed the staff_cases_datatable flake
   // rate: the code computing that condition was never running at all.
-  await page
+  const processingWaitResult = await page
     .evaluate(({ ids, ms }) => {
+      const start = Date.now();
       const stillProcessing = () =>
         ids.some((id) => {
           const indicator = document.getElementById(`${id}_processing`);
           return indicator && getComputedStyle(indicator).display !== "none";
         });
-      const timeout = new Promise((resolve) => setTimeout(resolve, ms));
+      const present = ids.some((id) => document.getElementById(`${id}_processing`));
+      const timeout = new Promise((resolve) => setTimeout(() => resolve("timeout"), ms));
       const ready = new Promise((resolve) => {
         const check = () => {
-          if (!stillProcessing()) resolve();
+          if (!stillProcessing()) resolve("ready");
           else setTimeout(check, 100);
         };
         check();
       });
-      return Promise.race([ready, timeout]);
+      return Promise.race([ready, timeout]).then((outcome) => ({
+        present,
+        outcome,
+        elapsedMs: Date.now() - start,
+      }));
     }, { ids: DATATABLE_IDS, ms: 15000 })
-    .catch(() => {});
+    .catch(() => null);
+  // Temporary diagnostic for the staff_cases_datatable flake (see
+  // logs/wcag/README.md): logs whether a DataTable was present on this
+  // page at all, and whether the _processing wait resolved on signal or
+  // hit the full 15s budget, so a CI run tells us whether the timeout
+  // itself is too short or something else entirely is going on. Remove
+  // once the flake is understood.
+  if (label && processingWaitResult && processingWaitResult.present) {
+    console.log(
+      `[datatable-wait] ${label}: outcome=${processingWaitResult.outcome} ` +
+        `elapsedMs=${processingWaitResult.elapsedMs}`
+    );
+  }
   // Rows existing in the DOM isn't the same as DataTables having finished
   // its own post-insert layout pass (column width/scroll-wrapper sizing) -
   // harmless to keep as a secondary settle check now that the wait above
@@ -291,7 +309,7 @@ async function captureViewportPass(context, entry, viewportName, viewport, shotD
   page.setDefaultTimeout(10000); // well under Playwright's 30s default
   await page.setViewportSize(viewport);
   await page.goto(entry.path, { waitUntil: "load" });
-  await waitStable(page);
+  await waitStable(page, `${entry.id}/${viewportName}/postload`);
   if (writeHtmlTo) writeHtml(writeHtmlTo, "postload", await pageHtml(page));
   await writeScreenshot(page, shotDir, "postload", viewportName);
 
@@ -427,7 +445,7 @@ async function captureEntrySemantics(browser, roleStates, entry) {
     page.setDefaultTimeout(10000);
     await page.setViewportSize(VIEWPORTS.desktop);
     await page.goto(entry.path, { waitUntil: "load" });
-    await waitStable(page);
+    await waitStable(page, `${entry.id}/semantics`);
 
     const states = { postload: await extractSemantics(page) };
     for (const kind of entry.interactions || []) {

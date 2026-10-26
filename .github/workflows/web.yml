@@ -110,6 +110,18 @@ jobs:
       - name: Bring the app up against poradnia_a11y
         run: |
           docker compose -f docker-compose.yml -f tests/wcag/docker-compose.a11y.yml up -d web
+      # Without this, every run pays for a fresh apt-get + ~120MB Chromium
+      # download whenever the hosted runner's disk image doesn't already
+      # have this Playwright version baked in - that gap made the step
+      # anywhere from ~20s (image already had it) to ~9min (cold) between
+      # otherwise-identical runs. Keying on package-lock.json's hash
+      # invalidates automatically whenever the pinned Playwright version
+      # changes.
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('tests/wcag/playwright/package-lock.json') }}
       - name: Install Playwright
         working-directory: tests/wcag/playwright
         run: |
