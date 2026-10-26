@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content %}
-    {% block object %}<h1>{{ object }}</h1>{% endblock %}
+    {% block object %}<h1>{% if object %}{{ object }}{% else %}{% trans 'Event' %}{% endif %}</h1>{% endblock %}
     {% form_error_summary form %}
     {% crispy form %}
 {% endblock %}

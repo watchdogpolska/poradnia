@@ -4,7 +4,7 @@
 {% block title %}{% trans 'Dashboard' %} - {{ block.super }}{% endblock %}
 {% block content %}
     <div class="dashboard-page-header">
-        <h3>{% trans 'Dashboard' %}</h3>
+        <h1 class="h3">{% trans 'Dashboard' %}</h1>
         <button type="button" class="btn btn-default" id="dashboard-export-btn"
                 data-export-url="{% url 'dashboard:export_excel' %}"
                 data-current-year="{{ current_year }}">
@@ -67,9 +67,9 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="dashboard-export-year-modal-label">
+                    <h2 class="modal-title" id="dashboard-export-year-modal-label">
                         {% trans 'Choose a year for the export' %}
-                    </h4>
+                    </h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">

@@ -24325,7 +24325,7 @@ table.month li.deadline {
   flex-wrap: wrap;
   gap: 10px;
 }
-.dashboard-page-header h3 {
+.dashboard-page-header h1 {
   margin: 0;
 }
 
