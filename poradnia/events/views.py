@@ -45,6 +45,7 @@ class EventCreateView(
     form_class = EventForm
     template_name = "events/form.html"
     permission_required = ["cases.can_add_record"]
+    prefix = "event"
 
     @cached_property
     def case(self):
