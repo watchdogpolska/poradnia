@@ -53,6 +53,30 @@ function listFilesRecursive(dir) {
   return out;
 }
 
+// Temporary diagnostic for the staff_cases_datatable flake (see
+// logs/wcag/README.md): "HTML CHANGED" alone doesn't say what changed, and
+// this script discards its tmp capture before exiting, so a failing CI run
+// gave no way to see the actual content difference. No diff library is
+// available here (tests/wcag/playwright has none as a dependency), so this
+// is a plain line-by-line comparison, not a real diff algorithm - good
+// enough to show a handful of differing lines with context. Remove once
+// the flake is understood.
+function logLineDiff(label, a, b) {
+  const linesA = a.split("\n");
+  const linesB = b.split("\n");
+  console.log(`[line-diff] ${label}: ${linesA.length} vs ${linesB.length} lines`);
+  const max = Math.max(linesA.length, linesB.length);
+  let shown = 0;
+  for (let i = 0; i < max && shown < 5; i++) {
+    if (linesA[i] !== linesB[i]) {
+      console.log(`[line-diff] ${label} line ${i + 1}:`);
+      console.log(`[line-diff]   - ${JSON.stringify(linesA[i] ?? "<missing>").slice(0, 500)}`);
+      console.log(`[line-diff]   + ${JSON.stringify(linesB[i] ?? "<missing>").slice(0, 500)}`);
+      shown++;
+    }
+  }
+}
+
 function diffHtml(baselineDir, tmpDir, relPrefix, diffs) {
   const baselineFiles = listFilesRecursive(baselineDir).filter((f) => f.endsWith(".html"));
   for (const baselineFile of baselineFiles) {
@@ -66,6 +90,7 @@ function diffHtml(baselineDir, tmpDir, relPrefix, diffs) {
     const b = fs.readFileSync(tmpFile, "utf8");
     if (a !== b) {
       diffs.push(`HTML CHANGED: ${relPrefix}/${rel}`);
+      logLineDiff(`${relPrefix}/${rel}`, a, b);
     }
   }
   const tmpFiles = listFilesRecursive(tmpDir).filter((f) => f.endsWith(".html"));
