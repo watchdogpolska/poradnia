@@ -122,6 +122,23 @@ jobs:
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('tests/wcag/playwright/package-lock.json') }}
+      # `playwright install --with-deps` also apt-get installs a long list
+      # of OS-level shared libraries (libnss3, xvfb, fonts-*, ...) so
+      # Chromium can run headless - that's independent of the browser
+      # binary cache above, which only covers ~/.cache/ms-playwright.
+      # Confirmed live: on one run this step's apt-get download of ~24MB of
+      # .debs crawled at ~35 kB/s from the Ubuntu/Azure mirror (one package
+      # even stalled and had to be retried), accounting for the entire
+      # ~11-minute step duration on its own - package resolution and
+      # unpacking together took under 10s once the download finished.
+      # Caching the downloaded .debs lets apt skip the network fetch
+      # entirely on a cache hit, the same way the browser-binary cache
+      # does for Chromium itself.
+      - name: Cache apt packages
+        uses: actions/cache@v4
+        with:
+          path: /var/cache/apt/archives/*.deb
+          key: ${{ runner.os }}-apt-playwright-chromium-${{ hashFiles('tests/wcag/playwright/package-lock.json') }}
       - name: Install Playwright
         working-directory: tests/wcag/playwright
         run: |

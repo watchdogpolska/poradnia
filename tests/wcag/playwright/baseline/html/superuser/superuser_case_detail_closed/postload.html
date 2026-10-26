@@ -1,28 +1,28 @@
-<!DOCTYPE html><html lang="pl" data-ui-mode="normal"><head>
+<!DOCTYPE html><html data-ui-mode="normal" lang="pl"><head>
     <meta charset="utf-8">
     <title>Sprawa zamknięta po udzieleniu odpowiedzi - Sprawy - Poradnia</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Poradnia App">
-    <meta name="author" content="Sieć Obywatelska - Watchdog Polska">
-    <meta name="theme-color" content="#D82727">
-    <link rel="apple-touch-icon" sizes="160x128" href="/static/images/logo-160x128.png">
-    <link rel="shortcut icon" type="image/png" href="/static/images/favicon-32x26.png" sizes="32x32">
-    <link rel="manifest" href="/static/images/manifest.json">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-TileImage" content="/static/images/logo-160x128.png">
-    <meta property="og:image" content="/static/images/logo-czerwone-tlo-1200x600.jpg">
-    <meta property="og:image:type" content="image/jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="600">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Poradnia App" name="description">
+    <meta content="Sieć Obywatelska - Watchdog Polska" name="author">
+    <meta content="#D82727" name="theme-color">
+    <link href="/static/images/logo-160x128.png" rel="apple-touch-icon" sizes="160x128">
+    <link href="/static/images/favicon-32x26.png" rel="shortcut icon" sizes="32x32" type="image/png">
+    <link href="/static/images/manifest.json" rel="manifest">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="/static/images/logo-160x128.png" name="msapplication-TileImage">
+    <meta content="/static/images/logo-czerwone-tlo-1200x600.jpg" property="og:image">
+    <meta content="image/jpg" property="og:image:type">
+    <meta content="1200" property="og:image:width">
+    <meta content="600" property="og:image:height">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
   <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-    <link rel="stylesheet" href="/static/tasty_feedback/style.css">
+    <link href="/static/tasty_feedback/style.css" rel="stylesheet">
 
     
-        <link rel="stylesheet" href="/static/css/style.min.css">
+        <link href="/static/css/style.min.css" rel="stylesheet">
     
     
     
@@ -33,7 +33,7 @@
     </style>
 
 
-<style>.htmx-indicator{opacity:0;visibility: hidden} .htmx-request .htmx-indicator, .htmx-request.htmx-indicator{opacity:1;visibility: visible;transition: opacity 200ms ease-in}</style><link rel="stylesheet" type="text/css" id="mce-u0" href="http://localhost:8000/static/tinymce/skins/ui/oxide/skin.min.css"><style type="text/css">
+<style>.htmx-indicator{opacity:0;visibility: hidden} .htmx-request .htmx-indicator, .htmx-request.htmx-indicator{opacity:1;visibility: visible;transition: opacity 200ms ease-in}</style><link href="http://localhost:8000/static/tinymce/skins/ui/oxide/skin.min.css" id="mce-u0" rel="stylesheet" type="text/css"><style type="text/css">
   *, *::before, *::after {
     animation-duration: 0s !important;
     animation-delay: 0s !important;
@@ -61,12 +61,12 @@
      still comfortably clear. z-index is needed because .navbar is
      position:fixed on mobile widths (see _layout.scss) and would
      otherwise render on top of this. -->
-<form method="post" action="/ui-mode/" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
-    <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
-    <input type="hidden" name="next" value="/sprawy/sprawa-4/">
+<form action="/ui-mode/" method="post" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
+    <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
+    <input name="next" type="hidden" value="/sprawy/sprawa-4/">
     
-        <input type="hidden" name="mode" value="wcag">
-        <button type="submit" class="btn btn-dark">Włącz wersję dostępną</button>
+        <input name="mode" type="hidden" value="wcag">
+        <button class="btn btn-dark" type="submit">Włącz wersję dostępną</button>
     
 </form>
 
@@ -100,7 +100,7 @@
                  with class="collapse" and no "show" - Bootstrap's own
                  CSS (.collapse:not(.show) { display: none; }) then hid
                  the entire page until reload. -->
-            <button type="button" class="navbar-toggler collapsed" data-bs-target="body" aria-expanded="false">
+            <button aria-expanded="false" class="navbar-toggler collapsed" data-bs-target="body" type="button">
                 <span class="visually-hidden">Toggle navigation</span>
                 <i class="navbar-burger"></i>
             </button>
@@ -127,7 +127,7 @@
         
         
            <li class="block-list-item">
-              <a href="#" data-bs-toggle="modal" data-bs-target="#navsearch_modal">
+              <a data-bs-target="#navsearch_modal" data-bs-toggle="modal" href="#">
                    <i class="fas fa-magnifying-glass"></i> Wyszukaj
                </a>
            </li>
@@ -241,7 +241,7 @@
     
         <div class="col-12">
             <p class="text-center">
-                <img src="/static/images/baner.png" alt="" class="img-fluid">
+                <img alt="" class="img-fluid" src="/static/images/baner.png">
                 Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                 finansowanego z Funduszy EOG.
             </p>
@@ -315,30 +315,30 @@
                     
                     
                         <div>
-                            <button type="button" class="btn btn-default dropdown-toggle js-ai-dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <button aria-expanded="false" aria-haspopup="true" class="btn btn-default dropdown-toggle js-ai-dropdown-toggle" data-bs-toggle="dropdown" type="button">
                                 <i class="fas fa-robot"></i> Asystent AI
                             </button>
                             <ul class="dropdown-menu">
                                 <li>
-                                    <form method="post" action="/sprawy/sprawa-4/klasyfikuj-szukaj-artykulow/">
-                                        <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
-                                        <button type="submit" class="btn btn-link" style="width:100%;text-align:left;padding:3px 20px;">
+                                    <form action="/sprawy/sprawa-4/klasyfikuj-szukaj-artykulow/" method="post">
+                                        <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
+                                        <button class="btn btn-link" style="width:100%;text-align:left;padding:3px 20px;" type="submit">
                                             Klasyfikuj i przeszukaj artykuły
                                         </button>
                                     </form>
                                 </li>
                                 <li>
-                                    <form method="post" action="/sprawy/sprawa-4/szukaj-artykulow/">
-                                        <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
-                                        <button type="submit" class="btn btn-link" style="width:100%;text-align:left;padding:3px 20px;">
+                                    <form action="/sprawy/sprawa-4/szukaj-artykulow/" method="post">
+                                        <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
+                                        <button class="btn btn-link" style="width:100%;text-align:left;padding:3px 20px;" type="submit">
                                             Wyszukaj artykuły
                                         </button>
                                     </form>
                                 </li>
                                 <li>
-                                    <form method="post" action="/sprawy/sprawa-4/taguj-sprawa/">
-                                        <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
-                                        <button type="submit" class="btn btn-link" style="width:100%;text-align:left;padding:3px 20px;">
+                                    <form action="/sprawy/sprawa-4/taguj-sprawa/" method="post">
+                                        <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
+                                        <button class="btn btn-link" style="width:100%;text-align:left;padding:3px 20px;" type="submit">
                                             Otaguj sprawę
                                         </button>
                                     </form>
@@ -373,7 +373,7 @@
                                 <td><i class="fas fa-user"></i> Zaangażowani</td>
                                 <td>
 
-    <i class="fas fa-shield-halved" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Może dodawać wpisy, Może widzieć sprawę, Może zmieniać własne wpisy" data-bs-original-title="Może dodawać wpisy, Może widzieć sprawę, Może zmieniać własne wpisy">
+    <i aria-label="Może dodawać wpisy, Może widzieć sprawę, Może zmieniać własne wpisy" class="fas fa-shield-halved" data-bs-original-title="Może dodawać wpisy, Może widzieć sprawę, Może zmieniać własne wpisy" data-bs-toggle="tooltip" data-placement="bottom">
     </i>
     <a href="/uzytkownik/a11y_staff_wsparcie/">Celina Wsparcie (team)</a>
     
@@ -386,7 +386,7 @@
         
     
 
-    <i class="fas fa-shield-halved" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Może dodawać wpisy, Może widzieć sprawę" data-bs-original-title="Może dodawać wpisy, Może widzieć sprawę">
+    <i aria-label="Może dodawać wpisy, Może widzieć sprawę" class="fas fa-shield-halved" data-bs-original-title="Może dodawać wpisy, Może widzieć sprawę" data-bs-toggle="tooltip" data-placement="bottom">
     </i>
     <a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a>
     
@@ -434,14 +434,14 @@
 
                                     
 
-<form action="/sprawy/sprawa-4/uprawnienia/przyznaj/" class="form-inline" method="post"> <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <link href="/static/dal_alight/autocomplete-light.css" media="all" rel="stylesheet">
+<form action="/sprawy/sprawa-4/uprawnienia/przyznaj/" class="form-inline" method="post"> <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <link href="/static/dal_alight/autocomplete-light.css" media="all" rel="stylesheet">
 <script src="/static/dal_alight/autocomplete-light.js"></script>
-<script src="/static/dal_alight/dal-django.js"></script> <div id="div_id_user" class="mb-3"> <label for="id_user" class="form-label requiredField">
-                Użytkownik<span class="asteriskField">*</span> </label> <autocomplete-select data-bound="true"><select name="user" class="modelalight form-select" required="" id="id_user" slot="select" data-autocomplete-light-url="/uzytkownik/~autocomplete/">
-</select><span slot="deck"></span><autocomplete-select-input slot="input" url="/uzytkownik/~autocomplete/" data-bound="true"><input type="text" name="user-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="false"></autocomplete-select-input></autocomplete-select> </div> <div id="div_id_group" class="mb-3"> <label for="id_group" class="form-label requiredField">
-                Grupa uprawnień<span class="asteriskField">*</span> </label> <select name="group" class="select form-select" required="" id="id_group"> <option value="" selected="">---------</option> <option value="4">admin</option> <option value="3">klient</option> <option value="2">obserwator</option> <option value="1">wsparcie</option>
+<script src="/static/dal_alight/dal-django.js"></script> <div class="mb-3" id="div_id_user"> <label class="form-label requiredField" for="id_user">
+                Użytkownik<span class="asteriskField">*</span> </label> <autocomplete-select data-bound="true"><select class="modelalight form-select" data-autocomplete-light-url="/uzytkownik/~autocomplete/" id="id_user" name="user" required="" slot="select">
+</select><span slot="deck"></span><autocomplete-select-input data-bound="true" slot="input" url="/uzytkownik/~autocomplete/"><input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" autocomplete="off" class="vTextField" name="user-input" placeholder="Wyszukaj" slot="input" type="text"></autocomplete-select-input></autocomplete-select> </div> <div class="mb-3" id="div_id_group"> <label class="form-label requiredField" for="id_group">
+                Grupa uprawnień<span class="asteriskField">*</span> </label> <select class="select form-select" id="id_group" name="group" required=""> <option selected="" value="">---------</option> <option value="4">admin</option> <option value="3">klient</option> <option value="2">obserwator</option> <option value="1">wsparcie</option>
 
-</select> </div> <input type="submit" name="grant" value="Przyznaj" class="btn btn-primary" id="submit-id-grant"> </form>
+</select> </div> <input class="btn btn-primary" id="submit-id-grant" name="grant" type="submit" value="Przyznaj"> </form>
 
                                     <details class="permissions_help">
                                         <summary>
@@ -490,7 +490,7 @@ wsparcie:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/db/09/db0922ce7ba066e6db05a74bb9b711ca.jpg" class="timeline-avatar" alt="">
+    <img alt="" class="timeline-avatar" src="/media/cache/d2/1d/d21dab1a8831acfe68c8490955f9805e.jpg">
     <div class="card border-default timeline-comment" id="letter-32">
         <div class="card-header text-bg-default">
             <h2 class="card-title">
@@ -543,7 +543,7 @@ wsparcie:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/fa/78/fa7898e15cbc596ed6db11ceccb5ac82.jpg" class="timeline-avatar" alt="">
+    <img alt="" class="timeline-avatar" src="/media/cache/82/95/829569847743af6f0bd044a105e58287.jpg">
     <div class="card border-primary timeline-comment" id="letter-33">
         <div class="card-header text-bg-primary">
             <h2 class="card-title">
@@ -596,7 +596,7 @@ wsparcie:
                     
                         
 <div class="timeline-messange">
-    <a href="#"><img src="/media/cache/fa/78/fa7898e15cbc596ed6db11ceccb5ac82.jpg" class="timeline-avatar"></a>
+    <a href="#"><img class="timeline-avatar" src="/media/cache/82/95/829569847743af6f0bd044a105e58287.jpg"></a>
     <div class="card border-default timeline-comment" id="event-3">
         <div class="card-header text-bg-default">
             <h2 class="card-title">
@@ -665,42 +665,42 @@ wsparcie:
 
         <div class="col-lg-6">
             
-                <div role="tabpanel" class="row" style="padding-left: 15px;">
+                <div class="row" role="tabpanel" style="padding-left: 15px;">
 
-                    <ul class="nav nav-tabs" role="tablist" id="form-tab">
+                    <ul class="nav nav-tabs" id="form-tab" role="tablist">
                         
                             <li role="presentation">
-                                <a href="#letter" aria-controls="letter" class="nav-link active" role="tab" data-bs-toggle="tab" aria-selected="true">List</a>
+                                <a aria-controls="letter" aria-selected="true" class="nav-link active" data-bs-toggle="tab" href="#letter" role="tab">List</a>
                             </li>
                         
                             <li role="presentation">
-                                <a href="#event" aria-controls="event" class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false" tabindex="-1">Wydarzenie</a>
+                                <a aria-controls="event" aria-selected="false" class="nav-link" data-bs-toggle="tab" href="#event" role="tab" tabindex="-1">Wydarzenie</a>
                             </li>
                         
                             <li role="presentation">
-                                <a href="#court" aria-controls="court" class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false" tabindex="-1">Sprawa sądowa</a>
+                                <a aria-controls="court" aria-selected="false" class="nav-link" data-bs-toggle="tab" href="#court" role="tab" tabindex="-1">Sprawa sądowa</a>
                             </li>
                         
                     </ul>
 
                     <div class="tab-content">
                         
-                            <div role="tabpanel" class="tab-pane  active" id="letter">
+                            <div class="tab-pane  active" id="letter" role="tabpanel">
                                 <h2>List</h2>
-                                <form method="post" class="" enctype="multipart/form-data" action="/listy/sprawa-4/" data-form-save="form-letter-4">
+                                <form action="/listy/sprawa-4/" class="" data-form-save="form-letter-4" enctype="multipart/form-data" method="post">
                                     
 
 
                                     
 
-<input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <script src="/static/tinymce/tinymce.min.js"></script>
-<script src="/static/django_tinymce/init_tinymce.js"></script> <div id="div_id_name" class="mb-3"> <label for="id_name" class="form-label requiredField">
-                Przedmiot<span class="asteriskField">*</span> </label> <input type="text" name="name" value="Odp: Sprawa zamknięta po udzieleniu odpowiedzi" maxlength="300" class="textinput form-control" required="" id="id_name"> </div> <div id="div_id_html" class="mb-3"> <label for="id_html" class="form-label">
+<input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <script src="/static/tinymce/tinymce.min.js"></script>
+<script src="/static/django_tinymce/init_tinymce.js"></script> <div class="mb-3" id="div_id_name"> <label class="form-label requiredField" for="id_name">
+                Przedmiot<span class="asteriskField">*</span> </label> <input class="textinput form-control" id="id_name" maxlength="300" name="name" required="" type="text" value="Odp: Sprawa zamknięta po udzieleniu odpowiedzi"> </div> <div class="mb-3" id="div_id_html"> <label class="form-label" for="id_html">
                 Mail sformatowany w HTML
-            </label> <textarea class="tinymce form-control tinymce" cols="80" data-mce-conf="{&quot;theme&quot;: &quot;silver&quot;, &quot;promotion&quot;: false, &quot;license_key&quot;: &quot;gpl&quot;, &quot;height&quot;: 500, &quot;menubar&quot;: true, &quot;lineheight&quot;: 1, &quot;plugins&quot;: &quot;advlist,autolink,lists,link,image,charmap,preview,anchor,searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,code,help,wordcount&quot;, &quot;toolbar&quot;: &quot;undo redo | formatselect | lineheight | fontsizeselect |bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | charmap | removeformat | help&quot;, &quot;language&quot;: &quot;pl&quot;, &quot;directionality&quot;: &quot;ltr&quot;, &quot;strict_loading_mode&quot;: 1, &quot;selector&quot;: &quot;#id_html&quot;}" id="id_html" name="html" rows="30" aria-hidden="true" style="display: none;">&lt;p&gt;&lt;br&gt;&lt;b&gt;Anna Administrator&lt;/b&gt;&lt;br&gt;&lt;/p&gt;</textarea><div role="application" class="tox tox-tinymce" aria-disabled="false"><!-- TINYMCE_WIDGET_NORMALIZED --></div> </div> <div class="mb-3"> <div class=""> <input type="submit" name="send" value="Odpowiedz wszystkim" class="btn btn-primary btn-primary" id="submit-id-send" title="Po wybraniu tej opcji Twoja wiadomość zostanie wysłana do klienta/klientki oraz członków zespołu prawnego, którzy widzą tę sprawę (administratorów i przypisane osoby z zespołu).
-Wybierz ją, jeśli Twoja wiadomość jest ostateczna i może trafić do klienta/klientki poradnictwa."> <input type="submit" name="project" value="Zapisz do przejrzenia" class="btn btn-primary btn-primary" id="submit-id-project" title="Po wybraniu tej opcji Twoja wiadomość zostanie zapisana w systemie jako projekt.
-Admin sprawdzi zapisany projekt i albo poprosi Cię o jego zmianę albo wyśle go do klienta/klientki."> <input type="submit" name="send_staff" value="Napisz do zespołu" class="btn btn-info" id="submit-id-send_staff" input-type="submit" title="Po wybraniu tej opcji Twoja wiadomość zostanie wysłana tylko do członków zespołu prawnego, którzy widzą tę sprawę (adminów i przypisane osoby z zespołu).
-Wybierz ją, jeśli chcesz coś ustalić, skonsultować w ramach zespołu."> </div> </div>
+            </label> <textarea aria-hidden="true" class="tinymce form-control tinymce" cols="80" data-mce-conf="{&quot;theme&quot;: &quot;silver&quot;, &quot;promotion&quot;: false, &quot;license_key&quot;: &quot;gpl&quot;, &quot;height&quot;: 500, &quot;menubar&quot;: true, &quot;lineheight&quot;: 1, &quot;plugins&quot;: &quot;advlist,autolink,lists,link,image,charmap,preview,anchor,searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,code,help,wordcount&quot;, &quot;toolbar&quot;: &quot;undo redo | formatselect | lineheight | fontsizeselect |bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | charmap | removeformat | help&quot;, &quot;language&quot;: &quot;pl&quot;, &quot;directionality&quot;: &quot;ltr&quot;, &quot;strict_loading_mode&quot;: 1, &quot;selector&quot;: &quot;#id_html&quot;}" id="id_html" name="html" rows="30" style="display: none;">&lt;p&gt;&lt;br&gt;&lt;b&gt;Anna Administrator&lt;/b&gt;&lt;br&gt;&lt;/p&gt;</textarea><div aria-disabled="false" class="tox tox-tinymce" role="application"><!-- TINYMCE_WIDGET_NORMALIZED --></div> </div> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-send" name="send" title="Po wybraniu tej opcji Twoja wiadomość zostanie wysłana do klienta/klientki oraz członków zespołu prawnego, którzy widzą tę sprawę (administratorów i przypisane osoby z zespołu).
+Wybierz ją, jeśli Twoja wiadomość jest ostateczna i może trafić do klienta/klientki poradnictwa." type="submit" value="Odpowiedz wszystkim"> <input class="btn btn-primary btn-primary" id="submit-id-project" name="project" title="Po wybraniu tej opcji Twoja wiadomość zostanie zapisana w systemie jako projekt.
+Admin sprawdzi zapisany projekt i albo poprosi Cię o jego zmianę albo wyśle go do klienta/klientki." type="submit" value="Zapisz do przejrzenia"> <input class="btn btn-info" id="submit-id-send_staff" input-type="submit" name="send_staff" title="Po wybraniu tej opcji Twoja wiadomość zostanie wysłana tylko do członków zespołu prawnego, którzy widzą tę sprawę (adminów i przypisane osoby z zespołu).
+Wybierz ją, jeśli chcesz coś ustalić, skonsultować w ramach zespołu." type="submit" value="Napisz do zespołu"> </div> </div>
 
                                     
                                     
@@ -751,11 +751,11 @@ Wybierz ją, jeśli chcesz coś ustalić, skonsultować w ramach zespołu."> </d
 
         
 
-<input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div id="div_id_file_field" class="mb-3"> <label for="id_file_field" class="form-label">
+<input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_file_field"> <label class="form-label" for="id_file_field">
                 Załączniki (wybierz lub upuść tutaj)
-            </label> <div> <input type="file" name="file_field" class="form-control" multiple="" id="id_file_field"> </div> </div>
+            </label> <div> <input class="form-control" id="id_file_field" multiple="" name="file_field" type="file"> </div> </div>
 
-        <button type="button" id="clear-files-button" class="clear-button">
+        <button class="clear-button" id="clear-files-button" type="button">
             &nbsp;&nbsp;Wyczyść pliki&nbsp;&nbsp;
         </button>
     </div>
@@ -764,7 +764,7 @@ Wybierz ją, jeśli chcesz coś ustalić, skonsultować w ramach zespołu."> </d
             <thead id="files-table-head">
                 <tr>
                     <th style="font-size: 14px;">
-                        <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Wybierz wiele plików za pomocą Ctrl lub Shift." data-bs-original-title="Wybierz wiele plików za pomocą Ctrl lub Shift.">
+                        <i aria-label="Wybierz wiele plików za pomocą Ctrl lub Shift." class="fa-regular fa-circle-question" data-bs-original-title="Wybierz wiele plików za pomocą Ctrl lub Shift." data-bs-toggle="tooltip" data-placement="bottom">
                         </i>
                         Wybrane pliki:
                     </th>
@@ -779,43 +779,43 @@ Wybierz ją, jeśli chcesz coś ustalić, skonsultować w ramach zespołu."> </d
                                 </form>
                             </div>
                         
-                            <div role="tabpanel" class="tab-pane " id="event">
+                            <div class="tab-pane " id="event" role="tabpanel">
                                 <h2>Wydarzenie</h2>
-                                <form method="post" class="form-horizontal" enctype="multipart/form-data" action="/wydarzenia/sprawa-4/" data-form-save="form-event-4">
+                                <form action="/wydarzenia/sprawa-4/" class="form-horizontal" data-form-save="form-event-4" enctype="multipart/form-data" method="post">
                                     
 
 
                                     
 
- <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div class="mb-3 row"> <div class="offset-lg-3 col-lg-9"> <div id="div_id_event-deadline" class="form-check"> <input type="checkbox" name="event-deadline" class="checkboxinput form-check-input" aria-describedby="id_event-deadline_helptext" id="id_event-deadline" checked=""> <label for="id_event-deadline" class="form-check-label">
+ <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <div class="mb-3 row"> <div class="offset-lg-3 col-lg-9"> <div class="form-check" id="div_id_event-deadline"> <input aria-describedby="id_event-deadline_helptext" checked="" class="checkboxinput form-check-input" id="id_event-deadline" name="event-deadline" type="checkbox"> <label class="form-check-label" for="id_event-deadline">
                     Termin
-                </label> <div id="id_event-deadline_helptext" class="form-text">Istotne wydarzenie, szczególnie podkreślone np. na liście spraw.</div> </div> </div> </div> <div class="mb-3 row"> <div class="offset-lg-3 col-lg-9"> <div id="div_id_event-completed" class="form-check"> <input type="checkbox" name="event-completed" class="checkboxinput form-check-input" aria-describedby="id_event-completed_helptext" id="id_event-completed"> <label for="id_event-completed" class="form-check-label">
+                </label> <div class="form-text" id="id_event-deadline_helptext">Istotne wydarzenie, szczególnie podkreślone np. na liście spraw.</div> </div> </div> </div> <div class="mb-3 row"> <div class="offset-lg-3 col-lg-9"> <div class="form-check" id="div_id_event-completed"> <input aria-describedby="id_event-completed_helptext" class="checkboxinput form-check-input" id="id_event-completed" name="event-completed" type="checkbox"> <label class="form-check-label" for="id_event-completed">
                     Zakończone
-                </label> <div id="id_event-completed_helptext" class="form-text">Wydarzenie zostało zakończone, nie będzie przypomnień.</div> </div> </div> </div> <div class="mb-3 row"> <div class="offset-lg-3 col-lg-9"> <div id="div_id_event-public" class="form-check"> <input type="checkbox" name="event-public" class="checkboxinput form-check-input" aria-describedby="id_event-public_helptext" id="id_event-public"> <label for="id_event-public" class="form-check-label">
+                </label> <div class="form-text" id="id_event-completed_helptext">Wydarzenie zostało zakończone, nie będzie przypomnień.</div> </div> </div> </div> <div class="mb-3 row"> <div class="offset-lg-3 col-lg-9"> <div class="form-check" id="div_id_event-public"> <input aria-describedby="id_event-public_helptext" class="checkboxinput form-check-input" id="id_event-public" name="event-public" type="checkbox"> <label class="form-check-label" for="id_event-public">
                     Publiczny
-                </label> <div id="id_event-public_helptext" class="form-text">Zdarzenie jest widoczne dla klientów (ext).</div> </div> </div> </div> <div id="div_id_event-time" class="mb-3 row"> <label for="id_event-time" class="col-form-label pt-0 col-lg-3 requiredField">
-                Czas<span class="asteriskField">*</span> </label> <div class="col-lg-9"> <input type="text" name="event-time" autocomplete="off" class="datetimeinput form-control" required="" id="id_event-time"> </div> </div> <div id="div_id_event-text" class="mb-3 row"> <label for="id_event-text" class="col-form-label pt-0 col-lg-3 requiredField">
-                Przedmiot<span class="asteriskField">*</span> </label> <div class="col-lg-9"> <textarea name="event-text" cols="40" rows="10" class="textarea form-control" required="" id="id_event-text"></textarea> </div> </div> <div class="mb-3 row"> <div class="aab col-lg-3"></div> <div class="col-lg-9"> <input type="submit" name="action" value="Zapisz" class="btn btn-primary btn-primary" id="submit-id-action-eventform"> </div> </div> </form>
+                </label> <div class="form-text" id="id_event-public_helptext">Zdarzenie jest widoczne dla klientów (ext).</div> </div> </div> </div> <div class="mb-3 row" id="div_id_event-time"> <label class="col-form-label pt-0 col-lg-3 requiredField" for="id_event-time">
+                Czas<span class="asteriskField">*</span> </label> <div class="col-lg-9"> <input autocomplete="off" class="datetimeinput form-control" id="id_event-time" name="event-time" required="" type="text"> </div> </div> <div class="mb-3 row" id="div_id_event-text"> <label class="col-form-label pt-0 col-lg-3 requiredField" for="id_event-text">
+                Przedmiot<span class="asteriskField">*</span> </label> <div class="col-lg-9"> <textarea class="textarea form-control" cols="40" id="id_event-text" name="event-text" required="" rows="10"></textarea> </div> </div> <div class="mb-3 row"> <div class="aab col-lg-3"></div> <div class="col-lg-9"> <input class="btn btn-primary btn-primary" id="submit-id-action-eventform" name="action" type="submit" value="Zapisz"> </div> </div> </form>
 
                                     
                                     
                                 
                             </div>
                         
-                            <div role="tabpanel" class="tab-pane " id="court">
+                            <div class="tab-pane " id="court" role="tabpanel">
                                 <h2>Sprawa sądowa</h2>
-                                <form method="post" class="" enctype="multipart/form-data" action="/sprawy_sadowe/~create-4" data-form-save="form-court-4">
+                                <form action="/sprawy_sadowe/~create-4" class="" data-form-save="form-court-4" enctype="multipart/form-data" method="post">
                                     
 
 
                                     
 
- <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div id="div_id_court" class="mb-3"> <label for="id_court" class="form-label">
+ <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_court"> <label class="form-label" for="id_court">
                 Sąd
-            </label> <select name="court" class="select form-select" id="id_court"> <option value="" selected="">---------</option> <option value="1">Wojewódzki Sąd Administracyjny w Warszawie</option>
+            </label> <select class="select form-select" id="id_court" name="court"> <option selected="" value="">---------</option> <option value="1">Wojewódzki Sąd Administracyjny w Warszawie</option>
 
-</select> </div> <div id="div_id_signature" class="mb-3"> <label for="id_signature" class="form-label requiredField">
-                Signature<span class="asteriskField">*</span> </label> <input type="text" name="signature" maxlength="50" class="textinput form-control" required="" aria-describedby="id_signature_helptext" id="id_signature"> <div id="id_signature_helptext" class="form-text">Sygnatura sądowa</div> </div> <div class="mb-3"> <div class=""> <input type="submit" name="action" value="Zapisz" class="btn btn-primary btn-primary" id="submit-id-action-courtcaseform"> </div> </div> </form>
+</select> </div> <div class="mb-3" id="div_id_signature"> <label class="form-label requiredField" for="id_signature">
+                Signature<span class="asteriskField">*</span> </label> <input aria-describedby="id_signature_helptext" class="textinput form-control" id="id_signature" maxlength="50" name="signature" required="" type="text"> <div class="form-text" id="id_signature_helptext">Sygnatura sądowa</div> </div> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-action-courtcaseform" name="action" type="submit" value="Zapisz"> </div> </div> </form>
 
                                     
                                     
@@ -862,7 +862,7 @@ Wybierz ją, jeśli chcesz coś ustalić, skonsultować w ramach zespołu."> </d
             <div class="footer">
                     <div class="footer-center col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
                         
-                            <img src="/static/images/baner.png" alt="" class="img-fluid"><br>
+                            <img alt="" class="img-fluid" src="/static/images/baner.png"><br>
                             Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                             finansowanego z Funduszy EOG.<br>
                         
@@ -884,8 +884,8 @@ Wybierz ją, jeśli chcesz coś ustalić, skonsultować w ramach zespołu."> </d
 
         
 
-<form action="/uwagi/submit" method="post"> <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div id="div_id_text" class="mb-3"> <label for="id_text" class="form-label requiredField">
-                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea name="text" cols="40" rows="10" class="textarea form-control" required="" aria-describedby="id_text_helptext" id="id_text"></textarea> <div id="id_text_helptext" class="form-text">Treść zgłoszona przez użytkownika</div> </div> <input type="hidden" name="url" value="http://localhost:8000/sprawy/sprawa-4/" id="id_url"> <div class="mb-3"> <div class=""> <input type="submit" name="feedback_action" value="Zgłoś usterkę administratorom poradni." class="btn btn-primary btn-primary" id="submit-id-feedback_action"> </div> </div> </form>
+<form action="/uwagi/submit" method="post"> <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_text"> <label class="form-label requiredField" for="id_text">
+                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea aria-describedby="id_text_helptext" class="textarea form-control" cols="40" id="id_text" name="text" required="" rows="10"></textarea> <div class="form-text" id="id_text_helptext">Treść zgłoszona przez użytkownika</div> </div> <input id="id_url" name="url" type="hidden" value="http://localhost:8000/sprawy/sprawa-4/"> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-feedback_action" name="feedback_action" type="submit" value="Zgłoś usterkę administratorom poradni."> </div> </div> </form>
 
     </div>
 </div>
@@ -896,12 +896,12 @@ Wybierz ją, jeśli chcesz coś ustalić, skonsultować w ramach zespołu."> </d
 
     
 <!-- Modal -->
-<div class="modal fade" id="navsearch_modal" tabindex="-1" role="dialog" aria-labelledby="navsearch_modal_label">
+<div aria-labelledby="navsearch_modal_label" class="modal fade" id="navsearch_modal" role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title" id="navsearch_modal_label">Wyszukaj</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body">
                 
@@ -909,7 +909,7 @@ Wybierz ją, jeśli chcesz coś ustalić, skonsultować w ramach zespołu."> </d
 	<form class="form" onsubmit="return false;">
 		<div class="form-group">
 			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
-			<input type="search" id="search" name="q" class="form-control navsearch__input" hx-get="/navsearch/" hx-trigger="input changed delay:300ms" hx-target=".navsearch__results" hx-swap="innerHTML">
+			<input class="form-control navsearch__input" hx-get="/navsearch/" hx-swap="innerHTML" hx-target=".navsearch__results" hx-trigger="input changed delay:300ms" id="search" name="q" type="search">
 		</div>
 	</form>
 	<div class="navsearch__results"></div>
@@ -1016,7 +1016,7 @@ Wybierz ją, jeśli chcesz coś ustalić, skonsultować w ramach zespołu."> </d
 
 
 <div id="attachment-text-modal-container"></div>
-<div id="htmx-spinner" class="htmx-indicator">
+<div class="htmx-indicator" id="htmx-spinner">
     Wczytywanie...
 </div>
 <script>

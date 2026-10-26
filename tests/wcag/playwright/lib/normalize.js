@@ -28,6 +28,17 @@ const RULES = [
     replacement: "[DATE]",
   },
   {
+    // crispy-forms' DateTimePicker inputs (e.g. advicer's "grant_on" field)
+    // default their value to today when unset, rendered DD.MM.YYYY - not
+    // covered by the ISO-ish rule above. Confirmed live: a baseline
+    // captured one day and re-diffed the next showed exactly this field
+    // changing (26.10.2026 -> 27.10.2026), nothing else - a real gap, not a
+    // flake, that would have recurred every midnight regardless.
+    label: "Polish dotted date (DD.MM.YYYY, e.g. advice-form's default grant_on value)",
+    re: /\b\d{2}\.\d{2}\.\d{4}\b/g,
+    replacement: "[DATE]",
+  },
+  {
     label: "Bare time (HH:MM[:SS])",
     re: /\b\d{2}:\d{2}(:\d{2})?\b/g,
     replacement: "[TIME]",
@@ -68,8 +79,38 @@ const RULES = [
   },
 ];
 
-function normalizeHtml(html) {
-  return RULES.reduce((acc, rule) => acc.replace(rule.re, rule.replacement), html);
+// Attribute order has no semantic meaning in HTML, but it isn't always
+// deterministic: DataTables' own ScrollX/ARIA pass (which adds
+// `role="columnheader"` to header cells missing one) races against this
+// app's own per-table `initComplete` handlers (e.g. events_datatables.js's
+// filter-row padding fix) that set other attributes on the same header
+// cells - whichever runs first wins that slot in the serialized attribute
+// order. Confirmed live: baseline_diff flagged
+// `<th style="padding: 0px;" role="columnheader">` vs
+// `<th role="columnheader" style="padding: 0px;">` on a DataTable filter
+// row between two captures of identical seed data - same two attributes,
+// same values, just swapped. Sorting every tag's attributes alphabetically
+// makes comparison insensitive to that race without hiding an actual
+// content change. Deliberately a regex pass (consistent with the RULES
+// above), not a full HTML parser - this is test-comparison tooling, not a
+// renderer, and a false "no tags matched" is far cheaper here than a new
+// parser dependency.
+const TAG_RE =
+  /<([a-zA-Z][a-zA-Z0-9:-]*)((?:\s+[^\s"'>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?)*)\s*(\/?)>/g;
+const ATTR_RE = /[^\s"'>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?/g;
+
+function sortTagAttributes(html) {
+  return html.replace(TAG_RE, (match, tagName, attrsStr, selfClose) => {
+    if (!attrsStr || !attrsStr.trim()) return match;
+    const attrs = Array.from(attrsStr.matchAll(ATTR_RE)).map((m) => m[0]);
+    attrs.sort((a, b) => a.localeCompare(b));
+    return `<${tagName} ${attrs.join(" ")}${selfClose ? " /" : ""}>`;
+  });
 }
 
-module.exports = { normalizeHtml, RULES };
+function normalizeHtml(html) {
+  const withRulesApplied = RULES.reduce((acc, rule) => acc.replace(rule.re, rule.replacement), html);
+  return sortTagAttributes(withRulesApplied);
+}
+
+module.exports = { normalizeHtml, RULES, sortTagAttributes };

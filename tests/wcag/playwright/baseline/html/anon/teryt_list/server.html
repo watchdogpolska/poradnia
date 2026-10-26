@@ -1,31 +1,31 @@
 
 <!DOCTYPE html>
-<html lang="pl" data-ui-mode="normal">
+<html data-ui-mode="normal" lang="pl">
 <head>
     <meta charset="utf-8">
     <title>Województwa - Poradnia</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Poradnia App">
-    <meta name="author" content="Sieć Obywatelska - Watchdog Polska">
-    <meta name="theme-color" content="#D82727">
-    <link rel="apple-touch-icon" sizes="160x128" href="/static/images/logo-160x128.png">
-    <link rel="shortcut icon" type="image/png" href="/static/images/favicon-32x26.png" sizes="32x32">
-    <link rel="manifest" href="/static/images/manifest.json">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-TileImage" content="/static/images/logo-160x128.png">
-    <meta property="og:image" content="/static/images/logo-czerwone-tlo-1200x600.jpg" />
-    <meta property="og:image:type" content="image/jpg" />
-    <meta property="og:image:width" content="1200" />
-    <meta property="og:image:height" content="600" />
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Poradnia App" name="description">
+    <meta content="Sieć Obywatelska - Watchdog Polska" name="author">
+    <meta content="#D82727" name="theme-color">
+    <link href="/static/images/logo-160x128.png" rel="apple-touch-icon" sizes="160x128">
+    <link href="/static/images/favicon-32x26.png" rel="shortcut icon" sizes="32x32" type="image/png">
+    <link href="/static/images/manifest.json" rel="manifest">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="/static/images/logo-160x128.png" name="msapplication-TileImage">
+    <meta content="/static/images/logo-czerwone-tlo-1200x600.jpg" property="og:image" />
+    <meta content="image/jpg" property="og:image:type" />
+    <meta content="1200" property="og:image:width" />
+    <meta content="600" property="og:image:height" />
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
   <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-    <link rel="stylesheet" href="/static/tasty_feedback/style.css">
+    <link href="/static/tasty_feedback/style.css" rel="stylesheet">
 
     
-        <link rel="stylesheet" href="/static/css/style.min.css">
+        <link href="/static/css/style.min.css" rel="stylesheet">
     
     
     
@@ -49,12 +49,12 @@
      still comfortably clear. z-index is needed because .navbar is
      position:fixed on mobile widths (see _layout.scss) and would
      otherwise render on top of this. -->
-<form method="post" action="/ui-mode/" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
-    <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
-    <input type="hidden" name="next" value="/teryt/">
+<form action="/ui-mode/" method="post" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
+    <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
+    <input name="next" type="hidden" value="/teryt/">
     
-        <input type="hidden" name="mode" value="wcag">
-        <button type="submit" class="btn btn-dark">Włącz wersję dostępną</button>
+        <input name="mode" type="hidden" value="wcag">
+        <button class="btn btn-dark" type="submit">Włącz wersję dostępną</button>
     
 </form>
 
@@ -152,7 +152,7 @@
 </style>
 
 <div id="alt-popup-backdrop"></div>
-<div id="alt-popup-container" role="dialog" aria-modal="true" aria-label="Wesprzyj naszą działalność" tabindex="-1">
+<div aria-label="Wesprzyj naszą działalność" aria-modal="true" id="alt-popup-container" role="dialog" tabindex="-1">
     
         <h1 class="h2">Wesprzyj naszą działalność!</h1>
         <h2 class="h4">Wesprzyj działanie naszej poradni dobrowolną darowizną,<br>
@@ -164,7 +164,7 @@
 
     <!-- Add any other content or buttons as needed -->
     <p>&nbsp;</p>
-    <!-- <input type="checkbox" id="altAlreadyDonated" name="altAlreadyDonated" value="donated">
+    <!-- <input id="altAlreadyDonated" name="altAlreadyDonated" type="checkbox" value="donated">
     <label for="altAlreadyDonated">Już przekazałem/am</label> -->
     <p>&nbsp;</p>
     <button class="btn btn-primary" id="alt-donate-button" onclick="closeAltPopup()">Zamknij</button>
@@ -188,7 +188,7 @@
                  with class="collapse" and no "show" - Bootstrap's own
                  CSS (.collapse:not(.show) { display: none; }) then hid
                  the entire page until reload. -->
-            <button type="button" class="navbar-toggler collapsed" data-bs-target="body" aria-expanded="false">
+            <button aria-expanded="false" class="navbar-toggler collapsed" data-bs-target="body" type="button">
                 <span class="visually-hidden">Toggle navigation</span>
                 <i class="navbar-burger"></i>
             </button>
@@ -241,8 +241,7 @@
 <div class="block-list">
     <div class="block-list-header">Sprawy</div>
     <ul class="block-list-list">
-        <li class="block-list-item"><a href="/listy/"><i
-                class="fas fa-pencil"></i> Nowa sprawa</a></li>
+        <li class="block-list-item"><a href="/listy/"><i class="fas fa-pencil"></i> Nowa sprawa</a></li>
         
         
         <li class="block-list-item">
@@ -261,7 +260,7 @@
     
         <div class="col-12">
             <p class="text-center">
-                <img src="/static/images/baner.png" alt="" class="img-fluid">
+                <img alt="" class="img-fluid" src="/static/images/baner.png">
                 Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                 finansowanego z Funduszy EOG.
             </p>
@@ -311,7 +310,7 @@
             <div class="footer">
                     <div class="footer-center col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
                         
-                            <img src="/static/images/baner.png" alt="" class="img-fluid"><br>
+                            <img alt="" class="img-fluid" src="/static/images/baner.png"><br>
                             Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                             finansowanego z Funduszy EOG.<br>
                         
@@ -344,7 +343,7 @@
 
 
 <div id="attachment-text-modal-container"></div>
-<div id="htmx-spinner" class="htmx-indicator">
+<div class="htmx-indicator" id="htmx-spinner">
     Wczytywanie...
 </div>
 <script>

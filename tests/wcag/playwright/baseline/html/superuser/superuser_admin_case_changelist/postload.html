@@ -1,17 +1,17 @@
-<!DOCTYPE html><html lang="pl" dir="ltr" data-theme="auto"><head>
+<!DOCTYPE html><html data-theme="auto" dir="ltr" lang="pl"><head>
 <title>Wybierz Sprawa do obejrzenia | Administracja stroną Django</title>
-<link rel="stylesheet" href="/static/admin/css/base.css">
+<link href="/static/admin/css/base.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/static/admin/css/dark_mode.css">
+  <link href="/static/admin/css/dark_mode.css" rel="stylesheet">
   <script src="/static/admin/js/theme.js"></script>
 
 
-  <link rel="stylesheet" href="/static/admin/css/nav_sidebar.css">
-  <script src="/static/admin/js/nav_sidebar.js" defer=""></script>
+  <link href="/static/admin/css/nav_sidebar.css" rel="stylesheet">
+  <script defer="" src="/static/admin/js/nav_sidebar.js"></script>
 
 
   
-  <link rel="stylesheet" href="/static/admin/css/changelists.css">
+  <link href="/static/admin/css/changelists.css" rel="stylesheet">
   
   
   
@@ -28,14 +28,14 @@
 <script src="/static/admin/js/urlify.js"></script>
 <script src="/static/admin/js/prepopulate.js"></script>
 <script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
-<script src="/static/admin/js/filters.js" defer=""></script>
+<script defer="" src="/static/admin/js/filters.js"></script>
 
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/admin/css/responsive.css">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="/static/admin/css/responsive.css" rel="stylesheet">
     
 
-<meta name="robots" content="NONE,NOARCHIVE">
+<meta content="NONE,NOARCHIVE" name="robots">
 <style type="text/css">
   *, *::before, *::after {
     animation-duration: 0s !important;
@@ -48,7 +48,7 @@
 </style></head>
 
 <body class=" app-cases model-case change-list" data-admin-utc-offset="3600">
-<a href="#content-start" class="skip-to-content-link">Przejdź do głównej treści</a>
+<a class="skip-to-content-link" href="#content-start">Przejdź do głównej treści</a>
 <!-- Container -->
 <div id="container">
 
@@ -80,8 +80,8 @@
                 
                 <a href="/admin/password_change/">Zmień hasło</a> /
                 
-                <form id="logout-form" method="post" action="/admin/logout/">
-                    <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
+                <form action="/admin/logout/" id="logout-form" method="post">
+                    <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
                     <button type="submit">Wyloguj się</button>
                 </form>
                 
@@ -125,9 +125,9 @@
       
         
           
-<button class="sticky toggle-nav-sidebar" id="toggle-nav-sidebar" aria-label="Przełącz nawigację"></button>
-<nav class="sticky" id="nav-sidebar" aria-label="Pasek boczny" aria-expanded="true">
-  <input type="search" id="nav-filter" placeholder="Zacznij pisać, aby odfiltrować…" aria-label="Filtruj elementy nawigacji">
+<button aria-label="Przełącz nawigację" class="sticky toggle-nav-sidebar" id="toggle-nav-sidebar"></button>
+<nav aria-expanded="true" aria-label="Pasek boczny" class="sticky" id="nav-sidebar">
+  <input aria-label="Filtruj elementy nawigacji" id="nav-filter" placeholder="Zacznij pisać, aby odfiltrować…" type="search">
   
 
 
@@ -135,7 +135,7 @@
     <div class="app-admin module">
       <table>
         <caption>
-          <a href="/admin/admin/" class="section" title="Modele w aplikacji Administracja">Administracja</a>
+          <a class="section" href="/admin/admin/" title="Modele w aplikacji Administracja">Administracja</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -147,7 +147,7 @@
         
           
             <tbody><tr class="model-logentry">
-              <th scope="row" id="admin-logentry">
+              <th id="admin-logentry" scope="row">
                 
                   <a href="/admin/admin/logentry/">Logi</a>
                 
@@ -167,7 +167,7 @@
     <div class="app-teryt_tree module">
       <table>
         <caption>
-          <a href="/admin/teryt_tree/" class="section" title="Modele w aplikacji Administrative division">Administrative division</a>
+          <a class="section" href="/admin/teryt_tree/" title="Modele w aplikacji Administrative division">Administrative division</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -179,7 +179,7 @@
         
           
             <tbody><tr class="model-jednostkaadministracyjna">
-              <th scope="row" id="teryt_tree-jednostkaadministracyjna">
+              <th id="teryt_tree-jednostkaadministracyjna" scope="row">
                 
                   <a href="/admin/teryt_tree/jednostkaadministracyjna/">Units of administrative division</a>
                 
@@ -199,7 +199,7 @@
     <div class="app-ai_assistant module">
       <table>
         <caption>
-          <a href="/admin/ai_assistant/" class="section" title="Modele w aplikacji Ai_Assistant">Ai_Assistant</a>
+          <a class="section" href="/admin/ai_assistant/" title="Modele w aplikacji Ai_Assistant">Ai_Assistant</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -211,7 +211,7 @@
         
           
             <tbody><tr class="model-n8narticlessearchrequest">
-              <th scope="row" id="ai_assistant-n8narticlessearchrequest">
+              <th id="ai_assistant-n8narticlessearchrequest" scope="row">
                 
                   <a href="/admin/ai_assistant/n8narticlessearchrequest/">N8n articles search requests</a>
                 
@@ -227,7 +227,7 @@
         
           
             <tr class="model-n8ncasetagsrequest">
-              <th scope="row" id="ai_assistant-n8ncasetagsrequest">
+              <th id="ai_assistant-n8ncasetagsrequest" scope="row">
                 
                   <a href="/admin/ai_assistant/n8ncasetagsrequest/">N8n case tags requests</a>
                 
@@ -247,7 +247,7 @@
     <div class="app-celery_monitor module">
       <table>
         <caption>
-          <a href="/admin/celery_monitor/" class="section" title="Modele w aplikacji Celery / RabbitMQ Monitoring">Celery / RabbitMQ Monitoring</a>
+          <a class="section" href="/admin/celery_monitor/" title="Modele w aplikacji Celery / RabbitMQ Monitoring">Celery / RabbitMQ Monitoring</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -259,7 +259,7 @@
         
           
             <tbody><tr class="model-monitoringalert">
-              <th scope="row" id="celery_monitor-monitoringalert">
+              <th id="celery_monitor-monitoringalert" scope="row">
                 
                   <a href="/admin/celery_monitor/monitoringalert/">Monitoring alerts</a>
                 
@@ -275,7 +275,7 @@
         
           
             <tr class="model-queuesnapshot">
-              <th scope="row" id="celery_monitor-queuesnapshot">
+              <th id="celery_monitor-queuesnapshot" scope="row">
                 
                   <a href="/admin/celery_monitor/queuesnapshot/">Queue snapshots</a>
                 
@@ -291,7 +291,7 @@
         
           
             <tr class="model-systemhealthcheck">
-              <th scope="row" id="celery_monitor-systemhealthcheck">
+              <th id="celery_monitor-systemhealthcheck" scope="row">
                 
                   <a href="/admin/celery_monitor/systemhealthcheck/">System health checks</a>
                 
@@ -307,7 +307,7 @@
         
           
             <tr class="model-taskslasnapshot">
-              <th scope="row" id="celery_monitor-taskslasnapshot">
+              <th id="celery_monitor-taskslasnapshot" scope="row">
                 
                   <a href="/admin/celery_monitor/taskslasnapshot/">Task sla snapshots</a>
                 
@@ -323,7 +323,7 @@
         
           
             <tr class="model-workerheartbeat">
-              <th scope="row" id="celery_monitor-workerheartbeat">
+              <th id="celery_monitor-workerheartbeat" scope="row">
                 
                   <a href="/admin/celery_monitor/workerheartbeat/">Worker heartbeats</a>
                 
@@ -343,7 +343,7 @@
     <div class="app-django_celery_results module">
       <table>
         <caption>
-          <a href="/admin/django_celery_results/" class="section" title="Modele w aplikacji Celery Results">Celery Results</a>
+          <a class="section" href="/admin/django_celery_results/" title="Modele w aplikacji Celery Results">Celery Results</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -355,14 +355,14 @@
         
           
             <tbody><tr class="model-groupresult">
-              <th scope="row" id="django_celery_results-groupresult">
+              <th id="django_celery_results-groupresult" scope="row">
                 
                   <a href="/admin/django_celery_results/groupresult/">Group results</a>
                 
               </th>
 
               
-                <td><a href="/admin/django_celery_results/groupresult/add/" class="addlink" aria-describedby="django_celery_results-groupresult">Dodaj</a></td>
+                <td><a aria-describedby="django_celery_results-groupresult" class="addlink" href="/admin/django_celery_results/groupresult/add/">Dodaj</a></td>
               
 
               
@@ -371,7 +371,7 @@
         
           
             <tr class="model-taskresult">
-              <th scope="row" id="django_celery_results-taskresult">
+              <th id="django_celery_results-taskresult" scope="row">
                 
                   <a href="/admin/django_celery_results/taskresult/">Task results</a>
                 
@@ -391,7 +391,7 @@
     <div class="app-judgements module">
       <table>
         <caption>
-          <a href="/admin/judgements/" class="section" title="Modele w aplikacji Judgements">Judgements</a>
+          <a class="section" href="/admin/judgements/" title="Modele w aplikacji Judgements">Judgements</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -403,14 +403,14 @@
         
           
             <tbody><tr class="model-courtsession">
-              <th scope="row" id="judgements-courtsession">
+              <th id="judgements-courtsession" scope="row">
                 
                   <a href="/admin/judgements/courtsession/">Rozprawy sądowe</a>
                 
               </th>
 
               
-                <td><a href="/admin/judgements/courtsession/add/" class="addlink" aria-describedby="judgements-courtsession">Dodaj</a></td>
+                <td><a aria-describedby="judgements-courtsession" class="addlink" href="/admin/judgements/courtsession/add/">Dodaj</a></td>
               
 
               
@@ -419,14 +419,14 @@
         
           
             <tr class="model-courtcase">
-              <th scope="row" id="judgements-courtcase">
+              <th id="judgements-courtcase" scope="row">
                 
                   <a href="/admin/judgements/courtcase/">Sprawy sądowe</a>
                 
               </th>
 
               
-                <td><a href="/admin/judgements/courtcase/add/" class="addlink" aria-describedby="judgements-courtcase">Dodaj</a></td>
+                <td><a aria-describedby="judgements-courtcase" class="addlink" href="/admin/judgements/courtcase/add/">Dodaj</a></td>
               
 
               
@@ -435,14 +435,14 @@
         
           
             <tr class="model-court">
-              <th scope="row" id="judgements-court">
+              <th id="judgements-court" scope="row">
                 
                   <a href="/admin/judgements/court/">Sądy</a>
                 
               </th>
 
               
-                <td><a href="/admin/judgements/court/add/" class="addlink" aria-describedby="judgements-court">Dodaj</a></td>
+                <td><a aria-describedby="judgements-court" class="addlink" href="/admin/judgements/court/add/">Dodaj</a></td>
               
 
               
@@ -455,7 +455,7 @@
     <div class="app-keys module">
       <table>
         <caption>
-          <a href="/admin/keys/" class="section" title="Modele w aplikacji Klucze API">Klucze API</a>
+          <a class="section" href="/admin/keys/" title="Modele w aplikacji Klucze API">Klucze API</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -467,7 +467,7 @@
         
           
             <tbody><tr class="model-key">
-              <th scope="row" id="keys-key">
+              <th id="keys-key" scope="row">
                 
                   <a href="/admin/keys/key/">Klucze dostępu</a>
                 
@@ -487,7 +487,7 @@
     <div class="app-account module">
       <table>
         <caption>
-          <a href="/admin/account/" class="section" title="Modele w aplikacji Konta">Konta</a>
+          <a class="section" href="/admin/account/" title="Modele w aplikacji Konta">Konta</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -499,14 +499,14 @@
         
           
             <tbody><tr class="model-emailaddress">
-              <th scope="row" id="account-emailaddress">
+              <th id="account-emailaddress" scope="row">
                 
                   <a href="/admin/account/emailaddress/">Adresy e-mail</a>
                 
               </th>
 
               
-                <td><a href="/admin/account/emailaddress/add/" class="addlink" aria-describedby="account-emailaddress">Dodaj</a></td>
+                <td><a aria-describedby="account-emailaddress" class="addlink" href="/admin/account/emailaddress/add/">Dodaj</a></td>
               
 
               
@@ -519,7 +519,7 @@
     <div class="app-socialaccount module">
       <table>
         <caption>
-          <a href="/admin/socialaccount/" class="section" title="Modele w aplikacji Konta społecznościowe">Konta społecznościowe</a>
+          <a class="section" href="/admin/socialaccount/" title="Modele w aplikacji Konta społecznościowe">Konta społecznościowe</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -531,14 +531,14 @@
         
           
             <tbody><tr class="model-socialapp">
-              <th scope="row" id="socialaccount-socialapp">
+              <th id="socialaccount-socialapp" scope="row">
                 
                   <a href="/admin/socialaccount/socialapp/">Aplikacje społecznościowe</a>
                 
               </th>
 
               
-                <td><a href="/admin/socialaccount/socialapp/add/" class="addlink" aria-describedby="socialaccount-socialapp">Dodaj</a></td>
+                <td><a aria-describedby="socialaccount-socialapp" class="addlink" href="/admin/socialaccount/socialapp/add/">Dodaj</a></td>
               
 
               
@@ -547,7 +547,7 @@
         
           
             <tr class="model-socialaccount">
-              <th scope="row" id="socialaccount-socialaccount">
+              <th id="socialaccount-socialaccount" scope="row">
                 
                   <a href="/admin/socialaccount/socialaccount/">Konta społecznościowe</a>
                 
@@ -563,7 +563,7 @@
         
           
             <tr class="model-socialtoken">
-              <th scope="row" id="socialaccount-socialtoken">
+              <th id="socialaccount-socialtoken" scope="row">
                 
                   <a href="/admin/socialaccount/socialtoken/">Tokeny aplikacji społecznościowych</a>
                 
@@ -583,7 +583,7 @@
     <div class="app-letters module">
       <table>
         <caption>
-          <a href="/admin/letters/" class="section" title="Modele w aplikacji Korespondencja">Korespondencja</a>
+          <a class="section" href="/admin/letters/" title="Modele w aplikacji Korespondencja">Korespondencja</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -595,7 +595,7 @@
         
           
             <tbody><tr class="model-letter">
-              <th scope="row" id="letters-letter">
+              <th id="letters-letter" scope="row">
                 
                   <a href="/admin/letters/letter/">Korespondencja</a>
                 
@@ -611,7 +611,7 @@
         
           
             <tr class="model-attachment">
-              <th scope="row" id="letters-attachment">
+              <th id="letters-attachment" scope="row">
                 
                   <a href="/admin/letters/attachment/">Załączniki</a>
                 
@@ -631,7 +631,7 @@
     <div class="app-mfa module">
       <table>
         <caption>
-          <a href="/admin/mfa/" class="section" title="Modele w aplikacji MFA">MFA</a>
+          <a class="section" href="/admin/mfa/" title="Modele w aplikacji MFA">MFA</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -643,7 +643,7 @@
         
           
             <tbody><tr class="model-authenticator">
-              <th scope="row" id="mfa-authenticator">
+              <th id="mfa-authenticator" scope="row">
                 
                   <a href="/admin/mfa/authenticator/">Authenticators</a>
                 
@@ -663,7 +663,7 @@
     <div class="app-django_celery_beat module">
       <table>
         <caption>
-          <a href="/admin/django_celery_beat/" class="section" title="Modele w aplikacji Periodic Tasks">Periodic Tasks</a>
+          <a class="section" href="/admin/django_celery_beat/" title="Modele w aplikacji Periodic Tasks">Periodic Tasks</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -675,14 +675,14 @@
         
           
             <tbody><tr class="model-clockedschedule">
-              <th scope="row" id="django_celery_beat-clockedschedule">
+              <th id="django_celery_beat-clockedschedule" scope="row">
                 
                   <a href="/admin/django_celery_beat/clockedschedule/">Clocked</a>
                 
               </th>
 
               
-                <td><a href="/admin/django_celery_beat/clockedschedule/add/" class="addlink" aria-describedby="django_celery_beat-clockedschedule">Dodaj</a></td>
+                <td><a aria-describedby="django_celery_beat-clockedschedule" class="addlink" href="/admin/django_celery_beat/clockedschedule/add/">Dodaj</a></td>
               
 
               
@@ -691,14 +691,14 @@
         
           
             <tr class="model-crontabschedule">
-              <th scope="row" id="django_celery_beat-crontabschedule">
+              <th id="django_celery_beat-crontabschedule" scope="row">
                 
                   <a href="/admin/django_celery_beat/crontabschedule/">Crontabs</a>
                 
               </th>
 
               
-                <td><a href="/admin/django_celery_beat/crontabschedule/add/" class="addlink" aria-describedby="django_celery_beat-crontabschedule">Dodaj</a></td>
+                <td><a aria-describedby="django_celery_beat-crontabschedule" class="addlink" href="/admin/django_celery_beat/crontabschedule/add/">Dodaj</a></td>
               
 
               
@@ -707,14 +707,14 @@
         
           
             <tr class="model-intervalschedule">
-              <th scope="row" id="django_celery_beat-intervalschedule">
+              <th id="django_celery_beat-intervalschedule" scope="row">
                 
                   <a href="/admin/django_celery_beat/intervalschedule/">Intervals</a>
                 
               </th>
 
               
-                <td><a href="/admin/django_celery_beat/intervalschedule/add/" class="addlink" aria-describedby="django_celery_beat-intervalschedule">Dodaj</a></td>
+                <td><a aria-describedby="django_celery_beat-intervalschedule" class="addlink" href="/admin/django_celery_beat/intervalschedule/add/">Dodaj</a></td>
               
 
               
@@ -723,14 +723,14 @@
         
           
             <tr class="model-periodictask">
-              <th scope="row" id="django_celery_beat-periodictask">
+              <th id="django_celery_beat-periodictask" scope="row">
                 
                   <a href="/admin/django_celery_beat/periodictask/">Periodic tasks</a>
                 
               </th>
 
               
-                <td><a href="/admin/django_celery_beat/periodictask/add/" class="addlink" aria-describedby="django_celery_beat-periodictask">Dodaj</a></td>
+                <td><a aria-describedby="django_celery_beat-periodictask" class="addlink" href="/admin/django_celery_beat/periodictask/add/">Dodaj</a></td>
               
 
               
@@ -739,14 +739,14 @@
         
           
             <tr class="model-solarschedule">
-              <th scope="row" id="django_celery_beat-solarschedule">
+              <th id="django_celery_beat-solarschedule" scope="row">
                 
                   <a href="/admin/django_celery_beat/solarschedule/">Solar events</a>
                 
               </th>
 
               
-                <td><a href="/admin/django_celery_beat/solarschedule/add/" class="addlink" aria-describedby="django_celery_beat-solarschedule">Dodaj</a></td>
+                <td><a aria-describedby="django_celery_beat-solarschedule" class="addlink" href="/admin/django_celery_beat/solarschedule/add/">Dodaj</a></td>
               
 
               
@@ -759,7 +759,7 @@
     <div class="app-advicer module">
       <table>
         <caption>
-          <a href="/admin/advicer/" class="section" title="Modele w aplikacji Rejestr tagów spraw">Rejestr tagów spraw</a>
+          <a class="section" href="/admin/advicer/" title="Modele w aplikacji Rejestr tagów spraw">Rejestr tagów spraw</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -771,7 +771,7 @@
         
           
             <tbody><tr class="model-advice">
-              <th scope="row" id="advicer-advice">
+              <th id="advicer-advice" scope="row">
                 
                   <a href="/admin/advicer/advice/">Tagi</a>
                 
@@ -787,14 +787,14 @@
         
           
             <tr class="model-scope">
-              <th scope="row" id="advicer-scope">
+              <th id="advicer-scope" scope="row">
                 
                   <a href="/admin/advicer/scope/">Zakresy poradnictwa</a>
                 
               </th>
 
               
-                <td><a href="/admin/advicer/scope/add/" class="addlink" aria-describedby="advicer-scope">Dodaj</a></td>
+                <td><a aria-describedby="advicer-scope" class="addlink" href="/admin/advicer/scope/add/">Dodaj</a></td>
               
 
               
@@ -803,14 +803,14 @@
         
           
             <tr class="model-issue">
-              <th scope="row" id="advicer-issue">
+              <th id="advicer-issue" scope="row">
                 
                   <a href="/admin/advicer/issue/">Zagadnienia</a>
                 
               </th>
 
               
-                <td><a href="/admin/advicer/issue/add/" class="addlink" aria-describedby="advicer-issue">Dodaj</a></td>
+                <td><a aria-describedby="advicer-issue" class="addlink" href="/admin/advicer/issue/add/">Dodaj</a></td>
               
 
               
@@ -819,14 +819,14 @@
         
           
             <tr class="model-area">
-              <th scope="row" id="advicer-area">
+              <th id="advicer-area" scope="row">
                 
                   <a href="/admin/advicer/area/">Obszary</a>
                 
               </th>
 
               
-                <td><a href="/admin/advicer/area/add/" class="addlink" aria-describedby="advicer-area">Dodaj</a></td>
+                <td><a aria-describedby="advicer-area" class="addlink" href="/admin/advicer/area/add/">Dodaj</a></td>
               
 
               
@@ -835,14 +835,14 @@
         
           
             <tr class="model-personkind">
-              <th scope="row" id="advicer-personkind">
+              <th id="advicer-personkind" scope="row">
                 
                   <a href="/admin/advicer/personkind/">Rodzaj osób, które się zgłaszają o poradę:</a>
                 
               </th>
 
               
-                <td><a href="/admin/advicer/personkind/add/" class="addlink" aria-describedby="advicer-personkind">Dodaj</a></td>
+                <td><a aria-describedby="advicer-personkind" class="addlink" href="/admin/advicer/personkind/add/">Dodaj</a></td>
               
 
               
@@ -851,14 +851,14 @@
         
           
             <tr class="model-institutionkind">
-              <th scope="row" id="advicer-institutionkind">
+              <th id="advicer-institutionkind" scope="row">
                 
                   <a href="/admin/advicer/institutionkind/">Rodzaje instytucji</a>
                 
               </th>
 
               
-                <td><a href="/admin/advicer/institutionkind/add/" class="addlink" aria-describedby="advicer-institutionkind">Dodaj</a></td>
+                <td><a aria-describedby="advicer-institutionkind" class="addlink" href="/admin/advicer/institutionkind/add/">Dodaj</a></td>
               
 
               
@@ -871,7 +871,7 @@
     <div class="app-cases module current-app">
       <table>
         <caption>
-          <a href="/admin/cases/" class="section" title="Modele w aplikacji Sprawy">Sprawy</a>
+          <a class="section" href="/admin/cases/" title="Modele w aplikacji Sprawy">Sprawy</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -883,14 +883,14 @@
         
           
             <tbody><tr class="model-permissiongroup">
-              <th scope="row" id="cases-permissiongroup">
+              <th id="cases-permissiongroup" scope="row">
                 
                   <a href="/admin/cases/permissiongroup/">Permission groups</a>
                 
               </th>
 
               
-                <td><a href="/admin/cases/permissiongroup/add/" class="addlink" aria-describedby="cases-permissiongroup">Dodaj</a></td>
+                <td><a aria-describedby="cases-permissiongroup" class="addlink" href="/admin/cases/permissiongroup/add/">Dodaj</a></td>
               
 
               
@@ -899,9 +899,9 @@
         
           
             <tr class="model-case current-model">
-              <th scope="row" id="cases-case">
+              <th id="cases-case" scope="row">
                 
-                  <a href="/admin/cases/case/" aria-current="page">Sprawy</a>
+                  <a aria-current="page" href="/admin/cases/case/">Sprawy</a>
                 
               </th>
 
@@ -915,7 +915,7 @@
         
           
             <tr class="model-deletecaseproxy">
-              <th scope="row" id="cases-deletecaseproxy">
+              <th id="cases-deletecaseproxy" scope="row">
                 
                   <a href="/admin/cases/deletecaseproxy/">Sprawy do usunięcia</a>
                 
@@ -935,7 +935,7 @@
     <div class="app-sites module">
       <table>
         <caption>
-          <a href="/admin/sites/" class="section" title="Modele w aplikacji Strony">Strony</a>
+          <a class="section" href="/admin/sites/" title="Modele w aplikacji Strony">Strony</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -947,14 +947,14 @@
         
           
             <tbody><tr class="model-site">
-              <th scope="row" id="sites-site">
+              <th id="sites-site" scope="row">
                 
                   <a href="/admin/sites/site/">Strony</a>
                 
               </th>
 
               
-                <td><a href="/admin/sites/site/add/" class="addlink" aria-describedby="sites-site">Dodaj</a></td>
+                <td><a aria-describedby="sites-site" class="addlink" href="/admin/sites/site/add/">Dodaj</a></td>
               
 
               
@@ -967,7 +967,7 @@
     <div class="app-tinycontent module">
       <table>
         <caption>
-          <a href="/admin/tinycontent/" class="section" title="Modele w aplikacji Tinycontent">Tinycontent</a>
+          <a class="section" href="/admin/tinycontent/" title="Modele w aplikacji Tinycontent">Tinycontent</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -979,7 +979,7 @@
         
           
             <tbody><tr class="model-tinycontent">
-              <th scope="row" id="tinycontent-tinycontent">
+              <th id="tinycontent-tinycontent" scope="row">
                 
                   <a href="/admin/tinycontent/tinycontent/">Content blocks</a>
                 
@@ -995,14 +995,14 @@
         
           
             <tr class="model-tinycontentfileupload">
-              <th scope="row" id="tinycontent-tinycontentfileupload">
+              <th id="tinycontent-tinycontentfileupload" scope="row">
                 
                   <a href="/admin/tinycontent/tinycontentfileupload/">File uploads</a>
                 
               </th>
 
               
-                <td><a href="/admin/tinycontent/tinycontentfileupload/add/" class="addlink" aria-describedby="tinycontent-tinycontentfileupload">Dodaj</a></td>
+                <td><a aria-describedby="tinycontent-tinycontentfileupload" class="addlink" href="/admin/tinycontent/tinycontentfileupload/add/">Dodaj</a></td>
               
 
               
@@ -1015,7 +1015,7 @@
     <div class="app-tasty_feedback module">
       <table>
         <caption>
-          <a href="/admin/tasty_feedback/" class="section" title="Modele w aplikacji Uwagi">Uwagi</a>
+          <a class="section" href="/admin/tasty_feedback/" title="Modele w aplikacji Uwagi">Uwagi</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -1027,14 +1027,14 @@
         
           
             <tbody><tr class="model-feedback">
-              <th scope="row" id="tasty_feedback-feedback">
+              <th id="tasty_feedback-feedback" scope="row">
                 
                   <a href="/admin/tasty_feedback/feedback/">Uwagi</a>
                 
               </th>
 
               
-                <td><a href="/admin/tasty_feedback/feedback/add/" class="addlink" aria-describedby="tasty_feedback-feedback">Dodaj</a></td>
+                <td><a aria-describedby="tasty_feedback-feedback" class="addlink" href="/admin/tasty_feedback/feedback/add/">Dodaj</a></td>
               
 
               
@@ -1047,7 +1047,7 @@
     <div class="app-auth module">
       <table>
         <caption>
-          <a href="/admin/auth/" class="section" title="Modele w aplikacji Uwierzytelnienie i autoryzacja">Uwierzytelnienie i autoryzacja</a>
+          <a class="section" href="/admin/auth/" title="Modele w aplikacji Uwierzytelnienie i autoryzacja">Uwierzytelnienie i autoryzacja</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -1059,14 +1059,14 @@
         
           
             <tbody><tr class="model-group">
-              <th scope="row" id="auth-group">
+              <th id="auth-group" scope="row">
                 
                   <a href="/admin/auth/group/">Grupy</a>
                 
               </th>
 
               
-                <td><a href="/admin/auth/group/add/" class="addlink" aria-describedby="auth-group">Dodaj</a></td>
+                <td><a aria-describedby="auth-group" class="addlink" href="/admin/auth/group/add/">Dodaj</a></td>
               
 
               
@@ -1079,7 +1079,7 @@
     <div class="app-users module">
       <table>
         <caption>
-          <a href="/admin/users/" class="section" title="Modele w aplikacji Użytkownicy">Użytkownicy</a>
+          <a class="section" href="/admin/users/" title="Modele w aplikacji Użytkownicy">Użytkownicy</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -1091,14 +1091,14 @@
         
           
             <tbody><tr class="model-profile">
-              <th scope="row" id="users-profile">
+              <th id="users-profile" scope="row">
                 
                   <a href="/admin/users/profile/">Profile</a>
                 
               </th>
 
               
-                <td><a href="/admin/users/profile/add/" class="addlink" aria-describedby="users-profile">Dodaj</a></td>
+                <td><a aria-describedby="users-profile" class="addlink" href="/admin/users/profile/add/">Dodaj</a></td>
               
 
               
@@ -1107,14 +1107,14 @@
         
           
             <tr class="model-user">
-              <th scope="row" id="users-user">
+              <th id="users-user" scope="row">
                 
                   <a href="/admin/users/user/">Użytkownicy</a>
                 
               </th>
 
               
-                <td><a href="/admin/users/user/add/" class="addlink" aria-describedby="users-user">Dodaj</a></td>
+                <td><a aria-describedby="users-user" class="addlink" href="/admin/users/user/add/">Dodaj</a></td>
               
 
               
@@ -1127,7 +1127,7 @@
     <div class="app-records module">
       <table>
         <caption>
-          <a href="/admin/records/" class="section" title="Modele w aplikacji Wpis">Wpis</a>
+          <a class="section" href="/admin/records/" title="Modele w aplikacji Wpis">Wpis</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -1139,14 +1139,14 @@
         
           
             <tbody><tr class="model-record">
-              <th scope="row" id="records-record">
+              <th id="records-record" scope="row">
                 
                   <a href="/admin/records/record/">Wpis</a>
                 
               </th>
 
               
-                <td><a href="/admin/records/record/add/" class="addlink" aria-describedby="records-record">Dodaj</a></td>
+                <td><a aria-describedby="records-record" class="addlink" href="/admin/records/record/add/">Dodaj</a></td>
               
 
               
@@ -1159,7 +1159,7 @@
     <div class="app-events module">
       <table>
         <caption>
-          <a href="/admin/events/" class="section" title="Modele w aplikacji Wydarzenia">Wydarzenia</a>
+          <a class="section" href="/admin/events/" title="Modele w aplikacji Wydarzenia">Wydarzenia</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -1171,14 +1171,14 @@
         
           
             <tbody><tr class="model-event">
-              <th scope="row" id="events-event">
+              <th id="events-event" scope="row">
                 
                   <a href="/admin/events/event/">Wydarzenia</a>
                 
               </th>
 
               
-                <td><a href="/admin/events/event/add/" class="addlink" aria-describedby="events-event">Dodaj</a></td>
+                <td><a aria-describedby="events-event" class="addlink" href="/admin/events/event/add/">Dodaj</a></td>
               
 
               
@@ -1194,12 +1194,12 @@
 
         
       
-      <main id="content-start" class="content" tabindex="-1">
+      <main class="content" id="content-start" tabindex="-1">
         
           
         
         <!-- Content -->
-        <div id="content" class="">
+        <div class="" id="content">
           
           <h1>Wybierz Sprawa do obejrzenia</h1>
           
@@ -1224,8 +1224,8 @@
 
 <div id="toolbar"><form id="changelist-search" method="get" role="search">
 <div><!-- DIV needed for valid HTML -->
-<label for="searchbar"><img src="/static/admin/img/search.svg" alt="Search"></label>
-<input type="text" size="40" name="q" value="" id="searchbar">
+<label for="searchbar"><img alt="Search" src="/static/admin/img/search.svg"></label>
+<input id="searchbar" name="q" size="40" type="text" value="">
 <input type="submit" value="Wyszukaj">
 
 
@@ -1238,7 +1238,7 @@
 <nav class="toplinks">
 
 
-<a href="?created_on__year=2026" class="date-back">‹ 2026</a>
+<a class="date-back" href="?created_on__year=2026">‹ 2026</a>
 
 
 
@@ -1250,7 +1250,7 @@
 
 
 
-        <form id="changelist-form" method="post" novalidate=""><input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
+        <form id="changelist-form" method="post" novalidate=""><input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
         
 
         
@@ -1263,52 +1263,52 @@
 <thead>
 <tr>
 
-<th scope="col" class="sortable column-id">
+<th class="sortable column-id" scope="col">
    
    <div class="text"><a href="?o=0">Numer sprawy</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-name">
+<th class="sortable column-name" scope="col">
    
    <div class="text"><a href="?o=1">Przedmiot</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-created_on">
+<th class="sortable column-created_on" scope="col">
    
    <div class="text"><a href="?o=2">Utworzone o</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-last_action">
+<th class="sortable column-last_action" scope="col">
    
    <div class="text"><a href="?o=3">Ostatnia czynność</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-deadline">
+<th class="sortable column-deadline" scope="col">
    
    <div class="text"><a href="?o=4">Termin</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-status">
+<th class="sortable column-status" scope="col">
    
    <div class="text"><a href="?o=5">Status</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-client">
+<th class="sortable column-client" scope="col">
    
    <div class="text"><a href="?o=6">Klient</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="column-record_count">
+<th class="column-record_count" scope="col">
    
    <div class="text"><span>Record count</span></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-handled">
+<th class="sortable column-handled" scope="col">
    
    <div class="text"><a href="?o=8">Obsłużona</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-has_project">
+<th class="sortable column-has_project" scope="col">
    
    <div class="text"><a href="?o=9">Posiada projekt</a></div>
    <div class="clear"></div>
@@ -1318,199 +1318,199 @@
 <tbody>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/65/change/">65</a></th><td class="field-name">Prośba o udostępnienie rejestru nr 57</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/65/change/">65</a></th><td class="field-name">Prośba o udostępnienie rejestru nr 57</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/64/change/">64</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 56</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/64/change/">64</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 56</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/63/change/">63</a></th><td class="field-name">Pytanie o wydatki publiczne nr 55</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/63/change/">63</a></th><td class="field-name">Pytanie o wydatki publiczne nr 55</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/62/change/">62</a></th><td class="field-name">Sprawa dotycząca ponownego wykorzystania nr 54</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/62/change/">62</a></th><td class="field-name">Sprawa dotycząca ponownego wykorzystania nr 54</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/61/change/">61</a></th><td class="field-name">Pytanie o wydatki publiczne nr 53</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/61/change/">61</a></th><td class="field-name">Pytanie o wydatki publiczne nr 53</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/60/change/">60</a></th><td class="field-name">Odwołanie od decyzji wójta nr 52</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/60/change/">60</a></th><td class="field-name">Odwołanie od decyzji wójta nr 52</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/59/change/">59</a></th><td class="field-name">Pytanie o wydatki publiczne nr 51</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/59/change/">59</a></th><td class="field-name">Pytanie o wydatki publiczne nr 51</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/58/change/">58</a></th><td class="field-name">Wniosek o informację publiczną nr 50</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/58/change/">58</a></th><td class="field-name">Wniosek o informację publiczną nr 50</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/57/change/">57</a></th><td class="field-name">Odwołanie od decyzji wójta nr 49</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/57/change/">57</a></th><td class="field-name">Odwołanie od decyzji wójta nr 49</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/56/change/">56</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 48</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/56/change/">56</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 48</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/55/change/">55</a></th><td class="field-name">Odwołanie od decyzji wójta nr 47</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/55/change/">55</a></th><td class="field-name">Odwołanie od decyzji wójta nr 47</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/54/change/">54</a></th><td class="field-name">Wniosek o informację publiczną nr 46</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/54/change/">54</a></th><td class="field-name">Wniosek o informację publiczną nr 46</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/53/change/">53</a></th><td class="field-name">Dostęp do danych środowiskowych nr 45</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/53/change/">53</a></th><td class="field-name">Dostęp do danych środowiskowych nr 45</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/52/change/">52</a></th><td class="field-name">Pytanie o wydatki publiczne nr 44</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/52/change/">52</a></th><td class="field-name">Pytanie o wydatki publiczne nr 44</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/51/change/">51</a></th><td class="field-name">Pytanie o wydatki publiczne nr 43</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/51/change/">51</a></th><td class="field-name">Pytanie o wydatki publiczne nr 43</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/50/change/">50</a></th><td class="field-name">Pytanie o wydatki publiczne nr 42</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/50/change/">50</a></th><td class="field-name">Pytanie o wydatki publiczne nr 42</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/49/change/">49</a></th><td class="field-name">Dostęp do danych środowiskowych nr 41</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/49/change/">49</a></th><td class="field-name">Dostęp do danych środowiskowych nr 41</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/48/change/">48</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 40</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/48/change/">48</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 40</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/47/change/">47</a></th><td class="field-name">Zażalenie na odmowę nr 39</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/47/change/">47</a></th><td class="field-name">Zażalenie na odmowę nr 39</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/46/change/">46</a></th><td class="field-name">Prośba o udostępnienie rejestru nr 38</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/46/change/">46</a></th><td class="field-name">Prośba o udostępnienie rejestru nr 38</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/45/change/">45</a></th><td class="field-name">Pytanie o wydatki publiczne nr 37</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/45/change/">45</a></th><td class="field-name">Pytanie o wydatki publiczne nr 37</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/44/change/">44</a></th><td class="field-name">Wniosek o informację publiczną nr 36</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/44/change/">44</a></th><td class="field-name">Wniosek o informację publiczną nr 36</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/43/change/">43</a></th><td class="field-name">Pytanie o wydatki publiczne nr 35</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/43/change/">43</a></th><td class="field-name">Pytanie o wydatki publiczne nr 35</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/42/change/">42</a></th><td class="field-name">Zażalenie na odmowę nr 34</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/42/change/">42</a></th><td class="field-name">Zażalenie na odmowę nr 34</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/41/change/">41</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 33</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/41/change/">41</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 33</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/40/change/">40</a></th><td class="field-name">Żądanie wyjaśnień urzędu gminy nr 32</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/40/change/">40</a></th><td class="field-name">Żądanie wyjaśnień urzędu gminy nr 32</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/39/change/">39</a></th><td class="field-name">Sprawa dotycząca ponownego wykorzystania nr 31</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/39/change/">39</a></th><td class="field-name">Sprawa dotycząca ponownego wykorzystania nr 31</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/38/change/">38</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 30</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/38/change/">38</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 30</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/37/change/">37</a></th><td class="field-name">Wniosek o informację publiczną nr 29</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/37/change/">37</a></th><td class="field-name">Wniosek o informację publiczną nr 29</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/36/change/">36</a></th><td class="field-name">Sprawa dotycząca ponownego wykorzystania nr 28</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/36/change/">36</a></th><td class="field-name">Sprawa dotycząca ponownego wykorzystania nr 28</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/35/change/">35</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 27</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/35/change/">35</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 27</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/34/change/">34</a></th><td class="field-name">Odwołanie od decyzji wójta nr 26</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/34/change/">34</a></th><td class="field-name">Odwołanie od decyzji wójta nr 26</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/33/change/">33</a></th><td class="field-name">Zażalenie na odmowę nr 25</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/33/change/">33</a></th><td class="field-name">Zażalenie na odmowę nr 25</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/32/change/">32</a></th><td class="field-name">Prośba o udostępnienie rejestru nr 24</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/32/change/">32</a></th><td class="field-name">Prośba o udostępnienie rejestru nr 24</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/31/change/">31</a></th><td class="field-name">Skarga na bezczynność urzędu nr 23</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/31/change/">31</a></th><td class="field-name">Skarga na bezczynność urzędu nr 23</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/30/change/">30</a></th><td class="field-name">Zażalenie na odmowę nr 22</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/30/change/">30</a></th><td class="field-name">Zażalenie na odmowę nr 22</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/29/change/">29</a></th><td class="field-name">Zażalenie na odmowę nr 21</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/29/change/">29</a></th><td class="field-name">Zażalenie na odmowę nr 21</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/28/change/">28</a></th><td class="field-name">Wniosek o informację publiczną nr 20</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/28/change/">28</a></th><td class="field-name">Wniosek o informację publiczną nr 20</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/27/change/">27</a></th><td class="field-name">Wniosek o informację publiczną nr 19</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/27/change/">27</a></th><td class="field-name">Wniosek o informację publiczną nr 19</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/26/change/">26</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 18</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/26/change/">26</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 18</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/25/change/">25</a></th><td class="field-name">Żądanie wyjaśnień urzędu gminy nr 17</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/25/change/">25</a></th><td class="field-name">Żądanie wyjaśnień urzędu gminy nr 17</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/24/change/">24</a></th><td class="field-name">Skarga na bezczynność urzędu nr 16</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/24/change/">24</a></th><td class="field-name">Skarga na bezczynność urzędu nr 16</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/23/change/">23</a></th><td class="field-name">Wniosek o informację publiczną nr 15</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/23/change/">23</a></th><td class="field-name">Wniosek o informację publiczną nr 15</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/22/change/">22</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 14</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/22/change/">22</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 14</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/21/change/">21</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 13</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/21/change/">21</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 13</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/20/change/">20</a></th><td class="field-name">Pytanie o wydatki publiczne nr 12</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/20/change/">20</a></th><td class="field-name">Pytanie o wydatki publiczne nr 12</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/19/change/">19</a></th><td class="field-name">Skarga na bezczynność urzędu nr 11</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/19/change/">19</a></th><td class="field-name">Skarga na bezczynność urzędu nr 11</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/18/change/">18</a></th><td class="field-name">Pytanie o wydatki publiczne nr 10</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/18/change/">18</a></th><td class="field-name">Pytanie o wydatki publiczne nr 10</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/17/change/">17</a></th><td class="field-name">Zażalenie na odmowę nr 9</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/17/change/">17</a></th><td class="field-name">Zażalenie na odmowę nr 9</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/16/change/">16</a></th><td class="field-name">Prośba o udostępnienie rejestru nr 8</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/16/change/">16</a></th><td class="field-name">Prośba o udostępnienie rejestru nr 8</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/15/change/">15</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 7</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/15/change/">15</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 7</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/14/change/">14</a></th><td class="field-name">Odwołanie od decyzji wójta nr 6</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/14/change/">14</a></th><td class="field-name">Odwołanie od decyzji wójta nr 6</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/13/change/">13</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 5</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/13/change/">13</a></th><td class="field-name">Zapytanie o uchwałę rady miasta nr 5</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/12/change/">12</a></th><td class="field-name">Sprawa dotycząca ponownego wykorzystania nr 4</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/12/change/">12</a></th><td class="field-name">Sprawa dotycząca ponownego wykorzystania nr 4</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/11/change/">11</a></th><td class="field-name">Dostęp do danych środowiskowych nr 3</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/11/change/">11</a></th><td class="field-name">Dostęp do danych środowiskowych nr 3</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/10/change/">10</a></th><td class="field-name">Zażalenie na odmowę nr 2</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/10/change/">10</a></th><td class="field-name">Zażalenie na odmowę nr 2</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/9/change/">9</a></th><td class="field-name">Odwołanie od decyzji wójta nr 1</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/9/change/">9</a></th><td class="field-name">Odwołanie od decyzji wójta nr 1</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/8/change/">8</a></th><td class="field-name">Przykładowa sprawa &lt;b&gt;test&lt;/b&gt; do testów renderowania</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/8/change/">8</a></th><td class="field-name">Przykładowa sprawa &lt;b&gt;test&lt;/b&gt; do testów renderowania</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/7/change/">7</a></th><td class="field-name">Żądanie dostępu do dokumentów dotyczących śmieci i ścieków w gminie Łęczyca</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Zofia Świętosławska-Grzegorzewska-Łączyńska</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/7/change/">7</a></th><td class="field-name">Żądanie dostępu do dokumentów dotyczących śmieci i ścieków w gminie Łęczyca</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Zofia Świętosławska-Grzegorzewska-Łączyńska</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/6/change/">6</a></th><td class="field-name">Wniosek o udostępnienie informacji publicznej dotyczącej wydatków Wniosek o udostępnienie informacji publicznej dotyczącej wydatków Wniosek o udostępnienie informacji publicznej dotyczącej wydatków Wniosek o udostępnienie informacji publicznej dotycz</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/6/change/">6</a></th><td class="field-name">Wniosek o udostępnienie informacji publicznej dotyczącej wydatków Wniosek o udostępnienie informacji publicznej dotyczącej wydatków Wniosek o udostępnienie informacji publicznej dotyczącej wydatków Wniosek o udostępnienie informacji publicznej dotycz</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/5/change/">5</a></th><td class="field-name">Sprawa w moderacji</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/5/change/">5</a></th><td class="field-name">Sprawa w moderacji</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">-</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">0</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/1/change/">1</a></th><td class="field-name">Wniosek o udostępnienie rejestru umów</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/1/change/">1</a></th><td class="field-name">Wniosek o udostępnienie rejestru umów</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">wolna</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">1</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/2/change/">2</a></th><td class="field-name">Spór o dostęp do danych środowiskowych</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">6</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/2/change/">2</a></th><td class="field-name">Spór o dostęp do danych środowiskowych</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">moderowana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">6</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/3/change/">3</a></th><td class="field-name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">27</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/3/change/">3</a></th><td class="field-name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">przypisana</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">27</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 
-<tr><th class="field-id"><a href="/admin/cases/case/4/change/">4</a></th><td class="field-name">Sprawa zamknięta po udzieleniu odpowiedzi</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">zamknięta</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">3</td><td class="field-handled"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-has_project"><img src="/static/admin/img/icon-no.svg" alt="False"></td></tr>
+<tr><th class="field-id"><a href="/admin/cases/case/4/change/">4</a></th><td class="field-name">Sprawa zamknięta po udzieleniu odpowiedzi</td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-last_action nowrap">[DATE] [TIME]</td><td class="field-deadline nowrap">-</td><td class="field-status">zamknięta</td><td class="field-client nowrap">Ewa Klientka</td><td class="field-record_count">3</td><td class="field-handled"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-has_project"><img alt="False" src="/static/admin/img/icon-no.svg"></td></tr>
 
 </tbody>
 </table>
@@ -1532,11 +1532,11 @@
       </div>
       
         
-          <nav id="changelist-filter" aria-labelledby="changelist-filter-header">
+          <nav aria-labelledby="changelist-filter-header" id="changelist-filter">
             <h2 id="changelist-filter-header">Filtr</h2>
             <div id="changelist-filter-extra-actions">
               <h3>
-                <a href="?_facets=True" class="viewlink">Pokaż ilości</a>
+                <a class="viewlink" href="?_facets=True">Pokaż ilości</a>
               </h3>
               
             </div>
@@ -1618,10 +1618,10 @@
 <!-- END Container -->
 
 <!-- SVGs -->
-<svg xmlns="http://www.w3.org/2000/svg" class="base-svgs">
-  <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-auto"><path d="M0 0h24v24H0z" fill="currentColor"></path><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2V4a8 8 0 1 0 0 16z"></path></symbol>
-  <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-moon"><path d="M0 0h24v24H0z" fill="currentColor"></path><path d="M10 7a7 7 0 0 0 12 4.9v.1c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2h.1A6.979 6.979 0 0 0 10 7zm-6 5a8 8 0 0 0 15.062 3.762A9 9 0 0 1 8.238 4.938 7.999 7.999 0 0 0 4 12z"></path></symbol>
-  <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-sun"><path d="M0 0h24v24H0z" fill="currentColor"></path><path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.121 2.121-1.414 1.414-2.121-2.121zm2.121-14.85l1.414 1.415-2.121 2.121-1.414-1.414 2.121-2.121zM5.636 16.95l1.414 1.414-2.121 2.121-1.414-1.414 2.121-2.121zM23 11v2h-3v-2h3zM4 11v2H1v-2h3z"></path></symbol>
+<svg class="base-svgs" xmlns="http://www.w3.org/2000/svg">
+  <symbol height="1.5rem" id="icon-auto" viewBox="0 0 24 24" width="1.5rem"><path d="M0 0h24v24H0z" fill="currentColor"></path><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2V4a8 8 0 1 0 0 16z"></path></symbol>
+  <symbol height="1.5rem" id="icon-moon" viewBox="0 0 24 24" width="1.5rem"><path d="M0 0h24v24H0z" fill="currentColor"></path><path d="M10 7a7 7 0 0 0 12 4.9v.1c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2h.1A6.979 6.979 0 0 0 10 7zm-6 5a8 8 0 0 0 15.062 3.762A9 9 0 0 1 8.238 4.938 7.999 7.999 0 0 0 4 12z"></path></symbol>
+  <symbol height="1.5rem" id="icon-sun" viewBox="0 0 24 24" width="1.5rem"><path d="M0 0h24v24H0z" fill="currentColor"></path><path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.121 2.121-1.414 1.414-2.121-2.121zm2.121-14.85l1.414 1.415-2.121 2.121-1.414-1.414 2.121-2.121zM5.636 16.95l1.414 1.414-2.121 2.121-1.414-1.414 2.121-2.121zM23 11v2h-3v-2h3zM4 11v2H1v-2h3z"></path></symbol>
 </svg>
 <!-- END SVGs -->
 

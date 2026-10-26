@@ -1,28 +1,28 @@
-<!DOCTYPE html><html lang="pl" data-ui-mode="normal"><head>
+<!DOCTYPE html><html data-ui-mode="normal" lang="pl"><head>
     <meta charset="utf-8">
     <title>Profil - Użytkownik: a11y_client_active - Poradnia</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Poradnia App">
-    <meta name="author" content="Sieć Obywatelska - Watchdog Polska">
-    <meta name="theme-color" content="#D82727">
-    <link rel="apple-touch-icon" sizes="160x128" href="/static/images/logo-160x128.png">
-    <link rel="shortcut icon" type="image/png" href="/static/images/favicon-32x26.png" sizes="32x32">
-    <link rel="manifest" href="/static/images/manifest.json">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-TileImage" content="/static/images/logo-160x128.png">
-    <meta property="og:image" content="/static/images/logo-czerwone-tlo-1200x600.jpg">
-    <meta property="og:image:type" content="image/jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="600">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Poradnia App" name="description">
+    <meta content="Sieć Obywatelska - Watchdog Polska" name="author">
+    <meta content="#D82727" name="theme-color">
+    <link href="/static/images/logo-160x128.png" rel="apple-touch-icon" sizes="160x128">
+    <link href="/static/images/favicon-32x26.png" rel="shortcut icon" sizes="32x32" type="image/png">
+    <link href="/static/images/manifest.json" rel="manifest">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="/static/images/logo-160x128.png" name="msapplication-TileImage">
+    <meta content="/static/images/logo-czerwone-tlo-1200x600.jpg" property="og:image">
+    <meta content="image/jpg" property="og:image:type">
+    <meta content="1200" property="og:image:width">
+    <meta content="600" property="og:image:height">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
   <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-    <link rel="stylesheet" href="/static/tasty_feedback/style.css">
+    <link href="/static/tasty_feedback/style.css" rel="stylesheet">
 
     
-        <link rel="stylesheet" href="/static/css/style.min.css">
+        <link href="/static/css/style.min.css" rel="stylesheet">
     
     
     
@@ -55,12 +55,12 @@
      still comfortably clear. z-index is needed because .navbar is
      position:fixed on mobile widths (see _layout.scss) and would
      otherwise render on top of this. -->
-<form method="post" action="/ui-mode/" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
-    <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
-    <input type="hidden" name="next" value="/uzytkownik/~profil/">
+<form action="/ui-mode/" method="post" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
+    <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
+    <input name="next" type="hidden" value="/uzytkownik/~profil/">
     
-        <input type="hidden" name="mode" value="wcag">
-        <button type="submit" class="btn btn-dark">Włącz wersję dostępną</button>
+        <input name="mode" type="hidden" value="wcag">
+        <button class="btn btn-dark" type="submit">Włącz wersję dostępną</button>
     
 </form>
 
@@ -158,7 +158,7 @@
 </style>
 
 <div id="alt-popup-backdrop"></div>
-<div id="alt-popup-container" role="dialog" aria-modal="true" aria-label="Wesprzyj naszą działalność" tabindex="-1">
+<div aria-label="Wesprzyj naszą działalność" aria-modal="true" id="alt-popup-container" role="dialog" tabindex="-1">
     
         <h1 class="h2">Wesprzyj naszą działalność!</h1>
         <h2 class="h4">Wesprzyj działanie naszej poradni dobrowolną darowizną,<br>
@@ -170,7 +170,7 @@
 
     <!-- Add any other content or buttons as needed -->
     <p>&nbsp;</p>
-    <!-- <input type="checkbox" id="altAlreadyDonated" name="altAlreadyDonated" value="donated">
+    <!-- <input id="altAlreadyDonated" name="altAlreadyDonated" type="checkbox" value="donated">
     <label for="altAlreadyDonated">Już przekazałem/am</label> -->
     <p>&nbsp;</p>
     <button class="btn btn-primary" id="alt-donate-button" onclick="closeAltPopup()">Zamknij</button>
@@ -194,7 +194,7 @@
                  with class="collapse" and no "show" - Bootstrap's own
                  CSS (.collapse:not(.show) { display: none; }) then hid
                  the entire page until reload. -->
-            <button type="button" class="navbar-toggler collapsed" data-bs-target="body" aria-expanded="false">
+            <button aria-expanded="false" class="navbar-toggler collapsed" data-bs-target="body" type="button">
                 <span class="visually-hidden">Toggle navigation</span>
                 <i class="navbar-burger"></i>
             </button>
@@ -221,7 +221,7 @@
         
         
            <li class="block-list-item">
-              <a href="#" data-bs-toggle="modal" data-bs-target="#navsearch_modal">
+              <a data-bs-target="#navsearch_modal" data-bs-toggle="modal" href="#">
                    <i class="fas fa-magnifying-glass"></i> Wyszukaj
                </a>
            </li>
@@ -290,7 +290,7 @@
     
         <div class="col-12">
             <p class="text-center">
-                <img src="/static/images/baner.png" alt="" class="img-fluid">
+                <img alt="" class="img-fluid" src="/static/images/baner.png">
                 Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                 finansowanego z Funduszy EOG.
             </p>
@@ -323,18 +323,18 @@
         <div class="col-lg-8 col-md-10 col-sm-12 col-12 offset-lg-2 offset-md-1">
             <h1>Użytkownik: Ewa Klientka</h1>
             
-            <form enctype="multipart/form-data" class="form-horizontal" method="post">
-                <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
+            <form class="form-horizontal" enctype="multipart/form-data" method="post">
+                <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
                 
 
 
                 
 
- <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div id="div_id_description" class="mb-3 row"> <label for="id_description" class="col-form-label pt-0 col-lg-3">
+ <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <div class="mb-3 row" id="div_id_description"> <label class="col-form-label pt-0 col-lg-3" for="id_description">
                 Opis
-            </label> <div class="col-lg-9"> <textarea name="description" cols="40" rows="10" class="textarea form-control" id="id_description"></textarea> </div> </div> <div id="div_id_www" class="mb-3 row"> <label for="id_www" class="col-form-label pt-0 col-lg-3">
+            </label> <div class="col-lg-9"> <textarea class="textarea form-control" cols="40" id="id_description" name="description" rows="10"></textarea> </div> </div> <div class="mb-3 row" id="div_id_www"> <label class="col-form-label pt-0 col-lg-3" for="id_www">
                 Strona domowa
-            </label> <div class="col-lg-9"> <input type="url" name="www" maxlength="200" class="urlinput form-control" id="id_www"> </div> </div> <div class="mb-3 row"> <div class="aab col-lg-3"></div> <div class="col-lg-9"> <input type="submit" name="action" value="Aktualizowanie" class="btn btn-primary btn-primary" id="submit-id-action-profileform"> </div> </div> </form>
+            </label> <div class="col-lg-9"> <input class="urlinput form-control" id="id_www" maxlength="200" name="www" type="url"> </div> </div> <div class="mb-3 row"> <div class="aab col-lg-3"></div> <div class="col-lg-9"> <input class="btn btn-primary btn-primary" id="submit-id-action-profileform" name="action" type="submit" value="Aktualizowanie"> </div> </div> </form>
 
             
             
@@ -360,7 +360,7 @@
             <div class="footer">
                     <div class="footer-center col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
                         
-                            <img src="/static/images/baner.png" alt="" class="img-fluid"><br>
+                            <img alt="" class="img-fluid" src="/static/images/baner.png"><br>
                             Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                             finansowanego z Funduszy EOG.<br>
                         
@@ -382,8 +382,8 @@
 
         
 
-<form action="/uwagi/submit" method="post"> <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div id="div_id_text" class="mb-3"> <label for="id_text" class="form-label requiredField">
-                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea name="text" cols="40" rows="10" class="textarea form-control" required="" aria-describedby="id_text_helptext" id="id_text"></textarea> <div id="id_text_helptext" class="form-text">Treść zgłoszona przez użytkownika</div> </div> <input type="hidden" name="url" value="http://localhost:8000/uzytkownik/~profil/" id="id_url"> <div class="mb-3"> <div class=""> <input type="submit" name="feedback_action" value="Zgłoś usterkę administratorom poradni." class="btn btn-primary btn-primary" id="submit-id-feedback_action"> </div> </div> </form>
+<form action="/uwagi/submit" method="post"> <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_text"> <label class="form-label requiredField" for="id_text">
+                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea aria-describedby="id_text_helptext" class="textarea form-control" cols="40" id="id_text" name="text" required="" rows="10"></textarea> <div class="form-text" id="id_text_helptext">Treść zgłoszona przez użytkownika</div> </div> <input id="id_url" name="url" type="hidden" value="http://localhost:8000/uzytkownik/~profil/"> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-feedback_action" name="feedback_action" type="submit" value="Zgłoś usterkę administratorom poradni."> </div> </div> </form>
 
     </div>
 </div>
@@ -394,12 +394,12 @@
 
     
 <!-- Modal -->
-<div class="modal fade" id="navsearch_modal" tabindex="-1" role="dialog" aria-labelledby="navsearch_modal_label">
+<div aria-labelledby="navsearch_modal_label" class="modal fade" id="navsearch_modal" role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title" id="navsearch_modal_label">Wyszukaj</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body">
                 
@@ -407,7 +407,7 @@
 	<form class="form" onsubmit="return false;">
 		<div class="form-group">
 			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
-			<input type="search" id="search" name="q" class="form-control navsearch__input" hx-get="/navsearch/" hx-trigger="input changed delay:300ms" hx-target=".navsearch__results" hx-swap="innerHTML">
+			<input class="form-control navsearch__input" hx-get="/navsearch/" hx-swap="innerHTML" hx-target=".navsearch__results" hx-trigger="input changed delay:300ms" id="search" name="q" type="search">
 		</div>
 	</form>
 	<div class="navsearch__results"></div>
@@ -438,7 +438,7 @@
 
 
 <div id="attachment-text-modal-container"></div>
-<div id="htmx-spinner" class="htmx-indicator">
+<div class="htmx-indicator" id="htmx-spinner">
     Wczytywanie...
 </div>
 <script>

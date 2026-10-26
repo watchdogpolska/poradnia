@@ -1,28 +1,28 @@
-<!DOCTYPE html><html lang="pl" data-ui-mode="normal"><head>
+<!DOCTYPE html><html data-ui-mode="normal" lang="pl"><head>
     <meta charset="utf-8">
     <title>Wykaz użytkowników / użytkowniczek</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Poradnia App">
-    <meta name="author" content="Sieć Obywatelska - Watchdog Polska">
-    <meta name="theme-color" content="#D82727">
-    <link rel="apple-touch-icon" sizes="160x128" href="/static/images/logo-160x128.png">
-    <link rel="shortcut icon" type="image/png" href="/static/images/favicon-32x26.png" sizes="32x32">
-    <link rel="manifest" href="/static/images/manifest.json">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-TileImage" content="/static/images/logo-160x128.png">
-    <meta property="og:image" content="/static/images/logo-czerwone-tlo-1200x600.jpg">
-    <meta property="og:image:type" content="image/jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="600">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Poradnia App" name="description">
+    <meta content="Sieć Obywatelska - Watchdog Polska" name="author">
+    <meta content="#D82727" name="theme-color">
+    <link href="/static/images/logo-160x128.png" rel="apple-touch-icon" sizes="160x128">
+    <link href="/static/images/favicon-32x26.png" rel="shortcut icon" sizes="32x32" type="image/png">
+    <link href="/static/images/manifest.json" rel="manifest">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="/static/images/logo-160x128.png" name="msapplication-TileImage">
+    <meta content="/static/images/logo-czerwone-tlo-1200x600.jpg" property="og:image">
+    <meta content="image/jpg" property="og:image:type">
+    <meta content="1200" property="og:image:width">
+    <meta content="600" property="og:image:height">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
   <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-    <link rel="stylesheet" href="/static/tasty_feedback/style.css">
+    <link href="/static/tasty_feedback/style.css" rel="stylesheet">
 
     
-        <link rel="stylesheet" href="/static/css/style.min.css">
+        <link href="/static/css/style.min.css" rel="stylesheet">
     
     
     
@@ -72,12 +72,12 @@
      still comfortably clear. z-index is needed because .navbar is
      position:fixed on mobile widths (see _layout.scss) and would
      otherwise render on top of this. -->
-<form method="post" action="/ui-mode/" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
-    <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
-    <input type="hidden" name="next" value="/uzytkownik/">
+<form action="/ui-mode/" method="post" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
+    <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
+    <input name="next" type="hidden" value="/uzytkownik/">
     
-        <input type="hidden" name="mode" value="wcag">
-        <button type="submit" class="btn btn-dark">Włącz wersję dostępną</button>
+        <input name="mode" type="hidden" value="wcag">
+        <button class="btn btn-dark" type="submit">Włącz wersję dostępną</button>
     
 </form>
 
@@ -111,7 +111,7 @@
                  with class="collapse" and no "show" - Bootstrap's own
                  CSS (.collapse:not(.show) { display: none; }) then hid
                  the entire page until reload. -->
-            <button type="button" class="navbar-toggler collapsed" data-bs-target="body" aria-expanded="false">
+            <button aria-expanded="false" class="navbar-toggler collapsed" data-bs-target="body" type="button">
                 <span class="visually-hidden">Toggle navigation</span>
                 <i class="navbar-burger"></i>
             </button>
@@ -138,7 +138,7 @@
         
         
            <li class="block-list-item">
-              <a href="#" data-bs-toggle="modal" data-bs-target="#navsearch_modal">
+              <a data-bs-target="#navsearch_modal" data-bs-toggle="modal" href="#">
                    <i class="fas fa-magnifying-glass"></i> Wyszukaj
                </a>
            </li>
@@ -244,7 +244,7 @@
     
         <div class="col-12">
             <p class="text-center">
-                <img src="/static/images/baner.png" alt="" class="img-fluid">
+                <img alt="" class="img-fluid" src="/static/images/baner.png">
                 Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                 finansowanego z Funduszy EOG.
             </p>
@@ -287,21 +287,21 @@
 
             
 
-<form class="form-inline" method="get"> <div id="div_id_is_superuser" class="mb-3"> <label for="id_is_superuser" class="form-label">
+<form class="form-inline" method="get"> <div class="mb-3" id="div_id_is_superuser"> <label class="form-label" for="id_is_superuser">
                 Status superużytkownika
-            </label> <select name="is_superuser" class="nullbooleanselect form-select" id="id_is_superuser"> <option value="unknown" selected="">Nieznane</option> <option value="true">Tak</option> <option value="false">Nie</option>
+            </label> <select class="nullbooleanselect form-select" id="id_is_superuser" name="is_superuser"> <option selected="" value="unknown">Nieznane</option> <option value="true">Tak</option> <option value="false">Nie</option>
 
-</select> </div> <div id="div_id_is_staff" class="mb-3"> <label for="id_is_staff" class="form-label">
+</select> </div> <div class="mb-3" id="div_id_is_staff"> <label class="form-label" for="id_is_staff">
                 W zespole
-            </label> <select name="is_staff" class="nullbooleanselect form-select" id="id_is_staff"> <option value="unknown" selected="">Nieznane</option> <option value="true">Tak</option> <option value="false">Nie</option>
+            </label> <select class="nullbooleanselect form-select" id="id_is_staff" name="is_staff"> <option selected="" value="unknown">Nieznane</option> <option value="true">Tak</option> <option value="false">Nie</option>
 
-</select> </div> <div id="div_id_nicename" class="mb-3"> <label for="id_nicename" class="form-label">
+</select> </div> <div class="mb-3" id="div_id_nicename"> <label class="form-label" for="id_nicename">
                 Pełna nazwa zawiera
-            </label> <input type="text" name="nicename" class="textinput form-control" id="id_nicename"> </div> <div id="div_id_sort" class="mb-3"> <label for="id_sort" class="form-label">
+            </label> <input class="textinput form-control" id="id_nicename" name="nicename" type="text"> </div> <div class="mb-3" id="div_id_sort"> <label class="form-label" for="id_sort">
                 Sortowanie
-            </label> <select name="sort" class="csvselect form-select" id="id_sort"> <option value="">---------</option> <option value="moderated">Moderowane</option> <option value="-moderated">Moderowane (malejąco)</option> <option value="active">Aktywne</option> <option value="-active">Aktywne (malejąco)</option> <option value="closed">Zamknięte</option> <option value="-closed">Zamknięte (malejąco)</option>
+            </label> <select class="csvselect form-select" id="id_sort" name="sort"> <option value="">---------</option> <option value="moderated">Moderowane</option> <option value="-moderated">Moderowane (malejąco)</option> <option value="active">Aktywne</option> <option value="-active">Aktywne (malejąco)</option> <option value="closed">Zamknięte</option> <option value="-closed">Zamknięte (malejąco)</option>
 
-</select> </div> <input type="submit" name="filter" value="Filtr" class="btn btn-primary" id="submit-id-filter"> </form>
+</select> </div> <input class="btn btn-primary" id="submit-id-filter" name="filter" type="submit" value="Filtr"> </form>
 
         </div>
 
@@ -324,7 +324,7 @@
                         <a href="/uzytkownik/a11y_superuser/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/4b/dc/4bdc25ea5a91633a9ed579e65073db26.jpg" alt=""> Anna Administrator
+                                <img alt="" src="/media/cache/6d/88/6d88042bffec58276b0cf79ef20ff3d1.jpg"> Anna Administrator
                             </div>
                         </a>
                     </td>
@@ -353,7 +353,7 @@
                         <a href="/uzytkownik/a11y_staff_admin/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" alt=""> Bartosz Kierownik
+                                <img alt="" src="/media/cache/b2/54/b254138f928aa6ec3edb7b9a3eb45557.jpg"> Bartosz Kierownik
                             </div>
                         </a>
                     </td>
@@ -382,7 +382,7 @@
                         <a href="/uzytkownik/a11y_staff_wsparcie/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/fa/78/fa7898e15cbc596ed6db11ceccb5ac82.jpg" alt=""> Celina Wsparcie
+                                <img alt="" src="/media/cache/82/95/829569847743af6f0bd044a105e58287.jpg"> Celina Wsparcie
                             </div>
                         </a>
                     </td>
@@ -411,7 +411,7 @@
                         <a href="/uzytkownik/a11y_staff_obserwator/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/12/17/12178545f255c3648f63affe88693667.jpg" alt=""> Dawid Obserwator
+                                <img alt="" src="/media/cache/c6/19/c619e396a1a1f48506182a7ffb7c20f9.jpg"> Dawid Obserwator
                             </div>
                         </a>
                     </td>
@@ -440,7 +440,7 @@
                         <a href="/uzytkownik/a11y_client_active/">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="/media/cache/db/09/db0922ce7ba066e6db05a74bb9b711ca.jpg" alt=""> Ewa Klientka
+                                <img alt="" src="/media/cache/d2/1d/d21dab1a8831acfe68c8490955f9805e.jpg"> Ewa Klientka
                             </div>
                         </a>
                     </td>
@@ -496,7 +496,7 @@
             <div class="footer">
                     <div class="footer-center col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
                         
-                            <img src="/static/images/baner.png" alt="" class="img-fluid"><br>
+                            <img alt="" class="img-fluid" src="/static/images/baner.png"><br>
                             Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                             finansowanego z Funduszy EOG.<br>
                         
@@ -518,8 +518,8 @@
 
         
 
-<form action="/uwagi/submit" method="post"> <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div id="div_id_text" class="mb-3"> <label for="id_text" class="form-label requiredField">
-                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea name="text" cols="40" rows="10" class="textarea form-control" required="" aria-describedby="id_text_helptext" id="id_text"></textarea> <div id="id_text_helptext" class="form-text">Treść zgłoszona przez użytkownika</div> </div> <input type="hidden" name="url" value="http://localhost:8000/uzytkownik/" id="id_url"> <div class="mb-3"> <div class=""> <input type="submit" name="feedback_action" value="Zgłoś usterkę administratorom poradni." class="btn btn-primary btn-primary" id="submit-id-feedback_action"> </div> </div> </form>
+<form action="/uwagi/submit" method="post"> <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_text"> <label class="form-label requiredField" for="id_text">
+                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea aria-describedby="id_text_helptext" class="textarea form-control" cols="40" id="id_text" name="text" required="" rows="10"></textarea> <div class="form-text" id="id_text_helptext">Treść zgłoszona przez użytkownika</div> </div> <input id="id_url" name="url" type="hidden" value="http://localhost:8000/uzytkownik/"> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-feedback_action" name="feedback_action" type="submit" value="Zgłoś usterkę administratorom poradni."> </div> </div> </form>
 
     </div>
 </div>
@@ -530,12 +530,12 @@
 
     
 <!-- Modal -->
-<div class="modal fade" id="navsearch_modal" tabindex="-1" role="dialog" aria-labelledby="navsearch_modal_label">
+<div aria-labelledby="navsearch_modal_label" class="modal fade" id="navsearch_modal" role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title" id="navsearch_modal_label">Wyszukaj</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body">
                 
@@ -543,7 +543,7 @@
 	<form class="form" onsubmit="return false;">
 		<div class="form-group">
 			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
-			<input type="search" id="search" name="q" class="form-control navsearch__input" hx-get="/navsearch/" hx-trigger="input changed delay:300ms" hx-target=".navsearch__results" hx-swap="innerHTML">
+			<input class="form-control navsearch__input" hx-get="/navsearch/" hx-swap="innerHTML" hx-target=".navsearch__results" hx-trigger="input changed delay:300ms" id="search" name="q" type="search">
 		</div>
 	</form>
 	<div class="navsearch__results"></div>
@@ -571,7 +571,7 @@
 
 
 <div id="attachment-text-modal-container"></div>
-<div id="htmx-spinner" class="htmx-indicator">
+<div class="htmx-indicator" id="htmx-spinner">
     Wczytywanie...
 </div>
 <script>

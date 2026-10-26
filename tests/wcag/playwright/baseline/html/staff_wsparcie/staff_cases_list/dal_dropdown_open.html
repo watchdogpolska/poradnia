@@ -1,28 +1,28 @@
-<!DOCTYPE html><html lang="pl" data-ui-mode="normal"><head>
+<!DOCTYPE html><html data-ui-mode="normal" lang="pl"><head>
     <meta charset="utf-8">
     <title>Wykaz spraw - Sprawy - Poradnia</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Poradnia App">
-    <meta name="author" content="Sieć Obywatelska - Watchdog Polska">
-    <meta name="theme-color" content="#D82727">
-    <link rel="apple-touch-icon" sizes="160x128" href="/static/images/logo-160x128.png">
-    <link rel="shortcut icon" type="image/png" href="/static/images/favicon-32x26.png" sizes="32x32">
-    <link rel="manifest" href="/static/images/manifest.json">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-TileImage" content="/static/images/logo-160x128.png">
-    <meta property="og:image" content="/static/images/logo-czerwone-tlo-1200x600.jpg">
-    <meta property="og:image:type" content="image/jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="600">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Poradnia App" name="description">
+    <meta content="Sieć Obywatelska - Watchdog Polska" name="author">
+    <meta content="#D82727" name="theme-color">
+    <link href="/static/images/logo-160x128.png" rel="apple-touch-icon" sizes="160x128">
+    <link href="/static/images/favicon-32x26.png" rel="shortcut icon" sizes="32x32" type="image/png">
+    <link href="/static/images/manifest.json" rel="manifest">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="/static/images/logo-160x128.png" name="msapplication-TileImage">
+    <meta content="/static/images/logo-czerwone-tlo-1200x600.jpg" property="og:image">
+    <meta content="image/jpg" property="og:image:type">
+    <meta content="1200" property="og:image:width">
+    <meta content="600" property="og:image:height">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
   <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-    <link rel="stylesheet" href="/static/tasty_feedback/style.css">
+    <link href="/static/tasty_feedback/style.css" rel="stylesheet">
 
     
-        <link rel="stylesheet" href="/static/css/style.min.css">
+        <link href="/static/css/style.min.css" rel="stylesheet">
     
     
     
@@ -73,12 +73,12 @@
      still comfortably clear. z-index is needed because .navbar is
      position:fixed on mobile widths (see _layout.scss) and would
      otherwise render on top of this. -->
-<form method="post" action="/ui-mode/" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
-    <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]" style="">
-    <input type="hidden" name="next" value="/sprawy/" style="">
+<form action="/ui-mode/" method="post" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
+    <input name="csrfmiddlewaretoken" style="" type="hidden" value="[CSRF]">
+    <input name="next" style="" type="hidden" value="/sprawy/">
     
-        <input type="hidden" name="mode" value="wcag" style="">
-        <button type="submit" class="btn btn-dark">Włącz wersję dostępną</button>
+        <input name="mode" style="" type="hidden" value="wcag">
+        <button class="btn btn-dark" type="submit">Włącz wersję dostępną</button>
     
 </form>
 
@@ -112,7 +112,7 @@
                  with class="collapse" and no "show" - Bootstrap's own
                  CSS (.collapse:not(.show) { display: none; }) then hid
                  the entire page until reload. -->
-            <button type="button" class="navbar-toggler collapsed" data-bs-target="body" aria-expanded="false">
+            <button aria-expanded="false" class="navbar-toggler collapsed" data-bs-target="body" type="button">
                 <span class="visually-hidden">Toggle navigation</span>
                 <i class="navbar-burger"></i>
             </button>
@@ -139,7 +139,7 @@
         
         
            <li class="block-list-item">
-              <a href="#" data-bs-toggle="modal" data-bs-target="#navsearch_modal">
+              <a data-bs-target="#navsearch_modal" data-bs-toggle="modal" href="#">
                    <i class="fas fa-magnifying-glass"></i> Wyszukaj
                </a>
            </li>
@@ -245,7 +245,7 @@
     
         <div class="col-12">
             <p class="text-center">
-                <img src="/static/images/baner.png" alt="" class="img-fluid">
+                <img alt="" class="img-fluid" src="/static/images/baner.png">
                 Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                 finansowanego z Funduszy EOG.
             </p>
@@ -278,38 +278,38 @@
 
 <form class="form-inline" method="get"> <link href="/static/dal_alight/autocomplete-light.css" media="all" rel="stylesheet">
 <script src="/static/dal_alight/autocomplete-light.js"></script>
-<script src="/static/dal_alight/dal-django.js"></script> <div id="div_id_id" class="mb-3"> <label for="id_id" class="form-label">
+<script src="/static/dal_alight/dal-django.js"></script> <div class="mb-3" id="div_id_id"> <label class="form-label" for="id_id">
                 Numer sprawy
-            </label> <input type="number" name="id" step="any" class="numberinput form-control" id="id_id" style=""> </div> <div id="div_id_status" class="mb-3"> <label for="id_status" class="form-label">
+            </label> <input class="numberinput form-control" id="id_id" name="id" step="any" style="" type="number"> </div> <div class="mb-3" id="div_id_status"> <label class="form-label" for="id_status">
                 Status
-            </label> <select name="status" class="selectmultiple form-select" id="id_status" multiple=""> <option value="0">wolna</option> <option value="3">moderowana</option> <option value="1">przypisana</option> <option value="2">zamknięta</option>
+            </label> <select class="selectmultiple form-select" id="id_status" multiple="" name="status"> <option value="0">wolna</option> <option value="3">moderowana</option> <option value="1">przypisana</option> <option value="2">zamknięta</option>
 
-</select> </div> <div id="div_id_client" class="mb-3"> <label for="id_client" class="form-label">
+</select> </div> <div class="mb-3" id="div_id_client"> <label class="form-label" for="id_client">
                 Klient
-            </label> <autocomplete-select data-bound="true"><select name="client" class="modelalight form-select" id="id_client" slot="select" data-autocomplete-light-url="/uzytkownik/~autocomplete/">
-</select><span slot="deck"></span><autocomplete-select-input slot="input" url="/uzytkownik/~autocomplete/" data-bound="true"><input type="text" name="client-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="true" style=""></autocomplete-select-input></autocomplete-select> </div> <div id="div_id_name" class="mb-3"> <label for="id_name" class="form-label">
+            </label> <autocomplete-select data-bound="true"><select class="modelalight form-select" data-autocomplete-light-url="/uzytkownik/~autocomplete/" id="id_client" name="client" slot="select">
+</select><span slot="deck"></span><autocomplete-select-input data-bound="true" slot="input" url="/uzytkownik/~autocomplete/"><input aria-autocomplete="list" aria-expanded="true" aria-haspopup="listbox" autocomplete="off" class="vTextField" name="client-input" placeholder="Wyszukaj" slot="input" style="" type="text"></autocomplete-select-input></autocomplete-select> </div> <div class="mb-3" id="div_id_name"> <label class="form-label" for="id_name">
                 Przedmiot
-            </label> <input type="text" name="name" class="textinput form-control" id="id_name" style=""> </div> <div id="div_id_has_project" class="mb-3"> <label for="id_has_project" class="form-label">
+            </label> <input class="textinput form-control" id="id_name" name="name" style="" type="text"> </div> <div class="mb-3" id="div_id_has_project"> <label class="form-label" for="id_has_project">
                 Posiada projekt
-            </label> <select name="has_project" class="nullbooleanselect form-select" id="id_has_project"> <option value="unknown" selected="">Nieznane</option> <option value="true">Tak</option> <option value="false">Nie</option>
+            </label> <select class="nullbooleanselect form-select" id="id_has_project" name="has_project"> <option selected="" value="unknown">Nieznane</option> <option value="true">Tak</option> <option value="false">Nie</option>
 
-</select> </div> <div id="div_id_permission" class="mb-3"> <label for="id_permission" class="form-label">
+</select> </div> <div class="mb-3" id="div_id_permission"> <label class="form-label" for="id_permission">
                 Osoba przypisana
-            </label> <select name="permission" class="select form-select" id="id_permission"> <option value="" selected="">---------</option> <option value="1">Anna Administrator (team)</option> <option value="2">Bartosz Kierownik (team)</option> <option value="3">Celina Wsparcie (team)</option> <option value="4">Dawid Obserwator (team)</option>
+            </label> <select class="select form-select" id="id_permission" name="permission"> <option selected="" value="">---------</option> <option value="1">Anna Administrator (team)</option> <option value="2">Bartosz Kierownik (team)</option> <option value="3">Celina Wsparcie (team)</option> <option value="4">Dawid Obserwator (team)</option>
 
-</select> </div> <div id="div_id_handled" class="mb-3"> <label for="id_handled" class="form-label">
+</select> </div> <div class="mb-3" id="div_id_handled"> <label class="form-label" for="id_handled">
                 Odpowiedziana
-            </label> <select name="handled" class="nullbooleanselect form-select" id="id_handled"> <option value="unknown" selected="">Nieznane</option> <option value="true">Tak</option> <option value="false">Nie</option>
+            </label> <select class="nullbooleanselect form-select" id="id_handled" name="handled"> <option selected="" value="unknown">Nieznane</option> <option value="true">Tak</option> <option value="false">Nie</option>
 
-</select> </div> <div id="div_id_has_advice" class="mb-3"> <label for="id_has_advice" class="form-label">
+</select> </div> <div class="mb-3" id="div_id_has_advice"> <label class="form-label" for="id_has_advice">
                 Sprawa otagowana
-            </label> <select name="has_advice" class="nullbooleanselect form-select" id="id_has_advice"> <option value="unknown" selected="">Nieznane</option> <option value="true">Tak</option> <option value="false">Nie</option>
+            </label> <select class="nullbooleanselect form-select" id="id_has_advice" name="has_advice"> <option selected="" value="unknown">Nieznane</option> <option value="true">Tak</option> <option value="false">Nie</option>
 
-</select> </div> <div id="div_id_o" class="mb-3"> <label for="id_o" class="form-label">
+</select> </div> <div class="mb-3" id="div_id_o"> <label class="form-label" for="id_o">
                 Sortowanie
-            </label> <select name="o" class="csvselect form-select" id="id_o"> <option value="">---------</option> <option value="last_action" selected="">Domyślne</option> <option value="-last_action">Domyślne (malejąco)</option> <option value="deadline">Termin</option> <option value="-deadline">Termin (malejąco)</option> <option value="pk">Numer</option> <option value="-pk">Numer (malejąco)</option> <option value="client">Klient</option> <option value="-client">Klient (malejąco)</option> <option value="created_on">Utworzone o</option> <option value="-created_on">Utworzone o (malejąco)</option> <option value="last_send">Ostatnia odpowiedź</option> <option value="-last_send">Ostatnia odpowiedź (malejąco)</option> <option value="last_received">Ostatnio otrzymano</option> <option value="-last_received">Ostatnio otrzymano (malejąco)</option>
+            </label> <select class="csvselect form-select" id="id_o" name="o"> <option value="">---------</option> <option selected="" value="last_action">Domyślne</option> <option value="-last_action">Domyślne (malejąco)</option> <option value="deadline">Termin</option> <option value="-deadline">Termin (malejąco)</option> <option value="pk">Numer</option> <option value="-pk">Numer (malejąco)</option> <option value="client">Klient</option> <option value="-client">Klient (malejąco)</option> <option value="created_on">Utworzone o</option> <option value="-created_on">Utworzone o (malejąco)</option> <option value="last_send">Ostatnia odpowiedź</option> <option value="-last_send">Ostatnia odpowiedź (malejąco)</option> <option value="last_received">Ostatnio otrzymano</option> <option value="-last_received">Ostatnio otrzymano (malejąco)</option>
 
-</select> </div> <input type="submit" name="filter" value="Zastosuj filtr" class="btn btn-primary" id="submit-id-filter" style=""> </form>
+</select> </div> <input class="btn btn-primary" id="submit-id-filter" name="filter" style="" type="submit" value="Zastosuj filtr"> </form>
 
 
         
@@ -1004,7 +1004,7 @@
                 
                 </tbody>
             </table>
-            <p>Legenda statusów <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Zgłoszona przez Ciebie sprawa otrzymuje najpierw status &quot;wolna&quot;. To znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na &quot;przypisana&quot;. A gdy już Ci pomożemy &quot;zakończona&quot;." data-bs-original-title="Zgłoszona przez Ciebie sprawa otrzymuje najpierw status &quot;wolna&quot;. To znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na &quot;przypisana&quot;. A gdy już Ci pomożemy &quot;zakończona&quot;."></i>:
+            <p>Legenda statusów <i aria-label="Zgłoszona przez Ciebie sprawa otrzymuje najpierw status &quot;wolna&quot;. To znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na &quot;przypisana&quot;. A gdy już Ci pomożemy &quot;zakończona&quot;." class="fa-regular fa-circle-question" data-bs-original-title="Zgłoszona przez Ciebie sprawa otrzymuje najpierw status &quot;wolna&quot;. To znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na &quot;przypisana&quot;. A gdy już Ci pomożemy &quot;zakończona&quot;." data-bs-toggle="tooltip" data-placement="bottom"></i>:
                 <i class="far fa-circle "></i>
                     wolna <i class="far fa-square-plus"></i>
                     moderowana <i class="far fa-circle-dot"></i>
@@ -1039,7 +1039,7 @@
             <div class="footer">
                     <div class="footer-center col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
                         
-                            <img src="/static/images/baner.png" alt="" class="img-fluid"><br>
+                            <img alt="" class="img-fluid" src="/static/images/baner.png"><br>
                             Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                             finansowanego z Funduszy EOG.<br>
                         
@@ -1061,8 +1061,8 @@
 
         
 
-<form action="/uwagi/submit" method="post"> <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]" style=""> <div id="div_id_text" class="mb-3"> <label for="id_text" class="form-label requiredField">
-                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea name="text" cols="40" rows="10" class="textarea form-control" required="" aria-describedby="id_text_helptext" id="id_text" style=""></textarea> <div id="id_text_helptext" class="form-text">Treść zgłoszona przez użytkownika</div> </div> <input type="hidden" name="url" value="http://localhost:8000/sprawy/" id="id_url" style=""> <div class="mb-3"> <div class=""> <input type="submit" name="feedback_action" value="Zgłoś usterkę administratorom poradni." class="btn btn-primary btn-primary" id="submit-id-feedback_action" style=""> </div> </div> </form>
+<form action="/uwagi/submit" method="post"> <input name="csrfmiddlewaretoken" style="" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_text"> <label class="form-label requiredField" for="id_text">
+                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea aria-describedby="id_text_helptext" class="textarea form-control" cols="40" id="id_text" name="text" required="" rows="10" style=""></textarea> <div class="form-text" id="id_text_helptext">Treść zgłoszona przez użytkownika</div> </div> <input id="id_url" name="url" style="" type="hidden" value="http://localhost:8000/sprawy/"> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-feedback_action" name="feedback_action" style="" type="submit" value="Zgłoś usterkę administratorom poradni."> </div> </div> </form>
 
     </div>
 </div>
@@ -1073,12 +1073,12 @@
 
     
 <!-- Modal -->
-<div class="modal fade" id="navsearch_modal" tabindex="-1" role="dialog" aria-labelledby="navsearch_modal_label">
+<div aria-labelledby="navsearch_modal_label" class="modal fade" id="navsearch_modal" role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title" id="navsearch_modal_label">Wyszukaj</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body">
                 
@@ -1086,7 +1086,7 @@
 	<form class="form" onsubmit="return false;">
 		<div class="form-group">
 			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
-			<input type="search" id="search" name="q" class="form-control navsearch__input" hx-get="/navsearch/" hx-trigger="input changed delay:300ms" hx-target=".navsearch__results" hx-swap="innerHTML" style="">
+			<input class="form-control navsearch__input" hx-get="/navsearch/" hx-swap="innerHTML" hx-target=".navsearch__results" hx-trigger="input changed delay:300ms" id="search" name="q" style="" type="search">
 		</div>
 	</form>
 	<div class="navsearch__results"></div>
@@ -1144,7 +1144,7 @@
 
 
 <div id="attachment-text-modal-container"></div>
-<div id="htmx-spinner" class="htmx-indicator">
+<div class="htmx-indicator" id="htmx-spinner">
     Wczytywanie...
 </div>
 <script>
@@ -1233,4 +1233,4 @@
 
 
 
-<div class="autocomplete-light-box" role="listbox" style="top: 199px; left: 797.109px; width: 198px;"><div data-value="1" role="option" aria-selected="false" data-bound="true">Anna Administrator (team)</div><div data-value="2" role="option" aria-selected="false" data-bound="true">Bartosz Kierownik (team)</div><div data-value="3" role="option" aria-selected="false" data-bound="true">Celina Wsparcie (team)</div><div data-value="4" role="option" aria-selected="false" data-bound="true">Dawid Obserwator (team)</div><div data-value="5" role="option" aria-selected="false" data-bound="true">Ewa Klientka</div></div></body></html>
+<div class="autocomplete-light-box" role="listbox" style="top: 199px; left: 797.109px; width: 198px;"><div aria-selected="false" data-bound="true" data-value="1" role="option">Anna Administrator (team)</div><div aria-selected="false" data-bound="true" data-value="2" role="option">Bartosz Kierownik (team)</div><div aria-selected="false" data-bound="true" data-value="3" role="option">Celina Wsparcie (team)</div><div aria-selected="false" data-bound="true" data-value="4" role="option">Dawid Obserwator (team)</div><div aria-selected="false" data-bound="true" data-value="5" role="option">Ewa Klientka</div></div></body></html>

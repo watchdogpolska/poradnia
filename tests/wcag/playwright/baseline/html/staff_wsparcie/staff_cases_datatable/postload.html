@@ -1,28 +1,28 @@
-<!DOCTYPE html><html lang="pl" data-ui-mode="normal"><head>
+<!DOCTYPE html><html data-ui-mode="normal" lang="pl"><head>
     <meta charset="utf-8">
     <title>Tabela Spraw - Poradnia</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Poradnia App">
-    <meta name="author" content="Sieć Obywatelska - Watchdog Polska">
-    <meta name="theme-color" content="#D82727">
-    <link rel="apple-touch-icon" sizes="160x128" href="/static/images/logo-160x128.png">
-    <link rel="shortcut icon" type="image/png" href="/static/images/favicon-32x26.png" sizes="32x32">
-    <link rel="manifest" href="/static/images/manifest.json">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-TileImage" content="/static/images/logo-160x128.png">
-    <meta property="og:image" content="/static/images/logo-czerwone-tlo-1200x600.jpg">
-    <meta property="og:image:type" content="image/jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="600">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Poradnia App" name="description">
+    <meta content="Sieć Obywatelska - Watchdog Polska" name="author">
+    <meta content="#D82727" name="theme-color">
+    <link href="/static/images/logo-160x128.png" rel="apple-touch-icon" sizes="160x128">
+    <link href="/static/images/favicon-32x26.png" rel="shortcut icon" sizes="32x32" type="image/png">
+    <link href="/static/images/manifest.json" rel="manifest">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="/static/images/logo-160x128.png" name="msapplication-TileImage">
+    <meta content="/static/images/logo-czerwone-tlo-1200x600.jpg" property="og:image">
+    <meta content="image/jpg" property="og:image:type">
+    <meta content="1200" property="og:image:width">
+    <meta content="600" property="og:image:height">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
   <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-    <link rel="stylesheet" href="/static/tasty_feedback/style.css">
+    <link href="/static/tasty_feedback/style.css" rel="stylesheet">
 
     
-        <link rel="stylesheet" href="/static/css/style.min.css">
+        <link href="/static/css/style.min.css" rel="stylesheet">
     
     
     
@@ -55,12 +55,12 @@
      still comfortably clear. z-index is needed because .navbar is
      position:fixed on mobile widths (see _layout.scss) and would
      otherwise render on top of this. -->
-<form method="post" action="/ui-mode/" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
-    <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
-    <input type="hidden" name="next" value="/sprawy/table/">
+<form action="/ui-mode/" method="post" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
+    <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
+    <input name="next" type="hidden" value="/sprawy/table/">
     
-        <input type="hidden" name="mode" value="wcag">
-        <button type="submit" class="btn btn-dark">Włącz wersję dostępną</button>
+        <input name="mode" type="hidden" value="wcag">
+        <button class="btn btn-dark" type="submit">Włącz wersję dostępną</button>
     
 </form>
 
@@ -94,7 +94,7 @@
                  with class="collapse" and no "show" - Bootstrap's own
                  CSS (.collapse:not(.show) { display: none; }) then hid
                  the entire page until reload. -->
-            <button type="button" class="navbar-toggler collapsed" data-bs-target="body" aria-expanded="false">
+            <button aria-expanded="false" class="navbar-toggler collapsed" data-bs-target="body" type="button">
                 <span class="visually-hidden">Toggle navigation</span>
                 <i class="navbar-burger"></i>
             </button>
@@ -121,7 +121,7 @@
         
         
            <li class="block-list-item">
-              <a href="#" data-bs-toggle="modal" data-bs-target="#navsearch_modal">
+              <a data-bs-target="#navsearch_modal" data-bs-toggle="modal" href="#">
                    <i class="fas fa-magnifying-glass"></i> Wyszukaj
                </a>
            </li>
@@ -227,7 +227,7 @@
     
         <div class="col-12">
             <p class="text-center">
-                <img src="/static/images/baner.png" alt="" class="img-fluid">
+                <img alt="" class="img-fluid" src="/static/images/baner.png">
                 Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                 finansowanego z Funduszy EOG.
             </p>
@@ -259,46 +259,46 @@
 
 <h1 class="h3">Tabela Spraw:</h1>
 
-<div id="modal-popup" class="modal fade" role="dialog" aria-hidden="true">
+<div aria-hidden="true" class="modal fade" id="modal-popup" role="dialog">
     <div class="modal-dialog modal-lg">
         <div class="modal-content" style="width:1000px;"></div>
     </div>
 </div>
 
-<div id="tableWrapper" class="row">
+<div class="row" id="tableWrapper">
     <!-- TODO add colvis button and functionality -->
     <div class="col-sm-1 filters">
         <br><br><br><br>
         <h2 class="h4">Filtry:</h2><br>
         <div>
-            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Zgłoszona przez Ciebie sprawa otrzymuje najpierw status &quot;wolna&quot;. To znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na &quot;przypisana&quot;. A gdy już Ci pomożemy &quot;zakończona&quot;." data-bs-original-title="Zgłoszona przez Ciebie sprawa otrzymuje najpierw status &quot;wolna&quot;. To znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na &quot;przypisana&quot;. A gdy już Ci pomożemy &quot;zakończona&quot;.">
+            <i aria-label="Zgłoszona przez Ciebie sprawa otrzymuje najpierw status &quot;wolna&quot;. To znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na &quot;przypisana&quot;. A gdy już Ci pomożemy &quot;zakończona&quot;." class="fa-regular fa-circle-question" data-bs-original-title="Zgłoszona przez Ciebie sprawa otrzymuje najpierw status &quot;wolna&quot;. To znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na &quot;przypisana&quot;. A gdy już Ci pomożemy &quot;zakończona&quot;." data-bs-toggle="tooltip" data-placement="bottom">
             </i>
             <label>Status (kol. "S"):</label><br>
             
-              <input type="checkbox" id="status_free" name="check_status_free" checked="">
-              <label for="status_free" class="small">wolna</label> &nbsp;
+              <input checked="" id="status_free" name="check_status_free" type="checkbox">
+              <label class="small" for="status_free">wolna</label> &nbsp;
               <i class="far fa-circle "></i>
               <br>
             
-              <input type="checkbox" id="status_moderated" name="check_status_moderated" checked="">
-              <label for="status_moderated" class="small">moderowana</label> &nbsp;
+              <input checked="" id="status_moderated" name="check_status_moderated" type="checkbox">
+              <label class="small" for="status_moderated">moderowana</label> &nbsp;
               <i class="far fa-square-plus"></i>
               <br>
             
-              <input type="checkbox" id="status_assigned" name="check_status_assigned" checked="">
-              <label for="status_assigned" class="small">przypisana</label> &nbsp;
+              <input checked="" id="status_assigned" name="check_status_assigned" type="checkbox">
+              <label class="small" for="status_assigned">przypisana</label> &nbsp;
               <i class="far fa-circle-dot"></i>
               <br>
             
-              <input type="checkbox" id="status_closed" name="check_status_closed">
-              <label for="status_closed" class="small">zamknięta</label> &nbsp;
+              <input id="status_closed" name="check_status_closed" type="checkbox">
+              <label class="small" for="status_closed">zamknięta</label> &nbsp;
               <i class="fas fa-circle"></i>
               <br>
             
             <br><br>
         </div>
         <div>
-            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Sprawy, w których w zaangażowanym personelu jest wybrany użytkownik." data-bs-original-title="Sprawy, w których w zaangażowanym personelu jest wybrany użytkownik.">
+            <i aria-label="Sprawy, w których w zaangażowanym personelu jest wybrany użytkownik." class="fa-regular fa-circle-question" data-bs-original-title="Sprawy, w których w zaangażowanym personelu jest wybrany użytkownik." data-bs-toggle="tooltip" data-placement="bottom">
             </i>
             <label for="involved_staff_select">Zaangażowani z zespołu:</label><br>
             <select id="involved_staff_select" name="involved_staff_select" style="width: 120px;">
@@ -314,68 +314,68 @@
             </select><br><br><br>
         </div>        
         <div>
-            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Sprawy, które mają list ze statusem `wykonany` (temat sprawy nie jest pogrubiony)." data-bs-original-title="Sprawy, które mają list ze statusem `wykonany` (temat sprawy nie jest pogrubiony).">
+            <i aria-label="Sprawy, które mają list ze statusem `wykonany` (temat sprawy nie jest pogrubiony)." class="fa-regular fa-circle-question" data-bs-original-title="Sprawy, które mają list ze statusem `wykonany` (temat sprawy nie jest pogrubiony)." data-bs-toggle="tooltip" data-placement="bottom">
             </i>
             <label>Odpowiedziana:</label><br>
-            <input type="checkbox" id="handled_yes" name="check_handled_yes" checked="">
-            <label for="handled_yes" class="small">Tak</label><br>
-            <input type="checkbox" id="handled_no" name="check_handled_no" checked="">
-            <label for="handled_no" class="small">Nie</label><br>
+            <input checked="" id="handled_yes" name="check_handled_yes" type="checkbox">
+            <label class="small" for="handled_yes">Tak</label><br>
+            <input checked="" id="handled_no" name="check_handled_no" type="checkbox">
+            <label class="small" for="handled_no">Nie</label><br>
             <br><br>
         </div>
         <div>
-            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Sprawy, które mają tag." data-bs-original-title="Sprawy, które mają tag.">
+            <i aria-label="Sprawy, które mają tag." class="fa-regular fa-circle-question" data-bs-original-title="Sprawy, które mają tag." data-bs-toggle="tooltip" data-placement="bottom">
             </i>
             <label>Ma tag:</label><br>
-            <input type="checkbox" id="has_tag_yes" name="check_has_tag_yes" checked="">
-            <label for="has_tag_yes" class="small">Tak</label><br>
-            <input type="checkbox" id="has_tag_no" name="check_has_tag_no" checked="">
-            <label for="has_tag_no" class="small">Nie</label><br>
+            <input checked="" id="has_tag_yes" name="check_has_tag_yes" type="checkbox">
+            <label class="small" for="has_tag_yes">Tak</label><br>
+            <input checked="" id="has_tag_no" name="check_has_tag_no" type="checkbox">
+            <label class="small" for="has_tag_no">Nie</label><br>
             <br><br>
         </div>
         <div>
-            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Sprawy, które mają zdarzenie z terminem." data-bs-original-title="Sprawy, które mają zdarzenie z terminem.">
+            <i aria-label="Sprawy, które mają zdarzenie z terminem." class="fa-regular fa-circle-question" data-bs-original-title="Sprawy, które mają zdarzenie z terminem." data-bs-toggle="tooltip" data-placement="bottom">
             </i>
             <label>Ma termin:</label><br>
-            <input type="checkbox" id="has_deadline_yes" name="check_has_deadline_yes" checked="">
-            <label for="has_deadline_yes" class="small">Tak</label><br>
-            <input type="checkbox" id="has_deadline_no" name="check_has_deadline_no" checked="">
-            <label for="has_deadline_no" class="small">Nie</label><br>
+            <input checked="" id="has_deadline_yes" name="check_has_deadline_yes" type="checkbox">
+            <label class="small" for="has_deadline_yes">Tak</label><br>
+            <input checked="" id="has_deadline_no" name="check_has_deadline_no" type="checkbox">
+            <label class="small" for="has_deadline_no">Nie</label><br>
             <br><br>
         </div>
         <div>
-            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Sprawy, które mają list z sugestią artykułów wygenerowaną przez AI." data-bs-original-title="Sprawy, które mają list z sugestią artykułów wygenerowaną przez AI.">
+            <i aria-label="Sprawy, które mają list z sugestią artykułów wygenerowaną przez AI." class="fa-regular fa-circle-question" data-bs-original-title="Sprawy, które mają list z sugestią artykułów wygenerowaną przez AI." data-bs-toggle="tooltip" data-placement="bottom">
             </i>
             <label>Posiada artykuły AI:</label><br>
-            <input type="checkbox" id="has_ai_articles_yes" name="check_has_ai_articles_yes" checked="">
-            <label for="has_ai_articles_yes" class="small">Tak</label><br>
-            <input type="checkbox" id="has_ai_articles_no" name="check_has_ai_articles_no" checked="">
-            <label for="has_ai_articles_no" class="small">Nie</label><br>
+            <input checked="" id="has_ai_articles_yes" name="check_has_ai_articles_yes" type="checkbox">
+            <label class="small" for="has_ai_articles_yes">Tak</label><br>
+            <input checked="" id="has_ai_articles_no" name="check_has_ai_articles_no" type="checkbox">
+            <label class="small" for="has_ai_articles_no">Nie</label><br>
             <br><br>
         </div>
         <div>
-            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Sprawy z listem z artykułami wygenerowanym przez AI, jeszcze niezaakceptowanym ani nieodrzuconym przez członka zespołu." data-bs-original-title="Sprawy z listem z artykułami wygenerowanym przez AI, jeszcze niezaakceptowanym ani nieodrzuconym przez członka zespołu.">
+            <i aria-label="Sprawy z listem z artykułami wygenerowanym przez AI, jeszcze niezaakceptowanym ani nieodrzuconym przez członka zespołu." class="fa-regular fa-circle-question" data-bs-original-title="Sprawy z listem z artykułami wygenerowanym przez AI, jeszcze niezaakceptowanym ani nieodrzuconym przez członka zespołu." data-bs-toggle="tooltip" data-placement="bottom">
             </i>
             <label>Artykuły AI do oceny:</label><br>
-            <input type="checkbox" id="has_ai_articles_to_review_yes" name="check_has_ai_articles_to_review_yes" checked="">
-            <label for="has_ai_articles_to_review_yes" class="small">Tak</label><br>
-            <input type="checkbox" id="has_ai_articles_to_review_no" name="check_has_ai_articles_to_review_no" checked="">
-            <label for="has_ai_articles_to_review_no" class="small">Nie</label><br>
+            <input checked="" id="has_ai_articles_to_review_yes" name="check_has_ai_articles_to_review_yes" type="checkbox">
+            <label class="small" for="has_ai_articles_to_review_yes">Tak</label><br>
+            <input checked="" id="has_ai_articles_to_review_no" name="check_has_ai_articles_to_review_no" type="checkbox">
+            <label class="small" for="has_ai_articles_to_review_no">Nie</label><br>
             <br><br>
         </div>
         <div>
-            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" aria-label="Sprawy, których tag ma sugestię tagów wygenerowaną przez AI." data-bs-original-title="Sprawy, których tag ma sugestię tagów wygenerowaną przez AI.">
+            <i aria-label="Sprawy, których tag ma sugestię tagów wygenerowaną przez AI." class="fa-regular fa-circle-question" data-bs-original-title="Sprawy, których tag ma sugestię tagów wygenerowaną przez AI." data-bs-toggle="tooltip" data-placement="bottom">
             </i>
             <label>Posiada sugestie tagów AI:</label><br>
-            <input type="checkbox" id="has_ai_tag_suggestion_yes" name="check_has_ai_tag_suggestion_yes" checked="">
-            <label for="has_ai_tag_suggestion_yes" class="small">Tak</label><br>
-            <input type="checkbox" id="has_ai_tag_suggestion_no" name="check_has_ai_tag_suggestion_no" checked="">
-            <label for="has_ai_tag_suggestion_no" class="small">Nie</label><br>
+            <input checked="" id="has_ai_tag_suggestion_yes" name="check_has_ai_tag_suggestion_yes" type="checkbox">
+            <label class="small" for="has_ai_tag_suggestion_yes">Tak</label><br>
+            <input checked="" id="has_ai_tag_suggestion_no" name="check_has_ai_tag_suggestion_no" type="checkbox">
+            <label class="small" for="has_ai_tag_suggestion_no">Nie</label><br>
             <br><br>
         </div>
     </div>
     <div class="col-sm-11 table-responsive">
-        <div id="datatable_cases_wrapper" class="dt-container dt-empty-footer"><div id="" class="toolbar"></div><div id="" class="dt-top-row"><div class="dt-length"><label for="dt-length-0">Pokaż <select aria-controls="datatable_cases" autocomplete="off" class="dt-input" id="dt-length-0"><option value="200">200</option><option value="20">20</option><option value="50">50</option><option value="100">100</option></select> pozycji</label></div><div class="dt-search"><label for="dt-search-0">Szukaj:</label><input type="search" class="dt-input" autocomplete="off" id="dt-search-0" placeholder="" aria-controls="datatable_cases"></div></div><div class="dt-scroll" role="table"><div id="datatable_cases_processing" role="status" class="dt-processing" style="display: none;">Przetwarzanie...<div><div></div><div></div><div></div><div></div></div></div><div class="dt-scroll-head" role="none" style="overflow: hidden; position: relative; border: 0px; width: 100%;"><div class="dt-scroll-headInner" role="none" style="box-sizing: content-box; width: 1501px; padding-right: 0px;"><table width="100%" class="table table-bordered compact dataTable" role="none" style="margin-left: 0px; width: 1501px;"><thead><tr><th class="null dt-orderable-asc dt-orderable-desc dt-ordering-desc dt-type-numeric" data-dt-column="0" rowspan="1" colspan="1" aria-sort="descending"><div class="dt-column-header"><div class="dt-column-title">Numer</div><div class="dt-column-order" role="button" aria-label="Numer: aktywuj, by usunąć sortowanie" tabindex="0"></div></div></th><th class="null dt-orderable-none" data-dt-column="1" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">S</div><div class="dt-column-order"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="2" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Przedmiot</div><div class="dt-column-order" role="button" aria-label="Przedmiot: aktywuj, by posortować kolumnę" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="4" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Tag - Przedmiot</div><div class="dt-column-order" role="button" aria-label="Tag - Przedmiot: aktywuj, by posortować kolumnę" tabindex="0"></div></div></th><th class="highlighted dt-orderable-none" data-dt-column="5" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Zaangażowani z zespołu</div><div class="dt-column-order"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="6" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Data terminu</div><div class="dt-column-order" role="button" aria-label="Data terminu: aktywuj, by posortować kolumnę" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="7" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Klient</div><div class="dt-column-order" role="button" aria-label="Klient: aktywuj, by posortować kolumnę" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc dt-type-date" data-dt-column="8" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Ostatnia czynność</div><div class="dt-column-order" role="button" aria-label="Ostatnia czynność: aktywuj, by posortować kolumnę" tabindex="0"></div></div></th><th class="null dt-orderable-none dt-type-numeric" data-dt-column="9" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Liczba listów</div><div class="dt-column-order"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc dt-type-date" data-dt-column="10" rowspan="1" colspan="1"><div class="dt-column-header"><div class="dt-column-title">Utworzone o</div><div class="dt-column-order" role="button" aria-label="Utworzone o: aktywuj, by posortować kolumnę" tabindex="0"></div></div></th></tr><tr class="datatable-column-filter-row"><th style="padding: 0px;"><input type="text" data-index="0" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></th><th style="padding: 0px;">&nbsp;</th><th style="padding: 0px;"><input type="text" data-index="2" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></th><th style="padding: 0px;"><input type="text" data-index="4" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></th><th style="padding: 0px;">&nbsp;</th><th style="padding: 0px;"><input type="text" data-index="6" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></th><th style="padding: 0px;"><input type="text" data-index="7" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></th><th style="padding: 0px;"><input type="text" data-index="8" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></th><th style="padding: 0px;">&nbsp;</th><th style="padding: 0px;"><input type="text" data-index="10" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></th></tr></thead><colgroup><col data-dt-column="0" style="width: 122.094px; min-width: 122.094px;"><col data-dt-column="1" style="width: 43.9219px; min-width: 43.9219px;"><col data-dt-column="2" style="width: 237.828px; min-width: 237.828px;"><col data-dt-column="4" style="width: 212.047px; min-width: 212.047px;"><col data-dt-column="5" style="width: 202.875px; min-width: 202.875px;"><col data-dt-column="6" style="width: 138.234px; min-width: 138.234px;"><col data-dt-column="7" style="width: 116.734px; min-width: 116.734px;"><col data-dt-column="8" style="width: 153.75px; min-width: 153.75px;"><col data-dt-column="9" style="width: 97.1875px; min-width: 97.1875px;"><col data-dt-column="10" style="width: 175.328px; min-width: 175.328px;"></colgroup></table></div></div><div class="dt-scroll-body" role="none" style="position: relative; overflow: auto; width: 100%; max-height: 757.609px; height: 757.609px;"><table id="datatable_cases" width="100%" class="table table-bordered compact dataTable" role="none" aria-describedby="datatable_cases_info" style="width: 100%;"><colgroup><col data-dt-column="0" style="width: 122.094px; min-width: 122.094px;"><col data-dt-column="1" style="width: 43.9219px; min-width: 43.9219px;"><col data-dt-column="2" style="width: 237.828px; min-width: 237.828px;"><col data-dt-column="4" style="width: 212.047px; min-width: 212.047px;"><col data-dt-column="5" style="width: 202.875px; min-width: 202.875px;"><col data-dt-column="6" style="width: 138.234px; min-width: 138.234px;"><col data-dt-column="7" style="width: 116.734px; min-width: 116.734px;"><col data-dt-column="8" style="width: 153.75px; min-width: 153.75px;"><col data-dt-column="9" style="width: 97.1875px; min-width: 97.1875px;"><col data-dt-column="10" style="width: 175.328px; min-width: 175.328px;"></colgroup><tfoot role="none"></tfoot><thead role="none"><tr role="row"><th class="null dt-orderable-asc dt-orderable-desc dt-ordering-desc dt-type-numeric" data-dt-column="0" rowspan="1" colspan="1" aria-sort="descending" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Numer</div><div class="dt-column-order" aria-label="Numer: aktywuj, by usunąć sortowanie"></div></div></div></th><th class="null dt-orderable-none" data-dt-column="1" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">S</div><div class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="2" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Przedmiot</div><div class="dt-column-order" aria-label="Przedmiot: aktywuj, by posortować kolumnę"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="4" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Tag - Przedmiot</div><div class="dt-column-order" aria-label="Tag - Przedmiot: aktywuj, by posortować kolumnę"></div></div></div></th><th class="highlighted dt-orderable-none" data-dt-column="5" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Zaangażowani z zespołu</div><div class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="6" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Data terminu</div><div class="dt-column-order" aria-label="Data terminu: aktywuj, by posortować kolumnę"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" data-dt-column="7" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Klient</div><div class="dt-column-order" aria-label="Klient: aktywuj, by posortować kolumnę"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc dt-type-date" data-dt-column="8" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Ostatnia czynność</div><div class="dt-column-order" aria-label="Ostatnia czynność: aktywuj, by posortować kolumnę"></div></div></div></th><th class="null dt-orderable-none dt-type-numeric" data-dt-column="9" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Liczba listów</div><div class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc dt-type-date" data-dt-column="10" rowspan="1" colspan="1" role="columnheader"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Utworzone o</div><div class="dt-column-order" aria-label="Utworzone o: aktywuj, by posortować kolumnę"></div></div></div></th></tr><tr class="datatable-column-filter-row" role="row"><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing"><input type="text" data-index="0" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing">&nbsp;</div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing"><input type="text" data-index="2" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing"><input type="text" data-index="4" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing">&nbsp;</div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing"><input type="text" data-index="6" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing"><input type="text" data-index="7" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing"><input type="text" data-index="8" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing">&nbsp;</div></th><th style="padding: 0px;" role="columnheader"><div class="dt-scroll-sizing"><input type="text" data-index="10" placeholder="..." value="" style="width: 100%; box-sizing: border-box;"></div></th></tr></thead>
+        <div class="dt-container dt-empty-footer" id="datatable_cases_wrapper"><div class="toolbar" id=""></div><div class="dt-top-row" id=""><div class="dt-length"><label for="dt-length-0">Pokaż <select aria-controls="datatable_cases" autocomplete="off" class="dt-input" id="dt-length-0"><option value="200">200</option><option value="20">20</option><option value="50">50</option><option value="100">100</option></select> pozycji</label></div><div class="dt-search"><label for="dt-search-0">Szukaj:</label><input aria-controls="datatable_cases" autocomplete="off" class="dt-input" id="dt-search-0" placeholder="" type="search"></div></div><div class="dt-scroll" role="table"><div class="dt-processing" id="datatable_cases_processing" role="status" style="display: none;">Przetwarzanie...<div><div></div><div></div><div></div><div></div></div></div><div class="dt-scroll-head" role="none" style="overflow: hidden; position: relative; border: 0px; width: 100%;"><div class="dt-scroll-headInner" role="none" style="box-sizing: content-box; width: 1501px; padding-right: 0px;"><table class="table table-bordered compact dataTable" role="none" style="margin-left: 0px; width: 1501px;" width="100%"><thead><tr><th aria-sort="descending" class="null dt-orderable-asc dt-orderable-desc dt-ordering-desc dt-type-numeric" colspan="1" data-dt-column="0" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Numer</div><div aria-label="Numer: aktywuj, by usunąć sortowanie" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-none" colspan="1" data-dt-column="1" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">S</div><div class="dt-column-order"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="2" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Przedmiot</div><div aria-label="Przedmiot: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="4" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Tag - Przedmiot</div><div aria-label="Tag - Przedmiot: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="highlighted dt-orderable-none" colspan="1" data-dt-column="5" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Zaangażowani z zespołu</div><div class="dt-column-order"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="6" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Data terminu</div><div aria-label="Data terminu: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="7" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Klient</div><div aria-label="Klient: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc dt-type-date" colspan="1" data-dt-column="8" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Ostatnia czynność</div><div aria-label="Ostatnia czynność: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-none dt-type-numeric" colspan="1" data-dt-column="9" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Liczba listów</div><div class="dt-column-order"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc dt-type-date" colspan="1" data-dt-column="10" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Utworzone o</div><div aria-label="Utworzone o: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th></tr><tr class="datatable-column-filter-row"><th style="padding: 0px;"><input data-index="0" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></th><th style="padding: 0px;">&nbsp;</th><th style="padding: 0px;"><input data-index="2" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></th><th style="padding: 0px;"><input data-index="4" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></th><th style="padding: 0px;">&nbsp;</th><th style="padding: 0px;"><input data-index="6" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></th><th style="padding: 0px;"><input data-index="7" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></th><th style="padding: 0px;"><input data-index="8" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></th><th style="padding: 0px;">&nbsp;</th><th style="padding: 0px;"><input data-index="10" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></th></tr></thead><colgroup><col data-dt-column="0" style="width: 122.094px; min-width: 122.094px;"><col data-dt-column="1" style="width: 43.9219px; min-width: 43.9219px;"><col data-dt-column="2" style="width: 237.828px; min-width: 237.828px;"><col data-dt-column="4" style="width: 212.047px; min-width: 212.047px;"><col data-dt-column="5" style="width: 202.875px; min-width: 202.875px;"><col data-dt-column="6" style="width: 138.234px; min-width: 138.234px;"><col data-dt-column="7" style="width: 116.734px; min-width: 116.734px;"><col data-dt-column="8" style="width: 153.75px; min-width: 153.75px;"><col data-dt-column="9" style="width: 97.1875px; min-width: 97.1875px;"><col data-dt-column="10" style="width: 175.328px; min-width: 175.328px;"></colgroup></table></div></div><div class="dt-scroll-body" role="none" style="position: relative; overflow: auto; width: 100%; max-height: 757.609px; height: 757.609px;"><table aria-describedby="datatable_cases_info" class="table table-bordered compact dataTable" id="datatable_cases" role="none" style="width: 100%;" width="100%"><colgroup><col data-dt-column="0" style="width: 122.094px; min-width: 122.094px;"><col data-dt-column="1" style="width: 43.9219px; min-width: 43.9219px;"><col data-dt-column="2" style="width: 237.828px; min-width: 237.828px;"><col data-dt-column="4" style="width: 212.047px; min-width: 212.047px;"><col data-dt-column="5" style="width: 202.875px; min-width: 202.875px;"><col data-dt-column="6" style="width: 138.234px; min-width: 138.234px;"><col data-dt-column="7" style="width: 116.734px; min-width: 116.734px;"><col data-dt-column="8" style="width: 153.75px; min-width: 153.75px;"><col data-dt-column="9" style="width: 97.1875px; min-width: 97.1875px;"><col data-dt-column="10" style="width: 175.328px; min-width: 175.328px;"></colgroup><tfoot role="none"></tfoot><thead role="none"><tr role="row"><th aria-sort="descending" class="null dt-orderable-asc dt-orderable-desc dt-ordering-desc dt-type-numeric" colspan="1" data-dt-column="0" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Numer</div><div aria-label="Numer: aktywuj, by usunąć sortowanie" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-none" colspan="1" data-dt-column="1" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">S</div><div class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="2" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Przedmiot</div><div aria-label="Przedmiot: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="4" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Tag - Przedmiot</div><div aria-label="Tag - Przedmiot: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="highlighted dt-orderable-none" colspan="1" data-dt-column="5" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Zaangażowani z zespołu</div><div class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="6" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Data terminu</div><div aria-label="Data terminu: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="7" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Klient</div><div aria-label="Klient: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc dt-type-date" colspan="1" data-dt-column="8" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Ostatnia czynność</div><div aria-label="Ostatnia czynność: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-none dt-type-numeric" colspan="1" data-dt-column="9" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Liczba listów</div><div class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc dt-type-date" colspan="1" data-dt-column="10" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Utworzone o</div><div aria-label="Utworzone o: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th></tr><tr class="datatable-column-filter-row" role="row"><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><input data-index="0" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing">&nbsp;</div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><input data-index="2" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><input data-index="4" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing">&nbsp;</div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><input data-index="6" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><input data-index="7" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><input data-index="8" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing">&nbsp;</div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><input data-index="10" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></div></th></tr></thead>
             <!-- table-striped  nowrap-->
         <tbody role="rowgroup"><tr id="row-65" role="row"><td class="null dt-type-numeric sorting_1" role="cell">65</td><td class="null" role="cell"><span class="far fa-square-plus"></span></td><td class="null" role="cell"><b><a href="/sprawy/sprawa-65/">Prośba o udostępnienie rejestru nr 57</a></b></td><td class="null" role="cell"></td><td class="highlighted" role="cell">
                 <span class="badge text-bg-info" title="Can add record, Can change own records, Can view">
@@ -425,7 +425,7 @@
             </td><td class="null" role="cell"></td><td class="null" role="cell">Ewa Klientka (ext)</td><td class="null dt-type-date" role="cell">[DATETIME]</td><td class="null dt-type-numeric" role="cell">1</td><td class="null dt-type-date" role="cell">[DATETIME]</td></tr><tr id="row-2" role="row"><td class="null dt-type-numeric sorting_1" role="cell">2</td><td class="null" role="cell"><span class="far fa-square-plus"></span></td><td class="null" role="cell"><b><a href="/sprawy/sprawa-2/">Spór o dostęp do danych środowiskowych</a></b></td><td class="null" role="cell"><a href="/porady/1">Porada ws. danych środowiskowych</a></td><td class="highlighted" role="cell">
                 <span class="badge text-bg-info" title="Can add record, Can change own records, Can view">
                 Celina Wsparcie</span>
-            </td><td class="null" role="cell"></td><td class="null" role="cell">Ewa Klientka (ext)</td><td class="null dt-type-date" role="cell">[DATETIME]</td><td class="null dt-type-numeric" role="cell">5</td><td class="null dt-type-date" role="cell">[DATETIME]</td></tr></tbody></table></div><div class="dt-scroll-foot" role="none" style="overflow: hidden; border: 0px; width: 100%;"><div class="dt-scroll-footInner" role="none" style="width: 1501px; padding-right: 0px;"><table width="100%" class="table table-bordered compact dataTable" role="none" style="margin-left: 0px; width: 1501px;"><colgroup><col data-dt-column="0" style="width: 122.094px; min-width: 122.094px;"><col data-dt-column="1" style="width: 43.9219px; min-width: 43.9219px;"><col data-dt-column="2" style="width: 237.828px; min-width: 237.828px;"><col data-dt-column="4" style="width: 212.047px; min-width: 212.047px;"><col data-dt-column="5" style="width: 202.875px; min-width: 202.875px;"><col data-dt-column="6" style="width: 138.234px; min-width: 138.234px;"><col data-dt-column="7" style="width: 116.734px; min-width: 116.734px;"><col data-dt-column="8" style="width: 153.75px; min-width: 153.75px;"><col data-dt-column="9" style="width: 97.1875px; min-width: 97.1875px;"><col data-dt-column="10" style="width: 175.328px; min-width: 175.328px;"></colgroup></table></div></div></div><div id="" class="dt-bottom-row"><div class="dt-info" aria-live="polite" id="datatable_cases_info" role="status">Pozycje od 1 do 16 z 16 łącznie</div><div class="dt-paging"><nav aria-label="pagination"><button class="dt-paging-button disabled first" role="link" type="button" aria-controls="datatable_cases" aria-disabled="true" aria-label="Pierwsza" data-dt-idx="first" tabindex="-1">Pierwsza</button><button class="dt-paging-button disabled previous" role="link" type="button" aria-controls="datatable_cases" aria-disabled="true" aria-label="Poprzednia" data-dt-idx="previous" tabindex="-1">Poprzednia</button><button class="dt-paging-button current" role="link" type="button" aria-controls="datatable_cases" aria-current="page" data-dt-idx="0">1</button><button class="dt-paging-button disabled next" role="link" type="button" aria-controls="datatable_cases" aria-disabled="true" aria-label="Następna" data-dt-idx="next" tabindex="-1">Następna</button><button class="dt-paging-button disabled last" role="link" type="button" aria-controls="datatable_cases" aria-disabled="true" aria-label="Ostatnia" data-dt-idx="last" tabindex="-1">Ostatnia</button></nav></div></div><div class="dt-autosize" style="width: 100%; height: 0px;"></div></div>
+            </td><td class="null" role="cell"></td><td class="null" role="cell">Ewa Klientka (ext)</td><td class="null dt-type-date" role="cell">[DATETIME]</td><td class="null dt-type-numeric" role="cell">5</td><td class="null dt-type-date" role="cell">[DATETIME]</td></tr></tbody></table></div><div class="dt-scroll-foot" role="none" style="overflow: hidden; border: 0px; width: 100%;"><div class="dt-scroll-footInner" role="none" style="width: 1501px; padding-right: 0px;"><table class="table table-bordered compact dataTable" role="none" style="margin-left: 0px; width: 1501px;" width="100%"><colgroup><col data-dt-column="0" style="width: 122.094px; min-width: 122.094px;"><col data-dt-column="1" style="width: 43.9219px; min-width: 43.9219px;"><col data-dt-column="2" style="width: 237.828px; min-width: 237.828px;"><col data-dt-column="4" style="width: 212.047px; min-width: 212.047px;"><col data-dt-column="5" style="width: 202.875px; min-width: 202.875px;"><col data-dt-column="6" style="width: 138.234px; min-width: 138.234px;"><col data-dt-column="7" style="width: 116.734px; min-width: 116.734px;"><col data-dt-column="8" style="width: 153.75px; min-width: 153.75px;"><col data-dt-column="9" style="width: 97.1875px; min-width: 97.1875px;"><col data-dt-column="10" style="width: 175.328px; min-width: 175.328px;"></colgroup></table></div></div></div><div class="dt-bottom-row" id=""><div aria-live="polite" class="dt-info" id="datatable_cases_info" role="status">Pozycje od 1 do 16 z 16 łącznie</div><div class="dt-paging"><nav aria-label="pagination"><button aria-controls="datatable_cases" aria-disabled="true" aria-label="Pierwsza" class="dt-paging-button disabled first" data-dt-idx="first" role="link" tabindex="-1" type="button">Pierwsza</button><button aria-controls="datatable_cases" aria-disabled="true" aria-label="Poprzednia" class="dt-paging-button disabled previous" data-dt-idx="previous" role="link" tabindex="-1" type="button">Poprzednia</button><button aria-controls="datatable_cases" aria-current="page" class="dt-paging-button current" data-dt-idx="0" role="link" type="button">1</button><button aria-controls="datatable_cases" aria-disabled="true" aria-label="Następna" class="dt-paging-button disabled next" data-dt-idx="next" role="link" tabindex="-1" type="button">Następna</button><button aria-controls="datatable_cases" aria-disabled="true" aria-label="Ostatnia" class="dt-paging-button disabled last" data-dt-idx="last" role="link" tabindex="-1" type="button">Ostatnia</button></nav></div></div><div class="dt-autosize" style="width: 100%; height: 0px;"></div></div>
     </div>
 </div>
 
@@ -449,7 +449,7 @@
             <div class="footer">
                     <div class="footer-center col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
                         
-                            <img src="/static/images/baner.png" alt="" class="img-fluid"><br>
+                            <img alt="" class="img-fluid" src="/static/images/baner.png"><br>
                             Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                             finansowanego z Funduszy EOG.<br>
                         
@@ -471,8 +471,8 @@
 
         
 
-<form action="/uwagi/submit" method="post"> <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div id="div_id_text" class="mb-3"> <label for="id_text" class="form-label requiredField">
-                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea name="text" cols="40" rows="10" class="textarea form-control" required="" aria-describedby="id_text_helptext" id="id_text"></textarea> <div id="id_text_helptext" class="form-text">Treść zgłoszona przez użytkownika</div> </div> <input type="hidden" name="url" value="http://localhost:8000/sprawy/table/" id="id_url"> <div class="mb-3"> <div class=""> <input type="submit" name="feedback_action" value="Zgłoś usterkę administratorom poradni." class="btn btn-primary btn-primary" id="submit-id-feedback_action"> </div> </div> </form>
+<form action="/uwagi/submit" method="post"> <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_text"> <label class="form-label requiredField" for="id_text">
+                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea aria-describedby="id_text_helptext" class="textarea form-control" cols="40" id="id_text" name="text" required="" rows="10"></textarea> <div class="form-text" id="id_text_helptext">Treść zgłoszona przez użytkownika</div> </div> <input id="id_url" name="url" type="hidden" value="http://localhost:8000/sprawy/table/"> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-feedback_action" name="feedback_action" type="submit" value="Zgłoś usterkę administratorom poradni."> </div> </div> </form>
 
     </div>
 </div>
@@ -483,12 +483,12 @@
 
     
 <!-- Modal -->
-<div class="modal fade" id="navsearch_modal" tabindex="-1" role="dialog" aria-labelledby="navsearch_modal_label">
+<div aria-labelledby="navsearch_modal_label" class="modal fade" id="navsearch_modal" role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title" id="navsearch_modal_label">Wyszukaj</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body">
                 
@@ -496,7 +496,7 @@
 	<form class="form" onsubmit="return false;">
 		<div class="form-group">
 			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
-			<input type="search" id="search" name="q" class="form-control navsearch__input" hx-get="/navsearch/" hx-trigger="input changed delay:300ms" hx-target=".navsearch__results" hx-swap="innerHTML">
+			<input class="form-control navsearch__input" hx-get="/navsearch/" hx-swap="innerHTML" hx-target=".navsearch__results" hx-trigger="input changed delay:300ms" id="search" name="q" type="search">
 		</div>
 	</form>
 	<div class="navsearch__results"></div>
@@ -524,7 +524,7 @@
 
 
 <div id="attachment-text-modal-container"></div>
-<div id="htmx-spinner" class="htmx-indicator">
+<div class="htmx-indicator" id="htmx-spinner">
     Wczytywanie...
 </div>
 <script>

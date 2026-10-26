@@ -1,28 +1,28 @@
-<!DOCTYPE html><html lang="pl" data-ui-mode="normal"><head>
+<!DOCTYPE html><html data-ui-mode="normal" lang="pl"><head>
     <meta charset="utf-8">
     <title>Rejestr tagów - Porady - Poradnia</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Poradnia App">
-    <meta name="author" content="Sieć Obywatelska - Watchdog Polska">
-    <meta name="theme-color" content="#D82727">
-    <link rel="apple-touch-icon" sizes="160x128" href="/static/images/logo-160x128.png">
-    <link rel="shortcut icon" type="image/png" href="/static/images/favicon-32x26.png" sizes="32x32">
-    <link rel="manifest" href="/static/images/manifest.json">
-    <meta name="msapplication-TileColor" content="#da532c">
-    <meta name="msapplication-TileImage" content="/static/images/logo-160x128.png">
-    <meta property="og:image" content="/static/images/logo-czerwone-tlo-1200x600.jpg">
-    <meta property="og:image:type" content="image/jpg">
-    <meta property="og:image:width" content="1200">
-    <meta property="og:image:height" content="600">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Poradnia App" name="description">
+    <meta content="Sieć Obywatelska - Watchdog Polska" name="author">
+    <meta content="#D82727" name="theme-color">
+    <link href="/static/images/logo-160x128.png" rel="apple-touch-icon" sizes="160x128">
+    <link href="/static/images/favicon-32x26.png" rel="shortcut icon" sizes="32x32" type="image/png">
+    <link href="/static/images/manifest.json" rel="manifest">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="/static/images/logo-160x128.png" name="msapplication-TileImage">
+    <meta content="/static/images/logo-czerwone-tlo-1200x600.jpg" property="og:image">
+    <meta content="image/jpg" property="og:image:type">
+    <meta content="1200" property="og:image:width">
+    <meta content="600" property="og:image:height">
 
     <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
     <!--[if lt IE 9]>
   <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->
-    <link rel="stylesheet" href="/static/tasty_feedback/style.css">
+    <link href="/static/tasty_feedback/style.css" rel="stylesheet">
 
     
-        <link rel="stylesheet" href="/static/css/style.min.css">
+        <link href="/static/css/style.min.css" rel="stylesheet">
     
     
     
@@ -63,12 +63,12 @@
      still comfortably clear. z-index is needed because .navbar is
      position:fixed on mobile widths (see _layout.scss) and would
      otherwise render on top of this. -->
-<form method="post" action="/ui-mode/" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
-    <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
-    <input type="hidden" name="next" value="/porady/">
+<form action="/ui-mode/" method="post" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
+    <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
+    <input name="next" type="hidden" value="/porady/">
     
-        <input type="hidden" name="mode" value="wcag">
-        <button type="submit" class="btn btn-dark">Włącz wersję dostępną</button>
+        <input name="mode" type="hidden" value="wcag">
+        <button class="btn btn-dark" type="submit">Włącz wersję dostępną</button>
     
 </form>
 
@@ -102,7 +102,7 @@
                  with class="collapse" and no "show" - Bootstrap's own
                  CSS (.collapse:not(.show) { display: none; }) then hid
                  the entire page until reload. -->
-            <button type="button" class="navbar-toggler collapsed" data-bs-target="body" aria-expanded="false">
+            <button aria-expanded="false" class="navbar-toggler collapsed" data-bs-target="body" type="button">
                 <span class="visually-hidden">Toggle navigation</span>
                 <i class="navbar-burger"></i>
             </button>
@@ -129,7 +129,7 @@
         
         
            <li class="block-list-item">
-              <a href="#" data-bs-toggle="modal" data-bs-target="#navsearch_modal">
+              <a data-bs-target="#navsearch_modal" data-bs-toggle="modal" href="#">
                    <i class="fas fa-magnifying-glass"></i> Wyszukaj
                </a>
            </li>
@@ -235,7 +235,7 @@
     
         <div class="col-12">
             <p class="text-center">
-                <img src="/static/images/baner.png" alt="" class="img-fluid">
+                <img alt="" class="img-fluid" src="/static/images/baner.png">
                 Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                 finansowanego z Funduszy EOG.
             </p>
@@ -257,7 +257,7 @@
         
     <li class="breadcrumb-item active">Wykaz tagów</li>
     <div class="float-end">
-        <a href="/porady/nowa/" class="btn btn-success"><i class="fas fa-pencil"></i> Dodaj</a>
+        <a class="btn btn-success" href="/porady/nowa/"><i class="fas fa-pencil"></i> Dodaj</a>
     </div>
 
     </ol>
@@ -276,52 +276,52 @@
 
 <form class="form-inline" method="get"> <link href="/static/dal_alight/autocomplete-light.css" media="all" rel="stylesheet">
 <script src="/static/dal_alight/autocomplete-light.js"></script>
-<script src="/static/dal_alight/dal-django.js"></script> <fieldset> <legend>Dane statystyczne</legend> <div class="row"> <div class="col-sm-12 col-md-4"> <div id="div_id_area" class="mb-3"> <label for="id_area" class="form-label">
+<script src="/static/dal_alight/dal-django.js"></script> <fieldset> <legend>Dane statystyczne</legend> <div class="row"> <div class="col-sm-12 col-md-4"> <div class="mb-3" id="div_id_area"> <label class="form-label" for="id_area">
                 Obszary
-            </label> <autocomplete-select data-bound="true"><select name="area" class="modelalightmultiple form-select" id="id_area" slot="select" data-autocomplete-light-url="/porady/area-autocomplete/" multiple="">
-</select><span slot="deck"></span><autocomplete-select-input slot="input" url="/porady/area-autocomplete/" data-bound="true"><input type="text" name="area-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="false"></autocomplete-select-input></autocomplete-select> </div> </div>
-<div class="col-sm-12 col-md-4"> <div id="div_id_issues" class="mb-3"> <label for="id_issues" class="form-label">
+            </label> <autocomplete-select data-bound="true"><select class="modelalightmultiple form-select" data-autocomplete-light-url="/porady/area-autocomplete/" id="id_area" multiple="" name="area" slot="select">
+</select><span slot="deck"></span><autocomplete-select-input data-bound="true" slot="input" url="/porady/area-autocomplete/"><input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" autocomplete="off" class="vTextField" name="area-input" placeholder="Wyszukaj" slot="input" type="text"></autocomplete-select-input></autocomplete-select> </div> </div>
+<div class="col-sm-12 col-md-4"> <div class="mb-3" id="div_id_issues"> <label class="form-label" for="id_issues">
                 Zagadnienia
-            </label> <autocomplete-select data-bound="true"><select name="issues" class="modelalightmultiple form-select" id="id_issues" slot="select" data-autocomplete-light-url="/porady/issue-autocomplete/" multiple="">
-</select><span slot="deck"></span><autocomplete-select-input slot="input" url="/porady/issue-autocomplete/" data-bound="true"><input type="text" name="issues-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="false"></autocomplete-select-input></autocomplete-select> </div> </div>
-<div class="col-sm-12 col-md-4"> <div id="div_id_person_kind" class="mb-3"> <label for="id_person_kind" class="form-label">
+            </label> <autocomplete-select data-bound="true"><select class="modelalightmultiple form-select" data-autocomplete-light-url="/porady/issue-autocomplete/" id="id_issues" multiple="" name="issues" slot="select">
+</select><span slot="deck"></span><autocomplete-select-input data-bound="true" slot="input" url="/porady/issue-autocomplete/"><input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" autocomplete="off" class="vTextField" name="issues-input" placeholder="Wyszukaj" slot="input" type="text"></autocomplete-select-input></autocomplete-select> </div> </div>
+<div class="col-sm-12 col-md-4"> <div class="mb-3" id="div_id_person_kind"> <label class="form-label" for="id_person_kind">
                 Rodzaj osoby, która się zgłasza o poradę
-            </label> <select name="person_kind" class="select form-select" id="id_person_kind"> <option value="" selected="">---------</option> <option value="1">Osoba fizyczna</option>
+            </label> <select class="select form-select" id="id_person_kind" name="person_kind"> <option selected="" value="">---------</option> <option value="1">Osoba fizyczna</option>
 
 </select> </div> </div>
 
 </div>
-<div class="row"> <div class="col-sm-12 col-md-3"> <div id="div_id_institution_kind" class="mb-3"> <label for="id_institution_kind" class="form-label">
+<div class="row"> <div class="col-sm-12 col-md-3"> <div class="mb-3" id="div_id_institution_kind"> <label class="form-label" for="id_institution_kind">
                 Rodzaj podmiotu zobowiązanego
-            </label> <select name="institution_kind" class="select form-select" id="id_institution_kind"> <option value="" selected="">---------</option> <option value="1">Urząd gminy</option>
+            </label> <select class="select form-select" id="id_institution_kind" name="institution_kind"> <option selected="" value="">---------</option> <option value="1">Urząd gminy</option>
 
 </select> </div> </div>
-<div class="col-sm-12 col-md-2"> <div id="div_id_helped" class="mb-3"> <label for="id_helped" class="form-label">
+<div class="col-sm-12 col-md-2"> <div class="mb-3" id="div_id_helped"> <label class="form-label" for="id_helped">
                 Czy udzieliliśmy porady?
-            </label> <select name="helped" class="nullbooleanselect form-select" id="id_helped"> <option value="unknown" selected="">Nieznane</option> <option value="true">Tak</option> <option value="false">Nie</option>
+            </label> <select class="nullbooleanselect form-select" id="id_helped" name="helped"> <option selected="" value="unknown">Nieznane</option> <option value="true">Tak</option> <option value="false">Nie</option>
 
 </select> </div> </div>
-<div class="col-sm-12 col-md-7"> <div id="div_id_community" class="mb-3"> <label for="id_community" class="form-label">
+<div class="col-sm-12 col-md-7"> <div class="mb-3" id="div_id_community"> <label class="form-label" for="id_community">
                 Gmina
-            </label> <autocomplete-select data-bound="true"><select name="community" class="modelalightmultiple form-select" id="id_community" slot="select" data-autocomplete-light-url="/teryt/gminy-autouzupelnianie/" multiple="">
-</select><span slot="deck"></span><autocomplete-select-input slot="input" url="/teryt/gminy-autouzupelnianie/" data-bound="true"><input type="text" name="community-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="false"></autocomplete-select-input></autocomplete-select> </div> </div>
+            </label> <autocomplete-select data-bound="true"><select class="modelalightmultiple form-select" data-autocomplete-light-url="/teryt/gminy-autouzupelnianie/" id="id_community" multiple="" name="community" slot="select">
+</select><span slot="deck"></span><autocomplete-select-input data-bound="true" slot="input" url="/teryt/gminy-autouzupelnianie/"><input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" autocomplete="off" class="vTextField" name="community-input" placeholder="Wyszukaj" slot="input" type="text"></autocomplete-select-input></autocomplete-select> </div> </div>
 
 </div> </fieldset>
-<fieldset> <legend>Szczegóły</legend> <div id="div_id_advicer" class="mb-3"> <label for="id_advicer" class="form-label">
+<fieldset> <legend>Szczegóły</legend> <div class="mb-3" id="div_id_advicer"> <label class="form-label" for="id_advicer">
                 Radzący
-            </label> <autocomplete-select data-bound="true"><select name="advicer" class="modelalight form-select" id="id_advicer" slot="select" data-autocomplete-light-url="/uzytkownik/~autocomplete/">
-</select><span slot="deck"></span><autocomplete-select-input slot="input" url="/uzytkownik/~autocomplete/" data-bound="true"><input type="text" name="advicer-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="false"></autocomplete-select-input></autocomplete-select> </div> <div id="div_id_created_by" class="mb-3"> <label for="id_created_by" class="form-label">
+            </label> <autocomplete-select data-bound="true"><select class="modelalight form-select" data-autocomplete-light-url="/uzytkownik/~autocomplete/" id="id_advicer" name="advicer" slot="select">
+</select><span slot="deck"></span><autocomplete-select-input data-bound="true" slot="input" url="/uzytkownik/~autocomplete/"><input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" autocomplete="off" class="vTextField" name="advicer-input" placeholder="Wyszukaj" slot="input" type="text"></autocomplete-select-input></autocomplete-select> </div> <div class="mb-3" id="div_id_created_by"> <label class="form-label" for="id_created_by">
                 Utworzona przez
-            </label> <autocomplete-select data-bound="true"><select name="created_by" class="modelalight form-select" id="id_created_by" slot="select" data-autocomplete-light-url="/uzytkownik/~autocomplete/">
-</select><span slot="deck"></span><autocomplete-select-input slot="input" url="/uzytkownik/~autocomplete/" data-bound="true"><input type="text" name="created_by-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="false"></autocomplete-select-input></autocomplete-select> </div> <div id="div_id_created_on" class="mb-3"> <label for="id_created_on" class="form-label">
+            </label> <autocomplete-select data-bound="true"><select class="modelalight form-select" data-autocomplete-light-url="/uzytkownik/~autocomplete/" id="id_created_by" name="created_by" slot="select">
+</select><span slot="deck"></span><autocomplete-select-input data-bound="true" slot="input" url="/uzytkownik/~autocomplete/"><input aria-autocomplete="list" aria-expanded="false" aria-haspopup="listbox" autocomplete="off" class="vTextField" name="created_by-input" placeholder="Wyszukaj" slot="input" type="text"></autocomplete-select-input></autocomplete-select> </div> <div class="mb-3" id="div_id_created_on"> <label class="form-label" for="id_created_on">
                 Utworzone o
-            </label> <select name="created_on" class="select form-select" id="id_created_on"> <option value="" selected="">---------</option> <option value="today">Dziś</option> <option value="yesterday">Wczoraj</option> <option value="week">Ostatnie 7 dni</option> <option value="month">Ten miesiąc</option> <option value="year">Ten rok</option>
+            </label> <select class="select form-select" id="id_created_on" name="created_on"> <option selected="" value="">---------</option> <option value="today">Dziś</option> <option value="yesterday">Wczoraj</option> <option value="week">Ostatnie 7 dni</option> <option value="month">Ten miesiąc</option> <option value="year">Ten rok</option>
 
-</select> </div> <div id="div_id_subject" class="mb-3"> <label for="id_subject" class="form-label">
+</select> </div> <div class="mb-3" id="div_id_subject"> <label class="form-label" for="id_subject">
                 Przedmiot
-            </label> <input type="text" name="subject" class="textinput form-control" id="id_subject"> </div> <div id="div_id_comment" class="mb-3"> <label for="id_comment" class="form-label">
+            </label> <input class="textinput form-control" id="id_subject" name="subject" type="text"> </div> <div class="mb-3" id="div_id_comment"> <label class="form-label" for="id_comment">
                 Komentarz
-            </label> <input type="text" name="comment" class="textinput form-control" id="id_comment"> </div> </fieldset> <div class="mb-3"> <div class=""> <input type="submit" name="filter" value="Zastosuj filtr" class="btn btn-primary" id="submit-id-filter"> </div> </div> </form>
+            </label> <input class="textinput form-control" id="id_comment" name="comment" type="text"> </div> </fieldset> <div class="mb-3"> <div class=""> <input class="btn btn-primary" id="submit-id-filter" name="filter" type="submit" value="Zastosuj filtr"> </div> </div> </form>
 
                 
                     <div class="row">
@@ -390,7 +390,7 @@
             <div class="footer">
                     <div class="footer-center col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
                         
-                            <img src="/static/images/baner.png" alt="" class="img-fluid"><br>
+                            <img alt="" class="img-fluid" src="/static/images/baner.png"><br>
                             Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
                             finansowanego z Funduszy EOG.<br>
                         
@@ -412,8 +412,8 @@
 
         
 
-<form action="/uwagi/submit" method="post"> <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]"> <div id="div_id_text" class="mb-3"> <label for="id_text" class="form-label requiredField">
-                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea name="text" cols="40" rows="10" class="textarea form-control" required="" aria-describedby="id_text_helptext" id="id_text"></textarea> <div id="id_text_helptext" class="form-text">Treść zgłoszona przez użytkownika</div> </div> <input type="hidden" name="url" value="http://localhost:8000/porady/" id="id_url"> <div class="mb-3"> <div class=""> <input type="submit" name="feedback_action" value="Zgłoś usterkę administratorom poradni." class="btn btn-primary btn-primary" id="submit-id-feedback_action"> </div> </div> </form>
+<form action="/uwagi/submit" method="post"> <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_text"> <label class="form-label requiredField" for="id_text">
+                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea aria-describedby="id_text_helptext" class="textarea form-control" cols="40" id="id_text" name="text" required="" rows="10"></textarea> <div class="form-text" id="id_text_helptext">Treść zgłoszona przez użytkownika</div> </div> <input id="id_url" name="url" type="hidden" value="http://localhost:8000/porady/"> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-feedback_action" name="feedback_action" type="submit" value="Zgłoś usterkę administratorom poradni."> </div> </div> </form>
 
     </div>
 </div>
@@ -424,12 +424,12 @@
 
     
 <!-- Modal -->
-<div class="modal fade" id="navsearch_modal" tabindex="-1" role="dialog" aria-labelledby="navsearch_modal_label">
+<div aria-labelledby="navsearch_modal_label" class="modal fade" id="navsearch_modal" role="dialog" tabindex="-1">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 class="modal-title" id="navsearch_modal_label">Wyszukaj</h2>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
             </div>
             <div class="modal-body">
                 
@@ -437,7 +437,7 @@
 	<form class="form" onsubmit="return false;">
 		<div class="form-group">
 			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
-			<input type="search" id="search" name="q" class="form-control navsearch__input" hx-get="/navsearch/" hx-trigger="input changed delay:300ms" hx-target=".navsearch__results" hx-swap="innerHTML">
+			<input class="form-control navsearch__input" hx-get="/navsearch/" hx-swap="innerHTML" hx-target=".navsearch__results" hx-trigger="input changed delay:300ms" id="search" name="q" type="search">
 		</div>
 	</form>
 	<div class="navsearch__results"></div>
@@ -465,7 +465,7 @@
 
 
 <div id="attachment-text-modal-container"></div>
-<div id="htmx-spinner" class="htmx-indicator">
+<div class="htmx-indicator" id="htmx-spinner">
     Wczytywanie...
 </div>
 <script>

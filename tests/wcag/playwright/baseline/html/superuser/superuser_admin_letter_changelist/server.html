@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 
-<html lang="pl" dir="ltr">
+<html dir="ltr" lang="pl">
 <head>
 <title>Wybierz List do obejrzenia | Administracja stroną Django</title>
-<link rel="stylesheet" href="/static/admin/css/base.css">
+<link href="/static/admin/css/base.css" rel="stylesheet">
 
-  <link rel="stylesheet" href="/static/admin/css/dark_mode.css">
+  <link href="/static/admin/css/dark_mode.css" rel="stylesheet">
   <script src="/static/admin/js/theme.js"></script>
 
 
-  <link rel="stylesheet" href="/static/admin/css/nav_sidebar.css">
-  <script src="/static/admin/js/nav_sidebar.js" defer></script>
+  <link href="/static/admin/css/nav_sidebar.css" rel="stylesheet">
+  <script defer src="/static/admin/js/nav_sidebar.js"></script>
 
 
   
-  <link rel="stylesheet" href="/static/admin/css/changelists.css">
+  <link href="/static/admin/css/changelists.css" rel="stylesheet">
   
   
     <script src="/admin/jsi18n/"></script>
@@ -33,19 +33,18 @@
 <script src="/static/admin/js/urlify.js"></script>
 <script src="/static/admin/js/prepopulate.js"></script>
 <script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
-<script src="/static/admin/js/filters.js" defer></script>
+<script defer src="/static/admin/js/filters.js"></script>
 
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/admin/css/responsive.css">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <link href="/static/admin/css/responsive.css" rel="stylesheet">
     
 
-<meta name="robots" content="NONE,NOARCHIVE">
+<meta content="NONE,NOARCHIVE" name="robots">
 </head>
 
-<body class=" app-letters model-letter change-list"
-  data-admin-utc-offset="3600">
-<a href="#content-start" class="skip-to-content-link">Przejdź do głównej treści</a>
+<body class=" app-letters model-letter change-list" data-admin-utc-offset="3600">
+<a class="skip-to-content-link" href="#content-start">Przejdź do głównej treści</a>
 <!-- Container -->
 <div id="container">
 
@@ -77,8 +76,8 @@
                 
                 <a href="/admin/password_change/">Zmień hasło</a> /
                 
-                <form id="logout-form" method="post" action="/admin/logout/">
-                    <input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
+                <form action="/admin/logout/" id="logout-form" method="post">
+                    <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
                     <button type="submit">Wyloguj się</button>
                 </form>
                 
@@ -122,11 +121,9 @@
       
         
           
-<button class="sticky toggle-nav-sidebar" id="toggle-nav-sidebar" aria-label="Przełącz nawigację"></button>
-<nav class="sticky" id="nav-sidebar" aria-label="Pasek boczny">
-  <input type="search" id="nav-filter"
-         placeholder="Zacznij pisać, aby odfiltrować…"
-         aria-label="Filtruj elementy nawigacji">
+<button aria-label="Przełącz nawigację" class="sticky toggle-nav-sidebar" id="toggle-nav-sidebar"></button>
+<nav aria-label="Pasek boczny" class="sticky" id="nav-sidebar">
+  <input aria-label="Filtruj elementy nawigacji" id="nav-filter" placeholder="Zacznij pisać, aby odfiltrować…" type="search">
   
 
 
@@ -134,7 +131,7 @@
     <div class="app-admin module">
       <table>
         <caption>
-          <a href="/admin/admin/" class="section" title="Modele w aplikacji Administracja">Administracja</a>
+          <a class="section" href="/admin/admin/" title="Modele w aplikacji Administracja">Administracja</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -146,7 +143,7 @@
         
           
             <tr class="model-logentry">
-              <th scope="row" id="admin-logentry">
+              <th id="admin-logentry" scope="row">
                 
                   <a href="/admin/admin/logentry/">Logi</a>
                 
@@ -166,7 +163,7 @@
     <div class="app-teryt_tree module">
       <table>
         <caption>
-          <a href="/admin/teryt_tree/" class="section" title="Modele w aplikacji Administrative division">Administrative division</a>
+          <a class="section" href="/admin/teryt_tree/" title="Modele w aplikacji Administrative division">Administrative division</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -178,7 +175,7 @@
         
           
             <tr class="model-jednostkaadministracyjna">
-              <th scope="row" id="teryt_tree-jednostkaadministracyjna">
+              <th id="teryt_tree-jednostkaadministracyjna" scope="row">
                 
                   <a href="/admin/teryt_tree/jednostkaadministracyjna/">Units of administrative division</a>
                 
@@ -198,7 +195,7 @@
     <div class="app-ai_assistant module">
       <table>
         <caption>
-          <a href="/admin/ai_assistant/" class="section" title="Modele w aplikacji Ai_Assistant">Ai_Assistant</a>
+          <a class="section" href="/admin/ai_assistant/" title="Modele w aplikacji Ai_Assistant">Ai_Assistant</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -210,7 +207,7 @@
         
           
             <tr class="model-n8narticlessearchrequest">
-              <th scope="row" id="ai_assistant-n8narticlessearchrequest">
+              <th id="ai_assistant-n8narticlessearchrequest" scope="row">
                 
                   <a href="/admin/ai_assistant/n8narticlessearchrequest/">N8n articles search requests</a>
                 
@@ -226,7 +223,7 @@
         
           
             <tr class="model-n8ncasetagsrequest">
-              <th scope="row" id="ai_assistant-n8ncasetagsrequest">
+              <th id="ai_assistant-n8ncasetagsrequest" scope="row">
                 
                   <a href="/admin/ai_assistant/n8ncasetagsrequest/">N8n case tags requests</a>
                 
@@ -246,7 +243,7 @@
     <div class="app-celery_monitor module">
       <table>
         <caption>
-          <a href="/admin/celery_monitor/" class="section" title="Modele w aplikacji Celery / RabbitMQ Monitoring">Celery / RabbitMQ Monitoring</a>
+          <a class="section" href="/admin/celery_monitor/" title="Modele w aplikacji Celery / RabbitMQ Monitoring">Celery / RabbitMQ Monitoring</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -258,7 +255,7 @@
         
           
             <tr class="model-monitoringalert">
-              <th scope="row" id="celery_monitor-monitoringalert">
+              <th id="celery_monitor-monitoringalert" scope="row">
                 
                   <a href="/admin/celery_monitor/monitoringalert/">Monitoring alerts</a>
                 
@@ -274,7 +271,7 @@
         
           
             <tr class="model-queuesnapshot">
-              <th scope="row" id="celery_monitor-queuesnapshot">
+              <th id="celery_monitor-queuesnapshot" scope="row">
                 
                   <a href="/admin/celery_monitor/queuesnapshot/">Queue snapshots</a>
                 
@@ -290,7 +287,7 @@
         
           
             <tr class="model-systemhealthcheck">
-              <th scope="row" id="celery_monitor-systemhealthcheck">
+              <th id="celery_monitor-systemhealthcheck" scope="row">
                 
                   <a href="/admin/celery_monitor/systemhealthcheck/">System health checks</a>
                 
@@ -306,7 +303,7 @@
         
           
             <tr class="model-taskslasnapshot">
-              <th scope="row" id="celery_monitor-taskslasnapshot">
+              <th id="celery_monitor-taskslasnapshot" scope="row">
                 
                   <a href="/admin/celery_monitor/taskslasnapshot/">Task sla snapshots</a>
                 
@@ -322,7 +319,7 @@
         
           
             <tr class="model-workerheartbeat">
-              <th scope="row" id="celery_monitor-workerheartbeat">
+              <th id="celery_monitor-workerheartbeat" scope="row">
                 
                   <a href="/admin/celery_monitor/workerheartbeat/">Worker heartbeats</a>
                 
@@ -342,7 +339,7 @@
     <div class="app-django_celery_results module">
       <table>
         <caption>
-          <a href="/admin/django_celery_results/" class="section" title="Modele w aplikacji Celery Results">Celery Results</a>
+          <a class="section" href="/admin/django_celery_results/" title="Modele w aplikacji Celery Results">Celery Results</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -354,14 +351,14 @@
         
           
             <tr class="model-groupresult">
-              <th scope="row" id="django_celery_results-groupresult">
+              <th id="django_celery_results-groupresult" scope="row">
                 
                   <a href="/admin/django_celery_results/groupresult/">Group results</a>
                 
               </th>
 
               
-                <td><a href="/admin/django_celery_results/groupresult/add/" class="addlink" aria-describedby="django_celery_results-groupresult">Dodaj</a></td>
+                <td><a aria-describedby="django_celery_results-groupresult" class="addlink" href="/admin/django_celery_results/groupresult/add/">Dodaj</a></td>
               
 
               
@@ -370,7 +367,7 @@
         
           
             <tr class="model-taskresult">
-              <th scope="row" id="django_celery_results-taskresult">
+              <th id="django_celery_results-taskresult" scope="row">
                 
                   <a href="/admin/django_celery_results/taskresult/">Task results</a>
                 
@@ -390,7 +387,7 @@
     <div class="app-judgements module">
       <table>
         <caption>
-          <a href="/admin/judgements/" class="section" title="Modele w aplikacji Judgements">Judgements</a>
+          <a class="section" href="/admin/judgements/" title="Modele w aplikacji Judgements">Judgements</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -402,14 +399,14 @@
         
           
             <tr class="model-courtsession">
-              <th scope="row" id="judgements-courtsession">
+              <th id="judgements-courtsession" scope="row">
                 
                   <a href="/admin/judgements/courtsession/">Rozprawy sądowe</a>
                 
               </th>
 
               
-                <td><a href="/admin/judgements/courtsession/add/" class="addlink" aria-describedby="judgements-courtsession">Dodaj</a></td>
+                <td><a aria-describedby="judgements-courtsession" class="addlink" href="/admin/judgements/courtsession/add/">Dodaj</a></td>
               
 
               
@@ -418,14 +415,14 @@
         
           
             <tr class="model-courtcase">
-              <th scope="row" id="judgements-courtcase">
+              <th id="judgements-courtcase" scope="row">
                 
                   <a href="/admin/judgements/courtcase/">Sprawy sądowe</a>
                 
               </th>
 
               
-                <td><a href="/admin/judgements/courtcase/add/" class="addlink" aria-describedby="judgements-courtcase">Dodaj</a></td>
+                <td><a aria-describedby="judgements-courtcase" class="addlink" href="/admin/judgements/courtcase/add/">Dodaj</a></td>
               
 
               
@@ -434,14 +431,14 @@
         
           
             <tr class="model-court">
-              <th scope="row" id="judgements-court">
+              <th id="judgements-court" scope="row">
                 
                   <a href="/admin/judgements/court/">Sądy</a>
                 
               </th>
 
               
-                <td><a href="/admin/judgements/court/add/" class="addlink" aria-describedby="judgements-court">Dodaj</a></td>
+                <td><a aria-describedby="judgements-court" class="addlink" href="/admin/judgements/court/add/">Dodaj</a></td>
               
 
               
@@ -454,7 +451,7 @@
     <div class="app-keys module">
       <table>
         <caption>
-          <a href="/admin/keys/" class="section" title="Modele w aplikacji Klucze API">Klucze API</a>
+          <a class="section" href="/admin/keys/" title="Modele w aplikacji Klucze API">Klucze API</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -466,7 +463,7 @@
         
           
             <tr class="model-key">
-              <th scope="row" id="keys-key">
+              <th id="keys-key" scope="row">
                 
                   <a href="/admin/keys/key/">Klucze dostępu</a>
                 
@@ -486,7 +483,7 @@
     <div class="app-account module">
       <table>
         <caption>
-          <a href="/admin/account/" class="section" title="Modele w aplikacji Konta">Konta</a>
+          <a class="section" href="/admin/account/" title="Modele w aplikacji Konta">Konta</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -498,14 +495,14 @@
         
           
             <tr class="model-emailaddress">
-              <th scope="row" id="account-emailaddress">
+              <th id="account-emailaddress" scope="row">
                 
                   <a href="/admin/account/emailaddress/">Adresy e-mail</a>
                 
               </th>
 
               
-                <td><a href="/admin/account/emailaddress/add/" class="addlink" aria-describedby="account-emailaddress">Dodaj</a></td>
+                <td><a aria-describedby="account-emailaddress" class="addlink" href="/admin/account/emailaddress/add/">Dodaj</a></td>
               
 
               
@@ -518,7 +515,7 @@
     <div class="app-socialaccount module">
       <table>
         <caption>
-          <a href="/admin/socialaccount/" class="section" title="Modele w aplikacji Konta społecznościowe">Konta społecznościowe</a>
+          <a class="section" href="/admin/socialaccount/" title="Modele w aplikacji Konta społecznościowe">Konta społecznościowe</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -530,14 +527,14 @@
         
           
             <tr class="model-socialapp">
-              <th scope="row" id="socialaccount-socialapp">
+              <th id="socialaccount-socialapp" scope="row">
                 
                   <a href="/admin/socialaccount/socialapp/">Aplikacje społecznościowe</a>
                 
               </th>
 
               
-                <td><a href="/admin/socialaccount/socialapp/add/" class="addlink" aria-describedby="socialaccount-socialapp">Dodaj</a></td>
+                <td><a aria-describedby="socialaccount-socialapp" class="addlink" href="/admin/socialaccount/socialapp/add/">Dodaj</a></td>
               
 
               
@@ -546,7 +543,7 @@
         
           
             <tr class="model-socialaccount">
-              <th scope="row" id="socialaccount-socialaccount">
+              <th id="socialaccount-socialaccount" scope="row">
                 
                   <a href="/admin/socialaccount/socialaccount/">Konta społecznościowe</a>
                 
@@ -562,7 +559,7 @@
         
           
             <tr class="model-socialtoken">
-              <th scope="row" id="socialaccount-socialtoken">
+              <th id="socialaccount-socialtoken" scope="row">
                 
                   <a href="/admin/socialaccount/socialtoken/">Tokeny aplikacji społecznościowych</a>
                 
@@ -582,7 +579,7 @@
     <div class="app-letters module current-app">
       <table>
         <caption>
-          <a href="/admin/letters/" class="section" title="Modele w aplikacji Korespondencja">Korespondencja</a>
+          <a class="section" href="/admin/letters/" title="Modele w aplikacji Korespondencja">Korespondencja</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -594,9 +591,9 @@
         
           
             <tr class="model-letter current-model">
-              <th scope="row" id="letters-letter">
+              <th id="letters-letter" scope="row">
                 
-                  <a href="/admin/letters/letter/" aria-current="page">Korespondencja</a>
+                  <a aria-current="page" href="/admin/letters/letter/">Korespondencja</a>
                 
               </th>
 
@@ -610,7 +607,7 @@
         
           
             <tr class="model-attachment">
-              <th scope="row" id="letters-attachment">
+              <th id="letters-attachment" scope="row">
                 
                   <a href="/admin/letters/attachment/">Załączniki</a>
                 
@@ -630,7 +627,7 @@
     <div class="app-mfa module">
       <table>
         <caption>
-          <a href="/admin/mfa/" class="section" title="Modele w aplikacji MFA">MFA</a>
+          <a class="section" href="/admin/mfa/" title="Modele w aplikacji MFA">MFA</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -642,7 +639,7 @@
         
           
             <tr class="model-authenticator">
-              <th scope="row" id="mfa-authenticator">
+              <th id="mfa-authenticator" scope="row">
                 
                   <a href="/admin/mfa/authenticator/">Authenticators</a>
                 
@@ -662,7 +659,7 @@
     <div class="app-django_celery_beat module">
       <table>
         <caption>
-          <a href="/admin/django_celery_beat/" class="section" title="Modele w aplikacji Periodic Tasks">Periodic Tasks</a>
+          <a class="section" href="/admin/django_celery_beat/" title="Modele w aplikacji Periodic Tasks">Periodic Tasks</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -674,14 +671,14 @@
         
           
             <tr class="model-clockedschedule">
-              <th scope="row" id="django_celery_beat-clockedschedule">
+              <th id="django_celery_beat-clockedschedule" scope="row">
                 
                   <a href="/admin/django_celery_beat/clockedschedule/">Clocked</a>
                 
               </th>
 
               
-                <td><a href="/admin/django_celery_beat/clockedschedule/add/" class="addlink" aria-describedby="django_celery_beat-clockedschedule">Dodaj</a></td>
+                <td><a aria-describedby="django_celery_beat-clockedschedule" class="addlink" href="/admin/django_celery_beat/clockedschedule/add/">Dodaj</a></td>
               
 
               
@@ -690,14 +687,14 @@
         
           
             <tr class="model-crontabschedule">
-              <th scope="row" id="django_celery_beat-crontabschedule">
+              <th id="django_celery_beat-crontabschedule" scope="row">
                 
                   <a href="/admin/django_celery_beat/crontabschedule/">Crontabs</a>
                 
               </th>
 
               
-                <td><a href="/admin/django_celery_beat/crontabschedule/add/" class="addlink" aria-describedby="django_celery_beat-crontabschedule">Dodaj</a></td>
+                <td><a aria-describedby="django_celery_beat-crontabschedule" class="addlink" href="/admin/django_celery_beat/crontabschedule/add/">Dodaj</a></td>
               
 
               
@@ -706,14 +703,14 @@
         
           
             <tr class="model-intervalschedule">
-              <th scope="row" id="django_celery_beat-intervalschedule">
+              <th id="django_celery_beat-intervalschedule" scope="row">
                 
                   <a href="/admin/django_celery_beat/intervalschedule/">Intervals</a>
                 
               </th>
 
               
-                <td><a href="/admin/django_celery_beat/intervalschedule/add/" class="addlink" aria-describedby="django_celery_beat-intervalschedule">Dodaj</a></td>
+                <td><a aria-describedby="django_celery_beat-intervalschedule" class="addlink" href="/admin/django_celery_beat/intervalschedule/add/">Dodaj</a></td>
               
 
               
@@ -722,14 +719,14 @@
         
           
             <tr class="model-periodictask">
-              <th scope="row" id="django_celery_beat-periodictask">
+              <th id="django_celery_beat-periodictask" scope="row">
                 
                   <a href="/admin/django_celery_beat/periodictask/">Periodic tasks</a>
                 
               </th>
 
               
-                <td><a href="/admin/django_celery_beat/periodictask/add/" class="addlink" aria-describedby="django_celery_beat-periodictask">Dodaj</a></td>
+                <td><a aria-describedby="django_celery_beat-periodictask" class="addlink" href="/admin/django_celery_beat/periodictask/add/">Dodaj</a></td>
               
 
               
@@ -738,14 +735,14 @@
         
           
             <tr class="model-solarschedule">
-              <th scope="row" id="django_celery_beat-solarschedule">
+              <th id="django_celery_beat-solarschedule" scope="row">
                 
                   <a href="/admin/django_celery_beat/solarschedule/">Solar events</a>
                 
               </th>
 
               
-                <td><a href="/admin/django_celery_beat/solarschedule/add/" class="addlink" aria-describedby="django_celery_beat-solarschedule">Dodaj</a></td>
+                <td><a aria-describedby="django_celery_beat-solarschedule" class="addlink" href="/admin/django_celery_beat/solarschedule/add/">Dodaj</a></td>
               
 
               
@@ -758,7 +755,7 @@
     <div class="app-advicer module">
       <table>
         <caption>
-          <a href="/admin/advicer/" class="section" title="Modele w aplikacji Rejestr tagów spraw">Rejestr tagów spraw</a>
+          <a class="section" href="/admin/advicer/" title="Modele w aplikacji Rejestr tagów spraw">Rejestr tagów spraw</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -770,7 +767,7 @@
         
           
             <tr class="model-advice">
-              <th scope="row" id="advicer-advice">
+              <th id="advicer-advice" scope="row">
                 
                   <a href="/admin/advicer/advice/">Tagi</a>
                 
@@ -786,14 +783,14 @@
         
           
             <tr class="model-scope">
-              <th scope="row" id="advicer-scope">
+              <th id="advicer-scope" scope="row">
                 
                   <a href="/admin/advicer/scope/">Zakresy poradnictwa</a>
                 
               </th>
 
               
-                <td><a href="/admin/advicer/scope/add/" class="addlink" aria-describedby="advicer-scope">Dodaj</a></td>
+                <td><a aria-describedby="advicer-scope" class="addlink" href="/admin/advicer/scope/add/">Dodaj</a></td>
               
 
               
@@ -802,14 +799,14 @@
         
           
             <tr class="model-issue">
-              <th scope="row" id="advicer-issue">
+              <th id="advicer-issue" scope="row">
                 
                   <a href="/admin/advicer/issue/">Zagadnienia</a>
                 
               </th>
 
               
-                <td><a href="/admin/advicer/issue/add/" class="addlink" aria-describedby="advicer-issue">Dodaj</a></td>
+                <td><a aria-describedby="advicer-issue" class="addlink" href="/admin/advicer/issue/add/">Dodaj</a></td>
               
 
               
@@ -818,14 +815,14 @@
         
           
             <tr class="model-area">
-              <th scope="row" id="advicer-area">
+              <th id="advicer-area" scope="row">
                 
                   <a href="/admin/advicer/area/">Obszary</a>
                 
               </th>
 
               
-                <td><a href="/admin/advicer/area/add/" class="addlink" aria-describedby="advicer-area">Dodaj</a></td>
+                <td><a aria-describedby="advicer-area" class="addlink" href="/admin/advicer/area/add/">Dodaj</a></td>
               
 
               
@@ -834,14 +831,14 @@
         
           
             <tr class="model-personkind">
-              <th scope="row" id="advicer-personkind">
+              <th id="advicer-personkind" scope="row">
                 
                   <a href="/admin/advicer/personkind/">Rodzaj osób, które się zgłaszają o poradę:</a>
                 
               </th>
 
               
-                <td><a href="/admin/advicer/personkind/add/" class="addlink" aria-describedby="advicer-personkind">Dodaj</a></td>
+                <td><a aria-describedby="advicer-personkind" class="addlink" href="/admin/advicer/personkind/add/">Dodaj</a></td>
               
 
               
@@ -850,14 +847,14 @@
         
           
             <tr class="model-institutionkind">
-              <th scope="row" id="advicer-institutionkind">
+              <th id="advicer-institutionkind" scope="row">
                 
                   <a href="/admin/advicer/institutionkind/">Rodzaje instytucji</a>
                 
               </th>
 
               
-                <td><a href="/admin/advicer/institutionkind/add/" class="addlink" aria-describedby="advicer-institutionkind">Dodaj</a></td>
+                <td><a aria-describedby="advicer-institutionkind" class="addlink" href="/admin/advicer/institutionkind/add/">Dodaj</a></td>
               
 
               
@@ -870,7 +867,7 @@
     <div class="app-cases module">
       <table>
         <caption>
-          <a href="/admin/cases/" class="section" title="Modele w aplikacji Sprawy">Sprawy</a>
+          <a class="section" href="/admin/cases/" title="Modele w aplikacji Sprawy">Sprawy</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -882,14 +879,14 @@
         
           
             <tr class="model-permissiongroup">
-              <th scope="row" id="cases-permissiongroup">
+              <th id="cases-permissiongroup" scope="row">
                 
                   <a href="/admin/cases/permissiongroup/">Permission groups</a>
                 
               </th>
 
               
-                <td><a href="/admin/cases/permissiongroup/add/" class="addlink" aria-describedby="cases-permissiongroup">Dodaj</a></td>
+                <td><a aria-describedby="cases-permissiongroup" class="addlink" href="/admin/cases/permissiongroup/add/">Dodaj</a></td>
               
 
               
@@ -898,7 +895,7 @@
         
           
             <tr class="model-case">
-              <th scope="row" id="cases-case">
+              <th id="cases-case" scope="row">
                 
                   <a href="/admin/cases/case/">Sprawy</a>
                 
@@ -914,7 +911,7 @@
         
           
             <tr class="model-deletecaseproxy">
-              <th scope="row" id="cases-deletecaseproxy">
+              <th id="cases-deletecaseproxy" scope="row">
                 
                   <a href="/admin/cases/deletecaseproxy/">Sprawy do usunięcia</a>
                 
@@ -934,7 +931,7 @@
     <div class="app-sites module">
       <table>
         <caption>
-          <a href="/admin/sites/" class="section" title="Modele w aplikacji Strony">Strony</a>
+          <a class="section" href="/admin/sites/" title="Modele w aplikacji Strony">Strony</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -946,14 +943,14 @@
         
           
             <tr class="model-site">
-              <th scope="row" id="sites-site">
+              <th id="sites-site" scope="row">
                 
                   <a href="/admin/sites/site/">Strony</a>
                 
               </th>
 
               
-                <td><a href="/admin/sites/site/add/" class="addlink" aria-describedby="sites-site">Dodaj</a></td>
+                <td><a aria-describedby="sites-site" class="addlink" href="/admin/sites/site/add/">Dodaj</a></td>
               
 
               
@@ -966,7 +963,7 @@
     <div class="app-tinycontent module">
       <table>
         <caption>
-          <a href="/admin/tinycontent/" class="section" title="Modele w aplikacji Tinycontent">Tinycontent</a>
+          <a class="section" href="/admin/tinycontent/" title="Modele w aplikacji Tinycontent">Tinycontent</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -978,7 +975,7 @@
         
           
             <tr class="model-tinycontent">
-              <th scope="row" id="tinycontent-tinycontent">
+              <th id="tinycontent-tinycontent" scope="row">
                 
                   <a href="/admin/tinycontent/tinycontent/">Content blocks</a>
                 
@@ -994,14 +991,14 @@
         
           
             <tr class="model-tinycontentfileupload">
-              <th scope="row" id="tinycontent-tinycontentfileupload">
+              <th id="tinycontent-tinycontentfileupload" scope="row">
                 
                   <a href="/admin/tinycontent/tinycontentfileupload/">File uploads</a>
                 
               </th>
 
               
-                <td><a href="/admin/tinycontent/tinycontentfileupload/add/" class="addlink" aria-describedby="tinycontent-tinycontentfileupload">Dodaj</a></td>
+                <td><a aria-describedby="tinycontent-tinycontentfileupload" class="addlink" href="/admin/tinycontent/tinycontentfileupload/add/">Dodaj</a></td>
               
 
               
@@ -1014,7 +1011,7 @@
     <div class="app-tasty_feedback module">
       <table>
         <caption>
-          <a href="/admin/tasty_feedback/" class="section" title="Modele w aplikacji Uwagi">Uwagi</a>
+          <a class="section" href="/admin/tasty_feedback/" title="Modele w aplikacji Uwagi">Uwagi</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -1026,14 +1023,14 @@
         
           
             <tr class="model-feedback">
-              <th scope="row" id="tasty_feedback-feedback">
+              <th id="tasty_feedback-feedback" scope="row">
                 
                   <a href="/admin/tasty_feedback/feedback/">Uwagi</a>
                 
               </th>
 
               
-                <td><a href="/admin/tasty_feedback/feedback/add/" class="addlink" aria-describedby="tasty_feedback-feedback">Dodaj</a></td>
+                <td><a aria-describedby="tasty_feedback-feedback" class="addlink" href="/admin/tasty_feedback/feedback/add/">Dodaj</a></td>
               
 
               
@@ -1046,7 +1043,7 @@
     <div class="app-auth module">
       <table>
         <caption>
-          <a href="/admin/auth/" class="section" title="Modele w aplikacji Uwierzytelnienie i autoryzacja">Uwierzytelnienie i autoryzacja</a>
+          <a class="section" href="/admin/auth/" title="Modele w aplikacji Uwierzytelnienie i autoryzacja">Uwierzytelnienie i autoryzacja</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -1058,14 +1055,14 @@
         
           
             <tr class="model-group">
-              <th scope="row" id="auth-group">
+              <th id="auth-group" scope="row">
                 
                   <a href="/admin/auth/group/">Grupy</a>
                 
               </th>
 
               
-                <td><a href="/admin/auth/group/add/" class="addlink" aria-describedby="auth-group">Dodaj</a></td>
+                <td><a aria-describedby="auth-group" class="addlink" href="/admin/auth/group/add/">Dodaj</a></td>
               
 
               
@@ -1078,7 +1075,7 @@
     <div class="app-users module">
       <table>
         <caption>
-          <a href="/admin/users/" class="section" title="Modele w aplikacji Użytkownicy">Użytkownicy</a>
+          <a class="section" href="/admin/users/" title="Modele w aplikacji Użytkownicy">Użytkownicy</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -1090,14 +1087,14 @@
         
           
             <tr class="model-profile">
-              <th scope="row" id="users-profile">
+              <th id="users-profile" scope="row">
                 
                   <a href="/admin/users/profile/">Profile</a>
                 
               </th>
 
               
-                <td><a href="/admin/users/profile/add/" class="addlink" aria-describedby="users-profile">Dodaj</a></td>
+                <td><a aria-describedby="users-profile" class="addlink" href="/admin/users/profile/add/">Dodaj</a></td>
               
 
               
@@ -1106,14 +1103,14 @@
         
           
             <tr class="model-user">
-              <th scope="row" id="users-user">
+              <th id="users-user" scope="row">
                 
                   <a href="/admin/users/user/">Użytkownicy</a>
                 
               </th>
 
               
-                <td><a href="/admin/users/user/add/" class="addlink" aria-describedby="users-user">Dodaj</a></td>
+                <td><a aria-describedby="users-user" class="addlink" href="/admin/users/user/add/">Dodaj</a></td>
               
 
               
@@ -1126,7 +1123,7 @@
     <div class="app-records module">
       <table>
         <caption>
-          <a href="/admin/records/" class="section" title="Modele w aplikacji Wpis">Wpis</a>
+          <a class="section" href="/admin/records/" title="Modele w aplikacji Wpis">Wpis</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -1138,14 +1135,14 @@
         
           
             <tr class="model-record">
-              <th scope="row" id="records-record">
+              <th id="records-record" scope="row">
                 
                   <a href="/admin/records/record/">Wpis</a>
                 
               </th>
 
               
-                <td><a href="/admin/records/record/add/" class="addlink" aria-describedby="records-record">Dodaj</a></td>
+                <td><a aria-describedby="records-record" class="addlink" href="/admin/records/record/add/">Dodaj</a></td>
               
 
               
@@ -1158,7 +1155,7 @@
     <div class="app-events module">
       <table>
         <caption>
-          <a href="/admin/events/" class="section" title="Modele w aplikacji Wydarzenia">Wydarzenia</a>
+          <a class="section" href="/admin/events/" title="Modele w aplikacji Wydarzenia">Wydarzenia</a>
         </caption>
         <thead class="visually-hidden">
           <tr>
@@ -1170,14 +1167,14 @@
         
           
             <tr class="model-event">
-              <th scope="row" id="events-event">
+              <th id="events-event" scope="row">
                 
                   <a href="/admin/events/event/">Wydarzenia</a>
                 
               </th>
 
               
-                <td><a href="/admin/events/event/add/" class="addlink" aria-describedby="events-event">Dodaj</a></td>
+                <td><a aria-describedby="events-event" class="addlink" href="/admin/events/event/add/">Dodaj</a></td>
               
 
               
@@ -1193,12 +1190,12 @@
 
         
       
-      <main id="content-start" class="content" tabindex="-1">
+      <main class="content" id="content-start" tabindex="-1">
         
           
         
         <!-- Content -->
-        <div id="content" class="">
+        <div class="" id="content">
           
           <h1>Wybierz List do obejrzenia</h1>
           
@@ -1223,8 +1220,8 @@
 
 <div id="toolbar"><form id="changelist-search" method="get" role="search">
 <div><!-- DIV needed for valid HTML -->
-<label for="searchbar"><img src="/static/admin/img/search.svg" alt="Search"></label>
-<input type="text" size="40" name="q" value="" id="searchbar">
+<label for="searchbar"><img alt="Search" src="/static/admin/img/search.svg"></label>
+<input id="searchbar" name="q" size="40" type="text" value="">
 <input type="submit" value="Wyszukaj">
 
 
@@ -1237,7 +1234,7 @@
 <nav class="toplinks">
 
 
-<a href="?created_on__year=2026" class="date-back">&lsaquo; 2026</a>
+<a class="date-back" href="?created_on__year=2026">&lsaquo; 2026</a>
 
 
 
@@ -1249,7 +1246,7 @@
 
 
 
-        <form id="changelist-form" method="post" novalidate><input type="hidden" name="csrfmiddlewaretoken" value="[CSRF]">
+        <form id="changelist-form" method="post" novalidate><input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
         
 
         
@@ -1258,16 +1255,16 @@
   
     
     <label>Akcja: <select name="action" required>
-  <option value="" selected>---------</option>
+  <option selected value="">---------</option>
 
   <option value="delete_selected">Usuń wybrane Korespondencja</option>
 
   <option value="enqueue_letter_attachments_text_extraction">Zadania ekstrakcji tekstu z załączników dla wybranych listów (odstęp 20 sekund)</option>
 
-</select></label><input type="hidden" name="select_across" value="0" class="select-across">
+</select></label><input class="select-across" name="select_across" type="hidden" value="0">
     
     
-    <button type="submit" class="button" title="Wykonaj wybraną akcję" name="index" value="0">Idź</button>
+    <button class="button" name="index" title="Wykonaj wybraną akcję" type="submit" value="0">Idź</button>
     
     
     
@@ -1286,62 +1283,62 @@
 <thead>
 <tr>
 
-<th scope="col" class="action-checkbox-column">
+<th class="action-checkbox-column" scope="col">
    
-   <div class="text"><span><input type="checkbox" id="action-toggle" aria-label="Wybierz wszystkie obiekty na tej stronie do wykonania akcji"></span></div>
+   <div class="text"><span><input aria-label="Wybierz wszystkie obiekty na tej stronie do wykonania akcji" id="action-toggle" type="checkbox"></span></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="column-pk">
+<th class="column-pk" scope="col">
    
    <div class="text"><span>Pk</span></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-genre">
+<th class="sortable column-genre" scope="col">
    
    <div class="text"><a href="?o=2">Genre</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-status">
+<th class="sortable column-status" scope="col">
    
    <div class="text"><a href="?o=3">Status</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-name">
+<th class="sortable column-name" scope="col">
    
    <div class="text"><a href="?o=4">Przedmiot</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-get_case_name">
+<th class="sortable column-get_case_name" scope="col">
    
    <div class="text"><a href="?o=5">Nazwa sprawy</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-created_by">
+<th class="sortable column-created_by" scope="col">
    
    <div class="text"><a href="?o=6">Utworzona przez</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-created_by_is_staff">
+<th class="sortable column-created_by_is_staff" scope="col">
    
    <div class="text"><a href="?o=7">Created by staff member</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-created_on">
+<th class="sortable column-created_on" scope="col">
    
    <div class="text"><a href="?o=8">Utworzone o</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-modified_by">
+<th class="sortable column-modified_by" scope="col">
    
    <div class="text"><a href="?o=9">Zmodyfikowane przez</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-modified_on">
+<th class="sortable column-modified_on" scope="col">
    
    <div class="text"><a href="?o=10">Zmodyfikowane o</a></div>
    <div class="clear"></div>
 </th>
-<th scope="col" class="sortable column-eml">
+<th class="sortable column-eml" scope="col">
    
    <div class="text"><a href="?o=11">Treść surowej wiadomości</a></div>
    <div class="clear"></div>
@@ -1351,139 +1348,139 @@
 <tbody>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="45" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 56"></td><th class="field-pk"><a href="/admin/letters/letter/45/change/">45</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 56</td><td class="field-get_case_name">Zapytanie o uchwałę rady miasta nr 56</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 56" class="action-select" name="_selected_action" type="checkbox" value="45"></td><th class="field-pk"><a href="/admin/letters/letter/45/change/">45</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 56</td><td class="field-get_case_name">Zapytanie o uchwałę rady miasta nr 56</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="44" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 51"></td><th class="field-pk"><a href="/admin/letters/letter/44/change/">44</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 51</td><td class="field-get_case_name">Pytanie o wydatki publiczne nr 51</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 51" class="action-select" name="_selected_action" type="checkbox" value="44"></td><th class="field-pk"><a href="/admin/letters/letter/44/change/">44</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 51</td><td class="field-get_case_name">Pytanie o wydatki publiczne nr 51</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="43" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 46"></td><th class="field-pk"><a href="/admin/letters/letter/43/change/">43</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 46</td><td class="field-get_case_name">Wniosek o informację publiczną nr 46</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 46" class="action-select" name="_selected_action" type="checkbox" value="43"></td><th class="field-pk"><a href="/admin/letters/letter/43/change/">43</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 46</td><td class="field-get_case_name">Wniosek o informację publiczną nr 46</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="42" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 41"></td><th class="field-pk"><a href="/admin/letters/letter/42/change/">42</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 41</td><td class="field-get_case_name">Dostęp do danych środowiskowych nr 41</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 41" class="action-select" name="_selected_action" type="checkbox" value="42"></td><th class="field-pk"><a href="/admin/letters/letter/42/change/">42</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 41</td><td class="field-get_case_name">Dostęp do danych środowiskowych nr 41</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="41" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 36"></td><th class="field-pk"><a href="/admin/letters/letter/41/change/">41</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 36</td><td class="field-get_case_name">Wniosek o informację publiczną nr 36</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 36" class="action-select" name="_selected_action" type="checkbox" value="41"></td><th class="field-pk"><a href="/admin/letters/letter/41/change/">41</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 36</td><td class="field-get_case_name">Wniosek o informację publiczną nr 36</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="40" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 31"></td><th class="field-pk"><a href="/admin/letters/letter/40/change/">40</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 31</td><td class="field-get_case_name">Sprawa dotycząca ponownego wykorzystania nr 31</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 31" class="action-select" name="_selected_action" type="checkbox" value="40"></td><th class="field-pk"><a href="/admin/letters/letter/40/change/">40</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 31</td><td class="field-get_case_name">Sprawa dotycząca ponownego wykorzystania nr 31</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="39" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 26"></td><th class="field-pk"><a href="/admin/letters/letter/39/change/">39</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 26</td><td class="field-get_case_name">Odwołanie od decyzji wójta nr 26</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 26" class="action-select" name="_selected_action" type="checkbox" value="39"></td><th class="field-pk"><a href="/admin/letters/letter/39/change/">39</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 26</td><td class="field-get_case_name">Odwołanie od decyzji wójta nr 26</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="38" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 21"></td><th class="field-pk"><a href="/admin/letters/letter/38/change/">38</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 21</td><td class="field-get_case_name">Zażalenie na odmowę nr 21</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 21" class="action-select" name="_selected_action" type="checkbox" value="38"></td><th class="field-pk"><a href="/admin/letters/letter/38/change/">38</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 21</td><td class="field-get_case_name">Zażalenie na odmowę nr 21</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="37" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 16"></td><th class="field-pk"><a href="/admin/letters/letter/37/change/">37</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 16</td><td class="field-get_case_name">Skarga na bezczynność urzędu nr 16</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 16" class="action-select" name="_selected_action" type="checkbox" value="37"></td><th class="field-pk"><a href="/admin/letters/letter/37/change/">37</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 16</td><td class="field-get_case_name">Skarga na bezczynność urzędu nr 16</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="36" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 11"></td><th class="field-pk"><a href="/admin/letters/letter/36/change/">36</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 11</td><td class="field-get_case_name">Skarga na bezczynność urzędu nr 11</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 11" class="action-select" name="_selected_action" type="checkbox" value="36"></td><th class="field-pk"><a href="/admin/letters/letter/36/change/">36</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 11</td><td class="field-get_case_name">Skarga na bezczynność urzędu nr 11</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="35" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 6"></td><th class="field-pk"><a href="/admin/letters/letter/35/change/">35</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 6</td><td class="field-get_case_name">Odwołanie od decyzji wójta nr 6</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 6" class="action-select" name="_selected_action" type="checkbox" value="35"></td><th class="field-pk"><a href="/admin/letters/letter/35/change/">35</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 6</td><td class="field-get_case_name">Odwołanie od decyzji wójta nr 6</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="34" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 1"></td><th class="field-pk"><a href="/admin/letters/letter/34/change/">34</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 1</td><td class="field-get_case_name">Odwołanie od decyzji wójta nr 1</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pierwsze pismo w sprawie nr 1" class="action-select" name="_selected_action" type="checkbox" value="34"></td><th class="field-pk"><a href="/admin/letters/letter/34/change/">34</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pierwsze pismo w sprawie nr 1</td><td class="field-get_case_name">Odwołanie od decyzji wójta nr 1</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="33" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Odpowiedź i zamknięcie sprawy"></td><th class="field-pk"><a href="/admin/letters/letter/33/change/">33</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Odpowiedź i zamknięcie sprawy</td><td class="field-get_case_name">Sprawa zamknięta po udzieleniu odpowiedzi</td><td class="field-created_by nowrap">Celina Wsparcie (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Odpowiedź i zamknięcie sprawy" class="action-select" name="_selected_action" type="checkbox" value="33"></td><th class="field-pk"><a href="/admin/letters/letter/33/change/">33</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Odpowiedź i zamknięcie sprawy</td><td class="field-get_case_name">Sprawa zamknięta po udzieleniu odpowiedzi</td><td class="field-created_by nowrap">Celina Wsparcie (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="32" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pytanie o decyzję"></td><th class="field-pk"><a href="/admin/letters/letter/32/change/">32</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pytanie o decyzję</td><td class="field-get_case_name">Sprawa zamknięta po udzieleniu odpowiedzi</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pytanie o decyzję" class="action-select" name="_selected_action" type="checkbox" value="32"></td><th class="field-pk"><a href="/admin/letters/letter/32/change/">32</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pytanie o decyzję</td><td class="field-get_case_name">Sprawa zamknięta po udzieleniu odpowiedzi</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="31" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 25 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/31/change/">31</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 25 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 25 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="31"></td><th class="field-pk"><a href="/admin/letters/letter/31/change/">31</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 25 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="30" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 24 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/30/change/">30</a></th><td class="field-genre">ai_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 24 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 24 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="30"></td><th class="field-pk"><a href="/admin/letters/letter/30/change/">30</a></th><td class="field-genre">ai_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 24 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="29" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 23 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/29/change/">29</a></th><td class="field-genre">app_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 23 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 23 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="29"></td><th class="field-pk"><a href="/admin/letters/letter/29/change/">29</a></th><td class="field-genre">app_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 23 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="28" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 22 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/28/change/">28</a></th><td class="field-genre">comment</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 22 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 22 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="28"></td><th class="field-pk"><a href="/admin/letters/letter/28/change/">28</a></th><td class="field-genre">comment</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 22 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="27" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 21 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/27/change/">27</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 21 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 21 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="27"></td><th class="field-pk"><a href="/admin/letters/letter/27/change/">27</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 21 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="26" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 20 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/26/change/">26</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 20 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 20 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="26"></td><th class="field-pk"><a href="/admin/letters/letter/26/change/">26</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 20 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="25" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 19 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/25/change/">25</a></th><td class="field-genre">ai_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 19 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 19 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="25"></td><th class="field-pk"><a href="/admin/letters/letter/25/change/">25</a></th><td class="field-genre">ai_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 19 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="24" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 18 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/24/change/">24</a></th><td class="field-genre">app_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 18 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 18 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="24"></td><th class="field-pk"><a href="/admin/letters/letter/24/change/">24</a></th><td class="field-genre">app_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 18 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="23" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 17 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/23/change/">23</a></th><td class="field-genre">comment</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 17 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 17 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="23"></td><th class="field-pk"><a href="/admin/letters/letter/23/change/">23</a></th><td class="field-genre">comment</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 17 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="22" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 16 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/22/change/">22</a></th><td class="field-genre">mail</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 16 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 16 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="22"></td><th class="field-pk"><a href="/admin/letters/letter/22/change/">22</a></th><td class="field-genre">mail</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 16 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="21" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 15 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/21/change/">21</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 15 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 15 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="21"></td><th class="field-pk"><a href="/admin/letters/letter/21/change/">21</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 15 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="20" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 14 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/20/change/">20</a></th><td class="field-genre">ai_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 14 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 14 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="20"></td><th class="field-pk"><a href="/admin/letters/letter/20/change/">20</a></th><td class="field-genre">ai_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 14 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="19" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 13 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/19/change/">19</a></th><td class="field-genre">app_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 13 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 13 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="19"></td><th class="field-pk"><a href="/admin/letters/letter/19/change/">19</a></th><td class="field-genre">app_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 13 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="18" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 12 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/18/change/">18</a></th><td class="field-genre">comment</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 12 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 12 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="18"></td><th class="field-pk"><a href="/admin/letters/letter/18/change/">18</a></th><td class="field-genre">comment</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 12 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="17" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 11 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/17/change/">17</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 11 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 11 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="17"></td><th class="field-pk"><a href="/admin/letters/letter/17/change/">17</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 11 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="16" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 10 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/16/change/">16</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 10 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 10 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="16"></td><th class="field-pk"><a href="/admin/letters/letter/16/change/">16</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 10 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="15" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 9 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/15/change/">15</a></th><td class="field-genre">ai_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 9 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 9 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="15"></td><th class="field-pk"><a href="/admin/letters/letter/15/change/">15</a></th><td class="field-genre">ai_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 9 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="14" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 8 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/14/change/">14</a></th><td class="field-genre">app_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 8 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 8 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="14"></td><th class="field-pk"><a href="/admin/letters/letter/14/change/">14</a></th><td class="field-genre">app_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 8 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="13" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 7 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/13/change/">13</a></th><td class="field-genre">comment</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 7 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 7 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="13"></td><th class="field-pk"><a href="/admin/letters/letter/13/change/">13</a></th><td class="field-genre">comment</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 7 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="12" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 6 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/12/change/">12</a></th><td class="field-genre">mail</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 6 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 6 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="12"></td><th class="field-pk"><a href="/admin/letters/letter/12/change/">12</a></th><td class="field-genre">mail</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 6 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="11" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 5 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/11/change/">11</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 5 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 5 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="11"></td><th class="field-pk"><a href="/admin/letters/letter/11/change/">11</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 5 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="10" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 4 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/10/change/">10</a></th><td class="field-genre">ai_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 4 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 4 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="10"></td><th class="field-pk"><a href="/admin/letters/letter/10/change/">10</a></th><td class="field-genre">ai_message</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 4 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="9" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 3 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/9/change/">9</a></th><td class="field-genre">app_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 3 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 3 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="9"></td><th class="field-pk"><a href="/admin/letters/letter/9/change/">9</a></th><td class="field-genre">app_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 3 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="8" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 2 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/8/change/">8</a></th><td class="field-genre">comment</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 2 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 2 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="8"></td><th class="field-pk"><a href="/admin/letters/letter/8/change/">8</a></th><td class="field-genre">comment</td><td class="field-status">Zespoł</td><td class="field-name">Pismo nr 2 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Bartosz Kierownik (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="7" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 1 w długiej korespondencji"></td><th class="field-pk"><a href="/admin/letters/letter/7/change/">7</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 1 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo nr 1 w długiej korespondencji" class="action-select" name="_selected_action" type="checkbox" value="7"></td><th class="field-pk"><a href="/admin/letters/letter/7/change/">7</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pismo nr 1 w długiej korespondencji</td><td class="field-get_case_name">Długotrwała korespondencja ws. decyzji administracyjnej</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="6" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 5 w sprawie danych środowiskowych"></td><th class="field-pk"><a href="/admin/letters/letter/6/change/">6</a></th><td class="field-genre">ai_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo 5 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Celina Wsparcie (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 5 w sprawie danych środowiskowych" class="action-select" name="_selected_action" type="checkbox" value="6"></td><th class="field-pk"><a href="/admin/letters/letter/6/change/">6</a></th><td class="field-genre">ai_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo 5 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Celina Wsparcie (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="5" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 4 w sprawie danych środowiskowych"></td><th class="field-pk"><a href="/admin/letters/letter/5/change/">5</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Zespoł</td><td class="field-name">Pismo 4 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Celina Wsparcie (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 4 w sprawie danych środowiskowych" class="action-select" name="_selected_action" type="checkbox" value="5"></td><th class="field-pk"><a href="/admin/letters/letter/5/change/">5</a></th><td class="field-genre">ai_message_staff</td><td class="field-status">Zespoł</td><td class="field-name">Pismo 4 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Celina Wsparcie (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="4" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 3 w sprawie danych środowiskowych"></td><th class="field-pk"><a href="/admin/letters/letter/4/change/">4</a></th><td class="field-genre">app_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo 3 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 3 w sprawie danych środowiskowych" class="action-select" name="_selected_action" type="checkbox" value="4"></td><th class="field-pk"><a href="/admin/letters/letter/4/change/">4</a></th><td class="field-genre">app_message</td><td class="field-status">Wykonane</td><td class="field-name">Pismo 3 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="3" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 2 w sprawie danych środowiskowych"></td><th class="field-pk"><a href="/admin/letters/letter/3/change/">3</a></th><td class="field-genre">comment</td><td class="field-status">Zespoł</td><td class="field-name">Pismo 2 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Celina Wsparcie (team)</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-yes.svg" alt="True"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 2 w sprawie danych środowiskowych" class="action-select" name="_selected_action" type="checkbox" value="3"></td><th class="field-pk"><a href="/admin/letters/letter/3/change/">3</a></th><td class="field-genre">comment</td><td class="field-status">Zespoł</td><td class="field-name">Pismo 2 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Celina Wsparcie (team)</td><td class="field-created_by_is_staff"><img alt="True" src="/static/admin/img/icon-yes.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="2" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 1 w sprawie danych środowiskowych"></td><th class="field-pk"><a href="/admin/letters/letter/2/change/">2</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pismo 1 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Pismo 1 w sprawie danych środowiskowych" class="action-select" name="_selected_action" type="checkbox" value="2"></td><th class="field-pk"><a href="/admin/letters/letter/2/change/">2</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Pismo 1 w sprawie danych środowiskowych</td><td class="field-get_case_name">Spór o dostęp do danych środowiskowych</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 
-<tr><td class="action-checkbox"><input type="checkbox" name="_selected_action" value="1" class="action-select" aria-label="Wybierz ten obiekt do wykonania akcji - Wniosek o udostępnienie rejestru umów"></td><th class="field-pk"><a href="/admin/letters/letter/1/change/">1</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Wniosek o udostępnienie rejestru umów</td><td class="field-get_case_name">Wniosek o udostępnienie rejestru umów</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img src="/static/admin/img/icon-no.svg" alt="False"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
+<tr><td class="action-checkbox"><input aria-label="Wybierz ten obiekt do wykonania akcji - Wniosek o udostępnienie rejestru umów" class="action-select" name="_selected_action" type="checkbox" value="1"></td><th class="field-pk"><a href="/admin/letters/letter/1/change/">1</a></th><td class="field-genre">mail</td><td class="field-status">Wykonane</td><td class="field-name">Wniosek o udostępnienie rejestru umów</td><td class="field-get_case_name">Wniosek o udostępnienie rejestru umów</td><td class="field-created_by nowrap">Ewa Klientka</td><td class="field-created_by_is_staff"><img alt="False" src="/static/admin/img/icon-no.svg"></td><td class="field-created_on nowrap">[DATE] [TIME]</td><td class="field-modified_by nowrap">-</td><td class="field-modified_on nowrap">[DATE] [TIME]</td><td class="field-eml">-</td></tr>
 
 </tbody>
 </table>
@@ -1505,11 +1502,11 @@
       </div>
       
         
-          <nav id="changelist-filter" aria-labelledby="changelist-filter-header">
+          <nav aria-labelledby="changelist-filter-header" id="changelist-filter">
             <h2 id="changelist-filter-header">Filtr</h2>
             <div id="changelist-filter-extra-actions">
               <h3>
-                <a href="?_facets=True" class="viewlink">Pokaż ilości</a>
+                <a class="viewlink" href="?_facets=True">Pokaż ilości</a>
               </h3>
               
             </div>
@@ -1576,10 +1573,10 @@
 <!-- END Container -->
 
 <!-- SVGs -->
-<svg xmlns="http://www.w3.org/2000/svg" class="base-svgs">
-  <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-auto"><path d="M0 0h24v24H0z" fill="currentColor"/><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2V4a8 8 0 1 0 0 16z"/></symbol>
-  <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-moon"><path d="M0 0h24v24H0z" fill="currentColor"/><path d="M10 7a7 7 0 0 0 12 4.9v.1c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2h.1A6.979 6.979 0 0 0 10 7zm-6 5a8 8 0 0 0 15.062 3.762A9 9 0 0 1 8.238 4.938 7.999 7.999 0 0 0 4 12z"/></symbol>
-  <symbol viewBox="0 0 24 24" width="1.5rem" height="1.5rem" id="icon-sun"><path d="M0 0h24v24H0z" fill="currentColor"/><path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.121 2.121-1.414 1.414-2.121-2.121zm2.121-14.85l1.414 1.415-2.121 2.121-1.414-1.414 2.121-2.121zM5.636 16.95l1.414 1.414-2.121 2.121-1.414-1.414 2.121-2.121zM23 11v2h-3v-2h3zM4 11v2H1v-2h3z"/></symbol>
+<svg class="base-svgs" xmlns="http://www.w3.org/2000/svg">
+  <symbol height="1.5rem" id="icon-auto" viewBox="0 0 24 24" width="1.5rem"><path d="M0 0h24v24H0z" fill="currentColor" /><path d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm0-2V4a8 8 0 1 0 0 16z" /></symbol>
+  <symbol height="1.5rem" id="icon-moon" viewBox="0 0 24 24" width="1.5rem"><path d="M0 0h24v24H0z" fill="currentColor" /><path d="M10 7a7 7 0 0 0 12 4.9v.1c0 5.523-4.477 10-10 10S2 17.523 2 12 6.477 2 12 2h.1A6.979 6.979 0 0 0 10 7zm-6 5a8 8 0 0 0 15.062 3.762A9 9 0 0 1 8.238 4.938 7.999 7.999 0 0 0 4 12z" /></symbol>
+  <symbol height="1.5rem" id="icon-sun" viewBox="0 0 24 24" width="1.5rem"><path d="M0 0h24v24H0z" fill="currentColor" /><path d="M12 18a6 6 0 1 1 0-12 6 6 0 0 1 0 12zm0-2a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM11 1h2v3h-2V1zm0 19h2v3h-2v-3zM3.515 4.929l1.414-1.414L7.05 5.636 5.636 7.05 3.515 4.93zM16.95 18.364l1.414-1.414 2.121 2.121-1.414 1.414-2.121-2.121zm2.121-14.85l1.414 1.415-2.121 2.121-1.414-1.414 2.121-2.121zM5.636 16.95l1.414 1.414-2.121 2.121-1.414-1.414 2.121-2.121zM23 11v2h-3v-2h3zM4 11v2H1v-2h3z" /></symbol>
 </svg>
 <!-- END SVGs -->
 
