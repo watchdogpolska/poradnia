@@ -82,10 +82,10 @@
                 {% endif %}
 
                 {% if request.user.is_staff and object.caseuserobjectpermission_set.all %}
-                    {% regroup object.caseuserobjectpermission_set.all by user as user_list %}
+                    {% regroup object.caseuserobjectpermission_set.all|dictsort:"user_id" by user as user_list %}
                     {% for user in user_list %}
                         <span class="badge text-bg-info"
-                            title="{% for item in user.list %}{% trans item.permission.name %},{% endfor %}">
+                            title="{% for item in user.list|dictsort:"permission.name" %}{% trans item.permission.name %},{% endfor %}">
                 {{ user.grouper.get_codename }}
                 </span>
                     {% endfor %}

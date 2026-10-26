@@ -437,7 +437,7 @@
 <script src="/static/dal_alight/dal-django.js"></script> <div id="div_id_user" class="mb-3"> <label for="id_user" class="form-label requiredField">
                 Użytkownik<span class="asteriskField">*</span> </label> <autocomplete-select data-bound="true"><select name="user" class="modelalight form-select" required="" id="id_user" slot="select" data-autocomplete-light-url="/uzytkownik/~autocomplete/">
 </select><span slot="deck"></span><autocomplete-select-input slot="input" url="/uzytkownik/~autocomplete/" data-bound="true"><input type="text" name="user-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off" aria-haspopup="listbox" aria-autocomplete="list" aria-expanded="false" style=""></autocomplete-select-input></autocomplete-select> </div> <div id="div_id_group" class="mb-3"> <label for="id_group" class="form-label requiredField">
-                Grupa uprawnień<span class="asteriskField">*</span> </label> <select name="group" class="select form-select" required="" id="id_group"> <option value="" selected="">---------</option> <option value="1">wsparcie</option> <option value="2">obserwator</option> <option value="3">klient</option> <option value="4">admin</option>
+                Grupa uprawnień<span class="asteriskField">*</span> </label> <select name="group" class="select form-select" required="" id="id_group"> <option value="" selected="">---------</option> <option value="4">admin</option> <option value="3">klient</option> <option value="2">obserwator</option> <option value="1">wsparcie</option>
 
 </select> </div> <input type="submit" name="grant" value="Przyznaj" class="btn btn-primary" id="submit-id-grant" style=""> </form>
 
@@ -447,19 +447,6 @@
                                             <span>Uprawnienia w grupach</span>
                                         </summary>
                                         <span class="permissions_helptext">
-wsparcie:
-- Może dodawać wpisy
-- Może widzieć sprawę
-- Może zmieniać własne wpisy
-
-obserwator:
-- Może widzieć sprawę
-
-klient:
-- Może dodawać wpisy
-- Może komunikować z klientem
-- Może widzieć sprawę
-
 admin:
 - Can add Case
 - Can change Case
@@ -475,7 +462,20 @@ admin:
 - Może zamknąć sprawę
 - Może zmieniać wszystkie wpisy
 - Może zmieniać własne wpisy
-- Może zmienić sprawę</span>
+- Może zmienić sprawę
+
+klient:
+- Może dodawać wpisy
+- Może komunikować z klientem
+- Może widzieć sprawę
+
+obserwator:
+- Może widzieć sprawę
+
+wsparcie:
+- Może dodawać wpisy
+- Może widzieć sprawę
+- Może zmieniać własne wpisy</span>
                                     </details>                              
                                 </div>
                             </div>
@@ -488,7 +488,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/b6/56/b65605c5e7232578f4c77ebdd386ebb6.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/db/09/db0922ce7ba066e6db05a74bb9b711ca.jpg" class="timeline-avatar" alt="">
     <div class="card border-default timeline-comment" id="letter-7">
         <div class="card-header text-bg-default">
             <h2 class="card-title">
@@ -555,7 +555,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-info timeline-comment" id="letter-8">
         <div class="card-header text-bg-info">
             <h2 class="card-title">
@@ -622,7 +622,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-primary timeline-comment" id="letter-9">
         <div class="card-header text-bg-primary">
             <h2 class="card-title">
@@ -675,7 +675,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/b6/56/b65605c5e7232578f4c77ebdd386ebb6.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/db/09/db0922ce7ba066e6db05a74bb9b711ca.jpg" class="timeline-avatar" alt="">
     <div class="card border-success timeline-comment" id="letter-10">
         <div class="card-header text-bg-success">
             <h2 class="card-title">
@@ -771,7 +771,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-success timeline-comment" id="letter-11">
         <div class="card-header text-bg-success">
             <h2 class="card-title">
@@ -835,7 +835,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-primary timeline-comment" id="letter-12">
         <div class="card-header text-bg-primary">
             <h2 class="card-title">
@@ -899,7 +899,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/b6/56/b65605c5e7232578f4c77ebdd386ebb6.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/db/09/db0922ce7ba066e6db05a74bb9b711ca.jpg" class="timeline-avatar" alt="">
     <div class="card border-info timeline-comment" id="letter-13">
         <div class="card-header text-bg-info">
             <h2 class="card-title">
@@ -952,7 +952,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-primary timeline-comment" id="letter-14">
         <div class="card-header text-bg-primary">
             <h2 class="card-title">
@@ -1016,7 +1016,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-success timeline-comment" id="letter-15">
         <div class="card-header text-bg-success">
             <h2 class="card-title">
@@ -1080,7 +1080,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/b6/56/b65605c5e7232578f4c77ebdd386ebb6.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/db/09/db0922ce7ba066e6db05a74bb9b711ca.jpg" class="timeline-avatar" alt="">
     <div class="card border-success timeline-comment" id="letter-16">
         <div class="card-header text-bg-success">
             <h2 class="card-title">
@@ -1144,7 +1144,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-primary timeline-comment" id="letter-17">
         <div class="card-header text-bg-primary">
             <h2 class="card-title">
@@ -1197,7 +1197,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-info timeline-comment" id="letter-18">
         <div class="card-header text-bg-info">
             <h2 class="card-title">
@@ -1250,7 +1250,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/b6/56/b65605c5e7232578f4c77ebdd386ebb6.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/db/09/db0922ce7ba066e6db05a74bb9b711ca.jpg" class="timeline-avatar" alt="">
     <div class="card border-default timeline-comment" id="letter-19">
         <div class="card-header text-bg-default">
             <h2 class="card-title">
@@ -1303,7 +1303,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-success timeline-comment" id="letter-20">
         <div class="card-header text-bg-success">
             <h2 class="card-title">
@@ -1367,7 +1367,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-success timeline-comment" id="letter-21">
         <div class="card-header text-bg-success">
             <h2 class="card-title">
@@ -1431,7 +1431,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/b6/56/b65605c5e7232578f4c77ebdd386ebb6.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/db/09/db0922ce7ba066e6db05a74bb9b711ca.jpg" class="timeline-avatar" alt="">
     <div class="card border-default timeline-comment" id="letter-22">
         <div class="card-header text-bg-default">
             <h2 class="card-title">
@@ -1495,7 +1495,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-info timeline-comment" id="letter-23">
         <div class="card-header text-bg-info">
             <h2 class="card-title">
@@ -1548,7 +1548,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-primary timeline-comment" id="letter-24">
         <div class="card-header text-bg-primary">
             <h2 class="card-title">
@@ -1612,7 +1612,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/b6/56/b65605c5e7232578f4c77ebdd386ebb6.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/db/09/db0922ce7ba066e6db05a74bb9b711ca.jpg" class="timeline-avatar" alt="">
     <div class="card border-success timeline-comment" id="letter-25">
         <div class="card-header text-bg-success">
             <h2 class="card-title">
@@ -1676,7 +1676,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-success timeline-comment" id="letter-26">
         <div class="card-header text-bg-success">
             <h2 class="card-title">
@@ -1740,7 +1740,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-primary timeline-comment" id="letter-27">
         <div class="card-header text-bg-primary">
             <h2 class="card-title">
@@ -1793,7 +1793,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/b6/56/b65605c5e7232578f4c77ebdd386ebb6.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/db/09/db0922ce7ba066e6db05a74bb9b711ca.jpg" class="timeline-avatar" alt="">
     <div class="card border-info timeline-comment" id="letter-28">
         <div class="card-header text-bg-info">
             <h2 class="card-title">
@@ -1846,7 +1846,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-primary timeline-comment" id="letter-29">
         <div class="card-header text-bg-primary">
             <h2 class="card-title">
@@ -1899,7 +1899,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar" alt="">
     <div class="card border-success timeline-comment" id="letter-30">
         <div class="card-header text-bg-success">
             <h2 class="card-title">
@@ -1963,7 +1963,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <img src="/media/cache/b6/56/b65605c5e7232578f4c77ebdd386ebb6.jpg" class="timeline-avatar" alt="">
+    <img src="/media/cache/db/09/db0922ce7ba066e6db05a74bb9b711ca.jpg" class="timeline-avatar" alt="">
     <div class="card border-success timeline-comment" id="letter-31">
         <div class="card-header text-bg-success">
             <h2 class="card-title">
@@ -2041,7 +2041,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <a href="#"><img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar"></a>
+    <a href="#"><img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar"></a>
     <div class="card border-default timeline-comment" id="event-2">
         <div class="card-header text-bg-default">
             <h2 class="card-title">
@@ -2095,7 +2095,7 @@ admin:
                     
                         
 <div class="timeline-messange">
-    <a href="#"><img src="/media/cache/96/e3/96e3dad3e822362b4c4d8c731de937a3.jpg" class="timeline-avatar"></a>
+    <a href="#"><img src="/media/cache/da/5b/da5bcdef2e00d6b0d4241cf7760ef3e8.jpg" class="timeline-avatar"></a>
     <div class="card border-default timeline-comment" id="courtcase-1">
         <div class="card-header text-bg-default">
             <h2 class="card-title">

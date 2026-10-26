@@ -440,7 +440,7 @@
                 Użytkownik<span class="asteriskField">*</span> </label> <autocomplete-select><select name="user" class="modelalight form-select" required id="id_user" slot="select" data-autocomplete-light-url="/uzytkownik/~autocomplete/">
 </select><span slot="deck"></span><autocomplete-select-input slot="input" url="/uzytkownik/~autocomplete/"><input type="text" name="user-input" name="user-input" slot="input" class="vTextField" placeholder="Wyszukaj" autocomplete="off"></autocomplete-select-input></autocomplete-select> </div> <div id="div_id_group" class="mb-3"> <label
                 for="id_group" class="form-label requiredField">
-                Grupa uprawnień<span class="asteriskField">*</span> </label> <select name="group" class="select form-select" required id="id_group"> <option value="" selected>---------</option> <option value="1">wsparcie</option> <option value="2">obserwator</option> <option value="3">klient</option> <option value="4">admin</option>
+                Grupa uprawnień<span class="asteriskField">*</span> </label> <select name="group" class="select form-select" required id="id_group"> <option value="" selected>---------</option> <option value="4">admin</option> <option value="3">klient</option> <option value="2">obserwator</option> <option value="1">wsparcie</option>
 
 </select> </div> <input type="submit"
     name="grant"
@@ -458,19 +458,6 @@
                                             <span>Uprawnienia w grupach</span>
                                         </summary>
                                         <span class="permissions_helptext">
-wsparcie:
-- Może dodawać wpisy
-- Może widzieć sprawę
-- Może zmieniać własne wpisy
-
-obserwator:
-- Może widzieć sprawę
-
-klient:
-- Może dodawać wpisy
-- Może komunikować z klientem
-- Może widzieć sprawę
-
 admin:
 - Can add Case
 - Can change Case
@@ -486,7 +473,20 @@ admin:
 - Może zamknąć sprawę
 - Może zmieniać wszystkie wpisy
 - Może zmieniać własne wpisy
-- Może zmienić sprawę</span>
+- Może zmienić sprawę
+
+klient:
+- Może dodawać wpisy
+- Może komunikować z klientem
+- Może widzieć sprawę
+
+obserwator:
+- Może widzieć sprawę
+
+wsparcie:
+- Może dodawać wpisy
+- Może widzieć sprawę
+- Może zmieniać własne wpisy</span>
                                     </details>                              
                                 </div>
                             </div>

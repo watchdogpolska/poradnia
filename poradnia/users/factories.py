@@ -17,7 +17,17 @@ class UserFactory(factory.django.DjangoModelFactory):
     last_name = FuzzyPolishText()
     email = factory.LazyAttribute(lambda obj: "%s@example.com" % obj.username)
     password = factory.PostGenerationMethodCall("set_password", "pass")
-    picture = factory.django.ImageField()
+    # Every instance otherwise gets the same default filename
+    # ("example.jpg"), so storage's collision-avoidance kicks in for every
+    # user after the first and appends a non-seedable random suffix
+    # (Django's get_available_name() uses a CSPRNG, immune to
+    # random.seed()) - that made the avatar path, and therefore the
+    # sorl-thumbnail cache path derived from it, different on every single
+    # run regardless of environment. Keying the filename to the (unique,
+    # deterministic) username avoids the collision entirely.
+    picture = factory.django.ImageField(
+        filename=factory.LazyAttribute(lambda o: "%s.jpg" % o.factory_parent.username)
+    )
     codename = factory.Sequence(lambda n: "U_%d" % n)
 
     class Meta:

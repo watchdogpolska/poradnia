@@ -25,6 +25,7 @@ class Reminder(TimeStampedModel):
     class Meta:
         verbose_name = _("Reminder")
         verbose_name_plural = _("Reminders")
+        ordering = ["id"]
 
 
 class EventQuerySet(AbstractRecordQuerySet):

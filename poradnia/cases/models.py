@@ -816,6 +816,9 @@ class PermissionGroup(models.Model):
         to=Permission, verbose_name=_("Permissions"), limit_choices_to=limit
     )
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return self.name
 
