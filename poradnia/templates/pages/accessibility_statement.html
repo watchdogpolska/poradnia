@@ -51,7 +51,6 @@
     <tr><td>2.4.3 Kolejność fokusu</td><td>Wyskakujące okno ze zbiórką jest pierwszym elementem w kolejności fokusu na każdej stronie; wspomniane okno modalne pozwala fokusowi wyjść poza siebie.</td></tr>
     <tr><td>2.4.6 Nagłówki i etykiety</td><td>Pomijane poziomy nagłówków oraz puste nagłówki w wielu miejscach serwisu.</td></tr>
     <tr><td>2.5.8 Rozmiar celu (minimalny)</td><td>Kontrolki sortowania kolumn w listach (komponent DataTables) są mniejsze niż wymagane 24x24 px.</td></tr>
-    <tr><td>4.1.1 Parsowanie</td><td>Zduplikowane identyfikatory (id) elementów na części podstron (ograniczone w stosunku do pierwszego audytu, nie usunięte w całości).</td></tr>
     <tr><td>4.1.2 Nazwa, rola, wartość</td><td>Wynika z niezgodności wymienionych powyżej (ikony z podpowiedzią, struktura ARIA tabel list).</td></tr>
     <tr><td>4.1.3 Komunikaty o stanie</td><td>Komunikaty systemowe (np. potwierdzenia zapisania formularza) nie są ogłaszane technologiom asystującym (brak odpowiedniego regionu "live").</td></tr>
     <tr><td>EN 301 549, klauzula 10 (dokumenty nieobsługiwane przez sieć)</td><td>Część dokumentów załączanych do pism nie jest przygotowana jako dokument dostępny (brak odpowiedniego tagowania struktury dokumentu PDF).</td></tr>
@@ -150,7 +149,7 @@
     <tr><td>3.3.2 Etykiety lub instrukcje</td><td>Zgodne</td></tr>
     <tr><td>3.3.3 Sugestie korekty błędów</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
     <tr><td>3.3.4 Zapobieganie błędom (kontekst prawny, finansowy, związany z danymi)</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
-    <tr><td>4.1.1 Parsowanie kodu</td><td>Niezgodne (częściowo - część zduplikowanych identyfikatorów elementów na niektórych podstronach pozostaje)</td></tr>
+    <tr><td>4.1.1 Parsowanie kodu</td><td>Zgodne</td></tr>
     <tr><td>4.1.2 Nazwa, rola, wartość</td><td>Niezgodne (częściowo - kontrolki sortowania w tabelach list okresowo tracą atrybuty ARIA w trakcie wewnętrznego odświeżania biblioteki; złagodzone, lecz nie w pełni usunięte)</td></tr>
     <tr><td>4.1.3 Komunikaty o stanie</td><td>Zgodne</td></tr>
     <tr><td>EN 301 549, klauzula 10 (dokumenty nieobsługiwane przez sieć)</td><td>Niezgodne (niezależne od wybranego trybu wyświetlania strony)</td></tr>
@@ -169,8 +168,7 @@
     objął dotychczas tylko strony dotknięte poprawką tytułów (2.4.6); kontrolki sortowania w
     tabelach list okresowo tracą i odzyskują atrybuty ARIA w rytmie wewnętrznego odświeżania
     biblioteki - złagodzone, lecz nie w pełni usunięte (4.1.2); panel filtrów w widoku
-    administracyjnym Django nie spełnia minimalnego rozmiaru celu (2.5.8, kryterium WCAG 2.2);
-    część zduplikowanych identyfikatorów elementów nie została jeszcze usunięta (4.1.1); a
+    administracyjnym Django nie spełnia minimalnego rozmiaru celu (2.5.8, kryterium WCAG 2.2); a
     dostępność dokumentów załączanych do pism (klauzula 10 EN 301 549) nie zależy od wybranego
     trybu wyświetlania strony i wymaga odrębnego procesu po stronie zespołu. Kryteria oznaczone
     jako "Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii
