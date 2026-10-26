@@ -73,9 +73,15 @@ jobs:
   # job (not a step in django_build_and_test above) because it needs its own
   # Node/Playwright toolchain and an isolated `poradnia_a11y` database with
   # no real client data - never reuse `poradnia`/`test_poradnia` for this.
+  # Runs in parallel with django_build_and_test, not after it: this job
+  # builds and migrates its own isolated stack (poradnia_a11y), so it
+  # doesn't consume anything the other job produces. Serializing them was
+  # pure fail-fast cost-saving (skip the ~10-15min Playwright/Chromium job
+  # if the cheaper unit-test job was already going to fail the PR) at the
+  # cost of roughly doubling PR wall-clock time; running in parallel trades
+  # a bit of wasted CI time on broken builds for faster feedback.
   wcag_mode_checks:
     runs-on: ubuntu-latest
-    needs: django_build_and_test
     steps:
       - uses: actions/checkout@v7
       - name: Align container user with runner UID/GID
