@@ -6,8 +6,7 @@ from django.contrib.auth.forms import AdminUserCreationForm, UserChangeForm
 from django.utils.translation import gettext_lazy as _
 from sorl.thumbnail.admin import AdminImageMixin
 
-from . import admin_mfa  # noqa: F401
-from . import admin_socialaccount  # noqa: F401
+from . import admin_mfa, admin_socialaccount  # noqa: F401
 from .models import Profile, User
 
 
