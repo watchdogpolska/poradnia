@@ -49,7 +49,6 @@
     <tr><td>2.1.1 Klawiatura</td><td>Jedno z okien modalnych (podgląd treści załącznika) nie zamyka się klawiszem Escape.</td></tr>
     <tr><td>2.4.1 Możliwość pominięcia bloków</td><td>Brak linku "przejdź do treści głównej" oraz brak elementów nawigacyjnych (landmarks) w widoku standardowym.</td></tr>
     <tr><td>2.4.3 Kolejność fokusu</td><td>Wyskakujące okno ze zbiórką jest pierwszym elementem w kolejności fokusu na każdej stronie; wspomniane okno modalne pozwala fokusowi wyjść poza siebie.</td></tr>
-    <tr><td>2.4.6 Nagłówki i etykiety</td><td>Pomijane poziomy nagłówków oraz puste nagłówki w wielu miejscach serwisu.</td></tr>
     <tr><td>2.5.8 Rozmiar celu (minimalny)</td><td>Kontrolki sortowania kolumn w listach (komponent DataTables) są mniejsze niż wymagane 24x24 px.</td></tr>
     <tr><td>4.1.2 Nazwa, rola, wartość</td><td>Wynika z niezgodności wymienionych powyżej (ikony z podpowiedzią, struktura ARIA tabel list).</td></tr>
     <tr><td>4.1.3 Komunikaty o stanie</td><td>Komunikaty systemowe (np. potwierdzenia zapisania formularza) nie są ogłaszane technologiom asystującym (brak odpowiedniego regionu "live").</td></tr>
@@ -133,7 +132,7 @@
     <tr><td>2.4.3 Kolejność fokusu</td><td>Niezgodne (częściowo - okno z powiadomieniem o zbiórce pozostaje pierwszym elementem w kolejności fokusu)</td></tr>
     <tr><td>2.4.4 Cel linku (w kontekście)</td><td>Zgodne</td></tr>
     <tr><td>2.4.5 Wiele sposobów</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
-    <tr><td>2.4.6 Nagłówki i etykiety</td><td>Niezgodne (częściowo - poprawiono dotychczas tylko strony objęte ujednoliceniem tytułów)</td></tr>
+    <tr><td>2.4.6 Nagłówki i etykiety</td><td>Zgodne</td></tr>
     <tr><td>2.4.7 Widoczny fokus</td><td>Zgodne</td></tr>
     <tr><td>2.5.1 Gesty związane z wskazywaniem</td><td>Nie dotyczy</td></tr>
     <tr><td>2.5.2 Rezygnacja ze wskazania</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
@@ -164,8 +163,7 @@
 </div>
 <p>
     Nawet w Trybie dostępności pozostają elementy niezgodne: kolejność fokusu zakłóca
-    wyskakujące okno z powiadomieniem o zbiórce (2.4.3); pełny przegląd poziomów nagłówków
-    objął dotychczas tylko strony dotknięte poprawką tytułów (2.4.6); kontrolki sortowania w
+    wyskakujące okno z powiadomieniem o zbiórce (2.4.3); kontrolki sortowania w
     tabelach list okresowo tracą i odzyskują atrybuty ARIA w rytmie wewnętrznego odświeżania
     biblioteki - złagodzone, lecz nie w pełni usunięte (4.1.2); panel filtrów w widoku
     administracyjnym Django nie spełnia minimalnego rozmiaru celu (2.5.8, kryterium WCAG 2.2); a
