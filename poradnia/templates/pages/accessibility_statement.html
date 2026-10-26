@@ -149,7 +149,7 @@
     <tr><td>3.3.3 Sugestie korekty błędów</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
     <tr><td>3.3.4 Zapobieganie błędom (kontekst prawny, finansowy, związany z danymi)</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
     <tr><td>4.1.1 Parsowanie kodu</td><td>Zgodne</td></tr>
-    <tr><td>4.1.2 Nazwa, rola, wartość</td><td>Niezgodne (częściowo - kontrolki sortowania w tabelach list okresowo tracą atrybuty ARIA w trakcie wewnętrznego odświeżania biblioteki; złagodzone, lecz nie w pełni usunięte)</td></tr>
+    <tr><td>4.1.2 Nazwa, rola, wartość</td><td>Niezgodne (częściowo - kontrolki sortowania w tabelach list (komponent DataTables) okresowo tracą atrybuty ARIA w trakcie wewnętrznego odświeżania biblioteki; złagodzone, lecz nie w pełni usunięte)</td></tr>
     <tr><td>4.1.3 Komunikaty o stanie</td><td>Zgodne</td></tr>
     <tr><td>EN 301 549, klauzula 10 (dokumenty nieobsługiwane przez sieć)</td><td>Niezgodne (niezależne od wybranego trybu wyświetlania strony)</td></tr>
     <tr><td>2.4.11 Widoczność fokusu (minimalna) (WCAG 2.2)</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
@@ -164,8 +164,9 @@
 <p>
     Nawet w Trybie dostępności pozostają elementy niezgodne: kolejność fokusu zakłóca
     wyskakujące okno z powiadomieniem o zbiórce (2.4.3); kontrolki sortowania w
-    tabelach list okresowo tracą i odzyskują atrybuty ARIA w rytmie wewnętrznego odświeżania
-    biblioteki - złagodzone, lecz nie w pełni usunięte (4.1.2); panel filtrów w widoku
+    tabelach list (komponent DataTables) okresowo tracą i odzyskują atrybuty ARIA w rytmie
+    wewnętrznego odświeżania tej zewnętrznej biblioteki - złagodzone, lecz nie w pełni usunięte
+    (4.1.2); panel filtrów w widoku
     administracyjnym Django nie spełnia minimalnego rozmiaru celu (2.5.8, kryterium WCAG 2.2); a
     dostępność dokumentów załączanych do pism (klauzula 10 EN 301 549) nie zależy od wybranego
     trybu wyświetlania strony i wymaga odrębnego procesu po stronie zespołu. Kryteria oznaczone
