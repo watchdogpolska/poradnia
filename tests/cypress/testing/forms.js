@@ -5,8 +5,8 @@
 // the correct form.
 
 const submitCaseForm = (cy) => (form, { title, content, attachment }) => {
-  cy.get('input[name="name"]').clear().type(title);
-  cy.get('textarea[name="text"]').clear().type(content);
+  cy.get('input[name="newcase-name"]').clear().type(title);
+  cy.get('textarea[name="newcase-text"]').clear().type(content);
   if (attachment) {
     cy.get('input[type="file"]')
       .filter(":visible")
@@ -61,7 +61,7 @@ const fillPikaForm = (cy) => (form, { year, month, day, hour, minute }) => {
 
 const submitEventForm = (cy) => (form, { datetime, text }) => {
   cy.contains("div", "Przedmiot").within(($div) => {
-    cy.get('textarea[name="text"]').clear().type(text);
+    cy.get('textarea[name="event-text"]').clear().type(text);
   });
   // Click on the timeselect input. It will open a calender popup.
   cy.contains("Czas").click();
