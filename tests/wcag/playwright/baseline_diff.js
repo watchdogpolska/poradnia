@@ -61,6 +61,19 @@ function listFilesRecursive(dir) {
 // is a plain line-by-line comparison, not a real diff algorithm - good
 // enough to show a handful of differing lines with context. Remove once
 // the flake is understood.
+// A flat 500-char prefix wasn't enough: on a long single-line chunk (e.g. a
+// DataTable's whole wrapper/body packed onto one HTML line), both captures
+// are often byte-identical for hundreds of chars before the real difference,
+// so the truncated prefix shown was identical too and useless. This instead
+// finds the first differing character and shows a window around it.
+function firstDiffIndex(a, b) {
+  const len = Math.min(a.length, b.length);
+  for (let i = 0; i < len; i++) {
+    if (a[i] !== b[i]) return i;
+  }
+  return a.length === b.length ? -1 : len;
+}
+
 function logLineDiff(label, a, b) {
   const linesA = a.split("\n");
   const linesB = b.split("\n");
@@ -68,10 +81,18 @@ function logLineDiff(label, a, b) {
   const max = Math.max(linesA.length, linesB.length);
   let shown = 0;
   for (let i = 0; i < max && shown < 5; i++) {
-    if (linesA[i] !== linesB[i]) {
-      console.log(`[line-diff] ${label} line ${i + 1}:`);
-      console.log(`[line-diff]   - ${JSON.stringify(linesA[i] ?? "<missing>").slice(0, 500)}`);
-      console.log(`[line-diff]   + ${JSON.stringify(linesB[i] ?? "<missing>").slice(0, 500)}`);
+    const lineA = linesA[i] ?? "<missing>";
+    const lineB = linesB[i] ?? "<missing>";
+    if (lineA !== lineB) {
+      const idx = firstDiffIndex(lineA, lineB);
+      const start = Math.max(0, idx - 150);
+      const windowA = lineA.slice(start, idx + 150);
+      const windowB = lineB.slice(start, idx + 150);
+      console.log(
+        `[line-diff] ${label} line ${i + 1}: lengths ${lineA.length} vs ${lineB.length}, first diff at char ${idx}`
+      );
+      console.log(`[line-diff]   - ...${JSON.stringify(windowA)}...`);
+      console.log(`[line-diff]   + ...${JSON.stringify(windowB)}...`);
       shown++;
     }
   }
