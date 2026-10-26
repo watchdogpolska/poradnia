@@ -92,6 +92,7 @@ class EventUpdateView(
     form_class = EventForm
     template_name = "events/form.html"
     permission_required = ["cases.can_add_record"]
+    prefix = "event"
 
     def get_permission_object(self):
         return self._object.case
