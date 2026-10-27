@@ -1,0 +1,999 @@
+<!DOCTYPE html><html data-ui-mode="normal" lang="pl"><head>
+    <meta charset="utf-8">
+    <title>Spór o dostęp do danych środowiskowych - Sprawy - Poradnia</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Poradnia App" name="description">
+    <meta content="Sieć Obywatelska - Watchdog Polska" name="author">
+    <meta content="#D82727" name="theme-color">
+    <link href="/static/images/logo-160x128.png" rel="apple-touch-icon" sizes="160x128">
+    <link href="/static/images/favicon-32x26.png" rel="shortcut icon" sizes="32x32" type="image/png">
+    <link href="/static/images/manifest.json" rel="manifest">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="/static/images/logo-160x128.png" name="msapplication-TileImage">
+    <meta content="/static/images/logo-czerwone-tlo-1200x600.jpg" property="og:image">
+    <meta content="image/jpg" property="og:image:type">
+    <meta content="1200" property="og:image:width">
+    <meta content="600" property="og:image:height">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+  <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+    <link href="/static/tasty_feedback/style.css" rel="stylesheet">
+
+    
+        <link href="/static/css/style.min.css" rel="stylesheet">
+    
+    
+    
+    <style>
+        .ai-thumb { color: #999; opacity: 0.6; font-size: 1.25em; }
+        .ai-thumb:hover { opacity: 1; }
+        .ai-thumb-active { color: #f0ad4e; opacity: 1; cursor: help; }
+    </style>
+
+
+<style>.htmx-indicator{opacity:0;visibility: hidden} .htmx-request .htmx-indicator, .htmx-request.htmx-indicator{opacity:1;visibility: visible;transition: opacity 200ms ease-in}</style><link href="http://localhost:8000/static/tinymce/skins/ui/oxide/skin.min.css" id="mce-u0" rel="stylesheet" type="text/css"><style type="text/css">
+  *, *::before, *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    caret-color: transparent !important;
+    scroll-behavior: auto !important;
+  }
+</style></head>
+
+<body class="modal-open" style="overflow: hidden; padding-right: 0px;">
+
+<!-- First element in body by design: keyboard-reachable before anything
+     else, no JS required (plain form POST). This is the one approved
+     normal-mode DOM change - see logs/wcag/plan/ui-mode-design.md §2.
+     Fixed (not relative) so it stays in the same viewport corner
+     regardless of scroll position, like a django-debug-toolbar handle -
+     previously position:relative, it scrolled away with page content on
+     any long page (e.g. /sprawy/). top: 50px (not 0) matches
+     $navbar-height (_vars.scss, also what .sidebar's own top offset
+     uses, _sidebar.scss) - confirmed via Playwright that pinning this at
+     top:0 fully covers the mobile navbar's hamburger toggle and brand
+     link (both sit within the navbar's own ~44px height), and at this
+     width even the desktop sidebar's home link (measured at y:211+) is
+     still comfortably clear. z-index is needed because .navbar is
+     position:fixed on mobile widths (see _layout.scss) and would
+     otherwise render on top of this. -->
+<form action="/ui-mode/" method="post" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
+    <input name="csrfmiddlewaretoken" style="" type="hidden" value="[CSRF]">
+    <input name="next" style="" type="hidden" value="/sprawy/sprawa-2/">
+    
+        <input name="mode" style="" type="hidden" value="wcag">
+        <button class="btn btn-dark" type="submit">Włącz wersję dostępną</button>
+    
+</form>
+
+
+<!-- Moved to beginning to load JQueary before any other js code  -->
+
+    <script src="/static/js/script.min.js"></script>
+
+
+
+
+
+
+
+
+    
+
+<style>
+#alt-popup-backdrop {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Below both the popup itself (1001) and the mode-switch form that's
+       the first element in body (1051, see base.html), above everything
+       else - this is what actually blocks clicking through to the rest
+       of the page while the popup is shown. */
+    z-index: 1000;
+}
+#alt-popup-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 400ms ease, visibility 0s linear 0s;
+}
+#alt-popup-container {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 60px;
+    color: white;
+    background-color: #f93434;
+    border: 1px solid #000000;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    z-index: 1001;
+    white-space: nowrap;
+    text-align: center;
+    border-radius: 10px;
+}
+#alt-popup-container.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 400ms ease, visibility 0s linear 0s;
+}
+@media (max-width: 999px) {
+    #alt-popup-container {
+        white-space: normal;
+        overflow: auto;
+        max-height: 90vh;
+        max-width: 90vw;
+    }
+}
+#alt-popup-container a {
+    color: white;
+    text-decoration: underline;
+}
+#alt-popup-container button {
+    color: white;
+    background-color: #ad1a1a;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+#alt-popup-container h1 {
+    margin-bottom: 20px;
+}
+#alt-popup-container h2,
+#alt-popup-container h3 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+#alt-popup-container form {
+    display: inline-block;
+    margin: 0 4px;
+}
+</style>
+
+<div id="alt-popup-backdrop"></div>
+<div aria-label="Wesprzyj naszą działalność" aria-modal="true" id="alt-popup-container" role="dialog" tabindex="-1">
+    
+        <h1 class="h2">Wesprzyj naszą działalność!</h1>
+        <h2 class="h4">Wesprzyj działanie naszej poradni dobrowolną darowizną,<br>
+            którą wykorzystamy na rzecz ochrony prawa do informacji.</h2>
+        <h3><a href="https://siecobywatelska.pl/wspieraj" target="_blank">Przekaż darowiznę</a></h3>
+        <h4>Każda kwota ma znaczenie!</h4>
+    
+
+
+    <!-- Add any other content or buttons as needed -->
+    <p>&nbsp;</p>
+    <!-- <input id="altAlreadyDonated" name="altAlreadyDonated" type="checkbox" value="donated">
+    <label for="altAlreadyDonated">Już przekazałem/am</label> -->
+    <p>&nbsp;</p>
+    <button class="btn btn-primary" id="alt-donate-button" onclick="closeAltPopup()">Zamknij</button>
+</div>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <!-- No data-bs-toggle="collapse" here on purpose: the actual
+                 show/hide is handled by sidebar.js (a plain classList
+                 toggle on data-bs-target, driving .sidebar's CSS
+                 transform - not an accordion-style collapse panel).
+                 Bootstrap's own collapse JS binds to [data-bs-toggle=
+                 "collapse"] globally regardless of any explicit JS
+                 instantiation, so having both attached used to run two
+                 independent toggles per click: sidebar.js's (correct) and
+                 Bootstrap's own (which also manages body's collapse/show
+                 classes). Opening was harmless, but closing left body
+                 with class="collapse" and no "show" - Bootstrap's own
+                 CSS (.collapse:not(.show) { display: none; }) then hid
+                 the entire page until reload. -->
+            <button aria-expanded="false" class="navbar-toggler collapsed" data-bs-target="body" type="button">
+                <span class="visually-hidden">Toggle navigation</span>
+                <i class="navbar-burger"></i>
+            </button>
+            <a class="navbar-brand" href="#">Poradnia</a>
+        </div>
+    </div>
+</nav>
+<!-- app_main_style tag used to differentiate dev, demo and production environments -->
+<div class="main" style="background-color: #d3e20040;">)
+
+    <div class="sidebar">
+        
+<div class="sidebar-header">
+    <h1 class="app-mode-banner" style="color: red;">DEV</h1>
+    <a href="/">
+        <div class="logo"></div>
+        <p>Poradnia</p>
+    </a>
+    <p><a href="http://siecobywatelska.pl">Sieci Watchdog</a></p>
+</div>
+<div class="block-list">
+    <ul class="block-list-list">
+
+        
+        
+           <li class="block-list-item">
+              <a data-bs-target="#navsearch_modal" data-bs-toggle="modal" href="#">
+                   <i class="fas fa-magnifying-glass"></i> Wyszukaj
+               </a>
+           </li>
+        
+        
+        
+    </ul>
+</div>
+
+<div class="block-list">
+    <div class="block-list-header">Użytkownik</div>
+    <ul class="block-list-list">
+
+        
+            <li class="block-list-item">
+                <a href="/uzytkownik/a11y_client_active/"><i class="fas fa-user"></i>
+                    Ewa Klientka - profil i bezpieczeństwo</a>
+            </li>
+            
+            
+            <li class="block-list-item">
+                <a href="/konta/logout/"><i class="fa-solid fa-right-from-bracket"></i> Wyloguj</a>
+            </li>
+        
+    </ul>
+</div>
+
+
+
+
+
+<div class="block-list">
+    <div class="block-list-header">Sprawy</div>
+    <ul class="block-list-list">
+        <li class="block-list-item"><a href="/listy/"><i class="fas fa-pencil"></i> Nowa sprawa</a></li>
+        
+            <li class="block-list-item">
+                <a href="/sprawy/table/"><i class="fas fa-book"></i> Tabela spraw</a>
+            </li>
+            <li class="block-list-item">
+                <a href="/sprawy/?status=0&amp;status=1&amp;status=3"><i class="fas fa-book"></i> Wykaz spraw</a>
+            </li>
+        
+        
+        <li class="block-list-item">
+            <a href="/strony/regulamin-poradnictwa/"><i class="fas fa-gavel"></i> Regulamin poradnictwa</a>
+        </li>
+        <!-- TODO - move the below to Letters or generic sidebar for code consistency -->
+        
+            <li class="block-list-item">
+                <a href="/listy/table/"><i class="far fa-envelope"></i> Tabela korespondencji</a>
+            </li>
+        
+        
+            <li class="block-list-item">
+                <a href="/listy/rejestr"><i class="far fa-envelope"></i> Korespondencja</a>
+            </li>
+        
+    </ul>
+</div>
+
+
+
+
+<div class="footer row">
+    
+        <div class="col-12">
+            <p class="text-center">
+                <img alt="" class="img-fluid" src="/static/images/baner.png">
+                Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
+                finansowanego z Funduszy EOG.
+            </p>
+        </div>
+    
+
+
+</div>
+
+
+
+    </div>
+    <div class="main-side">
+        <div class="content">
+            
+            
+            
+            <div class="container-fluid">
+                
+    
+    <style>
+    .permissions_help summary {
+        padding-top: 10px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        list-style: none; /* Removes default triangle from <summary> */
+    }
+
+    .permissions_help_icon {
+        margin-right: 5px; /* Adds space between icon and text */
+    }
+
+    .permissions_helptext {
+        width: 280px;
+        height: 250px;
+        overflow-y: auto;
+        background-color: #555;
+        color: #fff;
+        text-align: left;
+        padding: 10px;
+        border-radius: 6px;
+        position: absolute;
+        z-index: 1;
+        bottom: -250px;
+        left: 0;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease-in-out;
+        white-space: pre-line;
+    }
+
+    details[open] .permissions_helptext {
+        opacity: 1;
+        visibility: visible;
+    }
+        </style>
+    <div class="row">
+        <div class="col-12">
+            <div class="case-header">
+                <div class="case-header-actions">
+                    
+                    
+                    
+                    
+                    
+                </div>
+                <h1 class="case-header-title">Spór o dostęp do danych środowiskowych
+                    <span class="case-header-number">#2</span></h1>
+                <div class="case-header-meta">
+                    
+                        <span class="badge text-bg-success" title="Ostatnia zmiana stanu: [DATE] [TIME] [RELATIVE_TIME]"> <i class="far fa-square-plus"></i> moderowana</span>
+                    
+                    
+                    
+                        Utworzona przez <a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a> o 
+                        [RELATIVE_TIME] dla <a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-6" style="height: 1000px; overflow-y: auto;">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-header"><i class="far fa-newspaper"></i> Przepływ pracy</div>
+                        <table class="table">
+                            <tbody><tr>
+                                <td><i class="fas fa-user"></i> Zaangażowani</td>
+                                <td>
+
+    <i aria-label="Może dodawać wpisy, Może widzieć sprawę, Może zmieniać własne wpisy" class="fas fa-shield-halved" data-bs-original-title="Może dodawać wpisy, Może widzieć sprawę, Może zmieniać własne wpisy" data-bs-toggle="tooltip" data-placement="bottom">
+    </i>
+    <a href="/uzytkownik/a11y_staff_wsparcie/">Celina Wsparcie (team)</a>
+    
+
+    <i aria-label="Może dodawać wpisy, Może widzieć sprawę" class="fas fa-shield-halved" data-bs-original-title="Może dodawać wpisy, Może widzieć sprawę" data-bs-toggle="tooltip" data-placement="bottom">
+    </i>
+    <a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a>
+    
+
+</td>
+                            </tr>
+                            
+                            
+                        </tbody></table>
+                    </div>
+                    
+                </div>
+
+                
+            </div>
+            
+                <div class="timeline">
+                    
+                        
+<div class="timeline-messange">
+    <img alt="" class="timeline-avatar" src="/media/cache/db/09/db0922ce7ba066e6db05a74bb9b711ca.jpg">
+    <div class="card border-default timeline-comment" id="letter-2">
+        <div class="card-header text-bg-default">
+            <h2 class="card-title">
+                <a href="#letter-2">
+                    <i class="far fa-envelope"></i>
+                    <i class="fas fa-reply-all"></i>
+                    Pismo 1 w sprawie danych środowiskowych
+                </a>
+            </h2>
+        </div>
+        <div class="card-body">
+            
+            <div style="max-height: 500px; overflow-y: auto;">
+                
+                    <p></p><p>Treść pisma numer 1 (genre=mail, status=done).</p><p></p>
+                    
+                
+            </div>    
+
+        </div>
+        
+        <ul class="list-group">
+            
+            <li class="list-group-item">
+                <i class="far fa-file-image"></i>
+                <button class="btn btn-sm btn-default" hx-get="/listy/attachments/1/text-content-modal/" hx-indicator="#htmx-spinner" hx-swap="innerHTML" hx-target="#attachment-text-modal-container" title="Pokaż wyodrębniony tekst" type="button">
+                    <i class="fas fa-align-left"></i>
+                </button>
+                <a href="/listy/sprawa-2/list-2/zalacznik/1">sample.png</a>
+            </li>
+            
+            <li class="list-group-item">
+                <i class="far fa-file-word"></i>
+                <button class="btn btn-sm btn-default" hx-get="/listy/attachments/2/text-content-modal/" hx-indicator="#htmx-spinner" hx-swap="innerHTML" hx-target="#attachment-text-modal-container" title="Pokaż wyodrębniony tekst" type="button">
+                    <i class="fas fa-align-left"></i>
+                </button>
+                <a href="/listy/sprawa-2/list-2/zalacznik/2">sample.docx</a>
+            </li>
+            
+        </ul>
+        
+        <div class="card-footer">
+            <i class="fas fa-user"></i> Ewa Klientka •
+            <i class="far fa-clock"></i>
+            <time datetime="[DATE] [TIME]">[DATE] [TIME]
+            </time>
+            
+            <!-- TODO differentiate permission level for edit and delete letter -->
+            
+            
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+                    
+                        
+<div class="timeline-messange">
+    <img alt="" class="timeline-avatar" src="/media/cache/db/09/db0922ce7ba066e6db05a74bb9b711ca.jpg">
+    <div class="card border-default timeline-comment" id="letter-4">
+        <div class="card-header text-bg-default">
+            <h2 class="card-title">
+                <a href="#letter-4">
+                    <i class="far fa-envelope"></i>
+                    <i class="fas fa-reply-all"></i>
+                    Pismo 3 w sprawie danych środowiskowych
+                </a>
+            </h2>
+        </div>
+        <div class="card-body">
+            
+            <div style="max-height: 500px; overflow-y: auto;">
+                
+                    <p></p><p>Treść pisma numer 3 (genre=app_message, status=done).</p><p></p>
+                    
+                
+            </div>    
+
+        </div>
+        
+        <div class="card-footer">
+            <i class="fas fa-user"></i> Ewa Klientka •
+            <i class="far fa-clock"></i>
+            <time datetime="[DATE] [TIME]">[DATE] [TIME]
+            </time>
+            
+            <!-- TODO differentiate permission level for edit and delete letter -->
+            
+            
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+                    
+                        
+<div class="timeline-messange">
+    <img alt="" class="timeline-avatar" src="/media/cache/fa/78/fa7898e15cbc596ed6db11ceccb5ac82.jpg">
+    <div class="card border-success timeline-comment" id="letter-6">
+        <div class="card-header text-bg-success">
+            <h2 class="card-title">
+                <a href="#letter-6">
+                    <i class="far fa-envelope"></i>
+                    <i class="fas fa-reply-all"></i>
+                    Pismo 5 w sprawie danych środowiskowych
+                </a>
+            </h2>
+        </div>
+        <div class="card-body">
+            
+            <div style="max-height: 500px; overflow-y: auto;">
+                
+                    <p></p><p>Treść pisma numer 5 (genre=ai_message, status=done).</p><p></p>
+                    
+                
+            </div>    
+
+        </div>
+        
+        <div class="card-footer">
+            <i class="fas fa-user"></i> Celina Wsparcie (team) •
+            <i class="far fa-clock"></i>
+            <time datetime="[DATE] [TIME]">[DATE] [TIME]
+            </time>
+            
+            <!-- TODO differentiate permission level for edit and delete letter -->
+            
+            
+            
+                
+            
+            
+            
+        </div>
+    </div>
+</div>
+
+                    
+                </div>
+                    
+        
+        </div>
+
+        <div class="col-lg-6">
+            
+                <div class="row" role="tabpanel" style="padding-left: 15px;">
+
+                    <ul class="nav nav-tabs" id="form-tab" role="tablist">
+                        
+                            <li role="presentation">
+                                <a aria-controls="letter" aria-selected="true" class="nav-link active" data-bs-toggle="tab" href="#letter" role="tab">List</a>
+                            </li>
+                        
+                            <li role="presentation">
+                                <a aria-controls="court" aria-selected="false" class="nav-link" data-bs-toggle="tab" href="#court" role="tab" tabindex="-1">Sprawa sądowa</a>
+                            </li>
+                        
+                    </ul>
+
+                    <div class="tab-content">
+                        
+                            <div class="tab-pane  active" id="letter" role="tabpanel">
+                                <h2>List</h2>
+                                <form action="/listy/sprawa-2/" class="" data-form-save="form-letter-2" enctype="multipart/form-data" method="post">
+                                    
+
+
+                                    
+
+<input name="csrfmiddlewaretoken" style="" type="hidden" value="[CSRF]"> <script src="/static/tinymce/tinymce.min.js"></script>
+<script src="/static/django_tinymce/init_tinymce.js"></script> <div class="mb-3" id="div_id_name"> <label class="form-label requiredField" for="id_name">
+                Przedmiot<span class="asteriskField">*</span> </label> <input class="textinput form-control" id="id_name" maxlength="300" name="name" required="" style="" type="text" value="Odp: Spór o dostęp do danych środowiskowych"> </div> <div class="mb-3" id="div_id_html"> <label class="form-label" for="id_html">
+                Mail sformatowany w HTML
+            </label> <textarea aria-hidden="true" class="tinymce form-control tinymce" cols="80" data-mce-conf="{&quot;theme&quot;: &quot;silver&quot;, &quot;promotion&quot;: false, &quot;license_key&quot;: &quot;gpl&quot;, &quot;height&quot;: 500, &quot;menubar&quot;: true, &quot;lineheight&quot;: 1, &quot;plugins&quot;: &quot;advlist,autolink,lists,link,image,charmap,preview,anchor,searchreplace,visualblocks,code,fullscreen,insertdatetime,media,table,code,help,wordcount&quot;, &quot;toolbar&quot;: &quot;undo redo | formatselect | lineheight | fontsizeselect |bold italic backcolor | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | charmap | removeformat | help&quot;, &quot;language&quot;: &quot;pl&quot;, &quot;directionality&quot;: &quot;ltr&quot;, &quot;strict_loading_mode&quot;: 1, &quot;selector&quot;: &quot;#id_html&quot;}" id="id_html" name="html" rows="30" style="display: none;">&lt;p&gt;&lt;br&gt;&lt;b&gt;Ewa Klientka&lt;/b&gt;&lt;br&gt;&lt;/p&gt;</textarea><div aria-disabled="false" class="tox tox-tinymce" role="application"><!-- TINYMCE_WIDGET_NORMALIZED --></div> </div> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-send" name="send" style="" type="submit" value="Odpowiedz"> </div> </div>
+
+                                    
+                                    
+                                        
+<style>
+    #selected-files {
+        border: 1px solid lightgray;
+    }
+
+    .sticky_right {
+        padding-right: 0;
+    }
+
+    .sticky_left {
+        padding-left: 0;
+    }
+
+    .clear-button {
+        margin-top: -15px;
+        margin-bottom: 20px;
+        margin-left: 12px;
+        display: none;
+    }
+
+    #div_id_file_field {
+        margin-bottom: 5px;
+    }
+
+    #drop-zone {
+        background-color: #f5f5f5;
+    }
+
+    /* BS5's own .table CSS paints every cell's own opaque background-color
+       (default: white) on top of whatever sits behind the table - BS3 left
+       cells transparent, so #drop-zone's light-grey background above showed
+       straight through the "Wybrane pliki:" header. table-striped's own
+       accent color is a separate box-shadow layer, unaffected by this, so
+       striping on populated rows still works once files are added. Found
+       via a user report that the header had gone white instead of grey. */
+    #selected-files > :not(caption) > * > * {
+        background-color: transparent;
+    }
+</style>
+<div class="row" id="drop-zone">
+    <div class="col-lg-4 sticky_right">
+        
+
+
+        
+
+<input name="csrfmiddlewaretoken" style="" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_file_field"> <label class="form-label" for="id_file_field">
+                Załączniki (wybierz lub upuść tutaj)
+            </label> <div> <input class="form-control" id="id_file_field" multiple="" name="file_field" style="" type="file"> </div> </div>
+
+        <button class="clear-button" id="clear-files-button" type="button">
+            &nbsp;&nbsp;Wyczyść pliki&nbsp;&nbsp;
+        </button>
+    </div>
+    <div class="col-lg-8 sticky_left">
+        <table class="table table-striped table-condensed" id="selected-files">
+            <thead id="files-table-head">
+                <tr>
+                    <th style="font-size: 14px;">
+                        <i aria-label="Wybierz wiele plików za pomocą Ctrl lub Shift." class="fa-regular fa-circle-question" data-bs-original-title="Wybierz wiele plików za pomocą Ctrl lub Shift." data-bs-toggle="tooltip" data-placement="bottom">
+                        </i>
+                        Wybrane pliki:
+                    </th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
+                                    
+                                </form>
+                            </div>
+                        
+                            <div class="tab-pane " id="court" role="tabpanel">
+                                <h2>Sprawa sądowa</h2>
+                                <form action="/sprawy_sadowe/~create-2" class="" data-form-save="form-court-2" enctype="multipart/form-data" method="post">
+                                    
+
+
+                                    
+
+ <input name="csrfmiddlewaretoken" style="" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_court"> <label class="form-label" for="id_court">
+                Sąd
+            </label> <select class="select form-select" id="id_court" name="court"> <option selected="" value="">---------</option> <option value="1">Wojewódzki Sąd Administracyjny w Warszawie</option>
+
+</select> </div> <div class="mb-3" id="div_id_signature"> <label class="form-label requiredField" for="id_signature">
+                Signature<span class="asteriskField">*</span> </label> <input aria-describedby="id_signature_helptext" class="textinput form-control" id="id_signature" maxlength="50" name="signature" required="" style="" type="text"> <div class="form-text" id="id_signature_helptext">Sygnatura sądowa</div> </div> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-action-courtcaseform" name="action" style="" type="submit" value="Zapisz"> </div> </div> </form>
+
+                                    
+                                    
+                                
+                            </div>
+                        
+                        <br>
+                        <p>List może zostać przesłany także z wykorzystaniem <a href="mailto:sprawa-2@porady.siecobywatelska.pl">poczty elektronicznej</a>.</p>
+                    </div>
+                </div>
+                        
+        </div>
+    </div>
+
+    
+    <ul class="pager">
+        
+            <li class="previous"><a href="/sprawy/sprawa-3/"> <span aria-hidden="true">←</span> Długotrwała korespondencja ws. decyzji administracyjnej</a></li>
+        
+
+        
+    </ul>
+
+
+
+            </div>
+            
+            <div class="footer">
+                <div class="footer-right">Sieć Obywatelska - Watchdog Polska<br>
+                    ul. Szpitalna 5/5<br>
+                    00-031 Warszawa
+                </div>
+                <div class="footer-left">
+                    silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
+                    [VERSION] |
+                    <a href="https://github.com/watchdogpolska/poradnia">
+                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/[GITHUB_REVISION]...master">[GITHUB_REVISION]</a> |
+                    <a href="/strony/deklaracja-dostepnosci/">Deklaracja dostępności</a>
+                </div>
+                <div class="footer-center">Strona wykorzystuje cookies</div>
+            </div>
+            <div class="footer">
+                    <div class="footer-center col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                        
+                            <img alt="" class="img-fluid" src="/static/images/baner.png"><br>
+                            Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
+                            finansowanego z Funduszy EOG.<br>
+                        
+
+
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+        
+        
+<div id="feedback">
+    <div id="feedback-header">Zgłoś usterkę administratorom poradni.</div>
+    <div id="feedback-body">
+        <p>Przekaż nam uwagi o tej stronie dotyczące błędów lub możliwych ulepszeń.</p>
+        
+
+
+        
+
+<form action="/uwagi/submit" method="post"> <input name="csrfmiddlewaretoken" style="" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_text"> <label class="form-label requiredField" for="id_text">
+                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea aria-describedby="id_text_helptext" class="textarea form-control" cols="40" id="id_text" name="text" required="" rows="10" style=""></textarea> <div class="form-text" id="id_text_helptext">Treść zgłoszona przez użytkownika</div> </div> <input id="id_url" name="url" style="" type="hidden" value="http://localhost:8000/sprawy/sprawa-2/"> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-feedback_action" name="feedback_action" style="" type="submit" value="Zgłoś usterkę administratorom poradni."> </div> </div> </form>
+
+    </div>
+</div>
+
+    
+
+</div>
+
+    
+<!-- Modal -->
+<div aria-labelledby="navsearch_modal_label" class="modal fade" id="navsearch_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="navsearch_modal_label">Wyszukaj</h2>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+                
+<div class="navsearch">
+	<form class="form" onsubmit="return false;">
+		<div class="form-group">
+			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
+			<input class="form-control navsearch__input" hx-get="/navsearch/" hx-swap="innerHTML" hx-target=".navsearch__results" hx-trigger="input changed delay:300ms" id="search" name="q" style="" type="search">
+		</div>
+	</form>
+	<div class="navsearch__results"></div>
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Le javascript
+  ================================================== -->
+<!-- Rest of js placed at the end of the document so the pages load faster -->
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="/static/js/donate_popup_alternative.js"></script>
+
+
+
+    
+    
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            const states = {
+                show: { iconClass: 'fa-regular fa-square-plus', text: 'Pokaż cytat' },
+                hide: { iconClass: 'fa-regular fa-square-minus', text: 'Ukryj cytat' },
+            };
+            document.querySelectorAll('blockquote').forEach((el) => {
+                el.hidden = true;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn quote-link';
+                const icon = document.createElement('i');
+                const label = document.createElement('span');
+                btn.append(icon, ' ', label);
+                const apply = ({ iconClass, text }) => {
+                    icon.className = iconClass;
+                    label.textContent = text;
+                };
+                apply(states.show);
+                btn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    el.hidden = !el.hidden;
+                    apply(el.hidden ? states.show : states.hide);
+                });
+                el.parentNode.insertBefore(btn, el);
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        // #form-tab links already use data-bs-toggle="tab", which handles
+        // click-to-switch on its own - only the initial tab (none is
+        // active on page load) still needs an explicit show().
+        var firstFormTab = document.querySelector('#form-tab a');
+        if (firstFormTab) {
+            bootstrap.Tab.getOrCreateInstance(firstFormTab).show();
+        }
+
+        function validateAiSearchRejectReason(pk) {
+            var textarea = document.getElementById('aiSearchRejectReason-' + pk);
+            var error = document.getElementById('aiSearchRejectReasonError-' + pk);
+            var value = textarea.value.trim();
+            var ok = !!value;
+            error.style.display = ok ? 'none' : 'block';
+            if (ok) {
+                // hidden.bs.modal (below) clears the textarea as soon as
+                // hide() below runs - which, without CSS transition support,
+                // fires synchronously - so hx-vals would otherwise read an
+                // empty value. Stash it on a data attribute hx-vals can read
+                // instead, unaffected by that reset.
+                textarea.dataset.pendingValue = value;
+                // Hide the modal now, while it's still attached to the DOM.
+                // The htmx swap that follows replaces #ai-feedback-{pk} (the
+                // modal's own parent) with the rejected state, which no
+                // longer renders the modal at all - if we waited until after
+                // that swap to call .hide(), Bootstrap would have no
+                // element left to run its hide transition on, and the
+                // backdrop it already added to <body> would never be
+                // removed, leaving the page stuck behind a dark overlay.
+                var modalEl = document.getElementById('aiSearchRejectModal-' + pk);
+                bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+            }
+            return ok;
+        }
+
+        document.addEventListener('hidden.bs.modal', function (event) {
+            if (!event.target.matches('[id^="aiSearchRejectModal-"]')) {
+                return;
+            }
+            var pk = event.target.id.replace('aiSearchRejectModal-', '');
+            var ta = document.getElementById('aiSearchRejectReason-' + pk);
+            var err = document.getElementById('aiSearchRejectReasonError-' + pk);
+            if (ta) { ta.value = ''; }
+            if (err) { err.style.display = 'none'; }
+        });
+    </script>
+
+
+<div id="attachment-text-modal-container">
+
+<div aria-labelledby="attachmentTextModalLabel" aria-modal="true" class="modal fade show" id="attachmentTextModal" role="dialog" style="display: block;" tabindex="-1">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="attachmentTextModalLabel">
+                    sample.png
+                </h2>
+                <button aria-label="Zamknij" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+
+            <div class="modal-body">
+                
+                    <em>Brak dostępnego tekstu.</em>
+                
+            </div>
+        </div>
+    </div>
+</div></div>
+<div class="htmx-indicator" id="htmx-spinner">
+    Wczytywanie...
+</div>
+<script>
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('[hx-target="#attachment-text-modal-container"]')) {
+            return;
+        }
+
+        // Only clean up a modal that's actually open (switching straight
+        // from one attachment's modal to another's, without closing
+        // first) - this used to run unconditionally on every click of an
+        // attachment button, including the very click that opens the
+        // *first* modal, which stripped the backdrop/scroll-lock Bootstrap
+        // had just added for that same click (confirmed via an isolated
+        // Bootstrap-only repro outside the app, alongside the F004 fix in
+        // wcag.js). Registered capture:true so this runs *before* the
+        // click's own handler swaps #attachment-text-modal-container's
+        // content below - otherwise, on a direct switch between two
+        // attachments, `existingModal` would already be the new (not-yet-
+        // shown) modal instead of the old (actually open) one, and this
+        // would wrongly skip cleanup, leaking the old backdrop behind the
+        // new one (confirmed via the same repro).
+        var existingModal = document.getElementById('attachmentTextModal');
+        if (existingModal && existingModal.classList.contains('show')) {
+            bootstrap.Modal.getOrCreateInstance(existingModal).hide();
+            document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+                el.remove();
+            });
+            document.body.classList.remove('modal-open');
+        }
+    }, true);
+
+    document.body.addEventListener('htmx:afterSwap', function (event) {
+        if (event.target.id === 'attachment-text-modal-container') {
+            var modal = document.getElementById('attachmentTextModal');
+            if (modal) {
+                bootstrap.Modal.getOrCreateInstance(modal).show();
+            }
+        }
+    });
+
+    // Bootstrap sets aria-hidden="true" on the modal from _hideModal(),
+    // called after the hide transition - if focus is still inside the
+    // modal at that point (e.g. the "Zamknij" button that was just
+    // clicked/activated to close it), the browser blocks it and logs an
+    // "aria-hidden blocked" console warning, since a hidden ancestor must
+    // never contain the focused element. 'hide.bs.modal' fires
+    // synchronously, immediately, before any of that - blurring here
+    // means focus is already outside the modal by the time aria-hidden
+    // is actually applied. The 'hidden.bs.modal' handler below still runs
+    // afterwards to move focus on to the triggering attachment button.
+    document.addEventListener('hide.bs.modal', function (event) {
+        if (event.target.matches('#attachmentTextModal') && event.target.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+    });
+
+    document.addEventListener('hidden.bs.modal', function (event) {
+        if (!event.target.matches('#attachmentTextModal')) {
+            return;
+        }
+        var container = document.getElementById('attachment-text-modal-container');
+        if (container) {
+            container.innerHTML = '';
+        }
+        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+            el.remove();
+        });
+        document.body.classList.remove('modal-open');
+    });
+
+    function getCookie(name) {
+        var value = '; ' + document.cookie;
+        var parts = value.split('; ' + name + '=');
+        if (parts.length === 2) {
+            return parts.pop().split(';').shift();
+        }
+        return null;
+    }
+
+    document.body.addEventListener('htmx:configRequest', function (event) {
+        event.detail.headers['X-CSRFToken'] = getCookie('csrftoken');
+    });
+</script>
+
+
+
+
+<div class="tox tox-silver-sink tox-tinymce-aux" style="position: relative;"></div><div class="modal-backdrop fade show"></div></body></html>

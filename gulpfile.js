@@ -48,6 +48,15 @@ const config = {
     },
     watch: [path.assets + "/scss/**/*.scss"],
   },
+  wcagScss: {
+    input: [path.assets + "/scss/wcag.scss"],
+    include: [path.npm, path.staticfiles, path.assets + "/scss/"],
+    output: {
+      dir: path.static + "/css",
+      filename: "wcag.css",
+    },
+    watch: [path.assets + "/scss/wcag.scss"],
+  },
   icons: {
     input: [path.npm + "/@fortawesome/fontawesome-free/webfonts/**/*.*"],
     output: path.static + "/webfonts",
@@ -62,6 +71,11 @@ const config = {
       path.npm + "/pikaday-time/pikaday.js",
       path.npm + "/patternomaly/dist/patternomaly.js",
       path.assets + "/js/*.js",
+      // wcag.js is bundled separately (see wcagScript below) so that
+      // style.css/.min.css + script.js/.min.js stay byte-identical whether
+      // or not WCAG mode exists - that's what keeps baseline/assets.sha256
+      // stable for logs/wcag's baseline-diff gate.
+      "!" + path.assets + "/js/wcag.js",
       path.npm + "/datatables.net/js/dataTables.js",
       path.npm + "/datatables.net-dt/js/dataTables.dataTables.js",
       path.staticfiles + "/ajax_datatable/js/utils.js",
@@ -80,6 +94,14 @@ const config = {
       filename: "script.js",
     },
     watch: [path.assets + "/js/*.js"],
+  },
+  wcagScript: {
+    input: [path.assets + "/js/wcag.js"],
+    output: {
+      dir: path.static + "/js",
+      filename: "wcag.js",
+    },
+    watch: [path.assets + "/js/wcag.js"],
   },
 };
 
@@ -122,21 +144,55 @@ function scss() {
     .pipe(livereload());
 }
 
+function wcagScss() {
+  return gulp.src(config.wcagScss.input, { allowEmpty: true })
+    .pipe(
+      sass({
+        style: "expanded",
+        loadPaths: config.wcagScss.include,
+        quietDeps: true,
+      }).on("error", sass.logError)
+    )
+    .pipe(postcss([autoprefixer()]))
+    .pipe(concat(config.wcagScss.output.filename))
+    .pipe(gulp.dest(config.wcagScss.output.dir))
+    .pipe(livereload())
+    .pipe(cleanCSS({ compatibility: "ie8" }))
+    .pipe(rename({ extname: ".min.css" }))
+    .pipe(gulp.dest(config.wcagScss.output.dir))
+    .pipe(livereload());
+}
+
+function wcagJs() {
+  return gulp.src(config.wcagScript.input, { allowEmpty: true })
+    .pipe(concat(config.wcagScript.output.filename))
+    .pipe(gulp.dest(config.wcagScript.output.dir))
+    .pipe(livereload())
+    .pipe(uglify())
+    .pipe(rename({ extname: ".min.js" }))
+    .pipe(gulp.dest(config.wcagScript.output.dir))
+    .pipe(livereload());
+}
+
 function watchFiles() {
   livereload.listen();
   gulp.watch(config.scss.watch, scss);
   gulp.watch(config.script.watch, js);
+  gulp.watch(config.wcagScss.watch, wcagScss);
+  gulp.watch(config.wcagScript.watch, wcagJs);
 }
 
 // ----------------------------------
 // Build & default
 // ----------------------------------
-const build = gulp.series(icons, js, scss);
+const build = gulp.series(icons, js, scss, wcagJs, wcagScss);
 const dev = gulp.series(build, watchFiles);
 
 exports.icons = icons;
 exports.js = js;
 exports.scss = scss;
+exports.wcagJs = wcagJs;
+exports.wcagScss = wcagScss;
 exports.build = build;
 exports.watch = watchFiles;
 exports.default = build;

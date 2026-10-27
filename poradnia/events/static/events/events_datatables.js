@@ -7,10 +7,10 @@ AjaxDatatableViewUtils.init({
         var toolbar = wrapper.querySelector('.toolbar');
         toolbar.innerHTML =
             '<div class="daterange" style="float: left; margin-right: 6px;">' +
-                '<span class="from"><label>Czas od</label>: ' +
-                    '<input type="date" class="date_from datepicker"></span>' +
-                '<span class="to"><label>&nbsp do</label>: ' +
-                    '<input type="date" class="date_to datepicker"></span>' +
+                '<span class="from"><label for="daterange_from">Czas od</label>: ' +
+                    '<input type="date" id="daterange_from" class="date_from datepicker"></span>' +
+                '<span class="to"><label for="daterange_to">&nbsp do</label>: ' +
+                    '<input type="date" id="daterange_to" class="date_to datepicker"></span>' +
             '</div>';
         toolbar.addEventListener('change', function(event) {
             if (!event.target.matches('.date_from, .date_to')) return;
@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function () {
             serverSide: true,
             autoWidth: true,
             full_row_select: false,
+            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
             // Group the length selector/search box, and the info/paging controls,
             // each into one row (default dom string stacks every feature separately).
             dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
@@ -83,8 +84,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     "last":       "Ostatnia"
                 },
                 "aria": {
-                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                    "orderable": ": aktywuj, by posortować kolumnę",
+                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
+                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "previous": "Poprzednia",
+                        "next": "Następna",
+                        "last": "Ostatnia"
+                    }
                 }
             },
         }, {

@@ -1,3 +1,4 @@
+import re
 from datetime import datetime
 
 from django import template
@@ -10,6 +11,27 @@ from guardian.shortcuts import get_user_perms
 from poradnia import get_version
 
 register = template.Library()
+
+
+@register.filter
+def strip_wrapping_p(value):
+    """
+    Strips the single <p> wrapper TinyMCE 7 always emits around its
+    content - even one typed line - now that forced_root_block's
+    validator rejects false/"" (confirmed against the bundled
+    tinymce.min.js: it requires a non-empty string and silently falls
+    back to its "p" default otherwise, so disabling the wrapper via
+    config is no longer possible). Needed wherever a tinycontent block
+    must render inline mid-sentence rather than as its own paragraph -
+    see pages/accessibility_statement.html's contact/RPO-link fields.
+    Removes only the first opening <p...> (anchored at the start) and
+    the first </p> that follows, so a trailing admin-only "(Edit)" link
+    or genuinely multi-paragraph content passes through untouched.
+    """
+    value = value or ""
+    value = re.sub(r"^\s*<p[^>]*>", "", value, count=1, flags=re.S)
+    value = re.sub(r"</p>", "", value, count=1, flags=re.S)
+    return mark_safe(value.strip())
 
 
 @register.filter
@@ -35,7 +57,13 @@ def app_mode():
     """
     if settings.APP_MODE == "PROD":
         return mark_safe("")
-    return mark_safe(f'<h1 style="color: red;">{settings.APP_MODE}</h1>')
+    # class added so WCAG mode can target this one h1 without touching any
+    # other <h1> on the page - the inline style (needed so !important can
+    # still win over it in WCAG mode, see wcag.scss) carries the normal-mode
+    # color unchanged.
+    return mark_safe(
+        f'<h1 class="app-mode-banner" style="color: red;">{settings.APP_MODE}</h1>'
+    )
 
 
 @register.simple_tag

@@ -1,6 +1,27 @@
 {% load tinycontent_tags %}
 
 <style>
+#alt-popup-backdrop {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Below both the popup itself (1001) and the mode-switch form that's
+       the first element in body (1051, see base.html), above everything
+       else - this is what actually blocks clicking through to the rest
+       of the page while the popup is shown. */
+    z-index: 1000;
+}
+#alt-popup-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 400ms ease, visibility 0s linear 0s;
+}
 #alt-popup-container {
     opacity: 0;
     visibility: hidden;
@@ -44,20 +65,26 @@
     padding: 10px 20px;
     font-weight: bold;
 }
-#alt-popup-container h2 {
+#alt-popup-container h1 {
     margin-bottom: 20px;
 }
+#alt-popup-container h2,
 #alt-popup-container h3 {
     margin-top: 15px;
     margin-bottom: 15px;
 }
+#alt-popup-container form {
+    display: inline-block;
+    margin: 0 4px;
+}
 </style>
 
-<div id="alt-popup-container">
+<div id="alt-popup-backdrop"></div>
+<div id="alt-popup-container" role="dialog" aria-modal="true" aria-label="Wesprzyj naszą działalność" tabindex="-1">
     {% tinycontent 'donate_popup_alternative:message' %}
-        <h2>Wesprzyj naszą działalność!</h2>
-        <h4>Wesprzyj działanie naszej poradni dobrowolną darowizną,<br>
-            którą wykorzystamy na rzecz ochrony prawa do informacji.</h4>
+        <h1 class="h2">Wesprzyj naszą działalność!</h1>
+        <h2 class="h4">Wesprzyj działanie naszej poradni dobrowolną darowizną,<br>
+            którą wykorzystamy na rzecz ochrony prawa do informacji.</h2>
         <h3><a href="https://siecobywatelska.pl/wspieraj" target="_blank">Przekaż darowiznę</a></h3>
         <h4>Każda kwota ma znaczenie!</h4>
     {% endtinycontent %}

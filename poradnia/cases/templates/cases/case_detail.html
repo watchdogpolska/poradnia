@@ -1,5 +1,5 @@
 {% extends 'cases/base.html' %}
-{% load guardian_tags crispy_forms_tags staticfiles humanize i18n cases_tags %}
+{% load guardian_tags crispy_forms_tags staticfiles humanize i18n cases_tags wcag_tags %}
 {% block title %}{{ object }} - {{ block.super }}{% endblock %}
 {% block javascript %}
     {{ block.super }}
@@ -241,6 +241,7 @@
                                     href="{% url 'cases:permission_add' pk=object.pk %}">{% trans "..." %}</a>
                                 </div>
                                 <div class="card-body">
+                                    {% form_error_summary casegroup_form %}
                                     {% crispy casegroup_form %}
                                     <details class="permissions_help">
                                         <summary>
@@ -292,6 +293,7 @@
                                     action="{{ row.form.helper.form_action }}" 
                                     data-form-save="form-{{ key }}-{{ object.pk }}"
                                 >
+                                    {% form_error_summary row.form %}
                                     {% crispy row.form %}
                                     {% if row.formset %}
                                         {% crispy row.formset %}

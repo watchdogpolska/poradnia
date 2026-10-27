@@ -1,5 +1,6 @@
 {% extends 'advicer/base.html' %}
-{% load humanize i18n crispy_forms_tags %}
+{% load humanize i18n crispy_forms_tags wcag_tags %}
+{% block title %}{% trans 'Advice list' %} - {{ block.super }}{% endblock %}
 {% block breadcrumbs_rows %}
     <li class="breadcrumb-item active">{% trans 'Advice index' %}</li>
     <div class="float-end">
@@ -12,6 +13,7 @@
     <div class="container">
         <div class="row justify-content-center">
             <div class="col-lg-12 col-md-12 col-sm-12">
+                {% form_error_summary filter.form %}
                 {% crispy filter.form %}
                 {% if object_list %}
                     <div class="row">

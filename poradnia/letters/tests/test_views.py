@@ -58,10 +58,10 @@ class NewCaseMixin(CaseMixin):
 class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
     fields = ["name", "text", "email_registration", "turnstile", "giodo"]
     post_data = {
-        "email_registration": "my_email@oh-noes.pl",
-        "giodo": "on",
-        "name": "Lorem ipsum subject example",
-        "text": "Lorem ipsum example text",
+        "newcase-email_registration": "my_email@oh-noes.pl",
+        "newcase-giodo": "on",
+        "newcase-name": "Lorem ipsum subject example",
+        "newcase-text": "Lorem ipsum example text",
         "turnstile": "valid-turnstile-response",  # Mocked valid Turnstile response
     }
 
@@ -115,14 +115,14 @@ class NewCaseAnonymousTestCase(NewCaseMixin, TestCase):
     def test_existing_account_does_not_disclose_account_or_create_case(
         self, mock: MagicMock
     ):
-        UserFactory(email=self.post_data["email_registration"])
+        UserFactory(email=self.post_data["newcase-email_registration"])
         resp = self.post()
         self.assertRedirects(resp, reverse("home"))
         self.assertEqual(self.get_case().count(), 0)
         self.assertEqual(self.get_letter().count(), 0)
         self.assertMailSend(
             template="users/email/existing_case_attempt.txt",
-            to=self.post_data["email_registration"],
+            to=self.post_data["newcase-email_registration"],
         )
 
 
@@ -133,11 +133,11 @@ class AdminNewCaseTestCase(NewCaseMixin, TestCase):
     def get_data(self):
         self.email = UserFactory.build().email
         return {
-            "client-autocomplete": "",
-            "email": self.email,
-            "giodo": "on",
-            "name": "Lorem ipsum subject example",
-            "text": "Lorem ipsum example text",
+            "newcase-client-autocomplete": "",
+            "newcase-email": self.email,
+            "newcase-giodo": "on",
+            "newcase-name": "Lorem ipsum subject example",
+            "newcase-text": "Lorem ipsum example text",
             "turnstile": "valid-turnstile-response",
         }
 
@@ -166,8 +166,8 @@ class UserNewCaseTestCase(NewCaseMixin, TestCase):
 
     def get_data(self):
         return {
-            "name": "Lorem ipsum subject example",
-            "text": "Lorem ipsum example text",
+            "newcase-name": "Lorem ipsum subject example",
+            "newcase-text": "Lorem ipsum example text",
             "turnstile": "valid-turnstile-response",  # Mocked valid Turnstile response
         }
 

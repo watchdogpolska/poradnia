@@ -1,0 +1,52 @@
+# Compose override for the WCAG accessibility audit.
+#
+# Points `web` at the isolated `poradnia_a11y` database (never the dev copy
+# of real data configured via .env) and runs the normal Dockerfile CMD
+# (collectstatic + migrate + runserver) instead of the VSCode `sleep infinity`
+# override, so Playwright can hit a live server.
+#
+# Also:
+# - MFA_ENFORCE_ENABLED=False: per HANDOFF.md's environment table ("Auth: MFA
+#   off"), but it defaults to True (config/settings/common.py:586) and the
+#   E2E_MFA_BYPASS_* cookie only activates when TESTING is set (see TEST=1
+#   below), which a plain runserver session doesn't set on its own --
+#   confirmed live: without this, a staff login via Playwright gets
+#   redirected to /konta/2fa/ (mfa_index) on every request.
+# - TEST=1: sets config/settings/common.py's TESTING flag (same mechanism
+#   Cypress e2e uses, per the comment in config/settings/local.py:23-25),
+#   which keeps django-debug-toolbar off. Without it, the toolbar injects a
+#   random data-request-id and live CPU/SQL/template timing numbers into
+#   every page, which made baseline_diff report nearly every page as
+#   changed between two otherwise-identical captures -- confirmed live.
+#   TEST=1 also makes Celery tasks run eager/in-memory rather than queuing
+#   to RabbitMQ, which is fine here since nothing in the baseline sample
+#   triggers a task (all read-only GETs).
+#
+# IMPORTANT: pass -f explicitly on every command; COMPOSE_FILE from .env
+# (docker-compose.yml:docker-compose.vscode.yml) is ignored once -f is given.
+#
+# Lives in tests/wcag/ (not logs/wcag/) because CI needs it tracked in git -
+# see logs/wcag/README.md §5.
+#
+# Usage:
+#   docker compose -f docker-compose.yml -f tests/wcag/docker-compose.a11y.yml run --rm web python manage.py migrate
+#   docker compose -f docker-compose.yml -f tests/wcag/docker-compose.a11y.yml up -d web
+#   docker compose -f docker-compose.yml -f tests/wcag/docker-compose.a11y.yml run --rm web python tests/wcag/seed_a11y.py --reset
+
+services:
+  web:
+    environment:
+      DATABASE_URL: mysql://root:password@db/poradnia_a11y
+      MFA_ENFORCE_ENABLED: "False"
+      TEST: "1"
+      # Per HANDOFF.md ("Turnstile off"); TURNSTILE_ENABLE defaults to True
+      # (common.py:581) and a real TURNSTILE_SITE_KEY is configured in this
+      # environment, so the widget actually renders and calls out to
+      # Cloudflare for real, generating a random cf-chl-widget-*_response id
+      # on every load -- confirmed live, the only remaining source of
+      # postload.html nondeterminism after disabling the debug toolbar.
+      TURNSTILE_ENABLE: "False"
+    command: >-
+      bash -c "python manage.py collectstatic --no-input &&
+               python manage.py migrate &&
+               python manage.py runserver 0.0.0.0:8000"

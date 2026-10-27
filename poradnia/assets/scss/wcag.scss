@@ -1,0 +1,235 @@
+// WCAG-mode-only stylesheet. Loaded in base.html only when ui_mode == "wcag",
+// after style.css, and every rule here should additionally be scoped under
+// html[data-ui-mode="wcag"] as a belt-and-suspenders guard.
+
+// F001: skip link (base.html), visually-hidden until focused - a standard
+// accessible pattern, not the same requirement as the mode-switch button
+// (which must stay always-visible per logs/wcag/plan/ui-mode-design.md §2).
+html[data-ui-mode="wcag"] .wcag-skip-link {
+	position: absolute;
+	top: -40px;
+	left: 0;
+	z-index: 1052;
+	padding: 0.5rem 1rem;
+	background: #fff;
+	color: #000;
+
+	&:focus {
+		top: 0;
+	}
+}
+
+// F013: style.scss's .btn-default border-color (#ccc, ~1.6:1 against white)
+// and focus-shadow-rgb (173,173,173, ~2.24:1) both fall under the 3:1
+// minimum WCAG 1.4.11 requires for UI-component boundaries/focus
+// indicators. Overridden here (not in style.scss) so normal mode's look -
+// and assets.sha256 - stay untouched. See audit/findings.csv F013.
+html[data-ui-mode="wcag"] .btn-default {
+	// #767676 is the well-known "exactly ~4.5:1 against white" gray,
+	// comfortably clearing the 3:1 minimum (was #ccc, ~1.6:1).
+	--bs-btn-border-color: #767676;
+	--bs-btn-hover-border-color: #767676;
+	--bs-btn-active-border-color: #767676;
+	--bs-btn-disabled-border-color: #767676;
+	// Bootstrap's own .btn:focus-visible rule renders this at 50% alpha
+	// over the page background (rgba(var(--bs-btn-focus-shadow-rgb), .5)),
+	// so the effective on-screen color is lighter than this raw value -
+	// black blends to roughly #808080 (~3.95:1), clearing 3:1 (the old
+	// 173,173,173 raw value was already under 3:1 *before* accounting for
+	// that blend, so the real rendered contrast was worse still).
+	--bs-btn-focus-shadow-rgb: 0, 0, 0;
+}
+
+// F006: DataTables.net's own ".dt-column-order" sort control renders at
+// 8x14px, under the 24x24px / adequate-spacing WCAG 2.5.8 (AA) target-size
+// minimum. The django-ajax-datatables.net.v3 fork (v1.1.0+) adds an
+// ".a11y-mode" class to the table wrapper when a11y_mode:true is passed to
+// initialize_table() (see the 5 *_datatables.js files), and ships this same
+// rule in its own ajax_datatable/css/style.css - not bundled here, since
+// that file also carries a lot of unrelated, unconditional DataTables
+// styling (font-size, padding, box-sizing) poradnia has never loaded in
+// either mode; pulling in the whole file would be a real, unreviewed visual
+// change. Duplicating just the one opt-in rule keeps this scoped to WCAG
+// mode and to this one fix. box-sizing is forced to content-box so the
+// padding reliably *adds* to the rendered size under Bootstrap's global
+// border-box reset.
+html[data-ui-mode="wcag"] .a11y-mode .dt-column-order {
+	box-sizing: content-box;
+	padding: 0 8px;
+}
+
+// events/event_archive.html's plain-text month links (the "months index"
+// archive page) render with no padding, so the clickable box is just the
+// text glyphs - under 24x24px / adequate-spacing for short labels like
+// "2026" (WCAG 2.5.8 AA target-size). Same fix shape as F006 above.
+html[data-ui-mode="wcag"] .event-month-link {
+	display: inline-block;
+	padding: 6px 4px;
+}
+
+// F018 completion: the audit's own fix note for F018 ("darken...wherever
+// this exact pair is used", findings.csv) was only partially done - the M1
+// commit scoped the darkened link color to .footer a alone, judged safe to
+// also apply in normal mode since that one shift is visually imperceptible.
+// The same #d82727-vs-#f4f8bf 4.48:1 shortfall (a hair under the 4.5:1
+// minimum) recurs sitewide wherever a plain link or a Bootstrap nav-link
+// sits against the general content background - case/letter lists, the
+// event calendar, dashboard/case-detail nav-tabs, profile pages - a much
+// larger and more visible footprint than the footer alone, so this
+// completion is kept WCAG-mode-only rather than extended to normal mode.
+// Overriding the two CSS custom properties Bootstrap's own rules actually
+// consume (not a plain `a{color}` rule, which can't reach .nav-link: it
+// renders via its own --bs-nav-link-color, itself defaulting to
+// --bs-link-color - see node_modules/bootstrap/scss/_nav.scss /
+// _root.scss) reaches every consumer in one place rather than chasing each
+// component's selector individually. Reuses #C42020, the same color
+// already picked for .footer a (5.32:1 against #f4f8bf).
+//
+// Darkening the link color to clear 1.4.3 against the light content
+// background pushes it *closer* to the dark body text color (#212529),
+// which tripped a second, previously-passing check: axe's
+// link-in-text-block (a plain-language link needs either >=3:1 contrast
+// from its surrounding non-link text, or a non-color cue like underline -
+// #C42020 only clears 2.63:1 against #212529, and the two thresholds here
+// turn out to be mutually exclusive for any color in this hue: the
+// luminance window that clears 4.5:1 against #f4f8bf while also clearing
+// 3:1 against #212529 is under 0.01 wide, no comfortable margin exists).
+// Solved properly by decoupling the two checks instead of fighting the
+// color math: restore the underline $link-decoration: none (_vars.scss)
+// deliberately removed app-wide for BS3 parity - once a link has its own
+// non-color affordance, link-in-text-block no longer cares about the
+// color-contrast number at all. Re-excluded on the handful of components
+// Bootstrap itself would normally force back to no-underline when
+// $link-decoration isn't none (grep "link-decoration == none" under
+// node_modules/bootstrap/scss/) - without this, .btn/.nav-link anchors
+// would get wrongly underlined too, since this project's compiled CSS
+// never emits their own text-decoration:none in the first place (Bootstrap
+// only emits that exclusion when $link-decoration is NOT already none).
+html[data-ui-mode="wcag"] {
+	--bs-link-color: #C42020;
+	--bs-link-color-rgb: 196, 32, 32;
+}
+html[data-ui-mode="wcag"] a {
+	text-decoration: underline;
+}
+html[data-ui-mode="wcag"] .btn,
+html[data-ui-mode="wcag"] .nav-link,
+html[data-ui-mode="wcag"] .dropdown-item,
+html[data-ui-mode="wcag"] .navbar-brand,
+html[data-ui-mode="wcag"] .page-link,
+html[data-ui-mode="wcag"] .list-group-item {
+	text-decoration: none;
+}
+
+// F019: .footer's shared gray (_layout.scss, #888888) is reused against two
+// different backgrounds it was never contrast-checked against - 3.21:1
+// against the main footer's light background (#f4f8bf) and 2.42:1 against
+// the sidebar footer's dark background (#4c4c4c). One shared value can't
+// clear 4.5:1 against both, so two separate overrides are needed. Kept
+// WCAG-mode-only (unlike F018's footer-link fix) since the darkening/
+// lightening needed here is large enough to be visibly noticeable, not an
+// imperceptible shift - see audit/findings.csv F019.
+html[data-ui-mode="wcag"] .footer {
+	color: #666666; // 5.20:1 against #f4f8bf
+}
+html[data-ui-mode="wcag"] .sidebar .footer {
+	color: #c4c4c4; // 4.92:1 against #4c4c4c
+}
+
+// F020: the donate popup's white heading/body text on its #f93434 red
+// background (templates/donate_popup_alternative.html) computes to
+// 3.71-3.77:1, under the 4.5:1 minimum. Text is already white (can't go
+// lighter), so the background is darkened instead - toward the same red
+// family, not toward F018/F019's unrelated #C42020, since this is a
+// visually distinct component (a modal, not body text) with its own
+// color identity. Only the container's own rule needs overriding; its
+// descendants (h2/h4/a/button) all already inherit or hardcode white text,
+// which now clears contrast against the darker background without
+// themselves changing.
+html[data-ui-mode="wcag"] #alt-popup-container {
+	background-color: #A82727; // 4.82:1 against white text
+}
+
+// New finding (post-M4 axe sweep, not yet in findings.csv): BS5's own
+// contrast-driven defaults for .badge.text-bg-info/.badge.text-bg-warning
+// and .btn-info/.btn-warning render black text, but style.scss deliberately
+// overrides all four to BS3's white-on-cyan/white-on-orange look (see the
+// long comments there) at Piotr's explicit request for historical parity -
+// white-on-#5bc0de (2.09:1), white-on-#f0ad4e (1.94:1), and white-on-
+// #0dcaf0 (1.95:1) are all well under 4.5:1. Rather than reverse that
+// explicit normal-mode decision, WCAG mode reverts to BS5's own choice
+// (plain black, ~10:1+ against all three) - preserves the BS3 look
+// everywhere else, fixes contrast only behind the toggle. Needs !important
+// to outrank style.scss's own !important rules for the badge pair; the
+// .btn-info/.btn-warning pair only sets CSS custom properties with no
+// !important, so a plain override (still scoped under this higher-
+// specificity selector) is enough there.
+html[data-ui-mode="wcag"] .badge.text-bg-info,
+html[data-ui-mode="wcag"] .badge.text-bg-warning {
+	color: #000 !important;
+}
+html[data-ui-mode="wcag"] .btn-info,
+html[data-ui-mode="wcag"] .btn-warning {
+	--bs-btn-color: #000;
+	--bs-btn-hover-color: #000;
+	--bs-btn-active-color: #000;
+	--bs-btn-disabled-color: #000;
+}
+
+// Another post-M4 finding, not in findings.csv: letters/_letter_list.html's
+// staff-only "Wszyscy"/"Zespół" status badge (style.scss's .panel-status)
+// sets only opacity: 0.5, no color of its own - it inherits the ordinary
+// body text color (#212529, confirmed live via getComputedStyle) and lets
+// opacity do the fading. At 0.5 that composites to ~#909294 against the
+// white card background, 3.12:1, under the 4.5:1 minimum. Raised to 0.7
+// (5.76:1) rather than removed outright (1.0, ~15:1) - keeps it reading
+// as a de-emphasized secondary label instead of full-strength body text,
+// just with enough opacity left to pass.
+html[data-ui-mode="wcag"] .panel-status {
+	opacity: 0.7;
+}
+
+// case_detail.html's "#<pk>" case-number suffix next to the case title
+// (_case.scss's .case-header-number, $gray-light = #777) against the same
+// general content background as F019's footer (#f4f8bf) computes to
+// 4.05:1, under the 4.5:1 minimum. Reuses #666666, the same color already
+// picked for F019's .footer against this exact background (5.20:1), for
+// consistency rather than introducing another one-off gray.
+html[data-ui-mode="wcag"] .case-header-number {
+	color: #666666;
+}
+
+// users/user_filter.html's deliberate ".staff { --bs-table-bg: #FF7474; }"
+// row highlight (its own inline <style>, restored during the BS3->BS5
+// migration to bring back a staff-row highlight a user report said had
+// gone missing - unrelated to this WCAG work) clashes with the red link
+// color sitting on top of it in the username cell: #C42020 (this file's
+// own WCAG-mode link color, see the F018-completion rule above) only
+// clears 2.24:1 against that bright pink, under 4.5:1. Darkening the
+// background toward the same red hue makes it WORSE, not better (it
+// converges with the link color instead of separating from it - checked:
+// every shade tried scored under 1.6:1) - so the fix goes the other way,
+// overriding just the link's own text color back to black within these
+// rows (8.00:1 against #FF7474) rather than touching the deliberate
+// highlight color itself.
+html[data-ui-mode="wcag"] .staff a {
+	color: #000;
+}
+
+// poradnia_tags.py's app_mode() prints the sidebar's "DEV"/"DEMO" env
+// banner (APP_MODE != "PROD") as a plain inline style="color: red;" <h1>,
+// no stylesheet hook until the class added alongside this fix. Pure red
+// (#ff0000) against the sidebar's dark background (#4c4c4c) is 2.15:1,
+// under the 3:1 minimum for large text (this h1 renders at ~35px, well
+// over the 18pt/24px large-text threshold). Lightened to #ff8080 (3.54:1)
+// in WCAG mode - needs !important since an inline style attribute always
+// outranks an external stylesheet rule otherwise, regardless of selector
+// specificity. Previously excluded from findings.csv as an environment-
+// only, not-a-real-page artifact, but it's real markup served from a real
+// endpoint, so closing it is straightforward once there's a class to
+// target - left for normal mode (the dev/demo-only audience already
+// knows what environment they're in from the banner text itself; the
+// color choice was never meant to be a conformance claim).
+html[data-ui-mode="wcag"] .app-mode-banner {
+	color: #ff8080 !important;
+}

@@ -92,7 +92,9 @@ class CaseDetailView(SingleObjectPermissionMixin, SelectRelatedMixin, DetailView
         if self.request.user.is_staff:
             forms["event"] = {
                 "title": _("Event"),
-                "form": EventForm(user=self.request.user, case=self.object),
+                "form": EventForm(
+                    user=self.request.user, case=self.object, prefix="event"
+                ),
             }
         forms["court"] = {
             "title": _("Court Case"),

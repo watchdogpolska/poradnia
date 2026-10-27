@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load crispy_forms_tags %}
+{% load wcag_tags %}
 {% load socialaccount %}
 
 {% block title %}{% trans "Signup" %}{% endblock title %}
@@ -23,6 +24,7 @@
                 </p>
         {% endif %}
         <p>{% trans 'Field with asterisk are required.' %}</p>
+        {% form_error_summary form %}
         {% crispy form %}
     </div>
 

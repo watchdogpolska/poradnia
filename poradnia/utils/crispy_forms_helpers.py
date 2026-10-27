@@ -10,6 +10,7 @@ from django.forms import BaseFormSet, BooleanField
 from django.forms.models import BaseInlineFormSet, inlineformset_factory
 from django.http import HttpResponseRedirect
 from django.utils.safestring import mark_safe
+from django.utils.text import slugify
 from django.utils.translation import gettext as _
 from tinycontent.models import TinyContent
 
@@ -105,7 +106,21 @@ class SingleButtonMixin(HelperMixin):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.helper.add_input(
-            Submit("action", self.action_text, css_class="btn-primary")
+            Submit(
+                "action",
+                self.action_text,
+                css_class="btn-primary",
+                # crispy-forms defaults to id="submit-id-{name}", so every
+                # SingleButtonMixin form would share id="submit-id-action" -
+                # harmless while only one such form is on the page, but
+                # case_detail.html renders the event and court-case forms
+                # together, duplicating the id (see also FeedbackForm in
+                # poradnia/tasty_feedback/forms.py, audit/findings.csv F016,
+                # for the same crispy default causing the same problem
+                # elsewhere). Suffixing with the form class keeps the id
+                # unique whenever two SingleButtonMixin forms share a page.
+                css_id=f"submit-id-action-{slugify(type(self).__name__)}",
+            )
         )
 
 

@@ -51,7 +51,7 @@
                     </tr>
                     <tr>
                         <td>{% trans 'Created' %}</td>
-                        <td><img src="{% get_avatar_url object.created_by %}">
+                        <td><img src="{% get_avatar_url object.created_by %}" alt="">
                             {% blocktrans with object.created_by as created and object.created_on|naturaltime as created_on_natural and object.created_on|date:'Y-m-d h:m:sT' as created_on_date %}
                                 {{ created }} on
                                 <time datetime="{{ created_on_date }}">{{ created_on_natural }}</time>{% endblocktrans %}
@@ -63,7 +63,7 @@
                             <td>
                             {% if object.modified_by %}
                                 <img
-                                    src="{% get_avatar_url object.modified_by %}">{% blocktrans with object.modified_by as modified_by and object.modified_on|naturaltime as modified_on_natural and object.modified_on|date:'Y-m-d h:m:sT' as modified_on_date %}
+                                    src="{% get_avatar_url object.modified_by %}" alt="">{% blocktrans with object.modified_by as modified_by and object.modified_on|naturaltime as modified_on_natural and object.modified_on|date:'Y-m-d h:m:sT' as modified_on_date %}
                                 {{ modified_by }} on
                                 <time datetime="{{ modified_on_date }}">{{ modified_on_natural }}</time>{% endblocktrans %}
                             {% endif %}
@@ -82,7 +82,7 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h4 class="modal-title" id="aiRejectModalLabel">{% trans 'Reject AI suggestion' %}</h4>
+                    <h2 class="modal-title" id="aiRejectModalLabel">{% trans 'Reject AI suggestion' %}</h2>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% trans 'Close' %}"></button>
                 </div>
                 <div class="modal-body">
