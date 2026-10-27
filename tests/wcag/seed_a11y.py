@@ -253,7 +253,30 @@ def reset_database():
     over (Court, and the advicer taxonomy models, which have no user FK) is
     cleared explicitly. PermissionGroup rows are left alone; they get
     upserted idempotently by ensure_permission_groups().
+
+    Django never deletes a FileField/ImageField's underlying file when the
+    row is deleted (by design, in case other rows reference the same file),
+    so without this every --reset orphaned the previous run's avatars and
+    attachments on disk. Both UserFactory's avatar and attach_file()'s
+    attachments are named deterministically (by username, and by the fixed
+    sample.{png,docx,...} fixture names respectively - not randomly), so the
+    next --reset's .objects.create() collides with the leftover file and
+    Django's storage backend appends a random suffix to disambiguate -
+    confirmed live as the cause of a wcag_mode_checks baseline flake (the
+    avatar's sorl-thumbnail cache path and the attachment's downloadable
+    filename are both keyed off this exact filename, so a new random suffix
+    meant different output on every run, appearing as spurious content
+    diffs on any page showing an avatar or an attachment link). Deleted
+    per-object via each FileField's own .delete() rather than a blanket
+    filesystem wipe of avatars/ or the attachment upload dir: those are
+    plain filesystem paths, shared on a local dev machine with whichever
+    other database "web" happens to be pointed at, so only removing exactly
+    the files these rows own is safe.
     """
+    for user in User.objects.exclude(picture=""):
+        user.picture.delete(save=False)
+    for attachment in Attachment.objects.exclude(attachment=""):
+        attachment.attachment.delete(save=False)
     User.objects.all().delete()
     CourtSession.objects.all().delete()
     CourtCase.objects.all().delete()
