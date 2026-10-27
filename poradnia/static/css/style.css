@@ -23793,6 +23793,9 @@ autocomplete-select [slot=deck] [data-value] .clear:hover {
   color: #888;
   font-size: 10px;
 }
+.footer a {
+  color: #C42020;
+}
 .footer-right {
   float: left;
 }
@@ -24322,7 +24325,7 @@ table.month li.deadline {
   flex-wrap: wrap;
   gap: 10px;
 }
-.dashboard-page-header h3 {
+.dashboard-page-header h1 {
   margin: 0;
 }
 
@@ -24581,7 +24584,7 @@ label {
 }
 
 .htmx-indicator::after {
-  content: "Loading...";
+  content: "Wczytywanie...";
   position: absolute;
   top: 50%;
   left: 50%;

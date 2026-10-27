@@ -45,6 +45,7 @@ class EventCreateView(
     form_class = EventForm
     template_name = "events/form.html"
     permission_required = ["cases.can_add_record"]
+    prefix = "event"
 
     @cached_property
     def case(self):
@@ -57,6 +58,11 @@ class EventCreateView(
         kwargs = super().get_form_kwargs()
         kwargs["case"] = self.case
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["case"] = self.case
+        return context
 
     def form_valid(self, form):
         response = super().form_valid(form)
@@ -86,6 +92,7 @@ class EventUpdateView(
     form_class = EventForm
     template_name = "events/form.html"
     permission_required = ["cases.can_add_record"]
+    prefix = "event"
 
     def get_permission_object(self):
         return self._object.case
@@ -101,6 +108,11 @@ class EventUpdateView(
         kwargs = super().get_form_kwargs()
         kwargs["case"] = self.object.case
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["case"] = self.object.case
+        return context
 
     def form_valid(self, form):
         self.object.reminder_set.all().update(active=False)

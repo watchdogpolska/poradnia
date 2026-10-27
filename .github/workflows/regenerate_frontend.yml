@@ -1,23 +1,41 @@
 name: Regenerate and update frontend
 
 on:
+  push:
+    branches:
+      - master
+      - dev
+
   pull_request:
-    types: [opened, synchronize] # Trigger when a PR is created or updated
+
+concurrency:
+  group: frontend-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
 
 jobs:
   regenerate_and_commit_frontend:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        python:
-          - "3.13"
-
+    env:
+      # Renovate (Mend-hosted app) can't use postUpgradeTasks, so its PRs never
+      # carry a rebuilt poradnia/static/. Rebuild and push back to the PR branch
+      # instead of just failing the check.
+      IS_RENOVATE: ${{ github.event_name == 'pull_request' &&
+        github.event.pull_request.user.login == 'renovate[bot]' &&
+        github.event.pull_request.head.repo.full_name == github.repository }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v7
         with:
-          # Ensure you fetch the PR branch
-          fetch-depth: 0
+          # On a pull_request event the default ref is the ephemeral
+          # refs/pull/N/merge commit. We need to check out and push to the
+          # real PR branch, so override the ref on Renovate PRs only.
+          ref: ${{ env.IS_RENOVATE == 'true' && github.head_ref || '' }}
+          # GITHUB_TOKEN-authored pushes don't trigger new workflow runs, so
+          # the follow-up run on the rebuild commit would never happen.
+          # Deploy-key pushes do. Empty for non-Renovate runs, so checkout
+          # falls back to the default token over HTTPS.
+          ssh-key: ${{ env.IS_RENOVATE == 'true' &&
+            secrets.FRONTEND_BOT_SSH_KEY || '' }}
       - name: Align container user with runner UID/GID
         # docker-compose.yml defaults UID/GID to 1000, which only matches the
         # checked-out file ownership by coincidence on dev machines. Without
@@ -26,56 +44,39 @@ jobs:
         run: |
           echo "UID=$(id -u)" >> .env
           echo "GID=$(id -g)" >> .env
-      - run: |
-          docker compose --file docker-compose.yml --file docker-compose.test.yml pull
-          docker pull python:${{matrix.python}}-slim
-      - name: Start database early
-        run: docker compose up -d db
-      - name: Build application
-        run: make build
+      - name: Collect statics
+        run: docker compose run web python manage.py collectstatic --no-input
+      - name: Build and run frontend
+        run: docker compose up gulp --exit-code-from gulp
+      - name: Show git status
+        run: git status
+      - name: Commit rebuilt frontend
+        if: env.IS_RENOVATE == 'true'
         env:
-          PYTHON_VERSION: ${{ matrix.python }}
-      - name: Show settings
-        run: make settings
-      - name: Regenerate frontend with gulp service
+          HEAD_REF: ${{ github.head_ref }}
+          BOT_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
         run: |
-          docker compose -f docker-compose.yml run web python manage.py collectstatic --no-input
-          docker compose -f docker-compose.yml up web gulp --exit-code-from gulp
-
-      - name: Check for pending front-end changes
-        shell: bash
+          changes=$(git status --porcelain poradnia/static/ package*.json)
+          if [[ -n "$changes" ]]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "$BOT_EMAIL"
+            git add poradnia/static/ package.json package-lock.json
+            git commit -m "Regenerate frontend"
+            git push origin "HEAD:$HEAD_REF"
+          else
+            echo "No pending front-end changes detected."
+          fi
+      - name: Require rebuild content
+        if: env.IS_RENOVATE != 'true'
         run: |
-          # Check for any changes (staged, unstaged, or untracked)
           changes=$(git status --porcelain poradnia/static/ package*.json)
           if [[ -n "$changes" ]]; then
             echo "Pending changes in the front-end have been detected."
-            echo "Use 'make regenerate_frontend' to regenerate front-end and commit changes."
-            echo "Following changes pending:"
+            echo "Use 'make gulp' to regenerate front-end"
+            echo "and commit changes. Following changes pending:"
             git diff
             git status
             exit 1
           else
             echo "No pending front-end changes detected."
           fi
-
-      ### TODO: not working properly with GH PR workflow checks - debug and fix
-      # - name: Check for Changes in Static Files and Commit to base branch if any
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-      #     if ! git diff --quiet poradnia/static/ package-lock.json; then
-      #       echo "Changes detected in poradnia/static/ or package-lock.json."
-      #       git status
-      #       git diff
-      #       echo "Configuring git"
-      #       git config --global user.name "github-actions[bot]"
-      #       git config --global user.email "github-actions[bot]@users.noreply.github.com"
-      #       echo "Commit detected changes"
-      #       git add poradnia/static/ package-lock.json
-      #       git commit -m "Update poradnia/static/ and package-lock.json"
-      #       echo "Push changes to the branch the PR is issued from"
-      #       git push origin HEAD:${{ github.event.pull_request.head.ref }}
-      #       echo "Static files changes have been successfully pushed."
-      #     else
-      #       echo "No changes in static files."
-      #     fi

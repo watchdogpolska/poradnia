@@ -351,8 +351,11 @@ msgid "Register"
 msgstr "Tagi"
 
 # msgstr "Rejestr porad" # GH #1310
-#: poradnia/advicer/templates/advicer/_sidebar.html:8
 #: poradnia/advicer/templates/advicer/base.html:3
+msgid "Advice"
+msgstr "Porady"
+
+#: poradnia/advicer/templates/advicer/_sidebar.html:8
 #: poradnia/advicer/templates/advicer/base.html:7
 msgid "Advice table"
 msgstr "Tabela tagów"
@@ -548,9 +551,6 @@ msgstr "{subject} usunięto!"
 #, python-format
 #~ msgid "Advice #%d"
 #~ msgstr "Porada #%d"
-
-#~ msgid "Advice"
-#~ msgstr "Porada"
 
 #~ msgid "Advices"
 #~ msgstr "Porady"

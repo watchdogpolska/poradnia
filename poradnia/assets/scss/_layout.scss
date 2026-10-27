@@ -32,6 +32,20 @@
 	border-top: 1px solid #F5F5F5;
 	color: #888;
 	font-size: 10px;
+	// Bootstrap's default link color is $primary (#D82727, this project's
+	// own brand red - see _vars.scss) inherited sitewide, not a footer-
+	// specific choice, so it's overridden here rather than touched
+	// globally. Against the footer's own background #D82727 computes to
+	// 4.48:1, a hair under the 4.5:1 minimum WCAG 1.4.3 requires (the
+	// margin is this thin because what reads as the footer's background
+	// in a dev/demo deployment is actually app_main_style's translucent
+	// environment watermark showing through - still a real, if narrow,
+	// non-conformance since that's what a dev/demo-environment tester
+	// actually sees). Darkened just enough to clear 4.5:1 with a little
+	// margin (5.3:1) - audit/findings.csv F018.
+	a {
+		color: #C42020;
+	}
 	&-right{
 		float: left;
 	}

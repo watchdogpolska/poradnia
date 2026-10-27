@@ -13,7 +13,7 @@
                 <ul>
                     {% for month in year.list %}
                         <li>
-                            <a href="{% url 'events:calendar' year=month.year month=month.month %}">{{ month|date:"F Y" }}</a>
+                            <a href="{% url 'events:calendar' year=month.year month=month.month %}" class="event-month-link">{{ month|date:"F Y" }}</a>
                         </li>
                     {% endfor %}
                 </ul>

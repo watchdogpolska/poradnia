@@ -70,7 +70,7 @@ class StaffCaseFilter(
 
     def __init__(self, *args, **kwargs):
         kwargs["queryset"] = kwargs.pop("queryset").order_by(
-            "-%s" % (Case.STAFF_ORDER_DEFAULT_FIELD)
+            "-%s" % (Case.STAFF_ORDER_DEFAULT_FIELD), "-pk"
         )
         super().__init__(*args, **kwargs)
 

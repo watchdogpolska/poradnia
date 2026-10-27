@@ -1,6 +1,6 @@
 {% load guardian_tags crispy_forms_tags humanize users_tags letter_tags i18n format_text%}
 <div class="timeline-messange">
-    <a href="#"><img src="{% get_avatar_url object.created_by %}" class="timeline-avatar"></a>
+    <img src="{% get_avatar_url object.created_by %}" class="timeline-avatar" alt="">
     <div class="card border-{{ object|letter2panel }} timeline-comment" id="letter-{{object.pk}}">
         <div class="card-header text-bg-{{ object|letter2panel }}">
             <h2 class="card-title">
@@ -101,10 +101,10 @@
                 {% endif %}
             {% endif %}
             {% if object.eml %} &bull;
-            <a href="{{object.eml.url}}"><i class="far fa-life-ring"></i></a>
+            <a href="{{object.eml.url}}" aria-label="{% trans 'Download .eml file' %}"><i class="far fa-life-ring"></i></a>
             {% endif %}
             {% if request.user.is_staff and object.attachment_set.all %} &bull;
-            <a href="{% url 'letters:attachments_zip' case_pk=object.case_id letter_pk=object.pk %}"><i
+            <a href="{% url 'letters:attachments_zip' case_pk=object.case_id letter_pk=object.pk %}" aria-label="{% trans 'Download attachments as ZIP' %}"><i
                     class="far fa-file-zipper"></i></a>
             {% endif %}
         </div>

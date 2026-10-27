@@ -31,6 +31,7 @@ from poradnia.letters.factories import AttachmentFactory, LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import UserFactory
 from poradnia.utils.tests.mixins import AdminTestCaseMixin, PermissionStatusMixin
+from poradnia.utils.ui_mode import UI_MODE_WCAG, _ui_mode_var
 
 
 class CaseQuerySetTestCase(TestCase):
@@ -377,6 +378,35 @@ class CaseTestCase(TestCase):
         Case.objects.filter(pk__in=[case.pk]).delete()
         # Then
         self._check_file_delete(attachment, False)
+
+
+class CaseRenderStatusTestCase(TestCase):
+    """render_status()'s normal-mode output must stay byte-identical
+    (see logs/wcag/plan/ui-mode-design.md §6); the WCAG-mode branch adds a
+    visually-hidden text alternative for the otherwise icon-only status."""
+
+    def setUp(self):
+        self.object = CaseFactory(status=Case.STATUS.free)
+
+    def tearDown(self):
+        _ui_mode_var.set("normal")
+
+    def test_normal_mode_unchanged(self):
+        self.assertEqual(
+            self.object.render_status(),
+            f'<span class="{Case.STATUS_STYLE["0"]}"></span>',
+        )
+
+    def test_wcag_mode_adds_visible_text_alternative(self):
+        _ui_mode_var.set(UI_MODE_WCAG)
+        html = self.object.render_status()
+        self.assertIn(
+            f'<span class="{Case.STATUS_STYLE["0"]}" aria-hidden="true"></span>', html
+        )
+        self.assertIn(
+            f'<span class="visually-hidden">{self.object.get_status_display()}</span>',
+            html,
+        )
 
 
 class CaseUserObjectPermissionTestCase(TestCase):

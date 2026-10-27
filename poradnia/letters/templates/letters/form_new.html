@@ -3,6 +3,8 @@
 {% block breadcrumb_row %}
     <li class="breadcrumb-item active">{% trans 'New case' %}</li>
 {% endblock %}
+{% block title %}{% trans 'New case' %} - {{ block.super }}{% endblock %}
+{% block object %}<h1>{% trans 'New case' %}</h1>{% endblock %}
 
 {% block description %}
     {% tinycontent 'letters:new_case_up' %}

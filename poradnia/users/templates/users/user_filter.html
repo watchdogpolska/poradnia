@@ -1,5 +1,5 @@
 {% extends "users/base.html" %}
-{% load static i18n users_tags crispy_forms_tags %}
+{% load static i18n users_tags crispy_forms_tags wcag_tags %}
 
 {% block title %}{% trans 'Users index' %}{% endblock %}
 
@@ -36,6 +36,7 @@
         {% endif %}
 
         <div class="row">
+            {% form_error_summary filter.form %}
             {% crispy filter.form %}
         </div>
 
@@ -58,7 +59,7 @@
                         <a href="{% url 'users:detail' user.username %}">
                             <!--TODO - handle table-users style in a css file -->
                             <div style="height:100%;width:100%">
-                                <img src="{% get_avatar_url user %}"> {{ user.get_nicename }}
+                                <img src="{% get_avatar_url user %}" alt=""> {{ user.get_nicename }}
                             </div>
                         </a>
                     </td>

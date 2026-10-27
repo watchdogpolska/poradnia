@@ -1,5 +1,5 @@
 {% extends 'letters/base.html' %}
-{% load crispy_forms_tags staticfiles i18n %}
+{% load crispy_forms_tags staticfiles i18n wcag_tags %}
 
 {% block javascript %}
     {{ block.super }}
@@ -34,6 +34,7 @@
             </div>
         {% endif %}
         <form method="post" enctype="multipart/form-data" data-form-save="case-{{ object.pk }}">
+            {% form_error_summary form %}
             {% crispy form %}
             {% if formset %}
                 {% crispy formset %}

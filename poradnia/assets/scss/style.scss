@@ -437,7 +437,12 @@ label {
 }
 
 .htmx-indicator::after {
-    content: "Loading...";
+    // The visible centered box is this generated-content string, not
+    // #htmx-spinner's own DOM text in base.html - that text sits unstyled
+    // at the indicator's top-left corner and is easy to miss, which is
+    // why fixing it alone (F015) didn't change what's actually seen. See
+    // audit/findings.csv F015.
+    content: "Wczytywanie...";
     position: absolute;
     top: 50%;
     left: 50%;

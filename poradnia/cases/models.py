@@ -42,6 +42,7 @@ from model_utils.fields import MonitorField, StatusField
 
 from poradnia.utils.constants import NAME_MAX_LENGTH
 from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
+from poradnia.utils.ui_mode import UI_MODE_WCAG, get_ui_mode
 from poradnia.utils.utils import get_numeric_param
 
 logger = logging.getLogger(__name__)
@@ -348,6 +349,11 @@ class Case(models.Model):
 
     def render_status(self):
         status_icon = self.STATUS_STYLE[self.status]
+        if get_ui_mode() == UI_MODE_WCAG:
+            return (
+                f'<span class="{status_icon}" aria-hidden="true"></span>'
+                f'<span class="visually-hidden">{self.get_status_display()}</span>'
+            )
         return f'<span class="{status_icon}"></span>'
 
     def render_project_badge(self):
@@ -369,12 +375,19 @@ class Case(models.Model):
             return ""
 
     def render_involved_staff(self):
-        permissions = self.caseuserobjectpermission_set.all()
+        # order_by("user_id") is required for itertools.groupby to group
+        # correctly (it only groups contiguous runs of the same key); the
+        # permission names are separately sorted() since their own order
+        # otherwise depends on queryset/iteration order, which isn't stable
+        # across process restarts - confirmed live, the same case's badge
+        # tooltip rendered permissions in a different order after a plain
+        # server restart with no data change at all.
+        permissions = self.caseuserobjectpermission_set.order_by("user_id")
         grouped_permissions = itertools.groupby(permissions, lambda p: p.user)
         user_list = [
             {
                 "grouper": key,
-                "title": ", ".join([p.permission.name for p in list(group)]),
+                "title": ", ".join(sorted(p.permission.name for p in group)),
             }
             for key, group in grouped_permissions
             if key.is_staff
@@ -802,6 +815,9 @@ class PermissionGroup(models.Model):
     permissions = models.ManyToManyField(
         to=Permission, verbose_name=_("Permissions"), limit_choices_to=limit
     )
+
+    class Meta:
+        ordering = ["name"]
 
     def __str__(self):
         return self.name

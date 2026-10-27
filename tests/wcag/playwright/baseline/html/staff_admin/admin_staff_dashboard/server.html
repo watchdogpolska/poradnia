@@ -1,0 +1,795 @@
+
+<!DOCTYPE html>
+<html data-ui-mode="normal" lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Panel raportów - Poradnia</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Poradnia App" name="description">
+    <meta content="Sieć Obywatelska - Watchdog Polska" name="author">
+    <meta content="#D82727" name="theme-color">
+    <link href="/static/images/logo-160x128.png" rel="apple-touch-icon" sizes="160x128">
+    <link href="/static/images/favicon-32x26.png" rel="shortcut icon" sizes="32x32" type="image/png">
+    <link href="/static/images/manifest.json" rel="manifest">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="/static/images/logo-160x128.png" name="msapplication-TileImage">
+    <meta content="/static/images/logo-czerwone-tlo-1200x600.jpg" property="og:image" />
+    <meta content="image/jpg" property="og:image:type" />
+    <meta content="1200" property="og:image:width" />
+    <meta content="600" property="og:image:height" />
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+  <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+    <link href="/static/tasty_feedback/style.css" rel="stylesheet">
+
+    
+        <link href="/static/css/style.min.css" rel="stylesheet">
+    
+    
+    
+
+</head>
+
+<body>
+
+<!-- First element in body by design: keyboard-reachable before anything
+     else, no JS required (plain form POST). This is the one approved
+     normal-mode DOM change - see logs/wcag/plan/ui-mode-design.md §2.
+     Fixed (not relative) so it stays in the same viewport corner
+     regardless of scroll position, like a django-debug-toolbar handle -
+     previously position:relative, it scrolled away with page content on
+     any long page (e.g. /sprawy/). top: 50px (not 0) matches
+     $navbar-height (_vars.scss, also what .sidebar's own top offset
+     uses, _sidebar.scss) - confirmed via Playwright that pinning this at
+     top:0 fully covers the mobile navbar's hamburger toggle and brand
+     link (both sit within the navbar's own ~44px height), and at this
+     width even the desktop sidebar's home link (measured at y:211+) is
+     still comfortably clear. z-index is needed because .navbar is
+     position:fixed on mobile widths (see _layout.scss) and would
+     otherwise render on top of this. -->
+<form action="/ui-mode/" method="post" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
+    <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
+    <input name="next" type="hidden" value="/dashboard/">
+    
+        <input name="mode" type="hidden" value="wcag">
+        <button class="btn btn-dark" type="submit">Włącz wersję dostępną</button>
+    
+</form>
+
+
+<!-- Moved to beginning to load JQueary before any other js code  -->
+
+    <script src="/static/js/script.min.js"></script>
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <!-- No data-bs-toggle="collapse" here on purpose: the actual
+                 show/hide is handled by sidebar.js (a plain classList
+                 toggle on data-bs-target, driving .sidebar's CSS
+                 transform - not an accordion-style collapse panel).
+                 Bootstrap's own collapse JS binds to [data-bs-toggle=
+                 "collapse"] globally regardless of any explicit JS
+                 instantiation, so having both attached used to run two
+                 independent toggles per click: sidebar.js's (correct) and
+                 Bootstrap's own (which also manages body's collapse/show
+                 classes). Opening was harmless, but closing left body
+                 with class="collapse" and no "show" - Bootstrap's own
+                 CSS (.collapse:not(.show) { display: none; }) then hid
+                 the entire page until reload. -->
+            <button aria-expanded="false" class="navbar-toggler collapsed" data-bs-target="body" type="button">
+                <span class="visually-hidden">Toggle navigation</span>
+                <i class="navbar-burger"></i>
+            </button>
+            <a class="navbar-brand" href="#">Poradnia</a>
+        </div>
+    </div>
+</nav>
+<!-- app_main_style tag used to differentiate dev, demo and production environments -->
+<div class="main" style="background-color: #d3e20040;">)
+
+    <div class="sidebar">
+        
+<div class="sidebar-header">
+    <h1 class="app-mode-banner" style="color: red;">DEV</h1>
+    <a href="/">
+        <div class="logo"></div>
+        <p>Poradnia</p>
+    </a>
+    <p><a href="http://siecobywatelska.pl">Sieci Watchdog</a></p>
+</div>
+<div class="block-list">
+    <ul class="block-list-list">
+
+        
+        
+           <li class="block-list-item">
+              <a data-bs-target="#navsearch_modal" data-bs-toggle="modal" href="#">
+                   <i class="fas fa-magnifying-glass"></i> Wyszukaj
+               </a>
+           </li>
+        
+        
+        
+            <li class="block-list-item">
+                <a href="/uwagi/"><i class="far fa-comment"></i> Uwagi</a>
+            </li>
+        
+    </ul>
+</div>
+
+<div class="block-list">
+    <div class="block-list-header">Użytkownik</div>
+    <ul class="block-list-list">
+
+        
+            <li class="block-list-item">
+                <a href="/uzytkownik/a11y_staff_admin/"><i class="fas fa-user"></i>
+                    Bartosz Kierownik (team) - profil i bezpieczeństwo</a>
+            </li>
+            
+                <li class="block-list-item">
+                    <a href="/uzytkownik/table/"><i class="fas fa-users"></i> Tabela użytkowników</a>
+                </li>
+                <li class="block-list-item">
+                    <a href="/uzytkownik/"><i class="fas fa-users"></i> Wykaz użytkowników</a>
+                </li>
+            
+            
+            <li class="block-list-item">
+                <a href="/konta/logout/"><i class="fa-solid fa-right-from-bracket"></i> Wyloguj</a>
+            </li>
+        
+    </ul>
+</div>
+
+
+
+    <div class="block-list">
+        <div class="block-list-header">Tagi</div>
+        <ul class="block-list-list">
+            <li class="block-list-item">
+                <a href="/porady/table/"><i class="fas fa-book"></i> Tabela tagów</a>
+            </li>
+            <li class="block-list-item">
+                <a href="/porady/?page=1"><i class="fas fa-chart-area"></i> Rejestr tagów</a>
+            </li>
+        </ul>
+    </div>
+
+
+
+<div class="block-list">
+    <div class="block-list-header">Sprawy</div>
+    <ul class="block-list-list">
+        <li class="block-list-item"><a href="/listy/"><i class="fas fa-pencil"></i> Nowa sprawa</a></li>
+        
+            <li class="block-list-item">
+                <a href="/sprawy/table/"><i class="fas fa-book"></i> Tabela spraw</a>
+            </li>
+            <li class="block-list-item">
+                <a href="/sprawy/?status=0&amp;status=1&amp;status=3"><i class="fas fa-book"></i> Wykaz spraw</a>
+            </li>
+        
+        
+            
+            <li class="block-list-item">
+                <a href="/wydarzenia/table/"><i class="fas fa-calendar-days"></i> Tabela wydarzeń</a>
+            </li>
+            <li class="block-list-item">
+                <!-- <a href="/wydarzenia/"><i class="fas fa-calendar-days"></i> Kalendarz wydarzeń</a> -->
+                <a href="/wydarzenia/2026-10"><i class="fas fa-calendar-days"></i> Kalendarz wydarzeń</a>
+            </li>
+        
+        <li class="block-list-item">
+            <a href="/strony/regulamin-poradnictwa/"><i class="fas fa-gavel"></i> Regulamin poradnictwa</a>
+        </li>
+        <!-- TODO - move the below to Letters or generic sidebar for code consistency -->
+        
+            <li class="block-list-item">
+                <a href="/listy/table/"><i class="far fa-envelope"></i> Tabela korespondencji</a>
+            </li>
+        
+        
+            <li class="block-list-item">
+                <a href="/listy/rejestr"><i class="far fa-envelope"></i> Korespondencja</a>
+            </li>
+        
+    </ul>
+</div>
+
+
+
+    <div class="block-list">
+        <div class="block-list-header">Panel raportów</div>
+        <ul class="block-list-list">
+            <li class="block-list-item">
+                <a href="/dashboard/"><i class="fas fa-chart-line"></i> Panel raportów</a>
+            </li>
+        </ul>
+    </div>
+
+
+<div class="footer row">
+    
+        <div class="col-12">
+            <p class="text-center">
+                <img alt="" class="img-fluid" src="/static/images/baner.png">
+                Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
+                finansowanego z Funduszy EOG.
+            </p>
+        </div>
+    
+
+
+</div>
+
+
+
+    </div>
+    <div class="main-side">
+        <div class="content">
+            
+            
+            
+            <div class="container-fluid">
+                
+    <div class="dashboard-page-header">
+        <h1 class="h3">Panel raportów</h1>
+        <button class="btn btn-default" data-current-year="2026" data-export-url="/dashboard/export/" id="dashboard-export-btn" type="button">
+            <i aria-hidden="true" class="fas fa-file-excel"></i>
+            Pobierz Excel
+        </button>
+    </div>
+
+    <ul class="nav nav-tabs" id="dashboard-tabs" role="tablist">
+        <li role="presentation">
+            <a aria-controls="dashboard-tab-summary" class="nav-link active" data-bs-toggle="tab" href="#dashboard-tab-summary" role="tab">
+                Podsumowanie
+            </a>
+        </li>
+        <li role="presentation">
+            <a aria-controls="dashboard-tab-cases" class="nav-link" data-bs-toggle="tab" href="#dashboard-tab-cases" hx-get="/dashboard/cases/" hx-swap="innerHTML" hx-target="#cases-tables" hx-trigger="click once" role="tab">
+                Sprawy
+            </a>
+        </li>
+        <li role="presentation">
+            <a aria-controls="dashboard-tab-advices" class="nav-link" data-bs-toggle="tab" href="#dashboard-tab-advices" hx-get="/dashboard/advices/" hx-swap="innerHTML" hx-target="#advices-tables" hx-trigger="click once" role="tab">
+                Tagi
+            </a>
+        </li>
+        <li role="presentation">
+            <a aria-controls="dashboard-tab-judgements" class="nav-link" data-bs-toggle="tab" href="#dashboard-tab-judgements" hx-get="/dashboard/judgements/" hx-swap="innerHTML" hx-target="#judgements-tables" hx-trigger="click once" role="tab">
+                Sądy
+            </a>
+        </li>
+    </ul>
+
+    <div class="tab-content">
+        <div class="tab-pane active" id="dashboard-tab-summary" role="tabpanel">
+            
+<div class="dashboard-table-wrapper">
+    <div class="dashboard-table-header">
+        <h2 class="dashboard-table-title h4">Raport podsumowujący</h2>
+        
+            <p class="dashboard-table-description">Zestawienie najważniejszych liczb poradni w rozbiciu na kolejne lata – nowe sprawy, nowi użytkownicy ze sprawami, listy i załączniki zespołu, sprawy i rozprawy sądowe oraz wydarzenia.</p>
+        
+    </div>
+    <div class="table-responsive">
+        <table class="table table-bordered table-striped">
+            <thead>
+                <tr>
+                    
+                        <th>Wskaźnik</th>
+                    
+                        <th>2018</th>
+                    
+                        <th>2019</th>
+                    
+                        <th>2020</th>
+                    
+                        <th>2021</th>
+                    
+                        <th>2022</th>
+                    
+                        <th>2023</th>
+                    
+                        <th>2024</th>
+                    
+                        <th>2025</th>
+                    
+                        <th>2026</th>
+                    
+                        <th>suma</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                
+                    <tr>
+                        
+                            <td>Nowe sprawy</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>65</td>
+                        
+                            <td>65</td>
+                        
+                    </tr>
+                
+                    <tr>
+                        
+                            <td>Nowi użytkownicy ze sprawami</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>2</td>
+                        
+                            <td>2</td>
+                        
+                    </tr>
+                
+                    <tr>
+                        
+                            <td>Listy utworzone przez zespół</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>20</td>
+                        
+                            <td>20</td>
+                        
+                    </tr>
+                
+                    <tr>
+                        
+                            <td>Załączniki utworzone przez zespół</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>1</td>
+                        
+                            <td>1</td>
+                        
+                    </tr>
+                
+                    <tr>
+                        
+                            <td>Sprawy sądowe</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>1</td>
+                        
+                            <td>1</td>
+                        
+                    </tr>
+                
+                    <tr>
+                        
+                            <td>Rozprawy sądowe</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>1</td>
+                        
+                            <td>1</td>
+                        
+                    </tr>
+                
+                    <tr>
+                        
+                            <td>Wydarzenia</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>0</td>
+                        
+                            <td>3</td>
+                        
+                            <td>3</td>
+                        
+                    </tr>
+                
+            </tbody>
+        </table>
+    </div>
+</div>
+
+        </div>
+
+        <div class="tab-pane" id="dashboard-tab-cases" role="tabpanel">
+            
+<div class="form-group dashboard-year-select">
+    <label for="cases-year">Rok</label>
+    <select class="form-control" hx-get="/dashboard/cases/" hx-swap="innerHTML" hx-target="#cases-tables" hx-trigger="change" id="cases-year" name="year">
+        
+            <option selected value="2026">2026</option>
+        
+            <option value="2025">2025</option>
+        
+            <option value="2024">2024</option>
+        
+            <option value="2023">2023</option>
+        
+            <option value="2022">2022</option>
+        
+            <option value="2021">2021</option>
+        
+            <option value="2020">2020</option>
+        
+            <option value="2019">2019</option>
+        
+            <option value="2018">2018</option>
+        
+    </select>
+</div>
+
+            <div id="cases-tables"></div>
+        </div>
+
+        <div class="tab-pane" id="dashboard-tab-advices" role="tabpanel">
+            
+<div class="form-group dashboard-year-select">
+    <label for="advices-year">Rok</label>
+    <select class="form-control" hx-get="/dashboard/advices/" hx-swap="innerHTML" hx-target="#advices-tables" hx-trigger="change" id="advices-year" name="year">
+        
+            <option selected value="2026">2026</option>
+        
+            <option value="2025">2025</option>
+        
+            <option value="2024">2024</option>
+        
+            <option value="2023">2023</option>
+        
+            <option value="2022">2022</option>
+        
+            <option value="2021">2021</option>
+        
+            <option value="2020">2020</option>
+        
+            <option value="2019">2019</option>
+        
+            <option value="2018">2018</option>
+        
+    </select>
+</div>
+
+            <div id="advices-tables"></div>
+        </div>
+
+        <div class="tab-pane" id="dashboard-tab-judgements" role="tabpanel">
+            <div id="judgements-tables"></div>
+        </div>
+    </div>
+
+    <div aria-labelledby="dashboard-export-year-modal-label" class="modal fade" id="dashboard-export-year-modal" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title" id="dashboard-export-year-modal-label">
+                        Wybierz rok eksportu
+                    </h2>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        Zakładki „Sprawy” i „Tagi” mają obecnie wybrane różne lata. Wybierz, który rok ma zostać użyty w całym eksporcie do Excela:
+                    </p>
+                    <div class="form-check">
+                        <input checked class="form-check-input" id="dashboard-export-year-cases" name="dashboard-export-year-choice" type="radio">
+                        <label class="form-check-label" for="dashboard-export-year-cases">
+                            Rok z zakładki Sprawy: <strong id="dashboard-export-year-cases-value"></strong>
+                        </label>
+                    </div>
+                    <div class="form-check">
+                        <input class="form-check-input" id="dashboard-export-year-tags" name="dashboard-export-year-choice" type="radio">
+                        <label class="form-check-label" for="dashboard-export-year-tags">
+                            Rok z zakładki Tagi: <strong id="dashboard-export-year-tags-value"></strong>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-default" data-bs-dismiss="modal" type="button">
+                        Anuluj
+                    </button>
+                    <button class="btn btn-primary" id="dashboard-export-year-confirm" type="button">
+                        Pobierz
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+            </div>
+            
+            <div class="footer">
+                <div class="footer-right">Sieć Obywatelska - Watchdog Polska<br>
+                    ul. Szpitalna 5/5<br>
+                    00-031 Warszawa
+                </div>
+                <div class="footer-left">
+                    silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
+                    [VERSION] |
+                    <a href="https://github.com/watchdogpolska/poradnia">
+                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/[GITHUB_REVISION]...master">[GITHUB_REVISION]</a> |
+                    <a href="/strony/deklaracja-dostepnosci/">Deklaracja dostępności</a>
+                </div>
+                <div class="footer-center">Strona wykorzystuje cookies</div>
+            </div>
+            <div class="footer">
+                    <div class="footer-center col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                        
+                            <img alt="" class="img-fluid" src="/static/images/baner.png"><br>
+                            Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
+                            finansowanego z Funduszy EOG.<br>
+                        
+
+
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+        
+        
+<div id="feedback">
+    <div id="feedback-header">Zgłoś usterkę administratorom poradni.</div>
+    <div id="feedback-body">
+        <p>Przekaż nam uwagi o tej stronie dotyczące błędów lub możliwych ulepszeń.</p>
+        
+
+
+        
+
+<form action="/uwagi/submit" method="post"> <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_text"> <label class="form-label requiredField" for="id_text">
+                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea aria-describedby="id_text_helptext" class="textarea form-control" cols="40" id="id_text" name="text" required rows="10">
+</textarea> <div class="form-text" id="id_text_helptext">Treść zgłoszona przez użytkownika</div> </div> <input id="id_url" name="url" type="hidden" value="http://localhost:8000/dashboard/"> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-feedback_action" name="feedback_action" type="submit" value="Zgłoś usterkę administratorom poradni." /> </div> </div> </form>
+
+    </div>
+</div>
+
+    
+
+</div>
+
+    
+<!-- Modal -->
+<div aria-labelledby="navsearch_modal_label" class="modal fade" id="navsearch_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="navsearch_modal_label">Wyszukaj</h2>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+                
+<div class="navsearch">
+	<form class="form" onsubmit="return false;">
+		<div class="form-group">
+			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
+			<input class="form-control navsearch__input" hx-get="/navsearch/" hx-swap="innerHTML" hx-target=".navsearch__results" hx-trigger="input changed delay:300ms" id="search" name="q" type="search">
+		</div>
+	</form>
+	<div class="navsearch__results"></div>
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Le javascript
+  ================================================== -->
+<!-- Rest of js placed at the end of the document so the pages load faster -->
+
+
+
+
+
+
+
+
+<div id="attachment-text-modal-container"></div>
+<div class="htmx-indicator" id="htmx-spinner">
+    Wczytywanie...
+</div>
+<script>
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('[hx-target="#attachment-text-modal-container"]')) {
+            return;
+        }
+
+        // Only clean up a modal that's actually open (switching straight
+        // from one attachment's modal to another's, without closing
+        // first) - this used to run unconditionally on every click of an
+        // attachment button, including the very click that opens the
+        // *first* modal, which stripped the backdrop/scroll-lock Bootstrap
+        // had just added for that same click (confirmed via an isolated
+        // Bootstrap-only repro outside the app, alongside the F004 fix in
+        // wcag.js). Registered capture:true so this runs *before* the
+        // click's own handler swaps #attachment-text-modal-container's
+        // content below - otherwise, on a direct switch between two
+        // attachments, `existingModal` would already be the new (not-yet-
+        // shown) modal instead of the old (actually open) one, and this
+        // would wrongly skip cleanup, leaking the old backdrop behind the
+        // new one (confirmed via the same repro).
+        var existingModal = document.getElementById('attachmentTextModal');
+        if (existingModal && existingModal.classList.contains('show')) {
+            bootstrap.Modal.getOrCreateInstance(existingModal).hide();
+            document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+                el.remove();
+            });
+            document.body.classList.remove('modal-open');
+        }
+    }, true);
+
+    document.body.addEventListener('htmx:afterSwap', function (event) {
+        if (event.target.id === 'attachment-text-modal-container') {
+            var modal = document.getElementById('attachmentTextModal');
+            if (modal) {
+                bootstrap.Modal.getOrCreateInstance(modal).show();
+            }
+        }
+    });
+
+    // Bootstrap sets aria-hidden="true" on the modal from _hideModal(),
+    // called after the hide transition - if focus is still inside the
+    // modal at that point (e.g. the "Zamknij" button that was just
+    // clicked/activated to close it), the browser blocks it and logs an
+    // "aria-hidden blocked" console warning, since a hidden ancestor must
+    // never contain the focused element. 'hide.bs.modal' fires
+    // synchronously, immediately, before any of that - blurring here
+    // means focus is already outside the modal by the time aria-hidden
+    // is actually applied. The 'hidden.bs.modal' handler below still runs
+    // afterwards to move focus on to the triggering attachment button.
+    document.addEventListener('hide.bs.modal', function (event) {
+        if (event.target.matches('#attachmentTextModal') && event.target.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+    });
+
+    document.addEventListener('hidden.bs.modal', function (event) {
+        if (!event.target.matches('#attachmentTextModal')) {
+            return;
+        }
+        var container = document.getElementById('attachment-text-modal-container');
+        if (container) {
+            container.innerHTML = '';
+        }
+        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+            el.remove();
+        });
+        document.body.classList.remove('modal-open');
+    });
+
+    function getCookie(name) {
+        var value = '; ' + document.cookie;
+        var parts = value.split('; ' + name + '=');
+        if (parts.length === 2) {
+            return parts.pop().split(';').shift();
+        }
+        return null;
+    }
+
+    document.body.addEventListener('htmx:configRequest', function (event) {
+        event.detail.headers['X-CSRFToken'] = getCookie('csrftoken');
+    });
+</script>
+
+</body>
+</html>
+

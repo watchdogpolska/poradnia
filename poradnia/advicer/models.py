@@ -77,6 +77,7 @@ class Issue(AbstractCategory):
     class Meta:
         verbose_name = _("Issue")
         verbose_name_plural = _("Issues")
+        ordering = ["name"]
 
     @classmethod
     def active_as_json(cls):
@@ -103,6 +104,7 @@ class Area(AbstractCategory):
     class Meta:
         verbose_name = _("Area")
         verbose_name_plural = _("Areas")
+        ordering = ["name"]
 
     @classmethod
     def active_as_json(cls):

@@ -1,0 +1,290 @@
+{% extends 'base.html' %}
+{% load tinycontent_tags poradnia_tags %}
+{% block title %}Deklaracja dostępności - {{ block.super }}{% endblock %}
+{% block content %}
+<h1>Deklaracja dostępności</h1>
+<p>
+    Sieć Obywatelska Watchdog Polska zobowiązuje się zapewnić dostępność serwisu Poradnia
+    zgodnie z ustawą z dnia 4 kwietnia 2019 r. o dostępności cyfrowej stron internetowych i
+    aplikacji mobilnych podmiotów publicznych. Oświadczenie w sprawie dostępności cyfrowej ma
+    zastosowanie do serwisu Poradnia.
+</p>
+
+<h2>Status pod względem zgodności z ustawą</h2>
+<p>
+    Serwis jest <strong>częściowo zgodny</strong> z ustawą o dostępności cyfrowej stron
+    internetowych i aplikacji mobilnych podmiotów publicznych z powodu niezgodności lub
+    wyłączeń wymienionych poniżej.
+</p>
+<p>
+    Serwis udostępnia dodatkowo <strong>Tryb dostępności (WCAG)</strong> - alternatywną wersję
+    tej samej strony, przygotowaną w pełnym zakresie pod kątem wytycznych WCAG 2.1 na poziomie
+    A i AA. Tryb dostępności zapewnia te same informacje, treści i funkcje co widok standardowy
+    i jest na bieżąco utrzymywany wraz z rozwojem serwisu - żadna nowa funkcja nie jest
+    wdrażana bez jej odpowiednika w Trybie dostępności. Osoby, których dotyczą niezgodności
+    widoku standardowego wskazane poniżej, mogą skorzystać z Trybu dostępności, aby korzystać z
+    serwisu w sposób w pełni zgodny z wytycznymi WCAG.
+</p>
+
+<h3>Niezgodności i wyłączenia widoku standardowego</h3>
+<p>
+    Poniższa lista zawiera podstawowe niezgodności i wyłączenia, które dotyczą 
+    <strong>widoku standardowego</strong> (poza Trybem dostępności) i powstała na podstawie
+    automatycznego (axe-core, html-validate) audytu dostępności serwisu:
+</p>
+<div class="table-responsive">
+<table class="table table-condensed">
+    <caption class="visually-hidden">Lista niezgodności z WCAG 2.1 w widoku standardowym</caption>
+    <thead>
+    <tr>
+        <th scope="col">Kryterium WCAG</th>
+        <th scope="col">Opis niezgodności</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr><td>1.1.1 Treść nietekstowa</td><td>Ikony z podpowiedzią (tooltip) otrzymują od biblioteki interfejsu nazwę dostępną bez odpowiedniej roli, przez co technologie asystujące mogą je błędnie zinterpretować.</td></tr>
+    <tr><td>1.3.1 Informacje i relacje</td><td>Nieprawidłowa struktura ARIA w tabelach list (komponent DataTables).</td></tr>
+    <tr><td>1.4.3 Kontrast (minimalny)</td><td>Część tekstów (m.in. stopka, przycisk powiadomienia o zbiórce) nie osiąga minimalnego wymaganego kontrastu.</td></tr>
+    <tr><td>1.4.11 Kontrast elementów nietekstowych</td><td>Obramowanie i obrys fokusu jednego z wariantów przycisków nie osiąga minimalnego wymaganego kontrastu.</td></tr>
+    <tr><td>2.1.1 Klawiatura</td><td>Jedno z okien modalnych (podgląd treści załącznika) nie zamyka się klawiszem Escape.</td></tr>
+    <tr><td>2.4.1 Możliwość pominięcia bloków</td><td>Brak linku "przejdź do treści głównej" oraz brak elementów nawigacyjnych (landmarks) w widoku standardowym.</td></tr>
+    <tr><td>2.4.3 Kolejność fokusu</td><td>Wyskakujące okno ze zbiórką jest pierwszym elementem w kolejności fokusu na każdej stronie; wspomniane okno modalne pozwala fokusowi wyjść poza siebie.</td></tr>
+    <tr><td>2.5.8 Rozmiar celu (minimalny)</td><td>Kontrolki sortowania kolumn w listach (komponent DataTables) są mniejsze niż wymagane 24x24 px.</td></tr>
+    <tr><td>4.1.2 Nazwa, rola, wartość</td><td>Wynika z niezgodności wymienionych powyżej (ikony z podpowiedzią, struktura ARIA tabel list).</td></tr>
+    <tr><td>4.1.3 Komunikaty o stanie</td><td>Komunikaty systemowe (np. potwierdzenia zapisania formularza) nie są ogłaszane technologiom asystującym (brak odpowiedniego regionu "live").</td></tr>
+    <tr><td>EN 301 549, klauzula 10 (dokumenty nieobsługiwane przez sieć)</td><td>Część dokumentów załączanych do pism nie jest przygotowana jako dokument dostępny (brak odpowiedniego tagowania struktury dokumentu PDF).</td></tr>
+    </tbody>
+</table>
+</div>
+<p>
+    Pozostałe kryteria WCAG 2.1 A/AA nie zostały jeszcze poddane pełnej ocenie manualnej
+    (w szczególności testom z użyciem czytników ekranu, testom powiększenia 200% i testom
+    responsywności w szerokości 320 px) - ocena objęła dotychczas testy automatyczne
+    (axe-core, html-validate) oraz skryptowy przegląd nawigacji klawiaturą i zarządzania
+    fokusem na próbie stron reprezentatywnej dla wszystkich głównych typów widoków, ról i
+    stanów serwisu. Pełny przegląd z użyciem technologii asystujących jest planowany na
+    <strong>
+        {% filter strip_wrapping_p %}{% tinycontent 'accessibility_statement_next_review_date' %}
+        [DO UZUPEŁNIENIA: termin kolejnego przeglądu]
+        {% endtinycontent %}{% endfilter %}
+    </strong>.
+</p>
+
+<h2>Jak włączyć Tryb dostępności (WCAG)</h2>
+<p>
+    Przycisk włączający Tryb dostępności znajduje się w lewym górnym rogu każdej strony
+    serwisu, w tym samym miejscu niezależnie od przewijania treści strony. W widoku
+    standardowym przycisk nosi etykietę <strong>"Włącz wersję dostępną"</strong>. Po jego
+    aktywowaniu serwis przełącza się w Tryb dostępności, a ten sam przycisk zmienia etykietę na
+    <strong>"Przełącz na wersję standardową"</strong>, umożliwiając powrót do widoku
+    standardowego w każdej chwili. Wybrany tryb jest zapamiętywany w przeglądarce.
+</p>
+<p>
+    Serwis celowo nie udostępnia własnych przycisków zmiany rozmiaru czcionki (np. "A", "A+",
+    "A++"), znanych z niektórych stron administracji publicznej. Zamiast tego spełnienie
+    kryterium WCAG 1.4.4 (Zmiana rozmiaru tekstu) opiera się na natywnym powiększaniu strony w
+    przeglądarce (np. <kbd>Ctrl</kbd> + <kbd>+</kbd>/<kbd>-</kbd>, gest szczypania na urządzeniach
+    dotykowych lub opcja powiększenia w menu przeglądarki) - mechanizm ten skaluje całą stronę, a
+    nie tylko tekst, jest w pełni dostępny z klawiatury i nie wymaga dodatkowej, niestandardowej
+    logiki po stronie serwisu. Z tego samego powodu nie ma osobnego przycisku "wysoki kontrast":
+    poprawki kontrastu kolorów wynikające z audytu (m.in. kolor odnośników, obramowania
+    przycisków, tła znaczników) są częścią tego samego Trybu dostępności opisanego powyżej, więc
+    włączenie jednego przełącznika wystarcza, by uzyskać zgodny z WCAG kontrast. Osoby
+    potrzebujące jeszcze silniejszego kontrastu mogą dodatkowo skorzystać z trybu wysokiego
+    kontrastu dostępnego na poziomie systemu operacyjnego lub przeglądarki (np. Tryb wysokiego
+    kontrastu w systemie Windows, funkcja "Zwiększ kontrast" w systemie macOS albo tryb czytnika
+    w przeglądarce) - działa on niezależnie od ustawień samego serwisu.
+</p>
+
+<h2>Zgodność wymagań w trybie dostępności</h2>
+<p>
+    Poniższa tabela przedstawia status zgodności z poszczególnymi kryteriami WCAG 2.1 (poziom
+    A i AA) oraz dodatkowo ocenianymi kryteriami WCAG 2.2 (poziom AA) <strong>w Trybie
+    dostępności</strong>, ustalony na podstawie tego samego audytu dostępności, co lista w
+    poprzedniej sekcji. Status "Zgodne" oznacza brak naruszeń wykrytych w ramach
+    przeprowadzonych testów automatycznych (axe-core, html-validate) oraz skryptowego
+    przeglądu nawigacji klawiaturą i zarządzania fokusem na próbie 45 stron, ról i stanów
+    serwisu - nie jest to niezależna certyfikacja ani potwierdzenie zgodności w każdym
+    możliwym przypadku użycia.
+</p>
+<div class="table-responsive">
+<table class="table table-condensed">
+    <caption class="visually-hidden">Status zgodności z WCAG 2.1 i WCAG 2.2 w Trybie dostępności</caption>
+    <thead>
+    <tr>
+        <th scope="col">Kryterium WCAG</th>
+        <th scope="col">Status zgodności</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr><td>1.1.1 Treść nietekstowa</td><td>Zgodne</td></tr>
+    <tr><td>1.2.1 Tylko audio i tylko wideo (nagranie)</td><td>Nie dotyczy (serwis nie zawiera żadnych nagrań audio ani wideo)</td></tr>
+    <tr><td>1.2.2 Napisy rozszerzone (nagranie)</td><td>Nie dotyczy (brak nagrań wideo, które wymagałyby napisów)</td></tr>
+    <tr><td>1.2.3 Audiodeskrypcja lub alternatywa dla mediów (nagranie)</td><td>Nie dotyczy (brak nagrań wideo, które wymagałyby audiodeskrypcji)</td></tr>
+    <tr><td>1.2.4 Napisy rozszerzone (na żywo)</td><td>Wyłączone z zakresu ustawy</td></tr>
+    <tr><td>1.2.5 Audiodeskrypcja (nagranie)</td><td>Nie dotyczy (brak nagrań wideo)</td></tr>
+    <tr><td>1.3.1 Informacje i relacje</td><td>Zgodne</td></tr>
+    <tr><td>1.3.2 Zrozumiała kolejność</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>1.3.3 Właściwości sensoryczne</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>1.3.4 Orientacja ekranu</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>1.3.5 Określenie pożądanej wartości</td><td>Zgodne</td></tr>
+    <tr><td>1.4.1 Użycie koloru</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>1.4.2 Kontrola odtwarzania dźwięku</td><td>Nie dotyczy (żadna strona nie odtwarza dźwięku automatycznie ani w inny sposób)</td></tr>
+    <tr><td>1.4.3 Kontrast (minimalny)</td><td>Zgodne</td></tr>
+    <tr><td>1.4.4 Zmiana rozmiaru tekstu</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>1.4.5 Obrazy tekstu</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>1.4.10 Zawijanie tekstu (Reflow)</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>1.4.11 Kontrast elementów nietekstowych</td><td>Zgodne</td></tr>
+    <tr><td>1.4.12 Odstępy w tekście</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>1.4.13 Treść spod kursora lub fokusu</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>2.1.1 Klawiatura</td><td>Zgodne</td></tr>
+    <tr><td>2.1.2 Żadnych pułapek na klawiaturę</td><td>Zgodne</td></tr>
+    <tr><td>2.1.4 Jednoliterowe skróty klawiszowe</td><td>Zgodne</td></tr>
+    <tr><td>2.2.1 Czas (dostosowanie czasu)</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>2.2.2 Pauza, zatrzymanie, ukrycie</td><td>Zgodne</td></tr>
+    <tr><td>2.3.1 Trzy błyski lub wartości poniżej progu</td><td>Zgodne</td></tr>
+    <tr><td>2.4.1 Możliwość pominięcia bloków</td><td>Zgodne</td></tr>
+    <tr><td>2.4.2 Tytuł strony</td><td>Zgodne</td></tr>
+    <tr><td>2.4.3 Kolejność fokusu</td><td>Niezgodne (częściowo - okno z powiadomieniem o zbiórce pozostaje pierwszym elementem w kolejności fokusu)</td></tr>
+    <tr><td>2.4.4 Cel linku (w kontekście)</td><td>Zgodne</td></tr>
+    <tr><td>2.4.5 Wiele sposobów</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>2.4.6 Nagłówki i etykiety</td><td>Zgodne</td></tr>
+    <tr><td>2.4.7 Widoczny fokus</td><td>Zgodne</td></tr>
+    <tr><td>2.4.11 Widoczność fokusu (minimalna) (WCAG 2.2)</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>2.5.1 Gesty związane z wskazywaniem</td><td>Nie dotyczy (obsługa opiera się wyłącznie na pojedynczym kliknięciu/dotknięciu, bez gestów wielopunktowych ani opartych na ścieżce ruchu)</td></tr>
+    <tr><td>2.5.2 Rezygnacja ze wskazania</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>2.5.3 Etykieta w nazwie</td><td>Zgodne</td></tr>
+    <tr><td>2.5.4 Uruchamianie przez ruch</td><td>Nie dotyczy (serwis nie udostępnia żadnych funkcji uruchamianych ruchem urządzenia, np. potrząśnięciem lub przechyleniem)</td></tr>
+    <tr><td>2.5.7 Ruchy związane z przeciąganiem (WCAG 2.2)</td><td>Nie dotyczy (jedyny mechanizm przypominający przeciąganie - upuszczenie pliku z systemu operacyjnego na pole załączników - nie jest objęty tym kryterium, które dotyczy przeciągania zainicjowanego w treści strony, a nie poza nią; dodatkowo dostępny jest wybór pliku kliknięciem jako alternatywa)</td></tr>
+    <tr><td>2.5.8 Rozmiar celu (minimalny) (WCAG 2.2)</td><td>Niezgodne (częściowo - panel filtrów w widoku administracyjnym Django)</td></tr>
+    <tr><td>3.1.1 Język strony</td><td>Zgodne</td></tr>
+    <tr><td>3.1.2 Język fragmentu tekstu</td><td>Zgodne</td></tr>
+    <tr><td>3.2.1 Po otrzymaniu fokusu</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>3.2.2 Podczas wprowadzania danych</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>3.2.3 Konsekwentna nawigacja</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>3.2.4 Konsekwentna identyfikacja</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>3.2.6 Pomoc (WCAG 2.2)</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>3.3.1 Identyfikacja błędu</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>3.3.2 Etykiety lub instrukcje</td><td>Zgodne</td></tr>
+    <tr><td>3.3.3 Sugestie korekty błędów</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>3.3.4 Zapobieganie błędom (kontekst prawny, finansowy, związany z danymi)</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>3.3.7 Zbędne wprowadzanie danych (WCAG 2.2)</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>3.3.8 Dostępne uwierzytelnianie (minimalne) (WCAG 2.2)</td><td>Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii asystujących.</td></tr>
+    <tr><td>4.1.1 Parsowanie kodu</td><td>Zgodne</td></tr>
+    <tr><td>4.1.2 Nazwa, rola, wartość</td><td>Niezgodne (częściowo - kontrolki sortowania w tabelach list (komponent DataTables) okresowo tracą atrybuty ARIA w trakcie wewnętrznego odświeżania biblioteki; złagodzone, lecz nie w pełni usunięte)</td></tr>
+    <tr><td>4.1.3 Komunikaty o stanie</td><td>Zgodne</td></tr>
+    <tr><td>EN 301 549, klauzula 10 (dokumenty nieobsługiwane przez sieć)</td><td>Niezgodne (niezależne od wybranego trybu wyświetlania strony)</td></tr>
+    </tbody>
+</table>
+</div>
+<p>
+    Nawet w Trybie dostępności pozostają elementy niezgodne: kolejność fokusu zakłóca
+    wyskakujące okno z powiadomieniem o zbiórce (2.4.3); kontrolki sortowania w
+    tabelach list (komponent DataTables) okresowo tracą i odzyskują atrybuty ARIA w rytmie
+    wewnętrznego odświeżania tej zewnętrznej biblioteki - złagodzone, lecz nie w pełni usunięte
+    (4.1.2); panel filtrów w widoku
+    administracyjnym Django nie spełnia minimalnego rozmiaru celu (2.5.8, kryterium WCAG 2.2); a
+    dostępność dokumentów załączanych do pism (klauzula 10 EN 301 549) nie zależy od wybranego
+    trybu wyświetlania strony i wymaga odrębnego procesu po stronie zespołu. Kryteria oznaczone
+    jako "Nie oceniono automatycznie - wymaga audytu ręcznego z użyciem technologii
+    asystujących" zostaną objęte pełnym przeglądem ręcznym, planowanym - tak jak w przypadku
+    widoku standardowego - na
+    <strong>
+        {% filter strip_wrapping_p %}{% tinycontent 'accessibility_statement_next_review_date' %}
+        [DO UZUPEŁNIENIA: termin kolejnego przeglądu]
+        {% endtinycontent %}{% endfilter %}
+    </strong>.
+</p>
+
+<h2>Przygotowanie deklaracji dostępności</h2>
+<p>
+    Deklarację sporządzono dnia: 2026-10-21.<br>
+    Deklarację ostatnio poddano przeglądowi i aktualizacji dnia: 2026-10-21.
+</p>
+<p>
+    Deklarację sporządzono na podstawie samooceny przeprowadzonej przez podmiot publiczny.
+    Ocenę dostępności przeprowadzono za pomocą testów automatycznych (axe-core w wersji 4.x
+    względem tagów WCAG 2.1 A/AA i WCAG 2.2 AA, reguł dostępności html-validate) oraz
+    skryptowego przeglądu nawigacji klawiaturą i zarządzania fokusem, na próbie 45 stron,
+    ról i stanów serwisu obejmującej wszystkie główne typy widoków i komponentów
+    współdzielonych.
+</p>
+
+<h2>Skróty klawiszowe</h2>
+<p>
+    Serwis nie posiada własnych, niestandardowych skrótów klawiszowych.
+</p>
+
+<h2>Informacje zwrotne i dane kontaktowe</h2>
+<p>
+    W przypadku problemów z dostępnością cyfrową serwisu prosimy o kontakt. Osobą kontaktową
+    jest
+    <strong>
+        {% filter strip_wrapping_p %}{% tinycontent 'accessibility_statement_contact_name' %}
+        [DO UZUPEŁNIENIA: imię i nazwisko osoby kontaktowej]
+        {% endtinycontent %}{% endfilter %}
+    </strong>, adres e-mail:
+    <strong>
+        {% filter strip_wrapping_p %}{% tinycontent 'accessibility_statement_contact_email' %}
+        [DO UZUPEŁNIENIA: adres e-mail]
+        {% endtinycontent %}{% endfilter %}
+    </strong>, telefon:
+    <strong>
+        {% filter strip_wrapping_p %}{% tinycontent 'accessibility_statement_contact_phone' %}
+        [DO UZUPEŁNIENIA: numer telefonu]
+        {% endtinycontent %}{% endfilter %}
+    </strong>. Tą samą drogą można składać wnioski o
+    udostępnienie informacji niedostępnej oraz żądania zapewnienia dostępności cyfrowej strony
+    internetowej, aplikacji mobilnej lub ich elementu.
+</p>
+<p>
+    Każdy ma prawo do wystąpienia z żądaniem zapewnienia dostępności cyfrowej strony
+    internetowej, aplikacji mobilnej lub jakiegoś ich elementu. Można także zażądać
+    udostępnienia informacji za pomocą alternatywnego sposobu dostępu, na przykład przez
+    odczytanie niedostępnego cyfrowo dokumentu, opisanie zawartości filmu bez audiodeskrypcji
+    itp. Żądanie powinno zawierać dane osoby zgłaszającej żądanie, wskazanie, o którą stronę
+    internetową lub aplikację mobilną chodzi oraz sposób kontaktu. Jeżeli osoba żądająca zgłasza
+    potrzebę otrzymania informacji za pomocą alternatywnego sposobu dostępu, powinna także
+    określić dogodny dla niej sposób przedstawienia tej informacji.
+</p>
+<p>
+    Podmiot publiczny powinien zrealizować żądanie niezwłocznie, nie później niż w ciągu
+    <strong>7 dni</strong> od dnia wystąpienia z żądaniem. Jeżeli dotrzymanie tego terminu nie
+    jest możliwe, podmiot publiczny niezwłocznie informuje o tym, kiedy realizacja żądania
+    będzie możliwa, przy czym termin ten nie może być dłuższy niż <strong>2 miesiące</strong>
+    od dnia wystąpienia z żądaniem.
+</p>
+
+<h2>Procedura odwoławcza</h2>
+<p>
+    Jeżeli zapewnienie dostępności cyfrowej nie jest możliwe, podmiot publiczny może zaproponować
+    alternatywny sposób dostępu do informacji. W przypadku, gdy podmiot publiczny odmówi
+    realizacji żądania zapewnienia dostępności lub alternatywnego sposobu dostępu do informacji,
+    a także gdy osoba żądająca nie jest zadowolona z udzielonej odpowiedzi, przysługuje jej
+    prawo do złożenia skargi do Rzecznika Praw Obywatelskich:
+    <strong>
+        {% filter strip_wrapping_p %}{% tinycontent 'accessibility_statement_rpo_link' %}
+        [DO UZUPEŁNIENIA: adres strony Biura Rzecznika Praw Obywatelskich]
+        {% endtinycontent %}{% endfilter %}
+    </strong>.
+</p>
+
+<h2>Dostępność architektoniczna</h2>
+{% tinycontent 'accessibility_statement_architectural_accessibility' %}
+<p><strong>[DO UZUPEŁNIENIA: opis dostępności architektonicznej budynku/siedziby - m.in.
+dostęp bez barier architektonicznych, winda, dostosowane toalety, miejsca parkingowe,
+możliwość wstępu z psem asystującym, dostępność tłumacza języka znaków]</strong></p>
+{% endtinycontent %}
+
+<h2>Dostępność alternatywna</h2>
+{% tinycontent 'accessibility_statement_alternative_access' %}
+<p><strong>[DO UZUPEŁNIENIA: alternatywny sposób dostępu do pomocy prawnej dla osób, które nie
+mogą skorzystać z serwisu, np. numer telefonu lub adres, pod którym można uzyskać pomoc
+bez korzystania z serwisu internetowego]</strong></p>
+{% endtinycontent %}
+
+<h2>Aplikacje mobilne</h2>
+<p>
+    Podmiot nie udostępnia aplikacji mobilnych.
+</p>
+{% endblock %}

@@ -1,5 +1,5 @@
 {% extends "cases/base.html" %}
-{% load crispy_forms_tags i18n %}
+{% load crispy_forms_tags i18n wcag_tags %}
 
 {% block title %}{{ object }} - {{ block.super }}{% endblock %}
 
@@ -16,6 +16,7 @@
     <div class="col-lg-8 col-md-10 col-sm-12 col-12 offset-lg-2 offset-md-1">
         <h1>{% block header %}{{ object }}{% endblock %}</h1>
         {% csrf_token %}
+        {% form_error_summary form %}
         {% crispy form %}
     </div>
 </div>

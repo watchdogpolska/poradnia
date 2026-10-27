@@ -1,5 +1,5 @@
 {% extends "users/base.html" %}
-{% load crispy_forms_tags i18n %}
+{% load crispy_forms_tags i18n wcag_tags %}
 
 {% block title %}{% trans 'User' %}: {{ user.username }} - {{ block.super }}{% endblock %}
 
@@ -16,6 +16,7 @@
             {% block form %}
             <form enctype="multipart/form-data" class="form-horizontal" method="post">
                 {% csrf_token %}
+                {% form_error_summary form %}
                 {% crispy form %}
             </form>
             {% endblock %}
