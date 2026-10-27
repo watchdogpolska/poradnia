@@ -1,6 +1,7 @@
 {% extends 'cases/_case_form_permission.html' %}
-{% load i18n crispy_forms_tags %}
+{% load i18n crispy_forms_tags wcag_tags %}
 {% block form %}
     <h2>{% trans 'Add new user' %}</h2>
+    {% form_error_summary form %}
     {% crispy form %}
 {% endblock %}

@@ -1,8 +1,9 @@
-{% load i18n crispy_forms_tags %}
+{% load i18n crispy_forms_tags wcag_tags %}
 <div id="feedback">
     <div id="feedback-header">{% trans 'Submit feedback' %}</div>
     <div id="feedback-body">
         <p>{% trans 'Please provide feedback about this page:' %}</p>
+        {% form_error_summary feedback_form %}
         {% crispy feedback_form %}
     </div>
 </div>

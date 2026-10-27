@@ -9,9 +9,9 @@
 {% block content %}
 <div class="row">
     <div class="col-lg-8 col-md-10 col-sm-12 col-12 offset-lg-2 offset-md-1">
-        <img src="{% get_avatar_url object %}">
-        <h3><b>{% trans 'Username' %}:</b> {{ object.username }} &nbsp; &nbsp; &nbsp;
-            <b>{% trans 'Full name' %}:</b> {{ object.nicename }}</h3>
+        <img src="{% get_avatar_url object %}" alt="">
+        <h1 class="h3"><b>{% trans 'Username' %}:</b> {{ object.username }} &nbsp; &nbsp; &nbsp;
+            <b>{% trans 'Full name' %}:</b> {{ object.nicename }}</h1>
         {% if object.is_staff %}
             <p>{% trans 'Is member of staff.' %}</p>
         {% endif %}

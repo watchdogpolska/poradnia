@@ -1,0 +1,1425 @@
+
+<!DOCTYPE html>
+<html data-ui-mode="normal" lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Wykaz spraw - Sprawy - Poradnia</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Poradnia App" name="description">
+    <meta content="Sieć Obywatelska - Watchdog Polska" name="author">
+    <meta content="#D82727" name="theme-color">
+    <link href="/static/images/logo-160x128.png" rel="apple-touch-icon" sizes="160x128">
+    <link href="/static/images/favicon-32x26.png" rel="shortcut icon" sizes="32x32" type="image/png">
+    <link href="/static/images/manifest.json" rel="manifest">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="/static/images/logo-160x128.png" name="msapplication-TileImage">
+    <meta content="/static/images/logo-czerwone-tlo-1200x600.jpg" property="og:image" />
+    <meta content="image/jpg" property="og:image:type" />
+    <meta content="1200" property="og:image:width" />
+    <meta content="600" property="og:image:height" />
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+  <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+    <link href="/static/tasty_feedback/style.css" rel="stylesheet">
+
+    
+        <link href="/static/css/style.min.css" rel="stylesheet">
+    
+    
+    
+    <style>
+        span.free, tr.free > td, td.free {
+            background-color: #38FF98;
+        }
+
+        span.open, tr.open > td, td.open {
+            background-color: #A3FFD0;
+        }
+
+        span.closed, tr.closed > td, td.closed {
+            background-color: #DEFFEE;
+        }
+
+        input#id_id {
+            width: 100px;
+        }
+    </style>
+
+
+</head>
+
+<body>
+
+<!-- First element in body by design: keyboard-reachable before anything
+     else, no JS required (plain form POST). This is the one approved
+     normal-mode DOM change - see logs/wcag/plan/ui-mode-design.md §2.
+     Fixed (not relative) so it stays in the same viewport corner
+     regardless of scroll position, like a django-debug-toolbar handle -
+     previously position:relative, it scrolled away with page content on
+     any long page (e.g. /sprawy/). top: 50px (not 0) matches
+     $navbar-height (_vars.scss, also what .sidebar's own top offset
+     uses, _sidebar.scss) - confirmed via Playwright that pinning this at
+     top:0 fully covers the mobile navbar's hamburger toggle and brand
+     link (both sit within the navbar's own ~44px height), and at this
+     width even the desktop sidebar's home link (measured at y:211+) is
+     still comfortably clear. z-index is needed because .navbar is
+     position:fixed on mobile widths (see _layout.scss) and would
+     otherwise render on top of this. -->
+<form action="/ui-mode/" method="post" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
+    <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
+    <input name="next" type="hidden" value="/sprawy/">
+    
+        <input name="mode" type="hidden" value="wcag">
+        <button class="btn btn-dark" type="submit">Włącz wersję dostępną</button>
+    
+</form>
+
+
+<!-- Moved to beginning to load JQueary before any other js code  -->
+
+    <script src="/static/js/script.min.js"></script>
+
+
+
+
+
+
+
+
+    
+
+<style>
+#alt-popup-backdrop {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    /* Below both the popup itself (1001) and the mode-switch form that's
+       the first element in body (1051, see base.html), above everything
+       else - this is what actually blocks clicking through to the rest
+       of the page while the popup is shown. */
+    z-index: 1000;
+}
+#alt-popup-backdrop.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 400ms ease, visibility 0s linear 0s;
+}
+#alt-popup-container {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 400ms ease, visibility 0s linear 400ms;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 60px;
+    color: white;
+    background-color: #f93434;
+    border: 1px solid #000000;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+    z-index: 1001;
+    white-space: nowrap;
+    text-align: center;
+    border-radius: 10px;
+}
+#alt-popup-container.show {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 400ms ease, visibility 0s linear 0s;
+}
+@media (max-width: 999px) {
+    #alt-popup-container {
+        white-space: normal;
+        overflow: auto;
+        max-height: 90vh;
+        max-width: 90vw;
+    }
+}
+#alt-popup-container a {
+    color: white;
+    text-decoration: underline;
+}
+#alt-popup-container button {
+    color: white;
+    background-color: #ad1a1a;
+    border: 2px solid white;
+    border-radius: 5px;
+    padding: 10px 20px;
+    font-weight: bold;
+}
+#alt-popup-container h1 {
+    margin-bottom: 20px;
+}
+#alt-popup-container h2,
+#alt-popup-container h3 {
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+#alt-popup-container form {
+    display: inline-block;
+    margin: 0 4px;
+}
+</style>
+
+<div id="alt-popup-backdrop"></div>
+<div aria-label="Wesprzyj naszą działalność" aria-modal="true" id="alt-popup-container" role="dialog" tabindex="-1">
+    
+        <h1 class="h2">Wesprzyj naszą działalność!</h1>
+        <h2 class="h4">Wesprzyj działanie naszej poradni dobrowolną darowizną,<br>
+            którą wykorzystamy na rzecz ochrony prawa do informacji.</h2>
+        <h3><a href="https://siecobywatelska.pl/wspieraj" target="_blank">Przekaż darowiznę</a></h3>
+        <h4>Każda kwota ma znaczenie!</h4>
+    
+
+
+    <!-- Add any other content or buttons as needed -->
+    <p>&nbsp;</p>
+    <!-- <input id="altAlreadyDonated" name="altAlreadyDonated" type="checkbox" value="donated">
+    <label for="altAlreadyDonated">Już przekazałem/am</label> -->
+    <p>&nbsp;</p>
+    <button class="btn btn-primary" id="alt-donate-button" onclick="closeAltPopup()">Zamknij</button>
+</div>
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <!-- No data-bs-toggle="collapse" here on purpose: the actual
+                 show/hide is handled by sidebar.js (a plain classList
+                 toggle on data-bs-target, driving .sidebar's CSS
+                 transform - not an accordion-style collapse panel).
+                 Bootstrap's own collapse JS binds to [data-bs-toggle=
+                 "collapse"] globally regardless of any explicit JS
+                 instantiation, so having both attached used to run two
+                 independent toggles per click: sidebar.js's (correct) and
+                 Bootstrap's own (which also manages body's collapse/show
+                 classes). Opening was harmless, but closing left body
+                 with class="collapse" and no "show" - Bootstrap's own
+                 CSS (.collapse:not(.show) { display: none; }) then hid
+                 the entire page until reload. -->
+            <button aria-expanded="false" class="navbar-toggler collapsed" data-bs-target="body" type="button">
+                <span class="visually-hidden">Toggle navigation</span>
+                <i class="navbar-burger"></i>
+            </button>
+            <a class="navbar-brand" href="#">Poradnia</a>
+        </div>
+    </div>
+</nav>
+<!-- app_main_style tag used to differentiate dev, demo and production environments -->
+<div class="main" style="background-color: #d3e20040;">)
+
+    <div class="sidebar">
+        
+<div class="sidebar-header">
+    <h1 class="app-mode-banner" style="color: red;">DEV</h1>
+    <a href="/">
+        <div class="logo"></div>
+        <p>Poradnia</p>
+    </a>
+    <p><a href="http://siecobywatelska.pl">Sieci Watchdog</a></p>
+</div>
+<div class="block-list">
+    <ul class="block-list-list">
+
+        
+        
+           <li class="block-list-item">
+              <a data-bs-target="#navsearch_modal" data-bs-toggle="modal" href="#">
+                   <i class="fas fa-magnifying-glass"></i> Wyszukaj
+               </a>
+           </li>
+        
+        
+        
+    </ul>
+</div>
+
+<div class="block-list">
+    <div class="block-list-header">Użytkownik</div>
+    <ul class="block-list-list">
+
+        
+            <li class="block-list-item">
+                <a href="/uzytkownik/a11y_client_active/"><i class="fas fa-user"></i>
+                    Ewa Klientka - profil i bezpieczeństwo</a>
+            </li>
+            
+            
+            <li class="block-list-item">
+                <a href="/konta/logout/"><i class="fa-solid fa-right-from-bracket"></i> Wyloguj</a>
+            </li>
+        
+    </ul>
+</div>
+
+
+
+
+
+<div class="block-list">
+    <div class="block-list-header">Sprawy</div>
+    <ul class="block-list-list">
+        <li class="block-list-item"><a href="/listy/"><i class="fas fa-pencil"></i> Nowa sprawa</a></li>
+        
+            <li class="block-list-item">
+                <a href="/sprawy/table/"><i class="fas fa-book"></i> Tabela spraw</a>
+            </li>
+            <li class="block-list-item">
+                <a href="/sprawy/?status=0&amp;status=1&amp;status=3"><i class="fas fa-book"></i> Wykaz spraw</a>
+            </li>
+        
+        
+        <li class="block-list-item">
+            <a href="/strony/regulamin-poradnictwa/"><i class="fas fa-gavel"></i> Regulamin poradnictwa</a>
+        </li>
+        <!-- TODO - move the below to Letters or generic sidebar for code consistency -->
+        
+            <li class="block-list-item">
+                <a href="/listy/table/"><i class="far fa-envelope"></i> Tabela korespondencji</a>
+            </li>
+        
+        
+            <li class="block-list-item">
+                <a href="/listy/rejestr"><i class="far fa-envelope"></i> Korespondencja</a>
+            </li>
+        
+    </ul>
+</div>
+
+
+
+
+<div class="footer row">
+    
+        <div class="col-12">
+            <p class="text-center">
+                <img alt="" class="img-fluid" src="/static/images/baner.png">
+                Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
+                finansowanego z Funduszy EOG.
+            </p>
+        </div>
+    
+
+
+</div>
+
+
+
+    </div>
+    <div class="main-side">
+        <div class="content">
+            
+            
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item active">Wykaz spraw</li>
+    </ol>
+
+            
+            <div class="container-fluid">
+                
+<div class="row">
+    <div class="col-lg-8 col-md-10 col-sm-12 col-12 offset-lg-2 offset-md-1">
+        
+
+
+        
+
+<form class="form-inline" method="get"> <div class="mb-3" id="div_id_name"> <label class="form-label" for="id_name">
+                Przedmiot
+            </label> <input class="textinput form-control" id="id_name" name="name" type="text"> </div> <div class="mb-3" id="div_id_created_on"> <label class="form-label" for="id_created_on">
+                Utworzone o
+            </label> <select class="select form-select" id="id_created_on" name="created_on"> <option selected value="">---------</option> <option value="today">Dziś</option> <option value="yesterday">Wczoraj</option> <option value="week">Ostatnie 7 dni</option> <option value="month">Ten miesiąc</option> <option value="year">Ten rok</option>
+
+</select> </div> <div class="mb-3" id="div_id_last_send"> <label class="form-label" for="id_last_send">
+                Ostatnia odpowiedź
+            </label> <select class="select form-select" id="id_last_send" name="last_send"> <option selected value="">---------</option> <option value="today">Dziś</option> <option value="yesterday">Wczoraj</option> <option value="week">Ostatnie 7 dni</option> <option value="month">Ten miesiąc</option> <option value="year">Ten rok</option>
+
+</select> </div> <div class="mb-3" id="div_id_o"> <label class="form-label" for="id_o">
+                Sortowanie
+            </label> <select class="csvselect form-select" id="id_o" name="o"> <option value="">---------</option> <option selected value="last_send">Ostatnia odpowiedź</option> <option value="-last_send">Ostatnia odpowiedź (malejąco)</option> <option value="pk">Numer</option> <option value="-pk">Numer (malejąco)</option> <option value="created_on">Utworzone o</option> <option value="-created_on">Utworzone o (malejąco)</option>
+
+</select> </div> <input class="btn btn-primary" id="submit-id-filter" name="filter" type="submit" value="Zastosuj filtr" /> </form>
+
+
+        
+            <table class="table  table-striped table-cases table-condensed">
+                <thead>
+                <tr>
+                    <th class="id">Nr.</th>
+                    <th class="client">Klient</th>
+                    <th class="subject">Przedmiot </th>
+                    
+                        <th class="last_response">Ostatnia odpowiedź</th>
+                    
+                </tr>
+                </thead>
+                <tbody>
+                
+                    <tr>
+                        <td class="id">4</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="fas fa-circle"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-4/">
+                    
+                        Sprawa zamknięta po udzieleniu odpowiedzi
+                    
+                </a>
+                
+                (2)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    [RELATIVE_TIME]
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">3</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-circle-dot"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-3/">
+                    
+                        Długotrwała korespondencja ws. decyzji administracyjnej
+                    
+                </a>
+                
+                (13)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    [RELATIVE_TIME]
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">2</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-square-plus"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-2/">
+                    
+                        Spór o dostęp do danych środowiskowych
+                    
+                </a>
+                
+                (3)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    [RELATIVE_TIME]
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">50</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-square-plus"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-50/">
+                    
+                        Pytanie o wydatki publiczne nr 42
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">36</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-circle "></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-36/">
+                    
+                        Sprawa dotycząca ponownego wykorzystania nr 28
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">49</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-square-plus"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-49/">
+                    
+                        Dostęp do danych środowiskowych nr 41
+                    
+                </a>
+                
+                (1)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">48</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-circle "></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-48/">
+                    
+                        Zapytanie o uchwałę rady miasta nr 40
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">47</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-circle-dot"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-47/">
+                    
+                        Zażalenie na odmowę nr 39
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">46</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-square-plus"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-46/">
+                    
+                        Prośba o udostępnienie rejestru nr 38
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">45</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-square-plus"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-45/">
+                    
+                        Pytanie o wydatki publiczne nr 37
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">44</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-circle "></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-44/">
+                    
+                        Wniosek o informację publiczną nr 36
+                    
+                </a>
+                
+                (1)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">43</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-circle-dot"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-43/">
+                    
+                        Pytanie o wydatki publiczne nr 35
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">42</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-square-plus"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-42/">
+                    
+                        Zażalenie na odmowę nr 34
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">41</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-square-plus"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-41/">
+                    
+                        Zapytanie o uchwałę rady miasta nr 33
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">40</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-circle "></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-40/">
+                    
+                        Żądanie wyjaśnień urzędu gminy nr 32
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">39</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-circle-dot"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-39/">
+                    
+                        Sprawa dotycząca ponownego wykorzystania nr 31
+                    
+                </a>
+                
+                (1)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">38</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-square-plus"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-38/">
+                    
+                        Zapytanie o uchwałę rady miasta nr 30
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">37</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-square-plus"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-37/">
+                    
+                        Wniosek o informację publiczną nr 29
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">65</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-square-plus"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-65/">
+                    
+                        Prośba o udostępnienie rejestru nr 57
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">51</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-circle-dot"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-51/">
+                    
+                        Pytanie o wydatki publiczne nr 43
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">52</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-circle "></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-52/">
+                    
+                        Pytanie o wydatki publiczne nr 44
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">53</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-square-plus"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-53/">
+                    
+                        Dostęp do danych środowiskowych nr 45
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">54</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-square-plus"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-54/">
+                    
+                        Wniosek o informację publiczną nr 46
+                    
+                </a>
+                
+                (1)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">55</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-circle-dot"></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-55/">
+                    
+                        Odwołanie od decyzji wójta nr 47
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                    <tr>
+                        <td class="id">56</td>
+                        <td class="client"><a href="/uzytkownik/a11y_client_active/">Ewa Klientka</a></td>
+                        <td class="subject">
+            <i class="far fa-circle "></i>
+            <span class="subject">
+            
+                <a href="/sprawy/sprawa-56/">
+                    
+                        Zapytanie o uchwałę rady miasta nr 48
+                    
+                </a>
+                
+                (0)
+                
+
+                
+
+                
+
+                
+                        </td>
+                        
+                            <td class="last_response">
+                                
+                                    Brak odpowiedzi
+                                
+                            </tr>
+                        
+
+                    </tr>
+                
+                </tbody>
+            </table>
+            <p>Legenda statusów <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom" title='Zgłoszona przez Ciebie sprawa otrzymuje najpierw status "wolna". To znaczy, że nie wiadomo jeszcze, która z udzielających porad osób Ci pomoże. Kiedy już wyznaczona zostanie ta osoba, porada zmieni status na "przypisana". A gdy już Ci pomożemy "zakończona".'></i>:
+                <i class="far fa-circle "></i>
+                    wolna <i class="far fa-square-plus"></i>
+                    moderowana <i class="far fa-circle-dot"></i>
+                    przypisana <i class="fas fa-circle"></i>
+                    zamknięta </p>
+            <div class="text-center">
+                
+
+    <ul class="pagination">
+        
+            <li class="page-item disabled"><span class="page-link">&laquo;</span></li>
+            <li class="page-item disabled"><span class="page-link">&lsaquo;</span></li>
+        
+        
+            
+                <li class="page-item active"><span class="page-link">1</span></li>
+            
+        
+            
+                <li class="page-item"><a class="page-link" href="?page=2">2</a></li>
+            
+        
+            
+                <li class="page-item"><a class="page-link" href="?page=3">3</a></li>
+            
+        
+        
+            <li class="page-item"><a aria-label="Następna" class="page-link" href="?page=2">&rsaquo;</a></li>
+            <li class="page-item"><a aria-label="Ostatnia" class="page-link" href="?page=3">&raquo;</a></li>
+        
+    </ul>
+
+
+            </div>
+
+        
+    </div>
+</div>
+
+            </div>
+            
+            <div class="footer">
+                <div class="footer-right">Sieć Obywatelska - Watchdog Polska<br>
+                    ul. Szpitalna 5/5<br>
+                    00-031 Warszawa
+                </div>
+                <div class="footer-left">
+                    silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
+                    [VERSION] |
+                    <a href="https://github.com/watchdogpolska/poradnia">
+                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/[GITHUB_REVISION]...master">[GITHUB_REVISION]</a> |
+                    <a href="/strony/deklaracja-dostepnosci/">Deklaracja dostępności</a>
+                </div>
+                <div class="footer-center">Strona wykorzystuje cookies</div>
+            </div>
+            <div class="footer">
+                    <div class="footer-center col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                        
+                            <img alt="" class="img-fluid" src="/static/images/baner.png"><br>
+                            Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
+                            finansowanego z Funduszy EOG.<br>
+                        
+
+
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+        
+        
+<div id="feedback">
+    <div id="feedback-header">Zgłoś usterkę administratorom poradni.</div>
+    <div id="feedback-body">
+        <p>Przekaż nam uwagi o tej stronie dotyczące błędów lub możliwych ulepszeń.</p>
+        
+
+
+        
+
+<form action="/uwagi/submit" method="post"> <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_text"> <label class="form-label requiredField" for="id_text">
+                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea aria-describedby="id_text_helptext" class="textarea form-control" cols="40" id="id_text" name="text" required rows="10">
+</textarea> <div class="form-text" id="id_text_helptext">Treść zgłoszona przez użytkownika</div> </div> <input id="id_url" name="url" type="hidden" value="http://localhost:8000/sprawy/"> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-feedback_action" name="feedback_action" type="submit" value="Zgłoś usterkę administratorom poradni." /> </div> </div> </form>
+
+    </div>
+</div>
+
+    
+
+</div>
+
+    
+<!-- Modal -->
+<div aria-labelledby="navsearch_modal_label" class="modal fade" id="navsearch_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="navsearch_modal_label">Wyszukaj</h2>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+                
+<div class="navsearch">
+	<form class="form" onsubmit="return false;">
+		<div class="form-group">
+			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
+			<input class="form-control navsearch__input" hx-get="/navsearch/" hx-swap="innerHTML" hx-target=".navsearch__results" hx-trigger="input changed delay:300ms" id="search" name="q" type="search">
+		</div>
+	</form>
+	<div class="navsearch__results"></div>
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Le javascript
+  ================================================== -->
+<!-- Rest of js placed at the end of the document so the pages load faster -->
+
+
+
+
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+    <script src="/static/js/donate_popup_alternative.js"></script>
+
+
+
+    
+
+    <script type="text/javascript">
+        document.addEventListener('DOMContentLoaded', function () {
+            const states = {
+                show: { iconClass: 'fa-regular fa-square-plus', text: 'Pokaż cytat' },
+                hide: { iconClass: 'fa-regular fa-square-minus', text: 'Ukryj cytat' },
+            };
+            document.querySelectorAll('blockquote').forEach((el) => {
+                el.hidden = true;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'btn quote-link';
+                const icon = document.createElement('i');
+                const label = document.createElement('span');
+                btn.append(icon, ' ', label);
+                const apply = ({ iconClass, text }) => {
+                    icon.className = iconClass;
+                    label.textContent = text;
+                };
+                apply(states.show);
+                btn.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    el.hidden = !el.hidden;
+                    apply(el.hidden ? states.show : states.hide);
+                });
+                el.parentNode.insertBefore(btn, el);
+            });
+        });
+    </script>
+
+
+<div id="attachment-text-modal-container"></div>
+<div class="htmx-indicator" id="htmx-spinner">
+    Wczytywanie...
+</div>
+<script>
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('[hx-target="#attachment-text-modal-container"]')) {
+            return;
+        }
+
+        // Only clean up a modal that's actually open (switching straight
+        // from one attachment's modal to another's, without closing
+        // first) - this used to run unconditionally on every click of an
+        // attachment button, including the very click that opens the
+        // *first* modal, which stripped the backdrop/scroll-lock Bootstrap
+        // had just added for that same click (confirmed via an isolated
+        // Bootstrap-only repro outside the app, alongside the F004 fix in
+        // wcag.js). Registered capture:true so this runs *before* the
+        // click's own handler swaps #attachment-text-modal-container's
+        // content below - otherwise, on a direct switch between two
+        // attachments, `existingModal` would already be the new (not-yet-
+        // shown) modal instead of the old (actually open) one, and this
+        // would wrongly skip cleanup, leaking the old backdrop behind the
+        // new one (confirmed via the same repro).
+        var existingModal = document.getElementById('attachmentTextModal');
+        if (existingModal && existingModal.classList.contains('show')) {
+            bootstrap.Modal.getOrCreateInstance(existingModal).hide();
+            document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+                el.remove();
+            });
+            document.body.classList.remove('modal-open');
+        }
+    }, true);
+
+    document.body.addEventListener('htmx:afterSwap', function (event) {
+        if (event.target.id === 'attachment-text-modal-container') {
+            var modal = document.getElementById('attachmentTextModal');
+            if (modal) {
+                bootstrap.Modal.getOrCreateInstance(modal).show();
+            }
+        }
+    });
+
+    // Bootstrap sets aria-hidden="true" on the modal from _hideModal(),
+    // called after the hide transition - if focus is still inside the
+    // modal at that point (e.g. the "Zamknij" button that was just
+    // clicked/activated to close it), the browser blocks it and logs an
+    // "aria-hidden blocked" console warning, since a hidden ancestor must
+    // never contain the focused element. 'hide.bs.modal' fires
+    // synchronously, immediately, before any of that - blurring here
+    // means focus is already outside the modal by the time aria-hidden
+    // is actually applied. The 'hidden.bs.modal' handler below still runs
+    // afterwards to move focus on to the triggering attachment button.
+    document.addEventListener('hide.bs.modal', function (event) {
+        if (event.target.matches('#attachmentTextModal') && event.target.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+    });
+
+    document.addEventListener('hidden.bs.modal', function (event) {
+        if (!event.target.matches('#attachmentTextModal')) {
+            return;
+        }
+        var container = document.getElementById('attachment-text-modal-container');
+        if (container) {
+            container.innerHTML = '';
+        }
+        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+            el.remove();
+        });
+        document.body.classList.remove('modal-open');
+    });
+
+    function getCookie(name) {
+        var value = '; ' + document.cookie;
+        var parts = value.split('; ' + name + '=');
+        if (parts.length === 2) {
+            return parts.pop().split(';').shift();
+        }
+        return null;
+    }
+
+    document.body.addEventListener('htmx:configRequest', function (event) {
+        event.detail.headers['X-CSRFToken'] = getCookie('csrftoken');
+    });
+</script>
+
+</body>
+</html>
+

@@ -29,6 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
             serverSide: true,
             autoWidth: true,
             full_row_select: false,
+            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
             // Group the length selector/search box, and the info/paging controls,
             // each into one row (default dom string stacks every feature separately).
             dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
@@ -58,8 +59,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     "last":       "Ostatnia"
                 },
                 "aria": {
-                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                    "orderable": ": aktywuj, by posortować kolumnę",
+                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
+                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "previous": "Poprzednia",
+                        "next": "Następna",
+                        "last": "Ostatnia"
+                    }
                 }
             },
         }, {

@@ -3,7 +3,7 @@
 {# {% load bootstrap4 %} #}
 {% load i18n cases_tags %}
 
-
+{% block title %}{% trans 'Case Table' %} - {{ block.super }}{% endblock %}
 {% block content %}
 
 <style>
@@ -15,7 +15,7 @@
     }
 </style>
 
-<h3>{% trans 'Case Table' %}:</h3>
+<h1 class="h3">{% trans 'Case Table' %}:</h1>
 
 <div id="modal-popup" class="modal fade" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -27,7 +27,7 @@
     <!-- TODO add colvis button and functionality -->
     <div class="col-sm-1 filters">
         <br><br><br><br>
-        <h4>{% trans 'Filters' %}:</h4><br>
+        <h2 class="h4">{% trans 'Filters' %}:</h2><br>
         <div>
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title='{% trans 'Cases have status changed by staff.' %}'>
@@ -46,7 +46,7 @@
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases that have selected user in involved staff.' %}">
             </i>
-            <label>{% trans 'Involved staff' %}:</label><br>
+            <label for="involved_staff_select">{% trans 'Involved staff' %}:</label><br>
             <select id="involved_staff_select" name="involved_staff_select" style="width: 120px;">
                 {% for involved in involved_staff %}
                     <option value="{{ involved.0 }}">{{ involved.1 }}</option>

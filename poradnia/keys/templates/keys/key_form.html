@@ -1,5 +1,5 @@
 {% extends 'keys/base.html' %}
-{% load crispy_forms_tags i18n %}
+{% load crispy_forms_tags i18n wcag_tags %}
 
 {% block breadcrumbs_rows %}
     <li class="breadcrumb-item active">{% trans 'New key' %}</li>
@@ -12,6 +12,7 @@
             <h1>{% block header %}{% trans 'New key' %}{% endblock %}</h1>
             <form method="post">
                 {% csrf_token %}
+                {% form_error_summary form %}
                 {% crispy form %}
             </form>
         </div>

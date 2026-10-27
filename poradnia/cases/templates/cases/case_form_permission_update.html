@@ -1,5 +1,5 @@
 {% extends 'cases/_case_form_permission.html' %}
-{% load i18n crispy_forms_tags %}
+{% load i18n crispy_forms_tags wcag_tags %}
 
 {% block form %}
     <h2>{% blocktrans %}Update permission of {{ action_user }}{% endblocktrans %}</h2>
@@ -7,5 +7,6 @@
     {% csrf_token %}
     <input type="submit" class="btn btn-primary" value="{% trans 'Remove all permission'%}">
     </form>
+    {% form_error_summary form %}
     {% crispy form %}
 {% endblock %}

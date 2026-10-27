@@ -1,0 +1,14 @@
+{
+  "name": "poradnia-wcag-audit-tools",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Node tooling for the Poradnia WCAG audit: Playwright-driven baseline capture/diff, axe-core runs, HTML validation. See ../HANDOFF.md.",
+  "type": "commonjs",
+  "dependencies": {
+    "axe-core": "^4.14.0",
+    "html-validate": "^11.16.2",
+    "pixelmatch": "^8.0.0",
+    "playwright": "^1.64.0",
+    "pngjs": "^7.0.0"
+  }
+}

@@ -64,3 +64,112 @@ jobs:
         run: make test
       - name: Run e2e tests
         run: make e2e
+
+  # WCAG-mode checks: see tests/wcag/README.md. Playwright, not cypress-axe
+  # (the equivalence test needs independent per-mode browser contexts, and
+  # every timing fix this
+  # tooling needed was hard-won against this app's own async widgets; redoing
+  # that in Cypress's idiom would duplicate effort for no benefit). Separate
+  # job (not a step in django_build_and_test above) because it needs its own
+  # Node/Playwright toolchain and an isolated `poradnia_a11y` database with
+  # no real client data - never reuse `poradnia`/`test_poradnia` for this.
+  # Runs in parallel with django_build_and_test, not after it: this job
+  # builds and migrates its own isolated stack (poradnia_a11y), so it
+  # doesn't consume anything the other job produces. Serializing them was
+  # pure fail-fast cost-saving (skip the ~10-15min Playwright/Chromium job
+  # if the cheaper unit-test job was already going to fail the PR) at the
+  # cost of roughly doubling PR wall-clock time; running in parallel trades
+  # a bit of wasted CI time on broken builds for faster feedback.
+  wcag_mode_checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Align container user with runner UID/GID
+        run: |
+          echo "UID=$(id -u)" >> .env
+          echo "GID=$(id -g)" >> .env
+      - name: Build application
+        run: make build
+      - name: Create and migrate the poradnia_a11y database
+        run: |
+          docker compose up -d --remove-orphans db
+          docker compose run web bash -c 'wait-for-it db:3306'
+          docker compose exec -T db mysql -uroot -ppassword -e \
+            "CREATE DATABASE IF NOT EXISTS poradnia_a11y CHARACTER SET utf8mb4 COLLATE utf8mb4_polish_ci;"
+          docker compose -f docker-compose.yml -f tests/wcag/docker-compose.a11y.yml \
+            run --rm web python manage.py migrate
+      - name: Seed WCAG-mode sample data
+        run: |
+          echo "A11Y_SEED_PASSWORD=$(openssl rand -base64 24)" >> "$GITHUB_ENV"
+      - name: Run seed script
+        run: |
+          docker compose up -d --remove-orphans maildump
+          docker compose -f docker-compose.yml -f tests/wcag/docker-compose.a11y.yml \
+            run --rm -e A11Y_SEED_PASSWORD="$A11Y_SEED_PASSWORD" \
+            web python tests/wcag/seed_a11y.py --reset
+      - name: Bring the app up against poradnia_a11y
+        run: |
+          docker compose -f docker-compose.yml -f tests/wcag/docker-compose.a11y.yml up -d web
+      # Without this, every run pays for a fresh apt-get + ~120MB Chromium
+      # download whenever the hosted runner's disk image doesn't already
+      # have this Playwright version baked in - that gap made the step
+      # anywhere from ~20s (image already had it) to ~9min (cold) between
+      # otherwise-identical runs. Keying on package-lock.json's hash
+      # invalidates automatically whenever the pinned Playwright version
+      # changes.
+      - name: Cache Playwright browsers
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ hashFiles('tests/wcag/playwright/package-lock.json') }}
+      # `playwright install --with-deps` also apt-get installs a long list
+      # of OS-level shared libraries (libnss3, xvfb, fonts-*, ...) so
+      # Chromium can run headless - that's independent of the browser
+      # binary cache above, which only covers ~/.cache/ms-playwright.
+      # Confirmed live: on one run this step's apt-get download of ~24MB of
+      # .debs crawled at ~35 kB/s from the Ubuntu/Azure mirror (one package
+      # even stalled and had to be retried), accounting for the entire
+      # ~11-minute step duration on its own - package resolution and
+      # unpacking together took under 10s once the download finished.
+      # Caching the downloaded .debs lets apt skip the network fetch
+      # entirely on a cache hit, the same way the browser-binary cache
+      # does for Chromium itself.
+      - name: Cache apt packages
+        uses: actions/cache@v4
+        with:
+          path: /var/cache/apt/archives/*.deb
+          key: ${{ runner.os }}-apt-playwright-chromium-${{ hashFiles('tests/wcag/playwright/package-lock.json') }}
+      - name: Install Playwright
+        working-directory: tests/wcag/playwright
+        run: |
+          npm ci
+          npx playwright install --with-deps chromium
+      - name: Equivalence test (normal mode vs WCAG mode, no stored baseline needed)
+        working-directory: tests/wcag/playwright
+        run: node equivalence_test.js
+      - name: axe-core against WCAG mode
+        working-directory: tests/wcag/playwright
+        run: node axe_run.js --mode=wcag
+      # Normal-mode regression gate. Diffs against tests/wcag/playwright/baseline/
+      # (HTML + compiled-asset hashes, COMMITTED to git - small, text,
+      # reviewable diffs). Screenshots are gitignored/local-only by design
+      # (see tests/wcag/README.md) so the pixel-diff portion of this check
+      # is a no-op in CI (logged as a NOTE, not a failure) - that's expected,
+      # not a bug: a PR that changes normal-mode output fails here on the
+      # HTML diff regardless, which is what actually blocks the merge; a
+      # human reviews the committed HTML diff plus (by convention) a
+      # screenshot attached to the PR description for the visual check.
+      - name: Normal-mode baseline diff
+        working-directory: tests/wcag/playwright
+        run: node baseline_diff.js
+      # logs/wcag/ is gitignored, but that's fine here: axe_run.js/
+      # validate_html.js/equivalence_test.js write this evidence fresh
+      # during the job above, so upload-artifact only needs it to exist on
+      # the runner's filesystem at this point, not to be tracked in git.
+      - name: Upload WCAG-mode evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: wcag-mode-evidence
+          path: logs/wcag/audit/evidence/
+          retention-days: 14

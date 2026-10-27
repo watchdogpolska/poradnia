@@ -519,11 +519,13 @@ class AccountActivationViewTestCase(TestCase):
 
     def test_valid_token_shows_form(self):
         resp = self.client.get(self.get_url())
-        self.assertContains(resp, "<form")
+        # name="new_password1" (SetPasswordForm's field), not just "<form" -
+        # every page also carries the WCAG-mode switch form now.
+        self.assertContains(resp, 'name="new_password1"')
 
     def test_invalid_token_rejected(self):
         resp = self.client.get(self.get_url(token="bogus-token"))
-        self.assertNotContains(resp, "<form")
+        self.assertNotContains(resp, 'name="new_password1"')
 
     def test_activation_sets_password_and_logs_in(self):
         resp = self.client.post(
@@ -581,7 +583,7 @@ class AccountActivationViewTestCase(TestCase):
         )
         self.client.logout()
         resp = self.client.get(url)
-        self.assertNotContains(resp, "<form")
+        self.assertNotContains(resp, 'name="new_password1"')
 
     @override_settings(ACCOUNT_RATE_LIMITS={"account_activation": "2/m/ip"})
     def test_post_beyond_rate_limit_returns_429(self):

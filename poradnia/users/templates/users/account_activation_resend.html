@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load crispy_forms_tags %}
+{% load wcag_tags %}
 
 {% block head_title %}{% trans "Wyślij nowy link aktywacyjny" %}{% endblock %}
 
@@ -11,6 +12,7 @@
             <h2>{% trans "Wyślij nowy link aktywacyjny" %}</h2>
             <p>{% trans "Poprzedni link aktywacyjny stracił ważność. Potwierdź, że nie jesteś robotem, aby otrzymać nowy." %}</p>
             {% csrf_token %}
+            {% form_error_summary form %}
             {% crispy form %}
         </div>
     </div>
