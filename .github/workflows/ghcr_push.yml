@@ -4,6 +4,10 @@ on:
   push:
     branches:
       - master
+      - dev
+    tags:
+      - "v*"
+  pull_request:
 
 jobs:
   build-and-push-ghcr:
@@ -25,15 +29,42 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract metadata for dev image
+        id: meta-dev
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/watchdogpolska/poradnia/web/dev
+          tags: |
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha,format=long
+            type=raw,value=latest,enable={{is_default_branch}}
+
       - name: Build and push dev image
         uses: docker/build-push-action@v7
         with:
           context: .
           file: .contrib/docker/Dockerfile.web
           push: true
+          tags: ${{ steps.meta-dev.outputs.tags }}
+          labels: ${{ steps.meta-dev.outputs.labels }}
+
+      - name: Extract metadata for production image
+        id: meta-prod
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/watchdogpolska/poradnia/web/production
           tags: |
-            ghcr.io/watchdogpolska/poradnia/web/dev:${{ github.sha }}
-            ghcr.io/watchdogpolska/poradnia/web/dev:latest
+            type=ref,event=branch
+            type=ref,event=pr
+            type=semver,pattern={{version}}
+            type=semver,pattern={{major}}.{{minor}}
+            type=semver,pattern={{major}}
+            type=sha,format=long
+            type=raw,value=latest,enable={{is_default_branch}}
 
       - name: Build and push production image
         uses: docker/build-push-action@v7
@@ -43,6 +74,5 @@ jobs:
           push: true
           build-args: |
             GIT_SHA=${{ github.sha }}
-          tags: |
-            ghcr.io/watchdogpolska/poradnia/web/production:${{ github.sha }}
-            ghcr.io/watchdogpolska/poradnia/web/production:latest
+          tags: ${{ steps.meta-prod.outputs.tags }}
+          labels: ${{ steps.meta-prod.outputs.labels }}
