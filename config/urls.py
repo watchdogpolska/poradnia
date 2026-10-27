@@ -7,7 +7,7 @@ from django.views.generic import RedirectView, TemplateView
 
 from poradnia.letters.views.cbv import ProtectedMediaView
 from poradnia.template_mail.views import email_catalog_view
-from poradnia.utils.views import messages_catalog_view
+from poradnia.utils.views import messages_catalog_view, ui_mode_view
 
 admin.autodiscover()
 
@@ -17,6 +17,7 @@ urlpatterns = [
     path("admin/email-catalog/", email_catalog_view, name="email_catalog"),
     path("admin/messages-catalog/", messages_catalog_view, name="messages_catalog"),
     path("admin/", admin.site.urls),
+    path("ui-mode/", ui_mode_view, name="ui_mode_switch"),
     path("navsearch/", include("poradnia.navsearch.urls", namespace="navsearch")),
     # User management
     path("uzytkownik/klucze", include("poradnia.keys.urls", namespace="keys")),
@@ -50,6 +51,11 @@ urlpatterns = [
         "strony/polityka-prywatnosci/",
         TemplateView.as_view(template_name="pages/privacy.html"),
         name="privacy",
+    ),
+    path(
+        "strony/deklaracja-dostepnosci/",
+        TemplateView.as_view(template_name="pages/accessibility_statement.html"),
+        name="accessibility_statement",
     ),
     re_path(r"^media/(?P<path>.*)$", ProtectedMediaView.as_view()),
 ]

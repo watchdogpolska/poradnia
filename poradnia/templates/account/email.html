@@ -2,6 +2,7 @@
 
 {% load i18n %}
 {% load crispy_forms_tags %}
+{% load wcag_tags %}
 
 {% block head_title %}{% trans "Account" %}{% endblock %}
 
@@ -61,6 +62,7 @@
 
             <form method="post" action="." class="add_email">
                 {% csrf_token %}
+                {% form_error_summary form %}
                 {{ form|crispy }}
                 <button class="btn" name="action_add" type="submit">{% trans "Add E-mail" %}</button>
             </form>

@@ -1,0 +1,16 @@
+{% load i18n %}
+{% if ui_mode == "wcag" and form.errors %}
+<div class="alert alert-danger" role="alert">
+    <p>{% trans "The form below contains errors:" %}</p>
+    <ul>
+        {% for field in form %}
+            {% for error in field.errors %}
+                <li><a href="#{{ field.id_for_label }}">{{ field.label }}: {{ error }}</a></li>
+            {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+            <li>{{ error }}</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}

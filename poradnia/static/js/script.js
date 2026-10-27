@@ -20411,8 +20411,16 @@ document.addEventListener('DOMContentLoaded', function() {
 			Array.prototype.slice.call(menu_toogles).forEach(function(toggle) {
 				toggle.addEventListener('click', function(e) {
 					var target = document.querySelector(toggle.dataset.bsTarget)
-					if(target)
-						target.classList.toggle('show-sidebar');
+					if(target) {
+						var expanded = target.classList.toggle('show-sidebar');
+						// Previously managed by Bootstrap's own collapse JS
+						// (via data-bs-toggle="collapse", removed from the
+						// button - see base.html's comment on why) -
+						// replicated here so the toggle still reports its
+						// state to assistive tech.
+						toggle.classList.toggle('collapsed', !expanded);
+						toggle.setAttribute('aria-expanded', expanded);
+					}
 					e.preventDefault();
 				});
 			});
@@ -33809,11 +33817,72 @@ window.AjaxDatatableViewUtils = (function() {
         toolbar_message.innerHTML = html;
     }
 
+    function _label_search_input(tableEl) {
+        // DataTables normally wraps its search input in a <label for="...">, but that
+        // association isn't guaranteed across configurations/versions - if it's ever
+        // missing, the input is left with only visually-adjacent text ("Search:",
+        // "Szukaj:", ...) as its apparent name, which screen readers ignore since it's
+        // not a real association. Trust an existing, correctly-wired <label>; otherwise
+        // derive an aria-label from that same visible text so the name still matches it.
+        var wrapper = tableEl.closest('.dt-container');
+        var searchInput = wrapper ? wrapper.querySelector('.dt-search input') : null;
+        if (!searchInput) {
+            return;
+        }
+        var alreadyLabelled = searchInput.id && wrapper.querySelector('label[for="' + searchInput.id + '"]');
+        if (alreadyLabelled || searchInput.getAttribute('aria-label') || searchInput.getAttribute('title')) {
+            return;
+        }
+        var labelEl = wrapper.querySelector('.dt-search label');
+        var labelText = labelEl ? labelEl.textContent.trim() : '';
+        if (!labelText) {
+            labelText = ((_options.language && _options.language.search) || 'Search:').replace('_INPUT_', '').trim();
+        }
+        searchInput.setAttribute('aria-label', labelText);
+    }
+
+    function _apply_a11y_mode(tableEl) {
+        var wrapper = tableEl.closest('.dt-container');
+        if (!wrapper) {
+            return;
+        }
+        // Opt-in hook for ajax_datatable/static/ajax_datatable/css/style.css's
+        // ".a11y-mode .dt-column-order" rule (enlarges the sort-control hit area).
+        wrapper.classList.add('a11y-mode');
+        _label_search_input(tableEl);
+    }
+
+    function _fix_scrollx_table_roles(tableEl) {
+        // With scrollX enabled, DataTables splits one logical table into up to 3 real
+        // <table>s (head/body/foot) wrapped in a ".dt-scroll" div, and marks that div
+        // role="table" with its structural wrapper divs *and* the real <table>s inside
+        // them role="none" - presumably so assistive tech treats the 3-table apparatus
+        // as a single logical table. But role="none" on a real <table> cascades
+        // presentational semantics down to its native <tr>/<th>/<td>, stripping the
+        // row/cell roles that role="table" requires its owned elements to have
+        // (aria-required-children), while individual <th> elements still carry
+        // aria-sort, which is only valid on a columnheader/rowheader role
+        // (aria-allowed-attr). Removing the overrides lets each split table's native
+        // HTML semantics - already individually valid - stand on their own instead.
+        // DataTables rebuilds the head/foot clones on every draw (to resync column
+        // widths), re-adding the roles each time, so this must re-run on every draw.
+        var wrapper = tableEl.closest('.dt-container');
+        var scrollWrapper = wrapper ? wrapper.querySelector('.dt-scroll') : null;
+        if (!scrollWrapper) {
+            return;
+        }
+        scrollWrapper.removeAttribute('role');
+        scrollWrapper.querySelectorAll('[role="none"]').forEach(function(el) {
+            el.removeAttribute('role');
+        });
+    }
+
     function initialize_table(element, url, extra_options, extra_data) {
         extra_options = extra_options || {};
         extra_data = extra_data || {};
 
         var tableEl = (typeof element === 'string') ? document.querySelector(element) : element;
+        var a11y_mode = extra_options.a11y_mode === true;
 
         var initData = {action: 'initialize'};
         Object.assign(initData, resolveExtraData(extra_data));
@@ -33906,6 +33975,10 @@ window.AjaxDatatableViewUtils = (function() {
                         AjaxDatatableViewUtils.adjust_table_columns();
                     }, 200);
 
+                    if (a11y_mode) {
+                        _apply_a11y_mode(tableEl);
+                    }
+
                     // Notify subscribers
                     //console.log('Broadcast initComplete()');
                     tableEl.dispatchEvent(new CustomEvent('initComplete', {
@@ -33913,6 +33986,10 @@ window.AjaxDatatableViewUtils = (function() {
                     }));
                 },
                 drawCallback: function(settings) {
+                    if (a11y_mode) {
+                        _fix_scrollx_table_roles(tableEl);
+                    }
+
                     // Notify subscribers
                     //console.log('Broadcast drawCallback()');
                     tableEl.dispatchEvent(new CustomEvent('drawCallback', {
@@ -33938,6 +34015,9 @@ window.AjaxDatatableViewUtils = (function() {
             if (extra_options) {
                 Object.assign(options, extra_options);
             }
+            // a11y_mode is this library's own flag, not a DataTables.net option - keep
+            // it out of the object passed to `new DataTable()`.
+            delete options.a11y_mode;
 
             var api = new DataTable(tableEl, options);
 
@@ -34010,6 +34090,7 @@ document.addEventListener('DOMContentLoaded', function () {
             serverSide: true,
             autoWidth: true,
             full_row_select: false,
+            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
             // Group the length selector/search box, and the info/paging controls,
             // each into one row (default dom string stacks every feature separately).
             dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
@@ -34039,8 +34120,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     "last":       "Ostatnia"
                 },
                 "aria": {
-                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                    "orderable": ": aktywuj, by posortować kolumnę",
+                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
+                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "previous": "Poprzednia",
+                        "next": "Następna",
+                        "last": "Ostatnia"
+                    }
                 }
             },
         }, {
@@ -34108,6 +34196,7 @@ document.addEventListener('DOMContentLoaded', function () {
             serverSide: true,
             autoWidth: true,
             full_row_select: false,
+            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
             // Group the length selector/search box, and the info/paging controls,
             // each into one row (default dom string stacks every feature separately).
             dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
@@ -34137,8 +34226,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     "last":       "Ostatnia"
                 },
                 "aria": {
-                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                    "orderable": ": aktywuj, by posortować kolumnę",
+                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
+                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "previous": "Poprzednia",
+                        "next": "Następna",
+                        "last": "Ostatnia"
+                    }
                 }
             },
         }, {
@@ -34197,6 +34293,7 @@ document.addEventListener('DOMContentLoaded', function () {
             serverSide: true,
             autoWidth: true,
             full_row_select: false,
+            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
             // Group the length selector/search box, and the info/paging controls,
             // each into one row (default dom string stacks every feature separately).
             dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
@@ -34226,8 +34323,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     "last":       "Ostatnia"
                 },
                 "aria": {
-                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                    "orderable": ": aktywuj, by posortować kolumnę",
+                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
+                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "previous": "Poprzednia",
+                        "next": "Następna",
+                        "last": "Ostatnia"
+                    }
                 }
             },
         }, {
@@ -34415,10 +34519,10 @@ AjaxDatatableViewUtils.init({
         var toolbar = wrapper.querySelector('.toolbar');
         toolbar.innerHTML =
             '<div class="daterange" style="float: left; margin-right: 6px;">' +
-                '<span class="from"><label>Czas od</label>: ' +
-                    '<input type="date" class="date_from datepicker"></span>' +
-                '<span class="to"><label>&nbsp do</label>: ' +
-                    '<input type="date" class="date_to datepicker"></span>' +
+                '<span class="from"><label for="daterange_from">Czas od</label>: ' +
+                    '<input type="date" id="daterange_from" class="date_from datepicker"></span>' +
+                '<span class="to"><label for="daterange_to">&nbsp do</label>: ' +
+                    '<input type="date" id="daterange_to" class="date_to datepicker"></span>' +
             '</div>';
         toolbar.addEventListener('change', function(event) {
             if (!event.target.matches('.date_from, .date_to')) return;
@@ -34462,6 +34566,7 @@ document.addEventListener('DOMContentLoaded', function () {
             serverSide: true,
             autoWidth: true,
             full_row_select: false,
+            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
             // Group the length selector/search box, and the info/paging controls,
             // each into one row (default dom string stacks every feature separately).
             dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
@@ -34491,8 +34596,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     "last":       "Ostatnia"
                 },
                 "aria": {
-                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                    "orderable": ": aktywuj, by posortować kolumnę",
+                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
+                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "previous": "Poprzednia",
+                        "next": "Następna",
+                        "last": "Ostatnia"
+                    }
                 }
             },
         }, {
@@ -34548,6 +34660,7 @@ document.addEventListener('DOMContentLoaded', function () {
             serverSide: true,
             autoWidth: true,
             full_row_select: false,
+            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
             // Group the length selector/search box, and the info/paging controls,
             // each into one row (default dom string stacks every feature separately).
             dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
@@ -34571,8 +34684,15 @@ document.addEventListener('DOMContentLoaded', function () {
                     "last":       "Ostatnia"
                 },
                 "aria": {
-                    "sortAscending": ": aktywuj, by posortować kolumnę rosnąco",
-                    "sortDescending": ": aktywuj, by posortować kolumnę malejąco"
+                    "orderable": ": aktywuj, by posortować kolumnę",
+                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
+                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
+                    "paginate": {
+                        "first": "Pierwsza",
+                        "previous": "Poprzednia",
+                        "next": "Następna",
+                        "last": "Ostatnia"
+                    }
                 }
             },
         }, {

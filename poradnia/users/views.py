@@ -244,6 +244,10 @@ class UserListView(StaffuserRequiredMixin, PermissionMixin, FilterView):
         qs = qs.filter(**self.IS_STAFF_FILTER[self.get_is_staff_choice()][1])
         qs = qs.with_case_count()
         qs = qs.with_case_count_assigned()
+        # with_case_count/with_case_count_assigned's annotate+GROUP BY clears
+        # the default User.Meta ordering, leaving row order up to MySQL's
+        # plan - pin it back down so the page is deterministic.
+        qs = qs.order_by("pk")
         return qs
 
     def get_context_data(self, **kwargs):

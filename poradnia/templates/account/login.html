@@ -3,6 +3,7 @@
 {% load i18n %}
 {% load account %}
 {% load crispy_forms_tags %}
+{% load wcag_tags %}
 {% load socialaccount %}
 
 {% block head_title %}{% trans "Sign In" %}{% endblock %}
@@ -32,6 +33,7 @@
                     <h3 class="login-or">Alternatywnie użyj konta użytkownika</h3>
 
                 {% endif %}
+                {% form_error_summary form %}
                 {% crispy form %}
                 
                 <p>

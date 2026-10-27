@@ -1,6 +1,7 @@
 {% extends "cases/base.html" %}
-{% load crispy_forms_tags humanize i18n cases_tags %}
+{% load crispy_forms_tags humanize i18n cases_tags wcag_tags %}
 
+{% block title %}{% trans 'Cases index' %} - {{ block.super }}{% endblock %}
 {% block extra_css %}
     <style>
         span.free, tr.free > td, td.free {
@@ -30,6 +31,7 @@
 {% block content %}
 <div class="row">
     <div class="col-lg-8 col-md-10 col-sm-12 col-12 offset-lg-2 offset-md-1">
+        {% form_error_summary filter.form %}
         {% crispy filter.form %}
 
         {% if object_list %}
@@ -80,10 +82,10 @@
                 {% endif %}
 
                 {% if request.user.is_staff and object.caseuserobjectpermission_set.all %}
-                    {% regroup object.caseuserobjectpermission_set.all by user as user_list %}
+                    {% regroup object.caseuserobjectpermission_set.all|dictsort:"user_id" by user as user_list %}
                     {% for user in user_list %}
                         <span class="badge text-bg-info"
-                            title="{% for item in user.list %}{% trans item.permission.name %},{% endfor %}">
+                            title="{% for item in user.list|dictsort:"permission.name" %}{% trans item.permission.name %},{% endfor %}">
                 {{ user.grouper.get_codename }}
                 </span>
                     {% endfor %}

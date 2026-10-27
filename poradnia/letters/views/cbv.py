@@ -74,6 +74,7 @@ class NewCaseCreateView(SetHeadlineMixin, UserFormKwargsMixin, CreateView):
     form_class = NewCaseForm
     headline = _("Create a new case")
     template_name = "letters/form_new.html"
+    prefix = "newcase"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

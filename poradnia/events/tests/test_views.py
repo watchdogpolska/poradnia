@@ -24,7 +24,12 @@ class EventCreateViewTestCase(PermissionStatusMixin, TestCase):
     def test_create_event(self):
         self.login_permitted_user()
         response = self.client.post(
-            self.url, {"deadline": "yes", "time": "2017-01-20 11:00", "text": "Skarga"}
+            self.url,
+            {
+                "event-deadline": "yes",
+                "event-time": "2017-01-20 11:00",
+                "event-text": "Skarga",
+            },
         )
         self.assertEqual(response.status_code, 302)
         event = Event.objects.get()
@@ -51,7 +56,12 @@ class EventUpdateViewTestCase(PermissionStatusMixin, TestCase):
 
         self.login_permitted_user()
         response = self.client.post(
-            self.url, {"deadline": False, "time": "2017-01-20 11:00", "text": "Skarga"}
+            self.url,
+            {
+                "event-deadline": False,
+                "event-time": "2017-01-20 11:00",
+                "event-text": "Skarga",
+            },
         )
         self.assertEqual(response.status_code, 302)
 

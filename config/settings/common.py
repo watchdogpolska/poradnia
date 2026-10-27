@@ -99,6 +99,7 @@ MIDDLEWARE = (
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
+    "poradnia.utils.middleware.UiModeMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     # Add the account middleware:
@@ -487,6 +488,7 @@ TEMPLATES = [
                 "django.template.context_processors.tz",
                 "django.contrib.messages.context_processors.messages",
                 "django.template.context_processors.request",
+                "poradnia.utils.context_processors.ui_mode",
             ),
             "loaders": [
                 "django.template.loaders.filesystem.Loader",
@@ -527,6 +529,10 @@ DEFAULT_AUTO_FIELD = "django.db.models.AutoField"
 TINYMCE_DEFAULT_CONFIG = {
     "theme": "silver",
     "promotion": False,
+    # This project uses the open-source (GPL) release of TinyMCE, not a
+    # commercial license - without this, TinyMCE 6+ assumes evaluation
+    # mode and logs a console warning on every page it loads on.
+    "license_key": "gpl",
     "height": 500,
     "menubar": True,
     "lineheight": 1,
