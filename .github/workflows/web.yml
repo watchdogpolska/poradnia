@@ -118,7 +118,7 @@ jobs:
       # invalidates automatically whenever the pinned Playwright version
       # changes.
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('tests/wcag/playwright/package-lock.json') }}
@@ -135,7 +135,7 @@ jobs:
       # entirely on a cache hit, the same way the browser-binary cache
       # does for Chromium itself.
       - name: Cache apt packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: /var/cache/apt/archives/*.deb
           key: ${{ runner.os }}-apt-playwright-chromium-${{ hashFiles('tests/wcag/playwright/package-lock.json') }}
