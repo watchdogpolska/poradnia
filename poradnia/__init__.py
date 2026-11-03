@@ -1,4 +1,4 @@
-__version__ = "1.9.73"
+__version__ = "1.9.74.deps"
 
 
 # Compatibility to eg. django-rest-framework
