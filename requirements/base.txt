@@ -45,7 +45,7 @@ html2text==2025.4.15
 
 openpyxl==3.1.5
 sentry-sdk==2.72.0
-python-dateutil==2.9.0.post0
+python-dateutil==3.0.0
 django-github-revision==0.0.3
 django-teryt-tree==0.18.4
 django-mptt==0.19.1
