@@ -48,6 +48,11 @@ jobs:
         run: docker compose run web python manage.py collectstatic --no-input
       - name: Build and run frontend
         run: docker compose up gulp --exit-code-from gulp
+      - name: Refresh WCAG baseline asset hashes
+        # A rebuilt bundle otherwise fails wcag_mode_checks' baseline_diff.js
+        # on every Renovate PR that bumps sass/autoprefixer/caniuse-lite.
+        if: env.IS_RENOVATE == 'true'
+        run: make wcag-assets-sha
       - name: Show git status
         run: git status
       - name: Commit rebuilt frontend
@@ -55,12 +60,13 @@ jobs:
         env:
           HEAD_REF: ${{ github.head_ref }}
           BOT_EMAIL: 41898282+github-actions[bot]@users.noreply.github.com
+          ASSETS_SHA: tests/wcag/playwright/baseline/assets.sha256
         run: |
-          changes=$(git status --porcelain poradnia/static/ package*.json)
+          changes=$(git status --porcelain poradnia/static/ package*.json "$ASSETS_SHA")
           if [[ -n "$changes" ]]; then
             git config user.name "github-actions[bot]"
             git config user.email "$BOT_EMAIL"
-            git add poradnia/static/ package.json package-lock.json
+            git add poradnia/static/ package.json package-lock.json "$ASSETS_SHA"
             git commit -m "Regenerate frontend"
             git push origin "HEAD:$HEAD_REF"
           else
