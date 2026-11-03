@@ -3,6 +3,9 @@
 // "Normalisation rules" for the human-readable list; keep that in sync with
 // this file's RULES array (label comes straight from here).
 
+const POLISH_MONTHS_NOMINATIVE =
+  "styczeń|luty|marzec|kwiecień|maj|czerwiec|lipiec|sierpień|wrzesień|październik|listopad|grudzień";
+
 const POLISH_MONTHS =
   "stycznia|lutego|marca|kwietnia|maja|czerwca|lipca|sierpnia|września|października|listopada|grudnia";
 
@@ -23,9 +26,42 @@ const RULES = [
     replacement: "[DATETIME]",
   },
   {
-    label: "Polish absolute date (\"14 października 2026\")",
-    re: new RegExp(`\\d{1,2}\\s+(${POLISH_MONTHS})\\s+\\d{4}`, "g"),
+    // Year optional: Django admin's date_hierarchy drill-down renders the
+    // day link as "27 października" with no year.
+    label: "Polish absolute date (\"14 października 2026\", \"27 października\")",
+    re: new RegExp(`\\d{1,2}\\s+(${POLISH_MONTHS})(\\s+\\d{4})?(?!\\p{L})`, "gu"),
     replacement: "[DATE]",
+  },
+  {
+    // Events calendar prev/next-month links ("Październik 2026"). Requires
+    // the year: a bare month name would also hit "maj" inside "mają".
+    label: "Polish month + year (\"Listopad 2026\")",
+    re: new RegExp(`(?<!\\p{L})(${POLISH_MONTHS_NOMINATIVE})\\s+\\d{4}\\b`, "giu"),
+    replacement: "[MONTH]",
+  },
+  {
+    // {% current_month_url %} in cases/_sidebar.html (every staff page) and
+    // the events calendar/table links render /wydarzenia/YYYY-MM, which the
+    // ISO-ish rule above doesn't cover (it needs a day). Runs after it, so
+    // full dates are already [DATETIME] by now.
+    label: "Year-month (YYYY-MM, e.g. /wydarzenia/2026-10 calendar links)",
+    re: /(?<![\d-])\d{4}-\d{2}(?![\d-])/g,
+    replacement: "[MONTH]",
+  },
+  {
+    // Django admin date_hierarchy query params on changelists; seed rows
+    // are dated relative to "now", so these drift every day.
+    label: "Django admin date_hierarchy params (field__day=/__month=/__year=)",
+    re: /(__(?:day|month|year))=\d+/g,
+    replacement: "$1=[N]",
+  },
+  {
+    // The same date_hierarchy's back-link text ("‹ 2026"). server.html
+    // keeps the template's &lsaquo; entity, postload.html (DOM-serialized)
+    // has the literal character, so both forms are matched.
+    label: "Django admin date_hierarchy back-link year (\"‹ 2026\")",
+    re: /(class="date-back"[^>]*>(?:‹|&lsaquo;)\s*)\d{4}(?=\s*<\/a>)/g,
+    replacement: "$1[N]",
   },
   {
     // crispy-forms' DateTimePicker inputs (e.g. advicer's "grant_on" field)
