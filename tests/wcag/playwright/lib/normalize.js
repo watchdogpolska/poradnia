@@ -14,7 +14,7 @@ const RULES = [
   },
   {
     label: "App version tag (templates/base.html `v{% poradnia_version %}`)",
-    re: /v\d+\.\d+\.\d+(-dev)?/g,
+    re: /v\d+\.\d+\.\d+(?:[.+-][0-9A-Za-z]+)*/g,
     replacement: "[VERSION]",
   },
   {
