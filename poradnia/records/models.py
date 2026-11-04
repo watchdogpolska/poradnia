@@ -108,7 +108,7 @@ class AbstractRecord(models.Model):
         return self.case.get_users_with_perms(*args, **kwargs)
 
     def get_template_list(self):
-        return "{}/_{}_list.html".format(self._meta.app_label, self._meta.model_name)
+        return f"{self._meta.app_label}/_{self._meta.model_name}_list.html"
 
     def send_notification(self, *args, **kwargs):
         return self.case.send_notification(target=self, *args, **kwargs)

@@ -24,7 +24,7 @@ def _gravatar_url(email, size, default, secure):
 @register.simple_tag
 def get_avatar_url(user, width=80, height=80, default=None):
     if user.picture:
-        geometry_string = "{width}x{height}".format(width=width, height=height)
+        geometry_string = f"{width}x{height}"
         return get_thumbnail(file_=user.picture, geometry_string=geometry_string).url
     return _gravatar_url(
         email=user.email,

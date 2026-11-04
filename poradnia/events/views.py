@@ -308,7 +308,7 @@ class ICalendarView(KeyAuthMixin, PermissionMixin, BaseListView):
         from icalendar import Calendar
 
         cal = Calendar()
-        cal["summary"] = "Events for {}".format(self.request.user)
+        cal["summary"] = f"Events for {self.request.user}"
         cal["dtstart"] = self.get_start()
         cal["dtend"] = self.get_end()
 

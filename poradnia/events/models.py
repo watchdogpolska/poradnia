@@ -104,12 +104,12 @@ class Event(AbstractRecord):
     @property
     def subject(self):
         if len(self.text) > 100:
-            return "{} ...".format(self.text[:100])
+            return f"{self.text[:100]} ..."
         return self.text
 
     def get_absolute_url(self):
         case_url = self.record.case_get_absolute_url()
-        return "{}#event-{}".format(case_url, self.pk)
+        return f"{case_url}#event-{self.pk}"
 
     def get_edit_url(self):
         return reverse("events:edit", kwargs={"pk": self.pk})

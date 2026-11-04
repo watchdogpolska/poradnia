@@ -80,7 +80,7 @@ class AbstractCalendar(HTMLCalendar):
         """
         Return a weekday name as a table header.
         """
-        return '<th class="{}">{}</th>'.format(self.cssclasses[day], day_abbr[day])
+        return f'<th class="{self.cssclasses[day]}">{day_abbr[day]}</th>'
 
     def formatday(self, day, weekday):
         if day != 0:
@@ -106,7 +106,7 @@ class AbstractCalendar(HTMLCalendar):
         return {day: list(items) for day, items in groupby(events, self.get_field)}
 
     def day_cell(self, cssclass, body):
-        return '<td class="{}">{}</td>'.format(cssclass, body)
+        return f'<td class="{cssclass}">{body}</td>'
 
     def get_field_name(self):
         return self.field

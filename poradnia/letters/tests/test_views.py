@@ -528,7 +528,7 @@ class ReceiveEmailTestCase(TestCase):
 
     def setUp(self):
         self.url = reverse("letters:webhook")
-        self.authenticated_url = "{}?secret={}".format(self.url, LETTER_RECEIVE_SECRET)
+        self.authenticated_url = f"{self.url}?secret={LETTER_RECEIVE_SECRET}"
 
     def test_required_authentication(self):
         response = self.client.get(self.url)

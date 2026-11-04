@@ -127,7 +127,7 @@ class Letter(AbstractRecord):
 
     def get_absolute_url(self):
         case_url = self.record.case_get_absolute_url()
-        return "{}#letter-{}".format(case_url, self.pk)
+        return f"{case_url}#letter-{self.pk}"
 
     def render_letter_link(self):
         url = self.get_absolute_url()
@@ -162,7 +162,7 @@ class Letter(AbstractRecord):
         if self.is_html():
             return self.html
         else:
-            return "<pre>{text}</pre>".format(text=format_text(self.text))
+            return f"<pre>{format_text(self.text)}</pre>"
 
     def get_edit_url(self):
         return reverse("letters:edit", kwargs={"pk": self.pk})
@@ -282,9 +282,9 @@ class AttachmentQuerySet(models.QuerySet):
             content_type = ContentType.objects.get_for_model(Case)
             qs = qs.filter(
                 **{
-                    "{}__permission__codename".format(lrc_cup): "can_view",
-                    "{}__permission__content_type".format(lrc_cup): content_type,
-                    "{}__user".format(lrc_cup): user,
+                    f"{lrc_cup}__permission__codename": "can_view",
+                    f"{lrc_cup}__permission__content_type": content_type,
+                    f"{lrc_cup}__user": user,
                 }
             )
         if not user.is_staff:

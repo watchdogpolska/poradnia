@@ -136,9 +136,7 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
             field_name = self.model.STAFF_ORDER_DEFAULT_FIELD
         else:
             field_name = self.model.USER_ORDER_DEFAULT_FIELD
-        return self.order_by(
-            "{}{}".format(order, field_name), "{}{}".format(order, "pk")
-        )
+        return self.order_by(f"{order}{field_name}", "{}{}".format(order, "pk"))
 
     def with_month_year(self):
         return self.annotate(
@@ -579,7 +577,7 @@ class Case(models.Model):
         param = getattr(self, field_name)
         q = Q()
         if param:
-            q = q | Q(**{"{}__{}".format(field_name, op): param})
+            q = q | Q(**{f"{field_name}__{op}": param})
         if self.pk:
             q = q | Q(**{field_name: param, "pk__%s" % op: self.pk})
         manager = self.__class__._default_manager.using(self._state.db).filter(**kwargs)
