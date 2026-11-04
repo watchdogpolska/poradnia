@@ -157,7 +157,7 @@ msgstr "Czy poza zakresem?"
 
 #: poradnia/advicer/models.py:52
 msgid "Scope"
-msgstr "Zakres"
+msgstr "Zakres poradnictwa"
 
 #: poradnia/advicer/models.py:53
 msgid "Scopes"
