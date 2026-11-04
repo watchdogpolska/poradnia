@@ -239,6 +239,13 @@ class Advice(models.Model):
         max_length=100, verbose_name=_("Tag subject"), null=True, blank=True
     )
     summary = models.TextField(verbose_name=_("Summary"), null=True, blank=True)
+    scope = models.ForeignKey(
+        to=Scope,
+        verbose_name=Scope._meta.verbose_name,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+    )
     issues = models.ManyToManyField(
         to=Issue, verbose_name=Issue._meta.verbose_name_plural, blank=True
     )
@@ -249,7 +256,7 @@ class Advice(models.Model):
         PersonKind,
         null=True,
         blank=True,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         verbose_name=PersonKind._meta.verbose_name,
     )
     institution_kind = models.ForeignKey(
@@ -257,21 +264,21 @@ class Advice(models.Model):
         verbose_name=InstitutionKind._meta.verbose_name,
         null=True,
         blank=True,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
     advicer = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         verbose_name=_("Advicer"),
         help_text=_("Person who give a advice"),
         limit_choices_to={"is_staff": True},
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
     grant_on = models.DateTimeField(default=now, verbose_name=_("Grant on"))
     created_by = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         verbose_name=_("Created by"),
         related_name="advice_created_by",
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
     created_on = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Creation date")
@@ -291,7 +298,7 @@ class Advice(models.Model):
         null=True,
         verbose_name=_("Modified by"),
         related_name="advice_modified_by",
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modification date")
@@ -302,7 +309,7 @@ class Advice(models.Model):
         to=JST,
         null=True,
         blank=True,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         verbose_name=_("Unit of administrative division"),
         db_index=True,
     )
