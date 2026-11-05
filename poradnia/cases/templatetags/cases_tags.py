@@ -5,6 +5,7 @@ from django.conf import settings
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.defaultfilters import stringfilter
 from django.urls import reverse
+from django.utils.safestring import mark_safe
 
 from poradnia.cases.models import Case
 
@@ -16,6 +17,12 @@ register = template.Library()
 def status2css(status):
     """Converts a status into css style"""
     return Case.STATUS_STYLE[status]
+
+
+@register.filter
+def advice_summary_button(case, user):
+    """Info button opening the case's advice summary popup (staff only)."""
+    return mark_safe(case.render_advice_summary_button(user))
 
 
 @register.filter

@@ -182,7 +182,9 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
     def customize_row(self, row, obj):
         row["subject"] = obj.render_advice_link()
-        row["case_name"] = obj.case.render_case_link() if obj.case else ""
+        row["case_name"] = (
+            obj.case.render_case_link(self.request.user) if obj.case else ""
+        )
         row["helped"] = obj.render_helped()
         row["visible"] = obj.render_visible()
         return

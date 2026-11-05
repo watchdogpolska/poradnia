@@ -31,6 +31,7 @@ from django.db.models import (
 from django.db.models.functions import Cast
 from django.db.models.query import QuerySet
 from django.template import Context, Template
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import gettext
@@ -324,12 +325,22 @@ class Case(models.Model):
     def get_absolute_url(self):
         return reverse("cases:detail", kwargs={"pk": str(self.pk)})
 
-    def render_case_link(self):
+    def render_case_link(self, user=None):
         url = self.get_absolute_url()
         label = self.name
         bold_start = "" if self.handled else "<b>"
         bold_end = "" if self.handled else "</b>"
-        return f'{bold_start}<a href="{url}">{label}</a>{bold_end}'
+        link = f'{bold_start}<a href="{url}">{label}</a>{bold_end}'
+        return link + self.render_advice_summary_button(user)
+
+    def render_advice_summary_button(self, user):
+        # Advice is staff-only data - same gate as case_detail.html's
+        # "Advice tags" row.
+        if not (user and user.is_staff and hasattr(self, "advice")):
+            return ""
+        return " " + render_to_string(
+            "cases/_advice_summary_button.html", {"case": self}
+        )
 
     def render_case_link_formatted(self, user):
         url = self.get_absolute_url()
