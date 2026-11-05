@@ -10,7 +10,7 @@ from django.db import close_old_connections, models, transaction
 from django.db.models import F, Func, IntegerField
 from django.forms.models import model_to_dict
 from django.urls import reverse
-from django.utils.html import mark_safe
+from django.utils.html import format_html, mark_safe
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
@@ -132,7 +132,7 @@ class Letter(AbstractRecord):
     def render_letter_link(self):
         url = self.get_absolute_url()
         label = self.name
-        return mark_safe(f'<a href="{url}">{label}</a>')
+        return format_html('<a href="{}">{}</a>', url, label)
 
     def render_admin_delete_link(self):
         url = reverse("admin:letters_letter_delete", args=(self.id,))

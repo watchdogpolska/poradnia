@@ -34,6 +34,7 @@ from django.template import Context, Template
 from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.html import escape
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
@@ -327,7 +328,8 @@ class Case(models.Model):
 
     def render_case_link(self, user=None):
         url = self.get_absolute_url()
-        label = self.name
+        # DataTables inserts this as HTML and the name is client-supplied.
+        label = escape(self.name)
         bold_start = "" if self.handled else "<b>"
         bold_end = "" if self.handled else "</b>"
         link = f'{bold_start}<a href="{url}">{label}</a>{bold_end}'
@@ -402,8 +404,8 @@ class Case(models.Model):
             if key.is_staff
         ]
         return "<br>".join([f"""
-                <span class="badge text-bg-info" title="{user["title"]}">
-                {user["grouper"].get_nicename()}</span>
+                <span class="badge text-bg-info" title="{escape(user["title"])}">
+                {escape(user["grouper"].get_nicename())}</span>
             """ for user in user_list])
 
     def render_case_advice_link(self):

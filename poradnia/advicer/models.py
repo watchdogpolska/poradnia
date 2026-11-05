@@ -6,6 +6,7 @@ from django.db.models import BooleanField, CharField, F, Q, Value, When
 from django.db.models import Case as djCase
 from django.db.models.query import QuerySet
 from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from teryt_tree.dal_ext.filters import AreaMultipleFilter
@@ -367,7 +368,7 @@ class Advice(models.Model):
     def render_advice_link(self):
         url = self.get_absolute_url()
         label = self.subject or _("Tag #%d") % (self.pk)
-        return f'<a href="{url}">{label}</a>'
+        return format_html('<a href="{}">{}</a>', url, label)
 
     def render_helped(self):
         if self.helped is None:
