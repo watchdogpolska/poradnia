@@ -968,6 +968,7 @@ class N8nCaseTagsPayloadValidationTestCase(TestCase):
         self.area = AreaFactory()
         self.person_kind = PersonKindFactory()
         self.institution_kind = InstitutionKindFactory()
+        self.scope = ScopeFactory()
 
     def _valid(self):
         return {
@@ -976,6 +977,7 @@ class N8nCaseTagsPayloadValidationTestCase(TestCase):
             "institution_kind_id": self.institution_kind.pk,
             "person_kind_id": self.person_kind.pk,
             "jst_id": "02",
+            "scope_id": self.scope.pk,
             "issue_ids": [self.issue.pk],
             "area_ids": [self.area.pk],
         }
@@ -1065,6 +1067,34 @@ class N8nCaseTagsPayloadValidationTestCase(TestCase):
         self.assertEqual(_json(err)["error"]["code"], "invalid_field")
 
     @patch(_JST_PATCH)
+    def test_missing_scope_id_returns_error(self, mock_filter):
+        mock_filter.return_value.exists.return_value = True
+        p = self._valid()
+        del p["scope_id"]
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertEqual(_json(err)["error"]["code"], "missing_field")
+        self.assertIn("scope_id", _json(err)["error"]["message"])
+
+    @patch(_JST_PATCH)
+    def test_non_integer_scope_id_returns_error(self, mock_filter):
+        mock_filter.return_value.exists.return_value = True
+        p = self._valid()
+        p["scope_id"] = "x"
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertEqual(_json(err)["error"]["code"], "missing_field")
+
+    @patch(_JST_PATCH)
+    def test_nonexistent_scope_id_returns_error(self, mock_filter):
+        mock_filter.return_value.exists.return_value = True
+        p = self._valid()
+        p["scope_id"] = 99999
+        err = self._validate(p)
+        self.assertIsNotNone(err)
+        self.assertEqual(_json(err)["error"]["code"], "invalid_field")
+
+    @patch(_JST_PATCH)
     def test_empty_issue_ids_returns_error(self, mock_filter):
         mock_filter.return_value.exists.return_value = True
         p = self._valid()
@@ -1115,6 +1145,7 @@ class N8nCaseTagsCallbackViewTestCase(TestCase):
         self.area = AreaFactory()
         self.person_kind = PersonKindFactory()
         self.institution_kind = InstitutionKindFactory()
+        self.scope = ScopeFactory()
 
     def _post(self, payload, token="case-tags-callback-secret"):
         body = json.dumps(payload).encode()
@@ -1140,6 +1171,7 @@ class N8nCaseTagsCallbackViewTestCase(TestCase):
             "institution_kind_id": self.institution_kind.pk,
             "person_kind_id": self.person_kind.pk,
             "jst_id": "02",
+            "scope_id": self.scope.pk,
             "issue_ids": [self.issue.pk],
             "area_ids": [self.area.pk],
         }
@@ -1244,6 +1276,7 @@ class N8nCaseTagsCallbackViewTestCase(TestCase):
         self.assertEqual(tags["institution_kind"], self.institution_kind.pk)
         self.assertEqual(tags["person_kind"], self.person_kind.pk)
         self.assertEqual(tags["jst"], "02")
+        self.assertEqual(tags["scope"], self.scope.pk)
         self.assertEqual(tags["issues"], [self.issue.pk])
         self.assertEqual(tags["area"], [self.area.pk])
 
@@ -1366,6 +1399,37 @@ class N8nCaseTagsCallbackViewTestCase(TestCase):
 
         self.assertEqual(response.status_code, 400)
         self.assertEqual(_json(response)["error"]["code"], "invalid_field")
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    def test_success_stores_scope_in_tags_and_response(self):
+        from poradnia.advicer.models import Advice
+
+        case = CaseFactory()
+        tr = self._make_tags_request(case=case)
+        payload = self._valid_payload()
+        del payload["jst_id"]
+
+        response = self.view(self._post(payload))
+
+        self.assertEqual(response.status_code, 200)
+        tr.refresh_from_db()
+        self.assertEqual(json.loads(tr.response)["scope"], self.scope.pk)
+        advice = Advice.objects.get(case=case)
+        self.assertEqual(advice.ai_assistant_tags["scope"], self.scope.pk)
+
+    @override_settings(**CASE_TAGS_CALLBACK_SETTINGS)
+    def test_missing_scope_id_returns_400_and_leaves_request_pending(self):
+        tr = self._make_tags_request()
+        payload = self._valid_payload()
+        del payload["jst_id"]
+        del payload["scope_id"]
+
+        response = self.view(self._post(payload))
+
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(_json(response)["error"]["code"], "missing_field")
+        tr.refresh_from_db()
+        self.assertEqual(tr.status, "pending")
 
 
 SAMPLE_PHRASE_MATCHES = [
@@ -1647,3 +1711,47 @@ class N8nCaseTagsRequestAdminExportJstTestCase(TestCase):
 
         self.assertIsNone(row["advice_jst_name"])
         self.assertIsNone(row["ai_response_jst_name"])
+
+    def test_export_includes_scope_columns_before_scope_check(self):
+        case = CaseFactory()
+        advice_scope = ScopeFactory(name="Advice scope")
+        ai_scope = ScopeFactory(name="AI scope")
+        AdviceFactory(case=case, scope=advice_scope)
+        obj = N8nCaseTagsRequest.objects.create(
+            request_id="tags-export-scope-1",
+            environment="TEST",
+            question="q",
+            status="completed",
+            case=case,
+            response=json.dumps({"scope": ai_scope.pk}),
+        )
+
+        headers, row = self._export_row(obj)
+
+        self.assertEqual(
+            headers.index("ai_response_scope_name"),
+            headers.index("advice_scope_name") + 1,
+        )
+        self.assertEqual(
+            headers.index("scope_check"),
+            headers.index("ai_response_scope_name") + 1,
+        )
+        self.assertEqual(row["advice_scope_name"], "Advice scope")
+        self.assertEqual(row["ai_response_scope_name"], "AI scope")
+
+    def test_export_scope_columns_blank_when_unset(self):
+        case = CaseFactory()
+        AdviceFactory(case=case)
+        obj = N8nCaseTagsRequest.objects.create(
+            request_id="tags-export-scope-2",
+            environment="TEST",
+            question="q",
+            status="completed",
+            case=case,
+            response=json.dumps({}),
+        )
+
+        _, row = self._export_row(obj)
+
+        self.assertIsNone(row["advice_scope_name"])
+        self.assertIsNone(row["ai_response_scope_name"])

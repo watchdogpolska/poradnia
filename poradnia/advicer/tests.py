@@ -238,6 +238,7 @@ class AdviceAiTagsAcceptViewTestCase(InstanceMixin, PermissionMixin, TestCase):
         self.area = AreaFactory()
         self.person_kind = PersonKindFactory()
         self.institution_kind = InstitutionKindFactory()
+        self.scope = ScopeFactory()
         self.instance.issues.add(IssueFactory())
         self.instance.area.add(AreaFactory())
         self.tags_request = N8nCaseTagsRequest.objects.create(
@@ -249,6 +250,7 @@ class AdviceAiTagsAcceptViewTestCase(InstanceMixin, PermissionMixin, TestCase):
             "summary": "AI summary",
             "person_kind": self.person_kind.pk,
             "institution_kind": self.institution_kind.pk,
+            "scope": self.scope.pk,
             "issues": [self.issue.pk],
             "area": [self.area.pk],
             "comment": "AI comment",
@@ -280,12 +282,28 @@ class AdviceAiTagsAcceptViewTestCase(InstanceMixin, PermissionMixin, TestCase):
         self.assertEqual(self.instance.summary, "AI summary")
         self.assertEqual(self.instance.person_kind_id, self.person_kind.pk)
         self.assertEqual(self.instance.institution_kind_id, self.institution_kind.pk)
+        self.assertEqual(self.instance.scope_id, self.scope.pk)
         self.assertEqual(
             set(self.instance.issues.values_list("pk", flat=True)), {self.issue.pk}
         )
         self.assertEqual(
             set(self.instance.area.values_list("pk", flat=True)), {self.area.pk}
         )
+
+    def test_keeps_existing_scope_when_tags_have_no_scope(self):
+        existing = ScopeFactory()
+        self.instance.scope = existing
+        del self.instance.ai_assistant_tags["scope"]
+        self.instance.save()
+        self.login()
+        self.client.post(self.url)
+        self.instance.refresh_from_db()
+        self.assertEqual(self.instance.scope_id, existing.pk)
+
+    def test_ai_scope_returns_suggested_scope_name(self):
+        self.scope.name = "AI suggested scope"
+        self.scope.save()
+        self.assertEqual(self.instance.ai_scope, "AI suggested scope")
 
     def test_does_not_override_comment(self):
         original_comment = self.instance.comment

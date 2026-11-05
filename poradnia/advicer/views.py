@@ -361,6 +361,10 @@ class AdviceAiTagsAcceptView(
         }
         if "jst" in tags:
             applied["jst"] = tags["jst"]
+        # Suggestions stored before scope was tagged carry no "scope" key;
+        # don't wipe an existing Advice.scope when applying one of those.
+        if "scope" in tags:
+            applied["scope"] = tags["scope"]
 
         self.object.subject = applied["subject"]
         self.object.summary = applied["summary"]
@@ -368,6 +372,8 @@ class AdviceAiTagsAcceptView(
         self.object.institution_kind_id = applied["institution_kind"]
         if "jst" in applied:
             self.object.jst_id = applied["jst"]
+        if "scope" in applied:
+            self.object.scope_id = applied["scope"]
         self.object.modified_by = request.user
         self.object.save()
         self.object.issues.set(applied["issues"])  # replace, not merge

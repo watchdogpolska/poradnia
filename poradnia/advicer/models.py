@@ -411,6 +411,13 @@ class Advice(models.Model):
         )
 
     @property
+    def ai_scope(self):
+        pk = self._ai_tag("scope")
+        if pk is None:
+            return None
+        return Scope.objects.filter(pk=pk).values_list("name", flat=True).first()
+
+    @property
     def ai_jst(self):
         jst_id = self._ai_tag("jst")
         if jst_id is None:
