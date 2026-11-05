@@ -683,8 +683,10 @@ class ReceiveEmailView(View):
 
 class AttachmentTextContentModalView(PermissionMixin, View):
     def get(self, request, pk, *args, **kwargs):
+        # .for_user() - same rule as ProtectedMediaView: only cases the user
+        # can view, and no staff-only letters for clients.
         attachment = get_object_or_404(
-            Attachment.objects.select_related("letter"),
+            Attachment.objects.select_related("letter").for_user(request.user),
             pk=pk,
         )
 
