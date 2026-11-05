@@ -119,6 +119,25 @@ class AdviceUpdateTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
         resp = self.client.get(self.url)
         self.assertContains(resp, self.instance.subject)
 
+    def test_keeps_already_assigned_inactive_issue(self):
+        scope = ScopeFactory(is_dip=True)
+        issue = IssueFactory(is_dip=True)
+        self.instance.issues.set([issue])
+        issue.active = False
+        issue.save()
+        self.login()
+        resp = self.client.post(
+            self.url,
+            data={
+                "scope": scope.pk,
+                "issues": [issue.pk],
+                "advicer": self.user.pk,
+                "grant_on": datetime.datetime.now(),
+            },
+        )
+        self.assertEqual(resp.status_code, 302)
+        self.assertEqual(list(self.instance.issues.all()), [issue])
+
 
 class AdviceCreateTestCase(PermissionMixin, TemplateUsedMixin, TestCase):
     template_name = "advicer/advice_form.html"
@@ -127,21 +146,72 @@ class AdviceCreateTestCase(PermissionMixin, TemplateUsedMixin, TestCase):
     def setUp(self):
         super().setUp()
         self.user = StaffFactory(username="john")
-        self.issue = IssueFactory()
+        self.scope = ScopeFactory(is_dip=True)
+        self.issue = IssueFactory(is_dip=True)
+        self.area = AreaFactory(is_dip=True)
+
+    def _post(self, **data):
+        self.login()
+        payload = {
+            "scope": self.scope.pk,
+            "advicer": self.user.pk,
+            "grant_on": datetime.datetime.now(),
+        }
+        payload.update(data)
+        return self.client.post(
+            self.url, data={k: v for k, v in payload.items() if v is not None}
+        )
 
     def test_keep_issues(self):
-        self.login()
-        resp = self.client.post(
-            self.url,
-            data={
-                "issues": [self.issue.pk],
-                "advicer": self.user.pk,
-                "grant_on": datetime.datetime.now(),
-            },
-        )
+        resp = self._post(issues=[self.issue.pk])
         self.assertEqual(resp.status_code, 302)
         advice = Advice.objects.last()
         self.assertTrue(advice.issues.filter(pk=self.issue.pk).exists())
+        self.assertEqual(advice.scope, self.scope)
+
+    def test_scope_required(self):
+        resp = self._post(scope=None, issues=[self.issue.pk])
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("scope", resp.context["form"].errors)
+        self.assertFalse(Advice.objects.exists())
+
+    def test_rejects_issue_and_area_not_matching_scope(self):
+        issue = IssueFactory(is_dip=False, is_slapp=True, name="SLAPP issue")
+        area = AreaFactory(is_dip=True, is_local_government=True, name="LG area")
+        resp = self._post(issues=[issue.pk], area=[area.pk])
+        self.assertEqual(resp.status_code, 200)
+        errors = resp.context["form"].errors
+        self.assertIn("SLAPP issue", errors["issues"][0])
+        self.assertIn("LG area", errors["area"][0])
+        self.assertFalse(Advice.objects.exists())
+
+    def test_rejects_new_inactive_issue_and_area(self):
+        issue = IssueFactory(is_dip=True, active=False, name="Old issue")
+        area = AreaFactory(is_dip=True, active=False, name="Old area")
+        resp = self._post(issues=[issue.pk], area=[area.pk])
+        self.assertEqual(resp.status_code, 200)
+        errors = resp.context["form"].errors
+        self.assertIn("Old issue", errors["issues"][0])
+        self.assertIn("Old area", errors["area"][0])
+        self.assertFalse(Advice.objects.exists())
+
+    def test_accepts_matching_issue_and_area(self):
+        resp = self._post(issues=[self.issue.pk], area=[self.area.pk])
+        self.assertEqual(resp.status_code, 302)
+
+    def test_inactive_scope_not_offered(self):
+        inactive = ScopeFactory(active=False)
+        resp = self._post(scope=inactive.pk)
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("scope", resp.context["form"].errors)
+
+    def test_form_forwards_scope_and_renders_status_region(self):
+        self.login()
+        resp = self.client.get(self.url)
+        self.assertContains(resp, 'id="advice-scope-status"')
+        self.assertContains(resp, 'role="status"')
+        self.assertContains(resp, "advicer/advice_form.js")
+        self.assertContains(resp, "scope_filtered")
 
 
 class AdviceDeleteTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, TestCase):
@@ -603,6 +673,33 @@ class ScopeActiveAsJsonTestCase(TestCase):
         )
 
 
+class ScopeMatchesTestCase(TestCase):
+    FLAGS = ("is_dip", "is_local_government", "is_slapp", "is_out_of_scope")
+
+    def _flags(self, *true_flags):
+        return {flag: flag in true_flags for flag in self.FLAGS}
+
+    def test_equal_flags_match(self):
+        scope = ScopeFactory(**self._flags("is_dip", "is_slapp"))
+        self.assertTrue(
+            scope.matches(IssueFactory(**self._flags("is_dip", "is_slapp")))
+        )
+
+    def test_subset_or_superset_does_not_match(self):
+        scope = ScopeFactory(**self._flags("is_dip", "is_slapp"))
+        self.assertFalse(scope.matches(IssueFactory(**self._flags("is_dip"))))
+        self.assertFalse(
+            scope.matches(
+                AreaFactory(**self._flags("is_dip", "is_slapp", "is_out_of_scope"))
+            )
+        )
+
+    def test_all_false_scope_matches_only_all_false(self):
+        scope = ScopeFactory(**self._flags())
+        self.assertTrue(scope.matches(AreaFactory(**self._flags())))
+        self.assertFalse(scope.matches(AreaFactory(**self._flags("is_dip"))))
+
+
 class AdviceScopeTestCase(TestCase):
     def test_scope_is_optional(self):
         advice = AdviceFactory()
@@ -838,3 +935,71 @@ class AreaAutocompleteViewTestCase(TestCase):
         response_nonexistent = self.client.get(self.url, {"q": "some-unknown-id"})
         self.assertEqual(response_nonexistent.status_code, 200)
         self.assertEqual(autocomplete_ids(response_nonexistent.text), [])
+
+
+class ScopeFilteredAutocompleteTestMixin:
+    url = None
+    factory_cls = None
+
+    def setUp(self):
+        self.client.force_login(StaffFactory())
+        flags = {
+            "is_dip": True,
+            "is_local_government": True,
+            "is_slapp": False,
+            "is_out_of_scope": False,
+        }
+        self.scope = ScopeFactory(**flags)
+        self.matching = self.factory_cls(name="item-match", **flags)
+        # Shares is_dip but differs on is_local_government: not equal, no match.
+        self.partial = self.factory_cls(
+            name="item-partial", **{**flags, "is_local_government": False}
+        )
+
+    def _get(self, forwarded):
+        return self.client.get(
+            self.url, {"q": "item", "forward": json.dumps(forwarded)}
+        )
+
+    def test_scope_filtered_returns_only_items_with_equal_flags(self):
+        response = self._get({"scope": str(self.scope.pk), "scope_filtered": True})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(autocomplete_ids(response.text), [self.matching.pk])
+
+    def test_scope_filtered_excludes_inactive(self):
+        self.matching.active = False
+        self.matching.save()
+        response = self._get({"scope": str(self.scope.pk), "scope_filtered": True})
+        self.assertEqual(autocomplete_ids(response.text), [])
+
+    def test_without_marker_includes_inactive(self):
+        self.matching.active = False
+        self.matching.save()
+        response = self._get({})
+        self.assertIn(self.matching.pk, autocomplete_ids(response.text))
+
+    def test_scope_filtered_without_scope_returns_nothing(self):
+        response = self._get({"scope_filtered": True})
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(autocomplete_ids(response.text), [])
+
+    def test_scope_filtered_with_unknown_scope_returns_nothing(self):
+        response = self._get({"scope": "999999", "scope_filtered": True})
+        self.assertEqual(autocomplete_ids(response.text), [])
+
+    def test_without_marker_ignores_scope(self):
+        # The advice list filter uses the same endpoint without a scope.
+        response = self._get({})
+        self.assertEqual(
+            set(autocomplete_ids(response.text)), {self.matching.pk, self.partial.pk}
+        )
+
+
+class IssueAutocompleteScopeTestCase(ScopeFilteredAutocompleteTestMixin, TestCase):
+    url = reverse_lazy("advicer:issue-autocomplete")
+    factory_cls = IssueFactory
+
+
+class AreaAutocompleteScopeTestCase(ScopeFilteredAutocompleteTestMixin, TestCase):
+    url = reverse_lazy("advicer:area-autocomplete")
+    factory_cls = AreaFactory

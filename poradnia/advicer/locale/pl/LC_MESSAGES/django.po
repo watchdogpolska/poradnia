@@ -163,6 +163,31 @@ msgstr "Zakres poradnictwa"
 msgid "Scopes"
 msgstr "Zakresy poradnictwa"
 
+#: poradnia/advicer/forms.py:44
+msgid ""
+"Issues and areas to choose from depend on the selected scope. Changing the "
+"scope clears the selected issues and areas."
+msgstr ""
+"Dostępne zagadnienia i obszary zależą od wybranego zakresu poradnictwa. "
+"Zmiana zakresu czyści wybrane zagadnienia i obszary."
+
+#: poradnia/advicer/forms.py:57
+msgid ""
+"The scope has changed, so the selected issues and areas have been cleared."
+msgstr ""
+"Zmieniono zakres poradnictwa, więc wybrane zagadnienia i obszary zostały "
+"wyczyszczone."
+
+#: poradnia/advicer/forms.py:74
+#, python-format
+msgid "Not available for the selected scope: %(names)s"
+msgstr "Niedostępne dla wybranego zakresu poradnictwa: %(names)s"
+
+#: poradnia/advicer/forms.py:113
+#, python-format
+msgid "Inactive, cannot be added: %(names)s"
+msgstr "Nieaktywne, nie można dodać: %(names)s"
+
 #: poradnia/advicer/models.py:79
 msgid "Issue"
 msgstr "Zagadnienie"

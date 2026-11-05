@@ -29,7 +29,7 @@ from poradnia.utils.view_mixins import (
 
 from .filters import AdviceFilter
 from .forms import AdviceForm
-from .models import Advice, Area, Issue
+from .models import Advice, Area, Issue, Scope
 
 ORDERING_TEXT = _("Ordering")
 
@@ -429,8 +429,32 @@ class AdviceAiTagsRejectView(
         )
 
 
+class ScopeFilteredAutocompleteMixin:
+    """Limit results to the forwarded scope's matching, active Issues/Areas.
+
+    Only applies when the widget forwards the ``scope_filtered`` marker
+    (AdviceForm does); other users of the endpoint, like the advice list
+    filter, keep getting unfiltered results, inactive entries included, so
+    old advices tagged with them stay searchable. With the marker set but no
+    valid scope selected, nothing is returned.
+    """
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if not self.forwarded.get("scope_filtered"):
+            return qs
+        try:
+            scope = Scope.objects.get(pk=int(self.forwarded.get("scope")))
+        except (TypeError, ValueError, Scope.DoesNotExist):
+            return qs.none()
+        return qs.filter(active=True, **scope.flags_filter())
+
+
 class IssueAutocomplete(
-    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.AlightQuerySetView
+    StaffuserRequiredMixin,
+    ScopeFilteredAutocompleteMixin,
+    ExprAutocompleteMixin,
+    autocomplete.AlightQuerySetView,
 ):
     model = Issue
     search_expr = [
@@ -439,7 +463,10 @@ class IssueAutocomplete(
 
 
 class AreaAutocomplete(
-    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.AlightQuerySetView
+    StaffuserRequiredMixin,
+    ScopeFilteredAutocompleteMixin,
+    ExprAutocompleteMixin,
+    autocomplete.AlightQuerySetView,
 ):
     model = Area
     search_expr = [

@@ -47,9 +47,23 @@ class Scope(AbstractCategory):
         default=False, verbose_name=_("Is Out of scope?")
     )
 
+    # Flags shared with Issue and Area. An Issue/Area belongs to a scope when
+    # all of these flags are equal on both sides.
+    FLAG_FIELDS = ("is_dip", "is_local_government", "is_slapp", "is_out_of_scope")
+
     class Meta:
         verbose_name = _("Scope")
         verbose_name_plural = _("Scopes")
+
+    def flags_filter(self):
+        """Lookup kwargs selecting the Issues/Areas that match this scope."""
+        return {flag: getattr(self, flag) for flag in self.FLAG_FIELDS}
+
+    def matches(self, obj):
+        """Whether an Issue/Area has exactly this scope's flags."""
+        return all(
+            getattr(obj, flag) == value for flag, value in self.flags_filter().items()
+        )
 
     @classmethod
     def active_as_json(cls):

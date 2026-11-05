@@ -3,6 +3,7 @@ const {
   addSuperUserPrivileges,
   createAdministrativeDivisionCategory,
   createAdministrativeDivisionUnit,
+  createAdviceScope,
 } = require("../testing/management");
 const {
   submitCaseForm,
@@ -86,6 +87,9 @@ describe("datatables", () => {
     );
     createAdministrativeDivisionCategory(cy)(administrativeDivisionCategory);
     createAdministrativeDivisionUnit(cy)(administrativeDivisionUnit);
+    // The advice form requires a scope.
+    const adviceScope = { name: "adviceScopeA" };
+    createAdviceScope(cy)(adviceScope);
 
     const case_ = Case.fromId("caseA");
     cy.contains("Nowa sprawa").click();
@@ -97,6 +101,7 @@ describe("datatables", () => {
       datetime: { year: 2020, month: "January", day: 1, hour: 12, minute: 30 },
       solved: 1,
       administrativeDivision: administrativeDivisionUnit.name,
+      adviceScope,
       adviceAuthor: user,
       ...Advice.fromId("adviceA"),
     };
