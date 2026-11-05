@@ -507,8 +507,16 @@ class IssueActiveAsJsonTestCase(TestCase):
                 "is_dip",
                 "is_local_government",
                 "is_slapp",
+                "is_out_of_scope",
             },
         )
+
+    def test_is_out_of_scope_value(self):
+        in_scope = IssueFactory(active=True)
+        out_of_scope = IssueFactory(active=True, is_out_of_scope=True)
+        data = {d["id"]: d for d in json.loads(Issue.active_as_json())}
+        self.assertFalse(data[in_scope.pk]["is_out_of_scope"])
+        self.assertTrue(data[out_of_scope.pk]["is_out_of_scope"])
 
 
 class AreaActiveAsJsonTestCase(TestCase):
@@ -528,8 +536,23 @@ class AreaActiveAsJsonTestCase(TestCase):
         item = next(d for d in data if d["id"] == area.pk)
         self.assertEqual(
             set(item.keys()),
-            {"id", "name", "tag_helper", "is_dip", "is_local_government", "is_slapp"},
+            {
+                "id",
+                "name",
+                "tag_helper",
+                "is_dip",
+                "is_local_government",
+                "is_slapp",
+                "is_out_of_scope",
+            },
         )
+
+    def test_is_out_of_scope_value(self):
+        in_scope = AreaFactory(active=True)
+        out_of_scope = AreaFactory(active=True, is_out_of_scope=True)
+        data = {d["id"]: d for d in json.loads(Area.active_as_json())}
+        self.assertFalse(data[in_scope.pk]["is_out_of_scope"])
+        self.assertTrue(data[out_of_scope.pk]["is_out_of_scope"])
 
 
 class ScopeActiveAsJsonTestCase(TestCase):

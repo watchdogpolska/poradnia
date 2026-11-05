@@ -73,6 +73,9 @@ class Issue(AbstractCategory):
         default=False, verbose_name=_("Is local government issue?")
     )
     is_slapp = models.BooleanField(default=False, verbose_name=_("Is SLAPP issue?"))
+    is_out_of_scope = models.BooleanField(
+        default=False, verbose_name=_("Is Out of scope?")
+    )
 
     class Meta:
         verbose_name = _("Issue")
@@ -89,6 +92,7 @@ class Issue(AbstractCategory):
                 "is_dip",
                 "is_local_government",
                 "is_slapp",
+                "is_out_of_scope",
             )
         )
         return json.dumps(items)
@@ -100,6 +104,9 @@ class Area(AbstractCategory):
         default=False, verbose_name=_("Is local government area?")
     )
     is_slapp = models.BooleanField(default=False, verbose_name=_("Is SLAPP area?"))
+    is_out_of_scope = models.BooleanField(
+        default=False, verbose_name=_("Is Out of scope?")
+    )
 
     class Meta:
         verbose_name = _("Area")
@@ -116,6 +123,7 @@ class Area(AbstractCategory):
                 "is_dip",
                 "is_local_government",
                 "is_slapp",
+                "is_out_of_scope",
             )
         )
         return json.dumps(items)
