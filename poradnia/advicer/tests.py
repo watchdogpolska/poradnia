@@ -4,6 +4,7 @@ import re
 
 from django.contrib.admin.models import CHANGE, LogEntry
 from django.contrib.contenttypes.models import ContentType
+from django.db.models import ProtectedError
 from django.test import RequestFactory
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -582,6 +583,39 @@ class ScopeActiveAsJsonTestCase(TestCase):
                 "is_out_of_scope",
             },
         )
+
+
+class AdviceScopeTestCase(TestCase):
+    def test_scope_is_optional(self):
+        advice = AdviceFactory()
+        advice.refresh_from_db()
+        self.assertIsNone(advice.scope)
+
+    def test_scope_is_saved(self):
+        scope = ScopeFactory()
+        advice = AdviceFactory(scope=scope)
+        advice.refresh_from_db()
+        self.assertEqual(advice.scope, scope)
+        self.assertIn(advice, scope.advice_set.all())
+
+    def test_delete_referenced_scope_is_protected(self):
+        scope = ScopeFactory()
+        advice = AdviceFactory(scope=scope)
+        with self.assertRaises(ProtectedError):
+            scope.delete()
+        self.assertTrue(Scope.objects.filter(pk=scope.pk).exists())
+        self.assertTrue(Advice.objects.filter(pk=advice.pk).exists())
+
+    def test_delete_unreferenced_scope(self):
+        scope = ScopeFactory()
+        scope.delete()
+        self.assertFalse(Scope.objects.filter(pk=scope.pk).exists())
+
+    def test_delete_advice_keeps_scope(self):
+        scope = ScopeFactory()
+        advice = AdviceFactory(scope=scope)
+        advice.delete()
+        self.assertTrue(Scope.objects.filter(pk=scope.pk).exists())
 
 
 class PersonKindActiveAsJsonTestCase(TestCase):
