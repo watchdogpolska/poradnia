@@ -7,7 +7,7 @@ from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 class TemplateMailManagerTestCase(TestCase):
     def assertEmpty(self, obj):
         obj = list(obj)
-        self.assertEqual(len(obj), 0, "{} is not empty".format(obj))
+        self.assertEqual(len(obj), 0, f"{obj} is not empty")
 
     def _throws_template_error(self, template):
         try:

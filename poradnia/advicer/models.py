@@ -6,6 +6,7 @@ from django.db.models import BooleanField, CharField, F, Q, Value, When
 from django.db.models import Case as djCase
 from django.db.models.query import QuerySet
 from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
 from teryt_tree.dal_ext.filters import AreaMultipleFilter
@@ -47,9 +48,23 @@ class Scope(AbstractCategory):
         default=False, verbose_name=_("Is Out of scope?")
     )
 
+    # Flags shared with Issue and Area. An Issue/Area belongs to a scope when
+    # all of these flags are equal on both sides.
+    FLAG_FIELDS = ("is_dip", "is_local_government", "is_slapp", "is_out_of_scope")
+
     class Meta:
         verbose_name = _("Scope")
         verbose_name_plural = _("Scopes")
+
+    def flags_filter(self):
+        """Lookup kwargs selecting the Issues/Areas that match this scope."""
+        return {flag: getattr(self, flag) for flag in self.FLAG_FIELDS}
+
+    def matches(self, obj):
+        """Whether an Issue/Area has exactly this scope's flags."""
+        return all(
+            getattr(obj, flag) == value for flag, value in self.flags_filter().items()
+        )
 
     @classmethod
     def active_as_json(cls):
@@ -73,6 +88,9 @@ class Issue(AbstractCategory):
         default=False, verbose_name=_("Is local government issue?")
     )
     is_slapp = models.BooleanField(default=False, verbose_name=_("Is SLAPP issue?"))
+    is_out_of_scope = models.BooleanField(
+        default=False, verbose_name=_("Is Out of scope?")
+    )
 
     class Meta:
         verbose_name = _("Issue")
@@ -89,6 +107,7 @@ class Issue(AbstractCategory):
                 "is_dip",
                 "is_local_government",
                 "is_slapp",
+                "is_out_of_scope",
             )
         )
         return json.dumps(items)
@@ -100,6 +119,9 @@ class Area(AbstractCategory):
         default=False, verbose_name=_("Is local government area?")
     )
     is_slapp = models.BooleanField(default=False, verbose_name=_("Is SLAPP area?"))
+    is_out_of_scope = models.BooleanField(
+        default=False, verbose_name=_("Is Out of scope?")
+    )
 
     class Meta:
         verbose_name = _("Area")
@@ -116,6 +138,7 @@ class Area(AbstractCategory):
                 "is_dip",
                 "is_local_government",
                 "is_slapp",
+                "is_out_of_scope",
             )
         )
         return json.dumps(items)
@@ -239,6 +262,13 @@ class Advice(models.Model):
         max_length=100, verbose_name=_("Tag subject"), null=True, blank=True
     )
     summary = models.TextField(verbose_name=_("Summary"), null=True, blank=True)
+    scope = models.ForeignKey(
+        to=Scope,
+        verbose_name=Scope._meta.verbose_name,
+        null=True,
+        blank=True,
+        on_delete=models.PROTECT,
+    )
     issues = models.ManyToManyField(
         to=Issue, verbose_name=Issue._meta.verbose_name_plural, blank=True
     )
@@ -249,7 +279,7 @@ class Advice(models.Model):
         PersonKind,
         null=True,
         blank=True,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         verbose_name=PersonKind._meta.verbose_name,
     )
     institution_kind = models.ForeignKey(
@@ -257,21 +287,21 @@ class Advice(models.Model):
         verbose_name=InstitutionKind._meta.verbose_name,
         null=True,
         blank=True,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
     advicer = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         verbose_name=_("Advicer"),
         help_text=_("Person who give a advice"),
         limit_choices_to={"is_staff": True},
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
     grant_on = models.DateTimeField(default=now, verbose_name=_("Grant on"))
     created_by = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         verbose_name=_("Created by"),
         related_name="advice_created_by",
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
     created_on = models.DateTimeField(
         auto_now_add=True, verbose_name=_("Creation date")
@@ -291,7 +321,7 @@ class Advice(models.Model):
         null=True,
         verbose_name=_("Modified by"),
         related_name="advice_modified_by",
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
     )
     modified_on = models.DateTimeField(
         auto_now=True, null=True, blank=True, verbose_name=_("Modification date")
@@ -302,7 +332,7 @@ class Advice(models.Model):
         to=JST,
         null=True,
         blank=True,
-        on_delete=models.CASCADE,
+        on_delete=models.PROTECT,
         verbose_name=_("Unit of administrative division"),
         db_index=True,
     )
@@ -338,7 +368,7 @@ class Advice(models.Model):
     def render_advice_link(self):
         url = self.get_absolute_url()
         label = self.subject or _("Tag #%d") % (self.pk)
-        return f'<a href="{url}">{label}</a>'
+        return format_html('<a href="{}">{}</a>', url, label)
 
     def render_helped(self):
         if self.helped is None:
@@ -394,6 +424,13 @@ class Advice(models.Model):
         return (
             InstitutionKind.objects.filter(pk=pk).values_list("name", flat=True).first()
         )
+
+    @property
+    def ai_scope(self):
+        pk = self._ai_tag("scope")
+        if pk is None:
+            return None
+        return Scope.objects.filter(pk=pk).values_list("name", flat=True).first()
 
     @property
     def ai_jst(self):

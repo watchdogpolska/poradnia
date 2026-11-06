@@ -5,8 +5,8 @@ This list is maintained by hand. If you add, rename or remove an e-mail
 template anywhere in the app, update the matching entry here too.
 """
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable, Optional
 
 from django.conf import settings
 
@@ -29,17 +29,17 @@ class EmailCatalogEntry:
     key: str
     title: str
     trigger: str
-    sender: Optional[str] = None  # who/what address the e-mail is sent from
-    recipient: Optional[str] = None  # who the e-mail is sent to
-    txt_template: Optional[str] = None
-    html_template: Optional[str] = None
-    subject_template: Optional[str] = None  # allauth-style: subject rendered separately
+    sender: str | None = None  # who/what address the e-mail is sent from
+    recipient: str | None = None  # who the e-mail is sent to
+    txt_template: str | None = None
+    html_template: str | None = None
+    subject_template: str | None = None  # allauth-style: subject rendered separately
     split_subject: bool = (
         False  # TemplateMailManager-style: subject = first line of txt
     )
     context: Callable[[], dict] = field(default=dict)
-    note: Optional[str] = None
-    raw_example: Optional[str] = None  # for entries with no Django template at all
+    note: str | None = None
+    raw_example: str | None = None  # for entries with no Django template at all
 
 
 def _case(client=None):

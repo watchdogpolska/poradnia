@@ -52,6 +52,11 @@ urlpatterns = [
         views.CaseGroupPermissionView.as_view(),
         name="permission_grant",
     ),
+    path(
+        "sprawa-<int:pk>/podsumowanie-porady/",
+        views.CaseAdviceSummaryModalView.as_view(),
+        name="advice_summary_modal",
+    ),
     path("sprawa-<int:pk>/", views.CaseDetailView.as_view(), name="detail"),
     path("~autocomplete", views.CaseAutocomplete.as_view(), name="autocomplete"),
 ]

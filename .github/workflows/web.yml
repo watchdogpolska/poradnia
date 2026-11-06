@@ -9,7 +9,17 @@ on:
     types: [opened, synchronize]
 
 jobs:
+  # Fails fast if the Python version pinned in different places drifts apart.
+  # The check itself lives in .contrib/check_python_versions.sh.
+  python_version_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Verify all pinned Python versions match
+        run: make check-python-versions
+
   django_build_and_test:
+    needs: python_version_check
     runs-on: ubuntu-latest
     # strategy:
     #   matrix:
@@ -79,8 +89,10 @@ jobs:
   # pure fail-fast cost-saving (skip the ~10-15min Playwright/Chromium job
   # if the cheaper unit-test job was already going to fail the PR) at the
   # cost of roughly doubling PR wall-clock time; running in parallel trades
-  # a bit of wasted CI time on broken builds for faster feedback.
+  # a bit of wasted CI time on broken builds for faster feedback. It does
+  # wait for python_version_check, which takes only seconds.
   wcag_mode_checks:
+    needs: python_version_check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
@@ -118,7 +130,7 @@ jobs:
       # invalidates automatically whenever the pinned Playwright version
       # changes.
       - name: Cache Playwright browsers
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: ~/.cache/ms-playwright
           key: ${{ runner.os }}-playwright-${{ hashFiles('tests/wcag/playwright/package-lock.json') }}
@@ -135,7 +147,7 @@ jobs:
       # entirely on a cache hit, the same way the browser-binary cache
       # does for Chromium itself.
       - name: Cache apt packages
-        uses: actions/cache@v4
+        uses: actions/cache@v6
         with:
           path: /var/cache/apt/archives/*.deb
           key: ${{ runner.os }}-apt-playwright-chromium-${{ hashFiles('tests/wcag/playwright/package-lock.json') }}
@@ -168,7 +180,7 @@ jobs:
       # the runner's filesystem at this point, not to be tracked in git.
       - name: Upload WCAG-mode evidence
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: wcag-mode-evidence
           path: logs/wcag/audit/evidence/

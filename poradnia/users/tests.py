@@ -437,7 +437,7 @@ class UserAutocompleteViewTestCase(TestCase):
         self.factory = RequestFactory()
 
     def test_staff_user_with_permission_can_view_regular_user(self):
-        request = self.factory.get("?q={}".format(self.regular_user.username))
+        request = self.factory.get(f"?q={self.regular_user.username}")
         request.user = self.staff_user
         assign_perm("users.can_view_other", self.staff_user)
         response = UserAutocomplete.as_view()(request=request).getvalue()
@@ -447,7 +447,7 @@ class UserAutocompleteViewTestCase(TestCase):
         self.assertEqual(results[0], escape(str(self.regular_user)))
 
     def test_staff_user_with_permission_can_not_view_reqular_user(self):
-        request = self.factory.get("?q={}".format(self.regular_user.username))
+        request = self.factory.get(f"?q={self.regular_user.username}")
         request.user = self.staff_user
         response = UserAutocomplete.as_view()(request=request)
         self.assertNotContains(response, self.regular_user)

@@ -60,6 +60,12 @@
         </tr>
 
         <tr>
+            <td>{% trans 'Scope' %}</td>
+            <td>{{ object.scope | default:"---" }}</td>
+            <td{% if object.ai_tags_request.rejected_at %} class="text-muted ai-suggestion-rejected" title="{{ object.ai_tags_request.rejection_reason }}"{% endif %}>{{ object.ai_scope|default:"---" }}</td>
+        </tr>
+
+        <tr>
             <td>{% trans 'Issues' %}</td>
             <td>
             {% if object.issues.all %}

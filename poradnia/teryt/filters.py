@@ -43,7 +43,7 @@ class AreaMultipleFilter(ModelMultipleChoiceFilter):
             if area_field is None:
                 return path
             else:
-                return "{}__{}".format(area_field, path)
+                return f"{area_field}__{path}"
 
         if not value:
             return queryset.none()

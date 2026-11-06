@@ -53,9 +53,7 @@ wcag-baseline: wait_mysql
 		web python tests/wcag/seed_a11y.py --reset
 	docker compose -f docker-compose.yml -f tests/wcag/docker-compose.a11y.yml up -d web
 	$(MAKE) gulp
-	sha256sum poradnia/static/css/style.css poradnia/static/css/style.min.css \
-		poradnia/static/js/script.js poradnia/static/js/script.min.js \
-		> tests/wcag/playwright/baseline/assets.sha256
+	$(MAKE) wcag-assets-sha
 	cd tests/wcag/playwright && npm install && npx playwright install chromium && \
 		A11Y_SEED_PASSWORD="$(A11Y_SEED_PASSWORD)" node baseline_capture.js
 	docker compose up -d web
@@ -65,6 +63,14 @@ wcag-baseline: wait_mysql
 	@echo "  git diff tests/wcag/playwright/baseline/html/"
 	@echo "Commit tests/wcag/playwright/baseline/{html,assets.sha256} if the change is expected."
 	@echo "Screenshots (logs/wcag/baseline/screenshots/) are local-only - not committed."
+
+# Re-record only the normal-mode bundle hashes (no HTML recapture). Also run by
+# .github/workflows/regenerate_frontend.yml after rebuilding Renovate PRs.
+# wcag.css/wcag.js are deliberately not hashed - see gulpfile.js.
+wcag-assets-sha:
+	sha256sum poradnia/static/css/style.css poradnia/static/css/style.min.css \
+		poradnia/static/js/script.js poradnia/static/js/script.min.js \
+		> tests/wcag/playwright/baseline/assets.sha256
 
 wait_mysql:
 	docker compose up -d --remove-orphans db
@@ -79,6 +85,9 @@ lint: # lint currently staged files
 lint-all: # lint all files in repository
 	docker compose run web pre-commit run --all-files
 
+
+check-python-versions: # verify all pinned Python versions match
+	./.contrib/check_python_versions.sh
 check: wait_mysql
 	docker compose run web python manage.py makemigrations --check
 

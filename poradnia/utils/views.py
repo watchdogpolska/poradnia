@@ -19,7 +19,7 @@ def _render_example(entry):
     except (
         Exception
     ) as exc:  # noqa: BLE001 - surface render errors in the preview itself
-        return "BŁĄD RENDEROWANIA: {}: {}".format(type(exc).__name__, exc)
+        return f"BŁĄD RENDEROWANIA: {type(exc).__name__}: {exc}"
 
 
 @staff_member_required
