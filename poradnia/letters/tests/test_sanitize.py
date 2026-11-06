@@ -113,9 +113,7 @@ class SanitizeHtmlTestCase(HostileHtmlAssertMixin, TestCase):
                 self.assertNotIn("url(", cleaned)
 
     def test_keeps_safe_css_next_to_unsafe_css(self):
-        cleaned = sanitize_html(
-            '<p style="text-align: center; position: fixed;">a</p>'
-        )
+        cleaned = sanitize_html('<p style="text-align: center; position: fixed;">a</p>')
         self.assertIn("text-align: center", cleaned)
         self.assertNotIn("position", cleaned)
 
