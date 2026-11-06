@@ -85,6 +85,9 @@ lint: # lint currently staged files
 lint-all: # lint all files in repository
 	docker compose run web pre-commit run --all-files
 
+
+check-python-versions: # verify all pinned Python versions match
+	./.contrib/check_python_versions.sh
 check: wait_mysql
 	docker compose run web python manage.py makemigrations --check
 

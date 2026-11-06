@@ -25,10 +25,7 @@ class BaseParser:
         return []
 
     def get_description(self, row):
-        lines = [
-            "{}: {}".format(key, clean_text(value))
-            for key, value in sorted(row.items())
-        ]
+        lines = [f"{key}: {clean_text(value)}" for key, value in sorted(row.items())]
         return "\n".join(lines)
 
     def get_datetime(self, row):
@@ -37,7 +34,7 @@ class BaseParser:
 
         try:
             struct = strptime(
-                "{} {}".format(row[self.DATE_FIELD], row[self.HOUR_FIELD]),
+                f"{row[self.DATE_FIELD]} {row[self.HOUR_FIELD]}",
                 "%Y-%m-%d %H:%M",
             )
             return datetime(*struct[:6]).replace(tzinfo=timezone("Europe/Warsaw"))
@@ -45,7 +42,7 @@ class BaseParser:
             print(row)
             return self.get_date(row)
         except KeyError:
-            msg = "Invalid headers in {}".format(self.__class__.__name__)
+            msg = f"Invalid headers in {self.__class__.__name__}"
             print(msg)
             print(row)
             logger.warning(msg)

@@ -12,8 +12,8 @@ code makes, so the preview picks up the actual active-language translation
 (including any translation bugs) instead of a hand-typed guess.
 """
 
+from collections.abc import Callable
 from dataclasses import dataclass, field
-from typing import Callable, Optional
 
 from django.utils.translation import gettext
 
@@ -29,10 +29,10 @@ class MessageCatalogEntry:
     trigger: str
     level: str  # django.contrib.messages default tag: debug/info/success/warning/error
     translated: bool = True  # False if the source never wraps the text in _()
-    msgid: Optional[str] = None  # exact string literal passed to _() / gettext()
+    msgid: str | None = None  # exact string literal passed to _() / gettext()
     render: Callable[[str], str] = field(default=lambda text: text)
-    build: Optional[Callable[[], str]] = None  # escape hatch for multi-fragment text
-    note: Optional[str] = None
+    build: Callable[[], str] | None = None  # escape hatch for multi-fragment text
+    note: str | None = None
 
 
 CATALOG = [

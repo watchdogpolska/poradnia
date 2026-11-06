@@ -16,7 +16,7 @@ class Migration(migrations.Migration):
             name="created_on",
             field=models.DateTimeField(
                 default=datetime.datetime(
-                    2015, 4, 26, 21, 26, 57, 237045, tzinfo=datetime.timezone.utc
+                    2015, 4, 26, 21, 26, 57, 237045, tzinfo=datetime.UTC
                 ),
                 auto_now_add=True,
             ),

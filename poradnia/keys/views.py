@@ -26,9 +26,7 @@ class KeyDetailView(SuperuserPermissionMixin, PermissionMixin, DetailView):
         obj = super().get_object(*args, **kwargs)
         obj.download_on = now()
         obj.save()
-        messages.add_message(
-            self.request, messages.SUCCESS, "{object} downloaded!".format(object=obj)
-        )
+        messages.add_message(self.request, messages.SUCCESS, f"{obj} downloaded!")
         return obj
 
 

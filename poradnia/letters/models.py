@@ -10,7 +10,7 @@ from django.db import close_old_connections, models, transaction
 from django.db.models import F, Func, IntegerField
 from django.forms.models import model_to_dict
 from django.urls import reverse
-from django.utils.html import mark_safe
+from django.utils.html import format_html, mark_safe
 from django.utils.translation import gettext_lazy as _
 from model_utils import Choices
 from model_utils.fields import MonitorField, StatusField
@@ -127,12 +127,12 @@ class Letter(AbstractRecord):
 
     def get_absolute_url(self):
         case_url = self.record.case_get_absolute_url()
-        return "{}#letter-{}".format(case_url, self.pk)
+        return f"{case_url}#letter-{self.pk}"
 
     def render_letter_link(self):
         url = self.get_absolute_url()
         label = self.name
-        return mark_safe(f'<a href="{url}">{label}</a>')
+        return format_html('<a href="{}">{}</a>', url, label)
 
     def render_admin_delete_link(self):
         url = reverse("admin:letters_letter_delete", args=(self.id,))
@@ -162,7 +162,7 @@ class Letter(AbstractRecord):
         if self.is_html():
             return self.html
         else:
-            return "<pre>{text}</pre>".format(text=format_text(self.text))
+            return f"<pre>{format_text(self.text)}</pre>"
 
     def get_edit_url(self):
         return reverse("letters:edit", kwargs={"pk": self.pk})
@@ -282,9 +282,9 @@ class AttachmentQuerySet(models.QuerySet):
             content_type = ContentType.objects.get_for_model(Case)
             qs = qs.filter(
                 **{
-                    "{}__permission__codename".format(lrc_cup): "can_view",
-                    "{}__permission__content_type".format(lrc_cup): content_type,
-                    "{}__user".format(lrc_cup): user,
+                    f"{lrc_cup}__permission__codename": "can_view",
+                    f"{lrc_cup}__permission__content_type": content_type,
+                    f"{lrc_cup}__user": user,
                 }
             )
         if not user.is_staff:

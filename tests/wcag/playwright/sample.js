@@ -128,6 +128,15 @@ const SAMPLE = [
     note: "Staff case DataTable (65 rows, server-side)",
     interactions: ["datatable_sort_name", "datatable_page_length_25", "datatable_filter"],
   },
+  {
+    // Staff + case with an advice: the only state where the header's
+    // advice-summary button (and its popup) renders.
+    id: "staff_case_detail_thread5",
+    role: "staff_wsparcie",
+    path: `/sprawy/sprawa-${SEEDED.case.thread5}/`,
+    note: "Staff case detail with advice (advice summary button + popup)",
+    interactions: ["advice_summary_modal_open"],
+  },
   { id: "staff_events_calendar", role: "staff_wsparcie", path: "/wydarzenia/", note: "Events calendar" },
   { id: "staff_advices_list", role: "staff_wsparcie", path: "/porady/", note: "Advices list" },
   {

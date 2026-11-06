@@ -59,6 +59,10 @@ const clear = () =>
     "advicer_advice_area",
     "advicer_advice_issues",
     "advicer_advice",
+    // After advicer_advice: its FKs/M2M to these are cleared above.
+    "advicer_issue",
+    "advicer_area",
+    "advicer_scope",
     "teryt_tree_jednostkaadministracyjna",
     "teryt_tree_category",
     "django_admin_log",

@@ -1,0 +1,42 @@
+{% load i18n %}
+
+<div
+    class="modal fade"
+    id="adviceSummaryModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="adviceSummaryModalLabel"
+>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title fs-5" id="adviceSummaryModalLabel">
+                    {% if advice.subject %}
+                        {{ advice.subject }}
+                    {% elif advice.ai_subject %}
+                        {{ advice.ai_subject }}
+                        <span class="badge text-bg-secondary">AI</span>
+                    {% else %}
+                        {{ advice }}
+                    {% endif %}
+                </h2>
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="modal"
+                    aria-label="{% trans 'Close' %}"
+                ></button>
+            </div>
+
+            <div class="modal-body">
+                <p class="small text-muted mb-2">
+                    <em>{% trans 'Summary' %}</em>
+                    {% if not advice.summary and advice.ai_summary %}
+                        <span class="badge text-bg-secondary">AI</span>
+                    {% endif %}
+                </p>
+                <div class="border rounded p-3 bg-body-secondary" style="max-height: 50vh; overflow-y: auto; white-space: pre-wrap; word-break: break-word;">{% firstof advice.summary advice.ai_summary "-" %}</div>
+            </div>
+        </div>
+    </div>
+</div>
