@@ -23,7 +23,7 @@ from poradnia.utils.constants import NAME_MAX_LENGTH
 from poradnia.utils.mixins import FormattedDatetimeMixin, UserPrettyNameMixin
 
 from .templatetags.format_text import format_text
-from .utils import date_random_path
+from .utils import date_random_path, sanitize_html
 
 logger = logging.getLogger(__name__)
 
@@ -157,10 +157,15 @@ class Letter(AbstractRecord):
     def is_html(self):
         return bool(self.html)
 
+    def sanitized_html(self):
+        # Sanitised on read as well as on write: rows saved before the forms
+        # sanitised their input still hold raw client-supplied HTML.
+        return mark_safe(sanitize_html(self.html))
+
     # TOD0 - fix; long lines are not wrapped properly
     def render_as_html(self):
         if self.is_html():
-            return self.html
+            return self.sanitized_html()
         else:
             return f"<pre>{format_text(self.text)}</pre>"
 

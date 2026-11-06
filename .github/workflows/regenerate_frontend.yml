@@ -12,6 +12,9 @@ concurrency:
   group: frontend-${{ github.head_ref || github.ref }}
   cancel-in-progress: true
 
+permissions:
+  contents: read
+
 jobs:
   regenerate_and_commit_frontend:
     runs-on: ubuntu-latest
