@@ -6,7 +6,6 @@ import logging
 import mimetypes
 import os
 
-import bleach
 import django_filters
 from ajax_datatable import AjaxDatatableView
 from django.conf import settings
@@ -40,7 +39,7 @@ from django_filters.views import FilterView
 
 from poradnia.cases.models import Case
 from poradnia.letters.settings import LETTER_RECEIVE_SECRET
-from poradnia.letters.utils import get_html_from_eml_file
+from poradnia.letters.utils import get_html_from_eml_file, sanitize_html
 from poradnia.template_mail.utils import TemplateKey, TemplateMailManager
 from poradnia.users.utils import PermissionMixin
 from poradnia.utils.constants import NAME_MAX_LENGTH
@@ -507,12 +506,7 @@ class ReceiveEmailView(View):
         eml_file = letter.eml.open("rb")
         htm_content = get_html_from_eml_file(eml_file=eml_file)
         eml_file.close()
-        letter.html = bleach.clean(
-            htm_content,
-            tags=settings.BLEACH_ALLOWED_TAGS,
-            attributes=settings.BLEACH_ALLOWED_ATTRIBUTES,
-            strip=True,
-        )
+        letter.html = sanitize_html(htm_content)
         letter.save()
         logger.info(
             f"Letter {letter.id} created by {actor.email}"

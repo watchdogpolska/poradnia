@@ -130,10 +130,12 @@ const RULES = [
 // content change. Deliberately a regex pass (consistent with the RULES
 // above), not a full HTML parser - this is test-comparison tooling, not a
 // renderer, and a false "no tags matched" is far cheaper here than a new
-// parser dependency.
+// parser dependency. Unquoted values must exclude quotes: otherwise `=""` parses
+// as either a quoted or an unquoted value and a failed match backtracks
+// exponentially.
 const TAG_RE =
-  /<([a-zA-Z][a-zA-Z0-9:-]*)((?:\s+[^\s"'>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?)*)\s*(\/?)>/g;
-const ATTR_RE = /[^\s"'>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+))?/g;
+  /<([a-zA-Z][a-zA-Z0-9:-]*)((?:\s+[^\s"'>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'>]+))?)*)\s*(\/?)>/g;
+const ATTR_RE = /[^\s"'>/=]+(?:\s*=\s*(?:"[^"]*"|'[^']*'|[^\s"'>]+))?/g;
 
 function sortTagAttributes(html) {
   return html.replace(TAG_RE, (match, tagName, attrsStr, selfClose) => {
