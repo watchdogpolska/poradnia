@@ -139,6 +139,7 @@ const SAMPLE = [
   },
   { id: "staff_events_calendar", role: "staff_wsparcie", path: "/wydarzenia/", note: "Events calendar" },
   { id: "staff_advices_list", role: "staff_wsparcie", path: "/porady/", note: "Advices list" },
+  { id: "staff_advices_datatable", role: "staff_wsparcie", path: "/porady/table/", note: "Advices DataTable with column filters (advicer:table)" },
   {
     id: "staff_advice_detail",
     role: "staff_wsparcie",

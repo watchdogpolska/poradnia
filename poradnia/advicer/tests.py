@@ -1101,3 +1101,65 @@ class AssignAdviceScopesCommandTestCase(TestCase):
         advice.area.set([AreaFactory(is_dip=False, is_slapp=True)])
         self.run_command()
         self.assertScope(advice, self.dip)
+
+
+class AdviceAjaxDatatableScopeTestCase(TestCase):
+    url = reverse_lazy("advicer:advice_table_ajax_data")
+
+    def setUp(self):
+        self.user = StaffFactory()
+        assign_perm("advicer.can_view_all_advices", self.user)
+        self.client.login(username=self.user.username, password="pass")
+        AdviceFactory(scope=ScopeFactory(name="scope-column"), advicer=self.user)
+        AdviceFactory(advicer=self.user)
+
+    def get_columns(self):
+        resp = self.client.post(self.url, {"action": "initialize"})
+        return resp.json()["columns"]
+
+    def get_rows(self, scope_search=""):
+        data = {
+            "draw": 1,
+            "start": 0,
+            "length": 20,
+            "search[value]": "",
+            "search[regex]": "false",
+            "helped_yes": 1,
+            "helped_no": 1,
+            "helped_blank": 1,
+            "visible_yes": 1,
+            "visible_no": 1,
+        }
+        for name in (
+            "interesting_case",
+            "for_knowledge_base",
+            "has_ai_tag_suggestion",
+            "has_ai_tag_suggestion_to_review",
+        ):
+            data[f"{name}_yes"] = 1
+            data[f"{name}_no"] = 1
+        for index, column in enumerate(self.get_columns()):
+            data[f"columns[{index}][data]"] = column["name"]
+            data[f"columns[{index}][name]"] = column["name"]
+            data[f"columns[{index}][searchable]"] = "true"
+            data[f"columns[{index}][orderable]"] = "true"
+            data[f"columns[{index}][search][regex]"] = "false"
+            data[f"columns[{index}][search][value]"] = (
+                scope_search if column["name"] == "scope_name" else ""
+            )
+        resp = self.client.post(self.url, data)
+        self.assertEqual(resp.status_code, 200)
+        return resp.json()["data"]
+
+    def test_scope_column_has_filter_choices(self):
+        column = next(c for c in self.get_columns() if c["name"] == "scope_name")
+        self.assertEqual(column["title"], str(Scope._meta.verbose_name))
+        self.assertIn("scope-column", str(column["choices"]))
+
+    def test_rows_show_scope_name(self):
+        names = {row["scope_name"] or "" for row in self.get_rows()}
+        self.assertEqual(names, {"scope-column", ""})
+
+    def test_filter_by_scope(self):
+        rows = self.get_rows("scope-column")
+        self.assertEqual([row["scope_name"] for row in rows], ["scope-column"])
