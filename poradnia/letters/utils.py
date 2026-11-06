@@ -32,7 +32,7 @@ UNRENDERED_ELEMENT_RE = re.compile(
 )
 
 # Same noise bleach removes before it reads a URI's scheme.
-URI_NOISE_RE = re.compile("[`\000-\040\177-\240\\s�]+")
+URI_NOISE_RE = re.compile(r"[`\x00-\x20\x7f-\xa0�]+")
 # No SVG: it is the one image format that can carry script.
 DATA_IMAGE_RE = re.compile(r"data:image/(?:png|jpe?g|gif);base64,[a-z0-9+/=]*", re.I)
 
@@ -53,7 +53,7 @@ def allow_html_attribute(tag, name, value):
         return True
     # bleach's protocols apply to every tag, so "data" being allowed for pasted
     # images has to be narrowed back down here.
-    uri = URI_NOISE_RE.sub("", unescape(value))
+    uri = URI_NOISE_RE.sub("", "".join(unescape(value).split()))
     if "data:" not in uri.lower():
         return True
     return (tag, name) == ("img", "src") and bool(DATA_IMAGE_RE.fullmatch(uri))

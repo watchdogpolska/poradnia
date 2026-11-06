@@ -136,7 +136,7 @@ def _render_article_li(art):
 _ARTICLE_URL_LINE_RE = re.compile(
     rf"^-\s+(?:{_MD_LABEL}\(.+\)|\[https?://[^\]]+\]|https?://\S+)\s*$"
 )
-_LINKIFY_RE = re.compile(r"(\[[^\[\]]*\]\(https?://[^)\s]+\)|https?://\S+)")
+_LINKIFY_RE = re.compile(r"(\[[^\[\]]*\]\(https?://[^)\s\[]+\)|https?://\S+)")
 _MD_LINK_RE = re.compile(r"^\[([^\[\]]*)\]\((https?://[^)]+)\)$")
 _BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
 

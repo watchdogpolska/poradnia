@@ -309,6 +309,7 @@ class FormatArticlesHtmlTestCase(SimpleTestCase):
             "title\n- [a](" + "a](a" * 200_000,
             "title\n- [a](" + "a](" * 200_000,
             "[](http:// " * 200_000,
+            "[](http://" * 200_000,
         ):
             with self.subTest(line=line[:20]):
                 start = time.perf_counter()

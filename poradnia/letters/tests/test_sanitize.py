@@ -77,6 +77,9 @@ class SanitizeHtmlTestCase(HostileHtmlAssertMixin, TestCase):
             "da&#9;ta:text/html,x",
             "da\tta:text/html,x",
             "da\nta:text/html,x",
+            "da ta:text/html,x",
+            "da ta:text/html,x",
+            "da�ta:text/html,x",
             "`data:text/html,x",
         ):
             with self.subTest(href=href):
