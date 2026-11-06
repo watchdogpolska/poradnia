@@ -87,17 +87,21 @@ def _extract_url(line):
     return None
 
 
-_FIELD_LINE_RE = re.compile(r"^\*\*(.+?):\*\*\s*(.*)$")
+def _parse_field_line(line):
+    if not line.startswith("**"):
+        return None
+    label, separator, value = line[2:].partition(":**")
+    if not label or not separator:
+        return None
+    return label.strip(), value.strip()
 
 
 def _build_article(url, lines):
     fields = []
     for line in lines:
-        m = _FIELD_LINE_RE.match(line)
-        if m:
-            label, value = m.group(1).strip(), m.group(2).strip()
-            if value:
-                fields.append((label, value))
+        field = _parse_field_line(line)
+        if field and field[1]:
+            fields.append(field)
     return {"url": url, "fields": fields}
 
 

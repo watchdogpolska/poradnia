@@ -1,9 +1,13 @@
 import datetime
 import json
 import re
+from io import StringIO
+from unittest.mock import patch
 
 from django.contrib.admin.models import CHANGE, LogEntry
 from django.contrib.contenttypes.models import ContentType
+from django.core.management import call_command
+from django.core.management.base import CommandError
 from django.db.models import ProtectedError
 from django.test import RequestFactory
 from django.urls import reverse, reverse_lazy
@@ -21,6 +25,7 @@ from poradnia.advicer.models import (
     Scope,
 )
 from poradnia.ai_assistant.models import N8nCaseTagsRequest
+from poradnia.cases.factories import CaseFactory
 from poradnia.users.factories import StaffFactory, UserFactory
 from poradnia.utils.tests.mixins import AdminTestCaseMixin
 
@@ -1003,3 +1008,158 @@ class IssueAutocompleteScopeTestCase(ScopeFilteredAutocompleteTestMixin, TestCas
 class AreaAutocompleteScopeTestCase(ScopeFilteredAutocompleteTestMixin, TestCase):
     url = reverse_lazy("advicer:area-autocomplete")
     factory_cls = AreaFactory
+
+
+class AssignAdviceScopesCommandTestCase(TestCase):
+    def setUp(self):
+        Scope.objects.all().delete()
+        self.dip = ScopeFactory(name="dip", is_dip=True)
+        self.slapp = ScopeFactory(name="slapp", is_dip=False, is_slapp=True)
+        self.dip_issue = IssueFactory(is_dip=True)
+        self.slapp_issue = IssueFactory(is_dip=False, is_slapp=True)
+
+    def run_command(self, answer="y"):
+        out = StringIO()
+        with patch("builtins.input", return_value=answer) as mock_input:
+            call_command("assign_advice_scopes", stdout=out)
+        self.mock_input = mock_input
+        return out.getvalue()
+
+    def advice(self, *issues, **kwargs):
+        advice = AdviceFactory(**kwargs)
+        advice.issues.set(issues)
+        return advice
+
+    def assertScope(self, advice, scope):
+        advice.refresh_from_db()
+        self.assertEqual(advice.scope, scope)
+
+    def test_duplicate_active_flags_report_and_exit(self):
+        ScopeFactory(name="dip-copy", is_dip=True)
+        advice = self.advice(self.dip_issue)
+        with self.assertRaisesMessage(CommandError, "is_dip: dip, dip-copy"):
+            self.run_command()
+        self.assertScope(advice, None)
+
+    def test_inactive_scopes_are_not_considered(self):
+        ScopeFactory(name="dip-old", is_dip=True, active=False)
+        advice = self.advice(self.dip_issue)
+        self.run_command()
+        self.assertScope(advice, self.dip)
+
+    def test_assigns_when_confirmed(self):
+        dip_advice = self.advice(self.dip_issue, IssueFactory(is_dip=True))
+        slapp_advice = self.advice(self.slapp_issue)
+        output = self.run_command()
+        self.assertScope(dip_advice, self.dip)
+        self.assertScope(slapp_advice, self.slapp)
+        self.assertIn("Advices without a scope: 2", output)
+        self.assertIn("assignable: 2", output)
+        self.assertIn("Assigned 2 advice(s).", output)
+
+    def test_declined_changes_nothing(self):
+        advice = self.advice(self.dip_issue)
+        output = self.run_command(answer="n")
+        self.assertScope(advice, None)
+        self.assertIn("no changes made", output)
+
+    def test_skips_advice_without_issues(self):
+        advice = self.advice()
+        output = self.run_command()
+        self.assertScope(advice, None)
+        self.assertIn("no issues: 1", output)
+        self.mock_input.assert_not_called()
+
+    def test_counts_advices_without_issues_and_case(self):
+        self.advice()
+        self.advice(case=CaseFactory())
+        output = self.run_command()
+        self.assertIn("no issues: 2", output)
+        self.assertIn("no case: 1", output)
+
+    def test_skips_advice_with_mixed_issue_flags(self):
+        advice = self.advice(self.dip_issue, self.slapp_issue)
+        output = self.run_command()
+        self.assertScope(advice, None)
+        self.assertIn("issues with mixed flags: 1", output)
+
+    def test_skips_advice_when_no_active_scope_matches(self):
+        advice = self.advice(IssueFactory(is_dip=False, is_out_of_scope=True))
+        output = self.run_command()
+        self.assertScope(advice, None)
+        self.assertIn("no active scope for flags: 1", output)
+        self.assertIn("is_out_of_scope: 1", output)
+
+    def test_existing_scope_is_kept(self):
+        advice = self.advice(self.dip_issue, scope=self.slapp)
+        output = self.run_command()
+        self.assertScope(advice, self.slapp)
+        self.assertIn("Advices without a scope: 0", output)
+
+    def test_area_flags_are_ignored(self):
+        advice = self.advice(self.dip_issue)
+        advice.area.set([AreaFactory(is_dip=False, is_slapp=True)])
+        self.run_command()
+        self.assertScope(advice, self.dip)
+
+
+class AdviceAjaxDatatableScopeTestCase(TestCase):
+    url = reverse_lazy("advicer:advice_table_ajax_data")
+
+    def setUp(self):
+        self.user = StaffFactory()
+        assign_perm("advicer.can_view_all_advices", self.user)
+        self.client.login(username=self.user.username, password="pass")
+        AdviceFactory(scope=ScopeFactory(name="scope-column"), advicer=self.user)
+        AdviceFactory(advicer=self.user)
+
+    def get_columns(self):
+        resp = self.client.post(self.url, {"action": "initialize"})
+        return resp.json()["columns"]
+
+    def get_rows(self, scope_search=""):
+        data = {
+            "draw": 1,
+            "start": 0,
+            "length": 20,
+            "search[value]": "",
+            "search[regex]": "false",
+            "helped_yes": 1,
+            "helped_no": 1,
+            "helped_blank": 1,
+            "visible_yes": 1,
+            "visible_no": 1,
+        }
+        for name in (
+            "interesting_case",
+            "for_knowledge_base",
+            "has_ai_tag_suggestion",
+            "has_ai_tag_suggestion_to_review",
+        ):
+            data[f"{name}_yes"] = 1
+            data[f"{name}_no"] = 1
+        for index, column in enumerate(self.get_columns()):
+            data[f"columns[{index}][data]"] = column["name"]
+            data[f"columns[{index}][name]"] = column["name"]
+            data[f"columns[{index}][searchable]"] = "true"
+            data[f"columns[{index}][orderable]"] = "true"
+            data[f"columns[{index}][search][regex]"] = "false"
+            data[f"columns[{index}][search][value]"] = (
+                scope_search if column["name"] == "scope_name" else ""
+            )
+        resp = self.client.post(self.url, data)
+        self.assertEqual(resp.status_code, 200)
+        return resp.json()["data"]
+
+    def test_scope_column_has_filter_choices(self):
+        column = next(c for c in self.get_columns() if c["name"] == "scope_name")
+        self.assertEqual(column["title"], str(Scope._meta.verbose_name))
+        self.assertIn("scope-column", str(column["choices"]))
+
+    def test_rows_show_scope_name(self):
+        names = {row["scope_name"] or "" for row in self.get_rows()}
+        self.assertEqual(names, {"scope-column", ""})
+
+    def test_filter_by_scope(self):
+        rows = self.get_rows("scope-column")
+        self.assertEqual([row["scope_name"] for row in rows], ["scope-column"])

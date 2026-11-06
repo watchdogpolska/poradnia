@@ -317,6 +317,31 @@ class FormatArticlesHtmlTestCase(SimpleTestCase):
                 self.assertLess(time.perf_counter() - start, 5)
 
 
+class ParseFieldLineTestCase(SimpleTestCase):
+    def test_label_and_value_are_stripped(self):
+        self.assertEqual(
+            views_module._parse_field_line("**Temat :**   Tytuł artykułu  "),
+            ("Temat", "Tytuł artykułu"),
+        )
+
+    def test_value_may_be_empty(self):
+        self.assertEqual(views_module._parse_field_line("**Temat:**"), ("Temat", ""))
+
+    def test_value_may_contain_separator(self):
+        self.assertEqual(
+            views_module._parse_field_line("**Temat:** a:** b"), ("Temat", "a:** b")
+        )
+
+    def test_non_field_lines_are_ignored(self):
+        for line in ("Temat: tekst", "**Temat** tekst", "**:** tekst", "**"):
+            with self.subTest(line=line):
+                self.assertIsNone(views_module._parse_field_line(line))
+
+    def test_many_spaces_are_parsed_quickly(self):
+        line = "**a:**" + " " * 100_000 + "b"
+        self.assertEqual(views_module._parse_field_line(line), ("a", "b"))
+
+
 class N8nArticlesSearchHelpersTestCase(SimpleTestCase):
     def setUp(self):
         self.factory = RequestFactory()
