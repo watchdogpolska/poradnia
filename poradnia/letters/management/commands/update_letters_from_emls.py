@@ -4,7 +4,7 @@ from django.core.files.storage import default_storage
 from django.core.management.base import BaseCommand
 
 from poradnia.letters.models import Letter
-from poradnia.letters.utils import get_html_from_eml_file
+from poradnia.letters.utils import get_html_from_eml_file, sanitize_html
 
 
 class Command(BaseCommand):
@@ -47,7 +47,7 @@ class Command(BaseCommand):
 
             letter_html = get_html_from_eml_file(letter.eml.file)
             if letter_html:
-                letter.html = letter_html
+                letter.html = sanitize_html(letter_html)
                 letter.save()
 
         end_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
