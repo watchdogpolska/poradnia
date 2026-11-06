@@ -153,7 +153,9 @@ const SAMPLE = [
   { id: "staff_feedback_list", role: "staff_admin", path: "/uwagi/", note: "tasty_feedback list" },
   { id: "staff_navsearch", role: "staff_wsparcie", path: "/navsearch/?q=spor", note: "navsearch autocomplete (JSON)", isJson: true },
   { id: "staff_letters_list", role: "staff_wsparcie", path: "/listy/rejestr", note: "Letters register (letters:list)" },
+  { id: "staff_letters_datatable", role: "staff_wsparcie", path: "/listy/table/", note: "Letters DataTable with column filters (letters:table)" },
   { id: "staff_users_list", role: "staff_wsparcie", path: "/uzytkownik/", note: "Staff user list (users:list)" },
+  { id: "staff_users_datatable", role: "staff_wsparcie", path: "/uzytkownik/table/", note: "Users DataTable with column filters (users:table)" },
   { id: "staff_events_table", role: "staff_wsparcie", path: "/wydarzenia/table/", note: "Events DataTable (events:table)" },
   {
     // thread1 (case1) is unassigned -- staff_wsparcie has no permission on

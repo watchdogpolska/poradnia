@@ -34078,6 +34078,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 input.style.width = "100%";
                 input.style.boxSizing = "border-box";
             }
+            // The library renders filter controls without an accessible name.
+            const control = th.querySelector("input[type=text], select");
+            if (control) {
+                const header = th.closest("thead").rows[0].cells[th.cellIndex];
+                control.setAttribute("aria-label", header.textContent.trim());
+            }
         });
     });
     // Initialize table
@@ -34286,6 +34292,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if (input) {
                 input.style.width = "100%";
                 input.style.boxSizing = "border-box";
+            }
+            // The library renders filter controls without an accessible name.
+            const control = th.querySelector("input[type=text], select");
+            if (control) {
+                const header = th.closest("thead").rows[0].cells[th.cellIndex];
+                control.setAttribute("aria-label", header.textContent.trim());
             }
         });
     });
@@ -34560,6 +34572,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 input.style.width = "100%";
                 input.style.boxSizing = "border-box";
             }
+            // The library renders filter controls without an accessible name.
+            const control = th.querySelector("input[type=text], select");
+            if (control) {
+                const header = th.closest("thead").rows[0].cells[th.cellIndex];
+                control.setAttribute("aria-label", header.textContent.trim());
+            }
         });
     });
     // Initialize table
@@ -34653,6 +34671,12 @@ document.addEventListener('DOMContentLoaded', function () {
             if (input) {
                 input.style.width = "100%";
                 input.style.boxSizing = "border-box";
+            }
+            // The library renders filter controls without an accessible name.
+            const control = th.querySelector("input[type=text], select");
+            if (control) {
+                const header = th.closest("thead").rows[0].cells[th.cellIndex];
+                control.setAttribute("aria-label", header.textContent.trim());
             }
         });
     });
