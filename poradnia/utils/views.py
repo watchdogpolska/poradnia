@@ -46,15 +46,16 @@ def ui_mode_view(request):
     if mode not in UI_MODES:
         return HttpResponseBadRequest("Invalid ui_mode value")
 
-    next_url = request.POST.get("next") or "/"
-    if not url_has_allowed_host_and_scheme(
+    next_url = request.POST.get("next")
+    if next_url and url_has_allowed_host_and_scheme(
         next_url,
         allowed_hosts={request.get_host()},
         require_https=request.is_secure(),
     ):
-        next_url = "/"
+        response = redirect(next_url)
+    else:
+        response = redirect("/")
 
-    response = redirect(next_url)
     response.set_cookie(
         UI_MODE_COOKIE_NAME,
         mode,
