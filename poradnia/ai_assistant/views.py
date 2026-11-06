@@ -447,7 +447,7 @@ def _validate_int_list(payload, name, model):
 
 
 def _validate_case_tags_payload(payload):
-    from poradnia.advicer.models import Area, InstitutionKind, Issue, PersonKind
+    from poradnia.advicer.models import Area, InstitutionKind, Issue, PersonKind, Scope
 
     err = _validate_nonempty_string(payload, "subject")
     if err:
@@ -466,6 +466,10 @@ def _validate_case_tags_payload(payload):
         return err
 
     err = _validate_jst_id(payload)
+    if err:
+        return err
+
+    err = _validate_fk_int(payload, "scope_id", Scope)
     if err:
         return err
 
@@ -514,6 +518,7 @@ def _build_case_tags_data(payload):
         "summary": payload["summary"],
         "institution_kind": payload["institution_kind_id"],
         "person_kind": payload["person_kind_id"],
+        "scope": payload["scope_id"],
         "issues": payload["issue_ids"],
         "area": payload["area_ids"],
     }
@@ -575,6 +580,7 @@ class N8nCaseTagsCallbackView(View):
     ``person_kind_id``      - int, must reference an existing PersonKind.
     ``jst_id``              - str of 2-7 digits (optional), must reference an existing
                               JST if provided.
+    ``scope_id``            - int, must reference an existing Scope.
     ``issue_ids``           - non-empty list[int], all must reference existing Issues.
     ``area_ids``            - non-empty list[int], all must reference existing Areas.
     ``scope_check``         - dict (optional).  n8n's scope-exclusion reasoning; stored

@@ -6,6 +6,7 @@ const {
   createAdministrativeDivisionUnit,
   createAdviceArea,
   createAdviceIssue,
+  createAdviceScope,
 } = require("../testing/management");
 const {
   submitAdviceForm,
@@ -14,6 +15,7 @@ const {
   submitCourtCaseForm,
   submitLetterForm,
   submitEventForm,
+  selectAutocompleteOptionContaining,
 } = require("../testing/forms");
 const Case = require("../testing/case");
 const Letter = require("../testing/letter");
@@ -58,6 +60,8 @@ describe("advices", () => {
       "adviceIssueB",
       "adviceIssueC",
     ].map((name) => ({ name }));
+    // Default flags on both sides, so all issues/areas match this scope.
+    const adviceScope = { name: "adviceScopeA" };
 
     const user = User.fromId("testUser");
     register(cy)(user);
@@ -74,6 +78,7 @@ describe("advices", () => {
     adviceIssues.forEach((adviceIssue) => {
       createAdviceIssue(cy)(adviceIssue);
     });
+    createAdviceScope(cy)(adviceScope);
 
     // Create a few cases.
     const cases = ["caseA", "caseB", "caseC"].map(Case.fromId);
@@ -94,6 +99,7 @@ describe("advices", () => {
         datetime,
         solved: 1,
         administrativeDivision: administrativeDivisionUnits[0].name,
+        adviceScope,
         adviceArea: adviceAreas[0],
         adviceIssue: adviceIssues[0],
         adviceAuthor: user,
@@ -105,6 +111,7 @@ describe("advices", () => {
         datetime,
         solved: 1,
         administrativeDivision: administrativeDivisionUnits[1].name,
+        adviceScope,
         adviceArea: adviceAreas[1],
         adviceIssue: adviceIssues[1],
         adviceAuthor: user,
@@ -116,6 +123,7 @@ describe("advices", () => {
         datetime,
         solved: 0,
         administrativeDivision: administrativeDivisionUnits[2].name,
+        adviceScope,
         adviceArea: adviceAreas[2],
         adviceIssue: adviceIssues[2],
         adviceAuthor: user,
@@ -222,5 +230,41 @@ describe("advices", () => {
 
     cy.get('input[name="check_helped_yes"]').check();
     cy.wait("@dtAjax");
+  });
+
+  it("advice form limits issues to the scope and clears them on scope change", () => {
+    const user = User.fromId("testUser");
+    register(cy)(user);
+    addSuperUserPrivileges(cy)(user);
+
+    const slappFlags = { is_dip: 0, is_slapp: 1 };
+    createAdviceScope(cy)({ name: "scopeDip" });
+    createAdviceScope(cy)({ name: "scopeSlapp", ...slappFlags });
+    createAdviceIssue(cy)({ name: "issueDip" });
+    createAdviceIssue(cy)({ name: "issueSlapp", ...slappFlags });
+
+    cy.closeDonatePopup();
+    cy.visit("/porady/nowa/");
+
+    const issuesField = () => cy.contains("div", "Zagadnienia");
+
+    // No scope selected: the issue autocomplete offers nothing.
+    issuesField().within(() => {
+      cy.get("autocomplete-select-input input").click().type("issue").wait(1000);
+      cy.contains("issueDip").should("not.exist");
+    });
+
+    cy.contains("div", "Zakres poradnictwa").find("select").select("scopeDip");
+    issuesField().within(() => {
+      cy.get("autocomplete-select-input input").clear().type("issue").wait(1000);
+      cy.contains("issueSlapp").should("not.exist");
+      selectAutocompleteOptionContaining("issueDip");
+      cy.get("[slot=deck]").should("contain", "issueDip");
+    });
+
+    // Switching scope clears the selection and announces it.
+    cy.contains("div", "Zakres poradnictwa").find("select").select("scopeSlapp");
+    issuesField().find("[slot=deck] [data-value]").should("not.exist");
+    cy.get("#advice-scope-status").should("contain", "wyczyszczone");
   });
 });

@@ -10,7 +10,7 @@ from openpyxl import Workbook
 from openpyxl.styles import Alignment, Font, PatternFill
 from openpyxl.utils import get_column_letter
 
-from poradnia.advicer.models import Area, InstitutionKind, Issue, PersonKind
+from poradnia.advicer.models import Area, InstitutionKind, Issue, PersonKind, Scope
 from poradnia.teryt.models import JST
 
 from .models import N8nArticlesSearchRequest, N8nCaseTagsRequest
@@ -264,6 +264,8 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
             "advice_subject",
             "ai_response_subject",
             "ai_response_summary",
+            "advice_scope_name",
+            "ai_response_scope_name",
             "scope_check",
         ]
         sheet.append(columns)
@@ -284,10 +286,12 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
         area_names = dict(Area.objects.values_list("id", "name"))
         person_kind_names = dict(PersonKind.objects.values_list("id", "name"))
         institution_kind_names = dict(InstitutionKind.objects.values_list("id", "name"))
+        scope_names = dict(Scope.objects.values_list("id", "name"))
 
         queryset = queryset.select_related(
             "case__advice__institution_kind",
             "case__advice__person_kind",
+            "case__advice__scope",
             "case__advice__jst__parent__parent",
             "accepted_by",
             "rejected_by",
@@ -322,6 +326,7 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
             ai_institution_kind_id = ai_data.get("institution_kind")
             ai_person_kind_id = ai_data.get("person_kind")
             ai_jst_id = ai_data.get("jst")
+            ai_scope_id = ai_data.get("scope")
 
             sheet.append(
                 [
@@ -366,6 +371,8 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
                     advice.subject if advice and advice.subject else "",
                     ai_data.get("subject") or "",
                     ai_data.get("summary") or "",
+                    advice.scope.name if advice and advice.scope_id else "",
+                    scope_names.get(ai_scope_id, ""),
                     _pretty_json(ai_data.get("scope_check")),
                 ]
             )

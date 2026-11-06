@@ -31,6 +31,7 @@ from django.template.defaultfilters import linebreaksbr
 from django.urls import reverse
 from django.utils import timezone
 from django.utils._os import safe_join
+from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.views import View
@@ -369,8 +370,11 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
     def customize_row(self, row, obj):
         # row["text"] = mark_safe(linebreaksbr(obj.text[:300]))
         row["name"] = obj.render_letter_link()
-        row["text"] = obj.text[:300] + "..." if len(obj.text) > 300 else obj.text
-        row["case_name"] = obj.case.render_case_link()
+        text = obj.text[:300] + "..." if len(obj.text) > 300 else obj.text
+        # Letter text can come from any inbound e-mail; DataTables renders
+        # cell values as HTML.
+        row["text"] = escape(text)
+        row["case_name"] = obj.case.render_case_link(self.request.user)
         row["advice_subject"] = obj.case.render_case_advice_link()
         return
 
@@ -683,8 +687,10 @@ class ReceiveEmailView(View):
 
 class AttachmentTextContentModalView(PermissionMixin, View):
     def get(self, request, pk, *args, **kwargs):
+        # .for_user() - same rule as ProtectedMediaView: only cases the user
+        # can view, and no staff-only letters for clients.
         attachment = get_object_or_404(
-            Attachment.objects.select_related("letter"),
+            Attachment.objects.select_related("letter").for_user(request.user),
             pk=pk,
         )
 

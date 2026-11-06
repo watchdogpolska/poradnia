@@ -42,7 +42,7 @@ class InstitutionKindFactory(factory.django.DjangoModelFactory):
 class AdviceFactory(factory.django.DjangoModelFactory):
     advicer = factory.SubFactory("poradnia.users.factories.UserFactory")
     grant_on = factory.fuzzy.FuzzyDateTime(
-        datetime.datetime(2008, 1, 1, tzinfo=datetime.timezone.utc)
+        datetime.datetime(2008, 1, 1, tzinfo=datetime.UTC)
     )
     created_by = factory.SubFactory("poradnia.users.factories.UserFactory")
     comment = factory.Sequence("advice-comment-{}".format)

@@ -24,8 +24,14 @@
 // scoped to this one modal, layered on top of (not instead of) Bootstrap's
 // own handling, plus an explicit focus-return to whichever attachment
 // button opened the modal.
+//
+// The advice summary popup (#adviceSummaryModal, base.html's
+// #advice-summary-modal-container) sits at the same end-of-document spot
+// with a single close button, so it has the same gap and gets the same
+// Tab-wrap/Escape handling. Its focus-return is done by base.html.
 (function () {
     var MODAL_ID = "attachmentTextModal";
+    var MODAL_IDS = [MODAL_ID, "adviceSummaryModal"];
     var TRIGGER_SELECTOR = '[hx-target="#attachment-text-modal-container"]';
     var lastTrigger = null;
 
@@ -43,7 +49,13 @@
     });
 
     function getModal() {
-        return document.getElementById(MODAL_ID);
+        for (var i = 0; i < MODAL_IDS.length; i++) {
+            var modal = document.getElementById(MODAL_IDS[i]);
+            if (isOpen(modal)) {
+                return modal;
+            }
+        }
+        return null;
     }
 
     function isOpen(modal) {

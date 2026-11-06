@@ -111,30 +111,22 @@ class AdminTestCaseMixin:
     def test_status_changelist(self):
         url = reverse(self.get_changelist_viewname())
         response = self.client.get(url)
-        self.assertEqual(
-            response.status_code, 200, "Invalid status code on '{}'".format(url)
-        )
+        self.assertEqual(response.status_code, 200, f"Invalid status code on '{url}'")
 
     def test_status_change_view(self):
         url = reverse(self.get_change_viewname(), args=[self.object.pk])
         response = self.client.get(url)
-        self.assertEqual(
-            response.status_code, 200, "Invalid status code on '{}'".format(url)
-        )
+        self.assertEqual(response.status_code, 200, f"Invalid status code on '{url}'")
 
     def test_status_delete_view(self):
         url = reverse(self.get_delete_viewname(), args=[self.object.pk])
         response = self.client.get(url)
-        self.assertEqual(
-            response.status_code, 200, "Invalid status code on '{}'".format(url)
-        )
+        self.assertEqual(response.status_code, 200, f"Invalid status code on '{url}'")
 
     def test_status_history_view(self):
         url = reverse(self.get_history_viewname(), args=[self.object.pk])
         response = self.client.get(url)
-        self.assertEqual(
-            response.status_code, 200, "Invalid status code on '{}'".format(url)
-        )
+        self.assertEqual(response.status_code, 200, f"Invalid status code on '{url}'")
 
     def test_changelist_queries_limit(self):
         self.factory_cls.create_batch(size=20)

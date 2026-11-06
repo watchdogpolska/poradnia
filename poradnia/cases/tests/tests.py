@@ -534,6 +534,110 @@ class CaseDetailViewTestCase(TestCase):
         self.assertNotContains(resp, obj.name)
         self.assertContains(resp, obj2.name)
 
+    def _set_staff(self, is_staff):
+        self.object.created_by.is_staff = is_staff
+        self.object.created_by.save()
+
+    def _summary_url(self):
+        return reverse("cases:advice_summary_modal", kwargs={"pk": self.object.pk})
+
+    def test_advice_summary_button_for_staff(self):
+        self._set_staff(True)
+        AdviceFactory(case=self.object, summary="Summary-X")
+        resp = self.client.get(self.object.get_absolute_url())
+        self.assertContains(resp, f'data-advice-summary-url="{self._summary_url()}"')
+        # Content is fetched on click, not rendered into the page.
+        self.assertNotContains(resp, "Summary-X")
+
+    def test_advice_summary_button_hidden_without_advice(self):
+        self._set_staff(True)
+        resp = self.client.get(self.object.get_absolute_url())
+        self.assertNotContains(resp, 'data-advice-summary-url="')
+
+    def test_advice_summary_button_hidden_for_client(self):
+        self._set_staff(False)
+        AdviceFactory(case=self.object)
+        resp = self.client.get(self.object.get_absolute_url())
+        self.assertNotContains(resp, 'data-advice-summary-url="')
+
+
+class CaseAdviceSummaryModalViewTestCase(TestCase):
+    def setUp(self):
+        self.case = CaseFactory()
+        self.user = self.case.created_by
+        self.user.is_staff = True
+        self.user.save()
+        self.client.login(username=self.user.username, password="pass")
+        self.url = reverse("cases:advice_summary_modal", kwargs={"pk": self.case.pk})
+
+    def test_shows_subject_and_summary(self):
+        AdviceFactory(case=self.case, subject="Subj-X", summary="Summary-X")
+        resp = self.client.get(self.url)
+        self.assertContains(resp, 'id="adviceSummaryModal"')
+        self.assertContains(resp, "Subj-X")
+        self.assertContains(resp, "Summary-X")
+
+    def test_falls_back_to_ai_values(self):
+        AdviceFactory(
+            case=self.case,
+            subject="",
+            summary="",
+            ai_assistant_tags={"subject": "AI-Subj", "summary": "AI-Summary"},
+        )
+        resp = self.client.get(self.url)
+        self.assertContains(resp, "AI-Subj")
+        self.assertContains(resp, "AI-Summary")
+
+    def test_human_values_win_over_ai(self):
+        AdviceFactory(
+            case=self.case,
+            subject="Subj-X",
+            summary="Summary-X",
+            ai_assistant_tags={"subject": "AI-Subj", "summary": "AI-Summary"},
+        )
+        resp = self.client.get(self.url)
+        self.assertNotContains(resp, "AI-Subj")
+        self.assertNotContains(resp, "AI-Summary")
+
+    def test_404_without_advice(self):
+        self.assertEqual(self.client.get(self.url).status_code, 404)
+
+    def test_403_for_client(self):
+        AdviceFactory(case=self.case, summary="Summary-X")
+        self.user.is_staff = False
+        self.user.save()
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 403)
+        self.assertNotContains(resp, "Summary-X", status_code=403)
+
+    def test_403_for_staff_without_case_access(self):
+        AdviceFactory(case=self.case, summary="Summary-X")
+        other = UserFactory(is_staff=True)
+        self.client.login(username=other.username, password="pass")
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 403)
+        self.assertNotContains(resp, "Summary-X", status_code=403)
+
+
+class CaseRenderCaseLinkTestCase(TestCase):
+    def setUp(self):
+        self.case = CaseFactory()
+        AdviceFactory(case=self.case)
+
+    def test_button_for_staff(self):
+        html = self.case.render_case_link(UserFactory(is_staff=True))
+        self.assertIn("data-advice-summary-url", html)
+
+    def test_no_button_for_client_or_without_user(self):
+        self.assertNotIn(
+            "data-advice-summary-url", self.case.render_case_link(UserFactory())
+        )
+        self.assertNotIn("data-advice-summary-url", self.case.render_case_link())
+
+    def test_no_button_without_advice(self):
+        html = CaseFactory().render_case_link(UserFactory(is_staff=True))
+        self.assertNotIn("data-advice-summary-url", html)
+
 
 class StaffCaseFilterTestCase(TestCase):
     def get_filter(self, *args, **kwargs):

@@ -14,9 +14,9 @@ from ..registry import parser_registry
 
 
 def generator(f, suffix=None):
-    filename = "{}.{}".format(f.__self__.__class__.__name__, f.__name__)
+    filename = f"{f.__self__.__class__.__name__}.{f.__name__}"
     if suffix:
-        filename = "{}.{}".format(suffix, filename)
+        filename = f"{suffix}.{filename}"
     return os.path.join(os.path.dirname(inspect.getfile(f)), "cassettes", filename)
 
 
@@ -39,7 +39,7 @@ class ParserTestCaseMixin(TestCase):
                 self.subTest(parser_key=parser_key),
             ):
                 for i, session_row in enumerate(court.get_parser().get_session_rows()):
-                    msg = "Failed for {} in {}.".format(i, parser_key)
+                    msg = f"Failed for {i} in {parser_key}."
                     self.assertTrue(
                         session_row.signature, msg=msg + "Missing signature"
                     )
@@ -75,7 +75,7 @@ class ParserTestCaseMixin(TestCase):
         ]
         supported = set(get_parser_keys())
         for requirement in required_parsers:
-            self.assertIn(requirement, supported, msg="Missing {}".format(requirement))
+            self.assertIn(requirement, supported, msg=f"Missing {requirement}")
 
     @my_vcr.use_cassette()
     def test_parse_date_and_hours(self):

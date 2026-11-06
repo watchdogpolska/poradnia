@@ -9,7 +9,17 @@ on:
     types: [opened, synchronize]
 
 jobs:
+  # Fails fast if the Python version pinned in different places drifts apart.
+  # The check itself lives in .contrib/check_python_versions.sh.
+  python_version_check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Verify all pinned Python versions match
+        run: make check-python-versions
+
   django_build_and_test:
+    needs: python_version_check
     runs-on: ubuntu-latest
     # strategy:
     #   matrix:
@@ -79,8 +89,10 @@ jobs:
   # pure fail-fast cost-saving (skip the ~10-15min Playwright/Chromium job
   # if the cheaper unit-test job was already going to fail the PR) at the
   # cost of roughly doubling PR wall-clock time; running in parallel trades
-  # a bit of wasted CI time on broken builds for faster feedback.
+  # a bit of wasted CI time on broken builds for faster feedback. It does
+  # wait for python_version_check, which takes only seconds.
   wcag_mode_checks:
+    needs: python_version_check
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7

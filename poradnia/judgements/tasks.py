@@ -8,7 +8,8 @@ and monitoring capabilities.
 
 import io
 import unittest
-from typing import Any, Dict, List, Optional, Sequence
+from collections.abc import Sequence
+from typing import Any
 
 from celery import shared_task
 from celery.utils.log import get_task_logger
@@ -32,9 +33,9 @@ logger = get_task_logger(__name__)
 )
 def run_court_session_parser(
     self,
-    court_ids: Optional[Sequence[int]] = None,
-    parser_key: Optional[str] = None,
-) -> Dict[str, Any]:
+    court_ids: Sequence[int] | None = None,
+    parser_key: str | None = None,
+) -> dict[str, Any]:
     """
     Parse court session data from various Polish courts.
 
@@ -89,8 +90,8 @@ def run_court_session_parser(
 
 
 def _normalize_court_ids(
-    court_ids: Optional[Sequence[int]],
-) -> Optional[List[int]]:
+    court_ids: Sequence[int] | None,
+) -> list[int] | None:
     """Normalize incoming court IDs to a plain list of ints or None."""
     if court_ids is None:
         return None
@@ -100,9 +101,9 @@ def _normalize_court_ids(
 def _initialize_task_result(
     *,
     task_id: str,
-    parser_key: Optional[str],
-    requested_court_ids: Optional[List[int]],
-) -> Dict[str, Any]:
+    parser_key: str | None,
+    requested_court_ids: list[int] | None,
+) -> dict[str, Any]:
     """Initialize the task result payload."""
     return {
         "status": "started",
@@ -117,7 +118,7 @@ def _initialize_task_result(
     }
 
 
-def _prepare_task_environment(parser_key: Optional[str]):
+def _prepare_task_environment(parser_key: str | None):
     """Validate inputs and prepare shared task resources."""
     if parser_key and parser_key not in get_parser_keys():
         raise ValueError(f"Invalid parser key: {parser_key}")
@@ -138,9 +139,9 @@ def _prepare_task_environment(parser_key: Optional[str]):
 
 
 def _get_courts_to_process(
-    court_ids: Optional[Sequence[int]] = None,
-    parser_key: Optional[str] = None,
-) -> List[Court]:
+    court_ids: Sequence[int] | None = None,
+    parser_key: str | None = None,
+) -> list[Court]:
     """
     Return the concrete list of courts to process.
 
@@ -158,7 +159,7 @@ def _get_courts_to_process(
     return [court for court in qs if court.parser_status]
 
 
-def _complete_task_no_courts(result: Dict[str, Any]) -> Dict[str, Any]:
+def _complete_task_no_courts(result: dict[str, Any]) -> dict[str, Any]:
     """Return a completed result when no courts match the selection criteria."""
     logger.warning(
         "No courts found matching parser_key=%s court_ids=%s",
@@ -178,7 +179,7 @@ def _process_all_courts(
     *,
     courts_list: Sequence[Court],
     judgement_bot,
-    result: Dict[str, Any],
+    result: dict[str, Any],
 ) -> None:
     """Process all selected courts and accumulate summary metrics."""
     # Manager also logs each action via `logger` directly; these buffers just
@@ -198,7 +199,7 @@ def _process_single_court(
     *,
     court: Court,
     manager: Manager,
-    result: Dict[str, Any],
+    result: dict[str, Any],
 ) -> None:
     """Process one court, updating success/failure counters and error details."""
     try:
@@ -246,7 +247,7 @@ def _count_court_sessions(court: Court) -> int:
     time_limit=900,
     soft_time_limit=840,
 )
-def monitor_court_parsers(self) -> Dict[str, Any]:
+def monitor_court_parsers(self) -> dict[str, Any]:
     """
     Run LiveParserTestCase in-process and email ADMINS if any parsers fail.
 
@@ -297,7 +298,7 @@ def monitor_court_parsers(self) -> Dict[str, Any]:
     }
 
 
-def _finalize_task_result(result: Dict[str, Any]) -> Dict[str, Any]:
+def _finalize_task_result(result: dict[str, Any]) -> dict[str, Any]:
     """Finalize the task result status and log the final summary."""
     if result["courts_failed"] == 0:
         result["status"] = "completed_success"

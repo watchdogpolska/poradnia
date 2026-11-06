@@ -3,8 +3,10 @@ from collections import OrderedDict
 from ajax_datatable import AjaxDatatableView
 from dal import autocomplete
 from django.contrib import messages
+from django.core.exceptions import PermissionDenied
 from django.db.models import Prefetch, Q
-from django.shortcuts import redirect
+from django.http import Http404
+from django.shortcuts import redirect, render
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.functional import cached_property
@@ -262,7 +264,7 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
     ]
 
     def customize_row(self, row, obj):
-        row["name"] = obj.render_case_link()
+        row["name"] = obj.render_case_link(self.request.user)
         # row["name"] = obj.render_case_link_formatted(self.request.user)
         row["status"] = obj.render_status()
         # row["handled"] = obj.render_handled()
@@ -402,6 +404,27 @@ class CaseRequestAiTagsView(SingleObjectPermissionMixin, DetailView):
             )
         advice = getattr(self.object, "advice", None)
         return redirect(advice if advice else self.object)
+
+
+class CaseAdviceSummaryModalView(SingleObjectPermissionMixin, DetailView):
+    """Popup fetched by cases/_advice_summary_button.html (base.html JS)."""
+
+    model = Case
+    template_name = "cases/_advice_summary_modal.html"
+    permission_required = ["cases.can_view"]
+    accept_global_perms = True
+
+    def get_queryset(self):
+        return super().get_queryset().select_related("advice")
+
+    def get(self, request, *args, **kwargs):
+        # Advice is staff-only data - same gate as case_detail.html.
+        if not request.user.is_staff:
+            raise PermissionDenied
+        advice = getattr(self.object, "advice", None)
+        if advice is None:
+            raise Http404
+        return render(request, self.template_name, {"advice": advice})
 
 
 class CaseAutocomplete(autocomplete.AlightQuerySetView):

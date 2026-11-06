@@ -24,7 +24,7 @@ class Migration(migrations.Migration):
             name="last_action",
             field=models.DateTimeField(
                 default=datetime.datetime(
-                    2015, 3, 8, 2, 49, 55, 496358, tzinfo=datetime.timezone.utc
+                    2015, 3, 8, 2, 49, 55, 496358, tzinfo=datetime.UTC
                 ),
                 auto_now=True,
             ),

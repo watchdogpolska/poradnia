@@ -31,8 +31,10 @@ from django.db.models import (
 from django.db.models.functions import Cast
 from django.db.models.query import QuerySet
 from django.template import Context, Template
+from django.template.loader import render_to_string
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.html import escape
 from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
@@ -136,9 +138,7 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
             field_name = self.model.STAFF_ORDER_DEFAULT_FIELD
         else:
             field_name = self.model.USER_ORDER_DEFAULT_FIELD
-        return self.order_by(
-            "{}{}".format(order, field_name), "{}{}".format(order, "pk")
-        )
+        return self.order_by(f"{order}{field_name}", "{}{}".format(order, "pk"))
 
     def with_month_year(self):
         return self.annotate(
@@ -326,12 +326,23 @@ class Case(models.Model):
     def get_absolute_url(self):
         return reverse("cases:detail", kwargs={"pk": str(self.pk)})
 
-    def render_case_link(self):
+    def render_case_link(self, user=None):
         url = self.get_absolute_url()
-        label = self.name
+        # DataTables inserts this as HTML and the name is client-supplied.
+        label = escape(self.name)
         bold_start = "" if self.handled else "<b>"
         bold_end = "" if self.handled else "</b>"
-        return f'{bold_start}<a href="{url}">{label}</a>{bold_end}'
+        link = f'{bold_start}<a href="{url}">{label}</a>{bold_end}'
+        return link + self.render_advice_summary_button(user)
+
+    def render_advice_summary_button(self, user):
+        # Advice is staff-only data - same gate as case_detail.html's
+        # "Advice tags" row.
+        if not (user and user.is_staff and hasattr(self, "advice")):
+            return ""
+        return " " + render_to_string(
+            "cases/_advice_summary_button.html", {"case": self}
+        )
 
     def render_case_link_formatted(self, user):
         url = self.get_absolute_url()
@@ -393,8 +404,8 @@ class Case(models.Model):
             if key.is_staff
         ]
         return "<br>".join([f"""
-                <span class="badge text-bg-info" title="{user["title"]}">
-                {user["grouper"].get_nicename()}</span>
+                <span class="badge text-bg-info" title="{escape(user["title"])}">
+                {escape(user["grouper"].get_nicename())}</span>
             """ for user in user_list])
 
     def render_case_advice_link(self):
@@ -579,7 +590,7 @@ class Case(models.Model):
         param = getattr(self, field_name)
         q = Q()
         if param:
-            q = q | Q(**{"{}__{}".format(field_name, op): param})
+            q = q | Q(**{f"{field_name}__{op}": param})
         if self.pk:
             q = q | Q(**{field_name: param, "pk__%s" % op: self.pk})
         manager = self.__class__._default_manager.using(self._state.db).filter(**kwargs)

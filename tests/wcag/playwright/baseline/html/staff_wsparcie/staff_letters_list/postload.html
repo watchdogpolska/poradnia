@@ -885,6 +885,7 @@
 
 
 <div id="attachment-text-modal-container"></div>
+<div id="advice-summary-modal-container"></div>
 <div class="htmx-indicator" id="htmx-spinner">
     Wczytywanie...
 </div>
@@ -955,6 +956,59 @@
             el.remove();
         });
         document.body.classList.remove('modal-open');
+    });
+
+    // Advice summary popup (cases/_advice_summary_button.html). The button
+    // also sits inside DataTables rows rendered after page load, which htmx
+    // never processes, so this is a delegated click handler with fetch()
+    // rather than hx-get like the attachment popup above.
+    var adviceSummaryTrigger = null;
+
+    document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-advice-summary-url]');
+        if (!button) {
+            return;
+        }
+        event.preventDefault();
+        adviceSummaryTrigger = button;
+        fetch(button.dataset.adviceSummaryUrl, {credentials: 'same-origin'})
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status);
+                }
+                return response.text();
+            })
+            .then(function (html) {
+                var container = document.getElementById('advice-summary-modal-container');
+                container.innerHTML = html;
+                bootstrap.Modal.getOrCreateInstance(
+                    document.getElementById('adviceSummaryModal')
+                ).show();
+            })
+            .catch(function (error) {
+                console.error('Advice summary popup failed:', error);
+            });
+    });
+
+    // Same aria-hidden reason as #attachmentTextModal above.
+    document.addEventListener('hide.bs.modal', function (event) {
+        if (event.target.matches('#adviceSummaryModal') && event.target.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+    });
+
+    document.addEventListener('hidden.bs.modal', function (event) {
+        if (!event.target.matches('#adviceSummaryModal')) {
+            return;
+        }
+        bootstrap.Modal.getOrCreateInstance(event.target).dispose();
+        document.getElementById('advice-summary-modal-container').innerHTML = '';
+        // Shown via .show(), not data-bs-toggle, so Bootstrap doesn't
+        // return focus to the trigger on its own.
+        if (adviceSummaryTrigger && document.body.contains(adviceSummaryTrigger)) {
+            adviceSummaryTrigger.focus();
+        }
+        adviceSummaryTrigger = null;
     });
 
     function getCookie(name) {

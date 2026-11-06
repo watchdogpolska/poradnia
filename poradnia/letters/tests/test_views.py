@@ -507,6 +507,48 @@ class StreamAttachmentViewTestCase(TestCase):
         return hash_md5.hexdigest()
 
 
+class AttachmentTextContentModalViewTestCase(TestCase):
+    def setUp(self):
+        self.attachment = AttachmentFactory(
+            letter__status=Letter.STATUS.done, text_content="secret-text"
+        )
+        self.case = self.attachment.letter.case
+        self.url = reverse(
+            "letters:attachment_text_content_modal", kwargs={"pk": self.attachment.pk}
+        )
+
+    def _login(self, user):
+        self.client.login(username=user.username, password="pass")
+
+    def test_user_with_case_access_sees_text(self):
+        user = UserFactory()
+        assign_perm("cases.can_view", user, self.case)
+        self._login(user)
+        self.assertContains(self.client.get(self.url), "secret-text")
+
+    def test_user_without_case_access_gets_404(self):
+        self._login(UserFactory())
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 404)
+        self.assertNotContains(resp, "secret-text", status_code=404)
+
+    def test_staff_without_case_access_gets_404(self):
+        self._login(UserFactory(is_staff=True))
+        self.assertEqual(self.client.get(self.url).status_code, 404)
+
+    def test_client_cannot_read_staff_only_letter_attachment(self):
+        self.attachment.letter.status = Letter.STATUS.staff
+        self.attachment.letter.save()
+        user = UserFactory()
+        assign_perm("cases.can_view", user, self.case)
+        self._login(user)
+        self.assertEqual(self.client.get(self.url).status_code, 404)
+
+    def test_anonymous_redirected_to_login(self):
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 302)
+
+
 class DownloadAttachmentViewTestCase(TestCase):
     def setUp(self):
         self.attachment = AttachmentFactory()
@@ -528,7 +570,7 @@ class ReceiveEmailTestCase(TestCase):
 
     def setUp(self):
         self.url = reverse("letters:webhook")
-        self.authenticated_url = "{}?secret={}".format(self.url, LETTER_RECEIVE_SECRET)
+        self.authenticated_url = f"{self.url}?secret={LETTER_RECEIVE_SECRET}"
 
     def test_required_authentication(self):
         response = self.client.get(self.url)

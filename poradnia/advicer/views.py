@@ -29,7 +29,7 @@ from poradnia.utils.view_mixins import (
 
 from .filters import AdviceFilter
 from .forms import AdviceForm
-from .models import Advice, Area, Issue
+from .models import Advice, Area, Issue, Scope
 
 ORDERING_TEXT = _("Ordering")
 
@@ -182,7 +182,9 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
 
     def customize_row(self, row, obj):
         row["subject"] = obj.render_advice_link()
-        row["case_name"] = obj.case.render_case_link() if obj.case else ""
+        row["case_name"] = (
+            obj.case.render_case_link(self.request.user) if obj.case else ""
+        )
         row["helped"] = obj.render_helped()
         row["visible"] = obj.render_visible()
         return
@@ -361,6 +363,10 @@ class AdviceAiTagsAcceptView(
         }
         if "jst" in tags:
             applied["jst"] = tags["jst"]
+        # Suggestions stored before scope was tagged carry no "scope" key;
+        # don't wipe an existing Advice.scope when applying one of those.
+        if "scope" in tags:
+            applied["scope"] = tags["scope"]
 
         self.object.subject = applied["subject"]
         self.object.summary = applied["summary"]
@@ -368,6 +374,8 @@ class AdviceAiTagsAcceptView(
         self.object.institution_kind_id = applied["institution_kind"]
         if "jst" in applied:
             self.object.jst_id = applied["jst"]
+        if "scope" in applied:
+            self.object.scope_id = applied["scope"]
         self.object.modified_by = request.user
         self.object.save()
         self.object.issues.set(applied["issues"])  # replace, not merge
@@ -423,8 +431,32 @@ class AdviceAiTagsRejectView(
         )
 
 
+class ScopeFilteredAutocompleteMixin:
+    """Limit results to the forwarded scope's matching, active Issues/Areas.
+
+    Only applies when the widget forwards the ``scope_filtered`` marker
+    (AdviceForm does); other users of the endpoint, like the advice list
+    filter, keep getting unfiltered results, inactive entries included, so
+    old advices tagged with them stay searchable. With the marker set but no
+    valid scope selected, nothing is returned.
+    """
+
+    def get_queryset(self):
+        qs = super().get_queryset()
+        if not self.forwarded.get("scope_filtered"):
+            return qs
+        try:
+            scope = Scope.objects.get(pk=int(self.forwarded.get("scope")))
+        except (TypeError, ValueError, Scope.DoesNotExist):
+            return qs.none()
+        return qs.filter(active=True, **scope.flags_filter())
+
+
 class IssueAutocomplete(
-    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.AlightQuerySetView
+    StaffuserRequiredMixin,
+    ScopeFilteredAutocompleteMixin,
+    ExprAutocompleteMixin,
+    autocomplete.AlightQuerySetView,
 ):
     model = Issue
     search_expr = [
@@ -433,7 +465,10 @@ class IssueAutocomplete(
 
 
 class AreaAutocomplete(
-    StaffuserRequiredMixin, ExprAutocompleteMixin, autocomplete.AlightQuerySetView
+    StaffuserRequiredMixin,
+    ScopeFilteredAutocompleteMixin,
+    ExprAutocompleteMixin,
+    autocomplete.AlightQuerySetView,
 ):
     model = Area
     search_expr = [
