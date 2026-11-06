@@ -4,6 +4,7 @@ import pytz
 from django.conf import settings
 from django.db import models
 from django.urls import reverse
+from django.utils.html import escape
 from django.utils.safestring import mark_safe
 from django.utils.timezone import now
 from django.utils.translation import gettext_lazy as _
@@ -104,12 +105,12 @@ class Event(AbstractRecord):
     @property
     def subject(self):
         if len(self.text) > 100:
-            return "{} ...".format(self.text[:100])
+            return f"{self.text[:100]} ..."
         return self.text
 
     def get_absolute_url(self):
         case_url = self.record.case_get_absolute_url()
-        return "{}#event-{}".format(case_url, self.pk)
+        return f"{case_url}#event-{self.pk}"
 
     def get_edit_url(self):
         return reverse("events:edit", kwargs={"pk": self.pk})
@@ -122,7 +123,7 @@ class Event(AbstractRecord):
     @property
     def render_event_link(self):
         url = self.get_absolute_url()
-        label = self.text.replace("\n", "<br>")
+        label = escape(self.text).replace("\n", "<br>")
         bold_start = "" if self.deadline else "<b>"
         bold_end = "" if self.deadline else "</b>"
         return f'{bold_start}<a href="{url}">{label}</a>{bold_end}'
@@ -180,7 +181,7 @@ class Event(AbstractRecord):
     def render_court_case(self):
         if hasattr(self, "courtsession") and self.courtsession:
             return mark_safe(
-                self.courtsession.courtcase.signature
+                escape(self.courtsession.courtcase.signature)
                 + "<br>"
                 + self.courtsession.courtcase.render_court_order_search_link
             )

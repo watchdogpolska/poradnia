@@ -160,7 +160,8 @@
                     {% endif %}
                 </div>
                 <h1 class="case-header-title{% if user.is_staff and object.handled %} success{% endif %}">{{ object.name }}
-                    <span class="case-header-number">#{{ object.pk }}</span></h1>
+                    <span class="case-header-number">#{{ object.pk }}</span>
+                    {{ object|advice_summary_button:request.user }}</h1>
                 <div class="case-header-meta">
                     {% if object.status_changed %}
                         <span class="badge text-bg-success"

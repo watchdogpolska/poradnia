@@ -35,7 +35,7 @@ def mail_managers_replyable(
     else:
         headers = {}
     mail = EmailMultiAlternatives(
-        "{}{}".format(settings.EMAIL_SUBJECT_PREFIX, subject),
+        f"{settings.EMAIL_SUBJECT_PREFIX}{subject}",
         message,
         settings.SERVER_EMAIL,
         [a[1] for a in settings.MANAGERS],

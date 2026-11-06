@@ -96,10 +96,19 @@ const submitAdviceForm = (cy) => (
     solved,
     administrativeDivision,
     adviceAuthor,
+    adviceScope,
     adviceIssue,
     adviceArea,
   }
 ) => {
+  // Scope goes first: the issue/area autocompletes only offer entries
+  // matching it, and changing it clears their selections.
+  if (adviceScope) {
+    cy.contains("div", "Zakres poradnictwa").within(($div) => {
+      cy.get("select").select(adviceScope.name);
+    });
+  }
+
   if (adviceIssue) {
     cy.contains("div", "Zagadnienia").within(($div) => {
       selectAutocompleteOptionContaining(adviceIssue.name);
@@ -271,4 +280,5 @@ module.exports = {
   submitCourtCaseForm,
   submitAdviceForm,
   submitAdviceFilterForm,
+  selectAutocompleteOptionContaining,
 };

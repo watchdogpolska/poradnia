@@ -217,7 +217,7 @@ class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
         self.helper.form_tag = False
         self._fill_footer()
         self._add_buttons()
-        self.fields["name"].initial = "Odp: {}".format(self.case)
+        self.fields["name"].initial = f"Odp: {self.case}"
         self.fields["html"].widget = TinyMCE(attrs={"cols": 80, "rows": 30})
         # if settings.RICH_TEXT_ENABLED:
         #     self.fields["text"].help_text = INFO_ABOUT_MARKDOWN

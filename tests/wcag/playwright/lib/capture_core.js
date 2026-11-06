@@ -254,6 +254,16 @@ async function runInteraction(page, kind) {
       await page.waitForSelector(".modal-backdrop.show", { timeout: 5000 }).catch(() => {});
       break;
     }
+    case "advice_summary_modal_open": {
+      // The popup is fetched on click (base.html), then shown via
+      // bootstrap.Modal - wait for it and its backdrop, as above.
+      const btn = page.locator("button[data-advice-summary-url]").first();
+      await btn.waitFor({ state: "visible", timeout: 5000 });
+      await btn.click();
+      await page.waitForSelector("#adviceSummaryModal.show", { timeout: 5000 });
+      await page.waitForSelector(".modal-backdrop.show", { timeout: 5000 }).catch(() => {});
+      break;
+    }
     case "dal_dropdown_open": {
       // The DAL "Alight" widget's underlying <input>, inside its custom
       // element (see waitStable's data-bound wait above).

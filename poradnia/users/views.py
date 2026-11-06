@@ -12,6 +12,7 @@ from django.core.exceptions import PermissionDenied
 from django.db.models import Q
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.views.generic import (
@@ -456,6 +457,6 @@ class UserAjaxDatatableView(StaffuserRequiredMixin, PermissionMixin, AjaxDatatab
         return super().filter_queryset_by_column(column_name, search_value, qs)
 
     def customize_row(self, row, obj):
-        row["username"] = mark_safe(
-            f'<a href="{obj.get_absolute_url()}">{obj.username}</a>'
+        row["username"] = format_html(
+            '<a href="{}">{}</a>', obj.get_absolute_url(), obj.username
         )

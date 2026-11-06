@@ -1,6 +1,6 @@
 # Local development dependencies go here
 -r base.txt
-Sphinx==9.1.0
+Sphinx==9.2.0
 
 django-debug-toolbar==8.0.0
 django-extensions==4.1
@@ -8,7 +8,7 @@ graphviz==0.21
 factory-boy==3.3.3
 django-coverage-plugin==3.2.2
 django-test-plus==2.7.0
-vcrpy==8.3.0
+vcrpy==9.2.0
 ipdb==0.13.13
 
 pre-commit==4.7.0

@@ -97,12 +97,14 @@ class IssueAdmin(admin.ModelAdmin):
         "is_dip",
         "is_local_government",
         "is_slapp",
+        "is_out_of_scope",
         "active",
     ]
     list_filter = [
         "is_dip",
         "is_local_government",
         "is_slapp",
+        "is_out_of_scope",
         "active",
     ]
 
@@ -118,12 +120,14 @@ class AreaAdmin(admin.ModelAdmin):
         "is_dip",
         "is_local_government",
         "is_slapp",
+        "is_out_of_scope",
         "active",
     ]
     list_filter = [
         "is_dip",
         "is_local_government",
         "is_slapp",
+        "is_out_of_scope",
         "active",
     ]
 

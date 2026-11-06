@@ -69,8 +69,8 @@ class UserQuerySet(QuerySet):
             Case(
                 When(
                     **{
-                        "{}__status".format(cup_co): CaseModel.STATUS.free,
-                        "then": "{}__pk".format(cup_co),
+                        f"{cup_co}__status": CaseModel.STATUS.free,
+                        "then": f"{cup_co}__pk",
                     }
                 ),
                 default=None,
@@ -83,8 +83,8 @@ class UserQuerySet(QuerySet):
             Case(
                 When(
                     **{
-                        "{}__status".format(cup_co): CaseModel.STATUS.assigned,
-                        "then": "{}__pk".format(cup_co),
+                        f"{cup_co}__status": CaseModel.STATUS.assigned,
+                        "then": f"{cup_co}__pk",
                     }
                 ),
                 default=None,
@@ -97,8 +97,8 @@ class UserQuerySet(QuerySet):
             Case(
                 When(
                     **{
-                        "{}__status".format(cup_co): CaseModel.STATUS.closed,
-                        "then": "{}__pk".format(cup_co),
+                        f"{cup_co}__status": CaseModel.STATUS.closed,
+                        "then": f"{cup_co}__pk",
                     }
                 ),
                 default=None,
@@ -111,8 +111,8 @@ class UserQuerySet(QuerySet):
             Case(
                 When(
                     **{
-                        "{}__status".format(cup_co): CaseModel.STATUS.moderated,
-                        "then": "{}__pk".format(cup_co),
+                        f"{cup_co}__status": CaseModel.STATUS.moderated,
+                        "then": f"{cup_co}__pk",
                     }
                 ),
                 default=None,
@@ -170,7 +170,7 @@ class CustomUserManager(UserManager.from_queryset(UserQuerySet)):
         if not User.objects.filter(username=prefix).exists():
             return prefix
         while limit > 0:
-            username = "{prefix}-{no}".format(prefix=prefix, no=limit_org - limit + 1)
+            username = f"{prefix}-{limit_org - limit + 1}"
             if not User.objects.filter(username=username).exists():
                 return username
             limit -= 1

@@ -277,11 +277,13 @@ def reset_database():
         user.picture.delete(save=False)
     for attachment in Attachment.objects.exclude(attachment=""):
         attachment.attachment.delete(save=False)
+    # Advice.advicer/.created_by are on_delete=PROTECT, so advices must go
+    # before the User wipe or it raises ProtectedError.
+    Advice.objects.all().delete()
     User.objects.all().delete()
     CourtSession.objects.all().delete()
     CourtCase.objects.all().delete()
     Court.objects.all().delete()
-    Advice.objects.all().delete()
     # Feedback.user is nullable: rows created with user=None (the
     # "anonymous feedback" scenario) aren't reachable by cascading from
     # User, so they'd otherwise survive every --reset and accumulate.

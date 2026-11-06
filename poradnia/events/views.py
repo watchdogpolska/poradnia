@@ -229,7 +229,9 @@ class EventAjaxDatatableView(PermissionMixin, AjaxDatatableView):
     ]
 
     def customize_row(self, row, obj):
-        row["case_name"] = obj.case.render_case_link() if obj.case else ""
+        row["case_name"] = (
+            obj.case.render_case_link(self.request.user) if obj.case else ""
+        )
         row["text"] = obj.render_event_link
         row["properties"] = obj.render_property_icons
         row["court_case"] = obj.render_court_case
@@ -308,7 +310,7 @@ class ICalendarView(KeyAuthMixin, PermissionMixin, BaseListView):
         from icalendar import Calendar
 
         cal = Calendar()
-        cal["summary"] = "Events for {}".format(self.request.user)
+        cal["summary"] = f"Events for {self.request.user}"
         cal["dtstart"] = self.get_start()
         cal["dtend"] = self.get_end()
 

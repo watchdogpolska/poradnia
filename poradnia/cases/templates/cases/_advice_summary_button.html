@@ -1,0 +1,8 @@
+{% load i18n %}<button
+    type="button"
+    class="btn btn-sm btn-default align-middle"
+    title="{% trans 'Summary' %}"
+    aria-label="{% trans 'Summary' %}"
+    aria-haspopup="dialog"
+    data-advice-summary-url="{% url 'cases:advice_summary_modal' pk=case.pk %}"
+><i class="fa-solid fa-circle-info" aria-hidden="true"></i></button>

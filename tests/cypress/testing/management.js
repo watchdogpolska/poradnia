@@ -76,35 +76,40 @@ const createAdministrativeDivisionUnit = (cy) => (unit) => {
   );
 };
 
-const createAdviceArea = (cy) => (adviceArea) => {
-  const { name, active = 1, tag_helper = null, is_dip = 1, is_local_government = 0, is_slapp = 0 } = adviceArea;
+// Issues, areas and scopes share the same flag columns; an issue/area is
+// selectable in the advice form only when all flags equal the scope's.
+const createAdviceCategory = (cy) => (table, category) => {
+  const {
+    name,
+    active = 1,
+    tag_helper = null,
+    is_dip = 1,
+    is_local_government = 0,
+    is_slapp = 0,
+    is_out_of_scope = 0,
+  } = category;
   cy.task(
     "db:query",
-    buildInsertQuery("advicer_area", {
+    buildInsertQuery(table, {
       name: withExtraQuotes(name),
       active,
       tag_helper: tag_helper === null ? "NULL" : withExtraQuotes(tag_helper),
       is_dip,
       is_local_government,
       is_slapp,
+      is_out_of_scope,
     })
   );
 };
 
-const createAdviceIssue = (cy) => (adviceIssue) => {
-  const { name, active = 1, tag_helper = null, is_dip = 1, is_local_government = 0, is_slapp = 0 } = adviceIssue;
-  cy.task(
-    "db:query",
-    buildInsertQuery("advicer_issue", {
-      name: withExtraQuotes(name),
-      active,
-      tag_helper: tag_helper === null ? "NULL" : withExtraQuotes(tag_helper),
-      is_dip,
-      is_local_government,
-      is_slapp,
-    })
-  );
-};
+const createAdviceArea = (cy) => (adviceArea) =>
+  createAdviceCategory(cy)("advicer_area", adviceArea);
+
+const createAdviceIssue = (cy) => (adviceIssue) =>
+  createAdviceCategory(cy)("advicer_issue", adviceIssue);
+
+const createAdviceScope = (cy) => (adviceScope) =>
+  createAdviceCategory(cy)("advicer_scope", adviceScope);
 
 module.exports = {
   addSuperUserPrivileges,
@@ -113,4 +118,5 @@ module.exports = {
   createAdministrativeDivisionUnit,
   createAdviceArea,
   createAdviceIssue,
+  createAdviceScope,
 };
