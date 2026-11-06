@@ -474,6 +474,15 @@ label {
     margin-top: 10px;
 }
 
+// WCAG 2.5.8: the library's 10px row expand/collapse icons need a 24px target.
+.dataTables_row-tools a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 24px;
+    min-height: 24px;
+}
+
 // BS3 left `<input type="file">` completely unstyled, so every browser drew
 // its own native OS file-picker button - always rendered with its own
 // visible border/bevel sitting on a light gray fill, unmistakably a button,
