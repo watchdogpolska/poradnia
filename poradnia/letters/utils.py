@@ -7,13 +7,34 @@ import re
 import string
 from email import policy
 from email.parser import BytesParser
+from html import unescape
 from html.parser import HTMLParser
 
+import bleach
+from bleach.css_sanitizer import CSSSanitizer
+from bleach.sanitizer import ALLOWED_PROTOCOLS
+from django.conf import settings
 from django.core.files.base import File
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.utils.timezone import now
 
 logger = logging.getLogger(__name__)
+
+css_sanitizer = CSSSanitizer(
+    allowed_css_properties=settings.BLEACH_ALLOWED_CSS_PROPERTIES
+)
+
+# bleach's strip=True drops the tag but keeps its text, which for these elements
+# would print raw CSS into the letter. Not a security control: bleach runs after.
+# The \Z branch makes an unclosed tag one match, keeping this linear.
+UNRENDERED_ELEMENT_RE = re.compile(
+    r"<(style|script|title)\b.*?(?:</\1\s*>|\Z)", re.IGNORECASE | re.DOTALL
+)
+
+# Same noise bleach removes before it reads a URI's scheme.
+URI_NOISE_RE = re.compile("[`\000-\040\177-\240\\s�]+")
+# No SVG: it is the one image format that can carry script.
+DATA_IMAGE_RE = re.compile(r"data:image/(?:png|jpe?g|gif);base64,[a-z0-9+/=]*", re.I)
 
 
 class HTMLFilter(HTMLParser):
@@ -21,6 +42,32 @@ class HTMLFilter(HTMLParser):
 
     def handle_data(self, data):
         self.text += data
+
+
+def allow_html_attribute(tag, name, value):
+    if name == "style":
+        return True
+    if name not in settings.BLEACH_ALLOWED_ATTRIBUTES.get(tag, ()):
+        return False
+    if name not in ("href", "src"):
+        return True
+    # bleach's protocols apply to every tag, so "data" being allowed for pasted
+    # images has to be narrowed back down here.
+    uri = URI_NOISE_RE.sub("", unescape(value))
+    if "data:" not in uri.lower():
+        return True
+    return (tag, name) == ("img", "src") and bool(DATA_IMAGE_RE.fullmatch(uri))
+
+
+def sanitize_html(html):
+    return bleach.clean(
+        UNRENDERED_ELEMENT_RE.sub("", html),
+        tags=settings.BLEACH_ALLOWED_TAGS,
+        attributes=allow_html_attribute,
+        protocols=ALLOWED_PROTOCOLS | {"data"},
+        css_sanitizer=css_sanitizer,
+        strip=True,
+    )
 
 
 def prefix_gen(
