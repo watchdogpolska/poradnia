@@ -73,8 +73,24 @@ jobs:
             echo "No changes in static files."
           fi
 
-      - name: Run unit tests
-        run: make test
+      - name: Run unit tests with coverage
+        run: make coverage
+      - name: Publish coverage report to job summary
+        if: ${{ !cancelled() }}
+        run: |
+          docker compose run --rm --no-deps -T web \
+            coverage report --format=markdown >> "$GITHUB_STEP_SUMMARY"
+      - name: Export coverage report for Codecov
+        if: ${{ !cancelled() }}
+        run: docker compose run --rm --no-deps -T web coverage xml -o coverage.xml
+      - name: Upload coverage to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v7
+        with:
+          files: ./coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          # Fork PRs get no secrets; don't fail the build over the upload.
+          fail_ci_if_error: false
       - name: Run e2e tests
         run: make e2e
 

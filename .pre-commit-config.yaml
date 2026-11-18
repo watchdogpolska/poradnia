@@ -1,11 +1,11 @@
 ---
 ci:
   autofix_commit_msg: |
-      [pre-commit.ci] auto fixes from pre-commit.com hooks
-      for more information, see https://pre-commit.ci
+    [pre-commit.ci] auto fixes from pre-commit.com hooks
+    for more information, see https://pre-commit.ci
   autofix_prs: true
-  autoupdate_branch: 'dev'
-  autoupdate_commit_msg: '[pre-commit.ci] pre-commit autoupdate'
+  autoupdate_branch: "dev"
+  autoupdate_commit_msg: "[pre-commit.ci] pre-commit autoupdate"
   autoupdate_schedule: weekly
   skip: []
   submodules: false
@@ -27,10 +27,10 @@ repos:
         args:
           - --py313-plus
   - repo: https://github.com/pycqa/isort
-    rev: 10.0.0b2
+    rev: 10.0.0b3
     hooks:
       - id: isort
-        args: ["--profile", "black", "--filter-files"]
+        args: ["--filter-files"]
   - repo: https://github.com/sirosen/check-jsonschema
     rev: 0.39.0
     hooks:
@@ -52,4 +52,12 @@ repos:
     hooks:
       - id: flake8
         args:
-          - --config=./setup.cfg
+          - --config=./.flake8
+  - repo: local
+    hooks:
+      - id: prettier
+        name: prettier
+        entry: prettier --write --ignore-unknown
+        language: node
+        additional_dependencies: ["prettier@3.9.10"]
+        types_or: [javascript, css, scss, json, yaml, markdown]

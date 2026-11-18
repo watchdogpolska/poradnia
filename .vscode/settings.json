@@ -1,5 +1,5 @@
 {
-    "python.analysis.typeCheckingMode": "off",
-    "makefile.configureOnOpen": false,
-    // "python.analysis.autoImportCompletions": true
+  "python.analysis.typeCheckingMode": "off",
+  "makefile.configureOnOpen": false
+  // "python.analysis.autoImportCompletions": true
 }

@@ -16,7 +16,7 @@ const addSuperUserPrivileges = (cy) => (user) => {
     "db:query",
     `update users_user
      set is_staff=1, is_superuser=1
-     where username="${username}"`
+     where username="${username}"`,
   );
 };
 
@@ -33,7 +33,7 @@ const createCourt = (cy) => (court) => {
       modified: withExtraQuotes("2010-01-01"),
       parser_key: withExtraQuotes("parser_key"),
       active: 1,
-    })
+    }),
   );
 };
 
@@ -46,7 +46,7 @@ const createAdministrativeDivisionCategory = (cy) => (category) => {
       name: withExtraQuotes(name),
       slug: withExtraQuotes(name),
       level,
-    })
+    }),
   );
 };
 
@@ -72,7 +72,7 @@ const createAdministrativeDivisionUnit = (cy) => (unit) => {
       lft,
       rght,
       tree_id: 0,
-    })
+    }),
   );
 };
 
@@ -98,7 +98,7 @@ const createAdviceCategory = (cy) => (table, category) => {
       is_local_government,
       is_slapp,
       is_out_of_scope,
-    })
+    }),
   );
 };
 

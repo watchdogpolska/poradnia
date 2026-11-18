@@ -59,9 +59,7 @@ describe("datatables", () => {
     });
 
     cy.closeDonatePopup();
-    cy.intercept({ pathname: "/listy/letters_table_ajax_data/" }).as(
-      "dtAjax"
-    );
+    cy.intercept({ pathname: "/listy/letters_table_ajax_data/" }).as("dtAjax");
     cy.visit("/listy/table/");
     cy.wait("@dtAjax");
 
@@ -79,12 +77,11 @@ describe("datatables", () => {
       name: "admin-category",
       level: 3,
     };
-    const [
-      administrativeDivisionUnit,
-    ] = AdministrativeDivisionUnit.batchFromIds(
-      ["admin-division"],
-      administrativeDivisionCategory
-    );
+    const [administrativeDivisionUnit] =
+      AdministrativeDivisionUnit.batchFromIds(
+        ["admin-division"],
+        administrativeDivisionCategory,
+      );
     createAdministrativeDivisionCategory(cy)(administrativeDivisionCategory);
     createAdministrativeDivisionUnit(cy)(administrativeDivisionUnit);
     // The advice form requires a scope.
@@ -98,7 +95,13 @@ describe("datatables", () => {
     });
 
     const advice = {
-      datetime: { year: 2020, month: "January", day: 1, hour: 12, minute: 30 },
+      datetime: {
+        year: 2020,
+        month: "January",
+        day: 1,
+        hour: 12,
+        minute: 30,
+      },
       solved: 1,
       administrativeDivision: administrativeDivisionUnit.name,
       adviceScope,
@@ -111,9 +114,7 @@ describe("datatables", () => {
     });
 
     cy.closeDonatePopup();
-    cy.intercept({ pathname: "/porady/advice_table_ajax_data/" }).as(
-      "dtAjax"
-    );
+    cy.intercept({ pathname: "/porady/advice_table_ajax_data/" }).as("dtAjax");
     cy.visit("/porady/table/");
     cy.wait("@dtAjax");
 
@@ -134,7 +135,13 @@ describe("datatables", () => {
 
     const event = {
       text: "event-text",
-      datetime: { year: 2020, month: "January", day: 1, hour: 12, minute: 30 },
+      datetime: {
+        year: 2020,
+        month: "January",
+        day: 1,
+        hour: 12,
+        minute: 30,
+      },
     };
     cy.contains("Wydarzenie").click();
     cy.contains("form", "Czas").within(($form) => {
@@ -143,7 +150,7 @@ describe("datatables", () => {
 
     cy.closeDonatePopup();
     cy.intercept({ pathname: "/wydarzenia/events_table_ajax_data/" }).as(
-      "dtAjax"
+      "dtAjax",
     );
     cy.visit("/wydarzenia/table/");
     cy.wait("@dtAjax");
@@ -159,7 +166,7 @@ describe("datatables", () => {
 
     cy.closeDonatePopup();
     cy.intercept({ pathname: "/uzytkownik/users_table_ajax_data/" }).as(
-      "dtAjax"
+      "dtAjax",
     );
     cy.visit("/uzytkownik/table/");
     cy.wait("@dtAjax");

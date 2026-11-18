@@ -15,7 +15,7 @@ reached that state. A PR that adds a control, form, or page only in normal
 mode is treated the same as a PR that breaks an existing test: it doesn't
 merge. `equivalence_test.js` is the automated half of that check (same
 form fields, actionable-control targets, and content in both modes); it
-cannot judge whether the WCAG-mode rendering is actually *good*
+cannot judge whether the WCAG-mode rendering is actually _good_
 (semantically correct landmarks, sensible focus order, real labels - not
 just "technically present"), which stays a human PR-review step.
 
@@ -26,9 +26,9 @@ just "technically present"), which stays a human PR-review step.
   `equivalence_test.js`, `baseline_diff.js`, plus a fresh manual keyboard
   review) and republish the accessibility statement with updated dates and
   any new or resolved non-conformities.
-- **After every release**: the three CI gates above catch *regressions*
+- **After every release**: the three CI gates above catch _regressions_
   automatically on every PR. They do not substitute for the human review
-  step described above for *new* WCAG-mode work.
+  step described above for _new_ WCAG-mode work.
 
 ## What's here
 

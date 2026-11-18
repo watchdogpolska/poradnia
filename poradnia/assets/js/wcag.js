@@ -30,74 +30,74 @@
 // with a single close button, so it has the same gap and gets the same
 // Tab-wrap/Escape handling. Its focus-return is done by base.html.
 (function () {
-    var MODAL_ID = "attachmentTextModal";
-    var MODAL_IDS = [MODAL_ID, "adviceSummaryModal"];
-    var TRIGGER_SELECTOR = '[hx-target="#attachment-text-modal-container"]';
-    var lastTrigger = null;
+  var MODAL_ID = "attachmentTextModal";
+  var MODAL_IDS = [MODAL_ID, "adviceSummaryModal"];
+  var TRIGGER_SELECTOR = '[hx-target="#attachment-text-modal-container"]';
+  var lastTrigger = null;
 
-    document.addEventListener("click", function (event) {
-        var trigger = event.target.closest(TRIGGER_SELECTOR);
-        if (trigger) {
-            lastTrigger = trigger;
-        }
-    });
+  document.addEventListener("click", function (event) {
+    var trigger = event.target.closest(TRIGGER_SELECTOR);
+    if (trigger) {
+      lastTrigger = trigger;
+    }
+  });
 
-    document.addEventListener("hidden.bs.modal", function (event) {
-        if (event.target.id === MODAL_ID && lastTrigger) {
-            lastTrigger.focus();
-        }
-    });
+  document.addEventListener("hidden.bs.modal", function (event) {
+    if (event.target.id === MODAL_ID && lastTrigger) {
+      lastTrigger.focus();
+    }
+  });
 
-    function getModal() {
-        for (var i = 0; i < MODAL_IDS.length; i++) {
-            var modal = document.getElementById(MODAL_IDS[i]);
-            if (isOpen(modal)) {
-                return modal;
-            }
-        }
-        return null;
+  function getModal() {
+    for (var i = 0; i < MODAL_IDS.length; i++) {
+      var modal = document.getElementById(MODAL_IDS[i]);
+      if (isOpen(modal)) {
+        return modal;
+      }
+    }
+    return null;
+  }
+
+  function isOpen(modal) {
+    return !!modal && modal.classList.contains("show");
+  }
+
+  document.addEventListener("keydown", function (event) {
+    var modal = getModal();
+    if (!isOpen(modal)) {
+      return;
     }
 
-    function isOpen(modal) {
-        return !!modal && modal.classList.contains("show");
+    if (event.key === "Escape") {
+      bootstrap.Modal.getOrCreateInstance(modal).hide();
+      return;
     }
 
-    document.addEventListener("keydown", function (event) {
-        var modal = getModal();
-        if (!isOpen(modal)) {
-            return;
-        }
+    if (event.key !== "Tab") {
+      return;
+    }
 
-        if (event.key === "Escape") {
-            bootstrap.Modal.getOrCreateInstance(modal).hide();
-            return;
-        }
+    var focusable = modal.querySelectorAll(
+      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])',
+    );
+    if (focusable.length === 0) {
+      return;
+    }
 
-        if (event.key !== "Tab") {
-            return;
-        }
+    var first = focusable[0];
+    var last = focusable[focusable.length - 1];
 
-        var focusable = modal.querySelectorAll(
-            'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])'
-        );
-        if (focusable.length === 0) {
-            return;
-        }
-
-        var first = focusable[0];
-        var last = focusable[focusable.length - 1];
-
-        if (event.shiftKey && document.activeElement === first) {
-            event.preventDefault();
-            last.focus();
-        } else if (!event.shiftKey && document.activeElement === last) {
-            event.preventDefault();
-            first.focus();
-        } else if (!modal.contains(document.activeElement)) {
-            event.preventDefault();
-            first.focus();
-        }
-    });
+    if (event.shiftKey && document.activeElement === first) {
+      event.preventDefault();
+      last.focus();
+    } else if (!event.shiftKey && document.activeElement === last) {
+      event.preventDefault();
+      first.focus();
+    } else if (!modal.contains(document.activeElement)) {
+      event.preventDefault();
+      first.focus();
+    }
+  });
 })();
 
 // DAL ("Alight") autocomplete widget: missing role/aria-controls/names.
@@ -141,77 +141,77 @@
 // reaction to that same instance's own input/keyboard event, never a
 // decoupled/deferred call, so at most one input can be mid-open at once).
 (function () {
-    var boxIdCounter = 0;
+  var boxIdCounter = 0;
 
-    function labelTextFor(customEl) {
-        var wrapper = customEl.closest('[id^="div_id_"]');
-        var label = wrapper && wrapper.querySelector("label");
-        return label ? label.textContent.trim() : null;
+  function labelTextFor(customEl) {
+    var wrapper = customEl.closest('[id^="div_id_"]');
+    var label = wrapper && wrapper.querySelector("label");
+    return label ? label.textContent.trim() : null;
+  }
+
+  function patchInput(customEl) {
+    var input = customEl.querySelector('[slot="input"]');
+    if (!input || input.tagName !== "INPUT" || input.hasAttribute("role")) {
+      return;
     }
-
-    function patchInput(customEl) {
-        var input = customEl.querySelector('[slot="input"]');
-        if (!input || input.tagName !== "INPUT" || input.hasAttribute("role")) {
-            return;
-        }
-        input.setAttribute("role", "combobox");
-        var text = labelTextFor(customEl);
-        if (text) {
-            input.setAttribute("aria-label", text);
-        }
+    input.setAttribute("role", "combobox");
+    var text = labelTextFor(customEl);
+    if (text) {
+      input.setAttribute("aria-label", text);
     }
+  }
 
-    function patchBox(box) {
-        if (box.hasAttribute("aria-label")) {
-            return;
-        }
-        var input = document.querySelector(
-            'autocomplete-select-input input[aria-expanded="true"]'
-        );
-        if (!input) {
-            return;
-        }
-        var id = "wcag-dal-box-" + ++boxIdCounter;
-        box.setAttribute("id", id);
-        input.setAttribute("aria-controls", id);
-        var text = input.getAttribute("aria-label");
-        if (text) {
-            box.setAttribute("aria-label", text);
-        }
+  function patchBox(box) {
+    if (box.hasAttribute("aria-label")) {
+      return;
     }
+    var input = document.querySelector(
+      'autocomplete-select-input input[aria-expanded="true"]',
+    );
+    if (!input) {
+      return;
+    }
+    var id = "wcag-dal-box-" + ++boxIdCounter;
+    box.setAttribute("id", id);
+    input.setAttribute("aria-controls", id);
+    var text = input.getAttribute("aria-label");
+    if (text) {
+      box.setAttribute("aria-label", text);
+    }
+  }
 
-    document
-        .querySelectorAll('autocomplete-select-input[data-bound="true"]')
-        .forEach(patchInput);
+  document
+    .querySelectorAll('autocomplete-select-input[data-bound="true"]')
+    .forEach(patchInput);
 
-    new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-            var target = mutation.target;
-            if (
-                target.tagName === "AUTOCOMPLETE-SELECT-INPUT" &&
-                target.getAttribute("data-bound") === "true"
-            ) {
-                patchInput(target);
-            }
-        });
-    }).observe(document.body, {
-        attributes: true,
-        attributeFilter: ["data-bound"],
-        subtree: true,
+  new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      var target = mutation.target;
+      if (
+        target.tagName === "AUTOCOMPLETE-SELECT-INPUT" &&
+        target.getAttribute("data-bound") === "true"
+      ) {
+        patchInput(target);
+      }
     });
+  }).observe(document.body, {
+    attributes: true,
+    attributeFilter: ["data-bound"],
+    subtree: true,
+  });
 
-    new MutationObserver(function (mutations) {
-        mutations.forEach(function (mutation) {
-            mutation.addedNodes.forEach(function (node) {
-                if (
-                    node.nodeType === 1 &&
-                    node.classList.contains("autocomplete-light-box")
-                ) {
-                    patchBox(node);
-                }
-            });
-        });
-    }).observe(document.body, { childList: true });
+  new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      mutation.addedNodes.forEach(function (node) {
+        if (
+          node.nodeType === 1 &&
+          node.classList.contains("autocomplete-light-box")
+        ) {
+          patchBox(node);
+        }
+      });
+    });
+  }).observe(document.body, { childList: true });
 })();
 
 // Tooltip-triggering icons: aria-label on an element with no valid role.
@@ -246,16 +246,18 @@
 // order: script.min.js's tag precedes this one in base.html, so
 // initTooltips() (and therefore _fixTitle()) always runs first.
 function patchTooltipIcons() {
-    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
-        if (el.tagName === "I" && !el.hasAttribute("role")) {
-            el.setAttribute("role", "img");
-        }
+  document
+    .querySelectorAll('[data-bs-toggle="tooltip"]')
+    .forEach(function (el) {
+      if (el.tagName === "I" && !el.hasAttribute("role")) {
+        el.setAttribute("role", "img");
+      }
     });
 }
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", patchTooltipIcons);
+  document.addEventListener("DOMContentLoaded", patchTooltipIcons);
 } else {
-    patchTooltipIcons();
+  patchTooltipIcons();
 }
 
 // Bootstrap's .table-responsive wrapper (dashboard/_report_table.html) can
@@ -268,23 +270,23 @@ if (document.readyState === "loading") {
 // exact rule never firing on any of those pages in axe_run.js. Same
 // DOMContentLoaded gating as patchTooltipIcons above, same reason.
 function patchScrollableTables() {
-    document.querySelectorAll(".table-responsive").forEach(function (el) {
-        if (el.hasAttribute("tabindex")) {
-            return;
-        }
-        el.setAttribute("tabindex", "0");
-        el.setAttribute("role", "region");
-        var wrapper = el.closest(".dashboard-table-wrapper");
-        var heading = wrapper && wrapper.querySelector(".dashboard-table-title");
-        if (heading) {
-            el.setAttribute("aria-label", heading.textContent.trim());
-        }
-    });
+  document.querySelectorAll(".table-responsive").forEach(function (el) {
+    if (el.hasAttribute("tabindex")) {
+      return;
+    }
+    el.setAttribute("tabindex", "0");
+    el.setAttribute("role", "region");
+    var wrapper = el.closest(".dashboard-table-wrapper");
+    var heading = wrapper && wrapper.querySelector(".dashboard-table-title");
+    if (heading) {
+      el.setAttribute("aria-label", heading.textContent.trim());
+    }
+  });
 }
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", patchScrollableTables);
+  document.addEventListener("DOMContentLoaded", patchScrollableTables);
 } else {
-    patchScrollableTables();
+  patchScrollableTables();
 }
 
 // DataTables v3's own sort-header div (.dt-column-order) sets role="button"
@@ -306,19 +308,29 @@ if (document.readyState === "loading") {
 // or the fork's code, and isn't chased further here - this patch is a
 // mitigation, not a full close of the race.
 function patchColumnOrderRoles(el) {
-    if (!el.hasAttribute("role")) {
-        el.setAttribute("role", "button");
-    }
-    if (!el.hasAttribute("tabindex")) {
-        el.setAttribute("tabindex", "0");
-    }
+  if (!el.hasAttribute("role")) {
+    el.setAttribute("role", "button");
+  }
+  if (!el.hasAttribute("tabindex")) {
+    el.setAttribute("tabindex", "0");
+  }
 }
-document.querySelectorAll(".dt-column-order[aria-label]").forEach(patchColumnOrderRoles);
+document
+  .querySelectorAll(".dt-column-order[aria-label]")
+  .forEach(patchColumnOrderRoles);
 new MutationObserver(function (mutations) {
-    mutations.forEach(function (mutation) {
-        var target = mutation.target;
-        if (target.classList && target.classList.contains("dt-column-order") && target.hasAttribute("aria-label")) {
-            patchColumnOrderRoles(target);
-        }
-    });
-}).observe(document.body, { attributes: true, attributeFilter: ["aria-label"], subtree: true });
+  mutations.forEach(function (mutation) {
+    var target = mutation.target;
+    if (
+      target.classList &&
+      target.classList.contains("dt-column-order") &&
+      target.hasAttribute("aria-label")
+    ) {
+      patchColumnOrderRoles(target);
+    }
+  });
+}).observe(document.body, {
+  attributes: true,
+  attributeFilter: ["aria-label"],
+  subtree: true,
+});

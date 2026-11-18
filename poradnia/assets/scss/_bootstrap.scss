@@ -9,8 +9,8 @@
 // everything else there is either a BS3-legacy-named alias consumed
 // directly by our own partials, or unrelated to Bootstrap entirely.
 @forward "bootstrap/scss/bootstrap" with (
-  $primary: vars.$primary,
-  $success: vars.$success,
-  $font-size-base: vars.$font-size-base,
-  $link-decoration: vars.$link-decoration
+	$primary: vars.$primary,
+	$success: vars.$success,
+	$font-size-base: vars.$font-size-base,
+	$link-decoration: vars.$link-decoration
 );

@@ -21,7 +21,9 @@ const USERNAMES = {
 function getSeedPassword() {
   const password = process.env.A11Y_SEED_PASSWORD;
   if (!password) {
-    throw new Error("A11Y_SEED_PASSWORD env var is required (not printed anywhere).");
+    throw new Error(
+      "A11Y_SEED_PASSWORD env var is required (not printed anywhere).",
+    );
   }
   return password;
 }
@@ -48,7 +50,9 @@ async function loginStorageState(role, mode = "normal") {
     // No session to establish, but WCAG-mode anon captures still need the
     // cookie set - return a bare storage state rather than null so callers
     // get consistent behavior regardless of mode.
-    return mode === "wcag" ? { cookies: [uiModeCookie(mode)], origins: [] } : null;
+    return mode === "wcag"
+      ? { cookies: [uiModeCookie(mode)], origins: [] }
+      : null;
   }
   const username = USERNAMES[role];
   const password = getSeedPassword();
@@ -61,17 +65,23 @@ async function loginStorageState(role, mode = "normal") {
       throw new Error("Could not find CSRF token on the login page.");
     }
     const resp = await context.post("/konta/login/", {
-      form: { login: username, password, csrfmiddlewaretoken: csrfMatch[1] },
+      form: {
+        login: username,
+        password,
+        csrfmiddlewaretoken: csrfMatch[1],
+      },
       headers: { Referer: `${BASE_URL}/konta/login/` },
     });
     if (resp.status() >= 400) {
-      throw new Error(`Login POST failed for role=${role}: HTTP ${resp.status()}`);
+      throw new Error(
+        `Login POST failed for role=${role}: HTTP ${resp.status()}`,
+      );
     }
     const state = await context.storageState();
     const hasSession = state.cookies.some((c) => c.name === "sessionid");
     if (!hasSession) {
       throw new Error(
-        `Login did not establish a session for role=${role} (bad credentials or form changed?)`
+        `Login did not establish a session for role=${role} (bad credentials or form changed?)`,
       );
     }
     // Suppress the "alternative donate popup" (poradnia/static/js/donate_popup_alternative.js)

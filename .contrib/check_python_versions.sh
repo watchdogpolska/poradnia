@@ -29,8 +29,6 @@ pin "pyproject.toml (black target-version)" "$(sed -nE \
   "s/^target-version = \['py3([0-9]+)'\]\s*$/3.\1/p" pyproject.toml)"
 pin ".pre-commit-config.yaml (pyupgrade)" "$(sed -nE \
   's/^\s+- --py3([0-9]+)-plus\s*$/3.\1/p' .pre-commit-config.yaml)"
-pin "setup.py (python_requires)" "$(sed -nE \
-  's/^\s+python_requires=">=([0-9]+\.[0-9]+)",\s*$/\1/p' setup.py)"
 unique=$(echo $versions | tr ' ' '\n' | sort -u)
 if [ "$(echo "$unique" | grep -c .)" -gt 1 ]; then
   echo "::error::Pinned Python versions differ:" $unique
