@@ -107,6 +107,14 @@ class UiModeSwitchViewTestCase(TestCase):
         )
         self.assertRedirects(response, "/")
 
+    def test_safe_next_is_followed(self):
+        response = self.client.post(
+            self.url,
+            {"mode": UI_MODE_WCAG, "next": "/sprawy/"},
+        )
+        self.assertRedirects(response, "/sprawy/", fetch_redirect_response=False)
+        self.assertEqual(response.cookies[UI_MODE_COOKIE_NAME].value, UI_MODE_WCAG)
+
 
 class BaseTemplateWcagModeTestCase(TestCase):
     """base.html's M1 additions (F001 main/skip-link, F002 messages live

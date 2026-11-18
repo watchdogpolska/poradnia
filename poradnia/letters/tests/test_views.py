@@ -18,6 +18,7 @@ from poradnia.cases.models import Case
 from poradnia.letters.factories import AttachmentFactory, LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.letters.settings import LETTER_RECEIVE_SECRET
+from poradnia.letters.views.cbv import LetterAjaxDatatableView
 from poradnia.users.factories import UserFactory
 from poradnia.utils.tests.mixins import AssertSendMailMixin
 
@@ -746,3 +747,12 @@ class ReceiveEmailTestCase(TestCase):
             "eml": eml,
             "attachment": attachments,
         }
+
+
+class LetterRowToolsTestCase(TestCase):
+    def test_controls_have_polish_text_alternatives(self):
+        content = LetterAjaxDatatableView.render_row_tools_column_def()[
+            "defaultContent"
+        ]
+        self.assertIn('alt="Pokaż szczegóły"', content)
+        self.assertIn('alt="Ukryj szczegóły"', content)

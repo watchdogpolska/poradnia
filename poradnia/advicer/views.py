@@ -105,6 +105,15 @@ class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             "title": _("Comment"),
         },
         {
+            "name": "scope_name",
+            "visible": True,
+            "choices": True,
+            "autofilter": True,
+            "foreign_field": "scope__name",
+            "defaultContent": "",
+            "title": _("Scope"),
+        },
+        {
             "name": "issues",
             "visible": True,
             "choices": True,

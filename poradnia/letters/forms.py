@@ -25,7 +25,7 @@ from poradnia.utils.crispy_forms_helpers import (
 )
 
 from .models import Attachment, Letter
-from .utils import HTMLFilter
+from .utils import HTMLFilter, sanitize_html
 
 CLIENT_FIELD_TEXT = _("Leave empty to use email field and create a new one user.")
 
@@ -64,6 +64,12 @@ INFO_ABOUT_MARKDOWN = _(
 )
 
 logger = logging.getLogger(__name__)
+
+
+class SanitizedHtmlMixin:
+    # TinyMCE only filters in the browser, a direct POST bypasses it.
+    def clean_html(self):
+        return sanitize_html(self.cleaned_data["html"])
 
 
 class SimpleSubmit(BaseInput):
@@ -201,7 +207,7 @@ class NewCaseForm(SingleButtonMixin, PartialMixin, GIODOMixin, ModelForm):
         model = Letter
 
 
-class AddLetterForm(HelperMixin, PartialMixin, ModelForm):
+class AddLetterForm(SanitizedHtmlMixin, HelperMixin, PartialMixin, ModelForm):
     SEND_STAFF = "send_staff"
     PROJECT = "project"
     SEND = "send"
@@ -431,7 +437,9 @@ class AttachmentsFieldForm(forms.Form):
         self.helper.form_tag = False
 
 
-class LetterForm(SingleButtonMixin, PartialMixin, ModelForm):  # eg. edit form
+class LetterForm(
+    SanitizedHtmlMixin, SingleButtonMixin, PartialMixin, ModelForm
+):  # eg. edit form
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user")
         super().__init__(*args, **kwargs)

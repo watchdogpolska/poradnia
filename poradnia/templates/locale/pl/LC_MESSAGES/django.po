@@ -550,6 +550,14 @@ msgstr ""
 "ten blok treści\">Edytuj</a>)"
 
 #, python-format
+#: poradnia/templates/ajax_datatable/row_tools.html
+msgid "Show details"
+msgstr "Pokaż szczegóły"
+
+#: poradnia/templates/ajax_datatable/row_tools.html
+msgid "Hide details"
+msgstr "Ukryj szczegóły"
+
 #~ msgid ""
 #~ "(No content defined: <a href=\"%(add_url)s?name=%(name_url)s\" title=\"Add "
 #~ "content here\">Add some</a>)"

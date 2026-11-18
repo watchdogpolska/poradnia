@@ -1,4 +1,5 @@
 import json
+import time
 from io import BytesIO
 from unittest.mock import MagicMock, patch
 
@@ -292,6 +293,53 @@ class FormatArticlesHtmlTestCase(SimpleTestCase):
         html = self._fmt("**<script>alert(1)</script>**")
         self.assertNotIn("<script>", html)
         self.assertIn("<strong>&lt;script&gt;alert(1)&lt;/script&gt;</strong>", html)
+
+    def test_article_url_keeps_parentheses(self):
+        html = self._fmt("Tytul\n- [Hasło](https://example.com/a_(b))")
+        self.assertIn('href="https://example.com/a_(b)"', html)
+
+    def test_article_label_keeps_brackets(self):
+        url = views_module._extract_url("- [a [b] c](https://example.com/)")
+        self.assertEqual(url, "https://example.com/")
+
+    def test_long_unmatched_lines_stay_fast(self):
+        # These took over 20 seconds at a tenth of this size before the
+        # patterns stopped backtracking.
+        for line in (
+            "title\n- [a](" + "a](a" * 200_000,
+            "title\n- [a](" + "a](" * 200_000,
+            "[](http:// " * 200_000,
+            "[](http://" * 200_000,
+        ):
+            with self.subTest(line=line[:20]):
+                start = time.perf_counter()
+                self._fmt(line)
+                self.assertLess(time.perf_counter() - start, 5)
+
+
+class ParseFieldLineTestCase(SimpleTestCase):
+    def test_label_and_value_are_stripped(self):
+        self.assertEqual(
+            views_module._parse_field_line("**Temat :**   Tytuł artykułu  "),
+            ("Temat", "Tytuł artykułu"),
+        )
+
+    def test_value_may_be_empty(self):
+        self.assertEqual(views_module._parse_field_line("**Temat:**"), ("Temat", ""))
+
+    def test_value_may_contain_separator(self):
+        self.assertEqual(
+            views_module._parse_field_line("**Temat:** a:** b"), ("Temat", "a:** b")
+        )
+
+    def test_non_field_lines_are_ignored(self):
+        for line in ("Temat: tekst", "**Temat** tekst", "**:** tekst", "**"):
+            with self.subTest(line=line):
+                self.assertIsNone(views_module._parse_field_line(line))
+
+    def test_many_spaces_are_parsed_quickly(self):
+        line = "**a:**" + " " * 100_000 + "b"
+        self.assertEqual(views_module._parse_field_line(line), ("a", "b"))
 
 
 class N8nArticlesSearchHelpersTestCase(SimpleTestCase):

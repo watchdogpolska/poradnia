@@ -624,13 +624,51 @@ BLEACH_ALLOWED_TAGS = {
     "hr",
     "pre",
     "img",
+    "div",
+    "span",
+    "u",
+    "s",
+    "table",
+    "caption",
+    "thead",
+    "tbody",
+    "tfoot",
+    "tr",
+    "th",
+    "td",
 }
 
 BLEACH_ALLOWED_ATTRIBUTES = ALLOWED_ATTRIBUTES = {
-    "a": ["href", "title"],
+    "a": ["href", "title", "target", "rel"],
     "abbr": ["title"],
     "acronym": ["title"],
-    "img": ["alt", "src", "title"],
+    "img": ["alt", "src", "title", "width", "height"],
+    "table": ["border"],
+    "th": ["colspan", "rowspan", "scope"],
+    "td": ["colspan", "rowspan"],
+}
+
+# Inline styles TinyMCE writes into letters. Layout properties that can take an
+# element out of the letter's box (position, margin, transform, z-index...) and
+# anything loading a URL (background, background-image...) must stay out.
+BLEACH_ALLOWED_CSS_PROPERTIES = {
+    "background-color",
+    "border-collapse",
+    "border-color",
+    "border-style",
+    "border-width",
+    "color",
+    "font-family",
+    "font-size",
+    "font-style",
+    "font-weight",
+    "height",
+    "line-height",
+    "padding-left",
+    "text-align",
+    "text-decoration",
+    "vertical-align",
+    "width",
 }
 
 # CELERY CONFIGURATION

@@ -68,8 +68,14 @@ def _parse_payload(request):
     return data, None
 
 
+# The label can only end at the first "](", so nothing has to be retried on a
+# line that fails to match. The URL part may still contain parentheses.
+_MD_LABEL = r"\[(?:[^\]]|\](?!\())+\]"
+_MD_URL_LINE_RE = re.compile(rf"^-\s+{_MD_LABEL}\((.+)\)\s*$")
+
+
 def _extract_url(line):
-    m = re.match(r"^-\s+\[.+?\]\((.+?)\)\s*$", line)
+    m = _MD_URL_LINE_RE.match(line)
     if m:
         return m.group(1)
     m = re.match(r"^-\s+\[(https?://[^\]]+)\]\s*$", line)
@@ -81,17 +87,21 @@ def _extract_url(line):
     return None
 
 
-_FIELD_LINE_RE = re.compile(r"^\*\*(.+?):\*\*\s*(.*)$")
+def _parse_field_line(line):
+    if not line.startswith("**"):
+        return None
+    label, separator, value = line[2:].partition(":**")
+    if not label or not separator:
+        return None
+    return label.strip(), value.strip()
 
 
 def _build_article(url, lines):
     fields = []
     for line in lines:
-        m = _FIELD_LINE_RE.match(line)
-        if m:
-            label, value = m.group(1).strip(), m.group(2).strip()
-            if value:
-                fields.append((label, value))
+        field = _parse_field_line(line)
+        if field and field[1]:
+            fields.append(field)
     return {"url": url, "fields": fields}
 
 
@@ -128,9 +138,9 @@ def _render_article_li(art):
 
 
 _ARTICLE_URL_LINE_RE = re.compile(
-    r"^-\s+(?:\[.+?\]\(.+?\)|\[https?://[^\]]+\]|https?://\S+)\s*$"
+    rf"^-\s+(?:{_MD_LABEL}\(.+\)|\[https?://[^\]]+\]|https?://\S+)\s*$"
 )
-_LINKIFY_RE = re.compile(r"(\[[^\[\]]*\]\(https?://[^)]+\)|https?://\S+)")
+_LINKIFY_RE = re.compile(r"(\[[^\[\]]*\]\(https?://[^)\s\[]+\)|https?://\S+)")
 _MD_LINK_RE = re.compile(r"^\[([^\[\]]*)\]\((https?://[^)]+)\)$")
 _BOLD_RE = re.compile(r"\*\*(.+?)\*\*")
 

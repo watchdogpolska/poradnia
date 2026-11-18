@@ -22,6 +22,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 select.style.boxSizing = "border-box";
                 select.style.width = "100%";
             }
+            // The library renders filter controls without an accessible name.
+            const control = input || select;
+            if (control) {
+                const header = th.closest("thead").rows[0].cells[th.cellIndex];
+                control.setAttribute("aria-label", header.textContent.trim());
+            }
         });
     });
     // Initialize table

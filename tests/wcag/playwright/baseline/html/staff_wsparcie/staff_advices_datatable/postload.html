@@ -1,0 +1,606 @@
+<!DOCTYPE html><html data-ui-mode="normal" lang="pl"><head>
+    <meta charset="utf-8">
+    <title>Tabela tagów - Poradnia</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta content="Poradnia App" name="description">
+    <meta content="Sieć Obywatelska - Watchdog Polska" name="author">
+    <meta content="#D82727" name="theme-color">
+    <link href="/static/images/logo-160x128.png" rel="apple-touch-icon" sizes="160x128">
+    <link href="/static/images/favicon-32x26.png" rel="shortcut icon" sizes="32x32" type="image/png">
+    <link href="/static/images/manifest.json" rel="manifest">
+    <meta content="#da532c" name="msapplication-TileColor">
+    <meta content="/static/images/logo-160x128.png" name="msapplication-TileImage">
+    <meta content="/static/images/logo-czerwone-tlo-1200x600.jpg" property="og:image">
+    <meta content="image/jpg" property="og:image:type">
+    <meta content="1200" property="og:image:width">
+    <meta content="600" property="og:image:height">
+
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+  <script src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+  <![endif]-->
+    <link href="/static/tasty_feedback/style.css" rel="stylesheet">
+
+    
+        <link href="/static/css/style.min.css" rel="stylesheet">
+    
+    
+    
+
+<style>.htmx-indicator{opacity:0;visibility: hidden} .htmx-request .htmx-indicator, .htmx-request.htmx-indicator{opacity:1;visibility: visible;transition: opacity 200ms ease-in}</style><style type="text/css">
+  *, *::before, *::after {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+    transition-duration: 0s !important;
+    transition-delay: 0s !important;
+    caret-color: transparent !important;
+    scroll-behavior: auto !important;
+  }
+</style></head>
+
+<body>
+
+<!-- First element in body by design: keyboard-reachable before anything
+     else, no JS required (plain form POST). This is the one approved
+     normal-mode DOM change - see logs/wcag/plan/ui-mode-design.md §2.
+     Fixed (not relative) so it stays in the same viewport corner
+     regardless of scroll position, like a django-debug-toolbar handle -
+     previously position:relative, it scrolled away with page content on
+     any long page (e.g. /sprawy/). top: 50px (not 0) matches
+     $navbar-height (_vars.scss, also what .sidebar's own top offset
+     uses, _sidebar.scss) - confirmed via Playwright that pinning this at
+     top:0 fully covers the mobile navbar's hamburger toggle and brand
+     link (both sit within the navbar's own ~44px height), and at this
+     width even the desktop sidebar's home link (measured at y:211+) is
+     still comfortably clear. z-index is needed because .navbar is
+     position:fixed on mobile widths (see _layout.scss) and would
+     otherwise render on top of this. -->
+<form action="/ui-mode/" method="post" style="position: fixed; top: 50px; left: 0; z-index: 1051;">
+    <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]">
+    <input name="next" type="hidden" value="/porady/table/">
+    
+        <input name="mode" type="hidden" value="wcag">
+        <button class="btn btn-dark" type="submit">Włącz wersję dostępną</button>
+    
+</form>
+
+
+<!-- Moved to beginning to load JQueary before any other js code  -->
+
+    <script src="/static/js/script.min.js"></script>
+
+
+
+
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <!-- No data-bs-toggle="collapse" here on purpose: the actual
+                 show/hide is handled by sidebar.js (a plain classList
+                 toggle on data-bs-target, driving .sidebar's CSS
+                 transform - not an accordion-style collapse panel).
+                 Bootstrap's own collapse JS binds to [data-bs-toggle=
+                 "collapse"] globally regardless of any explicit JS
+                 instantiation, so having both attached used to run two
+                 independent toggles per click: sidebar.js's (correct) and
+                 Bootstrap's own (which also manages body's collapse/show
+                 classes). Opening was harmless, but closing left body
+                 with class="collapse" and no "show" - Bootstrap's own
+                 CSS (.collapse:not(.show) { display: none; }) then hid
+                 the entire page until reload. -->
+            <button aria-expanded="false" class="navbar-toggler collapsed" data-bs-target="body" type="button">
+                <span class="visually-hidden">Toggle navigation</span>
+                <i class="navbar-burger"></i>
+            </button>
+            <a class="navbar-brand" href="#">Poradnia</a>
+        </div>
+    </div>
+</nav>
+<!-- app_main_style tag used to differentiate dev, demo and production environments -->
+<div class="main" style="background-color: #d3e20040;">)
+
+    <div class="sidebar">
+        
+<div class="sidebar-header">
+    <h1 class="app-mode-banner" style="color: red;">DEV</h1>
+    <a href="/">
+        <div class="logo"></div>
+        <p>Poradnia</p>
+    </a>
+    <p><a href="http://siecobywatelska.pl">Sieci Watchdog</a></p>
+</div>
+<div class="block-list">
+    <ul class="block-list-list">
+
+        
+        
+           <li class="block-list-item">
+              <a data-bs-target="#navsearch_modal" data-bs-toggle="modal" href="#">
+                   <i class="fas fa-magnifying-glass"></i> Wyszukaj
+               </a>
+           </li>
+        
+        
+        
+    </ul>
+</div>
+
+<div class="block-list">
+    <div class="block-list-header">Użytkownik</div>
+    <ul class="block-list-list">
+
+        
+            <li class="block-list-item">
+                <a href="/uzytkownik/a11y_staff_wsparcie/"><i class="fas fa-user"></i>
+                    Celina Wsparcie (team) - profil i bezpieczeństwo</a>
+            </li>
+            
+                <li class="block-list-item">
+                    <a href="/uzytkownik/table/"><i class="fas fa-users"></i> Tabela użytkowników</a>
+                </li>
+                <li class="block-list-item">
+                    <a href="/uzytkownik/"><i class="fas fa-users"></i> Wykaz użytkowników</a>
+                </li>
+            
+            
+            <li class="block-list-item">
+                <a href="/konta/logout/"><i class="fa-solid fa-right-from-bracket"></i> Wyloguj</a>
+            </li>
+        
+    </ul>
+</div>
+
+
+
+    <div class="block-list">
+        <div class="block-list-header">Tagi</div>
+        <ul class="block-list-list">
+            <li class="block-list-item">
+                <a href="/porady/table/"><i class="fas fa-book"></i> Tabela tagów</a>
+            </li>
+            <li class="block-list-item">
+                <a href="/porady/?page=1"><i class="fas fa-chart-area"></i> Rejestr tagów</a>
+            </li>
+        </ul>
+    </div>
+
+
+
+<div class="block-list">
+    <div class="block-list-header">Sprawy</div>
+    <ul class="block-list-list">
+        <li class="block-list-item"><a href="/listy/"><i class="fas fa-pencil"></i> Nowa sprawa</a></li>
+        
+            <li class="block-list-item">
+                <a href="/sprawy/table/"><i class="fas fa-book"></i> Tabela spraw</a>
+            </li>
+            <li class="block-list-item">
+                <a href="/sprawy/?status=0&amp;status=1&amp;status=3"><i class="fas fa-book"></i> Wykaz spraw</a>
+            </li>
+        
+        
+            
+            <li class="block-list-item">
+                <a href="/wydarzenia/table/"><i class="fas fa-calendar-days"></i> Tabela wydarzeń</a>
+            </li>
+            <li class="block-list-item">
+                <!-- <a href="/wydarzenia/"><i class="fas fa-calendar-days"></i> Kalendarz wydarzeń</a> -->
+                <a href="/wydarzenia/[MONTH]"><i class="fas fa-calendar-days"></i> Kalendarz wydarzeń</a>
+            </li>
+        
+        <li class="block-list-item">
+            <a href="/strony/regulamin-poradnictwa/"><i class="fas fa-gavel"></i> Regulamin poradnictwa</a>
+        </li>
+        <!-- TODO - move the below to Letters or generic sidebar for code consistency -->
+        
+            <li class="block-list-item">
+                <a href="/listy/table/"><i class="far fa-envelope"></i> Tabela korespondencji</a>
+            </li>
+        
+        
+            <li class="block-list-item">
+                <a href="/listy/rejestr"><i class="far fa-envelope"></i> Korespondencja</a>
+            </li>
+        
+    </ul>
+</div>
+
+
+
+    <div class="block-list">
+        <div class="block-list-header">Panel raportów</div>
+        <ul class="block-list-list">
+            <li class="block-list-item">
+                <a href="/dashboard/"><i class="fas fa-chart-line"></i> Panel raportów</a>
+            </li>
+        </ul>
+    </div>
+
+
+<div class="footer row">
+    
+        <div class="col-12">
+            <p class="text-center">
+                <img alt="" class="img-fluid" src="/static/images/baner.png">
+                Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
+                finansowanego z Funduszy EOG.
+            </p>
+        </div>
+    
+
+
+</div>
+
+
+
+    </div>
+    <div class="main-side">
+        <div class="content">
+            
+            
+            
+            <div class="container-fluid">
+                
+
+<style>
+    input[type=search] {
+        width: 400px; /* set the desired min-width value */
+    }
+    input[type=text] {
+        width: 60px; /* set the desired min-width value */
+    }
+    /* Set the maximum width of the select element */
+    select {
+        width: 60px;
+        height: 26px; /* adjust height value to input[type=search]*/
+    }
+    /* Allow the select element to wrap its options */
+    select option {
+        white-space: normal;
+    }
+</style>
+
+<h3> Tabela tagów</h3>
+
+<div aria-hidden="true" class="modal fade" id="modal-popup" role="dialog">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content" style="width:1000px;"></div>
+    </div>
+</div>
+
+<div class="row" id="tableWrapper" style="max-height: 1007.61px;">
+    <!-- TODO add colvis button and functionality -->
+    <!-- TODO fix column invisible column sorting buttons -->
+    <div class="col-sm-1 filters">
+        <br><br><br><br>
+        <h4>Filtry:</h4><br>
+        <div>
+            <label>Udzieliliśmy porady? (kol. H?):</label><br>
+            <input checked="" id="helped_yes" name="check_helped_yes" type="checkbox">
+            <label class="small" for="helped_yes">Tak &nbsp;
+                <span class="fas fa-check" style="color: green;"></span>
+            </label><br>
+            <input checked="" id="helped_no" name="check_helped_no" type="checkbox">
+            <label class="small" for="helped_no">Nie &nbsp;
+                <span class="fas fa-xmark" style="color: red;"></span>
+            </label><br>
+            <input checked="" id="helped_blank" name="check_helped_blank" type="checkbox">
+            <label class="small" for="helped_blank">Nieznane  &nbsp;
+                <span class="fas fa-question"></span>
+            </label><br>
+            <br><br>
+        </div>
+        <div>
+            <label>Widoczne (kol. W.):</label><br>
+            <input checked="" id="visible_yes" name="check_visible_yes" type="checkbox">
+            <label class="small" for="visible_yes">Tak  &nbsp;
+                <span class="fas fa-check" style="color: green;"></span>
+            </label><br>
+            <input checked="" id="visible_no" name="check_visible_no" type="checkbox">
+            <label class="small" for="visible_no">Nie   &nbsp;
+                <span class="fas fa-xmark" style="color: red;"></span>
+            </label><br>
+            <br><br>
+        </div>
+        <div>
+            <label>Ciekawa sprawa:</label><br>
+            <input checked="" id="interesting_case_yes" name="check_interesting_case_yes" type="checkbox">
+            <label class="small" for="interesting_case_yes">Tak &nbsp;
+                <span class="fas fa-check" style="color: green;"></span>
+            </label><br>
+            <input checked="" id="interesting_case_no" name="check_interesting_case_no" type="checkbox">
+            <label class="small" for="interesting_case_no">Nie &nbsp;
+                <span class="fas fa-xmark" style="color: red;"></span>
+            </label><br>
+            <br><br>
+        </div>
+        <div>
+            <label>Do poradnika:</label><br>
+            <input checked="" id="for_knowledge_base_yes" name="check_for_knowledge_base_yes" type="checkbox">
+            <label class="small" for="for_knowledge_base_yes">Tak &nbsp;
+                <span class="fas fa-check" style="color: green;"></span>
+            </label><br>
+            <input checked="" id="for_knowledge_base_no" name="check_for_knowledge_base_no" type="checkbox">
+            <label class="small" for="for_knowledge_base_no">Nie &nbsp;
+                <span class="fas fa-xmark" style="color: red;"></span>
+            </label><br>
+            <br><br>
+        </div>
+        <div>
+            <label>Posiada sugestie tagów AI:</label><br>
+            <input checked="" id="has_ai_tag_suggestion_yes" name="check_has_ai_tag_suggestion_yes" type="checkbox">
+            <label class="small" for="has_ai_tag_suggestion_yes">Tak &nbsp;
+                <span class="fas fa-check" style="color: green;"></span>
+            </label><br>
+            <input checked="" id="has_ai_tag_suggestion_no" name="check_has_ai_tag_suggestion_no" type="checkbox">
+            <label class="small" for="has_ai_tag_suggestion_no">Nie &nbsp;
+                <span class="fas fa-xmark" style="color: red;"></span>
+            </label><br>
+            <br><br>
+        </div>
+        <div>
+            <label>Sugestie tagów AI do oceny:</label><br>
+            <input checked="" id="has_ai_tag_suggestion_to_review_yes" name="check_has_ai_tag_suggestion_to_review_yes" type="checkbox">
+            <label class="small" for="has_ai_tag_suggestion_to_review_yes">Tak &nbsp;
+                <span class="fas fa-check" style="color: green;"></span>
+            </label><br>
+            <input checked="" id="has_ai_tag_suggestion_to_review_no" name="check_has_ai_tag_suggestion_to_review_no" type="checkbox">
+            <label class="small" for="has_ai_tag_suggestion_to_review_no">Nie &nbsp;
+                <span class="fas fa-xmark" style="color: red;"></span>
+            </label><br>
+            <br><br>
+        </div>
+    </div>
+    <div class="col-sm-11 table-responsive">
+        <div class="dt-container dt-empty-footer" id="datatable_advices_wrapper"><div class="toolbar" id=""></div><div class="dt-top-row" id=""><div class="dt-length"><label for="dt-length-0">Pokaż <select aria-controls="datatable_advices" autocomplete="off" class="dt-input" id="dt-length-0"><option value="20">20</option><option value="50">50</option><option value="100">100</option></select> pozycji</label></div><div class="dt-search"><label for="dt-search-0">Szukaj:</label><input aria-controls="datatable_advices" autocomplete="off" class="dt-input" id="dt-search-0" placeholder="" type="search"></div></div><div class="dt-scroll" role="table"><div class="dt-processing" id="datatable_advices_processing" role="status" style="display: none;">Przetwarzanie...<div><div></div><div></div><div></div><div></div></div></div><div class="dt-scroll-head" role="none" style="overflow: hidden; position: relative; border: 0px; width: 100%;"><div class="dt-scroll-headInner" role="none" style="box-sizing: content-box; width: 1501px; padding-right: 0px;"><table class="table table-bordered compact dataTable" role="none" style="margin-left: 0px; width: 1501px;" width="100%"><thead><tr><th aria-sort="descending" class="null dt-orderable-asc dt-orderable-desc dt-ordering-desc dt-type-date" colspan="1" data-dt-column="0" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Utworzone o</div><div aria-label="Utworzone o: aktywuj, by usunąć sortowanie" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="1" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Przedmiot</div><div aria-label="Przedmiot: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="2" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Komentarz</div><div aria-label="Komentarz: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="3" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Zakres poradnictwa</div><div aria-label="Zakres poradnictwa: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="4" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Zagadnienia</div><div aria-label="Zagadnienia: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="5" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Obszary</div><div aria-label="Obszary: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="6" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Sprawa - Przedmiot</div><div aria-label="Sprawa - Przedmiot: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="7" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Rodzaj osoby, która się zgłasza o poradę</div><div aria-label="Rodzaj osoby, która się zgłasza o poradę: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="8" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Rodzaj podmiotu zobowiązanego</div><div aria-label="Rodzaj podmiotu zobowiązanego: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="9" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Radzący</div><div aria-label="Radzący: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc dt-type-date" colspan="1" data-dt-column="10" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Udzielona o</div><div aria-label="Udzielona o: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="11" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">Jednostka podziału terytorialnego</div><div aria-label="Jednostka podziału terytorialnego: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="12" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">P?</div><div aria-label="P?: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="13" rowspan="1"><div class="dt-column-header"><div class="dt-column-title">W.</div><div aria-label="W.: aktywuj, by posortować kolumnę" class="dt-column-order" role="button" tabindex="0"></div></div></th></tr><tr class="datatable-column-filter-row"><th style="padding: 0px;"><input aria-label="Utworzone o" data-index="0" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></th><th style="padding: 0px;"><input aria-label="Przedmiot" data-index="1" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></th><th style="padding: 0px;"><input aria-label="Komentarz" data-index="2" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></th><th style="padding: 0px;"><select aria-label="Zakres poradnictwa" data-index="3" style="box-sizing: border-box; width: 100%;"><option value=""></option><option value="Dostęp do informacji publicznej">Dostęp do informacji publicznej</option></select></th><th style="padding: 0px;"><select aria-label="Zagadnienia" data-index="4" style="box-sizing: border-box; width: 100%;"><option value=""></option><option value="Odmowa udostępnienia">Odmowa udostępnienia</option></select></th><th style="padding: 0px;"><select aria-label="Obszary" data-index="5" style="box-sizing: border-box; width: 100%;"><option value=""></option><option value="Administracja samorządowa">Administracja samorządowa</option></select></th><th style="padding: 0px;"><input aria-label="Sprawa - Przedmiot" data-index="6" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></th><th style="padding: 0px;"><select aria-label="Rodzaj osoby, która się zgłasza o poradę" data-index="7" style="box-sizing: border-box; width: 100%;"><option value=""></option><option value="Osoba fizyczna">Osoba fizyczna</option></select></th><th style="padding: 0px;"><select aria-label="Rodzaj podmiotu zobowiązanego" data-index="8" style="box-sizing: border-box; width: 100%;"><option value=""></option><option value="Urząd gminy">Urząd gminy</option></select></th><th style="padding: 0px;"><select aria-label="Radzący" data-index="9" style="box-sizing: border-box; width: 100%;"><option value=""></option><option value="Anna Administrator">Anna Administrator</option><option value="Bartosz Kierownik">Bartosz Kierownik</option><option value="Celina Wsparcie">Celina Wsparcie</option><option value="Dawid Obserwator">Dawid Obserwator</option></select></th><th style="padding: 0px;"><input aria-label="Udzielona o" data-index="10" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></th><th style="padding: 0px;"><input aria-label="Jednostka podziału terytorialnego" data-index="11" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></th><th style="padding: 0px;">&nbsp;</th><th style="padding: 0px;">&nbsp;</th></tr></thead><colgroup><col data-dt-column="0" style="width: 109.453px; min-width: 109.453px;"><col data-dt-column="1" style="width: 132.422px; min-width: 132.422px;"><col data-dt-column="2" style="width: 110.188px; min-width: 110.188px;"><col data-dt-column="3" style="width: 123.328px; min-width: 123.328px;"><col data-dt-column="4" style="width: 122.719px; min-width: 122.719px;"><col data-dt-column="5" style="width: 115.188px; min-width: 115.188px;"><col data-dt-column="6" style="width: 143.281px; min-width: 143.281px;"><col data-dt-column="7" style="width: 82.5312px; min-width: 82.5312px;"><col data-dt-column="8" style="width: 147.266px; min-width: 147.266px;"><col data-dt-column="9" style="width: 89.2969px; min-width: 89.2969px;"><col data-dt-column="10" style="width: 102.125px; min-width: 102.125px;"><col data-dt-column="11" style="width: 139.281px; min-width: 139.281px;"><col data-dt-column="12" style="width: 40.7656px; min-width: 40.7656px;"><col data-dt-column="13" style="width: 42.1562px; min-width: 42.1562px;"></colgroup></table></div></div><div class="dt-scroll-body" role="none" style="position: relative; overflow: auto; width: 100%; max-height: 757.609px; height: 757.609px;"><table aria-describedby="datatable_advices_info" class="table table-bordered compact dataTable" id="datatable_advices" role="none" style="width: 100%;" width="100%"><colgroup><col data-dt-column="0" style="width: 109.453px; min-width: 109.453px;"><col data-dt-column="1" style="width: 132.422px; min-width: 132.422px;"><col data-dt-column="2" style="width: 110.188px; min-width: 110.188px;"><col data-dt-column="3" style="width: 123.328px; min-width: 123.328px;"><col data-dt-column="4" style="width: 122.719px; min-width: 122.719px;"><col data-dt-column="5" style="width: 115.188px; min-width: 115.188px;"><col data-dt-column="6" style="width: 143.281px; min-width: 143.281px;"><col data-dt-column="7" style="width: 82.5312px; min-width: 82.5312px;"><col data-dt-column="8" style="width: 147.266px; min-width: 147.266px;"><col data-dt-column="9" style="width: 89.2969px; min-width: 89.2969px;"><col data-dt-column="10" style="width: 102.125px; min-width: 102.125px;"><col data-dt-column="11" style="width: 139.281px; min-width: 139.281px;"><col data-dt-column="12" style="width: 40.7656px; min-width: 40.7656px;"><col data-dt-column="13" style="width: 42.1562px; min-width: 42.1562px;"></colgroup><tfoot role="none"></tfoot><thead role="none"><tr role="row"><th aria-sort="descending" class="null dt-orderable-asc dt-orderable-desc dt-ordering-desc dt-type-date" colspan="1" data-dt-column="0" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Utworzone o</div><div aria-label="Utworzone o: aktywuj, by usunąć sortowanie" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="1" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Przedmiot</div><div aria-label="Przedmiot: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="2" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Komentarz</div><div aria-label="Komentarz: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="3" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Zakres poradnictwa</div><div aria-label="Zakres poradnictwa: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="4" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Zagadnienia</div><div aria-label="Zagadnienia: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="5" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Obszary</div><div aria-label="Obszary: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="6" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Sprawa - Przedmiot</div><div aria-label="Sprawa - Przedmiot: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="7" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Rodzaj osoby, która się zgłasza o poradę</div><div aria-label="Rodzaj osoby, która się zgłasza o poradę: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="8" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Rodzaj podmiotu zobowiązanego</div><div aria-label="Rodzaj podmiotu zobowiązanego: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="9" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Radzący</div><div aria-label="Radzący: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc dt-type-date" colspan="1" data-dt-column="10" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Udzielona o</div><div aria-label="Udzielona o: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="11" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">Jednostka podziału terytorialnego</div><div aria-label="Jednostka podziału terytorialnego: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="12" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">P?</div><div aria-label="P?: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th><th class="null dt-orderable-asc dt-orderable-desc" colspan="1" data-dt-column="13" role="columnheader" rowspan="1"><div class="dt-scroll-sizing"><div class="dt-column-header"><div class="dt-column-title">W.</div><div aria-label="W.: aktywuj, by posortować kolumnę" class="dt-column-order"></div></div></div></th></tr><tr class="datatable-column-filter-row" role="row"><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><input aria-label="Utworzone o" data-index="0" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><input aria-label="Przedmiot" data-index="1" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><input aria-label="Komentarz" data-index="2" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><select aria-label="Zakres poradnictwa" data-index="3" style="box-sizing: border-box; width: 100%;"><option value=""></option><option value="Dostęp do informacji publicznej">Dostęp do informacji publicznej</option></select></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><select aria-label="Zagadnienia" data-index="4" style="box-sizing: border-box; width: 100%;"><option value=""></option><option value="Odmowa udostępnienia">Odmowa udostępnienia</option></select></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><select aria-label="Obszary" data-index="5" style="box-sizing: border-box; width: 100%;"><option value=""></option><option value="Administracja samorządowa">Administracja samorządowa</option></select></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><input aria-label="Sprawa - Przedmiot" data-index="6" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><select aria-label="Rodzaj osoby, która się zgłasza o poradę" data-index="7" style="box-sizing: border-box; width: 100%;"><option value=""></option><option value="Osoba fizyczna">Osoba fizyczna</option></select></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><select aria-label="Rodzaj podmiotu zobowiązanego" data-index="8" style="box-sizing: border-box; width: 100%;"><option value=""></option><option value="Urząd gminy">Urząd gminy</option></select></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><select aria-label="Radzący" data-index="9" style="box-sizing: border-box; width: 100%;"><option value=""></option><option value="Anna Administrator">Anna Administrator</option><option value="Bartosz Kierownik">Bartosz Kierownik</option><option value="Celina Wsparcie">Celina Wsparcie</option><option value="Dawid Obserwator">Dawid Obserwator</option></select></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><input aria-label="Udzielona o" data-index="10" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing"><input aria-label="Jednostka podziału terytorialnego" data-index="11" placeholder="..." style="width: 100%; box-sizing: border-box;" type="text" value=""></div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing">&nbsp;</div></th><th role="columnheader" style="padding: 0px;"><div class="dt-scroll-sizing">&nbsp;</div></th></tr></thead>
+            <!-- table-striped  nowrap-->
+        <tbody role="rowgroup"><tr id="row-1" role="row"><td class="null dt-type-date sorting_1" role="cell">[DATETIME]</td><td class="null" role="cell"><a href="/porady/1">Porada ws. danych środowiskowych</a></td><td class="null" role="cell"></td><td class="null" role="cell"></td><td class="null" role="cell">Odmowa udostępnienia</td><td class="null" role="cell">Administracja samorządowa</td><td class="null" role="cell"><b><a href="/sprawy/sprawa-2/">Spór o dostęp do danych środowiskowych</a></b> <button aria-haspopup="dialog" aria-label="Podsumowanie" class="btn btn-sm btn-default align-middle" data-advice-summary-url="/sprawy/sprawa-2/podsumowanie-porady/" title="Podsumowanie" type="button"><i aria-hidden="true" class="fa-solid fa-circle-info"></i></button>
+</td><td class="null" role="cell">Osoba fizyczna</td><td class="null" role="cell">Urząd gminy</td><td class="null" role="cell">Celina Wsparcie</td><td class="null dt-type-date" role="cell">[DATETIME]</td><td class="null" role="cell">-</td><td class="null" role="cell"><span class="fas fa-question"></span></td><td class="null" role="cell"><span class="fas fa-check" style="color: green;"></span></td></tr></tbody></table></div><div class="dt-scroll-foot" role="none" style="overflow: hidden; border: 0px; width: 100%;"><div class="dt-scroll-footInner" role="none" style="width: 1501px; padding-right: 0px;"><table class="table table-bordered compact dataTable" role="none" style="margin-left: 0px; width: 1501px;" width="100%"><colgroup><col data-dt-column="0" style="width: 109.453px; min-width: 109.453px;"><col data-dt-column="1" style="width: 132.422px; min-width: 132.422px;"><col data-dt-column="2" style="width: 110.188px; min-width: 110.188px;"><col data-dt-column="3" style="width: 123.328px; min-width: 123.328px;"><col data-dt-column="4" style="width: 122.719px; min-width: 122.719px;"><col data-dt-column="5" style="width: 115.188px; min-width: 115.188px;"><col data-dt-column="6" style="width: 143.281px; min-width: 143.281px;"><col data-dt-column="7" style="width: 82.5312px; min-width: 82.5312px;"><col data-dt-column="8" style="width: 147.266px; min-width: 147.266px;"><col data-dt-column="9" style="width: 89.2969px; min-width: 89.2969px;"><col data-dt-column="10" style="width: 102.125px; min-width: 102.125px;"><col data-dt-column="11" style="width: 139.281px; min-width: 139.281px;"><col data-dt-column="12" style="width: 40.7656px; min-width: 40.7656px;"><col data-dt-column="13" style="width: 42.1562px; min-width: 42.1562px;"></colgroup></table></div></div></div><div class="dt-bottom-row" id=""><div aria-live="polite" class="dt-info" id="datatable_advices_info" role="status">Pozycje od 1 do 1 z 1 łącznie</div><div class="dt-paging"><nav aria-label="pagination"><button aria-controls="datatable_advices" aria-disabled="true" aria-label="Pierwsza" class="dt-paging-button disabled first" data-dt-idx="first" role="link" tabindex="-1" type="button">Pierwsza</button><button aria-controls="datatable_advices" aria-disabled="true" aria-label="Poprzednia" class="dt-paging-button disabled previous" data-dt-idx="previous" role="link" tabindex="-1" type="button">Poprzednia</button><button aria-controls="datatable_advices" aria-current="page" class="dt-paging-button current" data-dt-idx="0" role="link" type="button">1</button><button aria-controls="datatable_advices" aria-disabled="true" aria-label="Następna" class="dt-paging-button disabled next" data-dt-idx="next" role="link" tabindex="-1" type="button">Następna</button><button aria-controls="datatable_advices" aria-disabled="true" aria-label="Ostatnia" class="dt-paging-button disabled last" data-dt-idx="last" role="link" tabindex="-1" type="button">Ostatnia</button></nav></div></div><div class="dt-autosize" style="width: 100%; height: 0px;"></div></div>
+    </div>
+</div>
+
+
+            </div>
+            
+            <div class="footer">
+                <div class="footer-right">Sieć Obywatelska - Watchdog Polska<br>
+                    ul. Szpitalna 5/5<br>
+                    00-031 Warszawa
+                </div>
+                <div class="footer-left">
+                    silnik: <a href="http://jawne.info.pl">jawne.info.pl</a> |
+                    [VERSION] |
+                    <a href="https://github.com/watchdogpolska/poradnia">
+                        <i class="fab fa-github"></i> GitHub</a> - <a href="https://github.com/watchdogpolska/poradnia/compare/[GITHUB_REVISION]...master">[GITHUB_REVISION]</a> |
+                    <a href="/strony/deklaracja-dostepnosci/">Deklaracja dostępności</a>
+                </div>
+                <div class="footer-center">Strona wykorzystuje cookies</div>
+            </div>
+            <div class="footer">
+                    <div class="footer-center col-12 col-md-6 offset-md-3 col-lg-4 offset-lg-4">
+                        
+                            <img alt="" class="img-fluid" src="/static/images/baner.png"><br>
+                            Poradnia przygotowana została dzięki wsparciu programu Obywatele dla Demokracji,
+                            finansowanego z Funduszy EOG.<br>
+                        
+
+
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+        
+        
+<div id="feedback">
+    <div id="feedback-header">Zgłoś usterkę administratorom poradni.</div>
+    <div id="feedback-body">
+        <p>Przekaż nam uwagi o tej stronie dotyczące błędów lub możliwych ulepszeń.</p>
+        
+
+
+        
+
+<form action="/uwagi/submit" method="post"> <input name="csrfmiddlewaretoken" type="hidden" value="[CSRF]"> <div class="mb-3" id="div_id_text"> <label class="form-label requiredField" for="id_text">
+                Wiadomość dla administratorów strony:<span class="asteriskField">*</span> </label> <textarea aria-describedby="id_text_helptext" class="textarea form-control" cols="40" id="id_text" name="text" required="" rows="10"></textarea> <div class="form-text" id="id_text_helptext">Treść zgłoszona przez użytkownika</div> </div> <input id="id_url" name="url" type="hidden" value="http://localhost:8000/porady/table/"> <div class="mb-3"> <div class=""> <input class="btn btn-primary btn-primary" id="submit-id-feedback_action" name="feedback_action" type="submit" value="Zgłoś usterkę administratorom poradni."> </div> </div> </form>
+
+    </div>
+</div>
+
+    
+
+</div>
+
+    
+<!-- Modal -->
+<div aria-labelledby="navsearch_modal_label" class="modal fade" id="navsearch_modal" role="dialog" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title" id="navsearch_modal_label">Wyszukaj</h2>
+                <button aria-label="Close" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+            </div>
+            <div class="modal-body">
+                
+<div class="navsearch">
+	<form class="form" onsubmit="return false;">
+		<div class="form-group">
+			<label for="search">Nazwa użytkownika/numer sprawy/nazwa sprawy:</label>
+			<input class="form-control navsearch__input" hx-get="/navsearch/" hx-swap="innerHTML" hx-target=".navsearch__results" hx-trigger="input changed delay:300ms" id="search" name="q" type="search">
+		</div>
+	</form>
+	<div class="navsearch__results"></div>
+</div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+<!-- Le javascript
+  ================================================== -->
+<!-- Rest of js placed at the end of the document so the pages load faster -->
+
+
+
+
+
+
+
+
+<div id="attachment-text-modal-container"></div>
+<div id="advice-summary-modal-container"></div>
+<div class="htmx-indicator" id="htmx-spinner">
+    Wczytywanie...
+</div>
+<script>
+    document.addEventListener('click', function (event) {
+        if (!event.target.closest('[hx-target="#attachment-text-modal-container"]')) {
+            return;
+        }
+
+        // Only clean up a modal that's actually open (switching straight
+        // from one attachment's modal to another's, without closing
+        // first) - this used to run unconditionally on every click of an
+        // attachment button, including the very click that opens the
+        // *first* modal, which stripped the backdrop/scroll-lock Bootstrap
+        // had just added for that same click (confirmed via an isolated
+        // Bootstrap-only repro outside the app, alongside the F004 fix in
+        // wcag.js). Registered capture:true so this runs *before* the
+        // click's own handler swaps #attachment-text-modal-container's
+        // content below - otherwise, on a direct switch between two
+        // attachments, `existingModal` would already be the new (not-yet-
+        // shown) modal instead of the old (actually open) one, and this
+        // would wrongly skip cleanup, leaking the old backdrop behind the
+        // new one (confirmed via the same repro).
+        var existingModal = document.getElementById('attachmentTextModal');
+        if (existingModal && existingModal.classList.contains('show')) {
+            bootstrap.Modal.getOrCreateInstance(existingModal).hide();
+            document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+                el.remove();
+            });
+            document.body.classList.remove('modal-open');
+        }
+    }, true);
+
+    document.body.addEventListener('htmx:afterSwap', function (event) {
+        if (event.target.id === 'attachment-text-modal-container') {
+            var modal = document.getElementById('attachmentTextModal');
+            if (modal) {
+                bootstrap.Modal.getOrCreateInstance(modal).show();
+            }
+        }
+    });
+
+    // Bootstrap sets aria-hidden="true" on the modal from _hideModal(),
+    // called after the hide transition - if focus is still inside the
+    // modal at that point (e.g. the "Zamknij" button that was just
+    // clicked/activated to close it), the browser blocks it and logs an
+    // "aria-hidden blocked" console warning, since a hidden ancestor must
+    // never contain the focused element. 'hide.bs.modal' fires
+    // synchronously, immediately, before any of that - blurring here
+    // means focus is already outside the modal by the time aria-hidden
+    // is actually applied. The 'hidden.bs.modal' handler below still runs
+    // afterwards to move focus on to the triggering attachment button.
+    document.addEventListener('hide.bs.modal', function (event) {
+        if (event.target.matches('#attachmentTextModal') && event.target.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+    });
+
+    document.addEventListener('hidden.bs.modal', function (event) {
+        if (!event.target.matches('#attachmentTextModal')) {
+            return;
+        }
+        var container = document.getElementById('attachment-text-modal-container');
+        if (container) {
+            container.innerHTML = '';
+        }
+        document.querySelectorAll('.modal-backdrop').forEach(function (el) {
+            el.remove();
+        });
+        document.body.classList.remove('modal-open');
+    });
+
+    // Advice summary popup (cases/_advice_summary_button.html). The button
+    // also sits inside DataTables rows rendered after page load, which htmx
+    // never processes, so this is a delegated click handler with fetch()
+    // rather than hx-get like the attachment popup above.
+    var adviceSummaryTrigger = null;
+
+    document.addEventListener('click', function (event) {
+        var button = event.target.closest('[data-advice-summary-url]');
+        if (!button) {
+            return;
+        }
+        event.preventDefault();
+        adviceSummaryTrigger = button;
+        fetch(button.dataset.adviceSummaryUrl, {credentials: 'same-origin'})
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status);
+                }
+                return response.text();
+            })
+            .then(function (html) {
+                var container = document.getElementById('advice-summary-modal-container');
+                container.innerHTML = html;
+                bootstrap.Modal.getOrCreateInstance(
+                    document.getElementById('adviceSummaryModal')
+                ).show();
+            })
+            .catch(function (error) {
+                console.error('Advice summary popup failed:', error);
+            });
+    });
+
+    // Same aria-hidden reason as #attachmentTextModal above.
+    document.addEventListener('hide.bs.modal', function (event) {
+        if (event.target.matches('#adviceSummaryModal') && event.target.contains(document.activeElement)) {
+            document.activeElement.blur();
+        }
+    });
+
+    document.addEventListener('hidden.bs.modal', function (event) {
+        if (!event.target.matches('#adviceSummaryModal')) {
+            return;
+        }
+        bootstrap.Modal.getOrCreateInstance(event.target).dispose();
+        document.getElementById('advice-summary-modal-container').innerHTML = '';
+        // Shown via .show(), not data-bs-toggle, so Bootstrap doesn't
+        // return focus to the trigger on its own.
+        if (adviceSummaryTrigger && document.body.contains(adviceSummaryTrigger)) {
+            adviceSummaryTrigger.focus();
+        }
+        adviceSummaryTrigger = null;
+    });
+
+    function getCookie(name) {
+        var value = '; ' + document.cookie;
+        var parts = value.split('; ' + name + '=');
+        if (parts.length === 2) {
+            return parts.pop().split(';').shift();
+        }
+        return null;
+    }
+
+    document.body.addEventListener('htmx:configRequest', function (event) {
+        event.detail.headers['X-CSRFToken'] = getCookie('csrftoken');
+    });
+</script>
+
+
+
+
+</body></html>
