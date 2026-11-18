@@ -2,11 +2,11 @@
 @use "vars";
 
 $case-header-padding-vertical: 1em;
-.case-header{
+.case-header {
 	border-bottom: 1px solid vars.$gray-lighter;
 	padding-bottom: 1em;
 	margin-bottom: 1em;
-	&-actions{
+	&-actions {
 		@extend .btn-group;
 
 		// BS5's `@extend .btn-group` makes this `display: inline-flex`
@@ -51,21 +51,19 @@ $case-header-padding-vertical: 1em;
 			clear: both;
 		}
 
-		@media(min-width: vars.$screen-md-min) {
+		@media (min-width: vars.$screen-md-min) {
 			float: right;
 			margin: 20px;
 		}
-
-
 	}
-	&-title{
+	&-title {
 	}
-	&-number{
+	&-number {
 		color: vars.$gray-light;
 		font-size: 0.7em;
 		vertical-align: middle;
 	}
-	&-meta{
+	&-meta {
 		font-size: 1.2em;
 	}
 }

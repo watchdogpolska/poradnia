@@ -3,7 +3,7 @@
 
 @use "sass:color";
 
-.freatures{
+.freatures {
 	// Was @include make-row; / @include make-md-column(4, 40px); — BS3's
 	// breakpoint-infixed column mixins (make-md-column) have no BS5
 	// equivalent (BS5's make-col() dropped per-call gutter overrides and
@@ -12,7 +12,7 @@
 	margin-left: -15px;
 	margin-right: -15px;
 	@include bootstrap.clearfix;
-	&__freature{
+	&__freature {
 		position: relative;
 		min-height: 1px;
 		padding-left: 20px;
@@ -23,40 +23,38 @@
 		}
 	}
 }
-.freature{
-	&__icon{
+.freature {
+	&__icon {
 		text-align: center;
 		padding: 15px;
 		font-size: 8em;
 	}
-	&__title{
+	&__title {
 		margin-bottom: 3px;
-		font-size: 1.5em
+		font-size: 1.5em;
 	}
-	&__description{
+	&__description {
 		text-align: justify;
 	}
-
 }
 
-.support-button{
+.support-button {
 	display: inline-block;
-	clear:both;
-	background: #D72626;
+	clear: both;
+	background: #d72626;
 	color: white;
 	font-size: 2.3em;
-	padding:.5em;
-	transition: .2s;
+	padding: 0.5em;
+	transition: 0.2s;
 	font-size: 1.8em;
 	@media (min-width: vars.$screen-md-min) {
 		font-size: 2.3em;
 	}
-	&:hover{
-		background: color.scale(#D72626, $lightness: -5%);
+	&:hover {
+		background: color.scale(#d72626, $lightness: -5%);
 		color: white;
 		text-decoration: none;
 	}
-
 }
 
 .support-notice p {

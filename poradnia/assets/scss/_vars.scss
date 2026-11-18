@@ -3,7 +3,7 @@
 // Diffed against upstream bootstrap-sass 3.4.3's stock _variables.scss before
 // this file was gutted (it used to be a full hand-ported copy of that file).
 // Two real brand customizations survived the diff:
-$primary: #D82727; // was $brand-primary: #D82727
+$primary: #d82727; // was $brand-primary: #D82727
 $success: #555555; // was $brand-success: $gray (i.e. gray, not Bootstrap's default green)
 
 // bootstrap-sass 3.4.3's actual default $font-size-base was 14px, not the
@@ -80,13 +80,13 @@ $border-radius-small: 3px;
 // mixins/_center-block.scss); _timeline.scss and _forms.scss still use them and
 // BS5 has no equivalent, so they're reproduced here rather than ported away.
 @mixin square($size) {
-  width: $size;
-  height: $size;
+	width: $size;
+	height: $size;
 }
 @mixin center-block() {
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
 }
 
 // _timeline.scss panel-variant border/heading colors (feeds the timeline

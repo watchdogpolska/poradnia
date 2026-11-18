@@ -1,0 +1,50 @@
+name: Coverage
+
+# Uploads unit-test coverage for master/dev to Codecov, so the README badge
+# and PR comparisons have base-branch data. PRs get their coverage from
+# web.yml; this workflow only runs the unit tests, not e2e or WCAG checks.
+on:
+  push:
+    branches:
+      - master
+      - dev
+
+concurrency:
+  group: coverage-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - name: Align container user with runner UID/GID
+        run: |
+          echo "UID=$(id -u)" >> .env
+          echo "GID=$(id -g)" >> .env
+      - name: Start database early
+        run: docker compose up -d db
+      - name: Build application
+        run: make build
+      - name: Collect static files
+        run: docker compose run web python manage.py collectstatic --no-input
+      - name: Run unit tests with coverage
+        run: make coverage
+      - name: Publish coverage report to job summary
+        if: ${{ !cancelled() }}
+        run: |
+          docker compose run --rm --no-deps -T web \
+            coverage report --format=markdown >> "$GITHUB_STEP_SUMMARY"
+      - name: Export coverage report for Codecov
+        if: ${{ !cancelled() }}
+        run: docker compose run --rm --no-deps -T web coverage xml -o coverage.xml
+      - name: Upload coverage to Codecov
+        if: ${{ !cancelled() }}
+        uses: codecov/codecov-action@v7
+        with:
+          files: ./coverage.xml
+          token: ${{ secrets.CODECOV_TOKEN }}
+          fail_ci_if_error: false

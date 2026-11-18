@@ -28,15 +28,21 @@ const RULES = [
   {
     // Year optional: Django admin's date_hierarchy drill-down renders the
     // day link as "27 października" with no year.
-    label: "Polish absolute date (\"14 października 2026\", \"27 października\")",
-    re: new RegExp(`\\d{1,2}\\s+(${POLISH_MONTHS})(\\s+\\d{4})?(?!\\p{L})`, "gu"),
+    label: 'Polish absolute date ("14 października 2026", "27 października")',
+    re: new RegExp(
+      `\\d{1,2}\\s+(${POLISH_MONTHS})(\\s+\\d{4})?(?!\\p{L})`,
+      "gu",
+    ),
     replacement: "[DATE]",
   },
   {
     // Events calendar prev/next-month links ("Październik 2026"). Requires
     // the year: a bare month name would also hit "maj" inside "mają".
-    label: "Polish month + year (\"Listopad 2026\")",
-    re: new RegExp(`(?<!\\p{L})(${POLISH_MONTHS_NOMINATIVE})\\s+\\d{4}\\b`, "giu"),
+    label: 'Polish month + year ("Listopad 2026")',
+    re: new RegExp(
+      `(?<!\\p{L})(${POLISH_MONTHS_NOMINATIVE})\\s+\\d{4}\\b`,
+      "giu",
+    ),
     replacement: "[MONTH]",
   },
   {
@@ -59,7 +65,7 @@ const RULES = [
     // The same date_hierarchy's back-link text ("‹ 2026"). server.html
     // keeps the template's &lsaquo; entity, postload.html (DOM-serialized)
     // has the literal character, so both forms are matched.
-    label: "Django admin date_hierarchy back-link year (\"‹ 2026\")",
+    label: 'Django admin date_hierarchy back-link year ("‹ 2026")',
     re: /(class="date-back"[^>]*>(?:‹|&lsaquo;)\s*)\d{4}(?=\s*<\/a>)/g,
     replacement: "$1[N]",
   },
@@ -70,7 +76,8 @@ const RULES = [
     // captured one day and re-diffed the next showed exactly this field
     // changing (26.10.2026 -> 27.10.2026), nothing else - a real gap, not a
     // flake, that would have recurred every midnight regardless.
-    label: "Polish dotted date (DD.MM.YYYY, e.g. advice-form's default grant_on value)",
+    label:
+      "Polish dotted date (DD.MM.YYYY, e.g. advice-form's default grant_on value)",
     re: /\b\d{2}\.\d{2}\.\d{4}\b/g,
     replacement: "[DATE]",
   },
@@ -96,7 +103,7 @@ const RULES = [
     // title="minutę and ate the attribute syntax itself (confirmed live --
     // produced `<span [RELATIVE_TIME]">`, missing `title="`). Letters-only
     // stops dead at "=", which isn't a letter.
-    label: "Polish relative time (\"3 dni temu\", \"minutę temu\", ...)",
+    label: 'Polish relative time ("3 dni temu", "minutę temu", ...)',
     re: /\b(?:\d+(?:\s|&nbsp;)+)?[\p{L}]+(?:\s|&nbsp;)+temu\b/giu,
     replacement: "[RELATIVE_TIME]",
   },
@@ -109,7 +116,8 @@ const RULES = [
     // actually wired in here until found live: baseline_diff.js flagged
     // this footer line as a false-positive change after two ordinary
     // commits landed with no template changes at all.
-    label: "GitHub revision link ({% github_link %}, templates/base.html footer)",
+    label:
+      "GitHub revision link ({% github_link %}, templates/base.html footer)",
     re: /(href="https:\/\/github\.com\/watchdogpolska\/poradnia\/compare\/)[0-9a-f]{6,40}(\.\.\.[^"]*")>[0-9a-f]{6,40}(<\/a>)/g,
     replacement: "$1[GITHUB_REVISION]$2>[GITHUB_REVISION]$3",
   },
@@ -147,7 +155,10 @@ function sortTagAttributes(html) {
 }
 
 function normalizeHtml(html) {
-  const withRulesApplied = RULES.reduce((acc, rule) => acc.replace(rule.re, rule.replacement), html);
+  const withRulesApplied = RULES.reduce(
+    (acc, rule) => acc.replace(rule.re, rule.replacement),
+    html,
+  );
   return sortTagAttributes(withRulesApplied);
 }
 

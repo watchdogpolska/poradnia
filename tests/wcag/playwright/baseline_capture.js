@@ -34,19 +34,25 @@ async function main() {
   fs.writeFileSync(
     path.join(LOCAL_ROOT, "baseline", "capture-report.json"),
     JSON.stringify(report, null, 2),
-    "utf8"
+    "utf8",
   );
 
   const badStatus = report.filter((r) => r.path && !r.statusOk);
   const badInteraction = report.filter((r) => r.interaction && !r.ok);
   console.log(`\nCaptured ${SAMPLE.length} sample entries.`);
   if (badStatus.length) {
-    console.log(`WARNING: ${badStatus.length} entries returned an unexpected status:`);
-    badStatus.forEach((r) => console.log(`  ${r.role}/${r.id} ${r.path} -> ${r.status}`));
+    console.log(
+      `WARNING: ${badStatus.length} entries returned an unexpected status:`,
+    );
+    badStatus.forEach((r) =>
+      console.log(`  ${r.role}/${r.id} ${r.path} -> ${r.status}`),
+    );
   }
   if (badInteraction.length) {
     console.log(`WARNING: ${badInteraction.length} interactions failed:`);
-    badInteraction.forEach((r) => console.log(`  ${r.role}/${r.id} ${r.interaction}: ${r.error}`));
+    badInteraction.forEach((r) =>
+      console.log(`  ${r.role}/${r.id} ${r.interaction}: ${r.error}`),
+    );
   }
 }
 

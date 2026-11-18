@@ -1,14 +1,8 @@
 {
-  "extends": [
-    "config:recommended",
-    "schedule:weekly",
-    "group:allNonMajor"
-  ],
+  "extends": ["config:recommended", "schedule:weekly", "group:allNonMajor"],
   "baseBranchPatterns": ["dev"],
   "useBaseBranchConfig": "merge",
-  "ignorePaths": [
-    "poradnia/static/jquery-ui/**"
-  ],
+  "ignorePaths": ["poradnia/static/jquery-ui/**"],
   "enabledManagers": [
     "dockerfile",
     "docker-compose",
@@ -27,11 +21,7 @@
     },
     {
       "matchManagers": ["pip_requirements"],
-      "matchFileNames": [
-        "requirements/local.txt",
-        "requirements/test.txt",
-        "requirements/doc.txt"
-      ],
+      "matchFileNames": ["requirements/dev.txt"],
       "groupName": "non-production-dependencies"
     },
     {

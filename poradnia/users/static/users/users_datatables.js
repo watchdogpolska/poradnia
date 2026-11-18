@@ -1,78 +1,81 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const table1 = document.getElementById("datatable_users");
-    if (!table1) return;
-    const tableWrapper = document.getElementById("tableWrapper");
-    const tableTop = tableWrapper.getBoundingClientRect().top;
-    const viewportHeight = window.innerHeight;
-    const maxHeight = viewportHeight - tableTop;
-    tableWrapper.style.maxHeight = maxHeight + 'px';
+document.addEventListener("DOMContentLoaded", function () {
+  const table1 = document.getElementById("datatable_users");
+  if (!table1) return;
+  const tableWrapper = document.getElementById("tableWrapper");
+  const tableTop = tableWrapper.getBoundingClientRect().top;
+  const viewportHeight = window.innerHeight;
+  const maxHeight = viewportHeight - tableTop;
+  tableWrapper.style.maxHeight = maxHeight + "px";
 
-    // Subscribe "initComplete" event
-    table1.addEventListener('initComplete', function () {
-        // Code to resize input fields
-        const filterRowCells = tableWrapper.querySelectorAll("tr.datatable-column-filter-row th");
-        filterRowCells.forEach(function (th) {
-            th.style.padding = "0";
-            const input = th.querySelector("input[type=text]");
-            if (input) {
-                input.style.width = "100%";
-                input.style.boxSizing = "border-box";
-            }
-            // The library renders filter controls without an accessible name.
-            const control = th.querySelector("input[type=text], select");
-            if (control) {
-                const header = th.closest("thead").rows[0].cells[th.cellIndex];
-                control.setAttribute("aria-label", header.textContent.trim());
-            }
-        });
-    });
-
-    // Initialize table
-    AjaxDatatableViewUtils.initialize_table(
-        table1,
-        "/uzytkownik/users_table_ajax_data/",
-        {
-            processing: true,
-            serverSide: true,
-            autoWidth: true,
-            full_row_select: false,
-            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
-            // Group the length selector/search box, and the info/paging controls,
-            // each into one row (default dom string stacks every feature separately).
-            dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
-            scrollX: true,
-            scrollY: maxHeight - 250,
-            "language": {
-                "processing":     "Przetwarzanie...",
-                "search":         "Szukaj:",
-                "lengthMenu":     "Pokaż _MENU_ pozycji",
-                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                "infoPostFix":    "",
-                "loadingRecords": "Wczytywanie...",
-                "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                "emptyTable":     "Brak danych",
-                "paginate": {
-                    "first":      "Pierwsza",
-                    "previous":   "Poprzednia",
-                    "next":       "Następna",
-                    "last":       "Ostatnia"
-                },
-                "aria": {
-                    "orderable": ": aktywuj, by posortować kolumnę",
-                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
-                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
-                    "paginate": {
-                        "first": "Pierwsza",
-                        "previous": "Poprzednia",
-                        "next": "Następna",
-                        "last": "Ostatnia"
-                    }
-                }
-            },
-        }, {
-            // extra_data
-        },
+  // Subscribe "initComplete" event
+  table1.addEventListener("initComplete", function () {
+    // Code to resize input fields
+    const filterRowCells = tableWrapper.querySelectorAll(
+      "tr.datatable-column-filter-row th",
     );
+    filterRowCells.forEach(function (th) {
+      th.style.padding = "0";
+      const input = th.querySelector("input[type=text]");
+      if (input) {
+        input.style.width = "100%";
+        input.style.boxSizing = "border-box";
+      }
+      // The library renders filter controls without an accessible name.
+      const control = th.querySelector("input[type=text], select");
+      if (control) {
+        const header = th.closest("thead").rows[0].cells[th.cellIndex];
+        control.setAttribute("aria-label", header.textContent.trim());
+      }
+    });
+  });
+
+  // Initialize table
+  AjaxDatatableViewUtils.initialize_table(
+    table1,
+    "/uzytkownik/users_table_ajax_data/",
+    {
+      processing: true,
+      serverSide: true,
+      autoWidth: true,
+      full_row_select: false,
+      a11y_mode: document.documentElement.dataset.uiMode === "wcag",
+      // Group the length selector/search box, and the info/paging controls,
+      // each into one row (default dom string stacks every feature separately).
+      dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
+      scrollX: true,
+      scrollY: maxHeight - 250,
+      language: {
+        processing: "Przetwarzanie...",
+        search: "Szukaj:",
+        lengthMenu: "Pokaż _MENU_ pozycji",
+        info: "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+        infoEmpty: "Pozycji 0 z 0 dostępnych",
+        infoFiltered: "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+        infoPostFix: "",
+        loadingRecords: "Wczytywanie...",
+        zeroRecords: "Nie znaleziono pasujących pozycji",
+        emptyTable: "Brak danych",
+        paginate: {
+          first: "Pierwsza",
+          previous: "Poprzednia",
+          next: "Następna",
+          last: "Ostatnia",
+        },
+        aria: {
+          orderable: ": aktywuj, by posortować kolumnę",
+          orderableRemove: ": aktywuj, by usunąć sortowanie",
+          orderableReverse: ": aktywuj, by odwrócić sortowanie",
+          paginate: {
+            first: "Pierwsza",
+            previous: "Poprzednia",
+            next: "Następna",
+            last: "Ostatnia",
+          },
+        },
+      },
+    },
+    {
+      // extra_data
+    },
+  );
 });

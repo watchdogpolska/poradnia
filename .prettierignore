@@ -1,0 +1,13 @@
+# Django templates - Prettier's HTML parser doesn't understand {% %} / {{ }}
+*.html
+
+# Built by gulp from poradnia/assets/ - see gulpfile.js
+poradnia/static/css/
+poradnia/static/js/script*.js
+poradnia/static/js/wcag*.js
+
+# Generated
+**/package-lock.json
+**/cassettes/
+tests/wcag/playwright/baseline/
+staticfiles/

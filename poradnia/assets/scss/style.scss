@@ -14,8 +14,6 @@
 @use "bootstrap";
 @use "vars";
 
-
-
 // BS3's base styles made every bare <label> bold by default (a plain
 // element selector, not scoped to any class); BS5 leaves label font-
 // weight at normal. First found via a user report on /uzytkownik/'s
@@ -30,11 +28,11 @@ label {
 	font-weight: bold;
 }
 
-.logo{
+.logo {
 	display: inline-block;
 	width: 160px;
 	height: 160px;
-	background: url("../images/logo.png") no-repeat center center
+	background: url("../images/logo.png") no-repeat center center;
 }
 
 // The migration's mechanical class sweep renamed every `btn-default` to
@@ -108,25 +106,25 @@ label {
 // Values are bootstrap-sass 3.4.3's actual stock $state-*-text/-bg/-border
 // (the same border/bg pair already used for .panel-success and friends in
 // _vars.scss) and its alert-link darkened shades.
-.alert-success{
+.alert-success {
 	--bs-alert-color: #3c763d;
 	--bs-alert-bg: #dff0d8;
 	--bs-alert-border-color: #d6e9c6;
 	--bs-alert-link-color: #2b542c;
 }
-.alert-info{
+.alert-info {
 	--bs-alert-color: #31708f;
 	--bs-alert-bg: #d9edf7;
 	--bs-alert-border-color: #bce8f1;
 	--bs-alert-link-color: #245269;
 }
-.alert-warning{
+.alert-warning {
 	--bs-alert-color: #8a6d3b;
 	--bs-alert-bg: #fcf8e3;
 	--bs-alert-border-color: #faebcc;
 	--bs-alert-link-color: #66512c;
 }
-.alert-danger{
+.alert-danger {
 	--bs-alert-color: #a94442;
 	--bs-alert-bg: #f2dede;
 	--bs-alert-border-color: #ebccd1;
@@ -139,7 +137,7 @@ label {
 // --bs-breadcrumb-bg/-padding-x/-padding-y/-border-radius custom properties
 // all ship empty/zero) - restored via those same properties, found via a
 // user report wanting the grey background back.
-.breadcrumb{
+.breadcrumb {
 	--bs-breadcrumb-bg: #f5f5f5;
 	--bs-breadcrumb-padding-x: 15px;
 	--bs-breadcrumb-padding-y: 8px;
@@ -153,7 +151,7 @@ label {
 	// to push one item to the end of the row while the rest stay packed to
 	// the start, without touching .float-end's normal (non-flex) float
 	// behavior used everywhere else in the app.
-	.float-end{
+	.float-end {
 		margin-left: auto;
 	}
 }
@@ -170,7 +168,7 @@ label {
 // bare/unwrapped uses should keep BS5's normal block-flex behavior -
 // found via a user report that pagination controls were no longer
 // centered.
-.text-center .pagination{
+.text-center .pagination {
 	display: inline-flex;
 }
 
@@ -193,11 +191,11 @@ label {
 // selector name - found via a user report that letter cards for
 // non-staff messages had lost their background/border/text color
 // entirely.
-.text-bg-default{
+.text-bg-default {
 	color: vars.$text-color !important; // #333
 	background-color: vars.$panel-default-heading-bg !important; // #f5f5f5
 }
-.border-default{
+.border-default {
 	border-color: vars.$panel-default-border !important; // #ddd
 }
 
@@ -220,10 +218,10 @@ label {
 // should stay as they are, matching .btn-success. Scoped to `.card-
 // header.text-bg-success` specifically, since that combination only
 // ever occurs on a letter2panel-driven card.
-.border-success{
+.border-success {
 	border-color: vars.$panel-success-border !important; // #d6e9c6
 }
-.card-header.text-bg-success{
+.card-header.text-bg-success {
 	color: #3c763d !important;
 	background-color: vars.$panel-success-heading-bg !important; // #dff0d8
 }
@@ -237,10 +235,10 @@ label {
 // is scoped to `.card-header` since `.badge.text-bg-info` elsewhere
 // (case_filter.html, _simple_list.html, cases/models.py) needs its own,
 // different historical color - see below.
-.border-info{
+.border-info {
 	border-color: vars.$panel-info-border !important; // #bce8f1
 }
-.card-header.text-bg-info{
+.card-header.text-bg-info {
 	color: #31708f !important;
 	background-color: vars.$panel-info-heading-bg !important; // #d9edf7
 }
@@ -261,11 +259,11 @@ label {
 // specifically (not the bare utility) since `.text-bg-info` is also
 // used, correctly, on letter2panel-driven card headers above with a
 // different (pastel) historical color.
-.badge.text-bg-info{
+.badge.text-bg-info {
 	color: #fff !important;
 	background-color: #5bc0de !important; // BS3's stock $brand-info
 }
-.badge.text-bg-warning{
+.badge.text-bg-warning {
 	color: #fff !important;
 	background-color: #f0ad4e !important; // BS3's stock $brand-warning
 }
@@ -395,92 +393,92 @@ label {
 	}
 }
 
-.h1.success{
-    background-color: #DFF0D8;
+.h1.success {
+	background-color: #dff0d8;
 }
 
-.list-group__elastic{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    .list-group-item {
-            margin-bottom: 10px;
-    }
+.list-group__elastic {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+	.list-group-item {
+		margin-bottom: 10px;
+	}
 }
 .card-body {
-    position:relative;
+	position: relative;
 }
 .panel-status {
-    position: absolute;
-    right: 15px;
-    top: 15px;
-    opacity: 0.5;
+	position: absolute;
+	right: 15px;
+	top: 15px;
+	opacity: 0.5;
 }
 .badge {
-    margin-right: 2px;
-    margin-left: 2px;
+	margin-right: 2px;
+	margin-left: 2px;
 }
 
 #navigation_autocomplete {
-    width:100%
+	width: 100%;
 }
 
 .htmx-indicator {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    z-index: 2000;
-    background: rgba(0,0,0,0.2);
+	display: none;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 2000;
+	background: rgba(0, 0, 0, 0.2);
 }
 
 .htmx-indicator::after {
-    // The visible centered box is this generated-content string, not
-    // #htmx-spinner's own DOM text in base.html - that text sits unstyled
-    // at the indicator's top-left corner and is easy to miss, which is
-    // why fixing it alone (F015) didn't change what's actually seen. See
-    // audit/findings.csv F015.
-    content: "Wczytywanie...";
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #fff;
-    padding: 10px 15px;
-    border-radius: 4px;
+	// The visible centered box is this generated-content string, not
+	// #htmx-spinner's own DOM text in base.html - that text sits unstyled
+	// at the indicator's top-left corner and is easy to miss, which is
+	// why fixing it alone (F015) didn't change what's actually seen. See
+	// audit/findings.csv F015.
+	content: "Wczytywanie...";
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background: #fff;
+	padding: 10px 15px;
+	border-radius: 4px;
 }
 
 .htmx-request .htmx-indicator,
 .htmx-indicator.htmx-request {
-    display: block;
+	display: block;
 }
 
 .dt-top-row,
 .dt-bottom-row {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
 }
 
 .dt-top-row {
-    margin-bottom: 10px;
+	margin-bottom: 10px;
 }
 
 .dt-bottom-row {
-    margin-top: 10px;
+	margin-top: 10px;
 }
 
 // WCAG 2.5.8: the library's 10px row expand/collapse icons need a 24px target.
 .dataTables_row-tools a {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 24px;
-    min-height: 24px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 24px;
+	min-height: 24px;
 }
 
 // BS3 left `<input type="file">` completely unstyled, so every browser drew
