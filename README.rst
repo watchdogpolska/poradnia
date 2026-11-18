@@ -5,12 +5,13 @@ Poradnia
    :target: https://github.com/watchdogpolska/poradnia/actions/workflows/codeql.yml
    :alt: CodeQL
 
+.. image:: https://codecov.io/gh/PiotrIw/poradnia/branch/master/graph/badge.svg
+   :target: https://codecov.io/gh/PiotrIw/poradnia
+   :alt: Codecov
+
 .. image:: https://img.shields.io/github/issues/watchdogpolska/poradnia.svg
    :target: https://github.com/watchdogpolska/poradnia/issues
    :alt: GitHub issues counter
-
-.. image:: https://coveralls.io/repos/watchdogpolska/poradnia/badge.svg?branch=master&service=github
-   :target: https://coveralls.io/github/watchdogpolska/poradnia?branch=master
 
 Oprogramowanie ma na celu usprawnienie obsługi klientów Pozarządowego Centrum Dostępu do Informacji Publicznej oraz
 zwiększenie efektywności wsparcia ze strony praktykantów i ekspertów zewnętrznych. Powstałe narzędzie ma również
