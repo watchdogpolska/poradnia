@@ -26,11 +26,7 @@
     },
     {
       "matchManagers": ["pip_requirements"],
-      "matchFileNames": [
-        "requirements/local.txt",
-        "requirements/test.txt",
-        "requirements/doc.txt"
-      ],
+      "matchFileNames": ["requirements/dev.txt"],
       "groupName": "non-production-dependencies"
     },
     {
