@@ -38,7 +38,7 @@ function containsAllWords(haystack, needle) {
 function diffPair(label, normal, wcag, diffs) {
   if (normal.error || wcag.error) {
     diffs.push(
-      `${label}: interaction failed (normal=${normal.error || "ok"}, wcag=${wcag.error || "ok"})`
+      `${label}: interaction failed (normal=${normal.error || "ok"}, wcag=${wcag.error || "ok"})`,
     );
     return;
   }
@@ -54,7 +54,7 @@ function diffPair(label, normal, wcag, diffs) {
     .filter((key) => !wcagFormKeys.has(key));
   if (missingForms.length > 0) {
     diffs.push(
-      `${label}: WCAG mode is missing form(s) present in normal mode: ${missingForms.join(", ")}`
+      `${label}: WCAG mode is missing form(s) present in normal mode: ${missingForms.join(", ")}`,
     );
   }
 
@@ -62,7 +62,7 @@ function diffPair(label, normal, wcag, diffs) {
   const missingControls = normal.controls.filter((c) => !wcagControlSet.has(c));
   if (missingControls.length > 0) {
     diffs.push(
-      `${label}: WCAG mode is missing control target(s) present in normal mode: ${missingControls.join(", ")}`
+      `${label}: WCAG mode is missing control target(s) present in normal mode: ${missingControls.join(", ")}`,
     );
   }
 
@@ -89,11 +89,13 @@ async function main() {
   fs.mkdirSync(OUT_DIR, { recursive: true });
   fs.writeFileSync(
     path.join(OUT_DIR, "equivalence-report.json"),
-    JSON.stringify({ diffs, raw: result }, null, 2)
+    JSON.stringify({ diffs, raw: result }, null, 2),
   );
 
   if (diffs.length === 0) {
-    console.log("equivalence_test: OK -- normal and wcag mode offer the same forms/controls/content.");
+    console.log(
+      "equivalence_test: OK -- normal and wcag mode offer the same forms/controls/content.",
+    );
     process.exit(0);
   } else {
     console.log(`equivalence_test: ${diffs.length} diff(s) found:\n`);

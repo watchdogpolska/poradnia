@@ -1,3 +1,15 @@
 [run]
+# Repo-relative paths in coverage.xml, so Codecov maps them to the repo
+# without knowing about the container's /code mount.
+relative_files = True
+source = poradnia
+omit =
+    */migrations/*
+    */tests/*
+    */tests.py
 plugins =
     django_coverage_plugin
+
+[report]
+skip_covered = True
+sort = Cover

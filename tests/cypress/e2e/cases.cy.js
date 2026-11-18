@@ -22,7 +22,7 @@ const AdministrativeDivisionUnit = require("../testing/administrative-division-u
 describe("cases", () => {
   beforeEach(() => {
     cy.task("db:clear");
-    cy.viewport(1920,1080);
+    cy.viewport(1920, 1080);
   });
 
   it("user can open a new case, staff can act on it", () => {
@@ -38,24 +38,29 @@ describe("cases", () => {
     };
     // `case` is a reserved keyword.
     const case_ = { attachment: "text_file1.txt", ...Case.fromId("case") };
-    const letter = { attachment: "text_file2.txt", ...Letter.fromId("letter") };
+    const letter = {
+      attachment: "text_file2.txt",
+      ...Letter.fromId("letter"),
+    };
     const event = {
       text: "event-text",
       datetime,
     };
     const court = { id: 1, name: "court-name" };
-    const courtCase = { court: court.name, signature: "court-case-signature" };
+    const courtCase = {
+      court: court.name,
+      signature: "court-case-signature",
+    };
     const administrativeDivisionCategory = {
       id: 1,
       name: "admin-category",
       level: 3,
     };
-    const [
-      administrativeDivisionUnit,
-    ] = AdministrativeDivisionUnit.batchFromIds(
-      ["admin-division"],
-      administrativeDivisionCategory
-    );
+    const [administrativeDivisionUnit] =
+      AdministrativeDivisionUnit.batchFromIds(
+        ["admin-division"],
+        administrativeDivisionCategory,
+      );
     const advice = {
       datetime,
       solved: 1,
@@ -144,9 +149,7 @@ describe("cases", () => {
     });
 
     // Add an advice.
-    cy.contains(".card", "Dane statystyczne")
-      .contains("Otaguj sprawę")
-      .click();
+    cy.contains(".card", "Dane statystyczne").contains("Otaguj sprawę").click();
     cy.contains("form", "Dane statystyczne").within(($form) => {
       submitAdviceForm(cy)($form, advice);
     });

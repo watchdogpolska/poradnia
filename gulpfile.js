@@ -87,7 +87,7 @@ const config = {
       path.app + "/events/static/events/events_datatables.js",
       path.app + "/users/static/users/users_datatables.js",
       path.app + "/dashboard/static/dashboard/dashboard.js",
-      ],
+    ],
 
     output: {
       dir: path.static + "/js",
@@ -110,12 +110,14 @@ const config = {
 // ----------------------------------
 
 function icons() {
-  return gulp.src(config.icons.input, { encoding: false })
+  return gulp
+    .src(config.icons.input, { encoding: false })
     .pipe(gulp.dest(config.icons.output));
 }
 
 function js() {
-  return gulp.src(config.script.input, { allowEmpty: true })
+  return gulp
+    .src(config.script.input, { allowEmpty: true })
     .pipe(concat(config.script.output.filename))
     .pipe(gulp.dest(config.script.output.dir))
     .pipe(livereload())
@@ -126,13 +128,14 @@ function js() {
 }
 
 function scss() {
-  return gulp.src(config.scss.input, { allowEmpty: true })
+  return gulp
+    .src(config.scss.input, { allowEmpty: true })
     .pipe(
       sass({
         style: "expanded",
         loadPaths: config.scss.include,
         quietDeps: true,
-      }).on("error", sass.logError)
+      }).on("error", sass.logError),
     )
     .pipe(postcss([autoprefixer()]))
     .pipe(concat(config.scss.output.filename))
@@ -145,13 +148,14 @@ function scss() {
 }
 
 function wcagScss() {
-  return gulp.src(config.wcagScss.input, { allowEmpty: true })
+  return gulp
+    .src(config.wcagScss.input, { allowEmpty: true })
     .pipe(
       sass({
         style: "expanded",
         loadPaths: config.wcagScss.include,
         quietDeps: true,
-      }).on("error", sass.logError)
+      }).on("error", sass.logError),
     )
     .pipe(postcss([autoprefixer()]))
     .pipe(concat(config.wcagScss.output.filename))
@@ -164,7 +168,8 @@ function wcagScss() {
 }
 
 function wcagJs() {
-  return gulp.src(config.wcagScript.input, { allowEmpty: true })
+  return gulp
+    .src(config.wcagScript.input, { allowEmpty: true })
     .pipe(concat(config.wcagScript.output.filename))
     .pipe(gulp.dest(config.wcagScript.output.dir))
     .pipe(livereload())

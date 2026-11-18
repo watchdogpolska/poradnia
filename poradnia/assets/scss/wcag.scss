@@ -106,7 +106,7 @@ html[data-ui-mode="wcag"] .event-month-link {
 // never emits their own text-decoration:none in the first place (Bootstrap
 // only emits that exclusion when $link-decoration is NOT already none).
 html[data-ui-mode="wcag"] {
-	--bs-link-color: #C42020;
+	--bs-link-color: #c42020;
 	--bs-link-color-rgb: 196, 32, 32;
 }
 html[data-ui-mode="wcag"] a {
@@ -147,7 +147,7 @@ html[data-ui-mode="wcag"] .sidebar .footer {
 // which now clears contrast against the darker background without
 // themselves changing.
 html[data-ui-mode="wcag"] #alt-popup-container {
-	background-color: #A82727; // 4.82:1 against white text
+	background-color: #a82727; // 4.82:1 against white text
 }
 
 // New finding (post-M4 axe sweep, not yet in findings.csv): BS5's own

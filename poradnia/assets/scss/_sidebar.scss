@@ -2,116 +2,127 @@
 
 @use "sass:color";
 
-$block-list-item-hover-bg: color.scale(#4C4C4C, $lightness: 10%) !default;
-$block-list-item-selected-bg: color.adjust(#4C4C4C, $lightness: -10%) !default;
+$block-list-item-hover-bg: color.scale(#4c4c4c, $lightness: 10%) !default;
+$block-list-item-selected-bg: color.adjust(#4c4c4c, $lightness: -10%) !default;
 
 $block-list-item-padding-vertical: 0em !default;
 $block-list-item-padding-horizontal: 1em !default;
 
 $block-list-link-color: white !default;
-$block-list-link-padding-vertical: .5em !default;
-$block-list-link-padding-horizontal: .5em !default;
+$block-list-link-padding-vertical: 0.5em !default;
+$block-list-link-padding-horizontal: 0.5em !default;
 
 $block-list-header-padding-vertical: $block-list-link-padding-vertical;
 $block-list-header-padding-horizontal: $block-list-link-padding-horizontal;
-$block-list-inidicator-width: .4em !default;
+$block-list-inidicator-width: 0.4em !default;
 $block-list-inidicator-color: $block-list-link-color !default;
 
-.block-list{
-	&-header{
-		font-size: .8em;
+.block-list {
+	&-header {
+		font-size: 0.8em;
 		text-transform: uppercase;
-		padding: $block-list-item-padding-vertical $block-list-item-padding-horizontal;
+		padding: $block-list-item-padding-vertical
+			$block-list-item-padding-horizontal;
 		color: $block-list-link-color;
-		margin-top: .5em;
+		margin-top: 0.5em;
 	}
-	&-list{
+	&-list {
 		padding: 0;
 		list-style: none;
-		margin-bottom: .5em;
+		margin-bottom: 0.5em;
 	}
-	&-item{
+	&-item {
 		display: block;
-		transition: .4s background-color;
-		padding: $block-list-item-padding-vertical $block-list-item-padding-horizontal;
+		transition: 0.4s background-color;
+		padding: $block-list-item-padding-vertical
+			$block-list-item-padding-horizontal;
 		word-wrap: break-all;
 		> a {
 			display: block;
 			color: $block-list-link-color;
-			padding: $block-list-link-padding-vertical $block-list-link-padding-horizontal;
+			padding: $block-list-link-padding-vertical
+				$block-list-link-padding-horizontal;
 			font-style: none;
 			text-decoration: none;
-			> .fa, .glyphicon{
+			> .fa,
+			.glyphicon {
 				margin-right: 0.5em;
 			}
 		}
-		&:hover{
+		&:hover {
 			background: $block-list-item-hover-bg;
 		}
-		&.is-selected{
+		&.is-selected {
 			background: $block-list-item-selected-bg;
-			border-left: $block-list-inidicator-width solid $block-list-inidicator-color;
-			padding-left: #{ $block-list-item-padding-horizontal - $block-list-inidicator-width };
+			border-left: $block-list-inidicator-width solid
+				$block-list-inidicator-color;
+			padding-left: #{$block-list-item-padding-horizontal -
+				$block-list-inidicator-width};
 		}
 	}
 }
 
-.sidebar{
+.sidebar {
 	position: fixed;
 	top: vars.$navbar-height;
 	height: 100%;
 	overflow-x: hidden;
 	overflow-y: auto;
 	width: 90%;
-	z-index: #{ vars.$zindex-navbar - 1};
-	background: #4C4C4C;
+	z-index: #{vars.$zindex-navbar - 1};
+	background: #4c4c4c;
 	// min-height: 100vh;
 	transform: translateX(-100%);
 	transition: transform 0.5s;
-	@media(min-width: vars.$grid-float-breakpoint) {
+	@media (min-width: vars.$grid-float-breakpoint) {
 		width: auto;
 		transform: none;
 		height: 100%;
 		top: 0;
 		max-width: 240px;
 	}
-	body.show-sidebar &{
+	body.show-sidebar & {
 		transform: none;
 	}
 
-	&-header{
+	&-header {
 		padding: 1em;
 		text-align: center;
-		a, a:focus, a:hover{
+		a,
+		a:focus,
+		a:hover {
 			color: white;
 		}
 	}
 }
 
-.navbar-burger{
+.navbar-burger {
 	position: relative;
 	display: block;
 	font-size: 16px;
-	margin: .45em 0;
+	margin: 0.45em 0;
 	// border-bottom: 1px solid white;
 	width: 1em;
 	height: 1px;
 	background-color: white;
-	&, &:before, &:after{
-		transition: .2s;
+	&,
+	&:before,
+	&:after {
+		transition: 0.2s;
 	}
-	&:after, &:before{
-		content: '';
+	&:after,
+	&:before {
+		content: "";
 		display: block;
 		width: 100%;
 		background-color: white;
 		height: inherit;
 	}
-	&:before{
-		transform: translateY(-.5em);
+	&:before {
+		transform: translateY(-0.5em);
 	}
-	&:after{
-		transform: translateY(.40em);
+	&:after {
+		transform: translateY(0.4em);
 	}
 	// TODO: Animation
 	// body.show-sidebar &{
@@ -125,9 +136,11 @@ $block-list-inidicator-color: $block-list-link-color !default;
 	// 		transform: rotateZ(-45deg)
 	// 	}
 	// }
-	.navbar-toggler:focus &, .navbar-toggler:hover &,{
+	.navbar-toggler:focus &,
+	.navbar-toggler:hover & {
 		background-color: vars.$brand-primary;
-		&:before, &:after{
+		&:before,
+		&:after {
 			background-color: vars.$brand-primary;
 		}
 	}

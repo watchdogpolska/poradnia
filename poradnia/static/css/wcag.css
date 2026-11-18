@@ -30,7 +30,7 @@ html[data-ui-mode=wcag] .event-month-link {
 }
 
 html[data-ui-mode=wcag] {
-  --bs-link-color: #C42020;
+  --bs-link-color: #c42020;
   --bs-link-color-rgb: 196, 32, 32;
 }
 
@@ -56,7 +56,7 @@ html[data-ui-mode=wcag] .sidebar .footer {
 }
 
 html[data-ui-mode=wcag] #alt-popup-container {
-  background-color: #A82727;
+  background-color: #a82727;
 }
 
 html[data-ui-mode=wcag] .badge.text-bg-info,

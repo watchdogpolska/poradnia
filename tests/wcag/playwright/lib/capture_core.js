@@ -57,7 +57,9 @@ async function waitStable(page) {
       const ready = new Promise((resolve) => {
         const check = () => {
           const ok = Array.from(
-            document.querySelectorAll("autocomplete-select-input, autocomplete-select")
+            document.querySelectorAll(
+              "autocomplete-select-input, autocomplete-select",
+            ),
           ).every((el) => el.dataset.bound === "true");
           if (ok) resolve();
           else setTimeout(check, 100);
@@ -78,9 +80,9 @@ async function waitStable(page) {
       const timeout = new Promise((resolve) => setTimeout(resolve, ms));
       const ready = new Promise((resolve) => {
         const check = () => {
-          const ok = Array.from(document.querySelectorAll(".tox-tinymce")).every(
-            (el) => el.style.visibility !== "hidden"
-          );
+          const ok = Array.from(
+            document.querySelectorAll(".tox-tinymce"),
+          ).every((el) => el.style.visibility !== "hidden");
           if (ok) resolve();
           else setTimeout(check, 100);
         };
@@ -121,51 +123,59 @@ async function waitStable(page) {
   // wait condition itself ever changed the staff_cases_datatable flake
   // rate: the code computing that condition was never running at all.
   await page
-    .evaluate(({ ids, ms }) => {
-      const stillProcessing = () =>
-        ids.some((id) => {
-          const indicator = document.getElementById(`${id}_processing`);
-          return indicator && getComputedStyle(indicator).display !== "none";
+    .evaluate(
+      ({ ids, ms }) => {
+        const stillProcessing = () =>
+          ids.some((id) => {
+            const indicator = document.getElementById(`${id}_processing`);
+            return indicator && getComputedStyle(indicator).display !== "none";
+          });
+        const timeout = new Promise((resolve) =>
+          setTimeout(() => resolve("timeout"), ms),
+        );
+        const ready = new Promise((resolve) => {
+          const check = () => {
+            if (!stillProcessing()) resolve("ready");
+            else setTimeout(check, 100);
+          };
+          check();
         });
-      const timeout = new Promise((resolve) => setTimeout(() => resolve("timeout"), ms));
-      const ready = new Promise((resolve) => {
-        const check = () => {
-          if (!stillProcessing()) resolve("ready");
-          else setTimeout(check, 100);
-        };
-        check();
-      });
-      return Promise.race([ready, timeout]);
-    }, { ids: DATATABLE_IDS, ms: 15000 })
+        return Promise.race([ready, timeout]);
+      },
+      { ids: DATATABLE_IDS, ms: 15000 },
+    )
     .catch(() => {});
   // Rows existing in the DOM isn't the same as DataTables having finished
   // its own post-insert layout pass (column width/scroll-wrapper sizing) -
   // harmless to keep as a secondary settle check now that the wait above
   // is gated on the correct signal.
   await page
-    .evaluate(({ ids, ms }) => {
-      const timeout = new Promise((resolve) => setTimeout(resolve, ms));
-      const ready = new Promise((resolve) => {
-        let lastSizes = null;
-        const sizesOf = () =>
-          ids
-            .map((id) => document.getElementById(id))
-            .filter(Boolean)
-            .map((t) => `${t.scrollWidth}x${t.offsetHeight}`)
-            .join(",");
-        const check = () => {
-          const sizes = sizesOf();
-          if (sizes === lastSizes) {
-            resolve();
-            return;
-          }
-          lastSizes = sizes;
-          setTimeout(check, 150);
-        };
-        check();
-      });
-      return Promise.race([ready, timeout]);
-    }, { ids: DATATABLE_IDS, ms: 3000 })
+    .evaluate(
+      ({ ids, ms }) => {
+        const timeout = new Promise((resolve) => setTimeout(resolve, ms));
+        const ready = new Promise((resolve) => {
+          let lastSizes = null;
+          const sizesOf = () =>
+            ids
+              .map((id) => document.getElementById(id))
+              .filter(Boolean)
+              .map((t) => `${t.scrollWidth}x${t.offsetHeight}`)
+              .join(",");
+          const check = () => {
+            const sizes = sizesOf();
+            if (sizes === lastSizes) {
+              resolve();
+              return;
+            }
+            lastSizes = sizes;
+            setTimeout(check, 150);
+          };
+          check();
+        });
+        return Promise.race([ready, timeout]);
+      },
+      { ids: DATATABLE_IDS, ms: 3000 },
+    )
     .catch(() => {});
   await page.addStyleTag({ content: DISABLE_ANIMATIONS_CSS });
 }
@@ -194,7 +204,11 @@ async function pageHtml(page) {
 
 function writeHtml(dir, stateId, html) {
   fs.mkdirSync(dir, { recursive: true });
-  fs.writeFileSync(path.join(dir, `${stateId}.html`), normalizeHtml(html), "utf8");
+  fs.writeFileSync(
+    path.join(dir, `${stateId}.html`),
+    normalizeHtml(html),
+    "utf8",
+  );
 }
 
 async function writeScreenshot(page, dir, stateId, viewportName) {
@@ -214,26 +228,34 @@ async function runInteraction(page, kind) {
     // returns the existing instance's API if the table is already initialized,
     // rather than re-initializing it.
     case "datatable_page_length_25":
-      await page.waitForSelector("#datatable_cases", { state: "attached" });
-      await page.evaluate(() => new window.DataTable("#datatable_cases").page.len(25).draw());
+      await page.waitForSelector("#datatable_cases", {
+        state: "attached",
+      });
+      await page.evaluate(() =>
+        new window.DataTable("#datatable_cases").page.len(25).draw(),
+      );
       break;
     case "datatable_sort_name":
-      await page.waitForSelector("#datatable_cases", { state: "attached" });
+      await page.waitForSelector("#datatable_cases", {
+        state: "attached",
+      });
       await page.evaluate(() =>
-        new window.DataTable("#datatable_cases").order([[2, "asc"]]).draw()
+        new window.DataTable("#datatable_cases").order([[2, "asc"]]).draw(),
       );
       break;
     case "datatable_filter":
-      await page.waitForSelector("#datatable_cases", { state: "attached" });
+      await page.waitForSelector("#datatable_cases", {
+        state: "attached",
+      });
       await page.evaluate(() =>
-        new window.DataTable("#datatable_cases").search("Odwołanie").draw()
+        new window.DataTable("#datatable_cases").search("Odwołanie").draw(),
       );
       break;
     case "attachment_text_modal": {
       // attachment id=1 (sample.png), letter 2, in the 5-message thread --
       // safely on page 1 regardless of any pagination of the record list.
       const btn = page.locator(
-        'button[hx-get*="/listy/attachments/1/text-content-modal/"]'
+        'button[hx-get*="/listy/attachments/1/text-content-modal/"]',
       );
       await btn.waitFor({ state: "visible", timeout: 5000 });
       await btn.click();
@@ -243,15 +265,21 @@ async function runInteraction(page, kind) {
       // Opens the Bootstrap modal only -- does NOT click "Reject" inside it,
       // which would hx-post and permanently mark the seeded
       // N8nArticlesSearchRequest as rejected, breaking repeatability.
-      const btn = page.locator('button[data-bs-target="#aiSearchRejectModal-10"]');
+      const btn = page.locator(
+        'button[data-bs-target="#aiSearchRejectModal-10"]',
+      );
       await btn.waitFor({ state: "visible", timeout: 5000 });
       await btn.click();
-      await page.waitForSelector("#aiSearchRejectModal-10.show", { timeout: 5000 });
+      await page.waitForSelector("#aiSearchRejectModal-10.show", {
+        timeout: 5000,
+      });
       // The dialog's own .show class can land slightly before the backdrop
       // finishes painting (confirmed live -- an intermittent ~45% mobile
       // screenshot diff on this exact interaction, backdrop-not-yet-drawn
       // vs backdrop-drawn). Waiting for the backdrop too closes that gap.
-      await page.waitForSelector(".modal-backdrop.show", { timeout: 5000 }).catch(() => {});
+      await page
+        .waitForSelector(".modal-backdrop.show", { timeout: 5000 })
+        .catch(() => {});
       break;
     }
     case "advice_summary_modal_open": {
@@ -260,8 +288,12 @@ async function runInteraction(page, kind) {
       const btn = page.locator("button[data-advice-summary-url]").first();
       await btn.waitFor({ state: "visible", timeout: 5000 });
       await btn.click();
-      await page.waitForSelector("#adviceSummaryModal.show", { timeout: 5000 });
-      await page.waitForSelector(".modal-backdrop.show", { timeout: 5000 }).catch(() => {});
+      await page.waitForSelector("#adviceSummaryModal.show", {
+        timeout: 5000,
+      });
+      await page
+        .waitForSelector(".modal-backdrop.show", { timeout: 5000 })
+        .catch(() => {});
       break;
     }
     case "dal_dropdown_open": {
@@ -275,10 +307,14 @@ async function runInteraction(page, kind) {
       break;
     }
     case "navsearch_modal_open": {
-      const trigger = page.locator('a[data-bs-target="#navsearch_modal"]').first();
+      const trigger = page
+        .locator('a[data-bs-target="#navsearch_modal"]')
+        .first();
       await trigger.waitFor({ state: "visible", timeout: 5000 });
       await trigger.click();
-      await page.waitForSelector("#navsearch_modal.show", { timeout: 5000 });
+      await page.waitForSelector("#navsearch_modal.show", {
+        timeout: 5000,
+      });
       break;
     }
     default:
@@ -296,7 +332,15 @@ async function runInteraction(page, kind) {
 // ~1.9% whole-page pixel diff that moved between different states across
 // runs, confirmed live. Loading fresh at the target viewport is also just
 // more faithful to how a real mobile visitor would arrive at the page.
-async function captureViewportPass(context, entry, viewportName, viewport, shotDir, writeHtmlTo, report) {
+async function captureViewportPass(
+  context,
+  entry,
+  viewportName,
+  viewport,
+  shotDir,
+  writeHtmlTo,
+  report,
+) {
   const page = await context.newPage();
   page.setDefaultTimeout(10000); // well under Playwright's 30s default
   await page.setViewportSize(viewport);
@@ -311,12 +355,21 @@ async function captureViewportPass(context, entry, viewportName, viewport, shotD
       if (writeHtmlTo) writeHtml(writeHtmlTo, kind, await pageHtml(page));
       await writeScreenshot(page, shotDir, kind, viewportName);
       if (viewportName === "desktop") {
-        report.push({ id: entry.id, role: entry.role, interaction: kind, ok: true });
+        report.push({
+          id: entry.id,
+          role: entry.role,
+          interaction: kind,
+          ok: true,
+        });
       }
     } catch (err) {
       if (viewportName === "desktop") {
         report.push({
-          id: entry.id, role: entry.role, interaction: kind, ok: false, error: err.message,
+          id: entry.id,
+          role: entry.role,
+          interaction: kind,
+          ok: false,
+          error: err.message,
         });
       }
     }
@@ -324,7 +377,14 @@ async function captureViewportPass(context, entry, viewportName, viewport, shotD
   await page.close();
 }
 
-async function captureEntry(browser, roleStates, entry, htmlRoot, shotRoot, report) {
+async function captureEntry(
+  browser,
+  roleStates,
+  entry,
+  htmlRoot,
+  shotRoot,
+  report,
+) {
   const context = await browser.newContext({
     baseURL: BASE_URL,
     storageState: roleStates[entry.role] || undefined,
@@ -338,7 +398,13 @@ async function captureEntry(browser, roleStates, entry, htmlRoot, shotRoot, repo
     const allowed = entry.allowStatus || [200];
     writeHtml(htmlDir, "server", await apiResp.text());
 
-    const row = { id: entry.id, role: entry.role, path: entry.path, status, expected: allowed };
+    const row = {
+      id: entry.id,
+      role: entry.role,
+      path: entry.path,
+      status,
+      expected: allowed,
+    };
     row.statusOk = allowed.includes(status);
     report.push(row);
 
@@ -348,8 +414,24 @@ async function captureEntry(browser, roleStates, entry, htmlRoot, shotRoot, repo
 
     // HTML content isn't viewport-dependent (CSS-only responsive layout,
     // no server-side UA sniffing) -- only captured on the desktop pass.
-    await captureViewportPass(context, entry, "desktop", VIEWPORTS.desktop, shotDir, htmlDir, report);
-    await captureViewportPass(context, entry, "mobile", VIEWPORTS.mobile, shotDir, null, report);
+    await captureViewportPass(
+      context,
+      entry,
+      "desktop",
+      VIEWPORTS.desktop,
+      shotDir,
+      htmlDir,
+      report,
+    );
+    await captureViewportPass(
+      context,
+      entry,
+      "mobile",
+      VIEWPORTS.mobile,
+      shotDir,
+      null,
+      report,
+    );
   } finally {
     await context.close();
   }
@@ -371,7 +453,7 @@ async function capture(htmlRoot, shotRoot) {
     const startedAt = Date.now();
     await captureEntry(browser, roleStates, entry, htmlRoot, shotRoot, report);
     process.stdout.write(
-      `captured ${entry.role}/${entry.id} (${Date.now() - startedAt}ms)\n`
+      `captured ${entry.role}/${entry.id} (${Date.now() - startedAt}ms)\n`,
     );
   }
   await browser.close();

@@ -26,7 +26,7 @@ const AdministrativeDivisionUnit = require("../testing/administrative-division-u
 describe("advices", () => {
   beforeEach(() => {
     cy.task("db:clear");
-    cy.viewport(1920,1080);
+    cy.viewport(1920, 1080);
   });
 
   it("staff can search for an advice", () => {
@@ -46,20 +46,16 @@ describe("advices", () => {
     };
     const administrativeDivisionUnits = AdministrativeDivisionUnit.batchFromIds(
       ["adminDivisionA", "adminDivisionB", "adminDivisionC"],
-      administrativeDivisionCategory
+      administrativeDivisionCategory,
     );
 
     // Advice metadata.
-    const adviceAreas = [
-      "adviceAreaA",
-      "adviceAreaB",
-      "adviceAreaC",
-    ].map((name) => ({ name }));
-    const adviceIssues = [
-      "adviceIssueA",
-      "adviceIssueB",
-      "adviceIssueC",
-    ].map((name) => ({ name }));
+    const adviceAreas = ["adviceAreaA", "adviceAreaB", "adviceAreaC"].map(
+      (name) => ({ name }),
+    );
+    const adviceIssues = ["adviceIssueA", "adviceIssueB", "adviceIssueC"].map(
+      (name) => ({ name }),
+    );
     // Default flags on both sides, so all issues/areas match this scope.
     const adviceScope = { name: "adviceScopeA" };
 
@@ -155,11 +151,11 @@ describe("advices", () => {
     // For all remaining advices - validate that its subject is not visible.
     const validateContainsOnly = (expectedAdvices) => {
       const notExpectedAdvices = advices.filter(
-        (advice) => !expectedAdvices.includes(advice)
+        (advice) => !expectedAdvices.includes(advice),
       );
       expectedAdvices.forEach((advice) => cy.contains(advice.subject));
       notExpectedAdvices.forEach((advice) =>
-        cy.contains(advice.subject).should("not.exist")
+        cy.contains(advice.subject).should("not.exist"),
       );
     };
 
@@ -250,20 +246,28 @@ describe("advices", () => {
 
     // No scope selected: the issue autocomplete offers nothing.
     issuesField().within(() => {
-      cy.get("autocomplete-select-input input").click().type("issue").wait(1000);
+      cy.get("autocomplete-select-input input")
+        .click()
+        .type("issue")
+        .wait(1000);
       cy.contains("issueDip").should("not.exist");
     });
 
     cy.contains("div", "Zakres poradnictwa").find("select").select("scopeDip");
     issuesField().within(() => {
-      cy.get("autocomplete-select-input input").clear().type("issue").wait(1000);
+      cy.get("autocomplete-select-input input")
+        .clear()
+        .type("issue")
+        .wait(1000);
       cy.contains("issueSlapp").should("not.exist");
       selectAutocompleteOptionContaining("issueDip");
       cy.get("[slot=deck]").should("contain", "issueDip");
     });
 
     // Switching scope clears the selection and announces it.
-    cy.contains("div", "Zakres poradnictwa").find("select").select("scopeSlapp");
+    cy.contains("div", "Zakres poradnictwa")
+      .find("select")
+      .select("scopeSlapp");
     issuesField().find("[slot=deck] [data-value]").should("not.exist");
     cy.get("#advice-scope-status").should("contain", "wyczyszczone");
   });
