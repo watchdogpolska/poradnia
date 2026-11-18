@@ -54,7 +54,9 @@ function listFilesRecursive(dir) {
 }
 
 function diffHtml(baselineDir, tmpDir, relPrefix, diffs) {
-  const baselineFiles = listFilesRecursive(baselineDir).filter((f) => f.endsWith(".html"));
+  const baselineFiles = listFilesRecursive(baselineDir).filter((f) =>
+    f.endsWith(".html"),
+  );
   for (const baselineFile of baselineFiles) {
     const rel = path.relative(baselineDir, baselineFile);
     const tmpFile = path.join(tmpDir, rel);
@@ -68,7 +70,9 @@ function diffHtml(baselineDir, tmpDir, relPrefix, diffs) {
       diffs.push(`HTML CHANGED: ${relPrefix}/${rel}`);
     }
   }
-  const tmpFiles = listFilesRecursive(tmpDir).filter((f) => f.endsWith(".html"));
+  const tmpFiles = listFilesRecursive(tmpDir).filter((f) =>
+    f.endsWith(".html"),
+  );
   for (const tmpFile of tmpFiles) {
     const rel = path.relative(tmpDir, tmpFile);
     if (!fs.existsSync(path.join(baselineDir, rel))) {
@@ -81,11 +85,13 @@ function diffScreenshots(baselineDir, tmpDir, relPrefix, diffs) {
   if (!fs.existsSync(baselineDir)) {
     diffs.push(
       "NOTE: local screenshot baseline not present (local-only by design, not committed -- " +
-        "run baseline_capture.js first if you want this check) -- pixel diff skipped"
+        "run baseline_capture.js first if you want this check) -- pixel diff skipped",
     );
     return;
   }
-  const baselineFiles = listFilesRecursive(baselineDir).filter((f) => f.endsWith(".png"));
+  const baselineFiles = listFilesRecursive(baselineDir).filter((f) =>
+    f.endsWith(".png"),
+  );
   for (const baselineFile of baselineFiles) {
     const rel = path.relative(baselineDir, baselineFile);
     const tmpFile = path.join(tmpDir, rel);
@@ -97,17 +103,24 @@ function diffScreenshots(baselineDir, tmpDir, relPrefix, diffs) {
     const imgB = PNG.sync.read(fs.readFileSync(tmpFile));
     if (imgA.width !== imgB.width || imgA.height !== imgB.height) {
       diffs.push(
-        `SCREENSHOT SIZE CHANGED: ${relPrefix}/${rel} (${imgA.width}x${imgA.height} -> ${imgB.width}x${imgB.height})`
+        `SCREENSHOT SIZE CHANGED: ${relPrefix}/${rel} (${imgA.width}x${imgA.height} -> ${imgB.width}x${imgB.height})`,
       );
       continue;
     }
-    const diffPixels = pixelmatch(imgA.data, imgB.data, null, imgA.width, imgA.height, {
-      threshold: 0.1,
-    });
+    const diffPixels = pixelmatch(
+      imgA.data,
+      imgB.data,
+      null,
+      imgA.width,
+      imgA.height,
+      {
+        threshold: 0.1,
+      },
+    );
     const fraction = diffPixels / (imgA.width * imgA.height);
     if (fraction > PIXEL_DIFF_THRESHOLD) {
       diffs.push(
-        `SCREENSHOT PIXEL DIFF: ${relPrefix}/${rel} (${diffPixels} px, ${(fraction * 100).toFixed(3)}%)`
+        `SCREENSHOT PIXEL DIFF: ${relPrefix}/${rel} (${diffPixels} px, ${(fraction * 100).toFixed(3)}%)`,
       );
     }
   }
@@ -115,7 +128,9 @@ function diffScreenshots(baselineDir, tmpDir, relPrefix, diffs) {
 
 function diffAssetHashes(diffs) {
   if (!fs.existsSync(ASSETS_SHA_PATH)) {
-    diffs.push("NOTE: baseline/assets.sha256 not present -- bundle-hash check skipped");
+    diffs.push(
+      "NOTE: baseline/assets.sha256 not present -- bundle-hash check skipped",
+    );
     return;
   }
   const crypto = require("crypto");
@@ -130,7 +145,10 @@ function diffAssetHashes(diffs) {
       diffs.push(`ASSET MISSING: ${file}`);
       continue;
     }
-    const current = crypto.createHash("sha256").update(fs.readFileSync(fullPath)).digest("hex");
+    const current = crypto
+      .createHash("sha256")
+      .update(fs.readFileSync(fullPath))
+      .digest("hex");
     if (current !== hash) {
       diffs.push(`ASSET HASH CHANGED: ${file}`);
     }
@@ -138,7 +156,9 @@ function diffAssetHashes(diffs) {
 }
 
 async function main() {
-  const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), "poradnia-baseline-diff-"));
+  const tmpRoot = fs.mkdtempSync(
+    path.join(os.tmpdir(), "poradnia-baseline-diff-"),
+  );
   const tmpHtml = path.join(tmpRoot, "html");
   const tmpShot = path.join(tmpRoot, "screenshots");
 

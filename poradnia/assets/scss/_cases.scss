@@ -1,14 +1,13 @@
 @use "vars";
 
-.table-cases{
+.table-cases {
 	.id,
 	.last_response,
 	.last_action,
-	.created_on{
+	.created_on {
 		display: none;
 		@media (min-width: vars.$screen-md-min) {
 			display: table-cell;
 		}
 	}
-
 }

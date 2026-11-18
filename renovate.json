@@ -1,13 +1,7 @@
 {
-  "extends": [
-    "config:recommended",
-    "schedule:weekly",
-    "group:allNonMajor"
-  ],
+  "extends": ["config:recommended", "schedule:weekly", "group:allNonMajor"],
   "baseBranchPatterns": ["dev"],
-  "ignorePaths": [
-    "poradnia/static/jquery-ui/**"
-  ],
+  "ignorePaths": ["poradnia/static/jquery-ui/**"],
   "enabledManagers": [
     "dockerfile",
     "docker-compose",

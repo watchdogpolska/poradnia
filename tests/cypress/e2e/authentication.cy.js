@@ -4,7 +4,7 @@ const User = require("../testing/user");
 describe("authentication", () => {
   beforeEach(() => {
     cy.task("db:clear");
-    cy.viewport(1920,1080);
+    cy.viewport(1920, 1080);
   });
 
   it("user should be able to register and log in", () => {

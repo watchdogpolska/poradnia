@@ -1,111 +1,196 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const table1 = document.getElementById("datatable_cases");
-    if (!table1) return;
-    const tableWrapper = document.getElementById("tableWrapper");
-    const tableTop = tableWrapper.getBoundingClientRect().top;
-    const viewportHeight = window.innerHeight;
-    const maxHeight = viewportHeight - tableTop;
-    // Only the DataTable itself (via scrollY below) should be height-capped.
-    // Capping #tableWrapper too used to be harmless because the .filters
-    // sidebar's content happened to fit within that height under BS3's
-    // tighter spacing - BS5's taller checkbox/label spacing pushes .filters
-    // past the cap, and since it's not independently scrollable, it
-    // visibly spills into whatever follows (e.g. the page footer).
-    // Subscribe "initComplete" event
-    table1.addEventListener('initComplete', function () {
-        // Code to resize input fields
-        const filterRowCells = tableWrapper.querySelectorAll("tr.datatable-column-filter-row th");
-        filterRowCells.forEach(function (th) {
-            th.style.padding = "0";
-            const input = th.querySelector("input[type=text]");
-            if (input) {
-                input.style.width = "100%";
-                input.style.boxSizing = "border-box";
-            }
-            // The library renders filter controls without an accessible name.
-            const control = th.querySelector("input[type=text], select");
-            if (control) {
-                const header = th.closest("thead").rows[0].cells[th.cellIndex];
-                control.setAttribute("aria-label", header.textContent.trim());
-            }
-        });
-    });
-    // Initialize table
-    AjaxDatatableViewUtils.initialize_table(
-        table1,
-        "/sprawy/case_table_ajax_data/",
-        {
-            // extra_options (example)
-            processing: true,
-            serverSide: true,
-            autoWidth: true,
-            full_row_select: false,
-            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
-            // Group the length selector/search box, and the info/paging controls,
-            // each into one row (default dom string stacks every feature separately).
-            dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
-            scrollX: true,
-            // searching: false,
-            scrollY: maxHeight - 250,
-            // TODO make fixedColumns working !!!
-            // fixedColumns: {
-            //     left: 1,
-            //     // right: 1
-            // }
-            "language": {
-                "processing":     "Przetwarzanie...",
-                "search":         "Szukaj:",
-                "lengthMenu":     "Pokaż _MENU_ pozycji",
-                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                "infoPostFix":    "",
-                "loadingRecords": "Wczytywanie...",
-                "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                "emptyTable":     "Brak danych",
-                "paginate": {
-                    "first":      "Pierwsza",
-                    "previous":   "Poprzednia",
-                    "next":       "Następna",
-                    "last":       "Ostatnia"
-                },
-                "aria": {
-                    "orderable": ": aktywuj, by posortować kolumnę",
-                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
-                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
-                    "paginate": {
-                        "first": "Pierwsza",
-                        "previous": "Poprzednia",
-                        "next": "Następna",
-                        "last": "Ostatnia"
-                    }
-                }
-            },
-        }, {
-            // extra_data
-            status_free: function() { return document.querySelector("input[name='check_status_free']").checked ? 1 : 0; },
-            status_assigned: function() { return document.querySelector("input[name='check_status_assigned']").checked ? 1 : 0; },
-            status_moderated: function() { return document.querySelector("input[name='check_status_moderated']").checked ? 1 : 0; },
-            status_closed: function() { return document.querySelector("input[name='check_status_closed']").checked ? 1 : 0; },
-            handled_yes: function() { return document.querySelector("input[name='check_handled_yes']").checked ? 1 : 0; },
-            handled_no: function() { return document.querySelector("input[name='check_handled_no']").checked ? 1 : 0; },
-            has_tag_yes: function() { return document.querySelector("input[name='check_has_tag_yes']").checked ? 1 : 0; },
-            has_tag_no: function() { return document.querySelector("input[name='check_has_tag_no']").checked ? 1 : 0; },
-            has_deadline_yes: function() { return document.querySelector("input[name='check_has_deadline_yes']").checked ? 1 : 0; },
-            has_deadline_no: function() { return document.querySelector("input[name='check_has_deadline_no']").checked ? 1 : 0; },
-            has_ai_articles_yes: function() { return document.querySelector("input[name='check_has_ai_articles_yes']").checked ? 1 : 0; },
-            has_ai_articles_no: function() { return document.querySelector("input[name='check_has_ai_articles_no']").checked ? 1 : 0; },
-            has_ai_articles_to_review_yes: function() { return document.querySelector("input[name='check_has_ai_articles_to_review_yes']").checked ? 1 : 0; },
-            has_ai_articles_to_review_no: function() { return document.querySelector("input[name='check_has_ai_articles_to_review_no']").checked ? 1 : 0; },
-            has_ai_tag_suggestion_yes: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_yes']").checked ? 1 : 0; },
-            has_ai_tag_suggestion_no: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_no']").checked ? 1 : 0; },
-            involved_staff_filter: function() { return document.querySelector("select[name='involved_staff_select']").value; },
-        },
+document.addEventListener("DOMContentLoaded", function () {
+  const table1 = document.getElementById("datatable_cases");
+  if (!table1) return;
+  const tableWrapper = document.getElementById("tableWrapper");
+  const tableTop = tableWrapper.getBoundingClientRect().top;
+  const viewportHeight = window.innerHeight;
+  const maxHeight = viewportHeight - tableTop;
+  // Only the DataTable itself (via scrollY below) should be height-capped.
+  // Capping #tableWrapper too used to be harmless because the .filters
+  // sidebar's content happened to fit within that height under BS3's
+  // tighter spacing - BS5's taller checkbox/label spacing pushes .filters
+  // past the cap, and since it's not independently scrollable, it
+  // visibly spills into whatever follows (e.g. the page footer).
+  // Subscribe "initComplete" event
+  table1.addEventListener("initComplete", function () {
+    // Code to resize input fields
+    const filterRowCells = tableWrapper.querySelectorAll(
+      "tr.datatable-column-filter-row th",
     );
-    const filtersContainer = document.querySelector('.filters');
-    if (filtersContainer) {
-        filtersContainer.addEventListener('change', function () {
-            AjaxDatatableViewUtils.redraw_table(table1);
-        });
-    }
+    filterRowCells.forEach(function (th) {
+      th.style.padding = "0";
+      const input = th.querySelector("input[type=text]");
+      if (input) {
+        input.style.width = "100%";
+        input.style.boxSizing = "border-box";
+      }
+      // The library renders filter controls without an accessible name.
+      const control = th.querySelector("input[type=text], select");
+      if (control) {
+        const header = th.closest("thead").rows[0].cells[th.cellIndex];
+        control.setAttribute("aria-label", header.textContent.trim());
+      }
+    });
+  });
+  // Initialize table
+  AjaxDatatableViewUtils.initialize_table(
+    table1,
+    "/sprawy/case_table_ajax_data/",
+    {
+      // extra_options (example)
+      processing: true,
+      serverSide: true,
+      autoWidth: true,
+      full_row_select: false,
+      a11y_mode: document.documentElement.dataset.uiMode === "wcag",
+      // Group the length selector/search box, and the info/paging controls,
+      // each into one row (default dom string stacks every feature separately).
+      dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
+      scrollX: true,
+      // searching: false,
+      scrollY: maxHeight - 250,
+      // TODO make fixedColumns working !!!
+      // fixedColumns: {
+      //     left: 1,
+      //     // right: 1
+      // }
+      language: {
+        processing: "Przetwarzanie...",
+        search: "Szukaj:",
+        lengthMenu: "Pokaż _MENU_ pozycji",
+        info: "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+        infoEmpty: "Pozycji 0 z 0 dostępnych",
+        infoFiltered: "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+        infoPostFix: "",
+        loadingRecords: "Wczytywanie...",
+        zeroRecords: "Nie znaleziono pasujących pozycji",
+        emptyTable: "Brak danych",
+        paginate: {
+          first: "Pierwsza",
+          previous: "Poprzednia",
+          next: "Następna",
+          last: "Ostatnia",
+        },
+        aria: {
+          orderable: ": aktywuj, by posortować kolumnę",
+          orderableRemove: ": aktywuj, by usunąć sortowanie",
+          orderableReverse: ": aktywuj, by odwrócić sortowanie",
+          paginate: {
+            first: "Pierwsza",
+            previous: "Poprzednia",
+            next: "Następna",
+            last: "Ostatnia",
+          },
+        },
+      },
+    },
+    {
+      // extra_data
+      status_free: function () {
+        return document.querySelector("input[name='check_status_free']").checked
+          ? 1
+          : 0;
+      },
+      status_assigned: function () {
+        return document.querySelector("input[name='check_status_assigned']")
+          .checked
+          ? 1
+          : 0;
+      },
+      status_moderated: function () {
+        return document.querySelector("input[name='check_status_moderated']")
+          .checked
+          ? 1
+          : 0;
+      },
+      status_closed: function () {
+        return document.querySelector("input[name='check_status_closed']")
+          .checked
+          ? 1
+          : 0;
+      },
+      handled_yes: function () {
+        return document.querySelector("input[name='check_handled_yes']").checked
+          ? 1
+          : 0;
+      },
+      handled_no: function () {
+        return document.querySelector("input[name='check_handled_no']").checked
+          ? 1
+          : 0;
+      },
+      has_tag_yes: function () {
+        return document.querySelector("input[name='check_has_tag_yes']").checked
+          ? 1
+          : 0;
+      },
+      has_tag_no: function () {
+        return document.querySelector("input[name='check_has_tag_no']").checked
+          ? 1
+          : 0;
+      },
+      has_deadline_yes: function () {
+        return document.querySelector("input[name='check_has_deadline_yes']")
+          .checked
+          ? 1
+          : 0;
+      },
+      has_deadline_no: function () {
+        return document.querySelector("input[name='check_has_deadline_no']")
+          .checked
+          ? 1
+          : 0;
+      },
+      has_ai_articles_yes: function () {
+        return document.querySelector("input[name='check_has_ai_articles_yes']")
+          .checked
+          ? 1
+          : 0;
+      },
+      has_ai_articles_no: function () {
+        return document.querySelector("input[name='check_has_ai_articles_no']")
+          .checked
+          ? 1
+          : 0;
+      },
+      has_ai_articles_to_review_yes: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_articles_to_review_yes']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      has_ai_articles_to_review_no: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_articles_to_review_no']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      has_ai_tag_suggestion_yes: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_tag_suggestion_yes']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      has_ai_tag_suggestion_no: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_tag_suggestion_no']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      involved_staff_filter: function () {
+        return document.querySelector("select[name='involved_staff_select']")
+          .value;
+      },
+    },
+  );
+  const filtersContainer = document.querySelector(".filters");
+  if (filtersContainer) {
+    filtersContainer.addEventListener("change", function () {
+      AjaxDatatableViewUtils.redraw_table(table1);
+    });
+  }
 });
