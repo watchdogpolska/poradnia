@@ -8,13 +8,31 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{py,rst,ini}]
+[*.{py,rst,ini,toml}]
 indent_style = space
 indent_size = 4
 
-[*.yml]
+[*.{yml,yaml,json,sh}]
 indent_style = space
 indent_size = 2
 
+[*.html]
+indent_style = space
+indent_size = 4
+
+[*.scss]
+indent_style = tab
+
 [*.js]
+indent_style = space
+indent_size = 4
 trim_trailing_whitespace = false
+
+[{tests/**.js,gulpfile.js}]
+indent_size = 2
+
+[*.md]
+trim_trailing_whitespace = false
+
+[Makefile]
+indent_style = tab
