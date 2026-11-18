@@ -1,13 +1,9 @@
 Poradnia
 ========
 
-.. image:: https://travis-ci.org/watchdogpolska/poradnia.svg?branch=master
-   :target: https://travis-ci.org/watchdogpolska/poradnia
-   :alt: TravisCI
-
-.. image:: https://codeclimate.com/github/watchdogpolska/poradnia/badges/gpa.svg
-   :target: https://codeclimate.com/github/watchdogpolska/poradnia
-   :alt: Code Climate
+.. image:: https://github.com/watchdogpolska/poradnia/actions/workflows/codeql.yml/badge.svg?branch=master
+   :target: https://github.com/watchdogpolska/poradnia/actions/workflows/codeql.yml
+   :alt: CodeQL
 
 .. image:: https://img.shields.io/github/issues/watchdogpolska/poradnia.svg
    :target: https://github.com/watchdogpolska/poradnia/issues
