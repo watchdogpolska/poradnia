@@ -34,7 +34,7 @@ const query = withPromiseLogging("db:query")(
       });
 
       connection.end();
-    })
+    }),
 );
 
 // Clear all rows in tables provided.
@@ -42,8 +42,8 @@ const query = withPromiseLogging("db:query")(
 // If TableA references TableB, TableA should appear before TableB in the argument.
 const clearTables = (tables) => {
   // Create functions that will trigger queries, but do not execute them until scheduled.
-  const lazyDeletes = tables.map((table) => (previousQueryResult) =>
-    query(`delete from ${table}`)
+  const lazyDeletes = tables.map(
+    (table) => (previousQueryResult) => query(`delete from ${table}`),
   );
 
   // By convention, cypress plugins mustn't return `undefined`.

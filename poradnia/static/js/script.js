@@ -11705,17 +11705,21 @@ var htmx = (function() {
  * @property {() => string[]|null} getSelectors
  */
 
-window.addEventListener("load", function load(event){
-    window.removeEventListener("load", load, false); 
-    
-    var headers = document.querySelectorAll('#feedback-header');
-    Array.prototype.slice.call(headers).forEach(function(header){
-     header.addEventListener('click', function(e){
-       e.preventDefault();
-       header.parentElement.classList.toggle('show');
-   });
- });
-},false);
+window.addEventListener(
+  "load",
+  function load(event) {
+    window.removeEventListener("load", load, false);
+
+    var headers = document.querySelectorAll("#feedback-header");
+    Array.prototype.slice.call(headers).forEach(function (header) {
+      header.addEventListener("click", function (e) {
+        e.preventDefault();
+        header.parentElement.classList.toggle("show");
+      });
+    });
+  },
+  false,
+);
 
 //! moment.js
 //! version : 2.31.0
@@ -20297,134 +20301,138 @@ return pattern;
 })));
 //# sourceMappingURL=patternomaly.js.map
 
-document.addEventListener('DOMContentLoaded', function () {
-    document.querySelectorAll('.datetimeinput').forEach(function (item) {
-        new Pikaday({
-            field: item,
-            firstDay: 1,
-            format: 'DD.MM.YYYY HH:mm:ss',
-            minDate: new Date('2000-01-01'),
-            maxDate: new Date('2040-12-31'),
-            yearRange: [2000, 2040],
-            showTime: true,
-            use24hour: true
-        });
+document.addEventListener("DOMContentLoaded", function () {
+  document.querySelectorAll(".datetimeinput").forEach(function (item) {
+    new Pikaday({
+      field: item,
+      firstDay: 1,
+      format: "DD.MM.YYYY HH:mm:ss",
+      minDate: new Date("2000-01-01"),
+      maxDate: new Date("2040-12-31"),
+      yearRange: [2000, 2040],
+      showTime: true,
+      use24hour: true,
     });
+  });
 });
 
 function initTooltips() {
-    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function (el) {
-        bootstrap.Tooltip.getOrCreateInstance(el);
+  document
+    .querySelectorAll('[data-bs-toggle="tooltip"]')
+    .forEach(function (el) {
+      bootstrap.Tooltip.getOrCreateInstance(el);
     });
 }
 
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initTooltips);
+  document.addEventListener("DOMContentLoaded", initTooltips);
 } else {
-    initTooltips();
+  initTooltips();
 }
 
 function initFormSave() {
-    function storageAvailable(type) {
-        try {
-            var storage = window[type],
-                x = "__storage_test__";
-            storage.setItem(x, x);
-            storage.removeItem(x);
-            return true;
-        } catch (e) {
-            return (
-                e instanceof DOMException &&
-                // everything except Firefox
-                (e.code === 22 ||
-                    // Firefox
-                    e.code === 1014 ||
-                    // test name field too, because code might not be present
-                    // everything except Firefox
-                    e.name === "QuotaExceededError" ||
-                    // Firefox
-                    e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
-                // acknowledge QuotaExceededError only if there's something already stored
-                window[type].length !== 0
-            );
-        }
+  function storageAvailable(type) {
+    try {
+      var storage = window[type],
+        x = "__storage_test__";
+      storage.setItem(x, x);
+      storage.removeItem(x);
+      return true;
+    } catch (e) {
+      return (
+        e instanceof DOMException &&
+        // everything except Firefox
+        (e.code === 22 ||
+          // Firefox
+          e.code === 1014 ||
+          // test name field too, because code might not be present
+          // everything except Firefox
+          e.name === "QuotaExceededError" ||
+          // Firefox
+          e.name === "NS_ERROR_DOM_QUOTA_REACHED") &&
+        // acknowledge QuotaExceededError only if there's something already stored
+        window[type].length !== 0
+      );
     }
+  }
 
-    if (!storageAvailable("localStorage")) {
-        return;
-    }
+  if (!storageAvailable("localStorage")) {
+    return;
+  }
 
-    function findByName(inputs, name) {
-        return inputs.find(function (el) {
-            return el.name == name;
-        });
-    }
-
-    function loadInitalData(inputs, saveKey) {
-        try {
-            var formData = JSON.parse(localStorage.getItem(saveKey));
-            if (formData) {
-                formData.forEach(function (inputData) {
-                    var input = findByName(inputs, inputData.name);
-                    if (input) {
-                        input.value = inputData.value;
-                    }
-                });
-            }
-        } catch (e) {
-        }
-    }
-
-    function serializeForm(inputs) {
-        return inputs.map(function (input) {
-            return {name: input.name, value: input.value};
-        });
-    }
-
-    function setupListeners(inputs, saveKey) {
-        inputs.forEach(function (input) {
-            input.addEventListener("input", function () {
-                var formData = serializeForm(inputs);
-                localStorage.setItem(saveKey, JSON.stringify(formData));
-            });
-        });
-    }
-
-    var forms = Array.from(document.querySelectorAll("[data-form-save]"));
-
-    forms.forEach(function (element) {
-        var saveKey = "form-" + element.getAttribute("data-form-save");
-        var inputs = Array.from(element.querySelectorAll('input:not([type="hidden"]), textarea'));
-        loadInitalData(inputs, saveKey);
-        setupListeners(inputs, saveKey);
+  function findByName(inputs, name) {
+    return inputs.find(function (el) {
+      return el.name == name;
     });
+  }
+
+  function loadInitalData(inputs, saveKey) {
+    try {
+      var formData = JSON.parse(localStorage.getItem(saveKey));
+      if (formData) {
+        formData.forEach(function (inputData) {
+          var input = findByName(inputs, inputData.name);
+          if (input) {
+            input.value = inputData.value;
+          }
+        });
+      }
+    } catch (e) {}
+  }
+
+  function serializeForm(inputs) {
+    return inputs.map(function (input) {
+      return { name: input.name, value: input.value };
+    });
+  }
+
+  function setupListeners(inputs, saveKey) {
+    inputs.forEach(function (input) {
+      input.addEventListener("input", function () {
+        var formData = serializeForm(inputs);
+        localStorage.setItem(saveKey, JSON.stringify(formData));
+      });
+    });
+  }
+
+  var forms = Array.from(document.querySelectorAll("[data-form-save]"));
+
+  forms.forEach(function (element) {
+    var saveKey = "form-" + element.getAttribute("data-form-save");
+    var inputs = Array.from(
+      element.querySelectorAll('input:not([type="hidden"]), textarea'),
+    );
+    loadInitalData(inputs, saveKey);
+    setupListeners(inputs, saveKey);
+  });
 }
 
 if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", initFormSave);
+  document.addEventListener("DOMContentLoaded", initFormSave);
 } else {
-    initFormSave();
+  initFormSave();
 }
 
-document.addEventListener('DOMContentLoaded', function() {
-			var menu_toogles = document.querySelectorAll('.navbar-toggler');
-			Array.prototype.slice.call(menu_toogles).forEach(function(toggle) {
-				toggle.addEventListener('click', function(e) {
-					var target = document.querySelector(toggle.dataset.bsTarget)
-					if(target) {
-						var expanded = target.classList.toggle('show-sidebar');
-						// Previously managed by Bootstrap's own collapse JS
-						// (via data-bs-toggle="collapse", removed from the
-						// button - see base.html's comment on why) -
-						// replicated here so the toggle still reports its
-						// state to assistive tech.
-						toggle.classList.toggle('collapsed', !expanded);
-						toggle.setAttribute('aria-expanded', expanded);
-					}
-					e.preventDefault();
-				});
-			});
-		});
+document.addEventListener("DOMContentLoaded", function () {
+  var menu_toogles = document.querySelectorAll(".navbar-toggler");
+  Array.prototype.slice.call(menu_toogles).forEach(function (toggle) {
+    toggle.addEventListener("click", function (e) {
+      var target = document.querySelector(toggle.dataset.bsTarget);
+      if (target) {
+        var expanded = target.classList.toggle("show-sidebar");
+        // Previously managed by Bootstrap's own collapse JS
+        // (via data-bs-toggle="collapse", removed from the
+        // button - see base.html's comment on why) -
+        // replicated here so the toggle still reports its
+        // state to assistive tech.
+        toggle.classList.toggle("collapsed", !expanded);
+        toggle.setAttribute("aria-expanded", expanded);
+      }
+      e.preventDefault();
+    });
+  });
+});
+
 /*! DataTables 3.1.2
  * Copyright (c) SpryMedia Ltd - datatables.net/license
  */
@@ -34054,786 +34062,1009 @@ window.AjaxDatatableViewUtils = (function() {
 
 })();
 
-document.addEventListener('DOMContentLoaded', function () {
-    const table1 = document.getElementById("datatable_cases");
-    if (!table1) return;
-    const tableWrapper = document.getElementById("tableWrapper");
-    const tableTop = tableWrapper.getBoundingClientRect().top;
-    const viewportHeight = window.innerHeight;
-    const maxHeight = viewportHeight - tableTop;
-    // Only the DataTable itself (via scrollY below) should be height-capped.
-    // Capping #tableWrapper too used to be harmless because the .filters
-    // sidebar's content happened to fit within that height under BS3's
-    // tighter spacing - BS5's taller checkbox/label spacing pushes .filters
-    // past the cap, and since it's not independently scrollable, it
-    // visibly spills into whatever follows (e.g. the page footer).
-    // Subscribe "initComplete" event
-    table1.addEventListener('initComplete', function () {
-        // Code to resize input fields
-        const filterRowCells = tableWrapper.querySelectorAll("tr.datatable-column-filter-row th");
-        filterRowCells.forEach(function (th) {
-            th.style.padding = "0";
-            const input = th.querySelector("input[type=text]");
-            if (input) {
-                input.style.width = "100%";
-                input.style.boxSizing = "border-box";
-            }
-            // The library renders filter controls without an accessible name.
-            const control = th.querySelector("input[type=text], select");
-            if (control) {
-                const header = th.closest("thead").rows[0].cells[th.cellIndex];
-                control.setAttribute("aria-label", header.textContent.trim());
-            }
-        });
-    });
-    // Initialize table
-    AjaxDatatableViewUtils.initialize_table(
-        table1,
-        "/sprawy/case_table_ajax_data/",
-        {
-            // extra_options (example)
-            processing: true,
-            serverSide: true,
-            autoWidth: true,
-            full_row_select: false,
-            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
-            // Group the length selector/search box, and the info/paging controls,
-            // each into one row (default dom string stacks every feature separately).
-            dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
-            scrollX: true,
-            // searching: false,
-            scrollY: maxHeight - 250,
-            // TODO make fixedColumns working !!!
-            // fixedColumns: {
-            //     left: 1,
-            //     // right: 1
-            // }
-            "language": {
-                "processing":     "Przetwarzanie...",
-                "search":         "Szukaj:",
-                "lengthMenu":     "Pokaż _MENU_ pozycji",
-                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                "infoPostFix":    "",
-                "loadingRecords": "Wczytywanie...",
-                "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                "emptyTable":     "Brak danych",
-                "paginate": {
-                    "first":      "Pierwsza",
-                    "previous":   "Poprzednia",
-                    "next":       "Następna",
-                    "last":       "Ostatnia"
-                },
-                "aria": {
-                    "orderable": ": aktywuj, by posortować kolumnę",
-                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
-                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
-                    "paginate": {
-                        "first": "Pierwsza",
-                        "previous": "Poprzednia",
-                        "next": "Następna",
-                        "last": "Ostatnia"
-                    }
-                }
-            },
-        }, {
-            // extra_data
-            status_free: function() { return document.querySelector("input[name='check_status_free']").checked ? 1 : 0; },
-            status_assigned: function() { return document.querySelector("input[name='check_status_assigned']").checked ? 1 : 0; },
-            status_moderated: function() { return document.querySelector("input[name='check_status_moderated']").checked ? 1 : 0; },
-            status_closed: function() { return document.querySelector("input[name='check_status_closed']").checked ? 1 : 0; },
-            handled_yes: function() { return document.querySelector("input[name='check_handled_yes']").checked ? 1 : 0; },
-            handled_no: function() { return document.querySelector("input[name='check_handled_no']").checked ? 1 : 0; },
-            has_tag_yes: function() { return document.querySelector("input[name='check_has_tag_yes']").checked ? 1 : 0; },
-            has_tag_no: function() { return document.querySelector("input[name='check_has_tag_no']").checked ? 1 : 0; },
-            has_deadline_yes: function() { return document.querySelector("input[name='check_has_deadline_yes']").checked ? 1 : 0; },
-            has_deadline_no: function() { return document.querySelector("input[name='check_has_deadline_no']").checked ? 1 : 0; },
-            has_ai_articles_yes: function() { return document.querySelector("input[name='check_has_ai_articles_yes']").checked ? 1 : 0; },
-            has_ai_articles_no: function() { return document.querySelector("input[name='check_has_ai_articles_no']").checked ? 1 : 0; },
-            has_ai_articles_to_review_yes: function() { return document.querySelector("input[name='check_has_ai_articles_to_review_yes']").checked ? 1 : 0; },
-            has_ai_articles_to_review_no: function() { return document.querySelector("input[name='check_has_ai_articles_to_review_no']").checked ? 1 : 0; },
-            has_ai_tag_suggestion_yes: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_yes']").checked ? 1 : 0; },
-            has_ai_tag_suggestion_no: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_no']").checked ? 1 : 0; },
-            involved_staff_filter: function() { return document.querySelector("select[name='involved_staff_select']").value; },
-        },
+document.addEventListener("DOMContentLoaded", function () {
+  const table1 = document.getElementById("datatable_cases");
+  if (!table1) return;
+  const tableWrapper = document.getElementById("tableWrapper");
+  const tableTop = tableWrapper.getBoundingClientRect().top;
+  const viewportHeight = window.innerHeight;
+  const maxHeight = viewportHeight - tableTop;
+  // Only the DataTable itself (via scrollY below) should be height-capped.
+  // Capping #tableWrapper too used to be harmless because the .filters
+  // sidebar's content happened to fit within that height under BS3's
+  // tighter spacing - BS5's taller checkbox/label spacing pushes .filters
+  // past the cap, and since it's not independently scrollable, it
+  // visibly spills into whatever follows (e.g. the page footer).
+  // Subscribe "initComplete" event
+  table1.addEventListener("initComplete", function () {
+    // Code to resize input fields
+    const filterRowCells = tableWrapper.querySelectorAll(
+      "tr.datatable-column-filter-row th",
     );
-    const filtersContainer = document.querySelector('.filters');
-    if (filtersContainer) {
-        filtersContainer.addEventListener('change', function () {
-            AjaxDatatableViewUtils.redraw_table(table1);
-        });
-    }
+    filterRowCells.forEach(function (th) {
+      th.style.padding = "0";
+      const input = th.querySelector("input[type=text]");
+      if (input) {
+        input.style.width = "100%";
+        input.style.boxSizing = "border-box";
+      }
+      // The library renders filter controls without an accessible name.
+      const control = th.querySelector("input[type=text], select");
+      if (control) {
+        const header = th.closest("thead").rows[0].cells[th.cellIndex];
+        control.setAttribute("aria-label", header.textContent.trim());
+      }
+    });
+  });
+  // Initialize table
+  AjaxDatatableViewUtils.initialize_table(
+    table1,
+    "/sprawy/case_table_ajax_data/",
+    {
+      // extra_options (example)
+      processing: true,
+      serverSide: true,
+      autoWidth: true,
+      full_row_select: false,
+      a11y_mode: document.documentElement.dataset.uiMode === "wcag",
+      // Group the length selector/search box, and the info/paging controls,
+      // each into one row (default dom string stacks every feature separately).
+      dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
+      scrollX: true,
+      // searching: false,
+      scrollY: maxHeight - 250,
+      // TODO make fixedColumns working !!!
+      // fixedColumns: {
+      //     left: 1,
+      //     // right: 1
+      // }
+      language: {
+        processing: "Przetwarzanie...",
+        search: "Szukaj:",
+        lengthMenu: "Pokaż _MENU_ pozycji",
+        info: "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+        infoEmpty: "Pozycji 0 z 0 dostępnych",
+        infoFiltered: "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+        infoPostFix: "",
+        loadingRecords: "Wczytywanie...",
+        zeroRecords: "Nie znaleziono pasujących pozycji",
+        emptyTable: "Brak danych",
+        paginate: {
+          first: "Pierwsza",
+          previous: "Poprzednia",
+          next: "Następna",
+          last: "Ostatnia",
+        },
+        aria: {
+          orderable: ": aktywuj, by posortować kolumnę",
+          orderableRemove: ": aktywuj, by usunąć sortowanie",
+          orderableReverse: ": aktywuj, by odwrócić sortowanie",
+          paginate: {
+            first: "Pierwsza",
+            previous: "Poprzednia",
+            next: "Następna",
+            last: "Ostatnia",
+          },
+        },
+      },
+    },
+    {
+      // extra_data
+      status_free: function () {
+        return document.querySelector("input[name='check_status_free']").checked
+          ? 1
+          : 0;
+      },
+      status_assigned: function () {
+        return document.querySelector("input[name='check_status_assigned']")
+          .checked
+          ? 1
+          : 0;
+      },
+      status_moderated: function () {
+        return document.querySelector("input[name='check_status_moderated']")
+          .checked
+          ? 1
+          : 0;
+      },
+      status_closed: function () {
+        return document.querySelector("input[name='check_status_closed']")
+          .checked
+          ? 1
+          : 0;
+      },
+      handled_yes: function () {
+        return document.querySelector("input[name='check_handled_yes']").checked
+          ? 1
+          : 0;
+      },
+      handled_no: function () {
+        return document.querySelector("input[name='check_handled_no']").checked
+          ? 1
+          : 0;
+      },
+      has_tag_yes: function () {
+        return document.querySelector("input[name='check_has_tag_yes']").checked
+          ? 1
+          : 0;
+      },
+      has_tag_no: function () {
+        return document.querySelector("input[name='check_has_tag_no']").checked
+          ? 1
+          : 0;
+      },
+      has_deadline_yes: function () {
+        return document.querySelector("input[name='check_has_deadline_yes']")
+          .checked
+          ? 1
+          : 0;
+      },
+      has_deadline_no: function () {
+        return document.querySelector("input[name='check_has_deadline_no']")
+          .checked
+          ? 1
+          : 0;
+      },
+      has_ai_articles_yes: function () {
+        return document.querySelector("input[name='check_has_ai_articles_yes']")
+          .checked
+          ? 1
+          : 0;
+      },
+      has_ai_articles_no: function () {
+        return document.querySelector("input[name='check_has_ai_articles_no']")
+          .checked
+          ? 1
+          : 0;
+      },
+      has_ai_articles_to_review_yes: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_articles_to_review_yes']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      has_ai_articles_to_review_no: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_articles_to_review_no']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      has_ai_tag_suggestion_yes: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_tag_suggestion_yes']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      has_ai_tag_suggestion_no: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_tag_suggestion_no']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      involved_staff_filter: function () {
+        return document.querySelector("select[name='involved_staff_select']")
+          .value;
+      },
+    },
+  );
+  const filtersContainer = document.querySelector(".filters");
+  if (filtersContainer) {
+    filtersContainer.addEventListener("change", function () {
+      AjaxDatatableViewUtils.redraw_table(table1);
+    });
+  }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const table1 = document.getElementById("datatable_advices");
-    if (!table1) return;
-    const tableWrapper = document.getElementById("tableWrapper");
-    const tableTop = tableWrapper.getBoundingClientRect().top;
-    const viewportHeight = window.innerHeight;
-    const maxHeight = viewportHeight - tableTop;
-    tableWrapper.style.maxHeight = maxHeight + 'px';
-    // Subscribe "initComplete" event
-    table1.addEventListener('initComplete', function () {
-        // Code to resize input fields
-        const filterRowCells = tableWrapper.querySelectorAll("tr.datatable-column-filter-row th");
-        filterRowCells.forEach(function (th) {
-            th.style.padding = "0";
-            const input = th.querySelector("input[type=text]");
-            if (input) {
-                input.style.width = "100%";
-                input.style.boxSizing = "border-box";
-            }
-            const select = th.querySelector("select");
-            if (select) {
-                select.style.boxSizing = "border-box";
-                select.style.width = "100%";
-            }
-            // The library renders filter controls without an accessible name.
-            const control = input || select;
-            if (control) {
-                const header = th.closest("thead").rows[0].cells[th.cellIndex];
-                control.setAttribute("aria-label", header.textContent.trim());
-            }
-        });
-    });
-    // Initialize table
-    AjaxDatatableViewUtils.initialize_table(
-        table1,
-        "/porady/advice_table_ajax_data/",
-        {
-            // extra_options (example)
-            processing: true,
-            serverSide: true,
-            autoWidth: true,
-            full_row_select: false,
-            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
-            // Group the length selector/search box, and the info/paging controls,
-            // each into one row (default dom string stacks every feature separately).
-            dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
-            scrollX: true,
-            // searching: false,
-            scrollY: maxHeight - 250,
-            // TODO make fixedColumns working !!!
-            // fixedColumns: {
-            //     left: 1,
-            //     // right: 1
-            // }
-            "language": {
-                "processing":     "Przetwarzanie...",
-                "search":         "Szukaj:",
-                "lengthMenu":     "Pokaż _MENU_ pozycji",
-                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                "infoPostFix":    "",
-                "loadingRecords": "Wczytywanie...",
-                "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                "emptyTable":     "Brak danych",
-                "paginate": {
-                    "first":      "Pierwsza",
-                    "previous":   "Poprzednia",
-                    "next":       "Następna",
-                    "last":       "Ostatnia"
-                },
-                "aria": {
-                    "orderable": ": aktywuj, by posortować kolumnę",
-                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
-                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
-                    "paginate": {
-                        "first": "Pierwsza",
-                        "previous": "Poprzednia",
-                        "next": "Następna",
-                        "last": "Ostatnia"
-                    }
-                }
-            },
-        }, {
-            // extra_data
-            helped_yes: function() { return document.querySelector("input[name='check_helped_yes']").checked ? 1 : 0; },
-            helped_no: function() { return document.querySelector("input[name='check_helped_no']").checked ? 1 : 0; },
-            helped_blank: function() { return document.querySelector("input[name='check_helped_blank']").checked ? 1 : 0; },
-            visible_yes: function() { return document.querySelector("input[name='check_visible_yes']").checked ? 1 : 0; },
-            visible_no: function() { return document.querySelector("input[name='check_visible_no']").checked ? 1 : 0; },
-            interesting_case_yes: function() { return document.querySelector("input[name='check_interesting_case_yes']").checked ? 1 : 0; },
-            interesting_case_no: function() { return document.querySelector("input[name='check_interesting_case_no']").checked ? 1 : 0; },
-            for_knowledge_base_yes: function() { return document.querySelector("input[name='check_for_knowledge_base_yes']").checked ? 1 : 0; },
-            for_knowledge_base_no: function() { return document.querySelector("input[name='check_for_knowledge_base_no']").checked ? 1 : 0; },
-            has_ai_tag_suggestion_yes: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_yes']").checked ? 1 : 0; },
-            has_ai_tag_suggestion_no: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_no']").checked ? 1 : 0; },
-            has_ai_tag_suggestion_to_review_yes: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_to_review_yes']").checked ? 1 : 0; },
-            has_ai_tag_suggestion_to_review_no: function() { return document.querySelector("input[name='check_has_ai_tag_suggestion_to_review_no']").checked ? 1 : 0; },
-        },
+document.addEventListener("DOMContentLoaded", function () {
+  const table1 = document.getElementById("datatable_advices");
+  if (!table1) return;
+  const tableWrapper = document.getElementById("tableWrapper");
+  const tableTop = tableWrapper.getBoundingClientRect().top;
+  const viewportHeight = window.innerHeight;
+  const maxHeight = viewportHeight - tableTop;
+  tableWrapper.style.maxHeight = maxHeight + "px";
+  // Subscribe "initComplete" event
+  table1.addEventListener("initComplete", function () {
+    // Code to resize input fields
+    const filterRowCells = tableWrapper.querySelectorAll(
+      "tr.datatable-column-filter-row th",
     );
-    const filtersContainer = document.querySelector('.filters');
-    if (filtersContainer) {
-        filtersContainer.addEventListener('change', function () {
-            AjaxDatatableViewUtils.redraw_table(table1);
-        });
-    }
+    filterRowCells.forEach(function (th) {
+      th.style.padding = "0";
+      const input = th.querySelector("input[type=text]");
+      if (input) {
+        input.style.width = "100%";
+        input.style.boxSizing = "border-box";
+      }
+      const select = th.querySelector("select");
+      if (select) {
+        select.style.boxSizing = "border-box";
+        select.style.width = "100%";
+      }
+      // The library renders filter controls without an accessible name.
+      const control = input || select;
+      if (control) {
+        const header = th.closest("thead").rows[0].cells[th.cellIndex];
+        control.setAttribute("aria-label", header.textContent.trim());
+      }
+    });
+  });
+  // Initialize table
+  AjaxDatatableViewUtils.initialize_table(
+    table1,
+    "/porady/advice_table_ajax_data/",
+    {
+      // extra_options (example)
+      processing: true,
+      serverSide: true,
+      autoWidth: true,
+      full_row_select: false,
+      a11y_mode: document.documentElement.dataset.uiMode === "wcag",
+      // Group the length selector/search box, and the info/paging controls,
+      // each into one row (default dom string stacks every feature separately).
+      dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
+      scrollX: true,
+      // searching: false,
+      scrollY: maxHeight - 250,
+      // TODO make fixedColumns working !!!
+      // fixedColumns: {
+      //     left: 1,
+      //     // right: 1
+      // }
+      language: {
+        processing: "Przetwarzanie...",
+        search: "Szukaj:",
+        lengthMenu: "Pokaż _MENU_ pozycji",
+        info: "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+        infoEmpty: "Pozycji 0 z 0 dostępnych",
+        infoFiltered: "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+        infoPostFix: "",
+        loadingRecords: "Wczytywanie...",
+        zeroRecords: "Nie znaleziono pasujących pozycji",
+        emptyTable: "Brak danych",
+        paginate: {
+          first: "Pierwsza",
+          previous: "Poprzednia",
+          next: "Następna",
+          last: "Ostatnia",
+        },
+        aria: {
+          orderable: ": aktywuj, by posortować kolumnę",
+          orderableRemove: ": aktywuj, by usunąć sortowanie",
+          orderableReverse: ": aktywuj, by odwrócić sortowanie",
+          paginate: {
+            first: "Pierwsza",
+            previous: "Poprzednia",
+            next: "Następna",
+            last: "Ostatnia",
+          },
+        },
+      },
+    },
+    {
+      // extra_data
+      helped_yes: function () {
+        return document.querySelector("input[name='check_helped_yes']").checked
+          ? 1
+          : 0;
+      },
+      helped_no: function () {
+        return document.querySelector("input[name='check_helped_no']").checked
+          ? 1
+          : 0;
+      },
+      helped_blank: function () {
+        return document.querySelector("input[name='check_helped_blank']")
+          .checked
+          ? 1
+          : 0;
+      },
+      visible_yes: function () {
+        return document.querySelector("input[name='check_visible_yes']").checked
+          ? 1
+          : 0;
+      },
+      visible_no: function () {
+        return document.querySelector("input[name='check_visible_no']").checked
+          ? 1
+          : 0;
+      },
+      interesting_case_yes: function () {
+        return document.querySelector(
+          "input[name='check_interesting_case_yes']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      interesting_case_no: function () {
+        return document.querySelector("input[name='check_interesting_case_no']")
+          .checked
+          ? 1
+          : 0;
+      },
+      for_knowledge_base_yes: function () {
+        return document.querySelector(
+          "input[name='check_for_knowledge_base_yes']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      for_knowledge_base_no: function () {
+        return document.querySelector(
+          "input[name='check_for_knowledge_base_no']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      has_ai_tag_suggestion_yes: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_tag_suggestion_yes']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      has_ai_tag_suggestion_no: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_tag_suggestion_no']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      has_ai_tag_suggestion_to_review_yes: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_tag_suggestion_to_review_yes']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      has_ai_tag_suggestion_to_review_no: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_tag_suggestion_to_review_no']",
+        ).checked
+          ? 1
+          : 0;
+      },
+    },
+  );
+  const filtersContainer = document.querySelector(".filters");
+  if (filtersContainer) {
+    filtersContainer.addEventListener("change", function () {
+      AjaxDatatableViewUtils.redraw_table(table1);
+    });
+  }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const table1 = document.getElementById("datatable_letters");
-    if (!table1) return;
-    const tableWrapper = document.getElementById("tableWrapper");
-    const tableTop = tableWrapper.getBoundingClientRect().top;
-    const viewportHeight = window.innerHeight;
-    const maxHeight = viewportHeight - tableTop;
-    tableWrapper.style.maxHeight = maxHeight + 'px';
-    // Subscribe "initComplete" event
-    table1.addEventListener('initComplete', function () {
-        // Code to resize input fields
-        const filterRowCells = tableWrapper.querySelectorAll("tr.datatable-column-filter-row th");
-        filterRowCells.forEach(function (th) {
-            th.style.padding = "0";
-            const input = th.querySelector("input[type=text]");
-            if (input) {
-                input.style.width = "100%";
-                input.style.boxSizing = "border-box";
-            }
-            // The library renders filter controls without an accessible name.
-            const control = th.querySelector("input[type=text], select");
-            if (control) {
-                const header = th.closest("thead").rows[0].cells[th.cellIndex];
-                control.setAttribute("aria-label", header.textContent.trim());
-            }
-        });
-    });
-    // Initialize table
-    AjaxDatatableViewUtils.initialize_table(
-        table1,
-        "/listy/letters_table_ajax_data/",
-        {
-            // extra_options (example)
-            processing: true,
-            serverSide: true,
-            autoWidth: true,
-            full_row_select: false,
-            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
-            // Group the length selector/search box, and the info/paging controls,
-            // each into one row (default dom string stacks every feature separately).
-            dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
-            scrollX: true,
-            // searching: false,
-            scrollY: maxHeight - 250,
-            // TODO make fixedColumns working !!!
-            // fixedColumns: {
-            //     left: 1,
-            //     // right: 1
-            // },
-            "language": {
-                "processing":     "Przetwarzanie...",
-                "search":         "Szukaj:",
-                "lengthMenu":     "Pokaż _MENU_ pozycji",
-                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                "infoPostFix":    "",
-                "loadingRecords": "Wczytywanie...",
-                "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                "emptyTable":     "Brak danych",
-                "paginate": {
-                    "first":      "Pierwsza",
-                    "previous":   "Poprzednia",
-                    "next":       "Następna",
-                    "last":       "Ostatnia"
-                },
-                "aria": {
-                    "orderable": ": aktywuj, by posortować kolumnę",
-                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
-                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
-                    "paginate": {
-                        "first": "Pierwsza",
-                        "previous": "Poprzednia",
-                        "next": "Następna",
-                        "last": "Ostatnia"
-                    }
-                }
-            },
-        }, {
-            // extra_data
-        },
+document.addEventListener("DOMContentLoaded", function () {
+  const table1 = document.getElementById("datatable_letters");
+  if (!table1) return;
+  const tableWrapper = document.getElementById("tableWrapper");
+  const tableTop = tableWrapper.getBoundingClientRect().top;
+  const viewportHeight = window.innerHeight;
+  const maxHeight = viewportHeight - tableTop;
+  tableWrapper.style.maxHeight = maxHeight + "px";
+  // Subscribe "initComplete" event
+  table1.addEventListener("initComplete", function () {
+    // Code to resize input fields
+    const filterRowCells = tableWrapper.querySelectorAll(
+      "tr.datatable-column-filter-row th",
     );
+    filterRowCells.forEach(function (th) {
+      th.style.padding = "0";
+      const input = th.querySelector("input[type=text]");
+      if (input) {
+        input.style.width = "100%";
+        input.style.boxSizing = "border-box";
+      }
+      // The library renders filter controls without an accessible name.
+      const control = th.querySelector("input[type=text], select");
+      if (control) {
+        const header = th.closest("thead").rows[0].cells[th.cellIndex];
+        control.setAttribute("aria-label", header.textContent.trim());
+      }
+    });
+  });
+  // Initialize table
+  AjaxDatatableViewUtils.initialize_table(
+    table1,
+    "/listy/letters_table_ajax_data/",
+    {
+      // extra_options (example)
+      processing: true,
+      serverSide: true,
+      autoWidth: true,
+      full_row_select: false,
+      a11y_mode: document.documentElement.dataset.uiMode === "wcag",
+      // Group the length selector/search box, and the info/paging controls,
+      // each into one row (default dom string stacks every feature separately).
+      dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
+      scrollX: true,
+      // searching: false,
+      scrollY: maxHeight - 250,
+      // TODO make fixedColumns working !!!
+      // fixedColumns: {
+      //     left: 1,
+      //     // right: 1
+      // },
+      language: {
+        processing: "Przetwarzanie...",
+        search: "Szukaj:",
+        lengthMenu: "Pokaż _MENU_ pozycji",
+        info: "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+        infoEmpty: "Pozycji 0 z 0 dostępnych",
+        infoFiltered: "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+        infoPostFix: "",
+        loadingRecords: "Wczytywanie...",
+        zeroRecords: "Nie znaleziono pasujących pozycji",
+        emptyTable: "Brak danych",
+        paginate: {
+          first: "Pierwsza",
+          previous: "Poprzednia",
+          next: "Następna",
+          last: "Ostatnia",
+        },
+        aria: {
+          orderable: ": aktywuj, by posortować kolumnę",
+          orderableRemove: ": aktywuj, by usunąć sortowanie",
+          orderableReverse: ": aktywuj, by odwrócić sortowanie",
+          paginate: {
+            first: "Pierwsza",
+            previous: "Poprzednia",
+            next: "Następna",
+            last: "Ostatnia",
+          },
+        },
+      },
+    },
+    {
+      // extra_data
+    },
+  );
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    var dropZone = document.getElementById('drop-zone');
-    var clearButton = document.getElementById('clear-files-button');
-    var fileInput = document.getElementById('id_file_field');
-    if (!dropZone || !fileInput) {
-        return;
+document.addEventListener("DOMContentLoaded", function () {
+  var dropZone = document.getElementById("drop-zone");
+  var clearButton = document.getElementById("clear-files-button");
+  var fileInput = document.getElementById("id_file_field");
+  if (!dropZone || !fileInput) {
+    return;
+  }
+  var selectedFilesList = new DataTransfer();
+
+  // Highlight drop zone when drag event occurs
+  dropZone.addEventListener("dragover", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZone.style.backgroundColor = "lightgray";
+  });
+  dropZone.addEventListener("dragleave", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZone.style.backgroundColor = "#f5f5f5";
+  });
+  // Handle the drop event
+  dropZone.addEventListener("drop", function (e) {
+    e.preventDefault();
+    e.stopPropagation();
+    dropZone.style.backgroundColor = "#f5f5f5";
+    handleNewFiles(e.dataTransfer.files);
+    clearButton.style.display = "inline-block";
+  });
+  // Attach an event listener to the file input change event
+  fileInput.addEventListener("change", function (e) {
+    handleNewFiles(e.target.files);
+    clearButton.style.display =
+      selectedFilesList.files.length > 0 ? "inline-block" : "none";
+  });
+  // Use a button to clear files
+  clearButton.addEventListener("click", function () {
+    fileInput.files = new DataTransfer().files;
+    selectedFilesList = new DataTransfer();
+    updateTableWithFiles([]);
+    clearButton.style.display = "none";
+  });
+
+  var filesTableHead = document.getElementById("files-table-head");
+  if (filesTableHead) {
+    var labelHeight = filesTableHead.offsetHeight;
+    document.querySelectorAll(".control-label").forEach(function (el) {
+      el.style.height = labelHeight - 5 + "px";
+    });
+  }
+
+  // Function to update the table with files
+  function updateTableWithFiles(files) {
+    var tableBody = document.querySelector("#selected-files tbody");
+    if (!tableBody) {
+      return;
     }
-    var selectedFilesList = new DataTransfer();
-
-    // Highlight drop zone when drag event occurs
-    dropZone.addEventListener('dragover', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.style.backgroundColor = 'lightgray';
-    });
-    dropZone.addEventListener('dragleave', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.style.backgroundColor = '#f5f5f5';
-    });
-    // Handle the drop event
-    dropZone.addEventListener('drop', function (e) {
-        e.preventDefault();
-        e.stopPropagation();
-        dropZone.style.backgroundColor = '#f5f5f5';
-        handleNewFiles(e.dataTransfer.files);
-        clearButton.style.display = 'inline-block';
-    });
-    // Attach an event listener to the file input change event
-    fileInput.addEventListener('change', function (e) {
-        handleNewFiles(e.target.files);
-        clearButton.style.display = selectedFilesList.files.length > 0 ? 'inline-block' : 'none';
-    });
-    // Use a button to clear files
-    clearButton.addEventListener('click', function () {
-        fileInput.files = new DataTransfer().files;
-        selectedFilesList = new DataTransfer();
-        updateTableWithFiles([]);
-        clearButton.style.display = 'none';
-    });
-
-    var filesTableHead = document.getElementById('files-table-head');
-    if (filesTableHead) {
-        var labelHeight = filesTableHead.offsetHeight;
-        document.querySelectorAll('.control-label').forEach(function (el) {
-            el.style.height = (labelHeight - 5) + 'px';
-        });
+    tableBody.innerHTML = "";
+    for (var i = 0; i < files.length; i++) {
+      var row = document.createElement("tr");
+      row.className = "dynamic-form";
+      var cell = document.createElement("td");
+      cell.textContent = files[i].name;
+      row.appendChild(cell);
+      tableBody.appendChild(row);
     }
+  }
 
-    // Function to update the table with files
-    function updateTableWithFiles(files) {
-        var tableBody = document.querySelector('#selected-files tbody');
-        if (!tableBody) {
-            return;
-        }
-        tableBody.innerHTML = '';
-        for (var i = 0; i < files.length; i++) {
-            var row = document.createElement('tr');
-            row.className = 'dynamic-form';
-            var cell = document.createElement('td');
-            cell.textContent = files[i].name;
-            row.appendChild(cell);
-            tableBody.appendChild(row);
-        }
-    }
+  function handleNewFiles(eventFiles) {
+    var addedFiles = Array.from(eventFiles);
+    var selectedFiles = Array.from(selectedFilesList.files);
+    var newFiles = addedFiles.filter(function (addedFile) {
+      return !selectedFiles.some(function (selectedFile) {
+        return (
+          selectedFile.name === addedFile.name &&
+          selectedFile.size === addedFile.size &&
+          selectedFile.lastModified === addedFile.lastModified
+        );
+      });
+    });
+    newFiles.forEach(function (file) {
+      selectedFilesList.items.add(file);
+    });
 
-    function handleNewFiles(eventFiles) {
-        var addedFiles = Array.from(eventFiles);
-        var selectedFiles = Array.from(selectedFilesList.files);
-        var newFiles = addedFiles.filter(function (addedFile) {
-            return !selectedFiles.some(function (selectedFile) {
-                return selectedFile.name === addedFile.name &&
-                    selectedFile.size === addedFile.size &&
-                    selectedFile.lastModified === addedFile.lastModified;
-            });
-        });
-        newFiles.forEach(function (file) {
-            selectedFilesList.items.add(file);
-        });
-
-        updateTableWithFiles(selectedFilesList.files);
-        fileInput.files = selectedFilesList.files;
-    }
+    updateTableWithFiles(selectedFilesList.files);
+    fileInput.files = selectedFilesList.files;
+  }
 });
 
 function replaceAttachmentDeleteCheckbox(row, deleteText) {
-    var checkbox = row.querySelector('input[type="checkbox"][name$="-DELETE"]');
-    if (!checkbox) {
-        return;
-    }
-    var cell = checkbox.closest('td');
-    if (!cell) {
-        return;
-    }
-    var hidden = document.createElement('input');
-    hidden.type = 'hidden';
-    hidden.name = checkbox.name;
-    hidden.id = checkbox.id;
-    cell.querySelectorAll('label[for="' + checkbox.id + '"]').forEach(function (label) {
-        label.style.display = 'none';
+  var checkbox = row.querySelector('input[type="checkbox"][name$="-DELETE"]');
+  if (!checkbox) {
+    return;
+  }
+  var cell = checkbox.closest("td");
+  if (!cell) {
+    return;
+  }
+  var hidden = document.createElement("input");
+  hidden.type = "hidden";
+  hidden.name = checkbox.name;
+  hidden.id = checkbox.id;
+  cell
+    .querySelectorAll('label[for="' + checkbox.id + '"]')
+    .forEach(function (label) {
+      label.style.display = "none";
     });
-    checkbox.replaceWith(hidden);
+  checkbox.replaceWith(hidden);
 
-    var link = document.createElement('a');
-    link.href = 'javascript:void(0)';
-    link.className = 'delete-row';
-    link.textContent = deleteText;
-    link.addEventListener('click', function () {
-        hidden.value = 'on';
-        row.style.display = 'none';
-    });
-    cell.appendChild(link);
+  var link = document.createElement("a");
+  link.href = "javascript:void(0)";
+  link.className = "delete-row";
+  link.textContent = deleteText;
+  link.addEventListener("click", function () {
+    hidden.value = "on";
+    row.style.display = "none";
+  });
+  cell.appendChild(link);
 }
 
 function initAttachmentFormset(tbody, options) {
-    if (!tbody) {
-        return;
-    }
-    var emptyRow = tbody.querySelector('tr.empty-form');
-    if (!emptyRow) {
-        return;
-    }
-    var prefixInput = emptyRow.querySelector('[name*="-__prefix__-"]');
-    if (!prefixInput) {
-        return;
-    }
-    var prefix = prefixInput.name.split('-__prefix__-')[0];
-    var totalForms = document.getElementById('id_' + prefix + '-TOTAL_FORMS');
-    if (!totalForms) {
-        return;
-    }
+  if (!tbody) {
+    return;
+  }
+  var emptyRow = tbody.querySelector("tr.empty-form");
+  if (!emptyRow) {
+    return;
+  }
+  var prefixInput = emptyRow.querySelector('[name*="-__prefix__-"]');
+  if (!prefixInput) {
+    return;
+  }
+  var prefix = prefixInput.name.split("-__prefix__-")[0];
+  var totalForms = document.getElementById("id_" + prefix + "-TOTAL_FORMS");
+  if (!totalForms) {
+    return;
+  }
 
-    tbody.querySelectorAll('tr').forEach(function (row) {
-        if (row !== emptyRow) {
-            replaceAttachmentDeleteCheckbox(row, options.deleteText);
-        }
+  tbody.querySelectorAll("tr").forEach(function (row) {
+    if (row !== emptyRow) {
+      replaceAttachmentDeleteCheckbox(row, options.deleteText);
+    }
+  });
+
+  var addRow = document.createElement("tr");
+  var addCell = document.createElement("td");
+  addCell.colSpan = emptyRow.children.length;
+  var addLink = document.createElement("a");
+  addLink.href = "javascript:void(0)";
+  addLink.className = "add-row";
+  addLink.textContent = options.addText;
+  addCell.appendChild(addLink);
+  addRow.appendChild(addCell);
+  tbody.appendChild(addRow);
+
+  addLink.addEventListener("click", function () {
+    var formCount = parseInt(totalForms.value, 10);
+    var newRow = emptyRow.cloneNode(true);
+    newRow.classList.remove("hidden", "empty-form");
+    newRow.querySelectorAll("[name], [id]").forEach(function (el) {
+      if (el.name) {
+        el.name = el.name.replace("__prefix__", formCount);
+      }
+      if (el.id) {
+        el.id = el.id.replace("__prefix__", formCount);
+      }
     });
-
-    var addRow = document.createElement('tr');
-    var addCell = document.createElement('td');
-    addCell.colSpan = emptyRow.children.length;
-    var addLink = document.createElement('a');
-    addLink.href = 'javascript:void(0)';
-    addLink.className = 'add-row';
-    addLink.textContent = options.addText;
-    addCell.appendChild(addLink);
-    addRow.appendChild(addCell);
-    tbody.appendChild(addRow);
-
-    addLink.addEventListener('click', function () {
-        var formCount = parseInt(totalForms.value, 10);
-        var newRow = emptyRow.cloneNode(true);
-        newRow.classList.remove('hidden', 'empty-form');
-        newRow.querySelectorAll('[name], [id]').forEach(function (el) {
-            if (el.name) {
-                el.name = el.name.replace('__prefix__', formCount);
-            }
-            if (el.id) {
-                el.id = el.id.replace('__prefix__', formCount);
-            }
-        });
-        newRow.querySelectorAll('label[for]').forEach(function (label) {
-            label.setAttribute('for', label.getAttribute('for').replace('__prefix__', formCount));
-        });
-        tbody.insertBefore(newRow, addRow);
-        replaceAttachmentDeleteCheckbox(newRow, options.deleteText);
-        totalForms.value = formCount + 1;
+    newRow.querySelectorAll("label[for]").forEach(function (label) {
+      label.setAttribute(
+        "for",
+        label.getAttribute("for").replace("__prefix__", formCount),
+      );
     });
+    tbody.insertBefore(newRow, addRow);
+    replaceAttachmentDeleteCheckbox(newRow, options.deleteText);
+    totalForms.value = formCount + 1;
+  });
 }
 
 AjaxDatatableViewUtils.init({
-    search_icon_html: '<i class="fas fa-magnifying-glass"></i>',
-    language: {
+  search_icon_html: '<i class="fas fa-magnifying-glass"></i>',
+  language: {},
+  fn_daterange_widget_initialize: function (
+    tableEl,
+    data,
+    api,
+    extraFilterState,
+  ) {
+    var wrapper = tableEl.closest(".dt-container");
+    var toolbar = wrapper.querySelector(".toolbar");
+    toolbar.innerHTML =
+      '<div class="daterange" style="float: left; margin-right: 6px;">' +
+      '<span class="from"><label for="daterange_from">Czas od</label>: ' +
+      '<input type="date" id="daterange_from" class="date_from datepicker"></span>' +
+      '<span class="to"><label for="daterange_to">&nbsp do</label>: ' +
+      '<input type="date" id="daterange_to" class="date_to datepicker"></span>' +
+      "</div>";
+    toolbar.addEventListener("change", function (event) {
+      if (!event.target.matches(".date_from, .date_to")) return;
+      // Annotate table with values retrieved from date widgets
+      extraFilterState.date_from = wrapper.querySelector(".date_from").value;
+      extraFilterState.date_to = wrapper.querySelector(".date_to").value;
+      // Redraw table
+      api.draw();
+    });
+  },
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+  const table1 = document.getElementById("datatable_events");
+  if (!table1) return;
+  const tableWrapper = document.getElementById("tableWrapper");
+  const tableTop = tableWrapper.getBoundingClientRect().top;
+  const viewportHeight = window.innerHeight;
+  const maxHeight = viewportHeight - tableTop;
+  tableWrapper.style.maxHeight = maxHeight + "px";
+  // Subscribe "initComplete" event
+  table1.addEventListener("initComplete", function () {
+    // Code to resize input fields
+    const filterRowCells = tableWrapper.querySelectorAll(
+      "tr.datatable-column-filter-row th",
+    );
+    filterRowCells.forEach(function (th) {
+      th.style.padding = "0";
+      const input = th.querySelector("input[type=text]");
+      if (input) {
+        input.style.width = "100%";
+        input.style.boxSizing = "border-box";
+      }
+      // The library renders filter controls without an accessible name.
+      const control = th.querySelector("input[type=text], select");
+      if (control) {
+        const header = th.closest("thead").rows[0].cells[th.cellIndex];
+        control.setAttribute("aria-label", header.textContent.trim());
+      }
+    });
+  });
+  // Initialize table
+  AjaxDatatableViewUtils.initialize_table(
+    table1,
+    "/wydarzenia/events_table_ajax_data/",
+    {
+      // extra_options (example)
+      processing: true,
+      serverSide: true,
+      autoWidth: true,
+      full_row_select: false,
+      a11y_mode: document.documentElement.dataset.uiMode === "wcag",
+      // Group the length selector/search box, and the info/paging controls,
+      // each into one row (default dom string stacks every feature separately).
+      dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
+      scrollX: true,
+      // searching: false,
+      scrollY: maxHeight - 250,
+      // TODO make fixedColumns working !!!
+      // fixedColumns: {
+      //     left: 1,
+      //     // right: 1
+      // }
+      language: {
+        processing: "Przetwarzanie...",
+        search: "Szukaj:",
+        lengthMenu: "Pokaż _MENU_ pozycji",
+        info: "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+        infoEmpty: "Pozycji 0 z 0 dostępnych",
+        infoFiltered: "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+        infoPostFix: "",
+        loadingRecords: "Wczytywanie...",
+        zeroRecords: "Nie znaleziono pasujących pozycji",
+        emptyTable: "Brak danych",
+        paginate: {
+          first: "Pierwsza",
+          previous: "Poprzednia",
+          next: "Następna",
+          last: "Ostatnia",
+        },
+        aria: {
+          orderable: ": aktywuj, by posortować kolumnę",
+          orderableRemove: ": aktywuj, by usunąć sortowanie",
+          orderableReverse: ": aktywuj, by odwrócić sortowanie",
+          paginate: {
+            first: "Pierwsza",
+            previous: "Poprzednia",
+            next: "Następna",
+            last: "Ostatnia",
+          },
+        },
+      },
     },
-    fn_daterange_widget_initialize: function(tableEl, data, api, extraFilterState) {
-        var wrapper = tableEl.closest('.dt-container');
-        var toolbar = wrapper.querySelector('.toolbar');
-        toolbar.innerHTML =
-            '<div class="daterange" style="float: left; margin-right: 6px;">' +
-                '<span class="from"><label for="daterange_from">Czas od</label>: ' +
-                    '<input type="date" id="daterange_from" class="date_from datepicker"></span>' +
-                '<span class="to"><label for="daterange_to">&nbsp do</label>: ' +
-                    '<input type="date" id="daterange_to" class="date_to datepicker"></span>' +
-            '</div>';
-        toolbar.addEventListener('change', function(event) {
-            if (!event.target.matches('.date_from, .date_to')) return;
-            // Annotate table with values retrieved from date widgets
-            extraFilterState.date_from = wrapper.querySelector('.date_from').value;
-            extraFilterState.date_to = wrapper.querySelector('.date_to').value;
-            // Redraw table
-            api.draw();
-        });
-    }
+    {
+      // extra_data
+      deadline_yes: function () {
+        return document.querySelector("input[name='check_deadline_yes']")
+          .checked
+          ? 1
+          : 0;
+      },
+      deadline_no: function () {
+        return document.querySelector("input[name='check_deadline_no']").checked
+          ? 1
+          : 0;
+      },
+      completed_yes: function () {
+        return document.querySelector("input[name='check_completed_yes']")
+          .checked
+          ? 1
+          : 0;
+      },
+      completed_no: function () {
+        return document.querySelector("input[name='check_completed_no']")
+          .checked
+          ? 1
+          : 0;
+      },
+      public_yes: function () {
+        return document.querySelector("input[name='check_public_yes']").checked
+          ? 1
+          : 0;
+      },
+      public_no: function () {
+        return document.querySelector("input[name='check_public_no']").checked
+          ? 1
+          : 0;
+      },
+      courtsession_yes: function () {
+        return document.querySelector("input[name='check_courtsession_yes']")
+          .checked
+          ? 1
+          : 0;
+      },
+      courtsession_no: function () {
+        return document.querySelector("input[name='check_courtsession_no']")
+          .checked
+          ? 1
+          : 0;
+      },
+      // involved_staff_filter: function() { return document.querySelector("select[name='involved_staff_select']").value; },
+    },
+  );
+  const filtersContainer = document.querySelector(".filters");
+  if (filtersContainer) {
+    filtersContainer.addEventListener("change", function () {
+      AjaxDatatableViewUtils.redraw_table(table1);
+    });
+  }
 });
 
-document.addEventListener('DOMContentLoaded', function () {
-    const table1 = document.getElementById("datatable_events");
-    if (!table1) return;
-    const tableWrapper = document.getElementById("tableWrapper");
-    const tableTop = tableWrapper.getBoundingClientRect().top;
-    const viewportHeight = window.innerHeight;
-    const maxHeight = viewportHeight - tableTop;
-    tableWrapper.style.maxHeight = maxHeight + 'px';
-    // Subscribe "initComplete" event
-    table1.addEventListener('initComplete', function () {
-        // Code to resize input fields
-        const filterRowCells = tableWrapper.querySelectorAll("tr.datatable-column-filter-row th");
-        filterRowCells.forEach(function (th) {
-            th.style.padding = "0";
-            const input = th.querySelector("input[type=text]");
-            if (input) {
-                input.style.width = "100%";
-                input.style.boxSizing = "border-box";
-            }
-            // The library renders filter controls without an accessible name.
-            const control = th.querySelector("input[type=text], select");
-            if (control) {
-                const header = th.closest("thead").rows[0].cells[th.cellIndex];
-                control.setAttribute("aria-label", header.textContent.trim());
-            }
-        });
-    });
-    // Initialize table
-    AjaxDatatableViewUtils.initialize_table(
-        table1,
-        "/wydarzenia/events_table_ajax_data/",
-        {
-            // extra_options (example)
-            processing: true,
-            serverSide: true,
-            autoWidth: true,
-            full_row_select: false,
-            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
-            // Group the length selector/search box, and the info/paging controls,
-            // each into one row (default dom string stacks every feature separately).
-            dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
-            scrollX: true,
-            // searching: false,
-            scrollY: maxHeight - 250,
-            // TODO make fixedColumns working !!!
-            // fixedColumns: {
-            //     left: 1,
-            //     // right: 1
-            // }
-            "language": {
-                "processing":     "Przetwarzanie...",
-                "search":         "Szukaj:",
-                "lengthMenu":     "Pokaż _MENU_ pozycji",
-                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                "infoPostFix":    "",
-                "loadingRecords": "Wczytywanie...",
-                "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                "emptyTable":     "Brak danych",
-                "paginate": {
-                    "first":      "Pierwsza",
-                    "previous":   "Poprzednia",
-                    "next":       "Następna",
-                    "last":       "Ostatnia"
-                },
-                "aria": {
-                    "orderable": ": aktywuj, by posortować kolumnę",
-                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
-                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
-                    "paginate": {
-                        "first": "Pierwsza",
-                        "previous": "Poprzednia",
-                        "next": "Następna",
-                        "last": "Ostatnia"
-                    }
-                }
-            },
-        }, {
-            // extra_data
-            deadline_yes: function() { return document.querySelector("input[name='check_deadline_yes']").checked ? 1 : 0; },
-            deadline_no: function() { return document.querySelector("input[name='check_deadline_no']").checked ? 1 : 0; },
-            completed_yes: function() { return document.querySelector("input[name='check_completed_yes']").checked ? 1 : 0; },
-            completed_no: function() { return document.querySelector("input[name='check_completed_no']").checked ? 1 : 0; },
-            public_yes: function() { return document.querySelector("input[name='check_public_yes']").checked ? 1 : 0; },
-            public_no: function() { return document.querySelector("input[name='check_public_no']").checked ? 1 : 0; },
-            courtsession_yes: function() { return document.querySelector("input[name='check_courtsession_yes']").checked ? 1 : 0; },
-            courtsession_no: function() { return document.querySelector("input[name='check_courtsession_no']").checked ? 1 : 0; },
-            // involved_staff_filter: function() { return document.querySelector("select[name='involved_staff_select']").value; },
-        },
+document.addEventListener("DOMContentLoaded", function () {
+  const table1 = document.getElementById("datatable_users");
+  if (!table1) return;
+  const tableWrapper = document.getElementById("tableWrapper");
+  const tableTop = tableWrapper.getBoundingClientRect().top;
+  const viewportHeight = window.innerHeight;
+  const maxHeight = viewportHeight - tableTop;
+  tableWrapper.style.maxHeight = maxHeight + "px";
+
+  // Subscribe "initComplete" event
+  table1.addEventListener("initComplete", function () {
+    // Code to resize input fields
+    const filterRowCells = tableWrapper.querySelectorAll(
+      "tr.datatable-column-filter-row th",
     );
-    const filtersContainer = document.querySelector('.filters');
-    if (filtersContainer) {
-        filtersContainer.addEventListener('change', function () {
-            AjaxDatatableViewUtils.redraw_table(table1);
-        });
-    }
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    const table1 = document.getElementById("datatable_users");
-    if (!table1) return;
-    const tableWrapper = document.getElementById("tableWrapper");
-    const tableTop = tableWrapper.getBoundingClientRect().top;
-    const viewportHeight = window.innerHeight;
-    const maxHeight = viewportHeight - tableTop;
-    tableWrapper.style.maxHeight = maxHeight + 'px';
-
-    // Subscribe "initComplete" event
-    table1.addEventListener('initComplete', function () {
-        // Code to resize input fields
-        const filterRowCells = tableWrapper.querySelectorAll("tr.datatable-column-filter-row th");
-        filterRowCells.forEach(function (th) {
-            th.style.padding = "0";
-            const input = th.querySelector("input[type=text]");
-            if (input) {
-                input.style.width = "100%";
-                input.style.boxSizing = "border-box";
-            }
-            // The library renders filter controls without an accessible name.
-            const control = th.querySelector("input[type=text], select");
-            if (control) {
-                const header = th.closest("thead").rows[0].cells[th.cellIndex];
-                control.setAttribute("aria-label", header.textContent.trim());
-            }
-        });
+    filterRowCells.forEach(function (th) {
+      th.style.padding = "0";
+      const input = th.querySelector("input[type=text]");
+      if (input) {
+        input.style.width = "100%";
+        input.style.boxSizing = "border-box";
+      }
+      // The library renders filter controls without an accessible name.
+      const control = th.querySelector("input[type=text], select");
+      if (control) {
+        const header = th.closest("thead").rows[0].cells[th.cellIndex];
+        control.setAttribute("aria-label", header.textContent.trim());
+      }
     });
+  });
 
-    // Initialize table
-    AjaxDatatableViewUtils.initialize_table(
-        table1,
-        "/uzytkownik/users_table_ajax_data/",
-        {
-            processing: true,
-            serverSide: true,
-            autoWidth: true,
-            full_row_select: false,
-            a11y_mode: document.documentElement.dataset.uiMode === 'wcag',
-            // Group the length selector/search box, and the info/paging controls,
-            // each into one row (default dom string stacks every feature separately).
-            dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
-            scrollX: true,
-            scrollY: maxHeight - 250,
-            "language": {
-                "processing":     "Przetwarzanie...",
-                "search":         "Szukaj:",
-                "lengthMenu":     "Pokaż _MENU_ pozycji",
-                "info":           "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
-                "infoEmpty":      "Pozycji 0 z 0 dostępnych",
-                "infoFiltered":   "(filtrowanie spośród _MAX_ dostępnych pozycji)",
-                "infoPostFix":    "",
-                "loadingRecords": "Wczytywanie...",
-                "zeroRecords":    "Nie znaleziono pasujących pozycji",
-                "emptyTable":     "Brak danych",
-                "paginate": {
-                    "first":      "Pierwsza",
-                    "previous":   "Poprzednia",
-                    "next":       "Następna",
-                    "last":       "Ostatnia"
-                },
-                "aria": {
-                    "orderable": ": aktywuj, by posortować kolumnę",
-                    "orderableRemove": ": aktywuj, by usunąć sortowanie",
-                    "orderableReverse": ": aktywuj, by odwrócić sortowanie",
-                    "paginate": {
-                        "first": "Pierwsza",
-                        "previous": "Poprzednia",
-                        "next": "Następna",
-                        "last": "Ostatnia"
-                    }
-                }
-            },
-        }, {
-            // extra_data
+  // Initialize table
+  AjaxDatatableViewUtils.initialize_table(
+    table1,
+    "/uzytkownik/users_table_ajax_data/",
+    {
+      processing: true,
+      serverSide: true,
+      autoWidth: true,
+      full_row_select: false,
+      a11y_mode: document.documentElement.dataset.uiMode === "wcag",
+      // Group the length selector/search box, and the info/paging controls,
+      // each into one row (default dom string stacks every feature separately).
+      dom: '<"toolbar"><"dt-top-row"lf>rt<"dt-bottom-row"ip>',
+      scrollX: true,
+      scrollY: maxHeight - 250,
+      language: {
+        processing: "Przetwarzanie...",
+        search: "Szukaj:",
+        lengthMenu: "Pokaż _MENU_ pozycji",
+        info: "Pozycje od _START_ do _END_ z _TOTAL_ łącznie",
+        infoEmpty: "Pozycji 0 z 0 dostępnych",
+        infoFiltered: "(filtrowanie spośród _MAX_ dostępnych pozycji)",
+        infoPostFix: "",
+        loadingRecords: "Wczytywanie...",
+        zeroRecords: "Nie znaleziono pasujących pozycji",
+        emptyTable: "Brak danych",
+        paginate: {
+          first: "Pierwsza",
+          previous: "Poprzednia",
+          next: "Następna",
+          last: "Ostatnia",
         },
-    );
+        aria: {
+          orderable: ": aktywuj, by posortować kolumnę",
+          orderableRemove: ": aktywuj, by usunąć sortowanie",
+          orderableReverse: ": aktywuj, by odwrócić sortowanie",
+          paginate: {
+            first: "Pierwsza",
+            previous: "Poprzednia",
+            next: "Następna",
+            last: "Ostatnia",
+          },
+        },
+      },
+    },
+    {
+      // extra_data
+    },
+  );
 });
 
 (function () {
-    "use strict";
+  "use strict";
 
-    function cellValue(cell) {
-        var text = cell.textContent.trim();
-        var numeric = parseFloat(text.replace(/\s/g, "").replace(",", "."));
-        return isNaN(numeric) ? text.toLowerCase() : numeric;
-    }
+  function cellValue(cell) {
+    var text = cell.textContent.trim();
+    var numeric = parseFloat(text.replace(/\s/g, "").replace(",", "."));
+    return isNaN(numeric) ? text.toLowerCase() : numeric;
+  }
 
-    function sortTable(table, columnIndex, ascending) {
-        var tbody = table.tBodies[0];
-        var rows = Array.prototype.slice.call(tbody.rows);
-        var pinned = rows.filter(function (row) {
-            return row.dataset.pinned === "1";
-        });
-        var sortable = rows.filter(function (row) {
-            return row.dataset.pinned !== "1";
-        });
-
-        sortable.sort(function (rowA, rowB) {
-            var a = cellValue(rowA.cells[columnIndex]);
-            var b = cellValue(rowB.cells[columnIndex]);
-            if (a < b) {
-                return ascending ? -1 : 1;
-            }
-            if (a > b) {
-                return ascending ? 1 : -1;
-            }
-            return 0;
-        });
-
-        sortable.concat(pinned).forEach(function (row) {
-            tbody.appendChild(row);
-        });
-    }
-
-    document.addEventListener("click", function (event) {
-        var th = event.target.closest(".sortable-table th[data-sort-key]");
-        if (!th) {
-            return;
-        }
-        var table = th.closest("table");
-        var headerRow = th.parentElement;
-        var columnIndex = Array.prototype.indexOf.call(headerRow.children, th);
-        var ascending = th.getAttribute("aria-sort") !== "ascending";
-
-        Array.prototype.forEach.call(headerRow.children, function (header) {
-            header.removeAttribute("aria-sort");
-        });
-        th.setAttribute("aria-sort", ascending ? "ascending" : "descending");
-
-        sortTable(table, columnIndex, ascending);
+  function sortTable(table, columnIndex, ascending) {
+    var tbody = table.tBodies[0];
+    var rows = Array.prototype.slice.call(tbody.rows);
+    var pinned = rows.filter(function (row) {
+      return row.dataset.pinned === "1";
+    });
+    var sortable = rows.filter(function (row) {
+      return row.dataset.pinned !== "1";
     });
 
-    function yearSelectValue(id) {
-        var el = document.getElementById(id);
-        return el ? el.value : null;
-    }
-
-    function startExport(baseUrl, year) {
-        window.location.href = baseUrl + "?year=" + encodeURIComponent(year);
-    }
-
-    var pendingExportUrl = null;
-
-    function openYearMismatchModal(exportUrl, casesYear, tagsYear) {
-        pendingExportUrl = exportUrl;
-
-        var casesRadio = document.getElementById("dashboard-export-year-cases");
-        var tagsRadio = document.getElementById("dashboard-export-year-tags");
-        casesRadio.value = casesYear;
-        tagsRadio.value = tagsYear;
-        casesRadio.checked = true;
-        document.getElementById("dashboard-export-year-cases-value").textContent = casesYear;
-        document.getElementById("dashboard-export-year-tags-value").textContent = tagsYear;
-
-        window.bootstrap.Modal.getOrCreateInstance(document.getElementById("dashboard-export-year-modal")).show();
-    }
-
-    document.addEventListener("click", function (event) {
-        var exportBtn = event.target.closest("#dashboard-export-btn");
-        if (exportBtn) {
-            var exportUrl = exportBtn.dataset.exportUrl;
-            var casesYear = yearSelectValue("cases-year");
-            var tagsYear = yearSelectValue("advices-year");
-
-            if (casesYear && tagsYear && casesYear !== tagsYear) {
-                openYearMismatchModal(exportUrl, casesYear, tagsYear);
-            } else {
-                startExport(exportUrl, casesYear || tagsYear || exportBtn.dataset.currentYear);
-            }
-            return;
-        }
-
-        var confirmBtn = event.target.closest("#dashboard-export-year-confirm");
-        if (confirmBtn && pendingExportUrl) {
-            var checked = document.querySelector(
-                'input[name="dashboard-export-year-choice"]:checked'
-            );
-            window.bootstrap.Modal.getOrCreateInstance(document.getElementById("dashboard-export-year-modal")).hide();
-            if (checked) {
-                startExport(pendingExportUrl, checked.value);
-            }
-        }
+    sortable.sort(function (rowA, rowB) {
+      var a = cellValue(rowA.cells[columnIndex]);
+      var b = cellValue(rowB.cells[columnIndex]);
+      if (a < b) {
+        return ascending ? -1 : 1;
+      }
+      if (a > b) {
+        return ascending ? 1 : -1;
+      }
+      return 0;
     });
+
+    sortable.concat(pinned).forEach(function (row) {
+      tbody.appendChild(row);
+    });
+  }
+
+  document.addEventListener("click", function (event) {
+    var th = event.target.closest(".sortable-table th[data-sort-key]");
+    if (!th) {
+      return;
+    }
+    var table = th.closest("table");
+    var headerRow = th.parentElement;
+    var columnIndex = Array.prototype.indexOf.call(headerRow.children, th);
+    var ascending = th.getAttribute("aria-sort") !== "ascending";
+
+    Array.prototype.forEach.call(headerRow.children, function (header) {
+      header.removeAttribute("aria-sort");
+    });
+    th.setAttribute("aria-sort", ascending ? "ascending" : "descending");
+
+    sortTable(table, columnIndex, ascending);
+  });
+
+  function yearSelectValue(id) {
+    var el = document.getElementById(id);
+    return el ? el.value : null;
+  }
+
+  function startExport(baseUrl, year) {
+    window.location.href = baseUrl + "?year=" + encodeURIComponent(year);
+  }
+
+  var pendingExportUrl = null;
+
+  function openYearMismatchModal(exportUrl, casesYear, tagsYear) {
+    pendingExportUrl = exportUrl;
+
+    var casesRadio = document.getElementById("dashboard-export-year-cases");
+    var tagsRadio = document.getElementById("dashboard-export-year-tags");
+    casesRadio.value = casesYear;
+    tagsRadio.value = tagsYear;
+    casesRadio.checked = true;
+    document.getElementById("dashboard-export-year-cases-value").textContent =
+      casesYear;
+    document.getElementById("dashboard-export-year-tags-value").textContent =
+      tagsYear;
+
+    window.bootstrap.Modal.getOrCreateInstance(
+      document.getElementById("dashboard-export-year-modal"),
+    ).show();
+  }
+
+  document.addEventListener("click", function (event) {
+    var exportBtn = event.target.closest("#dashboard-export-btn");
+    if (exportBtn) {
+      var exportUrl = exportBtn.dataset.exportUrl;
+      var casesYear = yearSelectValue("cases-year");
+      var tagsYear = yearSelectValue("advices-year");
+
+      if (casesYear && tagsYear && casesYear !== tagsYear) {
+        openYearMismatchModal(exportUrl, casesYear, tagsYear);
+      } else {
+        startExport(
+          exportUrl,
+          casesYear || tagsYear || exportBtn.dataset.currentYear,
+        );
+      }
+      return;
+    }
+
+    var confirmBtn = event.target.closest("#dashboard-export-year-confirm");
+    if (confirmBtn && pendingExportUrl) {
+      var checked = document.querySelector(
+        'input[name="dashboard-export-year-choice"]:checked',
+      );
+      window.bootstrap.Modal.getOrCreateInstance(
+        document.getElementById("dashboard-export-year-modal"),
+      ).hide();
+      if (checked) {
+        startExport(pendingExportUrl, checked.value);
+      }
+    }
+  });
 })();

@@ -15,7 +15,7 @@ describe("events", () => {
 
     cy.closeDonatePopup();
     cy.intercept({ pathname: "/wydarzenia/events_table_ajax_data/" }).as(
-      "dtAjax"
+      "dtAjax",
     );
     cy.visit("/wydarzenia/table/");
 

@@ -48,7 +48,9 @@ function listFilesRecursive(dir) {
 }
 
 async function main() {
-  const files = listFilesRecursive(BASELINE_HTML).filter((f) => f.endsWith("server.html") === false);
+  const files = listFilesRecursive(BASELINE_HTML).filter(
+    (f) => f.endsWith("server.html") === false,
+  );
   // server.html is the raw pre-JS response -- validating it too would just
   // double-count every issue also present in postload.html (JS doesn't
   // remove markup problems, only add to the DOM). postload/interaction
@@ -68,10 +70,14 @@ async function main() {
     const outKey = rel.replace(/[\\/]/g, "__").replace(/\.html$/, "");
     fs.writeFileSync(
       path.join(OUT_DIR, `${outKey}.json`),
-      JSON.stringify(messages, null, 2)
+      JSON.stringify(messages, null, 2),
     );
 
-    report.push({ file: rel, errorCount: result.errorCount, warningCount: result.warningCount });
+    report.push({
+      file: rel,
+      errorCount: result.errorCount,
+      warningCount: result.warningCount,
+    });
     for (const m of messages) {
       ruleCounts[m.ruleId] = (ruleCounts[m.ruleId] || 0) + 1;
     }
@@ -79,11 +85,15 @@ async function main() {
 
   fs.writeFileSync(
     path.join(ROOT, "audit", "evidence", "html-validate-report.json"),
-    JSON.stringify(report, null, 2)
+    JSON.stringify(report, null, 2),
   );
 
-  console.log(`validate_html: ${files.length} files checked, ${report.length} with issues.`);
-  for (const [rule, count] of Object.entries(ruleCounts).sort((a, b) => b[1] - a[1])) {
+  console.log(
+    `validate_html: ${files.length} files checked, ${report.length} with issues.`,
+  );
+  for (const [rule, count] of Object.entries(ruleCounts).sort(
+    (a, b) => b[1] - a[1],
+  )) {
     console.log(`  ${rule}: ${count}`);
   }
 }

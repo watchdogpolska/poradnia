@@ -1,41 +1,41 @@
-.cards{
+.cards {
 	position: relative;
 	padding: 2em;
 	margin: 1em;
-	background: #4D4D4D;
+	background: #4d4d4d;
 	color: white;
-	&.cards--right-fold:after, 
-	&.cards--left-fold:after{
-		content: '';
+	&.cards--right-fold:after,
+	&.cards--left-fold:after {
+		content: "";
 		position: absolute;
-		top: 0; 
+		top: 0;
 		width: 0;
 		height: 0;
 		display: block;
 		border: 1em solid white;
 		border-bottom-color: #808080;
 	}
-	&.cards--right-fold:after{
+	&.cards--right-fold:after {
 		right: 0;
 		border-left-color: #808080;
-		&.cards--brand{
-			border-bottom-color: #7A1A1A;
-			border-left-color: #7A1A1A;
+		&.cards--brand {
+			border-bottom-color: #7a1a1a;
+			border-left-color: #7a1a1a;
 		}
 	}
-	&.cards--left-fold:after{
+	&.cards--left-fold:after {
 		left: 0;
 		border-right-color: #808080;
-		&.cards--brand{
-			border-bottom-color: #7A1A1A;
-			border-right-color: #7A1A1A;
+		&.cards--brand {
+			border-bottom-color: #7a1a1a;
+			border-right-color: #7a1a1a;
 		}
 	}
-	&.cards--light{
+	&.cards--light {
 		color: black;
-		background: #F0F0F0;
+		background: #f0f0f0;
 	}
-	&.cards--brand{
-		background: #D82727;
+	&.cards--brand {
+		background: #d82727;
 	}
 }
