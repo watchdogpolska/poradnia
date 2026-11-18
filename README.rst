@@ -5,8 +5,8 @@ Poradnia
    :target: https://github.com/watchdogpolska/poradnia/actions/workflows/codeql.yml
    :alt: CodeQL
 
-.. image:: https://codecov.io/gh/PiotrIw/poradnia/branch/master/graph/badge.svg
-   :target: https://codecov.io/gh/PiotrIw/poradnia
+.. image:: https://codecov.io/gh/watchdogpolska/poradnia/branch/dev/graph/badge.svg
+   :target: https://codecov.io/gh/watchdogpolska/poradnia
    :alt: Codecov
 
 .. image:: https://img.shields.io/github/issues/watchdogpolska/poradnia.svg
