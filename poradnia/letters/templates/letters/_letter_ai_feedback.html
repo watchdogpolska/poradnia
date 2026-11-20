@@ -1,5 +1,5 @@
 {% load i18n %}
-{% with search_request=object.get_ai_search_request %}
+{% with search_request=object.get_ai_request %}
 {% if search_request %}
     {% if not search_request.accepted_at and not search_request.rejected_at %}
     <button type="button"
