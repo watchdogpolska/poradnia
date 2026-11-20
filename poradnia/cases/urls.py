@@ -28,6 +28,11 @@ urlpatterns = [
         name="classify_and_search_articles",
     ),
     path(
+        "sprawa-<int:pk>/podobne-sprawy/",
+        views.CaseFindSimilarCasesView.as_view(),
+        name="find_similar_cases",
+    ),
+    path(
         "sprawa-<int:pk>/taguj-sprawa/",
         views.CaseRequestAiTagsView.as_view(),
         name="request_ai_tags",
