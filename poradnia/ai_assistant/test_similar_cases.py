@@ -4,6 +4,7 @@ from io import StringIO
 from unittest.mock import MagicMock, call, patch
 
 import requests as requests_lib
+from django.core.exceptions import ImproperlyConfigured
 from django.core.management import CommandError, call_command
 from django.test import RequestFactory, TestCase
 from django.test.utils import override_settings
@@ -24,7 +25,7 @@ from poradnia.ai_assistant.tasks import (
     sync_similar_cases_index_task,
 )
 from poradnia.cases.factories import CaseFactory
-from poradnia.cases.models import Case, DeleteCaseProxy
+from poradnia.cases.models import Case, DeleteCaseProxy, _normalize_whitespace
 from poradnia.letters.factories import AttachmentFactory, LetterFactory
 from poradnia.letters.models import Letter
 from poradnia.users.factories import StaffFactory, UserFactory
@@ -185,6 +186,10 @@ class GetSimilarCasesTextTestCase(TestCase):
             self.case.get_similar_cases_text(max_chars=1000),
             "one two three\n\n\nfour",
         )
+
+    def test_normalize_whitespace_of_empty_text(self):
+        self.assertEqual(_normalize_whitespace(None), "")
+        self.assertEqual(_normalize_whitespace(""), "")
 
     @override_settings(SIMILAR_CASES_TEXT_MAX_CHARS=30)
     def test_max_chars_defaults_to_setting(self):
@@ -381,6 +386,28 @@ class SyncCaseSimilarIndexTaskTestCase(TestCase):
         )
         result = sync_case_similar_index_task(self.case.pk)
         self.assertEqual(result["action"], "delete")
+
+    @patch(HTTP_POST)
+    def test_delete_error_records_error_and_keeps_state(self, mock_post):
+        SimilarCasesIndexState.objects.create(
+            case=self.case, status="indexed", points=1
+        )
+        Case.objects.filter(pk=self.case.pk).update(status=Case.STATUS.assigned)
+        mock_post.side_effect = requests_lib.ConnectionError("n8n down")
+
+        with self.assertRaises(requests_lib.ConnectionError):
+            sync_case_similar_index_task(self.case.pk)
+
+        state = SimilarCasesIndexState.objects.get(case=self.case)
+        self.assertEqual((state.status, state.attempts), ("error", 1))
+        self.assertIn("n8n down", state.error)
+
+    @override_settings(N8N_SIMILAR_CASES_INDEX_WEBHOOK="")
+    @patch(HTTP_POST)
+    def test_missing_index_webhook_raises_improperly_configured(self, mock_post):
+        with self.assertRaises(ImproperlyConfigured):
+            similar_cases.index_delete(self.case.pk)
+        mock_post.assert_not_called()
 
     @patch(HTTP_POST)
     def test_http_error_records_error_and_raises(self, mock_post):
@@ -1216,6 +1243,17 @@ class SimilarCasesIndexStateAdminTestCase(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, state.case.get_absolute_url())
 
+    def test_change_view_renders_read_only(self):
+        state = SimilarCasesIndexState.objects.create(
+            case=make_case(), status="error", error="boom"
+        )
+        response = self.client.get(
+            reverse("admin:ai_assistant_similarcasesindexstate_change", args=[state.pk])
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "boom")
+        self.assertNotContains(response, 'name="error"')
+
     @patch("poradnia.ai_assistant.admin.sync_case_similar_index_task.delay")
     def test_resync_selected_enqueues_each_row(self, mock_delay):
         first = SimilarCasesIndexState.objects.create(case=make_case(), status="error")
@@ -1252,3 +1290,18 @@ class SimilarCasesIndexStateAdminTestCase(TestCase):
         )
         self.assertEqual(change.status_code, 200)
         self.assertContains(change, "judge_fallback")
+
+    def test_request_changelist_links_letter_and_handles_missing_case(self):
+        letter = LetterFactory(case=make_case())
+        N8nSimilarCasesRequest.objects.create(
+            request_id="sim-letter",
+            environment="TEST",
+            question="q",
+            case=None,
+            letter=letter,
+        )
+        response = self.client.get(
+            reverse("admin:ai_assistant_n8nsimilarcasesrequest_changelist")
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, letter.get_absolute_url())
