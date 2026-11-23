@@ -1,4 +1,4 @@
-from argparse import ArgumentTypeError
+from argparse import ArgumentTypeError, BooleanOptionalAction
 from pprint import pformat
 
 from django.core.management import BaseCommand, CommandError
@@ -41,13 +41,21 @@ class Command(BaseCommand):
                 " (default: SIMILAR_CASES_SYNC_PAUSE_SECONDS)."
             ),
         )
-        parser.add_argument(
+        # One of these is required, so an argument-less run can't sync the
+        # whole index by mistake.
+        selection = parser.add_mutually_exclusive_group(required=True)
+        selection.add_argument(
+            "--all",
+            action="store_true",
+            help="Sync every case selected by --mode (the only choice for reconcile).",
+        )
+        selection.add_argument(
             "--limit",
             type=int,
             default=None,
             help="Sync at most this many cases (not allowed with reconcile).",
         )
-        parser.add_argument(
+        selection.add_argument(
             "--case-ids",
             type=_id_list,
             default=None,
@@ -87,8 +95,12 @@ class Command(BaseCommand):
         )
         parser.add_argument(
             "--dry-run",
-            action="store_true",
-            help="Only report what would be synced; enqueue nothing.",
+            action=BooleanOptionalAction,
+            default=True,
+            help=(
+                "Only report what would be synced; enqueue nothing. On by"
+                " default, pass --no-dry-run to actually sync."
+            ),
         )
         parser.add_argument(
             "--sync",
@@ -98,11 +110,18 @@ class Command(BaseCommand):
 
     def handle(self, **options):
         if options["mode"] == "reconcile" and (
-            options["case_ids"] or options["scope_ids"] or options["limit"]
+            not options["all"] or options["scope_ids"]
         ):
             raise CommandError(
-                "--mode reconcile can't be combined with --case-ids, --scope-ids"
-                " or --limit: n8n deletes every indexed case missing from the list."
+                "--mode reconcile needs --all and can't be combined with"
+                " --scope-ids: n8n deletes every indexed case missing from the list."
+            )
+        if options["dry_run"]:
+            self.stdout.write(
+                self.style.WARNING(
+                    "DRY RUN: only counting, nothing will be synced."
+                    " Pass --no-dry-run to sync."
+                )
             )
         kwargs = {
             "mode": options["mode"],

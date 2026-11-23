@@ -676,14 +676,14 @@ class SyncSimilarCasesIndexTaskTestCase(TestCase):
 
         self.assertEqual(
             mock_sync.call_args_list,
-            [call(args=[first.pk], countdown=0), call(args=[second.pk], countdown=5)],
+            [call(args=[second.pk], countdown=0), call(args=[first.pk], countdown=5)],
         )
         self.assertEqual(result["enqueued"], 2)
 
     def test_initial_limit(self, mock_sync):
-        first, _ = make_case(), make_case()
+        _, last = make_case(), make_case()
         sync_similar_cases_index_task(mode="initial", limit=1)
-        self.assertEqual(self._enqueued(mock_sync), [first.pk])
+        self.assertEqual(self._enqueued(mock_sync), [last.pk])
 
     def test_initial_force_reembed_resets_state(self, mock_sync):
         fresh, indexed = make_case(), make_case()
@@ -691,7 +691,7 @@ class SyncSimilarCasesIndexTaskTestCase(TestCase):
 
         sync_similar_cases_index_task(mode="initial", force_reembed=True)
 
-        self.assertEqual(self._enqueued(mock_sync), [fresh.pk, indexed.pk])
+        self.assertEqual(self._enqueued(mock_sync), [indexed.pk, fresh.pk])
         self.assertFalse(SimilarCasesIndexState.objects.exists())
 
     @override_settings(SIMILAR_CASES_SYNC_PAUSE_SECONDS=7)
@@ -847,16 +847,17 @@ class SyncSimilarCasesIndexCommandTestCase(TestCase):
             f"{first.pk},{second.pk}",
             "--pause-seconds",
             "2",
+            "--no-dry-run",
             "--sync",
             stdout=StringIO(),
         )
         self.assertEqual(
             mock_sync.call_args_list,
-            [call(args=[first.pk], countdown=0), call(args=[second.pk], countdown=2)],
+            [call(args=[second.pk], countdown=0), call(args=[first.pk], countdown=2)],
         )
 
     @patch("poradnia.ai_assistant.tasks.sync_similar_cases_index_task.delay")
-    def test_default_enqueues_the_task(self, mock_delay):
+    def test_default_enqueues_a_dry_run(self, mock_delay):
         mock_delay.return_value.id = "task-123"
         out = StringIO()
         call_command("sync_similar_cases_index", "--limit", "5", stdout=out)
@@ -868,15 +869,39 @@ class SyncSimilarCasesIndexCommandTestCase(TestCase):
             scope_ids=None,
             force_check=False,
             force_reembed=False,
-            dry_run=False,
+            dry_run=True,
         )
+        self.assertTrue(out.getvalue().startswith("DRY RUN"))
         self.assertIn("task-123", out.getvalue())
+
+    @patch("poradnia.ai_assistant.tasks.sync_similar_cases_index_task.delay")
+    def test_no_dry_run_skips_the_notice(self, mock_delay):
+        mock_delay.return_value.id = "task-123"
+        out = StringIO()
+        call_command("sync_similar_cases_index", "--all", "--no-dry-run", stdout=out)
+        self.assertIs(mock_delay.call_args.kwargs["dry_run"], False)
+        self.assertIsNone(mock_delay.call_args.kwargs["limit"])
+        self.assertNotIn("DRY RUN", out.getvalue())
+
+    def test_selection_argument_is_required(self):
+        with self.assertRaises(CommandError):
+            call_command("sync_similar_cases_index", stdout=StringIO())
+
+    def test_selection_arguments_are_exclusive(self):
+        for args in (
+            ("--all", "--limit", "5"),
+            ("--all", "--case-ids", "1"),
+            ("--limit", "5", "--case-ids", "1"),
+        ):
+            with self.subTest(args=args), self.assertRaises(CommandError):
+                call_command("sync_similar_cases_index", *args, stdout=StringIO())
 
     @patch("poradnia.ai_assistant.tasks.sync_similar_cases_index_task.delay")
     def test_scope_ids_and_force_check_are_passed_on(self, mock_delay):
         mock_delay.return_value.id = "task-123"
         call_command(
             "sync_similar_cases_index",
+            "--all",
             "--scope-ids",
             "3,4",
             "--force-check",
@@ -885,12 +910,36 @@ class SyncSimilarCasesIndexCommandTestCase(TestCase):
         self.assertEqual(mock_delay.call_args.kwargs["scope_ids"], [3, 4])
         self.assertIs(mock_delay.call_args.kwargs["force_check"], True)
 
+    @patch("poradnia.ai_assistant.tasks.sync_similar_cases_index_task.delay")
+    def test_reconcile_with_all_enqueues(self, mock_delay):
+        mock_delay.return_value.id = "task-123"
+        call_command(
+            "sync_similar_cases_index",
+            "--mode",
+            "reconcile",
+            "--all",
+            stdout=StringIO(),
+        )
+        self.assertEqual(mock_delay.call_args.kwargs["mode"], "reconcile")
+
+    def test_reconcile_with_limit_is_refused(self):
+        with self.assertRaises(CommandError):
+            call_command(
+                "sync_similar_cases_index",
+                "--mode",
+                "reconcile",
+                "--limit",
+                "5",
+                stdout=StringIO(),
+            )
+
     def test_reconcile_with_scope_ids_is_refused(self):
         with self.assertRaises(CommandError):
             call_command(
                 "sync_similar_cases_index",
                 "--mode",
                 "reconcile",
+                "--all",
                 "--scope-ids",
                 "1",
                 stdout=StringIO(),

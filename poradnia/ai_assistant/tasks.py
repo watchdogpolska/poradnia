@@ -135,14 +135,15 @@ def delete_case_from_similar_index_task(self, case_pk):
 
 
 def _enqueue_case_syncs(case_ids, pause_seconds):
-    for i, case_pk in enumerate(case_ids):
+    for i, case_pk in enumerate(_highest_first(case_ids)):
         sync_case_similar_index_task.apply_async(
             args=[case_pk], countdown=i * pause_seconds
         )
 
 
-def _unique(ids):
-    return list(dict.fromkeys(ids))
+# Cases are selected (limit) and indexed from the highest case id down.
+def _highest_first(ids):
+    return sorted(set(ids), reverse=True)
 
 
 def _narrowed_cases(case_ids, scope_ids):
@@ -160,7 +161,7 @@ def _initial_case_ids(eligible, limit, force_reembed):
         if force_reembed
         else eligible.filter(similar_cases_index_state__isnull=True)
     )
-    return list(qs.order_by("pk").values_list("pk", flat=True)[:limit])
+    return list(qs.order_by("-pk").values_list("pk", flat=True)[:limit])
 
 
 def _incremental_case_ids(cases, eligible, limit, force_check):
@@ -168,8 +169,8 @@ def _incremental_case_ids(cases, eligible, limit, force_check):
         qs = cases.filter(
             Q(pk__in=eligible.values("pk")) | Q(similar_cases_index_state__isnull=False)
         )
-        to_sync = list(qs.order_by("pk").values_list("pk", flat=True))
-        return _unique(to_sync)[:limit], len(to_sync), 0
+        to_sync = list(qs.order_by("-pk").values_list("pk", flat=True))
+        return _highest_first(to_sync)[:limit], len(to_sync), 0
 
     synced_at = F("similar_cases_index_state__synced_at")
     stale = eligible.filter(
@@ -178,14 +179,14 @@ def _incremental_case_ids(cases, eligible, limit, force_check):
         | Q(advice__modified_on__gt=synced_at)
         | Q(similar_cases_index_state__status=SimilarCasesIndexState.STATUS_ERROR)
     )
-    to_sync = list(stale.order_by("pk").values_list("pk", flat=True))
+    to_sync = list(stale.order_by("-pk").values_list("pk", flat=True))
     to_delete = list(
         cases.filter(similar_cases_index_state__isnull=False)
         .exclude(pk__in=eligible.values("pk"))
-        .order_by("pk")
+        .order_by("-pk")
         .values_list("pk", flat=True)
     )
-    return _unique(to_sync + to_delete)[:limit], len(to_sync), len(to_delete)
+    return _highest_first(to_sync + to_delete)[:limit], len(to_sync), len(to_delete)
 
 
 def _reconcile(eligible, pause_seconds, dry_run):
