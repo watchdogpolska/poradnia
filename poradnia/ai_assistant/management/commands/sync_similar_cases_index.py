@@ -1,4 +1,5 @@
 from argparse import ArgumentTypeError
+from pprint import pformat
 
 from django.core.management import BaseCommand, CommandError
 
@@ -53,3 +54,4 @@ class Command(BaseCommand):
         else:
             task = sync_similar_cases_index_task.delay(**kwargs)
             self.stdout.write(f"Enqueued sync_similar_cases_index_task: {task.id}")
+        self.stdout.write(f"kwargs:\n{pformat(kwargs)}")
