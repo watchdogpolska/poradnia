@@ -3,7 +3,10 @@ from django.urls import reverse
 from django.utils import timezone
 from guardian.shortcuts import assign_perm
 
-from poradnia.ai_assistant.models import N8nArticlesSearchRequest
+from poradnia.ai_assistant.models import (
+    N8nArticlesSearchRequest,
+    N8nSimilarCasesRequest,
+)
 from poradnia.cases.factories import CaseFactory
 from poradnia.letters.factories import LetterFactory
 from poradnia.users.factories import StaffFactory
@@ -298,3 +301,62 @@ class LetterAiFeedbackTemplateTestCase(TestCase):
         letter = LetterFactory(case=self.case, genre="mail", status="done")
         response = self.client.get(self.case.get_absolute_url())
         self.assertContains(response, letter.render_admin_delete_link())
+
+
+class SimilarCasesLetterAiReviewTestCase(TestCase):
+    """Accept/reject works the same for a similar-cases assistant letter."""
+
+    def setUp(self):
+        self.user = StaffFactory(username="john", password="pass")
+        self.case = CaseFactory()
+        self.letter = LetterFactory(
+            case=self.case,
+            genre="ai_message_staff",
+            status="staff",
+            created_by_is_staff=True,
+        )
+        self.similar_request = N8nSimilarCasesRequest.objects.create(
+            request_id="sim-1",
+            environment="TEST",
+            question="q",
+            case=self.case,
+            letter=self.letter,
+        )
+        assign_perm("can_view", self.user, self.case)
+        assign_perm("cases.can_change_case", self.user, self.case)
+        self.client.login(username="john", password="pass")
+
+    def test_get_ai_request_returns_similar_cases_request(self):
+        self.assertEqual(self.letter.get_ai_request(), self.similar_request)
+        self.assertEqual(self.letter.get_ai_search_request(), self.similar_request)
+
+    def test_get_ai_request_prefers_articles_request_and_handles_none(self):
+        articles_letter = LetterFactory(case=self.case, genre="ai_message_staff")
+        articles_request = N8nArticlesSearchRequest.objects.create(
+            request_id="req-a", environment="TEST", question="q", letter=articles_letter
+        )
+        self.assertEqual(articles_letter.get_ai_request(), articles_request)
+        self.assertIsNone(LetterFactory(case=self.case).get_ai_request())
+
+    def test_accept(self):
+        url = reverse("letters:ai_search_accept", kwargs={"pk": self.letter.pk})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 200)
+        self.similar_request.refresh_from_db()
+        self.assertEqual(self.similar_request.accepted_by, self.user)
+        self.assertIsNotNone(self.similar_request.accepted_at)
+        self.assertContains(response, "ai-thumb-active")
+
+    def test_reject(self):
+        url = reverse("letters:ai_search_reject", kwargs={"pk": self.letter.pk})
+        response = self.client.post(url, {"rejection_reason": "nietrafione"})
+        self.assertEqual(response.status_code, 200)
+        self.similar_request.refresh_from_db()
+        self.assertEqual(self.similar_request.rejected_by, self.user)
+        self.assertEqual(self.similar_request.rejection_reason, "nietrafione")
+
+    def test_case_detail_shows_feedback_buttons(self):
+        response = self.client.get(self.case.get_absolute_url())
+        self.assertContains(
+            response, reverse("letters:ai_search_accept", kwargs={"pk": self.letter.pk})
+        )

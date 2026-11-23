@@ -101,6 +101,75 @@ CATALOG = [
     ),
     MessageCatalogEntry(
         group="Sprawy",
+        key="case_similar_cases_no_institution_kind",
+        title="Podobne sprawy: brak rodzaju instytucji",
+        trigger=(
+            "CaseFindSimilarCasesView.post, gdy sprawa nie ma rodzaju "
+            "instytucji (ani w tagach, ani w sugestii AI) lub jest on "
+            "nieokreślony (cases/views/cases.py)."
+        ),
+        level="warning",
+        msgid="Tag the case first – the institution kind is missing.",
+    ),
+    MessageCatalogEntry(
+        group="Sprawy",
+        key="case_similar_cases_no_scope",
+        title="Podobne sprawy: brak zakresu",
+        trigger=(
+            "CaseFindSimilarCasesView.post, gdy sprawa nie ma zakresu "
+            "(ani w tagach, ani w sugestii AI) (cases/views/cases.py)."
+        ),
+        level="warning",
+        msgid="Tag the case first – the scope is missing.",
+    ),
+    MessageCatalogEntry(
+        group="Sprawy",
+        key="case_similar_cases_out_of_scope",
+        title="Podobne sprawy: sprawa poza zakresem",
+        trigger=(
+            "CaseFindSimilarCasesView.post, gdy zakres sprawy jest oznaczony "
+            "jako poza zakresem poradnictwa (cases/views/cases.py)."
+        ),
+        level="warning",
+        msgid="The case is out of scope – there are no similar cases to compare.",
+    ),
+    MessageCatalogEntry(
+        group="Sprawy",
+        key="case_similar_cases_no_client_text",
+        title="Podobne sprawy: brak wiadomości od klienta",
+        trigger=(
+            "CaseFindSimilarCasesView.post, gdy w sprawie nie ma tekstu "
+            "napisanego przez klienta (cases/views/cases.py)."
+        ),
+        level="warning",
+        msgid="There are no messages from the client – nothing to compare.",
+    ),
+    MessageCatalogEntry(
+        group="Sprawy",
+        key="case_similar_cases_started",
+        title="Rozpoczęto wyszukiwanie podobnych zamkniętych spraw",
+        trigger="CaseFindSimilarCasesView.post (cases/views/cases.py).",
+        level="success",
+        msgid='Similar closed cases search started for "%(object)s".',
+        render=lambda t: t % {"object": _CASE},
+    ),
+    MessageCatalogEntry(
+        group="Sprawy",
+        key="case_similar_cases_failed",
+        title="Nie udało się wyszukać podobnych zamkniętych spraw",
+        trigger=(
+            "CaseFindSimilarCasesView.post, gdy find_similar_cases() "
+            "nie wyśle zapytania do n8n."
+        ),
+        level="error",
+        msgid=(
+            'Similar closed cases search request failed for "%(object)s".'
+            " Please try again later."
+        ),
+        render=lambda t: t % {"object": _CASE},
+    ),
+    MessageCatalogEntry(
+        group="Sprawy",
         key="case_ai_tagging_started",
         title="Rozpoczęto tagowanie AI",
         trigger="CaseRequestAiTagsView.post (cases/views/cases.py).",
@@ -420,5 +489,18 @@ CATALOG = [
         ),
         level="info",
         msgid="No users to delete.",
+    ),
+    MessageCatalogEntry(
+        group="Panel administracyjny",
+        key="admin_similar_cases_resync",
+        title="Zlecono ponowną synchronizację indeksu podobnych spraw",
+        trigger=(
+            "SimilarCasesIndexStateAdmin.resync_selected, akcja listy stanów "
+            "indeksu podobnych spraw (ai_assistant/admin.py)."
+        ),
+        level="info",
+        msgid="Enqueued re-sync of %(count)d case(s).",
+        render=lambda t: t % {"count": 3},
+        note="message_user() bez podanego poziomu domyślnie używa poziomu INFO.",
     ),
 ]
