@@ -2,6 +2,7 @@ from collections import OrderedDict
 
 from ajax_datatable import AjaxDatatableView
 from dal import autocomplete
+from django.conf import settings
 from django.contrib import messages
 from django.core.exceptions import PermissionDenied
 from django.db.models import Prefetch, Q
@@ -130,6 +131,7 @@ class CaseDetailView(SingleObjectPermissionMixin, SelectRelatedMixin, DetailView
             [group.group_help_text for group in PermissionGroup.objects.all()]
         )
         context["next"], context["previous"] = self.get_next_and_prev()
+        context["similar_cases_enabled"] = bool(settings.N8N_SIMILAR_CASES_WEBHOOK)
         return context
 
 
@@ -377,6 +379,48 @@ class CaseSearchArticlesView(SingleObjectPermissionMixin, DetailView):
                 request,
                 _(
                     'Article search request failed for "%(object)s".'
+                    " Please try again later."
+                )
+                % {"object": self.object},
+            )
+        return redirect(self.object)
+
+
+class CaseFindSimilarCasesView(SingleObjectPermissionMixin, DetailView):
+    model = Case
+    permission_required = ["cases.can_change_case"]
+    http_method_names = ["post"]
+
+    def post(self, request, *args, **kwargs):
+        ok, code = self.object.find_similar_cases(requested_by=request.user)
+        if code == "no_institution_kind":
+            messages.warning(
+                request,
+                _("Tag the case first – the institution kind is missing."),
+            )
+        elif code == "no_scope":
+            messages.warning(request, _("Tag the case first – the scope is missing."))
+        elif code == "out_of_scope":
+            messages.warning(
+                request,
+                _("The case is out of scope – there are no similar cases to compare."),
+            )
+        elif code == "no_client_text":
+            messages.warning(
+                request,
+                _("There are no messages from the client – nothing to compare."),
+            )
+        elif ok:
+            messages.success(
+                request,
+                _('Similar closed cases search started for "%(object)s".')
+                % {"object": self.object},
+            )
+        else:
+            messages.error(
+                request,
+                _(
+                    'Similar closed cases search request failed for "%(object)s".'
                     " Please try again later."
                 )
                 % {"object": self.object},

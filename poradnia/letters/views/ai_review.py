@@ -17,7 +17,7 @@ class LetterAiSearchAcceptView(PermissionMixin, SingleObjectMixin, View):
         self.object = self.get_object()
         self.object.case.perm_check(request.user, "can_change_case")
 
-        search_request = self.object.get_ai_search_request()
+        search_request = self.object.get_ai_request()
         if search_request is not None and search_request.rejected_at is None:
             search_request.accepted_by = request.user
             search_request.accepted_at = timezone.now()
@@ -41,7 +41,7 @@ class LetterAiSearchRejectView(PermissionMixin, SingleObjectMixin, View):
         if not reason:
             return HttpResponseBadRequest("rejection_reason is required")
 
-        search_request = self.object.get_ai_search_request()
+        search_request = self.object.get_ai_request()
         if search_request is not None and search_request.accepted_at is None:
             search_request.rejected_by = request.user
             search_request.rejected_at = timezone.now()

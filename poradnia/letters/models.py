@@ -151,8 +151,14 @@ class Letter(AbstractRecord):
             else False
         )
 
+    def get_ai_request(self):
+        """The AI request (articles search or similar cases) behind this letter."""
+        return getattr(self, "ai_search_request", None) or getattr(
+            self, "ai_similar_cases_request", None
+        )
+
     def get_ai_search_request(self):
-        return getattr(self, "ai_search_request", None)
+        return self.get_ai_request()
 
     def is_html(self):
         return bool(self.html)

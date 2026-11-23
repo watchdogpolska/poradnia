@@ -1,6 +1,7 @@
 {
   "extends": ["config:recommended", "schedule:weekly", "group:allNonMajor"],
   "baseBranchPatterns": ["dev"],
+  "useBaseBranchConfig": "merge",
   "ignorePaths": ["poradnia/static/jquery-ui/**"],
   "enabledManagers": [
     "dockerfile",

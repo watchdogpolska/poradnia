@@ -13,7 +13,13 @@ from openpyxl.utils import get_column_letter
 from poradnia.advicer.models import Area, InstitutionKind, Issue, PersonKind, Scope
 from poradnia.teryt.models import JST
 
-from .models import N8nArticlesSearchRequest, N8nCaseTagsRequest
+from .models import (
+    N8nArticlesSearchRequest,
+    N8nCaseTagsRequest,
+    N8nSimilarCasesRequest,
+    SimilarCasesIndexState,
+)
+from .tasks import sync_case_similar_index_task
 
 HEADER_FONT = Font(bold=True)
 HEADER_FILL = PatternFill(
@@ -403,3 +409,121 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
         response["Content-Disposition"] = f'attachment; filename="{filename}"'
         workbook.save(response)
         return response
+
+
+def _case_link(case):
+    if case is None:
+        return "-"
+    return format_html(
+        '<a href="{}">#{} {}</a>', case.get_absolute_url(), case.pk, case
+    )
+
+
+@admin.register(N8nSimilarCasesRequest)
+class N8nSimilarCasesRequestAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "request_id",
+        "environment",
+        "status",
+        "case_link",
+        "letter_link",
+        "institution_kind",
+        "scope",
+        "requested_by",
+        "accepted_by",
+        "rejected_by",
+        "created_at",
+        "updated_at",
+    )
+    list_filter = (
+        "environment",
+        "status",
+        ("accepted_at", admin.EmptyFieldListFilter),
+        ("rejected_at", admin.EmptyFieldListFilter),
+    )
+    search_fields = ("request_id", "question", "response")
+    date_hierarchy = "created_at"
+    raw_id_fields = ("case", "letter")
+    exclude = ("similar_cases", "candidates")
+    list_select_related = (
+        "case",
+        "letter",
+        "institution_kind",
+        "scope",
+        "requested_by",
+        "accepted_by",
+        "rejected_by",
+    )
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = [f.name for f in self.model._meta.fields]
+        fields[fields.index("similar_cases")] = "similar_cases_display"
+        fields[fields.index("candidates")] = "candidates_display"
+        return fields
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    @admin.display(description=_("Case"), ordering="case")
+    def case_link(self, obj):
+        return _case_link(obj.case)
+
+    @admin.display(description=_("Letter"), ordering="letter")
+    def letter_link(self, obj):
+        if obj.letter is None:
+            return "-"
+        return format_html(
+            '<a href="{}">{}</a>', obj.letter.get_absolute_url(), obj.letter_id
+        )
+
+    @admin.display(description=_("Similar cases"))
+    def similar_cases_display(self, obj):
+        return format_html("<pre>{}</pre>", _pretty_json(obj.similar_cases) or "-")
+
+    @admin.display(description=_("Candidates"))
+    def candidates_display(self, obj):
+        return format_html("<pre>{}</pre>", _pretty_json(obj.candidates) or "-")
+
+
+@admin.register(SimilarCasesIndexState)
+class SimilarCasesIndexStateAdmin(admin.ModelAdmin):
+    list_display = (
+        "case_link",
+        "status",
+        "points",
+        "attempts",
+        "synced_at",
+        "error",
+    )
+    list_filter = ("status",)
+    search_fields = ("case__id", "error")
+    list_select_related = ("case",)
+    date_hierarchy = "synced_at"
+    actions = ["resync_selected"]
+
+    def get_readonly_fields(self, request, obj=None):
+        return [f.name for f in self.model._meta.fields]
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    @admin.display(description=_("Case"), ordering="case")
+    def case_link(self, obj):
+        return _case_link(obj.case)
+
+    @admin.action(description=_("Re-sync selected"))
+    def resync_selected(self, request, queryset):
+        case_ids = list(queryset.values_list("case_id", flat=True))
+        for case_pk in case_ids:
+            sync_case_similar_index_task.delay(case_pk)
+        self.message_user(
+            request,
+            _("Enqueued re-sync of %(count)d case(s).") % {"count": len(case_ids)},
+        )

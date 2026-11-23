@@ -39,7 +39,7 @@ from django.utils.translation import gettext
 from django.utils.translation import gettext_lazy as _
 from guardian.models import GroupObjectPermissionBase, UserObjectPermissionBase
 from guardian.shortcuts import assign_perm, get_objects_for_user, get_users_with_perms
-from model_utils import Choices
+from model_utils import Choices, FieldTracker
 from model_utils.fields import MonitorField, StatusField
 
 from poradnia.utils.constants import NAME_MAX_LENGTH
@@ -61,6 +61,41 @@ def delete_files_for_cases(cases):
 
     delete_qs(Attachment.objects.filter(letter__case__in=cases), "attachment")
     delete_qs(Letter.objects.filter(case__in=cases), "eml")
+
+
+_HORIZONTAL_WHITESPACE_RE = re.compile(r"[ \t]+")
+_TRAILING_WHITESPACE_RE = re.compile(r"[ \t]+\n")
+_EXCESS_BLANK_LINES_RE = re.compile(r"\n{4,}")
+
+
+def _normalize_whitespace(text):
+    """Collapse runs of spaces/tabs and keep at most 2 blank lines in a row."""
+    if not text:
+        return ""
+    text = text.replace("\r\n", "\n").replace("\r", "\n")
+    text = _HORIZONTAL_WHITESPACE_RE.sub(" ", text)
+    text = _TRAILING_WHITESPACE_RE.sub("\n", text)
+    text = _EXCESS_BLANK_LINES_RE.sub("\n\n\n", text)
+    return text.strip()
+
+
+def _resolve_advice_tag(advice, name, model):
+    """
+    Return (object, source) for an Advice tag: the staff-set FK first
+    (source "advice"), else the AI suggestion's id in ai_assistant_tags
+    (source "ai_tags"), looked up as an existing ``model`` row.
+    """
+    if advice is None:
+        return None, ""
+    obj = getattr(advice, name)
+    if obj is not None:
+        return obj, "advice"
+    pk = (advice.ai_assistant_tags or {}).get(name)
+    if isinstance(pk, int) and not isinstance(pk, bool):
+        obj = model.objects.filter(pk=pk).first()
+        if obj is not None:
+            return obj, "ai_tags"
+    return None, ""
 
 
 class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
@@ -251,6 +286,24 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
         oldest_date = current_month + relativedelta(years=-years_to_store)
         return self.filter(last_action__lt=oldest_date)
 
+    def eligible_for_similar_cases(self):
+        """Closed cases that belong in the similar-closed-cases index.
+
+        The single source of truth for the index: used by the sync signals,
+        the sync task, the sync command and the callback re-check. The sync
+        task additionally requires SIMILAR_CASES_MIN_TEXT_CHARS of client
+        text, which drops e.g. the emptied source case of a merge.
+        """
+        return self.filter(
+            status=self.model.STATUS.closed,
+            advice__isnull=False,
+            advice__visible=True,
+            advice__institution_kind__isnull=False,
+            advice__institution_kind__is_undefined=False,
+            advice__scope__isnull=False,
+            advice__scope__is_out_of_scope=False,
+        )
+
 
 class Case(models.Model):
     STAFF_ORDER_DEFAULT_FIELD = "last_action"
@@ -294,6 +347,7 @@ class Case(models.Model):
         verbose_name=_("Dead-line"),
     )
     objects = CaseQuerySet.as_manager()
+    tracker = FieldTracker(fields=["status"])
     created_by = models.ForeignKey(
         to=settings.AUTH_USER_MODEL,
         related_name="case_created",
@@ -747,6 +801,82 @@ class Case(models.Model):
                 if attachment.text_content:
                     parts.append(attachment.text_content)
         return "\n\n".join(parts)
+
+    def get_similar_cases_text(self, max_chars=None):
+        """
+        Client text sent to the similar-closed-cases index and search.
+
+        Unlike get_client_messages_content(), all client letter texts come
+        first (in id order) and the attachments' text_content after them (in
+        letter, then attachment order). The whole text is cut at max_chars, so
+        the first letter is kept in full unless it alone exceeds the budget,
+        later letters fill what is left, and attachments come last.
+        """
+        from poradnia.letters.models import Letter
+
+        if max_chars is None:
+            max_chars = settings.SIMILAR_CASES_TEXT_MAX_CHARS
+
+        letters = (
+            Letter.objects.filter(record__case=self, created_by_is_staff=False)
+            .prefetch_related("attachment_set")
+            .order_by("id")
+        )
+        letter_texts = []
+        attachment_texts = []
+        for letter in letters:
+            letter_texts.append(letter.text)
+            for attachment in sorted(letter.attachment_set.all(), key=lambda a: a.pk):
+                attachment_texts.append(attachment.text_content)
+
+        parts = [
+            normalized
+            for text in letter_texts + attachment_texts
+            if (normalized := _normalize_whitespace(text))
+        ]
+        return "\n\n".join(parts)[:max_chars].strip()
+
+    def find_similar_cases(self, requested_by):
+        """
+        Ask n8n for up to 3 similar closed cases. The result is delivered
+        asynchronously via N8nSimilarCasesCallbackView as an ai_message_staff
+        Letter on this case.
+
+        Returns (ok, message_code). The pre-checks (institution kind, scope,
+        client text) fail without creating an N8nSimilarCasesRequest row.
+        """
+        from poradnia.advicer.models import InstitutionKind, Scope
+        from poradnia.ai_assistant.models import N8nSimilarCasesRequest
+
+        advice = getattr(self, "advice", None)
+
+        institution_kind, institution_kind_source = _resolve_advice_tag(
+            advice, "institution_kind", InstitutionKind
+        )
+        if institution_kind is None or institution_kind.is_undefined:
+            return False, "no_institution_kind"
+
+        scope, scope_source = _resolve_advice_tag(advice, "scope", Scope)
+        if scope is None:
+            return False, "no_scope"
+        if scope.is_out_of_scope:
+            return False, "out_of_scope"
+
+        text = self.get_similar_cases_text()
+        if not text:
+            return False, "no_client_text"
+
+        obj = N8nSimilarCasesRequest(
+            case=self,
+            requested_by=requested_by,
+            question=text,
+            institution_kind=institution_kind,
+            institution_kind_source=institution_kind_source,
+            scope=scope,
+            scope_source=scope_source,
+        )
+        ok = obj.send_request()
+        return ok, "started" if ok else "request_failed"
 
     def search_articles_for_case(self, direct_search=False):
         """
