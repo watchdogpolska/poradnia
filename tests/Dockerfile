@@ -1,4 +1,4 @@
-FROM cypress/included:16.2.1
+FROM cypress/included:16.3.0
 
 RUN apt-get update && apt-get install -y wait-for-it
 
