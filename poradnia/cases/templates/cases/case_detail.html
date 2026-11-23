@@ -147,6 +147,16 @@
                                         </button>
                                     </form>
                                 </li>
+                                {% if similar_cases_enabled %}
+                                <li>
+                                    <form method="post" action="{% url 'cases:find_similar_cases' pk=object.pk %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-link" style="width:100%;text-align:left;padding:3px 20px;">
+                                            {% trans 'Find similar closed cases' %}
+                                        </button>
+                                    </form>
+                                </li>
+                                {% endif %}
                                 <li>
                                     <form method="post" action="{% url 'cases:request_ai_tags' pk=object.pk %}">
                                         {% csrf_token %}

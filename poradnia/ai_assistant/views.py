@@ -14,7 +14,11 @@ from django.views.decorators.csrf import csrf_exempt
 
 from poradnia.letters.models import Letter
 
-from .models import N8nArticlesSearchRequest, N8nCaseTagsRequest
+from .models import (
+    N8nArticlesSearchRequest,
+    N8nCaseTagsRequest,
+    N8nSimilarCasesRequest,
+)
 
 logger = logging.getLogger(__name__)
 
@@ -29,16 +33,17 @@ def _json_error(code, message, status):
     )
 
 
-def _check_token(request):
-    configured = getattr(settings, "N8N_ARTICLES_SEARCH_CALLBACK_TOKEN", "")
+def _check_bearer_token(request, setting_name, log_label):
+    configured = getattr(settings, setting_name, "")
     if not configured:
-        logger.error("N8N_ARTICLES_SEARCH_CALLBACK_TOKEN is not configured")
+        logger.error("%s is not configured", setting_name)
         return _json_error("webhook_not_configured", "Token not configured.", 503)
 
     auth = request.headers.get("Authorization", "")
     if not auth.startswith("Bearer "):
         logger.warning(
-            "Articles search callback: missing bearer token from %s",
+            "%s: missing bearer token from %s",
+            log_label,
             request.META.get("REMOTE_ADDR"),
         )
         return _json_error("unauthorized", "Missing bearer token.", 401)
@@ -46,7 +51,8 @@ def _check_token(request):
     token = auth.removeprefix("Bearer ").strip()
     if not hmac.compare_digest(token, configured):
         logger.warning(
-            "Articles search callback: invalid bearer token from %s",
+            "%s: invalid bearer token from %s",
+            log_label,
             request.META.get("REMOTE_ADDR"),
         )
         return _json_error("unauthorized", "Invalid bearer token.", 401)
@@ -54,15 +60,21 @@ def _check_token(request):
     return None
 
 
-def _parse_payload(request):
+def _check_token(request):
+    return _check_bearer_token(
+        request, "N8N_ARTICLES_SEARCH_CALLBACK_TOKEN", "Articles search callback"
+    )
+
+
+def _parse_payload(request, log_label="Articles search callback"):
     try:
         data = json.loads(request.body.decode("utf-8") or "{}")
     except (UnicodeDecodeError, json.JSONDecodeError):
-        logger.warning("Articles search callback: invalid JSON body")
+        logger.warning("%s: invalid JSON body", log_label)
         return None, _json_error("invalid_json", "Invalid JSON.", 400)
 
     if not isinstance(data, dict):
-        logger.warning("Articles search callback: payload is not a JSON object")
+        logger.warning("%s: payload is not a JSON object", log_label)
         return None, _json_error("invalid_payload", "Must be JSON object.", 400)
 
     return data, None
@@ -398,28 +410,9 @@ class N8nArticlesSearchCallbackView(View):
 
 
 def _check_case_tags_token(request):
-    configured = getattr(settings, "N8N_CASE_TAGS_CALLBACK_TOKEN", "")
-    if not configured:
-        logger.error("N8N_CASE_TAGS_CALLBACK_TOKEN is not configured")
-        return _json_error("webhook_not_configured", "Token not configured.", 503)
-
-    auth = request.headers.get("Authorization", "")
-    if not auth.startswith("Bearer "):
-        logger.warning(
-            "Case tags callback: missing bearer token from %s",
-            request.META.get("REMOTE_ADDR"),
-        )
-        return _json_error("unauthorized", "Missing bearer token.", 401)
-
-    token = auth.removeprefix("Bearer ").strip()
-    if not hmac.compare_digest(token, configured):
-        logger.warning(
-            "Case tags callback: invalid bearer token from %s",
-            request.META.get("REMOTE_ADDR"),
-        )
-        return _json_error("unauthorized", "Invalid bearer token.", 401)
-
-    return None
+    return _check_bearer_token(
+        request, "N8N_CASE_TAGS_CALLBACK_TOKEN", "Case tags callback"
+    )
 
 
 def _validate_nonempty_string(payload, name):
@@ -656,5 +649,339 @@ class N8nCaseTagsCallbackView(View):
             )
 
             _upsert_advice_ai_tags(tags_request, ai_tags, request_id)
+
+        return JsonResponse({"ok": True, "result": "completed"})
+
+
+SIMILAR_CASES_MAX_ENTRIES = 3
+SIMILAR_CASES_LETTER_NAME = "ASYSTENT AI: podobne zamknięte sprawy"
+
+
+def _is_int(value):
+    return isinstance(value, int) and not isinstance(value, bool)
+
+
+def _validate_similar_cases_payload(payload):
+    """Return an error message for a malformed callback payload, or None."""
+    entries = payload.get("similar_cases")
+    if not isinstance(entries, list):
+        return "similar_cases must be a list."
+    if len(entries) > SIMILAR_CASES_MAX_ENTRIES:
+        return f"similar_cases must have at most {SIMILAR_CASES_MAX_ENTRIES} entries."
+    for entry in entries:
+        if not isinstance(entry, dict):
+            return "similar_cases entries must be objects."
+        if not _is_int(entry.get("case_id")):
+            return "similar_cases case_id must be an integer."
+        score = entry.get("score")
+        if not isinstance(score, int | float) or isinstance(score, bool):
+            return "similar_cases score must be a number."
+        if not isinstance(entry.get("reason"), str):
+            return "similar_cases reason must be a string."
+    for name in ("candidates", "problems"):
+        value = payload.get(name)
+        if value is not None and not isinstance(value, list):
+            return f"{name} must be a list."
+    return None
+
+
+def _recheck_similar_cases(similar_request, entries):
+    """Keep the entries that are still valid matches, in n8n's order.
+
+    Drops cases that no longer exist, are no longer eligible (e.g. reopened
+    since indexing), are the requesting case, or were re-tagged so that their
+    institution kind or scope flag set no longer equals the request's.
+    """
+    from poradnia.cases.models import Case
+
+    scope = similar_request.scope
+    if not entries or scope is None or similar_request.institution_kind_id is None:
+        return [], {}
+
+    ids = [entry["case_id"] for entry in entries]
+    cases = (
+        Case.objects.eligible_for_similar_cases()
+        .filter(
+            pk__in=ids,
+            advice__institution_kind_id=similar_request.institution_kind_id,
+            advice__scope__is_dip=scope.is_dip,
+            advice__scope__is_local_government=scope.is_local_government,
+            advice__scope__is_slapp=scope.is_slapp,
+        )
+        .exclude(pk=similar_request.case_id)
+        .select_related("advice__advicer", "advice__institution_kind")
+    )
+    cases_by_id = {case.pk: case for case in cases}
+    requesting_client_id = (
+        similar_request.case.client_id if similar_request.case_id else None
+    )
+
+    kept = []
+    seen = set()
+    for entry in entries:
+        case = cases_by_id.get(entry["case_id"])
+        if case is None or case.pk in seen:
+            continue
+        seen.add(case.pk)
+        kept.append(
+            {
+                "case_id": case.pk,
+                "score": entry["score"],
+                "reason": entry["reason"],
+                "same_client": case.client_id == requesting_client_id,
+            }
+        )
+    return kept, cases_by_id
+
+
+def _similar_case_advisor(case):
+    advicer = case.advice.advicer
+    if advicer and advicer.username != AI_ASSISTANT_USERNAME:
+        return advicer
+    permission = (
+        case.caseuserobjectpermission_set.filter(user__is_staff=True)
+        .select_related("user")
+        .order_by("user__nicename", "user_id")
+        .first()
+    )
+    return permission.user if permission else None
+
+
+def _enrich_similar_cases(entries, cases_by_id):
+    """Add the presentation fields, computed at render time."""
+    enriched = []
+    for entry in entries:
+        case = cases_by_id[entry["case_id"]]
+        advisor = _similar_case_advisor(case)
+        enriched.append(
+            {
+                **entry,
+                "name": case.name,
+                "url": case.get_absolute_url(),
+                "closed_at": (
+                    case.status_changed.date().isoformat()
+                    if case.status_changed
+                    else ""
+                ),
+                "advisor": advisor.get_nicename() if advisor else "",
+                "institution_kind": case.advice.institution_kind.name,
+            }
+        )
+    return enriched
+
+
+def _similar_cases_summary(similar_request):
+    """Return the plain-text (header, nothing-found message) of the letter.
+
+    Names the filters the search used; a filter that came from the AI
+    tagging suggestion rather than the staff-set Advice says so.
+    """
+
+    def filter_label(nominative, genitive, obj, source):
+        suffix = (
+            " z sugestii AI" if source == N8nSimilarCasesRequest.SOURCE_AI_TAGS else ""
+        )
+        name = obj.name if obj is not None else "nieznany"
+        return f"{nominative}{suffix}: {name}", f"{genitive}{suffix}: {name}"
+
+    kind, kind_genitive = filter_label(
+        "rodzaj instytucji",
+        "rodzaju instytucji",
+        similar_request.institution_kind,
+        similar_request.institution_kind_source,
+    )
+    scope, scope_genitive = filter_label(
+        "zakres", "zakresu", similar_request.scope, similar_request.scope_source
+    )
+    header = f"ASYSTENT AI - Podobne zamknięte sprawy ({kind}; {scope})"
+    not_found = (
+        "Nie znaleziono podobnych zamkniętych spraw dla"
+        f" {kind_genitive} i {scope_genitive}."
+    )
+    return header, not_found
+
+
+def _similar_case_lines(entry):
+    lines = [
+        f"Zamknięta: {entry['closed_at']} · Doradca: {entry['advisor']}",
+        f"Dlaczego podobna: {entry['reason']}",
+    ]
+    if entry["same_client"]:
+        lines.append("Uwaga: ten sam klient")
+    return lines
+
+
+def _format_similar_cases_text(entries, similar_request):
+    header, not_found = _similar_cases_summary(similar_request)
+    parts = [header]
+    if not entries:
+        parts.append(not_found)
+    for entry in entries:
+        lines = [f"- #{entry['case_id']} – {entry['name']} ({entry['url']})"]
+        lines.extend(f"  {line}" for line in _similar_case_lines(entry))
+        parts.append("\n".join(lines))
+    return "\n\n".join(parts)
+
+
+def _format_similar_cases_html(entries, similar_request):
+    """Render the similar-cases letter HTML from data; every value escaped."""
+    header, not_found = _similar_cases_summary(similar_request)
+    parts = [f"<p><strong>{escape(header)}</strong></p>"]
+    if not entries:
+        parts.append(f"<p>{escape(not_found)}</p>")
+        return "\n".join(parts)
+
+    parts.append("<ul>")
+    for entry in entries:
+        parts.append("  <li>")
+        parts.append(
+            f'    <a href="{escape(entry["url"])}">'
+            f"#{escape(entry['case_id'])} – {escape(entry['name'])}</a>"
+        )
+        parts.append(
+            f"    <br><strong>Zamknięta:</strong> {escape(entry['closed_at'])}"
+            f" · <strong>Doradca:</strong> {escape(entry['advisor'])}"
+        )
+        parts.append(
+            f"    <br><strong>Dlaczego podobna:</strong> {escape(entry['reason'])}"
+        )
+        if entry["same_client"]:
+            parts.append("    <br><strong>Uwaga:</strong> ten sam klient")
+        parts.append("  </li>")
+    parts.append("</ul>")
+    return "\n".join(parts)
+
+
+def _create_similar_cases_letter(similar_request, response_text, response_html):
+    if not similar_request.case:
+        logger.debug(
+            "Similar cases %s: no case attached, skipping letter creation",
+            similar_request.request_id,
+        )
+        return
+
+    letter = Letter.objects.create(
+        case=similar_request.case,
+        genre=Letter.GENRE.ai_message_staff,
+        status=Letter.STATUS.staff,
+        name=SIMILAR_CASES_LETTER_NAME,
+        text=response_text,
+        html=response_html,
+        created_by=_get_or_create_ai_assistant(),
+        created_by_is_staff=True,
+    )
+    similar_request.letter = letter
+    similar_request.save(update_fields=["letter", "updated_at"])
+    logger.info(
+        "Created similar cases ai_message_staff letter for case %s (request_id=%s)",
+        similar_request.case_id,
+        similar_request.request_id,
+    )
+
+
+@method_decorator(csrf_exempt, name="dispatch")
+class N8nSimilarCasesCallbackView(View):
+    """Receive the similar-closed-cases result posted back by n8n after
+    N8nSimilarCasesRequest.send_request().
+
+    Bearer token: ``N8N_SIMILAR_CASES_CALLBACK_TOKEN``.
+
+    Expected JSON payload::
+
+        {
+            "request_id":     "<id>",
+            "similar_cases":  [{"case_id": 1, "score": 0.7, "reason": "..."}],
+                                               # 0-3 entries, already ranked
+            "problems":       [...],           # optional
+            "candidates":     [...],           # optional, stored as-is
+            "judge_fallback": false,           # optional
+            "error":          null             # a string on failure
+        }
+
+    The entries are re-checked against the current eligibility and the
+    request's filters, keeping n8n's order, and a staff-only letter is always
+    created on the requesting case, including when no entry is left.
+
+    Returns ``{"ok": true, "result": "completed"|"failed"}`` on success,
+    or a JSON error object with an appropriate HTTP status code.
+    """
+
+    log_label = "Similar cases callback"
+
+    def post(self, request, *args, **kwargs):
+        err = _check_bearer_token(
+            request, "N8N_SIMILAR_CASES_CALLBACK_TOKEN", self.log_label
+        )
+        if err:
+            return err
+
+        payload, err = _parse_payload(request, self.log_label)
+        if err:
+            return err
+
+        request_id = payload.get("request_id")
+        if not request_id:
+            logger.warning("%s: missing request_id in payload", self.log_label)
+            return _json_error("missing_field", "request_id is required.", 400)
+
+        try:
+            similar_request = N8nSimilarCasesRequest.objects.select_related(
+                "case", "institution_kind", "scope"
+            ).get(request_id=request_id)
+        except N8nSimilarCasesRequest.DoesNotExist:
+            logger.warning("%s: unknown request_id=%r", self.log_label, request_id)
+            return _json_error("not_found", f"No request with id {request_id!r}.", 404)
+
+        error = payload.get("error")
+
+        with transaction.atomic():
+            if error:
+                _mark_search_request_failed(similar_request, error)
+                logger.warning("Similar cases request %s failed: %s", request_id, error)
+                return JsonResponse({"ok": True, "result": "failed"})
+
+            validation_error = _validate_similar_cases_payload(payload)
+            if validation_error:
+                _mark_search_request_failed(similar_request, validation_error)
+                logger.warning(
+                    "Similar cases request %s failed: %s",
+                    request_id,
+                    validation_error,
+                )
+                return _json_error("invalid_field", validation_error, 400)
+
+            kept, cases_by_id = _recheck_similar_cases(
+                similar_request, payload["similar_cases"]
+            )
+            entries = _enrich_similar_cases(kept, cases_by_id)
+            response_text = _format_similar_cases_text(entries, similar_request)
+            response_html = _format_similar_cases_html(entries, similar_request)
+
+            similar_request.similar_cases = kept
+            similar_request.candidates = {
+                "problems": payload.get("problems"),
+                "candidates": payload.get("candidates"),
+                "judge_fallback": payload.get("judge_fallback"),
+            }
+            similar_request.response = response_text
+            similar_request.status = "completed"
+            similar_request.save(
+                update_fields=[
+                    "similar_cases",
+                    "candidates",
+                    "response",
+                    "status",
+                    "updated_at",
+                ]
+            )
+            logger.info(
+                "Similar cases %s completed (case=%s, received=%d, kept=%d)",
+                request_id,
+                similar_request.case_id,
+                len(payload["similar_cases"]),
+                len(kept),
+            )
+
+            _create_similar_cases_letter(similar_request, response_text, response_html)
 
         return JsonResponse({"ok": True, "result": "completed"})
