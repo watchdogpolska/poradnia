@@ -865,10 +865,36 @@ class SyncSimilarCasesIndexCommandTestCase(TestCase):
             pause_seconds=None,
             limit=5,
             case_ids=None,
+            scope_ids=None,
+            force_check=False,
             force_reembed=False,
             dry_run=False,
         )
         self.assertIn("task-123", out.getvalue())
+
+    @patch("poradnia.ai_assistant.tasks.sync_similar_cases_index_task.delay")
+    def test_scope_ids_and_force_check_are_passed_on(self, mock_delay):
+        mock_delay.return_value.id = "task-123"
+        call_command(
+            "sync_similar_cases_index",
+            "--scope-ids",
+            "3,4",
+            "--force-check",
+            stdout=StringIO(),
+        )
+        self.assertEqual(mock_delay.call_args.kwargs["scope_ids"], [3, 4])
+        self.assertIs(mock_delay.call_args.kwargs["force_check"], True)
+
+    def test_reconcile_with_scope_ids_is_refused(self):
+        with self.assertRaises(CommandError):
+            call_command(
+                "sync_similar_cases_index",
+                "--mode",
+                "reconcile",
+                "--scope-ids",
+                "1",
+                stdout=StringIO(),
+            )
 
     def test_reconcile_with_case_ids_is_refused(self):
         with self.assertRaises(CommandError):
