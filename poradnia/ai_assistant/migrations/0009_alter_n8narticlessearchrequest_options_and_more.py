@@ -6,16 +6,22 @@ from django.db import migrations
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('ai_assistant', '0008_add_similar_cases_sync_periodic_tasks'),
+        ("ai_assistant", "0008_add_similar_cases_sync_periodic_tasks"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='n8narticlessearchrequest',
-            options={'verbose_name': 'Articles search request', 'verbose_name_plural': 'Articles search requests'},
+            name="n8narticlessearchrequest",
+            options={
+                "verbose_name": "Articles search request",
+                "verbose_name_plural": "Articles search requests",
+            },
         ),
         migrations.AlterModelOptions(
-            name='n8ncasetagsrequest',
-            options={'verbose_name': 'Case tags request', 'verbose_name_plural': 'Case tags requests'},
+            name="n8ncasetagsrequest",
+            options={
+                "verbose_name": "Case tags request",
+                "verbose_name_plural": "Case tags requests",
+            },
         ),
     ]
