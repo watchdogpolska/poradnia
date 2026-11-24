@@ -117,6 +117,8 @@ const submitAdviceForm =
       adviceScope,
       adviceIssue,
       adviceArea,
+      personKind,
+      institutionKind,
     },
   ) => {
     // Scope goes first: the issue/area autocompletes only offer entries
@@ -137,6 +139,14 @@ const submitAdviceForm =
       cy.contains("div", "Obszary").within(($div) => {
         selectAutocompleteOptionContaining(adviceArea.name);
       });
+    }
+
+    if (personKind) {
+      cy.get('select[name="person_kind"]').select(personKind.name);
+    }
+
+    if (institutionKind) {
+      cy.get('select[name="institution_kind"]').select(institutionKind.name);
     }
 
     cy.contains("div", "Czy udzieliliśmy porady").within(($div) => {
