@@ -447,6 +447,7 @@ class N8nSimilarCasesRequestAdmin(admin.ModelAdmin):
     date_hierarchy = "created_at"
     raw_id_fields = ("case", "letter")
     exclude = ("similar_cases", "candidates")
+    actions = ["export_as_excel"]
     list_select_related = (
         "case",
         "letter",
@@ -488,6 +489,121 @@ class N8nSimilarCasesRequestAdmin(admin.ModelAdmin):
     @admin.display(description=_("Candidates"))
     def candidates_display(self, obj):
         return format_html("<pre>{}</pre>", _pretty_json(obj.candidates) or "-")
+
+    @admin.action(description=_("Export selected as Excel report"))
+    def export_as_excel(self, request, queryset):
+        workbook = Workbook()
+        sheet = workbook.active
+        sheet.title = "N8nSimilarCasesRequest"
+
+        columns = [
+            "id",
+            "created_at",
+            "request_id",
+            "environment",
+            "status",
+            "case_id",
+            "case_absolute_url",
+            "letter_id",
+            "letter_absolute_url",
+            "institution_kind",
+            "institution_kind_source",
+            "scope",
+            "scope_source",
+            "requested_by",
+            "accepted_by",
+            "rejected_by",
+            "rejection_reason",
+            "response",
+            "similar_cases",
+            "problems",
+        ]
+        sheet.append(columns)
+        for col_idx in range(1, len(columns) + 1):
+            cell = sheet.cell(row=1, column=col_idx)
+            cell.font = HEADER_FONT
+            cell.fill = HEADER_FILL
+
+        case_url_col = columns.index("case_absolute_url") + 1
+        letter_url_col = columns.index("letter_absolute_url") + 1
+        wrap_col_start = columns.index("rejection_reason") + 1
+        for col_idx in range(wrap_col_start, len(columns) + 1):
+            sheet.column_dimensions[get_column_letter(col_idx)].width = (
+                STANDARD_COLUMN_WIDTH * 3
+            )
+
+        queryset = queryset.select_related(
+            "case",
+            "letter",
+            "institution_kind",
+            "scope",
+            "requested_by",
+            "accepted_by",
+            "rejected_by",
+        )
+        for obj in queryset:
+            case_url = (
+                request.build_absolute_uri(obj.case.get_absolute_url())
+                if obj.case_id
+                else ""
+            )
+            letter_url = (
+                request.build_absolute_uri(obj.letter.get_absolute_url())
+                if obj.letter_id
+                else ""
+            )
+            problems = (obj.candidates or {}).get("problems")
+            sheet.append(
+                [
+                    obj.id,
+                    _naive(obj.created_at),
+                    obj.request_id,
+                    obj.environment,
+                    obj.status,
+                    obj.case_id,
+                    case_url,
+                    obj.letter_id,
+                    letter_url,
+                    obj.institution_kind.name if obj.institution_kind_id else "",
+                    obj.institution_kind_source,
+                    obj.scope.name if obj.scope_id else "",
+                    obj.scope_source,
+                    str(obj.requested_by) if obj.requested_by_id else "",
+                    str(obj.accepted_by) if obj.accepted_by_id else "",
+                    str(obj.rejected_by) if obj.rejected_by_id else "",
+                    obj.rejection_reason or "",
+                    obj.response,
+                    _pretty_json(obj.similar_cases),
+                    _pretty_json(problems),
+                ]
+            )
+            row_idx = sheet.max_row
+            for col_idx in range(wrap_col_start, len(columns) + 1):
+                sheet.cell(row=row_idx, column=col_idx).alignment = Alignment(
+                    wrap_text=True, vertical="top"
+                )
+            for url, col_idx in (
+                (case_url, case_url_col),
+                (letter_url, letter_url_col),
+            ):
+                if url:
+                    cell = sheet.cell(row=row_idx, column=col_idx)
+                    cell.hyperlink = url
+                    cell.style = "Hyperlink"
+
+        sheet.auto_filter.ref = sheet.dimensions
+        sheet.freeze_panes = "A2"
+
+        response = HttpResponse(
+            content_type=(
+                "application/vnd.openxmlformats-officedocument" ".spreadsheetml.sheet"
+            )
+        )
+        timestamp = timezone.localtime(timezone.now()).strftime("%Y%m%d_%H%M%S")
+        filename = f"n8n_similar_cases_requests_{settings.APP_MODE}_{timestamp}.xlsx"
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+        workbook.save(response)
+        return response
 
 
 @admin.register(SimilarCasesIndexState)
