@@ -1,3 +1,4 @@
+from django.template.loader import render_to_string
 from django.test import TestCase
 from teryt_tree.factories import JednostkaAdministracyjnaFactory
 
@@ -24,10 +25,22 @@ class JSTDetailViewTestCase(TestCase):
     def test_empty_area_shows_no_objects(self):
         resp = self.client.get(self.jst.get_absolute_url())
         self.assertEqual(resp.status_code, 200)
-        self.assertContains(resp, "No objects for", count=2)
+        self.assertContains(resp, "Brak pozycji.", count=2)
+
+    def test_lists_have_no_empty_heading(self):
+        # The page heads each list with its own <h3>, so _list.html gets no
+        # title and must not emit an empty <h2> (WCAG 1.3.1 / 2.4.6).
+        resp = self.client.get(self.jst.get_absolute_url())
+        self.assertNotContains(resp, "<h2></h2>")
 
     def test_excludes_advices_from_other_areas(self):
         other_jst = JednostkaAdministracyjnaFactory()
         advice = AdviceFactory(jst_id=other_jst.pk)
         resp = self.client.get(self.jst.get_absolute_url())
         self.assertNotContains(resp, advice.get_absolute_url())
+
+
+class ListTemplateTestCase(TestCase):
+    def test_title_renders_as_heading(self):
+        html = render_to_string("_list.html", {"title": "Porady", "object_list": []})
+        self.assertInHTML("<h2>Porady</h2>", html)
