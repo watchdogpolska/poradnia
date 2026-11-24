@@ -1,4 +1,9 @@
 {% extends "account/base.html" %}
+{# NOT RENDERED (django-allauth 65.22): after a successful confirmation allauth redirects and #}
+{# shows the "email_confirmed" flash message instead of rendering this page (the confirmation #}
+{# form itself is account/email_confirm.html). Becomes live only if a custom view renders it; #}
+{# the template expects an `email_address` (allauth EmailAddress) in the context. #}
+{# Excluded from coverage in .coveragerc - remove it there once this template is rendered. #}
 
 {% load i18n %}
 {% load account %}

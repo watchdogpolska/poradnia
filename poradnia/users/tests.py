@@ -2,8 +2,17 @@ import re
 from datetime import datetime, timedelta
 from hashlib import md5
 from unittest.mock import patch
+from urllib.parse import quote
 
-from allauth.account.models import EmailAddress
+from allauth.account.models import EmailAddress, EmailConfirmationHMAC
+from allauth.mfa.recovery_codes.internal.auth import RecoveryCodes
+from allauth.mfa.totp.internal.auth import (
+    TOTP,
+    format_hotp_value,
+    generate_totp_secret,
+    hotp_value,
+    yield_hotp_counters_from_time,
+)
 from django.contrib.admin import helpers
 from django.core import mail
 from django.core.cache import cache
@@ -741,3 +750,227 @@ class UserAdminResendActivationEmailActionTestCase(TestCase):
         activated = UserFactory(email="active@example.com")
         self.post_action([activated])
         self.assertEqual(len(mail.outbox), 0)
+
+
+class AllauthAccountPagesTestCase(TestCase):
+    """Smoke-renders the project's overrides of allauth's account templates."""
+
+    def setUp(self):
+        cache.clear()  # allauth rate-limit counters live in the cache
+        self.user = UserFactory()
+        self.primary = EmailAddress.objects.create(
+            user=self.user, email=self.user.email, verified=True, primary=True
+        )
+
+    def assertRendersTemplate(self, url, template_name):
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, template_name)
+        return resp
+
+    def test_logout_page(self):
+        self.client.force_login(self.user)
+        self.assertRendersTemplate(reverse("account_logout"), "account/logout.html")
+
+    def test_password_change_page(self):
+        self.client.force_login(self.user)
+        self.assertRendersTemplate(
+            reverse("account_change_password"), "account/password_change.html"
+        )
+
+    def test_password_set_page_for_user_without_password(self):
+        self.user.set_unusable_password()
+        self.user.save()
+        self.client.force_login(self.user)
+        self.assertRendersTemplate(
+            reverse("account_set_password"), "account/password_set.html"
+        )
+
+    def test_email_management_page_lists_addresses(self):
+        EmailAddress.objects.create(
+            user=self.user, email="second@example.com", verified=False
+        )
+        self.client.force_login(self.user)
+        resp = self.assertRendersTemplate(
+            reverse("account_email"), "account/email.html"
+        )
+        self.assertContains(resp, self.user.email)
+        self.assertContains(resp, "second@example.com")
+
+    def test_signup_page(self):
+        self.assertRendersTemplate(reverse("account_signup"), "account/signup.html")
+
+    @patch(
+        "allauth.account.adapter.DefaultAccountAdapter.is_open_for_signup",
+        return_value=False,
+    )
+    def test_signup_closed_page(self, _mock):
+        self.assertRendersTemplate(
+            reverse("account_signup"), "account/signup_closed.html"
+        )
+
+    def test_verification_sent_page(self):
+        self.assertRendersTemplate(
+            reverse("account_email_verification_sent"),
+            "account/verification_sent.html",
+        )
+
+    def test_login_with_unverified_email_shows_verification_sent(self):
+        self.primary.verified = False
+        self.primary.save()
+        resp = self.client.post(
+            reverse("account_login"),
+            data={"login": self.user.username, "password": "pass"},
+            follow=True,
+        )
+        self.assertTemplateUsed(resp, "account/verification_sent.html")
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_email_confirm_page_with_valid_key(self):
+        unverified = EmailAddress.objects.create(
+            user=self.user, email="confirm-me@example.com", verified=False
+        )
+        key = EmailConfirmationHMAC(unverified).key
+        resp = self.assertRendersTemplate(
+            reverse("account_confirm_email", args=[key]), "account/email_confirm.html"
+        )
+        self.assertContains(resp, "confirm-me@example.com")
+
+    def test_email_confirm_page_with_invalid_key(self):
+        self.assertRendersTemplate(
+            reverse("account_confirm_email", args=["bogus-key"]),
+            "account/email_confirm.html",
+        )
+
+    def test_reauthenticate_page(self):
+        self.client.force_login(self.user)
+        self.assertRendersTemplate(
+            reverse("account_reauthenticate"), "account/base_reauthenticate.html"
+        )
+
+
+class AllauthPasswordResetFlowTestCase(TestCase):
+    def setUp(self):
+        cache.clear()  # allauth rate-limit counters live in the cache
+        self.user = UserFactory()
+        EmailAddress.objects.create(
+            user=self.user, email=self.user.email, verified=True, primary=True
+        )
+
+    def request_reset(self, email):
+        return self.client.post(
+            reverse("account_reset_password"), data={"email": email}, follow=True
+        )
+
+    def test_reset_page(self):
+        resp = self.client.get(reverse("account_reset_password"))
+        self.assertTemplateUsed(resp, "account/password_reset.html")
+
+    def test_known_address_gets_reset_link(self):
+        resp = self.request_reset(self.user.email)
+        self.assertTemplateUsed(resp, "account/password_reset_done.html")
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn(self.user.email, mail.outbox[0].to)
+
+    def test_unknown_address_gets_unknown_account_email(self):
+        resp = self.request_reset("nobody@example.com")
+        # Same page as for a known address, so the form can't be used to
+        # probe which addresses have accounts.
+        self.assertTemplateUsed(resp, "account/password_reset_done.html")
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("nobody@example.com", mail.outbox[0].to)
+
+    def test_reset_link_sets_new_password(self):
+        self.request_reset(self.user.email)
+        reset_url = re.search(r"https?://[^/\s]+(/\S+/key/\S+/)", mail.outbox[0].body)[
+            1
+        ]
+
+        resp = self.client.get(reset_url, follow=True)
+        self.assertTemplateUsed(resp, "account/password_reset_from_key.html")
+        self.assertContains(resp, 'name="password1"')
+
+        resp = self.client.post(
+            resp.redirect_chain[-1][0],
+            data={"password1": "a-Very-Str0ng-Pass", "password2": "a-Very-Str0ng-Pass"},
+            follow=True,
+        )
+        self.assertTemplateUsed(resp, "account/password_reset_from_key_done.html")
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("a-Very-Str0ng-Pass"))
+
+    def test_invalid_reset_link_shows_token_failure(self):
+        resp = self.client.get(
+            reverse(
+                "account_reset_password_from_key",
+                kwargs={"uidb36": "zz", "key": "bogus-key"},
+            )
+        )
+        self.assertTemplateUsed(resp, "account/password_reset_from_key.html")
+        self.assertNotContains(resp, 'name="password1"')
+
+
+class AllauthMfaPagesTestCase(TestCase):
+    def setUp(self):
+        cache.clear()  # allauth rate-limit counters live in the cache
+        self.user = StaffFactory()
+        EmailAddress.objects.create(
+            user=self.user, email=self.user.email, verified=True, primary=True
+        )
+        self.secret = generate_totp_secret()
+        TOTP.activate(self.user, self.secret)
+        RecoveryCodes.activate(self.user)
+
+    def login_with_password(self):
+        return self.client.post(
+            reverse("account_login"),
+            data={"login": self.user.username, "password": "pass"},
+            follow=True,
+        )
+
+    def current_totp_code(self):
+        counter = next(yield_hotp_counters_from_time())
+        return format_hotp_value(hotp_value(self.secret, counter))
+
+    def test_mfa_index_page(self):
+        self.client.force_login(self.user)
+        resp = self.client.get(reverse("mfa_index"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, "mfa/index.html")
+
+    def test_password_login_asks_for_totp_code(self):
+        resp = self.login_with_password()
+        self.assertTemplateUsed(resp, "mfa/base_entrance.html")
+        self.assertContains(resp, 'name="code"')
+
+    def login_with_password_and_totp(self):
+        self.login_with_password()
+        return self.client.post(
+            reverse("mfa_authenticate"), data={"code": self.current_totp_code()}
+        )
+
+    def test_valid_totp_code_completes_login(self):
+        resp = self.login_with_password_and_totp()
+        self.assertRedirects(resp, reverse("home"), fetch_redirect_response=False)
+        self.assertEqual(int(self.client.session["_auth_user_id"]), self.user.pk)
+
+    def test_recovery_codes_page_requires_reauthentication(self):
+        # A real staff login: with only a password record (force_login, or a
+        # bare reauthentication) EnforceStaffMfaOnPasswordLoginMiddleware
+        # bounces every page to mfa_index instead.
+        self.login_with_password_and_totp()
+        resp = self.client.get(reverse("mfa_view_recovery_codes"))
+        self.assertRedirects(
+            resp,
+            reverse("account_reauthenticate")
+            + "?next="
+            + quote(reverse("mfa_view_recovery_codes"), safe=""),
+            fetch_redirect_response=False,
+        )
+
+        # Only an explicit reauthentication counts - a fresh login doesn't.
+        self.client.post(reverse("account_reauthenticate"), data={"password": "pass"})
+        resp = self.client.get(reverse("mfa_view_recovery_codes"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, "mfa/recovery_codes/index.html")
+        self.assertTemplateUsed(resp, "mfa/base_manage.html")

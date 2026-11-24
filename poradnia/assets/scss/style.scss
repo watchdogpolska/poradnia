@@ -214,7 +214,7 @@ label {
 // `.border-success` is safe to restore globally: nothing in the app uses
 // that literal class except via letter2panel. `.text-bg-success` is NOT
 // - .badge/.text-bg-success elsewhere (case_detail.html, _project_badge.
-// html, _simple_list.html) are genuinely gray-success badges that
+// html) are genuinely gray-success badges that
 // should stay as they are, matching .btn-success. Scoped to `.card-
 // header.text-bg-success` specifically, since that combination only
 // ever occurs on a letter2panel-driven card.
@@ -233,7 +233,7 @@ label {
 // Same badge-collision reasoning as .text-bg-success above: `.border-
 // info` is safe globally (only letter2panel emits it), `.text-bg-info`
 // is scoped to `.card-header` since `.badge.text-bg-info` elsewhere
-// (case_filter.html, _simple_list.html, cases/models.py) needs its own,
+// (case_filter.html, cases/models.py) needs its own,
 // different historical color - see below.
 .border-info {
 	border-color: vars.$panel-info-border !important; // #bce8f1
