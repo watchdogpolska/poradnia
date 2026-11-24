@@ -1,4 +1,5 @@
 import json
+import types
 
 from django.conf import settings
 from django.contrib import admin
@@ -527,3 +528,32 @@ class SimilarCasesIndexStateAdmin(admin.ModelAdmin):
             request,
             _("Enqueued re-sync of %(count)d case(s).") % {"count": len(case_ids)},
         )
+
+
+AI_ASSISTANT_ADMIN_MODEL_ORDER = [
+    "N8nCaseTagsRequest",
+    "N8nArticlesSearchRequest",
+    "N8nSimilarCasesRequest",
+    "SimilarCasesIndexState",
+]
+
+_default_get_app_list = admin.site.get_app_list
+
+
+def _ai_assistant_ordered_get_app_list(self, request, app_label=None):
+    app_list = _default_get_app_list(request, app_label)
+    for app in app_list:
+        if app["app_label"] == "ai_assistant":
+            app["models"].sort(
+                key=lambda model: (
+                    AI_ASSISTANT_ADMIN_MODEL_ORDER.index(model["object_name"])
+                    if model["object_name"] in AI_ASSISTANT_ADMIN_MODEL_ORDER
+                    else len(AI_ASSISTANT_ADMIN_MODEL_ORDER)
+                )
+            )
+    return app_list
+
+
+admin.site.get_app_list = types.MethodType(
+    _ai_assistant_ordered_get_app_list, admin.site
+)
