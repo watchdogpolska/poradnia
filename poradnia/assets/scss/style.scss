@@ -306,10 +306,9 @@ label {
 // `.pagination`) was dropped entirely in BS4+ with no replacement - unlike
 // `.panel`/`.well`/`.page-header`, the original migration's component
 // audit never touched it, so `.pager` has had zero CSS at all since the
-// migration landed, for every one of its three usages in the app
-// (cases/_case_pager.html, events/calendar.html, notifications_custom/
-// templates/notifications/list.html) - found via a user report on the
-// case-detail prev/next-letter pager. Restored as bootstrap-sass 3.4.3's
+// migration landed, for both of its usages in the app
+// (cases/_case_pager.html, events/calendar.html) - found via a user report
+// on the case-detail prev/next-letter pager. Restored as bootstrap-sass 3.4.3's
 // actual stock `.pager` (this app never customized $pager-*/$pagination-*
 // away from their defaults): a centered row of pill-shaped, bordered
 // links, `.previous` floated left and `.next` floated right (used by
