@@ -12,6 +12,7 @@ from django.contrib import messages
 from django.contrib.auth import REDIRECT_FIELD_NAME
 from django.contrib.auth.views import redirect_to_login
 from django.core.exceptions import ImproperlyConfigured, PermissionDenied
+from django.http import Http404
 from django.utils.encoding import force_str
 
 
@@ -118,3 +119,23 @@ class UserKwargModelFormMixin:
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop("user", None)
         super().__init__(*args, **kwargs)
+
+
+class NoRowDetailsMixin:
+    """Answers ajax_datatable's action=details with 404.
+
+    AjaxDatatableView.dispatch() handles action=details before the view's
+    queryset scoping runs, and its default render_row_details() loads any
+    row by pk and prints every concrete field unescaped (User.password
+    included). Use on every AjaxDatatableView that does not show the row
+    tools column; a view that needs row details must override
+    render_row_details() with its own .for_user() lookup and escaping, as
+    LetterAjaxDatatableView does. Put it after the auth mixins, so anonymous
+    users are still sent to the login page first.
+    """
+
+    def dispatch(self, request, *args, **kwargs):
+        params = request.GET if request.method == "GET" else request.POST
+        if params.get("action") == "details":
+            raise Http404
+        return super().dispatch(request, *args, **kwargs)

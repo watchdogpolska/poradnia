@@ -110,6 +110,28 @@
         </div>
         <div>
             <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
+                title="{% trans 'Cases that have an AI-generated similar cases letter.' %}">
+            </i>
+            <label>{% trans 'Has AI similar cases' %}:</label><br>
+            <input type="checkbox" id="has_ai_similar_cases_yes" name="check_has_ai_similar_cases_yes" checked>
+            <label for="has_ai_similar_cases_yes" class="small">{% trans 'Yes' %}</label><br>
+            <input type="checkbox" id="has_ai_similar_cases_no" name="check_has_ai_similar_cases_no" checked>
+            <label for="has_ai_similar_cases_no" class="small">{% trans 'No' %}</label><br>
+            <br><br>
+        </div>
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
+                title="{% trans 'Cases with an AI-generated similar cases letter not yet accepted or rejected by staff.' %}">
+            </i>
+            <label>{% trans 'AI similar cases to review' %}:</label><br>
+            <input type="checkbox" id="has_ai_similar_cases_to_review_yes" name="check_has_ai_similar_cases_to_review_yes" checked>
+            <label for="has_ai_similar_cases_to_review_yes" class="small">{% trans 'Yes' %}</label><br>
+            <input type="checkbox" id="has_ai_similar_cases_to_review_no" name="check_has_ai_similar_cases_to_review_no" checked>
+            <label for="has_ai_similar_cases_to_review_no" class="small">{% trans 'No' %}</label><br>
+            <br><br>
+        </div>
+        <div>
+            <i class="fa-regular fa-circle-question" data-bs-toggle="tooltip" data-placement="bottom"
                 title="{% trans 'Cases whose tag has an AI-generated tag suggestion.' %}">
             </i>
             <label>{% trans 'Has AI tag suggestion' %}:</label><br>

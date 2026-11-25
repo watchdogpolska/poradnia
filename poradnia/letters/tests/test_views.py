@@ -712,6 +712,111 @@ class ReceiveEmailTestCase(TestCase):
         self.assertEqual(len(emails), 1)
         self.assertIn(user.email, emails)
 
+    def test_reject_wrong_content_type(self):
+        response = self.client.post(
+            path=self.authenticated_url, data="{}", content_type="application/json"
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(Letter.objects.exists())
+
+    def test_reject_missing_manifest(self):
+        body = self._get_body()
+        del body["manifest"]
+        response = self.client.post(path=self.authenticated_url, data=body)
+        self.assertContains(response, "Missing 'manifest'", status_code=400)
+        self.assertFalse(Letter.objects.exists())
+
+    def test_reject_missing_eml(self):
+        body = self._get_body()
+        del body["eml"]
+        response = self.client.post(path=self.authenticated_url, data=body)
+        self.assertContains(response, "Missing 'eml'", status_code=400)
+        self.assertFalse(Letter.objects.exists())
+
+    def test_refuse_misaddressed_autoreply_without_notifying(self):
+        response = self.client.post(
+            path=self.authenticated_url,
+            data=self._get_body(
+                headers={
+                    "to": ["some-other-mail@example.com"],
+                    "auto_reply_type": "vacation-reply",
+                }
+            ),
+        )
+        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.json()["reason"], "autoreply")
+        self.assertFalse(response.json()["notified"])
+        self.assertEqual(len(mail.outbox), 0)
+        self.assertFalse(Letter.objects.exists())
+
+    def test_reject_missing_sender(self):
+        response = self.client.post(
+            path=self.authenticated_url, data=self._get_body(headers={"from": []})
+        )
+        self.assertContains(response, "Missing sender email address", status_code=400)
+        self.assertFalse(Letter.objects.exists())
+
+    def test_multiple_matching_cases_uses_existing_case(self):
+        first, second = CaseFactory(), CaseFactory()
+        cases_before = Case.objects.count()
+        body = self._get_body(headers={"to+": [first.get_email(), second.get_email()]})
+        response = self.client.post(path=self.authenticated_url, data=body)
+        self.assertEqual(response.json()["status"], "OK")
+        self.assertEqual(Case.objects.count(), cases_before)
+        letter = Letter.objects.get(pk=response.json()["letter"])
+        self.assertIn(letter.case_id, [first.pk, second.pk])
+
+    def test_staff_sender_without_send_permission_creates_staff_letter(self):
+        case = CaseFactory(handled=True)
+        staff = UserFactory(is_staff=True)
+        response = self.client.post(
+            path=self.authenticated_url, data=self._get_body(case, from_=staff.email)
+        )
+        letter = Letter.objects.get(pk=response.json()["letter"])
+        self.assertEqual(letter.status, Letter.STATUS.staff)
+        self.assertFalse(Case.objects.get(pk=case.pk).handled)
+
+    def test_staff_sender_with_send_permission_marks_case_handled(self):
+        case = CaseFactory(handled=False)
+        staff = UserFactory(is_staff=True)
+        assign_perm("cases.can_send_to_client", staff, case)
+        response = self.client.post(
+            path=self.authenticated_url, data=self._get_body(case, from_=staff.email)
+        )
+        letter = Letter.objects.get(pk=response.json()["letter"])
+        self.assertEqual(letter.status, Letter.STATUS.done)
+        self.assertTrue(Case.objects.get(pk=case.pk).handled)
+
+    @override_settings(SIMILAR_CASES_INDEX_ENABLED=False)
+    def test_new_case_enqueues_new_case_pipeline(self):
+        with (
+            patch("poradnia.cases.tasks.process_new_case_pipeline_task.delay") as delay,
+            self.captureOnCommitCallbacks(execute=True),
+        ):
+            response = self.client.post(
+                path=self.authenticated_url, data=self._get_body()
+            )
+        letter = Letter.objects.get(pk=response.json()["letter"])
+        delay.assert_called_once_with(letter.case_id, letter.pk)
+
+    @override_settings(SIMILAR_CASES_INDEX_ENABLED=False)
+    def test_existing_case_enqueues_attachment_text_extraction(self):
+        case = CaseFactory()
+        with (
+            patch(
+                "poradnia.letters.tasks.update_letter_attachments_text_content_task.delay"
+            ) as delay,
+            patch(
+                "poradnia.cases.tasks.process_new_case_pipeline_task.delay"
+            ) as pipeline,
+            self.captureOnCommitCallbacks(execute=True),
+        ):
+            response = self.client.post(
+                path=self.authenticated_url, data=self._get_body(case)
+            )
+        delay.assert_called_once_with(response.json()["letter"])
+        pipeline.assert_not_called()
+
     def _get_body(self, case=None, from_=None, headers=None):
         domain = settings.PORADNIA_EMAIL_DOMAIN
         manifest = {
@@ -756,3 +861,282 @@ class LetterRowToolsTestCase(TestCase):
         ]
         self.assertIn('alt="Pokaż szczegóły"', content)
         self.assertIn('alt="Ukryj szczegóły"', content)
+
+
+class ProtectedMediaViewTestCase(TestCase):
+    def setUp(self):
+        self.attachment = AttachmentFactory(letter__status=Letter.STATUS.done)
+        self.letter = self.attachment.letter
+        self.case = self.letter.case
+        self.attachment_url = f"/media/{self.attachment.attachment.name}"
+        self.eml_url = f"/media/{self.letter.eml.name}"
+
+    def _login_with_case_access(self, **kwargs):
+        user = UserFactory(**kwargs)
+        assign_perm("cases.can_view", user, self.case)
+        self.client.login(username=user.username, password="pass")
+        return user
+
+    def _content(self, resp):
+        return b"".join(resp.streaming_content)
+
+    def test_anonymous_redirected_to_login(self):
+        resp = self.client.get(self.attachment_url)
+        self.assertEqual(resp.status_code, 302)
+        self.assertTrue(resp["Location"].startswith(reverse(settings.LOGIN_URL)))
+
+    def test_user_with_case_access_downloads_attachment(self):
+        self._login_with_case_access()
+        resp = self.client.get(self.attachment_url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("attachment;", resp["Content-Disposition"])
+        self.attachment.attachment.open("rb")
+        try:
+            self.assertEqual(self._content(resp), self.attachment.attachment.read())
+        finally:
+            self.attachment.attachment.close()
+
+    def test_user_with_case_access_downloads_eml(self):
+        self._login_with_case_access()
+        resp = self.client.get(self.eml_url)
+        self.assertEqual(resp.status_code, 200)
+        self._content(resp)
+
+    def test_user_without_case_access_gets_404(self):
+        self.client.login(username=UserFactory().username, password="pass")
+        self.assertEqual(self.client.get(self.attachment_url).status_code, 404)
+        self.assertEqual(self.client.get(self.eml_url).status_code, 404)
+
+    def test_staff_without_case_access_gets_404(self):
+        user = UserFactory(is_staff=True)
+        self.client.login(username=user.username, password="pass")
+        self.assertEqual(self.client.get(self.attachment_url).status_code, 404)
+
+    def test_client_cannot_download_staff_only_letter_files(self):
+        self.letter.status = Letter.STATUS.staff
+        self.letter.save()
+        self._login_with_case_access()
+        self.assertEqual(self.client.get(self.attachment_url).status_code, 404)
+        self.assertEqual(self.client.get(self.eml_url).status_code, 404)
+
+    def test_staff_with_case_access_downloads_staff_only_letter_files(self):
+        self.letter.status = Letter.STATUS.staff
+        self.letter.save()
+        self._login_with_case_access(is_staff=True)
+        resp = self.client.get(self.attachment_url)
+        self.assertEqual(resp.status_code, 200)
+        self._content(resp)
+
+    def test_unsupported_path_gets_404(self):
+        self._login_with_case_access()
+        self.assertEqual(self.client.get("/media/other/file.txt").status_code, 404)
+
+    def test_traversal_path_gets_404(self):
+        self._login_with_case_access()
+        resp = self.client.get("/media/letters/../../config/settings/common.py")
+        self.assertEqual(resp.status_code, 404)
+
+    def test_missing_file_on_disk_gets_404(self):
+        self._login_with_case_access()
+        os.remove(self.attachment.attachment.path)
+        self.assertEqual(self.client.get(self.attachment_url).status_code, 404)
+
+
+class LetterCreateViewTestCase(TestCase):
+    def setUp(self):
+        self.case = CaseFactory()
+        self.url = reverse("letters:add", kwargs={"case_pk": self.case.pk})
+
+    def _login(self, user):
+        self.client.login(username=user.username, password="pass")
+
+    def test_anonymous_redirected_to_login(self):
+        self.assertEqual(self.client.get(self.url).status_code, 302)
+
+    def test_user_without_add_record_permission_forbidden(self):
+        self._login(UserFactory())
+        self.assertEqual(self.client.get(self.url).status_code, 403)
+        self.assertEqual(self.client.post(self.url, {}).status_code, 403)
+
+    def test_missing_case_gets_404(self):
+        self._login(UserFactory())
+        url = reverse("letters:add", kwargs={"case_pk": self.case.pk + 1000})
+        self.assertEqual(self.client.get(url).status_code, 404)
+
+    def test_user_with_add_record_permission_gets_form(self):
+        user = UserFactory()
+        assign_perm("cases.can_add_record", user, self.case)
+        self._login(user)
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, "letters/form_add.html")
+        self.assertEqual(resp.context["case"], self.case)
+        self.assertIn("attachments_form", resp.context)
+
+
+class LetterUpdateViewTestCase(TestCase):
+    def setUp(self):
+        self.author = UserFactory(is_staff=True)
+        self.letter = LetterFactory(created_by=self.author)
+        self.case = self.letter.case
+        self.url = reverse("letters:edit", kwargs={"pk": self.letter.pk})
+
+    def _login(self, user):
+        self.client.login(username=user.username, password="pass")
+
+    def test_author_with_change_own_permission_gets_form(self):
+        assign_perm("cases.can_change_own_record", self.author, self.case)
+        self._login(self.author)
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, "letters/form_edit.html")
+        self.assertEqual(resp.context["case"], self.case)
+
+    def test_author_without_change_own_permission_forbidden(self):
+        self._login(self.author)
+        self.assertEqual(self.client.get(self.url).status_code, 403)
+
+    def test_other_user_with_only_change_own_permission_forbidden(self):
+        other = UserFactory(is_staff=True)
+        assign_perm("cases.can_change_own_record", other, self.case)
+        self._login(other)
+        self.assertEqual(self.client.get(self.url).status_code, 403)
+
+    def test_other_user_with_change_all_permission_gets_form(self):
+        other = UserFactory(is_staff=True)
+        assign_perm("cases.can_change_all_record", other, self.case)
+        self._login(other)
+        self.assertEqual(self.client.get(self.url).status_code, 200)
+
+    def test_anonymous_forbidden(self):
+        # No LoginRequiredMixin here: the per-case permission check rejects
+        # anonymous users with 403 instead of redirecting to the login page.
+        self.assertEqual(self.client.get(self.url).status_code, 403)
+
+
+class LetterListViewTestCase(TestCase):
+    url = reverse_lazy("letters:list")
+
+    def _login(self, user):
+        self.client.login(username=user.username, password="pass")
+
+    def test_anonymous_redirected_to_login(self):
+        self.assertEqual(self.client.get(self.url).status_code, 302)
+
+    def test_staff_gets_status_filter(self):
+        self._login(UserFactory(is_staff=True))
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertIn("status", resp.context["filter"].form.fields)
+
+    def test_client_sees_only_done_letters_of_own_cases(self):
+        user = UserFactory()
+        done = LetterFactory(status=Letter.STATUS.done)
+        staff_only = LetterFactory(case=done.case, status=Letter.STATUS.staff)
+        other = LetterFactory(status=Letter.STATUS.done)
+        assign_perm("cases.can_view", user, done.case)
+        self._login(user)
+        resp = self.client.get(self.url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertNotIn("status", resp.context["filter"].form.fields)
+        letters = list(resp.context["object_list"])
+        self.assertIn(done, letters)
+        self.assertNotIn(staff_only, letters)
+        self.assertNotIn(other, letters)
+
+
+class LetterTableViewTestCase(TestCase):
+    def test_renders_table_with_ajax_url(self):
+        user = UserFactory(is_staff=True)
+        self.client.login(username=user.username, password="pass")
+        resp = self.client.get(reverse("letters:table"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertEqual(
+            resp.context["ajax_datatable_url"],
+            reverse("letters:letters_table_ajax_data"),
+        )
+
+    def test_anonymous_redirected_to_login(self):
+        resp = self.client.get(reverse("letters:table"))
+        self.assertEqual(resp.status_code, 302)
+
+
+class LetterAjaxDatatableRowDetailsTestCase(TestCase):
+    url = reverse_lazy("letters:letters_table_ajax_data")
+
+    def _details(self, pk):
+        return self.client.post(
+            self.url,
+            {"action": "details", "pk": pk},
+            headers={"accept": "application/json"},
+        )
+
+    def _login_with_case_access(self, letter, **kwargs):
+        user = UserFactory(**kwargs)
+        assign_perm("cases.can_view", user, letter.case)
+        self.client.login(username=user.username, password="pass")
+        return user
+
+    def test_staff_with_access_gets_letter_details(self):
+        letter = LetterFactory(text="line one\r\nline two")
+        self._login_with_case_access(letter, is_staff=True)
+        html = self._details(letter.pk).json()["html"]
+        self.assertIn("line one<br>line two", html)
+        self.assertNotIn("\r", html)
+
+    def test_user_without_case_access_cannot_read_letter_details(self):
+        letter = LetterFactory(text="confidential-letter-text")
+        user = UserFactory()
+        self.client.login(username=user.username, password="pass")
+        resp = self._details(letter.pk)
+        self.assertEqual(resp.status_code, 404)
+        self.assertNotContains(resp, "confidential-letter-text", status_code=404)
+
+    def test_staff_without_case_access_cannot_read_letter_details(self):
+        letter = LetterFactory(text="confidential-letter-text")
+        user = UserFactory(is_staff=True)
+        self.client.login(username=user.username, password="pass")
+        self.assertEqual(self._details(letter.pk).status_code, 404)
+
+    def test_client_cannot_read_staff_only_letter_details(self):
+        letter = LetterFactory(status=Letter.STATUS.staff, text="internal-note")
+        self._login_with_case_access(letter)
+        resp = self._details(letter.pk)
+        self.assertEqual(resp.status_code, 404)
+        self.assertNotContains(resp, "internal-note", status_code=404)
+
+    def test_client_with_access_gets_done_letter_details(self):
+        letter = LetterFactory(status=Letter.STATUS.done, text="reply-to-client")
+        self._login_with_case_access(letter)
+        self.assertIn("reply-to-client", self._details(letter.pk).json()["html"])
+
+    def test_missing_letter_gets_404(self):
+        letter = LetterFactory()
+        self._login_with_case_access(letter, is_staff=True)
+        self.assertEqual(self._details(letter.pk + 1000).status_code, 404)
+
+    def test_letter_details_escape_plain_fields(self):
+        letter = LetterFactory(
+            name="<img src=x onerror=alert(1)>",
+            signature="<script>alert(2)</script>",
+            text="<b>text</b>",
+        )
+        self._login_with_case_access(letter, is_staff=True)
+        html = self._details(letter.pk).json()["html"]
+        self.assertNotIn("<img src=x", html)
+        self.assertIn("&lt;img src=x onerror=alert(1)&gt;", html)
+        self.assertNotIn("<script>", html)
+        self.assertNotIn("<b>text</b>", html)
+        self.assertIn("&lt;b&gt;text&lt;/b&gt;", html)
+
+    def test_letter_details_sanitize_stored_raw_html(self):
+        letter = LetterFactory()
+        # Bypass write-side sanitising, like rows saved before it existed.
+        Letter.objects.filter(pk=letter.pk).update(
+            html='<p onclick="alert(1)">kept</p><script>alert(2)</script>'
+        )
+        self._login_with_case_access(letter, is_staff=True)
+        html = self._details(letter.pk).json()["html"]
+        self.assertIn("<p>kept</p>", html)
+        self.assertNotIn("onclick", html)
+        self.assertNotIn("<script>", html)

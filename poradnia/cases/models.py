@@ -193,7 +193,10 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
 
     def with_ai_review_flags(self):
         from poradnia.advicer.models import Advice
-        from poradnia.ai_assistant.models import N8nArticlesSearchRequest
+        from poradnia.ai_assistant.models import (
+            N8nArticlesSearchRequest,
+            N8nSimilarCasesRequest,
+        )
 
         return self.annotate(
             has_ai_articles=Exists(
@@ -203,6 +206,19 @@ class CaseQuerySet(FormattedDatetimeMixin, UserPrettyNameMixin, QuerySet):
             ),
             has_ai_articles_to_review=Exists(
                 N8nArticlesSearchRequest.objects.filter(
+                    case=OuterRef("pk"),
+                    letter__isnull=False,
+                    accepted_at__isnull=True,
+                    rejected_at__isnull=True,
+                )
+            ),
+            has_ai_similar_cases=Exists(
+                N8nSimilarCasesRequest.objects.filter(
+                    case=OuterRef("pk"), letter__isnull=False
+                )
+            ),
+            has_ai_similar_cases_to_review=Exists(
+                N8nSimilarCasesRequest.objects.filter(
                     case=OuterRef("pk"),
                     letter__isnull=False,
                     accepted_at__isnull=True,

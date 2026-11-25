@@ -32,7 +32,11 @@ from poradnia.letters.models import Attachment
 from poradnia.records.models import Record
 from poradnia.users.views import PermissionMixin
 from poradnia.utils.guardian_helpers import RaisePermissionRequiredMixin
-from poradnia.utils.view_mixins import SelectRelatedMixin, UserFormKwargsMixin
+from poradnia.utils.view_mixins import (
+    NoRowDetailsMixin,
+    SelectRelatedMixin,
+    UserFormKwargsMixin,
+)
 
 
 class SingleObjectPermissionMixin(RaisePermissionRequiredMixin):
@@ -180,7 +184,7 @@ class CaseTableView(PermissionMixin, TemplateView):
         return context
 
 
-class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
+class CaseAjaxDatatableView(PermissionMixin, NoRowDetailsMixin, AjaxDatatableView):
     """
     View to provide table list of all Cases with ajax data.
     """
@@ -297,6 +301,14 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         qs = qs.ajax_boolean_filter(self.request, "has_ai_articles_", "has_ai_articles")
         qs = qs.ajax_boolean_filter(
             self.request, "has_ai_articles_to_review_", "has_ai_articles_to_review"
+        )
+        qs = qs.ajax_boolean_filter(
+            self.request, "has_ai_similar_cases_", "has_ai_similar_cases"
+        )
+        qs = qs.ajax_boolean_filter(
+            self.request,
+            "has_ai_similar_cases_to_review_",
+            "has_ai_similar_cases_to_review",
         )
         qs = qs.ajax_boolean_filter(
             self.request, "has_ai_tag_suggestion_", "has_ai_tag_suggestion"

@@ -29,6 +29,7 @@ from poradnia.users.utils import PermissionMixin
 from poradnia.utils.guardian_helpers import RaisePermissionRequiredMixin
 from poradnia.utils.view_mixins import (
     FormValidMessageMixin,
+    NoRowDetailsMixin,
     SelectRelatedMixin,
     UserFormKwargsMixin,
 )
@@ -156,7 +157,7 @@ class EventTableView(PermissionMixin, TemplateView):
         return context
 
 
-class EventAjaxDatatableView(PermissionMixin, AjaxDatatableView):
+class EventAjaxDatatableView(PermissionMixin, NoRowDetailsMixin, AjaxDatatableView):
     """
     View to provide table list of all Events with ajax data.
     """
