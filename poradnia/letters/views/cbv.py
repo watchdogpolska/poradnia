@@ -30,7 +30,7 @@ from django.template.defaultfilters import linebreaksbr
 from django.urls import reverse
 from django.utils import timezone
 from django.utils._os import safe_join
-from django.utils.html import escape
+from django.utils.html import escape, format_html
 from django.utils.safestring import mark_safe
 from django.utils.translation import gettext_lazy as _
 from django.views import View
@@ -386,27 +386,37 @@ class LetterAjaxDatatableView(PermissionMixin, AjaxDatatableView):
         )
 
     def render_row_details(self, pk, request=None):
-        obj = self.model.objects.filter(id=pk).first()
+        # ajax_datatable dispatches action=details straight here, bypassing
+        # get_initial_queryset(), so the per-user scoping must be repeated.
+        obj = get_object_or_404(self.model.objects.for_user(self.request.user), pk=pk)
         fields_to_skip = ["case", "status_changed", "eml"]
         fields = [
             f.name
             for f in obj._meta.get_fields()
             if f.concrete and f.name not in fields_to_skip
         ]
-        html = '<table class="table table-bordered compact" style="max-width: 70%;">'
+        html = mark_safe(
+            '<table class="table table-bordered compact" style="max-width: 70%;">'
+        )
         for field in fields:
             try:
                 value = getattr(obj, field) or ""
                 if field == "text":
-                    value = mark_safe(linebreaksbr(value.replace("\r", "")))
+                    # linebreaksbr() escapes before adding <br>.
+                    value = linebreaksbr(value.replace("\r", ""))
+                elif field == "html":
+                    # Stored rows may predate write-side sanitising.
+                    value = mark_safe(sanitize_html(value))
                 elif isinstance(value, datetime.datetime):
                     value = timezone.localtime(value).strftime("%Y-%m-%d %H:%M:%S")
                 verbose_n = obj._meta.get_field(field).verbose_name
             except AttributeError:
                 continue
-            html += f'<tr><td style="width: 20%;">{verbose_n}</td><td>{value}</td></tr>'
-        html += "</table>"
-        return mark_safe(html)
+            html += format_html(
+                '<tr><td style="width: 20%;">{}</td><td>{}</td></tr>', verbose_n, value
+            )
+        html += mark_safe("</table>")
+        return html
 
 
 class ReceiveEmailView(View):

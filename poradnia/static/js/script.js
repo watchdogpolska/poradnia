@@ -34239,6 +34239,34 @@ document.addEventListener("DOMContentLoaded", function () {
           ? 1
           : 0;
       },
+      has_ai_similar_cases_yes: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_similar_cases_yes']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      has_ai_similar_cases_no: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_similar_cases_no']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      has_ai_similar_cases_to_review_yes: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_similar_cases_to_review_yes']",
+        ).checked
+          ? 1
+          : 0;
+      },
+      has_ai_similar_cases_to_review_no: function () {
+        return document.querySelector(
+          "input[name='check_has_ai_similar_cases_to_review_no']",
+        ).checked
+          ? 1
+          : 0;
+      },
       has_ai_tag_suggestion_yes: function () {
         return document.querySelector(
           "input[name='check_has_ai_tag_suggestion_yes']",
