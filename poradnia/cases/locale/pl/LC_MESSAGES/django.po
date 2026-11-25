@@ -547,7 +547,7 @@ msgstr "Sprawy, które mają list z sugestią artykułów wygenerowaną przez AI
 
 #: poradnia/cases/templates/cases/case_table.html:93
 msgid "Has AI articles"
-msgstr "Posiada artykuły AI"
+msgstr "Ma artykuły AI"
 
 #: poradnia/cases/templates/cases/case_table.html:102
 msgid ""
@@ -562,12 +562,32 @@ msgid "AI articles to review"
 msgstr "Artykuły AI do oceny"
 
 #: poradnia/cases/templates/cases/case_table.html:113
+msgid "Cases that have an AI-generated similar cases letter."
+msgstr "Sprawy, które mają list z podobnymi sprawami wygenerowany przez AI."
+
+#: poradnia/cases/templates/cases/case_table.html:115
+msgid "Has AI similar cases"
+msgstr "Ma podobne sprawy AI"
+
+#: poradnia/cases/templates/cases/case_table.html:124
+msgid ""
+"Cases with an AI-generated similar cases letter not yet accepted or rejected "
+"by staff."
+msgstr ""
+"Sprawy z listem z podobnymi sprawami wygenerowanym przez AI, jeszcze "
+"niezaakceptowanym ani nieodrzuconym przez członka zespołu."
+
+#: poradnia/cases/templates/cases/case_table.html:126
+msgid "AI similar cases to review"
+msgstr "Podobne sprawy AI do oceny"
+
+#: poradnia/cases/templates/cases/case_table.html:135
 msgid "Cases whose tag has an AI-generated tag suggestion."
 msgstr "Sprawy, których tag ma sugestię tagów wygenerowaną przez AI."
 
-#: poradnia/cases/templates/cases/case_table.html:115
+#: poradnia/cases/templates/cases/case_table.html:137
 msgid "Has AI tag suggestion"
-msgstr "Posiada sugestie tagów AI"
+msgstr "Ma sugestie tagów AI"
 
 #: poradnia/cases/views/cases.py:91
 msgid "Letter"

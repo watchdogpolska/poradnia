@@ -299,6 +299,14 @@ class CaseAjaxDatatableView(PermissionMixin, AjaxDatatableView):
             self.request, "has_ai_articles_to_review_", "has_ai_articles_to_review"
         )
         qs = qs.ajax_boolean_filter(
+            self.request, "has_ai_similar_cases_", "has_ai_similar_cases"
+        )
+        qs = qs.ajax_boolean_filter(
+            self.request,
+            "has_ai_similar_cases_to_review_",
+            "has_ai_similar_cases_to_review",
+        )
+        qs = qs.ajax_boolean_filter(
             self.request, "has_ai_tag_suggestion_", "has_ai_tag_suggestion"
         )
         return (
