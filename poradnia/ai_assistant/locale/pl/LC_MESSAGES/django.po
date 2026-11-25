@@ -102,6 +102,18 @@ msgstr "Zakres poradnictwa"
 msgid "Scope source"
 msgstr "Źródło zakresu poradnictwa"
 
+msgid "Articles search request"
+msgstr "Zapytanie o wyszukanie artykułów"
+
+msgid "Articles search requests"
+msgstr "Zapytania o wyszukanie artykułów"
+
+msgid "Case tags request"
+msgstr "Zapytanie o tagi sprawy"
+
+msgid "Case tags requests"
+msgstr "Zapytania o tagi sprawy"
+
 #: poradnia/ai_assistant/models.py:342
 msgid "Similar cases request"
 msgstr "Zapytanie o podobne sprawy"

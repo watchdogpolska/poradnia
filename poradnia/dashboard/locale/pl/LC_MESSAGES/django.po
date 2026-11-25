@@ -158,6 +158,10 @@ msgstr "przypisane sprawy"
 msgid "cases missing"
 msgstr "sprawy bez przypisania"
 
+#: poradnia/dashboard/reports.py:354
+msgid "Scopes report"
+msgstr "Raport zakresów poradnictwa"
+
 #: poradnia/dashboard/reports.py:347
 msgid "Issues report"
 msgstr "Raport zagadnień"

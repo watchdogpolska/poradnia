@@ -65,6 +65,7 @@ class AdvicesTabView(StaffDashboardMixin, YearMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         year = self.get_selected_year()
         context["advices_reports"] = [
+            reports.scopes_report(year),
             reports.issues_report(year),
             reports.areas_report(year),
             reports.institution_kind_report(year),

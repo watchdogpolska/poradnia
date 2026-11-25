@@ -558,6 +558,10 @@ msgstr "Pokaż szczegóły"
 msgid "Hide details"
 msgstr "Ukryj szczegóły"
 
+#: poradnia/templates/_list.html
+msgid "No items."
+msgstr "Brak pozycji."
+
 #~ msgid ""
 #~ "(No content defined: <a href=\"%(add_url)s?name=%(name_url)s\" title=\"Add "
 #~ "content here\">Add some</a>)"

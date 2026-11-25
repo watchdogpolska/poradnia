@@ -1,12 +1,24 @@
 import re
 from datetime import datetime, timedelta
 from hashlib import md5
+from io import StringIO
 from unittest.mock import patch
+from urllib.parse import quote
 
-from allauth.account.models import EmailAddress
+from allauth.account.models import EmailAddress, EmailConfirmationHMAC
+from allauth.mfa.recovery_codes.internal.auth import RecoveryCodes
+from allauth.mfa.totp.internal.auth import (
+    TOTP,
+    format_hotp_value,
+    generate_totp_secret,
+    hotp_value,
+    yield_hotp_counters_from_time,
+)
+from django.conf import settings
 from django.contrib.admin import helpers
 from django.core import mail
 from django.core.cache import cache
+from django.core.management import CommandError, call_command
 from django.test import RequestFactory, override_settings
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -14,10 +26,13 @@ from django.utils.encoding import force_bytes
 from django.utils.html import escape
 from django.utils.http import urlsafe_base64_encode
 from guardian.shortcuts import assign_perm, get_perms
+from guardian.utils import get_anonymous_user
 from test_plus.test import TestCase
 
+from poradnia.advicer.factories import AdviceFactory
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
+from poradnia.users.admin import IsSpamUserFilter
 from poradnia.users.factories import StaffFactory, UserFactory
 from poradnia.users.forms import (
     TranslatedManageObjectPermissionForm,
@@ -195,6 +210,38 @@ class UserQuerySetTestCase(TestCase):
 
     def test_register_by_email_notify(self):
         self._register_by_email_count(notify=False, count=0)
+
+    def test_spam_excludes_protected_users(self):
+        spam = UserFactory()
+        advice = AdviceFactory()
+        protected = [
+            UserFactory(is_staff=True),
+            UserFactory(is_superuser=True),
+            UserFactory(username=settings.JUDGEMENT_BOT_USERNAME),
+            UserFactory(username=settings.AI_ASSISTANT_USERNAME),
+            get_anonymous_user(),
+            advice.advicer,
+            advice.created_by,
+        ]
+        spam_pks = set(User.objects.spam().values_list("pk", flat=True))
+        self.assertIn(spam.pk, spam_pks)
+        for user in protected:
+            self.assertNotIn(user.pk, spam_pks, user)
+
+    def test_spam_admin_filter_matches_queryset(self):
+        UserFactory()
+        UserFactory(is_staff=True)
+        UserFactory(username=settings.AI_ASSISTANT_USERNAME)
+
+        def filtered(value):
+            spam_filter = IsSpamUserFilter(None, {"is_spam_user": [value]}, User, None)
+            qs = spam_filter.queryset(None, User.objects.all())
+            return set(qs.values_list("pk", flat=True))
+
+        spam_pks = set(User.objects.spam().values_list("pk", flat=True))
+        all_pks = set(User.objects.values_list("pk", flat=True))
+        self.assertEqual(filtered("yes"), spam_pks)
+        self.assertEqual(filtered("no"), all_pks - spam_pks)
 
 
 class UserFormTestCase(TestCase):
@@ -741,3 +788,322 @@ class UserAdminResendActivationEmailActionTestCase(TestCase):
         activated = UserFactory(email="active@example.com")
         self.post_action([activated])
         self.assertEqual(len(mail.outbox), 0)
+
+
+class AllauthAccountPagesTestCase(TestCase):
+    """Smoke-renders the project's overrides of allauth's account templates."""
+
+    def setUp(self):
+        cache.clear()  # allauth rate-limit counters live in the cache
+        self.user = UserFactory()
+        self.primary = EmailAddress.objects.create(
+            user=self.user, email=self.user.email, verified=True, primary=True
+        )
+
+    def assertRendersTemplate(self, url, template_name):
+        resp = self.client.get(url)
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, template_name)
+        return resp
+
+    def test_logout_page(self):
+        self.client.force_login(self.user)
+        self.assertRendersTemplate(reverse("account_logout"), "account/logout.html")
+
+    def test_password_change_page(self):
+        self.client.force_login(self.user)
+        self.assertRendersTemplate(
+            reverse("account_change_password"), "account/password_change.html"
+        )
+
+    def test_password_set_page_for_user_without_password(self):
+        self.user.set_unusable_password()
+        self.user.save()
+        self.client.force_login(self.user)
+        self.assertRendersTemplate(
+            reverse("account_set_password"), "account/password_set.html"
+        )
+
+    def test_email_management_page_lists_addresses(self):
+        EmailAddress.objects.create(
+            user=self.user, email="second@example.com", verified=False
+        )
+        self.client.force_login(self.user)
+        resp = self.assertRendersTemplate(
+            reverse("account_email"), "account/email.html"
+        )
+        self.assertContains(resp, self.user.email)
+        self.assertContains(resp, "second@example.com")
+
+    def test_signup_page(self):
+        self.assertRendersTemplate(reverse("account_signup"), "account/signup.html")
+
+    @patch(
+        "allauth.account.adapter.DefaultAccountAdapter.is_open_for_signup",
+        return_value=False,
+    )
+    def test_signup_closed_page(self, _mock):
+        self.assertRendersTemplate(
+            reverse("account_signup"), "account/signup_closed.html"
+        )
+
+    def test_verification_sent_page(self):
+        self.assertRendersTemplate(
+            reverse("account_email_verification_sent"),
+            "account/verification_sent.html",
+        )
+
+    def test_login_with_unverified_email_shows_verification_sent(self):
+        self.primary.verified = False
+        self.primary.save()
+        resp = self.client.post(
+            reverse("account_login"),
+            data={"login": self.user.username, "password": "pass"},
+            follow=True,
+        )
+        self.assertTemplateUsed(resp, "account/verification_sent.html")
+        self.assertEqual(len(mail.outbox), 1)
+
+    def test_email_confirm_page_with_valid_key(self):
+        unverified = EmailAddress.objects.create(
+            user=self.user, email="confirm-me@example.com", verified=False
+        )
+        key = EmailConfirmationHMAC(unverified).key
+        resp = self.assertRendersTemplate(
+            reverse("account_confirm_email", args=[key]), "account/email_confirm.html"
+        )
+        self.assertContains(resp, "confirm-me@example.com")
+
+    def test_email_confirm_page_with_invalid_key(self):
+        self.assertRendersTemplate(
+            reverse("account_confirm_email", args=["bogus-key"]),
+            "account/email_confirm.html",
+        )
+
+    def test_reauthenticate_page(self):
+        self.client.force_login(self.user)
+        self.assertRendersTemplate(
+            reverse("account_reauthenticate"), "account/base_reauthenticate.html"
+        )
+
+
+class AllauthPasswordResetFlowTestCase(TestCase):
+    def setUp(self):
+        cache.clear()  # allauth rate-limit counters live in the cache
+        self.user = UserFactory()
+        EmailAddress.objects.create(
+            user=self.user, email=self.user.email, verified=True, primary=True
+        )
+
+    def request_reset(self, email):
+        return self.client.post(
+            reverse("account_reset_password"), data={"email": email}, follow=True
+        )
+
+    def test_reset_page(self):
+        resp = self.client.get(reverse("account_reset_password"))
+        self.assertTemplateUsed(resp, "account/password_reset.html")
+
+    def test_known_address_gets_reset_link(self):
+        resp = self.request_reset(self.user.email)
+        self.assertTemplateUsed(resp, "account/password_reset_done.html")
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn(self.user.email, mail.outbox[0].to)
+
+    def test_unknown_address_gets_unknown_account_email(self):
+        resp = self.request_reset("nobody@example.com")
+        # Same page as for a known address, so the form can't be used to
+        # probe which addresses have accounts.
+        self.assertTemplateUsed(resp, "account/password_reset_done.html")
+        self.assertEqual(len(mail.outbox), 1)
+        self.assertIn("nobody@example.com", mail.outbox[0].to)
+
+    def test_reset_link_sets_new_password(self):
+        self.request_reset(self.user.email)
+        reset_url = re.search(r"https?://[^/\s]+(/\S+/key/\S+/)", mail.outbox[0].body)[
+            1
+        ]
+
+        resp = self.client.get(reset_url, follow=True)
+        self.assertTemplateUsed(resp, "account/password_reset_from_key.html")
+        self.assertContains(resp, 'name="password1"')
+
+        resp = self.client.post(
+            resp.redirect_chain[-1][0],
+            data={"password1": "a-Very-Str0ng-Pass", "password2": "a-Very-Str0ng-Pass"},
+            follow=True,
+        )
+        self.assertTemplateUsed(resp, "account/password_reset_from_key_done.html")
+        self.user.refresh_from_db()
+        self.assertTrue(self.user.check_password("a-Very-Str0ng-Pass"))
+
+    def test_invalid_reset_link_shows_token_failure(self):
+        resp = self.client.get(
+            reverse(
+                "account_reset_password_from_key",
+                kwargs={"uidb36": "zz", "key": "bogus-key"},
+            )
+        )
+        self.assertTemplateUsed(resp, "account/password_reset_from_key.html")
+        self.assertNotContains(resp, 'name="password1"')
+
+
+class AllauthMfaPagesTestCase(TestCase):
+    def setUp(self):
+        cache.clear()  # allauth rate-limit counters live in the cache
+        self.user = StaffFactory()
+        EmailAddress.objects.create(
+            user=self.user, email=self.user.email, verified=True, primary=True
+        )
+        self.secret = generate_totp_secret()
+        TOTP.activate(self.user, self.secret)
+        RecoveryCodes.activate(self.user)
+
+    def login_with_password(self):
+        return self.client.post(
+            reverse("account_login"),
+            data={"login": self.user.username, "password": "pass"},
+            follow=True,
+        )
+
+    def current_totp_code(self):
+        counter = next(yield_hotp_counters_from_time())
+        return format_hotp_value(hotp_value(self.secret, counter))
+
+    def test_mfa_index_page(self):
+        self.client.force_login(self.user)
+        resp = self.client.get(reverse("mfa_index"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, "mfa/index.html")
+
+    def test_password_login_asks_for_totp_code(self):
+        resp = self.login_with_password()
+        self.assertTemplateUsed(resp, "mfa/base_entrance.html")
+        self.assertContains(resp, 'name="code"')
+
+    def login_with_password_and_totp(self):
+        self.login_with_password()
+        return self.client.post(
+            reverse("mfa_authenticate"), data={"code": self.current_totp_code()}
+        )
+
+    def test_valid_totp_code_completes_login(self):
+        resp = self.login_with_password_and_totp()
+        self.assertRedirects(resp, reverse("home"), fetch_redirect_response=False)
+        self.assertEqual(int(self.client.session["_auth_user_id"]), self.user.pk)
+
+    def test_recovery_codes_page_requires_reauthentication(self):
+        # A real staff login: with only a password record (force_login, or a
+        # bare reauthentication) EnforceStaffMfaOnPasswordLoginMiddleware
+        # bounces every page to mfa_index instead.
+        self.login_with_password_and_totp()
+        resp = self.client.get(reverse("mfa_view_recovery_codes"))
+        self.assertRedirects(
+            resp,
+            reverse("account_reauthenticate")
+            + "?next="
+            + quote(reverse("mfa_view_recovery_codes"), safe=""),
+            fetch_redirect_response=False,
+        )
+
+        # Only an explicit reauthentication counts - a fresh login doesn't.
+        self.client.post(reverse("account_reauthenticate"), data={"password": "pass"})
+        resp = self.client.get(reverse("mfa_view_recovery_codes"))
+        self.assertEqual(resp.status_code, 200)
+        self.assertTemplateUsed(resp, "mfa/recovery_codes/index.html")
+        self.assertTemplateUsed(resp, "mfa/base_manage.html")
+
+
+class DeleteSpamUsersCommandTestCase(TestCase):
+    def call(self, answer="y", **options):
+        out = StringIO()
+        with patch("builtins.input", return_value=answer) as mock_input:
+            call_command("delete_spam_users", stdout=out, **options)
+        return out.getvalue(), mock_input
+
+    def make_spam(self, days_ago=100, **kwargs):
+        user = UserFactory(**kwargs)
+        User.objects.filter(pk=user.pk).update(
+            date_joined=timezone.now() - timedelta(days=days_ago)
+        )
+        return user
+
+    def assertExists(self, *users):
+        for user in users:
+            self.assertTrue(User.objects.filter(pk=user.pk).exists(), user)
+
+    def assertDeleted(self, *users):
+        for user in users:
+            self.assertFalse(User.objects.filter(pk=user.pk).exists(), user)
+
+    def test_limit_is_required(self):
+        with self.assertRaises(CommandError):
+            call_command("delete_spam_users")
+
+    def test_limit_must_be_positive(self):
+        with self.assertRaises(CommandError):
+            call_command("delete_spam_users", limit=0)
+
+    def test_deletes_oldest_spam_users_up_to_limit(self):
+        oldest = self.make_spam(days_ago=130)
+        older = self.make_spam(days_ago=120)
+        newest = self.make_spam(days_ago=110)
+        out, _ = self.call(limit=2)
+        self.assertIn("Spam users matching the criteria: 3", out)
+        self.assertIn("Users to be deleted (limit 2): 2", out)
+        self.assertDeleted(oldest, older)
+        self.assertExists(newest)
+
+    def test_skips_non_spam_staff_and_advice_users(self):
+        logged_in = self.make_spam(last_login=timezone.now())
+        client = self.make_spam()
+        CaseFactory(client=client)
+        staff = self.make_spam(is_staff=True)
+        superuser = self.make_spam(is_superuser=True)
+        advice = AdviceFactory()
+        anonymous = get_anonymous_user()
+        # 0 disables the age filter, so only the spam criteria protect them
+        out, mock_input = self.call(limit=100, older_than_days=0)
+        self.assertIn("Users to be deleted (limit 100): 0", out)
+        mock_input.assert_not_called()
+        self.assertExists(
+            logged_in,
+            client,
+            staff,
+            superuser,
+            advice.advicer,
+            advice.created_by,
+            anonymous,
+        )
+
+    def test_email_domain_filter(self):
+        match = self.make_spam(email="spam@Spam.example")
+        subdomain = self.make_spam(email="spam@mail.spam.example")
+        other = self.make_spam(email="spam@other.example")
+        self.call(limit=100, email_domain="@spam.EXAMPLE")
+        self.assertDeleted(match)
+        self.assertExists(subdomain, other)
+
+    def test_older_than_days_defaults_to_90(self):
+        old = self.make_spam(days_ago=91)
+        recent = self.make_spam(days_ago=89)
+        self.call(limit=100)
+        self.assertDeleted(old)
+        self.assertExists(recent)
+
+    def test_older_than_days_filter(self):
+        old = self.make_spam(days_ago=30)
+        recent = self.make_spam(days_ago=1)
+        self.call(limit=100, older_than_days=7)
+        self.assertDeleted(old)
+        self.assertExists(recent)
+
+    def test_older_than_days_must_not_be_negative(self):
+        with self.assertRaises(CommandError):
+            call_command("delete_spam_users", limit=1, older_than_days=-1)
+
+    def test_declined_confirmation_deletes_nothing(self):
+        user = self.make_spam()
+        out, _ = self.call(answer="n", limit=100)
+        self.assertIn("Aborted, nothing deleted.", out)
+        self.assertExists(user)

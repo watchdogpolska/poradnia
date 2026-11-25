@@ -44,6 +44,7 @@ class AdviceAdmin(admin.ModelAdmin):
     # list_display_links = ["__str__"]
     list_filter = [
         NullCaseFilter,
+        "scope",
         "advicer",
         "visible",
         "person_kind",

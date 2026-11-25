@@ -102,6 +102,7 @@ migrations: wait_mysql
 settings:
 	docker compose run web python manage.py diffsettings
 
+.PHONY: docs
 docs:
 	docker compose run web sphinx-build -b html -d docs/_build/doctrees docs docs/_build/html
 

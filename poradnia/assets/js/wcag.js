@@ -268,7 +268,11 @@ if (document.readyState === "loading") {
 // a .table-responsive wrapper, but DataTables' own scrollX:true markup
 // (.dt-scroll-body) is what actually scrolls there, confirmed by this
 // exact rule never firing on any of those pages in axe_run.js. Same
-// DOMContentLoaded gating as patchTooltipIcons above, same reason.
+// DOMContentLoaded gating as patchTooltipIcons above, same reason. Unlike
+// patchTooltipIcons it is also re-run after every HTMX swap: the dashboard's
+// Cases/Tags/Courts tabs and their year selects load their tables via htmx
+// after DOMContentLoaded (confirmed by axe_run.js on
+// staff_dashboard_tags_tab, mobile). The tabindex check keeps it idempotent.
 function patchScrollableTables() {
   document.querySelectorAll(".table-responsive").forEach(function (el) {
     if (el.hasAttribute("tabindex")) {
@@ -288,6 +292,7 @@ if (document.readyState === "loading") {
 } else {
   patchScrollableTables();
 }
+document.addEventListener("htmx:afterSettle", patchScrollableTables);
 
 // DataTables v3's own sort-header div (.dt-column-order) sets role="button"
 // + tabindex="0" together with aria-label when a column's header first
