@@ -1,6 +1,7 @@
 import re
 from datetime import datetime, timedelta
 from hashlib import md5
+from io import StringIO
 from unittest.mock import patch
 from urllib.parse import quote
 
@@ -13,9 +14,11 @@ from allauth.mfa.totp.internal.auth import (
     hotp_value,
     yield_hotp_counters_from_time,
 )
+from django.conf import settings
 from django.contrib.admin import helpers
 from django.core import mail
 from django.core.cache import cache
+from django.core.management import CommandError, call_command
 from django.test import RequestFactory, override_settings
 from django.urls import reverse, reverse_lazy
 from django.utils import timezone
@@ -23,10 +26,13 @@ from django.utils.encoding import force_bytes
 from django.utils.html import escape
 from django.utils.http import urlsafe_base64_encode
 from guardian.shortcuts import assign_perm, get_perms
+from guardian.utils import get_anonymous_user
 from test_plus.test import TestCase
 
+from poradnia.advicer.factories import AdviceFactory
 from poradnia.cases.factories import CaseFactory
 from poradnia.cases.models import Case
+from poradnia.users.admin import IsSpamUserFilter
 from poradnia.users.factories import StaffFactory, UserFactory
 from poradnia.users.forms import (
     TranslatedManageObjectPermissionForm,
@@ -204,6 +210,38 @@ class UserQuerySetTestCase(TestCase):
 
     def test_register_by_email_notify(self):
         self._register_by_email_count(notify=False, count=0)
+
+    def test_spam_excludes_protected_users(self):
+        spam = UserFactory()
+        advice = AdviceFactory()
+        protected = [
+            UserFactory(is_staff=True),
+            UserFactory(is_superuser=True),
+            UserFactory(username=settings.JUDGEMENT_BOT_USERNAME),
+            UserFactory(username=settings.AI_ASSISTANT_USERNAME),
+            get_anonymous_user(),
+            advice.advicer,
+            advice.created_by,
+        ]
+        spam_pks = set(User.objects.spam().values_list("pk", flat=True))
+        self.assertIn(spam.pk, spam_pks)
+        for user in protected:
+            self.assertNotIn(user.pk, spam_pks, user)
+
+    def test_spam_admin_filter_matches_queryset(self):
+        UserFactory()
+        UserFactory(is_staff=True)
+        UserFactory(username=settings.AI_ASSISTANT_USERNAME)
+
+        def filtered(value):
+            spam_filter = IsSpamUserFilter(None, {"is_spam_user": [value]}, User, None)
+            qs = spam_filter.queryset(None, User.objects.all())
+            return set(qs.values_list("pk", flat=True))
+
+        spam_pks = set(User.objects.spam().values_list("pk", flat=True))
+        all_pks = set(User.objects.values_list("pk", flat=True))
+        self.assertEqual(filtered("yes"), spam_pks)
+        self.assertEqual(filtered("no"), all_pks - spam_pks)
 
 
 class UserFormTestCase(TestCase):
@@ -974,3 +1012,86 @@ class AllauthMfaPagesTestCase(TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertTemplateUsed(resp, "mfa/recovery_codes/index.html")
         self.assertTemplateUsed(resp, "mfa/base_manage.html")
+
+
+class DeleteSpamUsersCommandTestCase(TestCase):
+    def call(self, answer="y", **options):
+        out = StringIO()
+        with patch("builtins.input", return_value=answer) as mock_input:
+            call_command("delete_spam_users", stdout=out, **options)
+        return out.getvalue(), mock_input
+
+    def make_spam(self, days_ago=30, **kwargs):
+        user = UserFactory(**kwargs)
+        User.objects.filter(pk=user.pk).update(
+            date_joined=timezone.now() - timedelta(days=days_ago)
+        )
+        return user
+
+    def assertExists(self, *users):
+        for user in users:
+            self.assertTrue(User.objects.filter(pk=user.pk).exists(), user)
+
+    def assertDeleted(self, *users):
+        for user in users:
+            self.assertFalse(User.objects.filter(pk=user.pk).exists(), user)
+
+    def test_limit_is_required(self):
+        with self.assertRaises(CommandError):
+            call_command("delete_spam_users")
+
+    def test_limit_must_be_positive(self):
+        with self.assertRaises(CommandError):
+            call_command("delete_spam_users", limit=0)
+
+    def test_deletes_oldest_spam_users_up_to_limit(self):
+        oldest = self.make_spam(days_ago=30)
+        older = self.make_spam(days_ago=20)
+        newest = self.make_spam(days_ago=10)
+        out, _ = self.call(limit=2)
+        self.assertIn("Spam users matching the criteria: 3", out)
+        self.assertIn("Users to be deleted (limit 2): 2", out)
+        self.assertDeleted(oldest, older)
+        self.assertExists(newest)
+
+    def test_skips_non_spam_staff_and_advice_users(self):
+        logged_in = self.make_spam(last_login=timezone.now())
+        client = self.make_spam()
+        CaseFactory(client=client)
+        staff = self.make_spam(is_staff=True)
+        superuser = self.make_spam(is_superuser=True)
+        advice = AdviceFactory()
+        anonymous = get_anonymous_user()
+        out, mock_input = self.call(limit=100)
+        self.assertIn("Users to be deleted (limit 100): 0", out)
+        mock_input.assert_not_called()
+        self.assertExists(
+            logged_in,
+            client,
+            staff,
+            superuser,
+            advice.advicer,
+            advice.created_by,
+            anonymous,
+        )
+
+    def test_email_domain_filter(self):
+        match = self.make_spam(email="spam@Spam.example")
+        subdomain = self.make_spam(email="spam@mail.spam.example")
+        other = self.make_spam(email="spam@other.example")
+        self.call(limit=100, email_domain="@spam.EXAMPLE")
+        self.assertDeleted(match)
+        self.assertExists(subdomain, other)
+
+    def test_older_than_days_filter(self):
+        old = self.make_spam(days_ago=30)
+        recent = self.make_spam(days_ago=1)
+        self.call(limit=100, older_than_days=7)
+        self.assertDeleted(old)
+        self.assertExists(recent)
+
+    def test_declined_confirmation_deletes_nothing(self):
+        user = self.make_spam()
+        out, _ = self.call(answer="n", limit=100)
+        self.assertIn("Aborted, nothing deleted.", out)
+        self.assertExists(user)
