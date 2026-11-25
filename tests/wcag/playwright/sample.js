@@ -168,6 +168,13 @@ const SAMPLE = [
     interactions: ["navsearch_modal_open"],
   },
   {
+    id: "staff_dashboard_tags_tab",
+    role: "staff_wsparcie",
+    path: "/dashboard/",
+    note: "Staff dashboard, Tags tab (htmx-loaded report tables)",
+    interactions: ["dashboard_tags_tab_open"],
+  },
+  {
     id: "staff_cases_list",
     role: "staff_wsparcie",
     path: "/sprawy/",

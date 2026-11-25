@@ -95,6 +95,7 @@ def build_workbook(year):
         reports.users_report(year),
         reports.cases_report(year),
         reports.staff_letters_report(year),
+        reports.scopes_report(year),
         reports.issues_report(year),
         reports.areas_report(year),
         reports.institution_kind_report(year),

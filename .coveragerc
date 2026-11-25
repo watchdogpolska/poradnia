@@ -7,6 +7,15 @@ omit =
     */migrations/*
     */tests/*
     */tests.py
+    # Never rendered: only there so makemessages picks up allauth message
+    # strings for the Polish overrides in the project .po (see its README).
+    */templates/account/messages_fake/*
+    # allauth overrides that allauth 65.x never renders - each template's
+    # header comment says when it would become live; drop it from here then.
+    */templates/account/password_delete.html
+    */templates/account/password_delete_done.html
+    */templates/account/email_confirmed.html
+    */templates/account/verified_email_required.html
 plugins =
     django_coverage_plugin
 

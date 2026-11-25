@@ -20,8 +20,12 @@ msgstr ""
 "X-Translated-Using: django-rosetta 0.10.3\n"
 
 #: poradnia/users/admin.py:15
-msgid "Is SPAM user (no login, no cases, no letters)"
-msgstr "Użytkownik ze SPAMu (brak logowania, spraw, listów)"
+msgid ""
+"Is SPAM user (no login, cases, letters or advices; excludes staff and system "
+"accounts)"
+msgstr ""
+"Użytkownik ze SPAMu (brak logowania, spraw, listów, porad; bez zespołu i kont "
+"systemowych)"
 
 #: poradnia/users/admin.py:20 poradnia/users/admin.py:51
 #: poradnia/users/admin.py:74 poradnia/users/admin.py:101
@@ -434,7 +438,7 @@ msgstr "Wszyscy użytkownicy"
 
 #: poradnia/users/views.py:228 poradnia/users/views.py:354
 msgid "Staff"
-msgstr "Zespoł"
+msgstr "Zespół"
 
 #: poradnia/users/views.py:229
 msgid "Clients"

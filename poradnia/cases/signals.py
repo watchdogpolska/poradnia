@@ -31,9 +31,12 @@ def assign_perm_new_case(sender, instance, created, **kwargs):
         instance.assign_perm()
 
 
-@receiver(pre_delete, sender=Case, dispatch_uid="delete_files_for_case")
+# No sender filter: the 6-year cleanup deletes through the DeleteCaseProxy
+# admin, and Django sends delete signals with the proxy class as sender.
+@receiver(pre_delete, dispatch_uid="delete_files_for_case")
 def delete_files(sender, instance, **kwargs):
-    delete_files_for_cases([instance])
+    if isinstance(instance, Case):
+        delete_files_for_cases([instance])
 
 
 @receiver(post_save, sender=Case, dispatch_uid="similar_cases_sync_on_status_change")

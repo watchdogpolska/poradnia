@@ -306,6 +306,17 @@ async function runInteraction(page, kind) {
       await page.waitForTimeout(400); // debounced remote fetch
       break;
     }
+    case "dashboard_tags_tab_open": {
+      // The Tags tab content is lazy-loaded by htmx on first click into
+      // #advices-tables - wait for its first report table to land.
+      const tab = page.locator('a[href="#dashboard-tab-advices"]');
+      await tab.waitFor({ state: "visible", timeout: 5000 });
+      await tab.click();
+      await page.waitForSelector("#advices-tables .dashboard-table-wrapper", {
+        timeout: 5000,
+      });
+      break;
+    }
     case "navsearch_modal_open": {
       const trigger = page
         .locator('a[data-bs-target="#navsearch_modal"]')

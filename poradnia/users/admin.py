@@ -7,11 +7,14 @@ from django.utils.translation import gettext_lazy as _
 from sorl.thumbnail.admin import AdminImageMixin
 
 from . import admin_mfa, admin_socialaccount  # noqa: F401
-from .models import Profile, User
+from .models import Profile, User, spam_user_q
 
 
 class IsSpamUserFilter(admin.SimpleListFilter):
-    title = _("Is SPAM user (no login, no cases, no letters)")
+    title = _(
+        "Is SPAM user (no login, cases, letters or advices; "
+        "excludes staff and system accounts)"
+    )
     parameter_name = "is_spam_user"
 
     def lookups(self, request, model_admin):
@@ -22,21 +25,9 @@ class IsSpamUserFilter(admin.SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == "yes":
-            return queryset.filter(
-                last_login__isnull=True,
-                case_client__isnull=True,
-                case_created__isnull=True,
-                case_modified__isnull=True,
-                letter_created_by__isnull=True,
-            )
+            return queryset.filter(spam_user_q())
         elif self.value() == "no":
-            return queryset.exclude(
-                last_login__isnull=True,
-                case_client__isnull=True,
-                case_created__isnull=True,
-                case_modified__isnull=True,
-                letter_created_by__isnull=True,
-            )
+            return queryset.exclude(spam_user_q())
         else:
             return queryset
 

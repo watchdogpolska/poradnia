@@ -1,10 +1,14 @@
+{% load i18n %}
+{# Optional `title` adds an <h2>; omit it when the including page already heads the list. #}
 <div class="container">
 
-    <div class="row">
-        <div class="col-12">
-            <h2>{{ title }}</h2>
+    {% if title %}
+        <div class="row">
+            <div class="col-12">
+                <h2>{{ title }}</h2>
+            </div>
         </div>
-    </div>
+    {% endif %}
     <div class="row">
         <div class="col-lg-12">
             <div class="list-group">
@@ -16,7 +20,7 @@
                         </a>
                     {% endfor %}
                 {% else %}
-                    No objects for {{ title }}
+                    <p class="list-group-item">{% trans "No items." %}</p>
                 {% endif %}
             </div>
         </div>
