@@ -3,7 +3,11 @@ const {
   addSuperUserPrivileges,
   createAdministrativeDivisionCategory,
   createAdministrativeDivisionUnit,
+  createAdviceArea,
+  createAdviceIssue,
   createAdviceScope,
+  createInstitutionKind,
+  createPersonKind,
 } = require("../testing/management");
 const {
   submitCaseForm,
@@ -84,9 +88,17 @@ describe("datatables", () => {
       );
     createAdministrativeDivisionCategory(cy)(administrativeDivisionCategory);
     createAdministrativeDivisionUnit(cy)(administrativeDivisionUnit);
-    // The advice form requires a scope.
+    // The advice form requires a scope, issues, areas and both kinds.
     const adviceScope = { name: "adviceScopeA" };
     createAdviceScope(cy)(adviceScope);
+    const adviceIssue = { name: "adviceIssueA" };
+    const adviceArea = { name: "adviceAreaA" };
+    const personKind = { name: "personKindA" };
+    const institutionKind = { name: "institutionKindA" };
+    createAdviceIssue(cy)(adviceIssue);
+    createAdviceArea(cy)(adviceArea);
+    createPersonKind(cy)(personKind);
+    createInstitutionKind(cy)(institutionKind);
 
     const case_ = Case.fromId("caseA");
     cy.contains("Nowa sprawa").click();
@@ -105,6 +117,10 @@ describe("datatables", () => {
       solved: 1,
       administrativeDivision: administrativeDivisionUnit.name,
       adviceScope,
+      adviceIssue,
+      adviceArea,
+      personKind,
+      institutionKind,
       adviceAuthor: user,
       ...Advice.fromId("adviceA"),
     };

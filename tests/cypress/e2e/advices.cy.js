@@ -7,6 +7,8 @@ const {
   createAdviceArea,
   createAdviceIssue,
   createAdviceScope,
+  createInstitutionKind,
+  createPersonKind,
 } = require("../testing/management");
 const {
   submitAdviceForm,
@@ -58,6 +60,8 @@ describe("advices", () => {
     );
     // Default flags on both sides, so all issues/areas match this scope.
     const adviceScope = { name: "adviceScopeA" };
+    const personKind = { name: "personKindA" };
+    const institutionKind = { name: "institutionKindA" };
 
     const user = User.fromId("testUser");
     register(cy)(user);
@@ -75,6 +79,8 @@ describe("advices", () => {
       createAdviceIssue(cy)(adviceIssue);
     });
     createAdviceScope(cy)(adviceScope);
+    createPersonKind(cy)(personKind);
+    createInstitutionKind(cy)(institutionKind);
 
     // Create a few cases.
     const cases = ["caseA", "caseB", "caseC"].map(Case.fromId);
@@ -98,6 +104,8 @@ describe("advices", () => {
         adviceScope,
         adviceArea: adviceAreas[0],
         adviceIssue: adviceIssues[0],
+        personKind,
+        institutionKind,
         adviceAuthor: user,
         ...Advice.fromId("adviceA"),
       },
@@ -110,6 +118,8 @@ describe("advices", () => {
         adviceScope,
         adviceArea: adviceAreas[1],
         adviceIssue: adviceIssues[1],
+        personKind,
+        institutionKind,
         adviceAuthor: user,
         ...Advice.fromId("adviceB"),
       },
@@ -122,6 +132,8 @@ describe("advices", () => {
         adviceScope,
         adviceArea: adviceAreas[2],
         adviceIssue: adviceIssues[2],
+        personKind,
+        institutionKind,
         adviceAuthor: user,
         ...Advice.fromId("adviceC"),
       },

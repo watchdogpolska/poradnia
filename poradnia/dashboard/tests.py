@@ -12,6 +12,7 @@ from poradnia.advicer.factories import (
     InstitutionKindFactory,
     IssueFactory,
     PersonKindFactory,
+    ScopeFactory,
 )
 from poradnia.cases.factories import CaseFactory
 from poradnia.events.factories import EventFactory
@@ -142,6 +143,30 @@ class IssuesReportTestCase(TestCase):
 
         self.assertEqual(rows[issue.name]["cases_assigned"], 1)
         self.assertEqual(rows[issue.name]["cases_missing"], 1)
+
+        any_total = rows[str(reports.ANY_TOTAL_LABEL)]
+        self.assertTrue(any_total["pinned"])
+        self.assertEqual(any_total["cases_assigned"], 1)
+        self.assertEqual(any_total["cases_missing"], 1)
+
+
+class ScopesReportTestCase(TestCase):
+    def test_per_scope_and_any_total(self):
+        case_with_scope = CaseFactory()
+        set_created_on(case_with_scope, "2024-07-01")
+        case_without_scope = CaseFactory()
+        set_created_on(case_without_scope, "2024-07-02")
+
+        scope = ScopeFactory()
+        AdviceFactory(case=case_with_scope, scope=scope)
+        AdviceFactory(case=case_without_scope)
+
+        report = reports.scopes_report(2024)
+        rows = {row["scope_name"]: row for row in report["rows"]}
+
+        self.assertEqual(rows[scope.name]["scope_id"], scope.pk)
+        self.assertEqual(rows[scope.name]["cases_assigned"], 1)
+        self.assertEqual(rows[scope.name]["cases_missing"], 1)
 
         any_total = rows[str(reports.ANY_TOTAL_LABEL)]
         self.assertTrue(any_total["pinned"])
@@ -374,11 +399,16 @@ class DashboardViewsTestCase(TestCase):
         resp = self.client.get(reverse("dashboard:cases_tab"), {"year": 1999})
         self.assertEqual(resp.status_code, 200)
 
-    def test_advices_tab_returns_four_reports(self):
+    def test_advices_tab_returns_five_reports_scopes_first(self):
         self.login_staff()
         resp = self.client.get(reverse("dashboard:advices_tab"))
         self.assertEqual(resp.status_code, 200)
-        self.assertEqual(len(resp.context["advices_reports"]), 4)
+        advices_reports = resp.context["advices_reports"]
+        self.assertEqual(len(advices_reports), 5)
+        self.assertEqual(
+            advices_reports[0]["title"],
+            reports.scopes_report(self.current_year)["title"],
+        )
 
     def test_judgements_tab_returns_two_reports(self):
         self.login_staff()
@@ -404,6 +434,7 @@ class BuildWorkbookTestCase(TestCase):
             reports.users_report(2024)["title"],
             reports.cases_report(2024)["title"],
             reports.staff_letters_report(2024)["title"],
+            reports.scopes_report(2024)["title"],
             reports.issues_report(2024)["title"],
             reports.areas_report(2024)["title"],
             reports.institution_kind_report(2024)["title"],
@@ -489,11 +520,11 @@ class ExcelExportViewTestCase(TestCase):
             f"dashboard_{self.current_year}.xlsx", resp["Content-Disposition"]
         )
 
-    def test_workbook_has_ten_sheets(self):
+    def test_workbook_has_eleven_sheets(self):
         self.login_staff()
         resp = self.client.get(reverse("dashboard:export_excel"))
         workbook = load_workbook(BytesIO(resp.content))
-        self.assertEqual(len(workbook.sheetnames), 10)
+        self.assertEqual(len(workbook.sheetnames), 11)
 
     def test_year_param_scopes_report_content(self):
         self.login_staff()

@@ -63,6 +63,8 @@ const clear = () =>
     "advicer_issue",
     "advicer_area",
     "advicer_scope",
+    "advicer_personkind",
+    "advicer_institutionkind",
     "teryt_tree_jednostkaadministracyjna",
     "teryt_tree_category",
     "django_admin_log",

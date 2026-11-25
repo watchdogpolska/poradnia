@@ -65,6 +65,10 @@ class N8nArticlesSearchRequest(models.Model):
         blank=True, null=True, verbose_name=_("Phrase matches")
     )
 
+    class Meta:
+        verbose_name = _("Articles search request")
+        verbose_name_plural = _("Articles search requests")
+
     def search_articles(self):
         """
         Send this instance's question to the n8n articles-search webhook and
@@ -166,6 +170,10 @@ class N8nCaseTagsRequest(models.Model):
         null=True, blank=True, verbose_name=_("Rejected at")
     )
     rejection_reason = models.TextField(blank=True, verbose_name=_("Rejection reason"))
+
+    class Meta:
+        verbose_name = _("Case tags request")
+        verbose_name_plural = _("Case tags requests")
 
     def send_tags_request(self):
         """

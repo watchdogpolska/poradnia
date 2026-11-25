@@ -132,6 +132,15 @@ def _event():
     )
 
 
+def _email_confirmation_context():
+    return {
+        "user": Mock("Jan Kowalski"),
+        "activate_url": (
+            "https://poradnia.siecobywatelska.pl/konta/" "potwierdz-email/token123/"
+        ),
+    }
+
+
 def _notification_meta(**extra):
     return {
         "ip": "192.0.2.10",
@@ -584,20 +593,36 @@ CATALOG = [
         key="email_confirmation",
         title="Potwierdzenie adresu e-mail",
         trigger=(
-            "allauth - wysyłane przy rejestracji/dodaniu adresu e-mail "
-            "wymagającego potwierdzenia."
+            "allauth - wysyłane przy dodaniu adresu e-mail wymagającego "
+            "potwierdzenia albo ponownym wysłaniu potwierdzenia (np. przy "
+            "logowaniu na niepotwierdzony adres)."
         ),
         sender=_ALLAUTH_SENDER,
         recipient="użytkownik potwierdzający adres e-mail",
         txt_template="account/email/email_confirmation_message.txt",
         html_template="account/email/email_confirmation_message.html",
         subject_template="account/email/email_confirmation_subject.txt",
-        context=lambda: {
-            "user": Mock("Jan Kowalski"),
-            "activate_url": (
-                "https://poradnia.siecobywatelska.pl/konta/" "potwierdz-email/token123/"
-            ),
-        },
+        context=_email_confirmation_context,
+    ),
+    EmailCatalogEntry(
+        group="Konto (allauth)",
+        key="email_confirmation_signup",
+        title="Potwierdzenie adresu e-mail po rejestracji",
+        trigger=(
+            "allauth - wysyłane zaraz po rejestracji przez formularz "
+            "rejestracji (send_confirmation_mail z signup=True)."
+        ),
+        sender=_ALLAUTH_SENDER,
+        recipient="nowo zarejestrowany użytkownik",
+        txt_template="account/email/email_confirmation_signup_message.txt",
+        html_template="account/email/email_confirmation_signup_message.html",
+        subject_template="account/email/email_confirmation_signup_subject.txt",
+        context=_email_confirmation_context,
+        note=(
+            "Treść jest ta sama co w „Potwierdzenie adresu e-mail” - szablony "
+            "signup tylko włączają (include) szablony email_confirmation; "
+            ".txt i temat pochodzą z samego allauth."
+        ),
     ),
     EmailCatalogEntry(
         group="Konto (allauth)",

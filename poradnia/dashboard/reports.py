@@ -5,7 +5,14 @@ from django.db.models.functions import ExtractYear, TruncMonth
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
 
-from poradnia.advicer.models import Advice, Area, InstitutionKind, Issue, PersonKind
+from poradnia.advicer.models import (
+    Advice,
+    Area,
+    InstitutionKind,
+    Issue,
+    PersonKind,
+    Scope,
+)
 from poradnia.cases.models import Case
 from poradnia.events.models import Event
 from poradnia.judgements.models import CourtCase, CourtSession
@@ -335,6 +342,21 @@ def _fk_case_breakdown(
         "columns": columns,
         "rows": rows,
     }
+
+
+def scopes_report(year):
+    return _fk_case_breakdown(
+        year,
+        "scope",
+        Scope,
+        "scope_id",
+        "scope_name",
+        _("Scopes report"),
+        (
+            "Liczba spraw przypisanych do poszczególnych zakresów "
+            "poradnictwa oraz liczba spraw bez przypisanego zakresu."
+        ),
+    )
 
 
 def issues_report(year):

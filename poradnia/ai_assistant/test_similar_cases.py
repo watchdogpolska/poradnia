@@ -1,9 +1,11 @@
 import json
 from datetime import timedelta
-from io import StringIO
+from io import BytesIO, StringIO
 from unittest.mock import MagicMock, call, patch
 
+import openpyxl
 import requests as requests_lib
+from django.contrib import admin as django_admin
 from django.core.exceptions import ImproperlyConfigured
 from django.core.management import CommandError, call_command
 from django.test import RequestFactory, TestCase
@@ -18,6 +20,7 @@ from poradnia.advicer.factories import (
 )
 from poradnia.ai_assistant import similar_cases
 from poradnia.ai_assistant import views as views_module
+from poradnia.ai_assistant.admin import N8nSimilarCasesRequestAdmin
 from poradnia.ai_assistant.models import N8nSimilarCasesRequest, SimilarCasesIndexState
 from poradnia.ai_assistant.tasks import (
     delete_case_from_similar_index_task,
@@ -1380,3 +1383,81 @@ class SimilarCasesIndexStateAdminTestCase(TestCase):
         )
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, letter.get_absolute_url())
+
+
+class N8nSimilarCasesRequestAdminExportTestCase(TestCase):
+    def setUp(self):
+        self.admin = N8nSimilarCasesRequestAdmin(
+            N8nSimilarCasesRequest, django_admin.site
+        )
+        self.request = RequestFactory().get(
+            "/admin/ai_assistant/n8nsimilarcasesrequest/"
+        )
+
+    def _export(self, obj):
+        response = self.admin.export_as_excel(
+            self.request, N8nSimilarCasesRequest.objects.filter(pk=obj.pk)
+        )
+        sheet = openpyxl.load_workbook(BytesIO(response.content)).active
+        headers = [cell.value for cell in sheet[1]]
+        return headers, dict(zip(headers, [cell.value for cell in sheet[2]]))
+
+    def test_export_includes_pretty_printed_problems_as_last_column(self):
+        problems = [{"problem": "p", "stage": "s", "client_goal": "g"}]
+        obj = N8nSimilarCasesRequest.objects.create(
+            request_id="sim-export-1",
+            environment="TEST",
+            question="q",
+            status="completed",
+            similar_cases=[{"case_id": 1, "score": 0.7, "reason": "r"}],
+            candidates={
+                "problems": problems,
+                "candidates": [],
+                "judge_fallback": False,
+            },
+        )
+
+        headers, row = self._export(obj)
+
+        self.assertEqual(headers[-1], "problems")
+        self.assertEqual(json.loads(row["problems"]), problems)
+        self.assertIn("\n", row["problems"])  # pretty-printed, not compact
+        self.assertEqual(
+            json.loads(row["similar_cases"]),
+            [{"case_id": 1, "score": 0.7, "reason": "r"}],
+        )
+
+    def test_export_problems_column_is_blank_when_unset(self):
+        obj = N8nSimilarCasesRequest.objects.create(
+            request_id="sim-export-2", environment="TEST", question="q"
+        )
+
+        _, row = self._export(obj)
+
+        self.assertIsNone(row["problems"])
+        self.assertIsNone(row["similar_cases"])
+
+    def test_export_includes_case_link_and_filter_names(self):
+        case = make_case()
+        obj = N8nSimilarCasesRequest.objects.create(
+            request_id="sim-export-3",
+            environment="TEST",
+            question="q",
+            case=case,
+            institution_kind=InstitutionKindFactory(name="Sąd"),
+            institution_kind_source=N8nSimilarCasesRequest.SOURCE_ADVICE,
+            scope=ScopeFactory(name="Dostęp do informacji"),
+            scope_source=N8nSimilarCasesRequest.SOURCE_AI_TAGS,
+        )
+
+        _, row = self._export(obj)
+
+        self.assertEqual(row["case_id"], case.pk)
+        self.assertEqual(
+            row["case_absolute_url"],
+            self.request.build_absolute_uri(case.get_absolute_url()),
+        )
+        self.assertEqual(row["institution_kind"], "Sąd")
+        self.assertEqual(row["institution_kind_source"], "advice")
+        self.assertEqual(row["scope"], "Dostęp do informacji")
+        self.assertEqual(row["scope_source"], "ai_tags")

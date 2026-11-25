@@ -24,7 +24,7 @@ from poradnia.cases.factories import (
 )
 from poradnia.cases.filters import StaffCaseFilter
 from poradnia.cases.forms import CaseCloseForm
-from poradnia.cases.models import Case, PermissionGroup
+from poradnia.cases.models import Case, DeleteCaseProxy, PermissionGroup
 from poradnia.cases.views import CaseListView
 from poradnia.events.factories import EventFactory
 from poradnia.letters.factories import AttachmentFactory, LetterFactory
@@ -376,6 +376,20 @@ class CaseTestCase(TestCase):
         self._check_file_delete(attachment, True)
         # When
         Case.objects.filter(pk__in=[case.pk]).delete()
+        # Then
+        self._check_file_delete(attachment, False)
+
+    def test_cleanup_proxy_delete_file_for_related_attachment(self):
+        # The 6-year cleanup deletes through the DeleteCaseProxy admin, so the
+        # delete signals arrive with the proxy class as sender. On-commit
+        # callbacks are not run here, so this checks the pre_delete receiver
+        # itself rather than django_cleanup.
+        # Given
+        attachment = AttachmentFactory()
+        case = attachment.letter.case
+        self._check_file_delete(attachment, True)
+        # When
+        DeleteCaseProxy.objects.filter(pk__in=[case.pk]).delete()
         # Then
         self._check_file_delete(attachment, False)
 

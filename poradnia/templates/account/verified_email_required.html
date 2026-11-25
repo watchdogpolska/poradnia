@@ -1,4 +1,9 @@
 {% extends "account/base.html" %}
+{# NOT RENDERED: allauth only shows this from its @verified_email_required decorator, and no #}
+{# view in this project uses it (new accounts are verified through our own activation flow - #}
+{# users.views.AccountActivationView - instead). It becomes live as soon as any view adds #}
+{# @verified_email_required, so keep the wording current and check it in WCAG mode then. #}
+{# Excluded from coverage in .coveragerc - remove it there once this template is rendered. #}
 
 {% load i18n %}
 
