@@ -76,7 +76,7 @@
                     </a>
                 {% endif %}
                 {% if object.genre == 'ai_message' or object.genre == 'ai_message_staff' %}
-                    {% with search_request=object.get_ai_search_request %}
+                    {% with search_request=object.get_ai_request %}
                     {% if search_request.rejected_at %}
                         &bull;
                         {{ object.render_admin_delete_link }}

@@ -1,1 +1,1 @@
-This templates come from django-social-auth. It is here only to include text in localization for overwrite it.
+These templates are copies of django-allauth's `account/messages/*.txt`. They are never rendered (allauth loads its own copies). They exist only so that `makemessages` extracts the message strings into the project `.po` files, where `LOCALE_PATHS` lets our Polish translations override allauth's. Don't delete them: the overrides would be marked obsolete on the next `makemessages` run.

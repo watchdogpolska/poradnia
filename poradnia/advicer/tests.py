@@ -136,6 +136,9 @@ class AdviceUpdateTestCase(InstanceMixin, PermissionMixin, TemplateUsedMixin, Te
             data={
                 "scope": scope.pk,
                 "issues": [issue.pk],
+                "area": [AreaFactory(is_dip=True).pk],
+                "person_kind": PersonKindFactory().pk,
+                "institution_kind": InstitutionKindFactory().pk,
                 "advicer": self.user.pk,
                 "grant_on": datetime.datetime.now(),
             },
@@ -154,11 +157,17 @@ class AdviceCreateTestCase(PermissionMixin, TemplateUsedMixin, TestCase):
         self.scope = ScopeFactory(is_dip=True)
         self.issue = IssueFactory(is_dip=True)
         self.area = AreaFactory(is_dip=True)
+        self.person_kind = PersonKindFactory()
+        self.institution_kind = InstitutionKindFactory()
 
     def _post(self, **data):
         self.login()
         payload = {
             "scope": self.scope.pk,
+            "issues": [self.issue.pk],
+            "area": [self.area.pk],
+            "person_kind": self.person_kind.pk,
+            "institution_kind": self.institution_kind.pk,
             "advicer": self.user.pk,
             "grant_on": datetime.datetime.now(),
         }
@@ -179,6 +188,25 @@ class AdviceCreateTestCase(PermissionMixin, TemplateUsedMixin, TestCase):
         self.assertEqual(resp.status_code, 200)
         self.assertIn("scope", resp.context["form"].errors)
         self.assertFalse(Advice.objects.exists())
+
+    def test_tag_fields_required(self):
+        fields = ("issues", "area", "person_kind", "institution_kind")
+        resp = self._post(**{name: None for name in fields})
+        self.assertEqual(resp.status_code, 200)
+        errors = resp.context["form"].errors
+        for name in fields:
+            self.assertIn(name, errors)
+        self.assertFalse(Advice.objects.exists())
+
+    def test_native_required_only_on_plain_selects(self):
+        self.login()
+        resp = self.client.get(self.url)
+        content = resp.content.decode()
+        for name in ("scope", "person_kind", "institution_kind"):
+            self.assertRegex(content, rf'<select name="{name}"[^>]* required')
+        # Autocomplete <select>s are visually hidden; see AdviceForm.
+        for name in ("issues", "area"):
+            self.assertNotRegex(content, rf'<select name="{name}"[^>]* required')
 
     def test_rejects_issue_and_area_not_matching_scope(self):
         issue = IssueFactory(is_dip=False, is_slapp=True, name="SLAPP issue")

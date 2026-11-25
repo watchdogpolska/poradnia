@@ -1,4 +1,5 @@
 import json
+import types
 
 from django.conf import settings
 from django.contrib import admin
@@ -13,7 +14,13 @@ from openpyxl.utils import get_column_letter
 from poradnia.advicer.models import Area, InstitutionKind, Issue, PersonKind, Scope
 from poradnia.teryt.models import JST
 
-from .models import N8nArticlesSearchRequest, N8nCaseTagsRequest
+from .models import (
+    N8nArticlesSearchRequest,
+    N8nCaseTagsRequest,
+    N8nSimilarCasesRequest,
+    SimilarCasesIndexState,
+)
+from .tasks import sync_case_similar_index_task
 
 HEADER_FONT = Font(bold=True)
 HEADER_FILL = PatternFill(
@@ -403,3 +410,266 @@ class N8nCaseTagsRequestAdmin(admin.ModelAdmin):
         response["Content-Disposition"] = f'attachment; filename="{filename}"'
         workbook.save(response)
         return response
+
+
+def _case_link(case):
+    if case is None:
+        return "-"
+    return format_html(
+        '<a href="{}">#{} {}</a>', case.get_absolute_url(), case.pk, case
+    )
+
+
+@admin.register(N8nSimilarCasesRequest)
+class N8nSimilarCasesRequestAdmin(admin.ModelAdmin):
+    list_display = (
+        "id",
+        "request_id",
+        "environment",
+        "status",
+        "case_link",
+        "letter_link",
+        "institution_kind",
+        "scope",
+        "requested_by",
+        "accepted_by",
+        "rejected_by",
+        "created_at",
+        "updated_at",
+    )
+    list_filter = (
+        "environment",
+        "status",
+        ("accepted_at", admin.EmptyFieldListFilter),
+        ("rejected_at", admin.EmptyFieldListFilter),
+    )
+    search_fields = ("request_id", "question", "response")
+    date_hierarchy = "created_at"
+    raw_id_fields = ("case", "letter")
+    exclude = ("similar_cases", "candidates")
+    actions = ["export_as_excel"]
+    list_select_related = (
+        "case",
+        "letter",
+        "institution_kind",
+        "scope",
+        "requested_by",
+        "accepted_by",
+        "rejected_by",
+    )
+
+    def get_readonly_fields(self, request, obj=None):
+        fields = [f.name for f in self.model._meta.fields]
+        fields[fields.index("similar_cases")] = "similar_cases_display"
+        fields[fields.index("candidates")] = "candidates_display"
+        return fields
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    @admin.display(description=_("Case"), ordering="case")
+    def case_link(self, obj):
+        return _case_link(obj.case)
+
+    @admin.display(description=_("Letter"), ordering="letter")
+    def letter_link(self, obj):
+        if obj.letter is None:
+            return "-"
+        return format_html(
+            '<a href="{}">{}</a>', obj.letter.get_absolute_url(), obj.letter_id
+        )
+
+    @admin.display(description=_("Similar cases"))
+    def similar_cases_display(self, obj):
+        return format_html("<pre>{}</pre>", _pretty_json(obj.similar_cases) or "-")
+
+    @admin.display(description=_("Candidates"))
+    def candidates_display(self, obj):
+        return format_html("<pre>{}</pre>", _pretty_json(obj.candidates) or "-")
+
+    @admin.action(description=_("Export selected as Excel report"))
+    def export_as_excel(self, request, queryset):
+        workbook = Workbook()
+        sheet = workbook.active
+        sheet.title = "N8nSimilarCasesRequest"
+
+        columns = [
+            "id",
+            "created_at",
+            "request_id",
+            "environment",
+            "status",
+            "case_id",
+            "case_absolute_url",
+            "letter_id",
+            "letter_absolute_url",
+            "institution_kind",
+            "institution_kind_source",
+            "scope",
+            "scope_source",
+            "requested_by",
+            "accepted_by",
+            "rejected_by",
+            "rejection_reason",
+            "response",
+            "similar_cases",
+            "problems",
+        ]
+        sheet.append(columns)
+        for col_idx in range(1, len(columns) + 1):
+            cell = sheet.cell(row=1, column=col_idx)
+            cell.font = HEADER_FONT
+            cell.fill = HEADER_FILL
+
+        case_url_col = columns.index("case_absolute_url") + 1
+        letter_url_col = columns.index("letter_absolute_url") + 1
+        wrap_col_start = columns.index("rejection_reason") + 1
+        for col_idx in range(wrap_col_start, len(columns) + 1):
+            sheet.column_dimensions[get_column_letter(col_idx)].width = (
+                STANDARD_COLUMN_WIDTH * 3
+            )
+
+        queryset = queryset.select_related(
+            "case",
+            "letter",
+            "institution_kind",
+            "scope",
+            "requested_by",
+            "accepted_by",
+            "rejected_by",
+        )
+        for obj in queryset:
+            case_url = (
+                request.build_absolute_uri(obj.case.get_absolute_url())
+                if obj.case_id
+                else ""
+            )
+            letter_url = (
+                request.build_absolute_uri(obj.letter.get_absolute_url())
+                if obj.letter_id
+                else ""
+            )
+            problems = (obj.candidates or {}).get("problems")
+            sheet.append(
+                [
+                    obj.id,
+                    _naive(obj.created_at),
+                    obj.request_id,
+                    obj.environment,
+                    obj.status,
+                    obj.case_id,
+                    case_url,
+                    obj.letter_id,
+                    letter_url,
+                    obj.institution_kind.name if obj.institution_kind_id else "",
+                    obj.institution_kind_source,
+                    obj.scope.name if obj.scope_id else "",
+                    obj.scope_source,
+                    str(obj.requested_by) if obj.requested_by_id else "",
+                    str(obj.accepted_by) if obj.accepted_by_id else "",
+                    str(obj.rejected_by) if obj.rejected_by_id else "",
+                    obj.rejection_reason or "",
+                    obj.response,
+                    _pretty_json(obj.similar_cases),
+                    _pretty_json(problems),
+                ]
+            )
+            row_idx = sheet.max_row
+            for col_idx in range(wrap_col_start, len(columns) + 1):
+                sheet.cell(row=row_idx, column=col_idx).alignment = Alignment(
+                    wrap_text=True, vertical="top"
+                )
+            for url, col_idx in (
+                (case_url, case_url_col),
+                (letter_url, letter_url_col),
+            ):
+                if url:
+                    cell = sheet.cell(row=row_idx, column=col_idx)
+                    cell.hyperlink = url
+                    cell.style = "Hyperlink"
+
+        sheet.auto_filter.ref = sheet.dimensions
+        sheet.freeze_panes = "A2"
+
+        response = HttpResponse(
+            content_type=(
+                "application/vnd.openxmlformats-officedocument" ".spreadsheetml.sheet"
+            )
+        )
+        timestamp = timezone.localtime(timezone.now()).strftime("%Y%m%d_%H%M%S")
+        filename = f"n8n_similar_cases_requests_{settings.APP_MODE}_{timestamp}.xlsx"
+        response["Content-Disposition"] = f'attachment; filename="{filename}"'
+        workbook.save(response)
+        return response
+
+
+@admin.register(SimilarCasesIndexState)
+class SimilarCasesIndexStateAdmin(admin.ModelAdmin):
+    list_display = (
+        "case_link",
+        "status",
+        "points",
+        "attempts",
+        "synced_at",
+        "error",
+    )
+    list_filter = ("status",)
+    search_fields = ("case__id", "error")
+    list_select_related = ("case",)
+    date_hierarchy = "synced_at"
+    actions = ["resync_selected"]
+
+    def get_readonly_fields(self, request, obj=None):
+        return [f.name for f in self.model._meta.fields]
+
+    def has_add_permission(self, request):
+        return False
+
+    def has_change_permission(self, request, obj=None):
+        return False
+
+    @admin.display(description=_("Case"), ordering="case")
+    def case_link(self, obj):
+        return _case_link(obj.case)
+
+    @admin.action(description=_("Re-sync selected"))
+    def resync_selected(self, request, queryset):
+        case_ids = list(queryset.values_list("case_id", flat=True))
+        for case_pk in case_ids:
+            sync_case_similar_index_task.delay(case_pk)
+        self.message_user(
+            request,
+            _("Enqueued re-sync of %(count)d case(s).") % {"count": len(case_ids)},
+        )
+
+
+AI_ASSISTANT_ADMIN_MODEL_ORDER = [
+    "N8nCaseTagsRequest",
+    "N8nArticlesSearchRequest",
+    "N8nSimilarCasesRequest",
+    "SimilarCasesIndexState",
+]
+
+_default_get_app_list = admin.site.get_app_list
+
+
+def _ai_assistant_ordered_get_app_list(self, request, app_label=None):
+    app_list = _default_get_app_list(request, app_label)
+    for app in app_list:
+        if app["app_label"] == "ai_assistant":
+            app["models"].sort(
+                key=lambda model: (
+                    AI_ASSISTANT_ADMIN_MODEL_ORDER.index(model["object_name"])
+                    if model["object_name"] in AI_ASSISTANT_ADMIN_MODEL_ORDER
+                    else len(AI_ASSISTANT_ADMIN_MODEL_ORDER)
+                )
+            )
+    return app_list
+
+
+admin.site.get_app_list = types.MethodType(
+    _ai_assistant_ordered_get_app_list, admin.site
+)

@@ -3,7 +3,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: poradnia\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-09-16 11:58+0200\n"
+"POT-Creation-Date: 2026-11-20 13:54+0100\n"
 "PO-Revision-Date: 2026-08-10 18:27+0200\n"
 "Last-Translator: Piotr Iwański <piotr.iwanski@siecobywatelska.pl>\n"
 "Language-Team: Polish\n"
@@ -14,34 +14,154 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n==1 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 "
 "|| n%100>=20) ? 1 : 2);\n"
 
-#: poradnia/ai_assistant/admin.py:87 poradnia/ai_assistant/models.py:65
+#: poradnia/ai_assistant/admin.py:105 poradnia/ai_assistant/models.py:65
 msgid "Phrase matches"
 msgstr "Dopasowane frazy"
 
-#: poradnia/ai_assistant/admin.py:94 poradnia/ai_assistant/admin.py:223
+#: poradnia/ai_assistant/admin.py:112 poradnia/ai_assistant/admin.py:241
 msgid "Export selected as Excel report"
 msgstr "Eksportuj zaznaczone do raportu Excel"
 
-#: poradnia/ai_assistant/models.py:39
+#: poradnia/ai_assistant/admin.py:469 poradnia/ai_assistant/admin.py:515
+#: poradnia/ai_assistant/models.py:440
+msgid "Case"
+msgstr "Sprawa"
+
+#: poradnia/ai_assistant/admin.py:473 poradnia/ai_assistant/models.py:39
+#: poradnia/ai_assistant/models.py:315
 msgid "Letter"
 msgstr "List"
 
+#: poradnia/ai_assistant/admin.py:481 poradnia/ai_assistant/models.py:304
+msgid "Similar cases"
+msgstr "Podobne sprawy"
+
+#: poradnia/ai_assistant/admin.py:485 poradnia/ai_assistant/models.py:306
+msgid "Candidates"
+msgstr "Kandydaci"
+
+#: poradnia/ai_assistant/admin.py:519
+msgid "Re-sync selected"
+msgstr "Synchronizuj ponownie zaznaczone"
+
+#: poradnia/ai_assistant/admin.py:526
+#, python-format
+msgid "Enqueued re-sync of %(count)d case(s)."
+msgstr "Zlecono ponowną synchronizację spraw: %(count)d."
+
 #: poradnia/ai_assistant/models.py:47 poradnia/ai_assistant/models.py:152
+#: poradnia/ai_assistant/models.py:323
 msgid "Accepted by"
 msgstr "Zaakceptowane przez"
 
 #: poradnia/ai_assistant/models.py:50 poradnia/ai_assistant/models.py:155
+#: poradnia/ai_assistant/models.py:326
 msgid "Accepted at"
 msgstr "Zaakceptowane o"
 
 #: poradnia/ai_assistant/models.py:58 poradnia/ai_assistant/models.py:163
+#: poradnia/ai_assistant/models.py:334
 msgid "Rejected by"
 msgstr "Odrzucone przez"
 
 #: poradnia/ai_assistant/models.py:61 poradnia/ai_assistant/models.py:166
+#: poradnia/ai_assistant/models.py:337
 msgid "Rejected at"
 msgstr "Odrzucone o"
 
 #: poradnia/ai_assistant/models.py:63 poradnia/ai_assistant/models.py:168
+#: poradnia/ai_assistant/models.py:339
 msgid "Rejection reason"
 msgstr "Powód odrzucenia"
+
+#: poradnia/ai_assistant/models.py:249
+msgid "Advice"
+msgstr "Tagi sprawy"
+
+#: poradnia/ai_assistant/models.py:250
+msgid "AI tags"
+msgstr "Sugestia AI"
+
+#: poradnia/ai_assistant/models.py:273
+msgid "Requested by"
+msgstr "Zlecone przez"
+
+#: poradnia/ai_assistant/models.py:281
+msgid "Institution kind"
+msgstr "Rodzaj podmiotu zobowiązanego"
+
+#: poradnia/ai_assistant/models.py:287
+msgid "Institution kind source"
+msgstr "Źródło rodzaju podmiotu zobowiązanego"
+
+#: poradnia/ai_assistant/models.py:295
+msgid "Scope"
+msgstr "Zakres poradnictwa"
+
+#: poradnia/ai_assistant/models.py:301
+msgid "Scope source"
+msgstr "Źródło zakresu poradnictwa"
+
+msgid "Articles search request"
+msgstr "Zapytanie o wyszukanie artykułów"
+
+msgid "Articles search requests"
+msgstr "Zapytania o wyszukanie artykułów"
+
+msgid "Case tags request"
+msgstr "Zapytanie o tagi sprawy"
+
+msgid "Case tags requests"
+msgstr "Zapytania o tagi sprawy"
+
+#: poradnia/ai_assistant/models.py:342
+msgid "Similar cases request"
+msgstr "Zapytanie o podobne sprawy"
+
+#: poradnia/ai_assistant/models.py:343
+msgid "Similar cases requests"
+msgstr "Zapytania o podobne sprawy"
+
+#: poradnia/ai_assistant/models.py:430
+msgid "Indexed"
+msgstr "Zaindeksowana"
+
+#: poradnia/ai_assistant/models.py:431
+msgid "Empty"
+msgstr "Pusta"
+
+#: poradnia/ai_assistant/models.py:432 poradnia/ai_assistant/models.py:452
+msgid "Error"
+msgstr "Błąd"
+
+#: poradnia/ai_assistant/models.py:443
+msgid "Content hash"
+msgstr "Skrót treści"
+
+#: poradnia/ai_assistant/models.py:446
+msgid "Metadata hash"
+msgstr "Skrót metadanych"
+
+#: poradnia/ai_assistant/models.py:448
+msgid "Points"
+msgstr "Punkty"
+
+#: poradnia/ai_assistant/models.py:450
+msgid "Status"
+msgstr "Status"
+
+#: poradnia/ai_assistant/models.py:453
+msgid "Attempts"
+msgstr "Próby"
+
+#: poradnia/ai_assistant/models.py:454
+msgid "Synced at"
+msgstr "Zsynchronizowano o"
+
+#: poradnia/ai_assistant/models.py:457
+msgid "Similar cases index state"
+msgstr "Stan indeksu podobnych spraw"
+
+#: poradnia/ai_assistant/models.py:458
+msgid "Similar cases index states"
+msgstr "Stany indeksu podobnych spraw"

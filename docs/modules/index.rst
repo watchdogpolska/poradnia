@@ -14,7 +14,6 @@ Aplikacja została wykonana modularnie w sposób właściwy dla aplikacji Django
    keys
    letters
    navsearch
-   notifications_custom
    records
    template_mail
    tinycontent

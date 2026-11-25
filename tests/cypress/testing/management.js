@@ -111,6 +111,26 @@ const createAdviceIssue = (cy) => (adviceIssue) =>
 const createAdviceScope = (cy) => (adviceScope) =>
   createAdviceCategory(cy)("advicer_scope", adviceScope);
 
+// Person and institution kinds have no scope flags, just is_undefined.
+const createAdviceKind = (cy) => (table, kind) => {
+  const { name, active = 1, tag_helper = null, is_undefined = 0 } = kind;
+  cy.task(
+    "db:query",
+    buildInsertQuery(table, {
+      name: withExtraQuotes(name),
+      active,
+      tag_helper: tag_helper === null ? "NULL" : withExtraQuotes(tag_helper),
+      is_undefined,
+    }),
+  );
+};
+
+const createPersonKind = (cy) => (personKind) =>
+  createAdviceKind(cy)("advicer_personkind", personKind);
+
+const createInstitutionKind = (cy) => (institutionKind) =>
+  createAdviceKind(cy)("advicer_institutionkind", institutionKind);
+
 module.exports = {
   addSuperUserPrivileges,
   createCourt,
@@ -119,4 +139,6 @@ module.exports = {
   createAdviceArea,
   createAdviceIssue,
   createAdviceScope,
+  createPersonKind,
+  createInstitutionKind,
 };

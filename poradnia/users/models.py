@@ -3,6 +3,7 @@ import re
 from email.utils import formataddr
 
 from allauth.account.models import EmailAddress
+from django.conf import settings
 from django.contrib.auth.models import AbstractUser, UserManager
 from django.db import models
 from django.db.models import (
@@ -37,6 +38,34 @@ _("Login")
 
 cup_co = "caseuserobjectpermission__content_object"
 
+
+def spam_user_q():
+    """Shared by the admin IsSpamUserFilter and the delete_spam_users command:
+    never logged in, no cases (as client, creator or modifier), no letters.
+
+    Team members, superusers, users referenced by advices (Advice FKs to User
+    are on_delete=PROTECT) and the system accounts (django-guardian's
+    AnonymousUser and the bots, which never log in) are never treated as spam.
+    """
+    system_usernames = [
+        settings.ANONYMOUS_USER_NAME,
+        settings.JUDGEMENT_BOT_USERNAME,
+        settings.AI_ASSISTANT_USERNAME,
+    ]
+    return Q(
+        is_staff=False,
+        is_superuser=False,
+        last_login__isnull=True,
+        case_client__isnull=True,
+        case_created__isnull=True,
+        case_modified__isnull=True,
+        letter_created_by__isnull=True,
+        advice__isnull=True,
+        advice_created_by__isnull=True,
+        advice_modified_by__isnull=True,
+    ) & ~Q(username__in=system_usernames)
+
+
 logger = logging.getLogger(__name__)
 
 
@@ -60,6 +89,9 @@ class UserQuerySet(QuerySet):
             client_qs = CaseModel.objects.for_user(user).all().values("client")
             return self.filter(Q(pk=user.pk) | Q(is_staff=True) | Q(pk__in=client_qs))
         return self.filter(Q(pk=user.pk) | Q(is_staff=True))
+
+    def spam(self):
+        return self.filter(spam_user_q())
 
     def with_case_count(self):
         return self.annotate(case_count=Count("case_client", distinct=True))

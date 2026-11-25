@@ -42,7 +42,13 @@ class AdviceForm(
             self.fields["case"].help_text = _(
                 "Select from poradnia.cases which do " "you have a permission"
             )
-        self.fields["scope"].required = True
+        for name in ("scope", "issues", "area", "person_kind", "institution_kind"):
+            self.fields[name].required = True
+        # The autocomplete widgets keep their <select> visually hidden, so a
+        # native "required" bubble would point at a 1px element. Leave those
+        # two to the server-side error rendered under the field.
+        for name in ("issues", "area"):
+            self.fields[name].widget.use_required_attribute = lambda initial: False
         # Keep an already assigned, since deactivated, scope selectable.
         self.fields["scope"].queryset = Scope.objects.filter(
             Q(active=True) | Q(pk=self.instance.scope_id)

@@ -46,6 +46,17 @@ services:
       # on every load -- confirmed live, the only remaining source of
       # postload.html nondeterminism after disabling the debug toolbar.
       TURNSTILE_ENABLE: "False"
+      # seed_a11y.py --reset deletes every case, and with the index enabled
+      # (as a local .env may have it) each delete is sent to the real
+      # similar-cases index webhook, removing entries by case pk -- confirmed
+      # live. Keep the throwaway a11y data away from the real index.
+      SIMILAR_CASES_INDEX_ENABLED: "False"
+      # Blank like CI: a set N8N_SIMILAR_CASES_WEBHOOK renders the "Znajdź
+      # podobne zamknięte sprawy" case-detail button (cases/views/cases.py),
+      # which made local captures differ from the committed baseline, and
+      # would let the a11y app call the real n8n search.
+      N8N_SIMILAR_CASES_WEBHOOK: ""
+      N8N_SIMILAR_CASES_INDEX_WEBHOOK: ""
     command: >-
       bash -c "python manage.py collectstatic --no-input &&
                python manage.py migrate &&

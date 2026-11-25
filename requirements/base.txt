@@ -12,11 +12,11 @@ django-model-utils==5.0.0
 
 # images
 Pillow==13.0.0
-sorl-thumbnail==13.4.0
+sorl-thumbnail==13.5.0
 
 # For user registration, either via email or social
 # Well-built with regular release cycles!
-django-allauth[socialaccount,mfa]==65.21.1
+django-allauth[socialaccount,mfa]==65.22.1
 
 # For the persistance stores
 mysqlclient==2.3.1
@@ -44,7 +44,7 @@ icalendar==7.3.0
 html2text==2025.4.15
 
 openpyxl==3.1.5
-sentry-sdk==2.74.0
+sentry-sdk==2.75.0
 python-dateutil==4.0.0
 django-github-revision==0.0.3
 
@@ -53,7 +53,7 @@ git+https://github.com/watchdogpolska/django-teryt-tree@v0.19.0
 
 django-mptt==0.21.1
 mistune==3.4.0
-django-rosetta==0.10.3
+django-rosetta==0.10.4
 
 # Additional sanitizer until a completely safe markdown package is found.
 bleach[css]==6.4.0
