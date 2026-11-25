@@ -15,7 +15,11 @@ from guardian.shortcuts import assign_perm, remove_perm
 from test_plus.test import TestCase
 
 from poradnia.advicer.factories import AdviceFactory
-from poradnia.ai_assistant.models import N8nArticlesSearchRequest, N8nCaseTagsRequest
+from poradnia.ai_assistant.models import (
+    N8nArticlesSearchRequest,
+    N8nCaseTagsRequest,
+    N8nSimilarCasesRequest,
+)
 from poradnia.cases.admin import CaseAdmin
 from poradnia.cases.factories import (
     CaseFactory,
@@ -154,6 +158,8 @@ class CaseAiReviewFlagsQuerySetTestCase(TestCase):
         obj = self._flags()
         self.assertFalse(obj.has_ai_articles)
         self.assertFalse(obj.has_ai_articles_to_review)
+        self.assertFalse(obj.has_ai_similar_cases)
+        self.assertFalse(obj.has_ai_similar_cases_to_review)
         self.assertFalse(obj.has_ai_tag_suggestion)
 
     def test_has_ai_articles_true_once_letter_linked(self):
@@ -247,6 +253,41 @@ class CaseAiReviewFlagsQuerySetTestCase(TestCase):
         AdviceFactory(case=self.case)
         obj = self._flags()
         self.assertFalse(obj.has_ai_tag_suggestion)
+
+    def test_similar_cases_flags_false_without_letter(self):
+        N8nSimilarCasesRequest.objects.create(
+            request_id="sim-1", environment="TEST", question="q", case=self.case
+        )
+        obj = self._flags()
+        self.assertFalse(obj.has_ai_similar_cases)
+        self.assertFalse(obj.has_ai_similar_cases_to_review)
+
+    def test_similar_cases_flags_true_when_undecided_with_letter(self):
+        letter = LetterFactory(case=self.case, genre="ai_message_staff", status="staff")
+        N8nSimilarCasesRequest.objects.create(
+            request_id="sim-2",
+            environment="TEST",
+            question="q",
+            case=self.case,
+            letter=letter,
+        )
+        obj = self._flags()
+        self.assertTrue(obj.has_ai_similar_cases)
+        self.assertTrue(obj.has_ai_similar_cases_to_review)
+
+    def test_similar_cases_to_review_false_once_rejected(self):
+        letter = LetterFactory(case=self.case, genre="ai_message_staff", status="staff")
+        N8nSimilarCasesRequest.objects.create(
+            request_id="sim-3",
+            environment="TEST",
+            question="q",
+            case=self.case,
+            letter=letter,
+            rejected_at=timezone.now(),
+        )
+        obj = self._flags()
+        self.assertTrue(obj.has_ai_similar_cases)
+        self.assertFalse(obj.has_ai_similar_cases_to_review)
 
 
 class CaseTestCase(TestCase):
