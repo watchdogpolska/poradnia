@@ -28,16 +28,15 @@ class Command(BaseCommand):
         parser.add_argument(
             "--older-than-days",
             type=int,
-            help="Only users who joined more than this many days ago.",
+            default=90,
+            help="Only users who joined more than this many days ago (default: 90).",
         )
 
-    def get_queryset(self, email_domain=None, older_than_days=None):
-        qs = User.objects.spam()
+    def get_queryset(self, older_than_days, email_domain=None):
+        cutoff = timezone.now() - timedelta(days=older_than_days)
+        qs = User.objects.spam().filter(date_joined__lt=cutoff)
         if email_domain:
             qs = qs.filter(email__iendswith="@" + email_domain)
-        if older_than_days is not None:
-            cutoff = timezone.now() - timedelta(days=older_than_days)
-            qs = qs.filter(date_joined__lt=cutoff)
         return qs
 
     def handle(self, **options):
@@ -45,11 +44,11 @@ class Command(BaseCommand):
         if limit < 1:
             raise CommandError("--limit must be a positive integer.")
         older_than_days = options["older_than_days"]
-        if older_than_days is not None and older_than_days < 0:
+        if older_than_days < 0:
             raise CommandError("--older-than-days must not be negative.")
         email_domain = (options["email_domain"] or "").strip().lstrip("@").lower()
 
-        qs = self.get_queryset(email_domain, older_than_days)
+        qs = self.get_queryset(older_than_days, email_domain)
         matching_count = qs.count()
         pks = list(
             qs.order_by("date_joined", "pk").values_list("pk", flat=True)[:limit]

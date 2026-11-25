@@ -1021,7 +1021,7 @@ class DeleteSpamUsersCommandTestCase(TestCase):
             call_command("delete_spam_users", stdout=out, **options)
         return out.getvalue(), mock_input
 
-    def make_spam(self, days_ago=30, **kwargs):
+    def make_spam(self, days_ago=100, **kwargs):
         user = UserFactory(**kwargs)
         User.objects.filter(pk=user.pk).update(
             date_joined=timezone.now() - timedelta(days=days_ago)
@@ -1045,9 +1045,9 @@ class DeleteSpamUsersCommandTestCase(TestCase):
             call_command("delete_spam_users", limit=0)
 
     def test_deletes_oldest_spam_users_up_to_limit(self):
-        oldest = self.make_spam(days_ago=30)
-        older = self.make_spam(days_ago=20)
-        newest = self.make_spam(days_ago=10)
+        oldest = self.make_spam(days_ago=130)
+        older = self.make_spam(days_ago=120)
+        newest = self.make_spam(days_ago=110)
         out, _ = self.call(limit=2)
         self.assertIn("Spam users matching the criteria: 3", out)
         self.assertIn("Users to be deleted (limit 2): 2", out)
@@ -1062,7 +1062,8 @@ class DeleteSpamUsersCommandTestCase(TestCase):
         superuser = self.make_spam(is_superuser=True)
         advice = AdviceFactory()
         anonymous = get_anonymous_user()
-        out, mock_input = self.call(limit=100)
+        # 0 disables the age filter, so only the spam criteria protect them
+        out, mock_input = self.call(limit=100, older_than_days=0)
         self.assertIn("Users to be deleted (limit 100): 0", out)
         mock_input.assert_not_called()
         self.assertExists(
@@ -1083,12 +1084,23 @@ class DeleteSpamUsersCommandTestCase(TestCase):
         self.assertDeleted(match)
         self.assertExists(subdomain, other)
 
+    def test_older_than_days_defaults_to_90(self):
+        old = self.make_spam(days_ago=91)
+        recent = self.make_spam(days_ago=89)
+        self.call(limit=100)
+        self.assertDeleted(old)
+        self.assertExists(recent)
+
     def test_older_than_days_filter(self):
         old = self.make_spam(days_ago=30)
         recent = self.make_spam(days_ago=1)
         self.call(limit=100, older_than_days=7)
         self.assertDeleted(old)
         self.assertExists(recent)
+
+    def test_older_than_days_must_not_be_negative(self):
+        with self.assertRaises(CommandError):
+            call_command("delete_spam_users", limit=1, older_than_days=-1)
 
     def test_declined_confirmation_deletes_nothing(self):
         user = self.make_spam()
