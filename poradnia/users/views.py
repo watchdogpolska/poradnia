@@ -27,7 +27,11 @@ from django_filters.views import FilterView
 from poradnia.cases.models import Case, CaseUserObjectPermission
 from poradnia.utils.action_views import ActionMessageMixin, ActionView
 from poradnia.utils.mixins import ExprAutocompleteMixin
-from poradnia.utils.view_mixins import StaffuserRequiredMixin, UserFormKwargsMixin
+from poradnia.utils.view_mixins import (
+    NoRowDetailsMixin,
+    StaffuserRequiredMixin,
+    UserFormKwargsMixin,
+)
 
 from .filters import UserFilter
 from .forms import AccountActivationResendForm, ProfileForm, UserForm
@@ -318,7 +322,9 @@ class UserTableView(StaffuserRequiredMixin, PermissionMixin, TemplateView):
         return context
 
 
-class UserAjaxDatatableView(StaffuserRequiredMixin, PermissionMixin, AjaxDatatableView):
+class UserAjaxDatatableView(
+    StaffuserRequiredMixin, PermissionMixin, NoRowDetailsMixin, AjaxDatatableView
+):
     """
     View to provide table list of all Users with ajax data.
     """

@@ -517,7 +517,7 @@ msgstr "Widoczne (kol. W.)"
 
 #: poradnia/advicer/templates/advicer/advice_table.html:94
 msgid "Has AI tag suggestion"
-msgstr "Posiada sugestie tagów AI"
+msgstr "Ma sugestie tagów AI"
 
 #: poradnia/advicer/templates/advicer/advice_table.html:106
 msgid "AI tag suggestions to review"

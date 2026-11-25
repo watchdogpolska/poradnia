@@ -22,6 +22,7 @@ from poradnia.utils.mixins import ExprAutocompleteMixin
 from poradnia.utils.utils import get_numeric_param
 from poradnia.utils.view_mixins import (
     FormValidMessageMixin,
+    NoRowDetailsMixin,
     SelectRelatedMixin,
     StaffuserRequiredMixin,
     UserFormKwargsMixin,
@@ -74,7 +75,7 @@ class AdviceTableView(PermissionMixin, TemplateView):
         return context
 
 
-class AdviceAjaxDatatableView(PermissionMixin, AjaxDatatableView):
+class AdviceAjaxDatatableView(PermissionMixin, NoRowDetailsMixin, AjaxDatatableView):
     """
     View to provide table list of all Advices with ajax data.
     """
