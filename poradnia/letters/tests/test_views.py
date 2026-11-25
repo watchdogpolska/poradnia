@@ -3,7 +3,6 @@ import json
 import os
 import zipfile
 from io import BytesIO
-from unittest import expectedFailure
 from unittest.mock import MagicMock, patch
 
 import bleach
@@ -1065,41 +1064,79 @@ class LetterTableViewTestCase(TestCase):
 class LetterAjaxDatatableRowDetailsTestCase(TestCase):
     url = reverse_lazy("letters:letters_table_ajax_data")
 
-    def _details(self, letter):
+    def _details(self, pk):
         return self.client.post(
             self.url,
-            {"action": "details", "pk": letter.pk},
+            {"action": "details", "pk": pk},
             headers={"accept": "application/json"},
         )
 
-    def test_staff_with_access_gets_letter_details(self):
-        user = UserFactory(is_staff=True)
-        letter = LetterFactory(text="line one\r\nline two")
+    def _login_with_case_access(self, letter, **kwargs):
+        user = UserFactory(**kwargs)
         assign_perm("cases.can_view", user, letter.case)
         self.client.login(username=user.username, password="pass")
-        html = self._details(letter).json()["html"]
+        return user
+
+    def test_staff_with_access_gets_letter_details(self):
+        letter = LetterFactory(text="line one\r\nline two")
+        self._login_with_case_access(letter, is_staff=True)
+        html = self._details(letter.pk).json()["html"]
         self.assertIn("line one<br>line two", html)
         self.assertNotIn("\r", html)
 
-    @expectedFailure
     def test_user_without_case_access_cannot_read_letter_details(self):
-        # BUG: render_row_details() looks the letter up with
-        # Letter.objects.filter(id=pk), skipping .for_user(), so any logged-in
-        # user can read any letter by id. Drop expectedFailure once fixed.
         letter = LetterFactory(text="confidential-letter-text")
         user = UserFactory()
         self.client.login(username=user.username, password="pass")
-        resp = self._details(letter)
-        self.assertNotContains(resp, "confidential-letter-text", status_code=200)
+        resp = self._details(letter.pk)
+        self.assertEqual(resp.status_code, 404)
+        self.assertNotContains(resp, "confidential-letter-text", status_code=404)
 
-    @expectedFailure
-    def test_letter_details_escape_subject(self):
-        # BUG: every field except text is interpolated into the HTML
-        # unescaped and returned with mark_safe(); the subject (name) comes
-        # straight from inbound e-mail. Drop expectedFailure once fixed.
+    def test_staff_without_case_access_cannot_read_letter_details(self):
+        letter = LetterFactory(text="confidential-letter-text")
         user = UserFactory(is_staff=True)
-        letter = LetterFactory(name="<img src=x onerror=alert(1)>")
-        assign_perm("cases.can_view", user, letter.case)
         self.client.login(username=user.username, password="pass")
-        html = self._details(letter).json()["html"]
+        self.assertEqual(self._details(letter.pk).status_code, 404)
+
+    def test_client_cannot_read_staff_only_letter_details(self):
+        letter = LetterFactory(status=Letter.STATUS.staff, text="internal-note")
+        self._login_with_case_access(letter)
+        resp = self._details(letter.pk)
+        self.assertEqual(resp.status_code, 404)
+        self.assertNotContains(resp, "internal-note", status_code=404)
+
+    def test_client_with_access_gets_done_letter_details(self):
+        letter = LetterFactory(status=Letter.STATUS.done, text="reply-to-client")
+        self._login_with_case_access(letter)
+        self.assertIn("reply-to-client", self._details(letter.pk).json()["html"])
+
+    def test_missing_letter_gets_404(self):
+        letter = LetterFactory()
+        self._login_with_case_access(letter, is_staff=True)
+        self.assertEqual(self._details(letter.pk + 1000).status_code, 404)
+
+    def test_letter_details_escape_plain_fields(self):
+        letter = LetterFactory(
+            name="<img src=x onerror=alert(1)>",
+            signature="<script>alert(2)</script>",
+            text="<b>text</b>",
+        )
+        self._login_with_case_access(letter, is_staff=True)
+        html = self._details(letter.pk).json()["html"]
         self.assertNotIn("<img src=x", html)
+        self.assertIn("&lt;img src=x onerror=alert(1)&gt;", html)
+        self.assertNotIn("<script>", html)
+        self.assertNotIn("<b>text</b>", html)
+        self.assertIn("&lt;b&gt;text&lt;/b&gt;", html)
+
+    def test_letter_details_sanitize_stored_raw_html(self):
+        letter = LetterFactory()
+        # Bypass write-side sanitising, like rows saved before it existed.
+        Letter.objects.filter(pk=letter.pk).update(
+            html='<p onclick="alert(1)">kept</p><script>alert(2)</script>'
+        )
+        self._login_with_case_access(letter, is_staff=True)
+        html = self._details(letter.pk).json()["html"]
+        self.assertIn("<p>kept</p>", html)
+        self.assertNotIn("onclick", html)
+        self.assertNotIn("<script>", html)
